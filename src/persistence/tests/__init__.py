@@ -11,5 +11,4 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-
-from ZODB.Connection import Connection
+""" Persistence unit tests."""

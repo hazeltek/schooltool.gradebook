@@ -11,5 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Provide access to Persistent C extension types."""
 
-from ZODB.Connection import Connection
+from persistent import Persistent
+

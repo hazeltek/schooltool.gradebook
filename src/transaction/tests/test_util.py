@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2001, 2002 Zope Corporation and Contributors.
+# Copyright (c) 2004 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,5 +11,15 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Test transaction utilities
 
-from ZODB.Connection import Connection
+$Id: test_util.py,v 1.1.2.2 2004/02/12 22:40:50 fdrake Exp $
+"""
+import unittest
+from doctest import DocTestSuite
+
+def test_suite():
+    return DocTestSuite('transaction.util')
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')

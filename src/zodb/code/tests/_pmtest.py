@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2001, 2002 Zope Corporation and Contributors.
+# Copyright (c) 2003 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,5 +11,15 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""A simple module"""
 
-from ZODB.Connection import Connection
+# XXX why aren't modules pickleable?
+# import os
+# from xml import sax
+
+a = 1
+b = 2
+c = 3
+
+def f(x):
+    return a * x ** 2 + b * x + c
