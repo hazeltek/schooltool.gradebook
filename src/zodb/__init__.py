@@ -8,6 +8,18 @@
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
+# FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
+
+__version__ = "3.3a2"
+
+import sys
+
+from persistent import TimeStamp
+from DB import DB
+import Transaction
+
+# Backward compat for old imports. I don't think TimeStamp should
+# really be in persistent anyway
+sys.modules['ZODB.TimeStamp'] = sys.modules['persistent.TimeStamp']

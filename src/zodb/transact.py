@@ -13,8 +13,7 @@
 ##############################################################################
 """Tools to simplify transactions within applications."""
 
-from transaction import get_transaction
-from zodb.interfaces import ReadConflictError, ConflictError
+from ZODB.POSException import ReadConflictError, ConflictError
 
 def _commit(note):
     t = get_transaction()
@@ -35,7 +34,7 @@ def transact(f, note=None, retries=5):
     """
 
     # XXX deal with ZEO disconnected errors?
-    
+
     def g(*args, **kwargs):
         n = retries
         while n:

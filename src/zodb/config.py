@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2002 Zope Corporation and Contributors.
+# Copyright (c) 2001, 2002 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -13,19 +13,19 @@
 ##############################################################################
 """Open database and storage from a configuration.
 
-$Id: config.py,v 1.5 2003/06/25 15:14:37 fdrake Exp $"""
+$Id: config.py,v 1.15 2003/10/02 18:17:19 jeremy Exp $"""
 
 import os
-import StringIO
+from cStringIO import StringIO
 
 import ZConfig
 
-import zodb.db
+import ZODB
 
-db_schema_path = os.path.join(zodb.__path__[0], "config.xml")
+db_schema_path = os.path.join(ZODB.__path__[0], "config.xml")
 _db_schema = None
 
-s_schema_path = os.path.join(zodb.__path__[0], "storage.xml")
+s_schema_path = os.path.join(ZODB.__path__[0], "storage.xml")
 _s_schema = None
 
 def getDbSchema():
@@ -41,7 +41,7 @@ def getStorageSchema():
     return _s_schema
 
 def databaseFromString(s):
-    return databaseFromFile(StringIO.StringIO(s))
+    return databaseFromFile(StringIO(s))
 
 def databaseFromFile(f):
     config, handle = ZConfig.loadConfigFile(getDbSchema(), f)
@@ -55,7 +55,7 @@ def databaseFromConfig(section):
     return section.open()
 
 def storageFromString(s):
-    return storageFromFile(StringIO.StringIO(s))
+    return storageFromFile(StringIO(s))
 
 def storageFromFile(f):
     config, handle = ZConfig.loadConfigFile(getStorageSchema(), f)
@@ -94,20 +94,22 @@ class ZODBDatabase(BaseConfig):
 
     def open(self):
         section = self.config
-        return zodb.db.DB(section.storage.open(),
-                          pool_size=section.pool_size,
-                          cache_size=section.cache_size)
+        return ZODB.DB(section.storage.open(),
+                       pool_size=section.pool_size,
+                       cache_size=section.cache_size,
+                       version_pool_size=section.version_pool_size,
+                       version_cache_size=section.version_cache_size)
 
 class MappingStorage(BaseConfig):
 
     def open(self):
-        from zodb.storage.mapping import MappingStorage
+        from ZODB.MappingStorage import MappingStorage
         return MappingStorage(self.config.name)
 
 class DemoStorage(BaseConfig):
 
     def open(self):
-        from zodb.storage.demo import DemoStorage
+        from ZODB.DemoStorage import DemoStorage
         if self.config.base:
             base = self.config.base.open()
         else:
@@ -119,7 +121,7 @@ class DemoStorage(BaseConfig):
 class FileStorage(BaseConfig):
 
     def open(self):
-        from zodb.storage.file import FileStorage
+        from ZODB.FileStorage import FileStorage
         return FileStorage(self.config.path,
                            create=self.config.create,
                            read_only=self.config.read_only,
@@ -128,7 +130,7 @@ class FileStorage(BaseConfig):
 class ZEOClient(BaseConfig):
 
     def open(self):
-        from zodb.zeo.client import ClientStorage
+        from ZEO.ClientStorage import ClientStorage
         # config.server is a multikey of socket-address values
         # where the value is a socket family, address tuple.
         L = [server.address for server in self.config.server]
@@ -148,23 +150,23 @@ class ZEOClient(BaseConfig):
 class BDBStorage(BaseConfig):
 
     def open(self):
-        from zodb.storage.base import BerkeleyConfig
+        from BDBStorage.BerkeleyBase import BerkeleyConfig
         storageclass = self.get_storageclass()
         bconf = BerkeleyConfig()
         for name in dir(BerkeleyConfig):
             if name.startswith('_'):
                 continue
             setattr(bconf, name, getattr(self.config, name))
-        return storageclass(self.config.name, config=bconf)
+        return storageclass(self.config.envdir, config=bconf)
 
 class BDBMinimalStorage(BDBStorage):
 
     def get_storageclass(self):
-        from zodb.storage.bdbminimal import BDBMinimalStorage
-        return BDBMinimalStorage
+        import BDBStorage.BDBMinimalStorage
+        return BDBStorage.BDBMinimalStorage.BDBMinimalStorage
 
 class BDBFullStorage(BDBStorage):
 
     def get_storageclass(self):
-        from zodb.storage.bdbfull import BDBFullStorage
-        return BDBFullStorage
+        import BDBStorage.BDBFullStorage
+        return BDBStorage.BDBFullStorage.BDBFullStorage

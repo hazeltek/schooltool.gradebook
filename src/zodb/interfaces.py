@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2001 Zope Corporation and Contributors.
+# Copyright (c) 2004 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,377 +11,215 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""ZODB database interfaces and exceptions
+"""Interfaces for ZODB."""
 
-The Zope Object Database (ZODB) manages persistent objects using
-pickle-based object serialization.  The database has a pluggable
-storage backend.
+try:
+    from zope.interface import Interface, Attribute
+except ImportError:
+    class Interface:
+        pass
 
-The IAppDatabase, IAppConnection, and ITransaction interfaces describe
-the public APIs of the database.
+    class Attribute:
+        def __init__(self, __name__, __doc__):
+            self.__name__ = __name__
+            self.__doc__ = __doc__
 
-The IDatabase, IConnection, and ITransactionAttrs interfaces describe
-private APIs used by the implementation.
 
-$Id: interfaces.py,v 1.19 2003/10/08 08:20:28 alga Exp $
-"""
+class IDataManager(Interface):
+    """Objects that manage transactional storage.
 
-import zodb.utils
-from zope.interface import Interface, Attribute
-
-from transaction.interfaces import ITransaction as _ITransaction
-from transaction.interfaces \
-     import TransactionError, RollbackError, ConflictError as _ConflictError
-
-__all__ = [
-    # Constants
-    'ZERO', 'MAXTID',
-    # Exceptions
-    'POSError',
-    'POSKeyError',
-    'ConflictError',
-    'ReadConflictError',
-    'DanglingReferenceError',
-    'VersionError',
-    'VersionCommitError',
-    'VersionLockError',
-    'UndoError',
-    'MultipleUndoErrors',
-    'ExportError',
-    'Unsupported',
-    'InvalidObjectReference',
-    # Interfaces
-    'IAppConnection',
-    'IConnection',
-    'ITransaction',
-    'ITransactionAttrs',
-    ]
-
-ZERO = '\0'*8
-MAXTID = '\377'*8
-
-def _fmt_oid(oid):
-    return "%016x" % zodb.utils.u64(oid)
-
-def _fmt_undo(oid, reason):
-    s = reason and (": %s" % reason) or ""
-    return "Undo error %s%s" % (_fmt_oid(oid), s)
-
-class POSError(StandardError):
-    """Persistent object system error."""
-
-class POSKeyError(KeyError, POSError):
-    """Key not found in database."""
-
-    def __str__(self):
-        return _fmt_oid(self.args[0])
-
-class ConflictError(_ConflictError):
-    """Two transactions tried to modify the same object at once.
-
-    This transaction should be resubmitted.
-
-    Instance attributes:
-      oid : string
-        the OID (8-byte packed string) of the object in conflict
-      class_name : string
-        the fully-qualified name of that object's class
-      message : string
-        a human-readable explanation of the error
-      serials : (string, string)
-        a pair of 8-byte packed strings; these are the serial numbers
-        related to conflict.  The first is the revision of object that
-        is in conflict, the second is the revision of that the current
-        transaction read when it started.
-
-    The caller should pass either object or oid as a keyword argument,
-    but not both of them.  If object is passed, it should be a
-    persistent object with an _p_oid attribute.
+    These object's may manage data for other objects, or they may manage
+    non-object storages, such as relational databases.
     """
 
-    def __init__(self, message=None, object=None, oid=None, serials=None):
-        if message is None:
-            self.message = "database conflict error"
-        else:
-            self.message = message
+    def abort_sub(transaction):
+        """Discard all subtransaction data.
 
-        if object is None:
-            self.oid = None
-            self.class_name = None
-        else:
-            self.oid = object._p_oid
-            klass = object.__class__
-            self.class_name = klass.__module__ + "." + klass.__name__
+        See subtransaction.txt
 
-        if oid is not None:
-            assert self.oid is None
-            self.oid = oid
+        This is called when top-level transactions are aborted.
 
-        self.serials = serials
+        No further subtransactions can be started once abort_sub()
+        has been called; this is only used when the transaction is
+        being aborted.
 
-    def __str__(self):
-        extras = []
-        if self.oid:
-            extras.append("oid %s" % _fmt_oid(self.oid))
-        if self.class_name:
-            extras.append("class %s" % self.class_name)
-        if self.serials:
-            extras.append("serial was %s, now %s" %
-                          tuple(map(_fmt_oid, self.serials)))
-        if extras:
-            return "%s (%s)" % (self.message, ", ".join(extras))
-        else:
-            return self.message
+        abort_sub also implies the abort of a 2-phase commit.
 
-    def get_oid(self):
-        return self.oid
+        This should never fail.
+        """
 
-    def get_class_name(self):
-        return self.class_name
+    def commit_sub(transaction):
+        """Commit all changes made in subtransactions and begin 2-phase commit
 
-    def get_old_serial(self):
-        return self.serials[0]
+        Data are saved *as if* they are part of the current transaction.
+        That is, they will not be persistent unless the current transaction
+        is committed.
 
-    def get_new_serial(self):
-        return self.serials[1]
+        This is called when the current top-level transaction is committed.
 
-    def get_serials(self):
-        return self.serials
+        No further subtransactions can be started once commit_sub()
+        has been called; this is only used when the transaction is
+        being committed.
 
-class ReadConflictError(ConflictError):
-    """Conflict detected when object was loaded.
+        This call also implied the beginning of 2-phase commit.
+        """
 
-    An attempt was made to read an object that has changed in another
-    transaction (eg. another thread or process).
-    """
-    def __init__(self, message=None, object=None, serials=None):
-        if message is None:
-            message = "database read conflict error"
-        ConflictError.__init__(self, message=message, object=object,
-                               serials=serials)
+    # Two-phase commit protocol.  These methods are called by the
+    # ITransaction object associated with the transaction being
+    # committed.
 
-class DanglingReferenceError(TransactionError):
-    """An object has a persistent reference to a missing object.
+    def tpc_begin(transaction, subtransaction=False):
+        """Begin commit of a transaction, starting the two-phase commit.
 
-    If an object is stored and it has a reference to another object
-    that does not exist (for example, it was deleted by pack), this
-    exception may be raised.  Whether a storage supports this feature,
-    it a quality of implementation issue.
+        transaction is the ITransaction instance associated with the
+        transaction being committed.
 
-    Instance attributes:
-    referer: oid of the object being written
-    missing: referenced oid that does not have a corresponding object
-    """
+        subtransaction is a Boolean flag indicating whether the
+        two-phase commit is being invoked for a subtransaction.
 
-    def __init__(self, Aoid, Boid):
-        self.referer = Aoid
-        self.missing = Boid
+        Important note: Subtransactions are modelled in the sense that
+        when you commit a subtransaction, subsequent commits should be
+        for subtransactions as well.  That is, there must be a
+        commit_sub() call between a tpc_begin() call with the
+        subtransaction flag set to true and a tpc_begin() with the
+        flag set to false.
 
-    def __str__(self):
-        return "from %s to %s" % (_fmt_oid(self.referer),
-                                  _fmt_oid(self.missing))
+        """
+        
 
-class VersionError(POSError):
-    """An error in handling versions occurred."""
+    def tpc_abort(transaction):
+        """Abort a transaction.
 
-class VersionCommitError(VersionError):
-    """An invalid combination of versions was used in a version commit."""
+        This is always called after a tpc_begin call.
 
-class VersionLockError(VersionError, TransactionError):
-    """Can't modify an object that is modified in unsaved version."""
+        transaction is the ITransaction instance associated with the
+        transaction being committed.
 
-    def __init__(self, oid, version):
-        self.oid = oid
-        self.version = version
+        This should never fail.
+        """
 
-    def __str__(self):
-        return "%s locked in version %r" % (_fmt_oid(self.oid),
-                                            self.version)
+    def tpc_finish(transaction):
+        """Indicate confirmation that the transaction is done.
 
-class UndoError(POSError):
-    """An attempt was made to undo a non-undoable transaction."""
+        transaction is the ITransaction instance associated with the
+        transaction being committed.
 
-    def __init__(self, oid, reason=None):
-        self._oid = oid
-        self._reason = reason
+        This should never fail. If this raises an exception, the
+        database is not expected to maintain consistency; it's a
+        serious error.
 
-    def __str__(self):
-        return _fmt_undo(self._oid, self._reason)
+        """
 
-class MultipleUndoErrors(UndoError):
-    """Several undo errors occured during a single transaction."""
+    def tpc_vote(transaction):
+        """Verify that a data manager can commit the transaction
 
-    def __init__(self, errs):
-        # provide an oid and reason for clients that only look at that
-        UndoError.__init__(self, *errs[0])
-        self._errs = errs
+        This is the last chance for a data manager to vote 'no'.  A
+        data manager votes 'no' by raising an exception.
 
-    def __str__(self):
-        return "\n".join([_fmt_undo(*pair) for pair in self._errs])
+        transaction is the ITransaction instance associated with the
+        transaction being committed.
+        """
 
-class ExportError(POSError):
-    """An export file doesn't have the right format."""
+    def commit(object, transaction):
+        """CCCommit changes to an object
 
-class Unsupported(POSError):
-    """An feature that is unsupported bt the storage was used."""
+        Save the object as part of the data to be made persistent if
+        the transaction commits.
+        """
 
-class InvalidObjectReference(POSError):
-    """An object contains an invalid reference to another object.
+    def abort(object, transaction):
+        """Abort changes to an object
 
-    A reference is invalid if it refers to an object managed
-    by a different database connection.
+        Only changes made since the last transaction or
+        sub-transaction boundary are discarded.
 
-    Attributes:
-    obj is the invalid object
-    jar is the manager that attempted to store it.
+        This method may be called either:
+
+        o Outside of two-phase commit, or
+
+        o In the first phase of two-phase commit
+
+        """
+
     
-    obj._p_jar != jar
+
+
+class ITransaction(Interface):
+    """Object representing a running transaction.
+
+    Objects with this interface may represent different transactions
+    during their lifetime (.begin() can be called to start a new
+    transaction using the same instance).
     """
 
-    def __init__(self, obj, jar):
-        self.obj = obj
-        self.jar = jar
+    user = Attribute(
+        "user",
+        "The name of the user on whose behalf the transaction is being\n"
+        "performed.  The format of the user name is defined by the\n"
+        "application.")
+    # XXX required to be a string?
 
-    def __str__(self):
-        return "Invalid reference to object %s." % _fmt_oid(self.obj._p_jar)
-    
-class IAppDatabase(Interface):
-    """Interface exported by database to applications.
+    description = Attribute(
+        "description",
+        "Textual description of the transaction.")
 
-    The database contains a graph of objects reachable from the
-    distinguished root object.  The root object is a mapping object
-    that can contain arbitrary application data.
+    def begin(info=None, subtransaction=None):
+        """Begin a new transaction.
 
-    There is only rudimentary support for using more than one database
-    in a single application.  The persistent state of an object in one
-    database can not contain a direct reference to an object in
-    another database.
-    """
-
-    def open(version="", transaction=None, temporary=False, force=False,
-             waitflag=True):
-        # XXX Most of these arguments should eventually go away
-        """Open a new database connection."""
-
-    def abortVersion(version):
-        """Abort the locked database version named version."""
-
-    def commitVersion(source, dest=""):
-        """Commit changes from locked database version source to dest.
-
-        The default value of dest means commit the changes to the
-        default version.
+        If the transaction is in progress, it is aborted and a new
+        transaction is started using the same transaction object.
         """
 
-    def pack(time):
-        """Pack database to time."""
+    def commit(subtransaction=None):
+        """Finalize the transaction.
 
-    def undo(txnid):
-        """Undo changes caused by transaction txnid."""
-
-class IAppConnection(Interface):
-    """Interface exported by database connection to applications.
-
-    Each database connection provides an independent copy of the
-    persistent object space.  ZODB supports multiple threads by
-    providing each thread with a separate connection.
-
-    Connections are synchronized through database commits and explicit
-    sync() calls.  Changes to the object space are only made visible
-    when a transaction commits.  When a connection commits its
-    changes, they become visible to other connections.  Changes made
-    by other connections are also become visible at this time.
-    """
-
-    def root():
-        """Return the root of the database."""
-
-    def sync():
-        """Process pending invalidations.
-
-        If there is a current transaction, it will be aborted.
+        This executes the two-phase commit algorithm for all
+        IDataManager objects associated with the transaction.
         """
 
-    def get(oid):
-        """Return object for `oid`.
+    def abort(subtransaction=0, freeme=1):
+        """Abort the transaction.
 
-        The object may be a ghost.
+        This is called from the application.  This can only be called
+        before the two-phase commit protocol has been started.
         """
 
-class IDatabase(Interface):
-    """Interface between the database and its connections."""
+    def join(datamanager):
+        """Add a datamanager to the transaction.
 
-    def invalidate(oids, conn=None, version=""):
-        pass
-
-    def _closeConnection(conn):
-        pass
-
-
-class IConnection(Interface):
-    """Interface required of Connection by ZODB DB.
-
-    The Connection also implements IPersistentDataManager.
-    """
-
-    def invalidate(oids):
-        """Invalidate a set of oids modified by a single transaction.
-
-        This marks the oids as invalid, but doesn't actually
-        invalidate them.  The object data will be actually invalidated
-        at certain transaction boundaries.
+        The datamanager must implement the
+        transactions.interfaces.IDataManager interface, and be
+        adaptable to ZODB.interfaces.IDataManager.
         """
 
-    def reset(version=""):
-        """Reset connection to use specified version."""
-
-    def getVersion():
-        """Return the version that connection is using."""
-
-    def close():
-        pass
-
-    def cacheGC():
-        pass
-
-    def add(obj):
-        """Add a persistent object to this connection.
-
-        Essentially, set _p_jar and assign _p_oid on the object.
-
-        Raises a TypeError if obj is not persistent. Does nothing if
-        obj is already added to this connection.
-        """
-
-class ITransaction(_ITransaction):
-    """Extends base ITransaction with with metadata.
-
-    Client code should use this interface to set attributes.
-    """
+    def register(object):
+        """Register the given object for transaction control."""
 
     def note(text):
-        """Add the text to the transaction description
+        """Add text to the transaction description.
 
-        If there previous description isn't empty, a blank line is
-        added before the new text.
+        If a description has already been set, text is added to the
+        end of the description following two newline characters.
+        Surrounding whitespace is stripped from text.
+        """
+        # XXX does impl do the right thing with ''?  Not clear what
+        # the "right thing" is.
+
+    def setUser(user_name, path="/"):
+        """Set the user name.
+
+        path should be provided if needed to further qualify the
+        identified user.
         """
 
-    def setUser(user_name):
-        """Set the transaction user name."""
-
     def setExtendedInfo(name, value):
-        """Set extended information."""
+        """Add extension data to the transaction.
 
-class ITransactionAttrs(_ITransaction):
-    # XXX The following attributes used by storages, so they are part
-    # of the interface.  But I'd rather not have user code explicitly
-    # use the attributes.
+        name is the name of the extension property to set; value must
+        be a picklable value.
 
-    user = Attribute("The user as set by setUser()")
-
-    description = Attribute("A description as set by note()")
-
-    _extension = Attribute(
-        """Extended info as set by setExtendedInfo()
-
-        Should be None or a dictionary.""")
+        Storage implementations may limit the amount of extension data
+        which can be stored.
+        """
+        # XXX is this this allowed to cause an exception here, during
+        # the two-phase commit, or can it toss data silently?

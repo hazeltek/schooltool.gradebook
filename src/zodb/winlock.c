@@ -14,7 +14,7 @@
 static char winlock_doc_string[] =
 "Lock files on Windows."
 "\n"
-"$Id: winlock.c,v 1.3 2003/02/27 21:27:18 tim_one Exp $\n";
+"$Id: winlock.c,v 1.9 2003/02/28 20:37:59 tim_one Exp $\n";
 
 #include "Python.h"
 

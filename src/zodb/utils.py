@@ -8,20 +8,34 @@
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
+# FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-from zodb.timestamp import TimeStamp
-import struct
+
+import sys
 import time
+from persistent.TimeStamp import TimeStamp
+
+from struct import pack, unpack
+from types import StringType
+
+z64 = '\0'*8
+t32 = 1L << 32
+
+assert sys.hexversion >= 0x02020000
+
+# The distinction between ints and longs is blurred in Python 2.2,
+# so u64() are U64() really the same.
 
 def p64(v):
     """Pack an integer or long into a 8-byte string"""
-    return struct.pack(">Q", v)
+    return pack(">Q", v)
 
 def u64(v):
     """Unpack an 8-byte string into a 64-bit long integer."""
-    return struct.unpack(">Q", v)[0]
+    return unpack(">Q", v)[0]
+
+U64 = u64
 
 def cp(f1, f2, l):
     read = f1.read
@@ -37,27 +51,21 @@ def cp(f1, f2, l):
         write(d)
         l = l - len(d)
 
-try:
-    from sets import Set
-except ImportError:
-    # This must be Python 2.2, which doesn't have a standard sets module.
-    # ZODB needs only a very limited subset of the Set API.
-    class Set(dict):
-        def __init__(self, arg=None):
-            if arg:
-                if isinstance(arg, dict):
-                    self.update(arg)
-                else:
-                    # XXX the proper sets version is much more robust
-                    for o in arg:
-                        self[o] = 1
-        def add(self, o):
-            self[o] = 1
-        def remove(self, o):
-            del self[o]
-        def __ior__(self, other):
-            if not isinstance(other, Set):
-                return NotImplemented
-            self.update(other)
-            return self
 
+def newTimeStamp(old=None,
+                 TimeStamp=TimeStamp,
+                 time=time.time, gmtime=time.gmtime):
+    t = time()
+    ts = TimeStamp(gmtime(t)[:5]+(t%60,))
+    if old is not None:
+        return ts.laterThan(old)
+    return ts
+
+
+def oid_repr(oid):
+    if isinstance(oid, StringType) and len(oid) == 8:
+        return '%016x' % U64(oid)
+    else:
+        return repr(oid)
+
+serial_repr = oid_repr
