@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2004 Zope Corporation and Contributors.
+# Copyright (c) 2001, 2002 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -8,18 +8,23 @@
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
 # WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
+# FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-"""Test transaction utilities
 
-$Id: test_util.py,v 1.2 2004/02/20 16:56:58 fdrake Exp $
-"""
-import unittest
-from doctest import DocTestSuite
+__version__ = "3.3a2"
 
-def test_suite():
-    return DocTestSuite('transaction.util')
+import sys
+import __builtin__
 
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+from persistent import TimeStamp
+from DB import DB
+from transaction import get as get_transaction
+
+# Backward compat for old imports. I don't think TimeStamp should
+# really be in persistent anyway.
+sys.modules['ZODB.TimeStamp'] = sys.modules['persistent.TimeStamp']
+
+# XXX Issue deprecation warning if this variant is used?
+__builtin__.get_transaction = get_transaction
+del __builtin__
