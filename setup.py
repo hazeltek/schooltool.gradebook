@@ -35,11 +35,23 @@ pkg_resources.require("setuptools>=0.6a11")
 import os
 from setuptools import setup, find_packages
 
+version = open("version.txt").read().strip()
+if version.endswith("dev"):
+    svnversion = os.popen('svnversion').read().strip()
+    versions = svnversion.split(':')
+    if len(versions) > 1:
+        sys.exit("Please run `svn up` before running this script.")
+    max_version = versions[0]
+    if max_version.endswith("M"):
+        sys.exit("You have uncommited changes. "
+                 "Please commit them before running this script.")
+    version += "_r" + max_version
+
 setup(
     name="schooltool.gradebook",
     description="SchoolTool US Gradebook package.",
     long_description="""TODO""",
-    version="0.1dev_r" + "$Id$".split()[2],
+    version=version,
     url='http://www.schooltool.org',
     license="GPL",
     maintainer="SchoolTool development team",
