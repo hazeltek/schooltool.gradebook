@@ -40,7 +40,10 @@ ftest: build
 
 .PHONY: release
 release:
-	 bin/buildout setup setup.py sdist
+	echo -n `sed -e 's/\n//' version.txt.in` > version.txt
+	echo -n "_r" >> version.txt
+	svnversion >> version.txt
+	bin/buildout setup setup.py sdist
 
 .PHONY: move-release
 move-release:
