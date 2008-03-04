@@ -114,7 +114,7 @@ class GradebookOverview(SectionFinder):
             grades = []
             for act_hash, activity in activities:
                 ev = gradebook.getEvaluation(student, activity)
-                if ev is not None:
+                if ev is not None and ev.value is not UNSCORED:
                     grades.append({'activity': act_hash, 'value': ev.value,
                                    'has_value': True})
                 else:
@@ -289,7 +289,7 @@ class GradeActivity(object):
         for student in self.context.students:
             ev = gradebook.getEvaluation(student, self.activity)
             value = self.request.get(student.username)
-            if ev is not None:
+            if ev is not None and ev.value is not UNSCORED:
                 value = value or ev.value
             else:
                 value = value or ''
@@ -367,7 +367,7 @@ class Grade(object):
         formatter = self.request.locale.dates.getFormatter('dateTime', 'short')
         gradebook = proxy.removeSecurityProxy(self.context)
         ev = gradebook.getEvaluation(self.student, self.activity)
-        if ev is not None:
+        if ev is not None and ev.value is not UNSCORED:
             return {'value': ev.value,
                     'time': formatter.format(ev.time)}
         else:

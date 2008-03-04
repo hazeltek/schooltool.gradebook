@@ -42,6 +42,7 @@ from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.category import getCategories
+from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.common import SchoolToolMessage as _
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
@@ -122,7 +123,7 @@ class GradebookBase(object):
         count = 0
         for activity in self.getWorksheetActivities(worksheet):
             ev = self.getEvaluation(student, activity)
-            if ev is not None:
+            if ev is not None and ev.value is not UNSCORED:
                 ss = ev.requirement.scoresystem
                 total += ev.value - ss.min
                 count += ss.max - ss.min
