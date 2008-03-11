@@ -412,10 +412,9 @@ class MyGradesView(SectionFinder):
         for activity in self.context.getCurrentActivities(self.person):
             activity = proxy.removeSecurityProxy(activity)
             ev = self.context.getEvaluation(self.person, activity)
-            if ev:
+            if ev is not None and ev.value is not UNSCORED:
                 ss = ev.requirement.scoresystem
                 grade = '%d/%d' % (ev.value, ss.max)
-                
                 total += ev.value - ss.min
                 count += ss.max - ss.min
             else:
