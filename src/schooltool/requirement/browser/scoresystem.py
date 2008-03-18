@@ -23,9 +23,6 @@ $Id$
 __docformat__ = 'reStructuredText'
 import zope.interface
 import zope.schema
-from zope.component import getUtility
-from zope.app.form.browser.interfaces import ITerms
-from zope.schema.interfaces import ITitledTokenizedTerm
 from zope.app import form
 from zope.app.pagetemplate import ViewPageTemplateFile
 
@@ -37,7 +34,7 @@ class IWidgetData(interfaces.IRangedValuesScoreSystem):
 
     existing = zope.schema.Choice(
         title=_('Exisiting Score System'),
-        source=scoresystem.ScoreSystemsSource(),
+        vocabulary='schooltool.requirement.scoresystems',
         required=False)
 
     custom = zope.schema.Bool(
@@ -52,31 +49,6 @@ class WidgetData(object):
     custom = False
     min = 0
     max = 100
-
-
-class ScoreSystemsTerm(object):
-    """A term for displaying a score system."""
-    zope.interface.implements(ITitledTokenizedTerm)
-
-    def __init__(self, nameOfUtility):
-        self.token = nameOfUtility
-        self.value = nameOfUtility
-        self.title = nameOfUtility
-
-
-class ScoreSystemsTerms(object):
-    """Displaying Score Systems."""
-    zope.interface.implements(ITerms)
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    def getTerm(self, value):
-        return ScoreSystemsTerm(value)
-
-    def getValue(self, token):
-        return token
 
 
 class ScoreSystemWidget(object):
@@ -172,7 +144,7 @@ class ScoreSystemWidget(object):
 
     def hasInput(self):
         """See zope.app.form.interfaces.IInputWidget"""
-        return (self.existing_widget.hasValidInput() or
+        return (self.existing_widget.hasInput() or
                 (self.custom_widget.hasValidInput() and
                  self.custom_widget.getInputValue()))
 

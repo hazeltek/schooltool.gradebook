@@ -25,8 +25,7 @@ __docformat__ = 'restructuredtext'
 import zope.interface
 import zope.schema
 import zope.security.checker
-from zope.component import getUtilitiesFor
-from zope.schema.interfaces import IIterableSource
+
 from decimal import Decimal
 
 from schooltool.requirement import interfaces
@@ -293,19 +292,3 @@ class IScoreSystemField(zope.schema.interfaces.IField):
 class ScoreSystemField(zope.schema.Field):
     """Score System Field."""
     zope.interface.implements(IScoreSystemField)
-
-class IScoreSystemsSource(IIterableSource):
-    """A source of scoresystems."""
-
-class ScoreSystemsSource(object):
-    zope.interface.implements(IScoreSystemsSource)
-
-    def scoreSystems(self):
-        ss = getUtilitiesFor(interfaces.IScoreSystem)
-        return [name for name, util in ss]
-
-    def __iter__(self):
-        return iter(self.scoreSystems())
-
-    def __len__(self):
-        return len(self.scoreSystems())
