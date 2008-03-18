@@ -26,12 +26,14 @@ import datetime
 import persistent.dict
 
 import zope.interface
+from zope.component import getUtility
 from zope import annotation
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 
 from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement import requirement
+from schooltool.requirement.interfaces import IScoreSystem
 from schooltool.traverser import traverser
 from schooltool.gradebook import interfaces
 
@@ -80,6 +82,19 @@ class Worksheet(requirement.Requirement):
 
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)
+
+    _scoresystem = None
+
+    def _setScoreSystem(self, value):
+        if type(value) == unicode:
+            self._scoresystem = getUtility(IScoreSystem, name=value)
+        else:
+            self._scoresystem = value
+
+    def _getScoreSystem(self):
+        return self._scoresystem
+
+    scoresystem = property(_getScoreSystem, _setScoreSystem)
 
     def __init__(self, title, category, scoresystem,
                  description=None, date=None):

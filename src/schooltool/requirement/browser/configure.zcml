@@ -13,6 +13,12 @@
       permission="zope.Public"
       />
 
+  <zope:adapter
+      for="schooltool.requirement.scoresystem.IScoreSystemsSource
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      factory=".scoresystem.ScoreSystemsTerms"
+      />
+
   <configure
       package="schooltool.skin"
       i18n_domain="schooltool">

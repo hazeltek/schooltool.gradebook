@@ -115,12 +115,6 @@
   <!-- Score System registrations -->
 
   <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component="zope.app.component.vocabulary.UtilityVocabulary"
-      name="schooltool.requirement.scoresystems"
-      />
-
-  <utility
       provides="schooltool.requirement.interfaces.IScoreSystem"
       component="schooltool.requirement.scoresystem.PassFail"
       name="Pass/Fail"

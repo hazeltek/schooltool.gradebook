@@ -147,6 +147,15 @@ Note that 'Week 1' is the currently selected worksheet.
 Now, let's add some activities to it.
 
     >>> stephan.getLink('New Activity').click()
+    >>> print analyze.queryHTML('id("field.scoresystem.existing")', stephan.contents)[0]
+    <select id="field.scoresystem.existing" name="field.scoresystem.existing" size="1">
+      <option selected="selected" value="">(no value)</option>
+      <option value="Letter Grade">Letter Grade</option>
+      <option value="Pass/Fail">Pass/Fail</option>
+      <option value="Percent">Percent</option>
+      <option value="100 Points">100 Points</option>
+      <option value="Extended Letter Grade">Extended Letter Grade</option>
+    </select>
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
     >>> stephan.getControl('Category').value = ['assignment']
