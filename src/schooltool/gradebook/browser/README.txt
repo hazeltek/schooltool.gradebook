@@ -61,6 +61,7 @@ We can also change the default category:
 
 Next the administrator defines the courses that are available in the school.
 
+    >>> manager.getLink('Manage').click()
     >>> manager.getLink('Courses').click()
     >>> manager.getLink('New Course').click()
     >>> manager.getControl('Title').value = 'Physics I'
@@ -89,6 +90,7 @@ But what would a section be without some students and a teacher?
 
 Now we can add those people to the section:
 
+    >>> manager.getLink('Manage').click()
     >>> manager.getLink('Courses').click()
     >>> manager.getLink('Physics I').click()
     >>> manager.getLink('(1)').click()
@@ -120,10 +122,8 @@ creating two worksheets, one for each week in our two week section.
 
     >>> stephan = setup.logIn('stephan', 'pwd')
 
-    >>> stephan.getLink('SchoolTool').click()
-    >>> stephan.getLink('Courses').click()
-    >>> stephan.getLink('Physics I').click()
-    >>> stephan.getLink('(1)').click()
+    >>> stephan.getLink('Stephan Richter').click()
+    >>> stephan.getLink('Stephan Richter -- Physics I (1)').click()
     >>> stephan.getLink('Activities').click()
 
     >>> stephan.getLink('New Worksheet').click()
@@ -245,10 +245,8 @@ Grading
 
 Now that we have both, students and activities, we can enter the gradebook.
 
-    >>> stephan.getLink('SchoolTool').click()
-    >>> stephan.getLink('Courses').click()
-    >>> stephan.getLink('Physics I').click()
-    >>> stephan.getLink('(1)').click()
+    >>> stephan.getLink('Stephan Richter').click()
+    >>> stephan.getLink('Stephan Richter -- Physics I (1)').click()
     >>> stephan.getLink('Gradebook').click()
 
 The initial gradebook screen is a simple spreadsheet. In order to prevent
