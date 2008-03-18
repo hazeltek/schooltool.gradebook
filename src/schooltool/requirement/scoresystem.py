@@ -25,11 +25,16 @@ __docformat__ = 'restructuredtext'
 import zope.interface
 import zope.schema
 import zope.security.checker
+from zope.app.component.vocabulary import UtilityVocabulary
 
 from decimal import Decimal
 
 from schooltool.requirement import interfaces
 
+
+def ScoreSystemsVocabulary(context):
+    return UtilityVocabulary(context,
+                             interface=interfaces.IScoreSystem)
 
 class UNSCORED(object):
     """This object behaves like a string.

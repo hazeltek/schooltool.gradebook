@@ -116,7 +116,7 @@
 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component="zope.app.component.vocabulary.UtilityVocabulary"
+      component="schooltool.requirement.scoresystem.ScoreSystemsVocabulary"
       name="schooltool.requirement.scoresystems"
       />
 
