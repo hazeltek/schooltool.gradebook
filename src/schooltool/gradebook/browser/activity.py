@@ -20,10 +20,12 @@
 
 $Id$
 """
-from zope.app import zapi
+import zope.security.proxy
 from zope.app.form.browser.editview import EditView
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
+from zope.traversing.browser.absoluteurl import absoluteURL
+from zope.traversing.api import getName
 
 from schooltool.app.browser import app
 from schooltool.gradebook import interfaces
@@ -49,14 +51,14 @@ class ActivitiesView(object):
         for activity in self.context.getCurrentActivities(self.person):
             pos += 1
             inherited = False
-            if zapi.isinstance(activity, requirement.InheritedRequirement):
+            if zope.security.proxy.isinstance(activity, requirement.InheritedRequirement):
                 inherited = True
                 activity = requirement.unwrapRequirement(activity)
-            yield {'name': zapi.name(activity),
+            yield {'name': getName(activity),
                    'title': activity.title,
                    'inherited': inherited,
                    'disabled': inherited and 'disabled' or '',
-                   'url': zapi.absoluteURL(activity, self.request),
+                   'url': absoluteURL(activity, self.request),
                    'pos': pos}
 
     def positions(self):
@@ -81,7 +83,7 @@ class ActivitiesView(object):
             old_pos = 0
             for activity in self.context.getCurrentActivities(self.person):
                 old_pos += 1
-                name = zapi.name(activity)
+                name = getName(activity)
                 if 'pos.'+name not in self.request:
                     continue
                 new_pos = int(self.request['pos.'+name])
@@ -104,7 +106,7 @@ class ActivityAddView(app.BaseAddView):
     """A view for adding an activity."""
 
     def nextURL(self):
-        return zapi.absoluteURL(self.context.context.__parent__, self.request)
+        return absoluteURL(self.context.context.__parent__, self.request)
 
 
 class BaseEditView(EditView):
@@ -124,12 +126,12 @@ class WorksheetEditView(BaseEditView):
     """A view for editing worksheet info."""
 
     def nextURL(self):
-        return zapi.absoluteURL(self.context.__parent__, self.request)
+        return absoluteURL(self.context.__parent__, self.request)
 
 
 class ActivityEditView(BaseEditView):
     """A view for editing activity info."""
 
     def nextURL(self):
-        return zapi.absoluteURL(self.context.__parent__.__parent__, self.request)
+        return absoluteURL(self.context.__parent__.__parent__, self.request)
 

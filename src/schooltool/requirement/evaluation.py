@@ -29,9 +29,9 @@ import zope.component
 import zope.event
 from zope import annotation
 from zope.app import container
-from zope.app import zapi
 from zope.location import location
 from zope.app.keyreference.interfaces import IKeyReference
+from zope.traversing.api import getParent, getName
 
 from schooltool.requirement import interfaces
 
@@ -133,7 +133,7 @@ class Evaluations(persistent.Persistent, container.contained.Contained):
                   for name, ev in self.items()
                   if ev.requirement in requirements]
         result = Evaluations(result)
-        location.locate(result, zapi.getParent(self), zapi.name(self))
+        location.locate(result, getParent(self), getName(self))
         return result
 
     def getEvaluationsOfEvaluator(self, evaluator):
@@ -142,12 +142,12 @@ class Evaluations(persistent.Persistent, container.contained.Contained):
                   for name, ev in self.items()
                   if ev.evaluator == evaluator]
         result = Evaluations(result)
-        location.locate(result, zapi.getParent(self), zapi.name(self))
+        location.locate(result, getParent(self), getName(self))
         return result
 
     def __repr__(self):
         try:
-            parent = zapi.getParent(self)
+            parent = getParent(self)
         except TypeError:
             parent = None
         return '<%s for %r>' % (self.__class__.__name__, parent)
@@ -184,7 +184,7 @@ class Evaluation(container.contained.Contained):
     @property
     def evaluatee(self):
         try:
-            return zapi.getParent(zapi.getParent(self))
+            return getParent(getParent(self))
         except TypeError:
             raise ValueError('Evaluation is not yet assigned to a evaluatee')
 
@@ -208,7 +208,7 @@ class AbstractQueryAdapter(object):
         """See interfaces.IEvaluationsQuery"""
         result = Evaluations(self._query(*args, **kwargs))
         location.locate(
-            result, zapi.getParent(self.context), zapi.name(self.context))
+            result, getParent(self.context), getName(self.context))
         return result
 
 

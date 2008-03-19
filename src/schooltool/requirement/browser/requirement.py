@@ -23,7 +23,7 @@ $Id$
 """
 import urllib
 
-from zope.app import zapi
+from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.form.browser.add import AddView
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
@@ -38,7 +38,7 @@ class RequirementAddView(AddView):
     """A view for adding Requirements."""
 
     def nextURL(self):
-        return zapi.absoluteURL(self.context.context, self.request)
+        return absoluteURL(self.context.context, self.request)
 
     def update(self):
         if 'CANCEL' in self.request:

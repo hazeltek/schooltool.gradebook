@@ -1056,8 +1056,8 @@ The evaluations for an evaluatable object can be accessed using the
   >>> evals = interfaces.IEvaluations(student)
   >>> evals
   <Evaluations for Person(u'Sample Student')>
-  >>> from zope.app import zapi
-  >>> zapi.getParent(evals)
+  >>> from zope.traversing.api import getParent
+  >>> getParent(evals)
   Person(u'Sample Student')
 
 Initially, there are no evaluations available.

@@ -66,7 +66,6 @@ Grab the student's ``IEvaluations`` adapter:
   >>> evals = interfaces.IEvaluations(student)
   >>> evals
   <Evaluations for <schooltool.person.person.Person object at ...>
-  >>> from zope.app import zapi
   >>> sorted(evals.keys())
   []
 

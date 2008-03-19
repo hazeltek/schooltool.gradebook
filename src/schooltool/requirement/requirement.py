@@ -32,9 +32,9 @@ import zope.app.container.contained
 import zope.lifecycleevent
 from zope import component
 from zope import annotation
-from zope.app import zapi
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.app.container.interfaces import IObjectRemovedEvent
+import zope.security.proxy
 
 from schooltool.requirement import interfaces
 
@@ -105,7 +105,7 @@ def getRequirementKey(requirement):
 
 def unwrapRequirement(requirement):
     """Remove all inherited requirement wrappers."""
-    while zapi.isinstance(requirement, InheritedRequirement):
+    while zope.security.proxy.isinstance(requirement, InheritedRequirement):
         requirement = requirement.original
     return requirement
 

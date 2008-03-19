@@ -23,9 +23,10 @@ $Id$
 __docformat__ = 'reStructuredText'
 import zope.schema
 from zope.security import proxy
-from zope.app import zapi
+from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.viewlet import viewlet
+from zope.traversing.api import getName
 
 from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -56,7 +57,7 @@ class SectionFinder(object):
                 continue
             if self.isStudent and not self.person in section.members:
                 continue
-            url = zapi.absoluteURL(section, self.request)
+            url = absoluteURL(section, self.request)
             if self.isTeacher:
                 url += '/gradebook'
             elif self.isStudent:
@@ -234,7 +235,7 @@ class GradeStudent(object):
 
         elif 'UPDATE_SUBMIT' in self.request:
             student = self.student
-            evaluator = zapi.getName(IPerson(self.request.principal))
+            evaluator = getName(IPerson(self.request.principal))
             gradebook = proxy.removeSecurityProxy(self.context)
             # Iterate through all activities
             for activity in self.context.activities:
@@ -303,7 +304,7 @@ class GradeActivity(object):
 
         elif 'UPDATE_SUBMIT' in self.request:
             activity = self.activity
-            evaluator = zapi.getName(IPerson(self.request.principal))
+            evaluator = getName(IPerson(self.request.principal))
             gradebook = proxy.removeSecurityProxy(self.context)
             # Iterate through all students
             for student in self.context.students:
@@ -381,7 +382,7 @@ class Grade(object):
             self.context.removeEvaluation(self.student, self.activity)
 
         elif 'UPDATE_SUBMIT' in self.request:
-            evaluator = zapi.getName(IPerson(self.request.principal))
+            evaluator = getName(IPerson(self.request.principal))
 
             score = self.activity.scoresystem.fromUnicode(self.request['grade'])
             gradebook = proxy.removeSecurityProxy(self.context)
