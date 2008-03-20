@@ -133,6 +133,14 @@
       permission="schooltool.view"
       />
 
+  <menuItem
+      menu="schooltool_actions"
+      title="Gradebook"
+      for="..interfaces.IActivities"
+      action="../gradebook/index.html"
+      permission="schooltool.view"
+      />
+
   <!-- Gradebook -->
 
   <page

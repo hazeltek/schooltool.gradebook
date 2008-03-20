@@ -253,9 +253,8 @@ Grading
 -------
 
 Now that we have both, students and activities, we can enter the gradebook.
+We'll use the link registered for IActivities that gets us there.
 
-    >>> stephan.getLink('Stephan Richter').click()
-    >>> stephan.getLink('Stephan Richter -- Physics I (1)').click()
     >>> stephan.getLink('Gradebook').click()
 
 The initial gradebook screen is a simple spreadsheet. In order to prevent
