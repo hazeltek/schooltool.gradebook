@@ -9,6 +9,58 @@
   <include package="schooltool.timetable" />
   <include package="schooltool.requirement" />
 
+  <configure
+      package="schooltool.skin"
+      i18n_domain="schooltool">
+
+    <browser:addform
+        label="Add a Requirement"
+        name="addRequirement.html"
+        schema="schooltool.requirement.interfaces.IRequirement"
+        fields="title"
+        arguments="title"
+        set_after_add="title"
+        content_factory="schooltool.requirement.requirement.Requirement"
+        permission="schooltool.edit"
+        template="templates/simple_add.pt"
+        class="schooltool.requirement.browser.requirement.RequirementAddView">
+    </browser:addform>
+
+    <browser:editform
+        label="Edit Requirement"
+        name="edit.html"
+        schema="schooltool.requirement.interfaces.IRequirement"
+        for="schooltool.requirement.interfaces.IRequirement"
+        fields="title"
+        template="templates/simple_edit.pt"
+        permission="schooltool.edit"
+        class="schooltool.requirement.browser.requirement.RequirementEditView"
+        />
+  
+    <browser:navigationViewlet
+        name="edit-requirement"
+        for="schooltool.requirement.interfaces.IRequirement"
+        manager="schooltool.skin.IActionMenuManager"
+        template="templates/actionsViewlet.pt"
+        permission="schooltool.edit"
+        link="edit.html"
+        title="Edit Requirement"
+        order="10"
+        />
+  
+    <browser:navigationViewlet
+        name="add-requirement"
+        for="schooltool.requirement.interfaces.IRequirement"
+        manager="schooltool.skin.IActionMenuManager"
+        template="templates/actionsViewlet.pt"
+        permission="schooltool.edit"
+        link="+/addRequirement.html"
+        title="New Requirement"
+        order="20"
+        />
+
+  </configure>
+
   <browser:defaultSkin name="SchoolTool" />
 
 </configure>
