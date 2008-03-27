@@ -35,7 +35,7 @@ pkg_resources.require("setuptools>=0.6a11")
 import os
 from setuptools import setup, find_packages
 
-version = "FAKE_VERSION_NUMBER"
+version = "FAKEVERSIONNUMBER"
 
 setup(
     name="schooltool.gradebook",
