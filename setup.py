@@ -35,17 +35,7 @@ pkg_resources.require("setuptools>=0.6a11")
 import os
 from setuptools import setup, find_packages
 
-if os.path.exists("version.txt"):
-    version = open("version.txt").read().strip()
-else:
-    version = open("version.txt.in").read().strip()
-
-if ":" in version:
-    sys.exit("Please run `svn up` before running this script.")
-
-if version.endswith("M"):
-    sys.exit("You have uncommited changes. "
-             "Please commit them before running this script.")
+version = "FAKE_VERSION_NUMBER"
 
 setup(
     name="schooltool.gradebook",
