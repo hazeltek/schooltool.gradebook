@@ -1,0 +1,7 @@
+<tal:if condition="request/principal/schooltool:authenticated"
+        define="app context/schooltool:app">
+  <a i18n:translate=""
+     class="navigation_header"
+     tal:attributes="href string:${app/@@absolute_url}/gradebook.html"
+     >Gradebook</a>
+</tal:if>

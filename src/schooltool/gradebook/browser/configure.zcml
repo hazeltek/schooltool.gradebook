@@ -30,25 +30,32 @@
       permission="schooltool.edit"
       />
 
-  <configure package="schooltool.skin">
+  <!-- Navigation Tabs -->
 
-    <navigationViewlet
-        name="categories"
-        for="*"
-        manager="schooltool.skin.INavigationManager"
-        template="templates/navigationViewlet.pt"
-        class="schooltool.skin.NavigationViewlet"
-        permission="schooltool.view"
-        link="categories.html"
-        title="Activity Categories"
-        order="200"
-        />
-
-  </configure>
+  <navigationViewlet
+      name="Gradebook"
+      for="*"
+      manager="schooltool.skin.skin.INavigationManager"
+      template="gradebook_tab.pt"
+      permission="schooltool.view"
+      link="gradebook.html"
+      order="310"
+      />
 
   <!-- Activities -->
 
   <configure package="schooltool.skin">
+    <navigationViewlet
+        name="categories"
+        for="*"
+        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
+        template="templates/navigationViewlet.pt"
+        class="schooltool.skin.skin.NavigationViewlet"
+        permission="schooltool.edit"
+        link="categories.html"
+        title="Activity Categories"
+        order="200"
+        />
 
     <addform
         label="Add an Activity"
@@ -135,13 +142,21 @@
 
   <menuItem
       menu="schooltool_actions"
-      title="Gradebook"
+      title="Return to Gradebook"
       for="..interfaces.IActivities"
       action="../gradebook/index.html"
       permission="schooltool.view"
       />
 
   <!-- Gradebook -->
+
+  <page
+      name="gradebook.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".gradebook.GradebookStartup"
+      template="gradebook_startup.pt"
+      permission="schooltool.view"
+      />
 
   <page
       name="index.html"

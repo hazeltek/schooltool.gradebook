@@ -33,34 +33,51 @@ from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import interfaces
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.securitypolicy.crowds import TeachersCrowd, StudentsCrowd
 from schooltool.common import SchoolToolMessage as _
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
 
+class GradebookStartup(object):
+    """A view for entry into into the gradebook or mygrades views."""
+
+    def update(self):
+        self.person = IPerson(self.request.principal)
+        self.sectionsTaught = []
+        self.sectionsAttended = []
+
+        for section in ISchoolToolApplication(None)['sections'].values():
+            if self.person in section.instructors:
+                self.sectionsTaught.append(section)
+            if self.person in section.members:
+                self.sectionsAttended.append(section)
+
+        if self.sectionsTaught:
+            section = self.sectionsTaught[0]
+            self.gradebookURL = absoluteURL(section, self.request) + '/gradebook'
+            if not self.sectionsAttended:
+                self.request.response.redirect(self.gradebookURL)
+        if self.sectionsAttended:
+            section = self.sectionsAttended[0]
+            self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
+            if not self.sectionsTaught:
+                self.request.response.redirect(self.mygradesURL)
+
+
 class SectionFinder(object):
     """Base class for GradebookOverview and MyGradesView"""
 
-    @property
-    def isTeacher(self):
-        return TeachersCrowd(self.context).contains(self.request.principal)
-
-    @property
-    def isStudent(self):
-        return StudentsCrowd(self.context).contains(self.request.principal)
-
-    def getSections(self):
+    def getSections(self, isTeacher):
         gradebook = proxy.removeSecurityProxy(self.context)
         for section in ISchoolToolApplication(None)['sections'].values():
-            if self.isTeacher and not self.person in section.instructors:
+            if isTeacher and not self.person in section.instructors:
                 continue
-            if self.isStudent and not self.person in section.members:
+            if not isTeacher and not self.person in section.members:
                 continue
             url = absoluteURL(section, self.request)
-            if self.isTeacher:
+            if isTeacher:
                 url += '/gradebook'
-            elif self.isStudent:
+            else:
                 url += '/mygrades'
             title = '%s<br/>%s' % (list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'

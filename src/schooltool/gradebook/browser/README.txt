@@ -14,9 +14,10 @@ manager:
 Initial School Setup
 --------------------
 
-We now go to the top and enter the category management page:
+We will use the 'Manage' tab to find the 'Activity Categories' link to set up
+the categories:
 
-    >>> manager.getLink('SchoolTool').click()
+    >>> manager.getLink('Manage').click()
     >>> manager.getLink('Activity Categories').click()
 
 As you can see, there are already several categories pre-defined. Oftentimes,
@@ -83,10 +84,10 @@ let's add a section for our course:
 But what would a section be without some students and a teacher?
 
     >>> from schooltool.app.browser.ftests.setup import addPerson
-    >>> addPerson('Paul Cardune', 'paul', 'pwd', groups=['students'])
-    >>> addPerson('Tom Hoffman', 'tom', 'pwd', groups=['students'])
-    >>> addPerson('Claudia Richter', 'claudia', 'pwd', groups=['students'])
-    >>> addPerson('Stephan Richter', 'stephan', 'pwd', groups=['teachers'])
+    >>> addPerson('Paul Cardune', 'paul', 'pwd')
+    >>> addPerson('Tom Hoffman', 'tom', 'pwd')
+    >>> addPerson('Claudia Richter', 'claudia', 'pwd')
+    >>> addPerson('Stephan Richter', 'stephan', 'pwd')
 
 Now we can add those people to the section:
 
@@ -119,11 +120,26 @@ Gradebook Management
 
 Once the term started, the instructor of the section will start by
 creating two worksheets, one for each week in our two week section.
+To set up the activities, we will start by clicking the 'Gradebook'
+tab.  As Stephan is only a teacher at this point and does not
+attend any classes himself (we will change that later), he will be
+taken directly to the gradebook view for the first section in the
+list of sections he teachers.  In this case, he only teachers the
+one section.
 
     >>> stephan = setup.logIn('stephan', 'pwd')
+    >>> stephan.getLink('Gradebook').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Physics I (1)...
+    ...View Final Grades...
+    ...Claudia...
+    ...Paul...
+    ...Tom...
 
-    >>> stephan.getLink('Stephan Richter').click()
-    >>> stephan.getLink('Stephan Richter -- Physics I (1)').click()
+Now we can use the 'Activities' link to get us to the view for
+adding activities to the section:
+
     >>> stephan.getLink('Activities').click()
 
     >>> stephan.getLink('New Worksheet').click()
@@ -252,10 +268,13 @@ of current worksheet will be in effect for the gradebook as well.
 Grading
 -------
 
-Now that we have both, students and activities, we can enter the gradebook.
-We'll use the link registered for IActivities that gets us there.
+Now that we have both students and activities, we can enter the gradebook.
+We'll use the link registered for IActivities that gets us there.  This
+link, called 'Return to Gradebook' is different than the 'Gradebook' tab
+itself in that it takes the user back to the gradebook for the same section
+that the activities view referenced.
 
-    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Return to Gradebook').click()
 
 The initial gradebook screen is a simple spreadsheet. In order to prevent
 accidental score submission, we do not allow to enter grades in this
@@ -588,15 +607,18 @@ reason will appear in the view in its place.
     ...value="B"...
     ...value="because"...
 
+
 My Grades
 ---------
 
 Students should also be able to view their grades (not change them), so there's
 a view for the student to see them.  Let's log in as Claudia and go to her grades
-for the section.  It will come up with Week 1 as the current worksheet,
+for the section.  It will come up with Week 1 as the current worksheet,  As
+Claudia is only a student and only attends the one section, the 'Gradebook' tab
+will take her directly to her grades for that section.
 
     >>> claudia = setup.logIn('claudia', 'pwd')
-    >>> claudia.open('http://localhost/sections/1/mygrades')
+    >>> claudia.getLink('Gradebook').click()
     >>> 'HW 1' in claudia.contents and 'Quiz' in claudia.contents
     True
     >>> 'HW 2' in claudia.contents or 'Final' in claudia.contents
@@ -606,3 +628,73 @@ for the section.  It will come up with Week 1 as the current worksheet,
     ...     < claudia.contents.find('Quiz') \
     ...     < claudia.contents.find('86/100')
     True
+
+
+Gradebook Startup View
+----------------------
+
+Now that we've tested both the teacher's gradebook and the student's mygrades
+views, we'll want to more thoroughly test the view that get's launched when
+the user clicks on the 'Gradebook' tab.  Up until now, the startup view has 
+automatically redirected both the teacher and the student to the gradebook and
+mygrades views respectively.  But what if the user neither attends or teachers
+any classes, like a site manager, or if the user both teachers AND attends
+classes?  We will test both of these scenarios.
+
+First, the manager doesn't participate in any classes, so we'll give him a
+simple message when he clicks on the 'Gradebook' tab.
+
+    >>> manager.getLink('Gradebook').click()
+    >>> print manager.contents
+    <BLANKLINE>
+    ...You do not teach or attend any classes...
+
+In order to test the second scenario, we will have to create a second section
+that has Stephan, teacher of the first Physics I section (1), attending a
+second section rather than teaching.
+
+    >>> setup.addSection('Physics I')
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getLink('Physics I').click()
+    >>> manager.getLink('(2)').click()
+
+    >>> manager.getLink('edit individuals').click()
+    >>> manager.getControl('Stephan Richter').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
+    >>> manager.getLink('edit instructors').click()
+    >>> manager.getControl('Tom Hoffman').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
+    >>> print manager.contents
+    <BLANKLINE>
+    ...Instructors...
+    ...Tom Hoffman...
+    ...Students...
+    ...Stephan Richter...
+ 
+ Now, when Stephan clicks on the 'Gradebook' tab, he will get a startup view
+ that allows him to go to either his gradebook or his mygrades views.
+ 
+    >>> stephan.getLink('Gradebook').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Classes you teach...
+    ...Classes you attend...
+
+    >>> stephan.getLink('Classes you teach').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Physics I (1)...
+    ...View Final Grades...
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you attend').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Physics I (2)...
+    ...Nothing Graded...
+

@@ -12,7 +12,7 @@
   <div class="topmenu">
     <ul>
       <li tal:attributes="class section/css" 
-          tal:repeat="section view/getSections">
+          tal:repeat="section python:view.getSections(False)">
         <a tal:attributes="href section/url" 
            tal:content="structure section/title"/>
       </li>
