@@ -619,6 +619,8 @@ will take her directly to her grades for that section.
 
     >>> claudia = setup.logIn('claudia', 'pwd')
     >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/sections/1/mygrades'
     >>> 'HW 1' in claudia.contents and 'Quiz' in claudia.contents
     True
     >>> 'HW 2' in claudia.contents or 'Final' in claudia.contents
@@ -697,4 +699,93 @@ second section rather than teaching.
     <BLANKLINE>
     ...Physics I (2)...
     ...Nothing Graded...
+
+
+Gradebook Security
+------------------
+
+It was desirable to move the security tests out of schooltool and into the
+schooltool.gradebook package where they belong, so here is where they will
+be.
+
+The first test will be for the unauthenticated user.  They should not be able
+to see a gradebook and certainly don't have a mygrades view.
+
+    >>> from zope.testbrowser.testing import Browser
+    >>> unauth = Browser()
+    >>> unauth.handleErrors = False
+    >>> unauth.open('http://localhost/sections/1/gradebook')
+    Traceback (most recent call last):
+    ...
+    Unauthorized: ...
+    >>> unauth.open('http://localhost/sections/1/mygrades')
+    Traceback (most recent call last):
+    ...
+    Unauthorized: ...
+
+For managers, the default is to allow them to view. but not edit.
+
+    >>> manager.open('http://localhost/sections/1/gradebook')
+    >>> print manager.contents
+    <BLANKLINE>
+    ...Physics I (1)...
+    ...View Final Grades...
+    >>> manager.getLink('HW 1').click()
+    Traceback (most recent call last):
+    ...
+    Unauthorized: ...
+
+Administration can't grade students by default but can give itself
+the permission to do it:
+
+    >>> manager.open('http://localhost')
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Access Control').click()
+    >>> manager.getControl('Administration can grade students').click()
+    >>> manager.getControl('Apply').click()
+
+And try again:
+
+    >>> manager.open('http://localhost/sections/1/gradebook')
+    >>> manager.getLink('HW 1').click()
+    >>> manager.getControl(name='tom').value = '45'
+    >>> manager.getControl('Update').click()
+
+Let's set the setting back to cover our tracks:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Access Control').click()
+    >>> manager.getControl('Administration can grade students').click()
+    >>> manager.getControl('Apply').click()
+
+A teacher should be able to view and edit his own gradebook.
+
+    >>> stephan.open('http://localhost/sections/1/gradebook')
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Physics I (1)...
+    ...View Final Grades...
+    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getControl(name='tom').value = '44'
+    >>> stephan.getControl('Update').click()
+
+Students won't be able to see each other's grade's because the mygrades view
+uses the request's principal to determine which grades to display.
+
+    >>> claudia.open('http://localhost/sections/1/mygrades')
+    >>> print claudia.contents
+    <BLANKLINE>
+    ... Current Grade: 86%...
+    >>> tom = setup.logIn('tom', 'pwd')
+    >>> tom.open('http://localhost/sections/1/mygrades')
+    >>> print tom.contents
+    <BLANKLINE>
+    ...Current Grade: 88%...
+
+Students should not be able to view a teacher's gradebook.
+
+    >>> claudia.open('http://localhost/sections/1/gradebook')
+    Traceback (most recent call last):
+    ...
+    Unauthorized: ...
 

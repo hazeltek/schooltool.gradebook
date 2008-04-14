@@ -11,20 +11,26 @@
 
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
-    <label for="currentSection" i18n:translate="">Section</label>
-    <select name="currentSection"
-            onchange="this.form.submit()">
-      <tal:block repeat="section python:view.getSections(True)">
-        <option value="1"
-            tal:condition="python:section['title'] != view.getCurrentSection()"
-            tal:attributes="value section/title"
-            tal:content="section/title" />
-        <option value="1" selected="selected"
-            tal:condition="python:section['title'] == view.getCurrentSection()"
-            tal:attributes="value section/title"
-            tal:content="section/title" />
-      </tal:block>
-    </select>
+    <tal:if condition="python:not list(view.getSections(True))">
+      <span tal:content="string:Section: ${view/getCurrentSection}" />
+    </tal:if>
+    <tal:if condition="python:list(view.getSections(True))">
+      <label for="currentSection" i18n:translate="">Section</label>
+      <select name="currentSection"
+              onchange="this.form.submit()">
+        <tal:block repeat="section python:view.getSections(True)">
+          <option value="1"
+              tal:condition="python:section['title'] != view.getCurrentSection()"
+              tal:attributes="value section/title"
+              tal:content="section/title" />
+          <option value="1" selected="selected"
+              tal:condition="python:section['title'] == view.getCurrentSection()"
+              tal:attributes="value section/title"
+              tal:content="section/title" />
+        </tal:block>
+      </select>
+    </tal:if>
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <label for="currentWorksheet" i18n:translate="">Worksheet</label>
     <select name="currentWorksheet"
             onchange="this.form.submit()">
