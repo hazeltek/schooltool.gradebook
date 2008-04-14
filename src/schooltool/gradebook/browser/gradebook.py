@@ -79,11 +79,15 @@ class SectionFinder(object):
                 url += '/gradebook'
             else:
                 url += '/mygrades'
-            title = '%s<br/>%s' % (list(section.courses)[0].title, section.title)
+            title = '%s - %s' % (list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
             if section == gradebook.context:
                 css = 'active-menu-item'
             yield {'url': url, 'title': title, 'css': css}
+
+    def getCurrentSection(self):
+        section = self.context.__parent__
+        return '%s - %s' % (list(section.courses)[0].title, section.title)
 
 
 class GradebookOverview(SectionFinder):
@@ -101,6 +105,13 @@ class GradebookOverview(SectionFinder):
                 reverse=False
             self.context.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = self.context.getSortKey(self.person)
+
+        """Handle change of current section."""
+        if 'currentSection' in self.request:
+            for section in self.getSections(True):
+                if section['title'] == self.request['currentSection']:
+                    self.request.response.redirect(section['url'])
+                    break
 
         """Handle change of current worksheet."""
         if 'currentWorksheet' in self.request:
