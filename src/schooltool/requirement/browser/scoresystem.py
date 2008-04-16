@@ -151,7 +151,7 @@ class ScoreSystemWidget(object):
                  self.custom_widget.getInputValue()))
         if not flag:
             self._error = _('Required input is missing.')
-        return flag
+        return bool(flag)
 
 
     def hasValidInput(self):

@@ -254,7 +254,7 @@ score system checkbox has been set.
   ...     'field.field.existing': ''})
   >>> widget = browser.scoresystem.ScoreSystemWidget(field, request)
   >>> widget.hasInput()
-  True
+  False
 
   >>> request = TestRequest(form={
   ...     'field.field.existing': 'Pass/Fail',
