@@ -160,7 +160,8 @@ Note that 'Week 1' is the currently selected worksheet.
     ...  stephan.contents
     True
 
-Now, let's add some activities to it.
+Now, let's add some activities to it.  First we'll verify that the activities
+add view has the right list of existing score systems.
 
     >>> stephan.getLink('New Activity').click()
     >>> print analyze.queryHTML('id("field.scoresystem.existing")', stephan.contents)[0]
@@ -172,14 +173,37 @@ Now, let's add some activities to it.
       <option value="Pass/Fail">Pass/Fail</option>
       <option value="Percent">Percent</option>
     </select>
+
+Now we'll test what happens when we try to add the activity without filling in
+all of the required fields.  The only fields that are required and could
+potentially be left out by the user are title and scoresystem.
+
+    >>> stephan.getControl('Add').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...There are <strong>2</strong> input errors...
+    ...A brief title of the requirement...
+    ...Required input is missing...
+    ...The activity scoresystem...
+    ...Required input is missing...
+
+Now we will fill in all of the required fields, first creating an activity that
+uses an existing score system.  We'll note that the new activity appears in
+the activities overview after successfully being added.
+
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
     >>> stephan.getControl('Category').value = ['assignment']
     >>> stephan.getControl(
     ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
-    >>> 'HW 1' in stephan.contents
-    True
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...New Worksheet...
+    ...New Activity...
+    ...HW 1...
+
+We'll add a second activity.
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'

@@ -58,6 +58,7 @@ class ScoreSystemWidget(object):
 
     template = ViewPageTemplateFile('scoresystemwidget.pt')
     _prefix = 'field.'
+    _error = ''
 
     # See zope.app.form.interfaces.IWidget
     name = None
@@ -144,9 +145,13 @@ class ScoreSystemWidget(object):
 
     def hasInput(self):
         """See zope.app.form.interfaces.IInputWidget"""
-        return (self.existing_widget.hasInput() or
+        flag = ((self.existing_widget.hasInput() and
+                 self.existing_widget.getInputValue()) or
                 (self.custom_widget.hasValidInput() and
                  self.custom_widget.getInputValue()))
+        if not flag:
+            self._error = _('Required input is missing.')
+        return flag
 
 
     def hasValidInput(self):
@@ -174,6 +179,9 @@ class ScoreSystemWidget(object):
 
     def error(self):
         """See zope.app.form.browser.interfaces.IBrowserWidget"""
+        if self._error:
+            return self._error
+
         custom_error = self.custom_widget.error()
         if custom_error:
             return custom_error
