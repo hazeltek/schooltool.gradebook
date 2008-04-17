@@ -22,7 +22,7 @@ First we will look at global requirements, which are attached to the
 ``SchoolToolApplication`` object.  From this screen we can add subrequirements.
 
     >>> browser.open('http://localhost/++requirement++')
-    >>> 'SchoolTool Sub Requirements' in browser.contents
+    >>> 'Your School Sub Requirements' in browser.contents
     True
 
     >>> browser.getLink('New Requirement').click()
