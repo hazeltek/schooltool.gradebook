@@ -32,7 +32,6 @@ from zope.security import proxy
 
 from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement import requirement
-from schooltool.traverser import traverser
 from schooltool.gradebook import interfaces
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
@@ -110,7 +109,3 @@ def getSectionActivities(context):
 
 # Convention to make adapter introspectable
 getSectionActivities.factory = Activities
-
-# HTTP pluggable traverser plugin
-ActivitiesTraverserPlugin = traverser.AdapterTraverserPlugin(
-    'activities', interfaces.IActivities)

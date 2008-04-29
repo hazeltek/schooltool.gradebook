@@ -279,14 +279,6 @@ class MyGrades(GradebookBase):
         self.__name__ = 'mygrades'
 
 
-# HTTP pluggable traverser plugins
-GradebookTraverserPlugin = traverser.AdapterTraverserPlugin(
-    'gradebook', interfaces.IGradebook)
-
-MyGradesTraverserPlugin = traverser.AdapterTraverserPlugin(
-    'mygrades', interfaces.IMyGrades)
-
-
 def getGradebookSection(gradebook):
     """Adapt IGradebook to ISection."""
     return course.interfaces.ISection(gradebook.context)

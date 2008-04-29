@@ -114,25 +114,25 @@
 
   <!-- Pluggable traverser plugins for HTTP paths -->
 
-  <subscriber
-      for="schooltool.course.interfaces.ISection
-           zope.publisher.interfaces.http.IHTTPRequest"
-      provides="schooltool.traverser.interfaces.ITraverserPlugin"
-      factory=".activity.ActivitiesTraverserPlugin"
+  <adapterTraverserPlugin
+      for="schooltool.course.interfaces.ISection"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="activities"
+      adapter="schooltool.gradebook.interfaces.IActivities"
       />
 
-  <subscriber
-      for="schooltool.course.interfaces.ISection
-           zope.publisher.interfaces.http.IHTTPRequest"
-      provides="schooltool.traverser.interfaces.ITraverserPlugin"
-      factory=".gradebook.GradebookTraverserPlugin"
+  <adapterTraverserPlugin
+      for="schooltool.course.interfaces.ISection"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="gradebook"
+      adapter="schooltool.gradebook.interfaces.IGradebook"
       />
 
-  <subscriber
-      for="schooltool.course.interfaces.ISection
-           zope.publisher.interfaces.http.IHTTPRequest"
-      provides="schooltool.traverser.interfaces.ITraverserPlugin"
-      factory=".gradebook.MyGradesTraverserPlugin"
+  <adapterTraverserPlugin
+      for="schooltool.course.interfaces.ISection"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="mygrades"
+      adapter="schooltool.gradebook.interfaces.IMyGrades"
       />
 
   <!-- apidoc help setup -->
