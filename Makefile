@@ -39,7 +39,7 @@ ftest: build
 	bin/test -f
 
 .PHONY: release
-release: compile-translations
+release:
 	echo -n `sed -e 's/\n//' version.txt.in` > version.txt
 	echo -n "_r" >> version.txt
 	bzr revno >> version.txt
