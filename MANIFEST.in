@@ -1,3 +1,4 @@
 recursive-include src *.zcml
+recursive-include src *.pt
 include version.txt
 include version.txt.in
