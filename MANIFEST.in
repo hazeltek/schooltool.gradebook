@@ -1,4 +1,5 @@
 recursive-include src *.zcml
 recursive-include src *.pt
+recursive-include src *.css
 include version.txt
 include version.txt.in
