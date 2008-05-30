@@ -9,19 +9,27 @@
 <body>
 <div metal:fill-slot="body">
 
-  <div class="topmenu">
-    <ul>
-      <li tal:attributes="class section/css" 
-          tal:repeat="section python:view.getSections(True)">
-        <a tal:attributes="href section/url" 
-           tal:content="structure section/title"/>
-      </li>
-    </ul>
-  </div>
-  
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}/final.html">
-    <br />
+    <tal:if condition="python:not list(view.getSections(True))">
+      <span tal:content="string:Section: ${view/getCurrentSection}" />
+    </tal:if>
+    <tal:if condition="python:list(view.getSections(True))">
+      <label for="currentSection" i18n:translate="">Section</label>
+      <select name="currentSection"
+              onchange="this.form.submit()">
+        <tal:block repeat="section python:view.getSections(True)">
+          <option value="1"
+              tal:condition="python:section['title'] != view.getCurrentSection()"
+              tal:attributes="value section/title"
+              tal:content="section/title" />
+          <option value="1" selected="selected"
+              tal:condition="python:section['title'] == view.getCurrentSection()"
+              tal:attributes="value section/title"
+              tal:content="section/title" />
+        </tal:block>
+      </select>
+    </tal:if>
     <input type="submit" class="button-ok" name="UPDATE" value="Update">
     <a class="button-ok" title="Return to Gradebook"
        tal:attributes="href string:${context/@@absolute_url}">

@@ -205,6 +205,14 @@ class FinalGradesView(SectionFinder):
         return rows
 
     def update(self):
+        """Handle change of current section."""
+        self.person = IPerson(self.request.principal)
+        if 'currentSection' in self.request:
+            for section in self.getSections(True):
+                if section['title'] == self.request['currentSection']:
+                    self.request.response.redirect(section['url'])
+                    break
+
         """Retrieve final grade adjustments and store changes to them."""
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
