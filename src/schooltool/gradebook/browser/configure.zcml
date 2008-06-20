@@ -4,7 +4,6 @@
     xmlns:zope="http://namespaces.zope.org/zope">
 
   <!-- CSS -->
-
   <viewlet
       name="gradebook_css"
       for="*"
@@ -19,7 +18,6 @@
       layer="schooltool.skin.ISchoolToolLayer" />
 
   <!-- Categories -->
-
   <form
       label="Activity Categories"
       name="categories.html"
@@ -31,7 +29,6 @@
       />
 
   <!-- Navigation Tabs -->
-
   <navigationViewlet
       name="Gradebook"
       for="*"
@@ -42,47 +39,17 @@
       order="310"
       />
 
-  <!-- Activities -->
+  <!-- Activities overview -->
+  <page
+      name="index.html"
+      for="..interfaces.IActivities"
+      class=".activity.ActivitiesView"
+      template="activities_overview.pt"
+      permission="schooltool.view"
+      />
 
+  <!-- Worksheets -->
   <configure package="schooltool.skin">
-    <navigationViewlet
-        name="categories"
-        for="*"
-        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
-        template="templates/navigationViewlet.pt"
-        class="schooltool.skin.skin.NavigationViewlet"
-        permission="schooltool.edit"
-        link="categories.html"
-        title="Activity Categories"
-        order="200"
-        />
-
-    <addform
-        label="Add an Activity"
-        name="addActivity.html"
-        schema="schooltool.gradebook.interfaces.IActivity"
-        fields="title description category scoresystem"
-        arguments="title category scoresystem"
-        content_factory="schooltool.gradebook.activity.Activity"
-        permission="schooltool.edit"
-        template="templates/simple_add.pt"
-        class="schooltool.gradebook.browser.activity.ActivityAddView">
-      <widget field="description" height="5" />
-    </addform>
-
-    <editform
-        label="Edit Activity"
-        name="edit.html"
-        for="schooltool.gradebook.interfaces.IActivity"
-        schema="schooltool.gradebook.interfaces.IActivity"
-        fields="title description category scoresystem"
-        permission="schooltool.edit"
-        template="templates/simple_edit.pt"
-        class="schooltool.gradebook.browser.activity.ActivityEditView"
-        menu="schooltool_actions"
-        title="Edit"
-        />
-
     <addform
         label="Add a Worksheet"
         name="addWorksheet.html"
@@ -95,7 +62,6 @@
         class="schooltool.gradebook.browser.activity.WorksheetAddView">
       <widget field="description" height="5" />
     </addform>
-
     <editform
         label="Edit Worksheet"
         name="edit.html"
@@ -108,22 +74,59 @@
         menu="schooltool_actions"
         title="Edit"
         />
-
   </configure>
-
   <page
-      name="index.html"
-      for="..interfaces.IActivities"
-      class=".activity.ActivitiesView"
-      template="activities_overview.pt"
-      permission="schooltool.view"
+      name="delete.html"
+      for="..interfaces.IWorksheet"
+      class=".activity.WorksheetDeleteView"
+      template="worksheet_delete.pt"
+      permission="schooltool.edit"
       />
 
+  <!-- Activities -->
+  <configure package="schooltool.skin">
+    <navigationViewlet
+        name="categories"
+        for="*"
+        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
+        template="templates/navigationViewlet.pt"
+        class="schooltool.skin.skin.NavigationViewlet"
+        permission="schooltool.edit"
+        link="categories.html"
+        title="Activity Categories"
+        order="200"
+        />
+    <addform
+        label="Add an Activity"
+        name="addActivity.html"
+        schema="schooltool.gradebook.interfaces.IActivity"
+        fields="title description category scoresystem"
+        arguments="title category scoresystem"
+        content_factory="schooltool.gradebook.activity.Activity"
+        permission="schooltool.edit"
+        template="templates/simple_add.pt"
+        class="schooltool.gradebook.browser.activity.ActivityAddView">
+      <widget field="description" height="5" />
+    </addform>
+    <editform
+        label="Edit Activity"
+        name="edit.html"
+        for="schooltool.gradebook.interfaces.IActivity"
+        schema="schooltool.gradebook.interfaces.IActivity"
+        fields="title description category scoresystem"
+        permission="schooltool.edit"
+        template="templates/simple_edit.pt"
+        class="schooltool.gradebook.browser.activity.ActivityEditView"
+        menu="schooltool_actions"
+        title="Edit"
+        />
+  </configure>
   <defaultView
       for="..interfaces.IActivity"
       name="edit.html"
       />
 
+  <!-- Menu items -->
   <menuItem
       menu="schooltool_actions"
       title="Activities"
@@ -131,7 +134,6 @@
       action="activities/index.html"
       permission="schooltool.view"
       />
-
   <menuItem
       menu="schooltool_actions"
       title="Activities"
@@ -139,7 +141,6 @@
       action="../activities/index.html"
       permission="schooltool.view"
       />
-
   <menuItem
       menu="schooltool_actions"
       title="Return to Gradebook"
@@ -147,41 +148,6 @@
       action="../gradebook/index.html"
       permission="schooltool.view"
       />
-
-  <!-- Gradebook -->
-
-  <page
-      name="gradebook.html"
-      for="schooltool.app.interfaces.ISchoolToolApplication"
-      class=".gradebook.GradebookStartup"
-      template="gradebook_startup.pt"
-      permission="schooltool.view"
-      />
-
-  <page
-      name="index.html"
-      for="..interfaces.IGradebook"
-      class=".gradebook.GradebookOverview"
-      template="gradebook_overview.pt"
-      permission="schooltool.view"
-      />
-
-  <page
-      name="final.html"
-      for="..interfaces.IGradebook"
-      class=".gradebook.FinalGradesView"
-      template="final_grades.pt"
-      permission="schooltool.view"
-      />
-
-  <page
-      name="index.html"
-      for="..interfaces.IMyGrades"
-      class=".gradebook.MyGradesView"
-      template="mygrades.pt"
-      permission="schooltool.view"
-      />
-
   <menuItem
       menu="schooltool_actions"
       title="Gradebook"
@@ -190,6 +156,35 @@
       permission="schooltool.view"
       />
 
+  <!-- Gradebook -->
+  <page
+      name="gradebook.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".gradebook.GradebookStartup"
+      template="gradebook_startup.pt"
+      permission="schooltool.view"
+      />
+  <page
+      name="index.html"
+      for="..interfaces.IGradebook"
+      class=".gradebook.GradebookOverview"
+      template="gradebook_overview.pt"
+      permission="schooltool.view"
+      />
+  <page
+      name="final.html"
+      for="..interfaces.IGradebook"
+      class=".gradebook.FinalGradesView"
+      template="final_grades.pt"
+      permission="schooltool.view"
+      />
+  <page
+      name="index.html"
+      for="..interfaces.IMyGrades"
+      class=".gradebook.MyGradesView"
+      template="mygrades.pt"
+      permission="schooltool.view"
+      />
   <page
       name="gradeStudent.html"
       for="..interfaces.IGradebook"
@@ -197,7 +192,6 @@
       template="gradebook_grade_student.pt"
       permission="schooltool.edit"
       />
-
   <page
       name="gradeActivity.html"
       for="..interfaces.IGradebook"
@@ -205,7 +199,6 @@
       template="gradebook_grade_activity.pt"
       permission="schooltool.edit"
       />
-
   <page
       name="grade.html"
       for="..interfaces.IGradebook"

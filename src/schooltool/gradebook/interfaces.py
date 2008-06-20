@@ -31,6 +31,9 @@ class IActivities(interfaces.IRequirement):
     '''A list of worksheets containing activities that must be fulfilled in a
        course or section.'''
 
+    def resetCurrentWorksheet():
+        """Reset the currently active worksheet to first or None."""
+
     def getCurrentWorksheet():
         """Get the currently active worksheet."""
 

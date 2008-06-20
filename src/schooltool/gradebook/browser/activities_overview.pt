@@ -37,6 +37,10 @@
        tal:attributes="href string:${view/currentWorksheet/@@absolute_url}/edit.html">
        Edit
     </a>
+    <a class="button-ok" href="" title="Delete Worksheet"
+       tal:attributes="href string:${view/currentWorksheet/@@absolute_url}/delete.html">
+       Delete
+    </a>
     <div style="padding-bottom: 1em; padding-top: 1em">
       <a class="button-ok" href="" title="New Worksheet"
          tal:attributes="href string:${view/currentWorksheet/@@absolute_url}/+/addActivity.html">
