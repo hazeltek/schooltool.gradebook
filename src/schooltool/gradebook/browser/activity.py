@@ -30,7 +30,7 @@ from zope.traversing.api import getName
 from schooltool.app.browser import app
 from schooltool.gradebook import interfaces
 from schooltool.person.interfaces import IPerson
-from schooltool.requirement import requirement
+
 
 class ActivitiesView(object):
     """A Group Container view."""
@@ -51,9 +51,6 @@ class ActivitiesView(object):
         for activity in self.context.getCurrentActivities(self.person):
             pos += 1
             inherited = False
-            if zope.security.proxy.isinstance(activity, requirement.InheritedRequirement):
-                inherited = True
-                activity = requirement.unwrapRequirement(activity)
             yield {'name': getName(activity),
                    'title': activity.title,
                    'inherited': inherited,

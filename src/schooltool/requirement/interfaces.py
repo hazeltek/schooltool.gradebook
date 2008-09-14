@@ -47,66 +47,8 @@ class IRequirement(zope.app.container.interfaces.IOrderedContainer,
         description=u'A brief title of the requirement.',
         required=True)
 
-    bases = zope.schema.List(
-        title=u'Bases',
-        description=u'An enumeration of base requirements.',
-        readonly=True)
-
-    def addBase(definition):
-        """Add a group requirement as a base definition."""
-
-    def removeBase(definition):
-        """Remove a group requirement from the bases.
-
-        This method is responsible for notifying its contained requirements
-        about the removal of this requirement.
-        """
-
     def changePosition(name, pos):
         """Changes the requirement's position to the specified position."""
-
-
-## XXX: should I put the various methods/attributes of the InheritedRequirement
-##      class?  If there wasn't a corresponding interface before, it must not
-##      be that important to have a particular "contract" for
-##      InheritedRequirements.  Especially since they already offer
-##      IRequirement.
-class IInheritedRequirement(IRequirement):
-    """A marker interface for the InheritedRequirement class."""
-
-
-class IExtendedRequirement(IRequirement):
-    """Extended Requirement
-
-    In order to correctly implement the ``IRequirement`` interface and not
-    make implementation-specific assumptions, we need some more methods. All
-    requirements properly implementing IExtendedRequirement should be able to
-    work together without any further assumptions.
-
-    This interface keeps track of all inherited requirements (``bases``) and all
-    sub-requirements (``subs``).
-    """
-    zope.app.container.constraints.contains('.IExtendedRequirement')
-    zope.app.container.constraints.containers('.IExtendedRequirement')
-
-    subs = zope.schema.List(
-        title=u'Sub-requirements',
-        description=u'An enumeration of sub-requirements.',
-        readonly=True)
-
-    def collectKeys(self):
-        """Collect all available keys without using any ``IContainer``
-        methods.
-
-        This method is needed to compute the newly available keys, once a base
-        was added or removed.
-        """
-
-    def distributeKey(self, key):
-        """Distribute a new key to itself and all sub-requirements."""
-
-    def undistributeKey(self, key):
-        """Un-distribute a new key to itself and all sub-requirements."""
 
 
 class IHaveRequirement(zope.interface.Interface):
