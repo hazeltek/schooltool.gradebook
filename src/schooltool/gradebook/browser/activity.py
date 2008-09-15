@@ -50,11 +50,8 @@ class ActivitiesView(object):
         pos = 0
         for activity in self.context.getCurrentActivities(self.person):
             pos += 1
-            inherited = False
             yield {'name': getName(activity),
                    'title': activity.title,
-                   'inherited': inherited,
-                   'disabled': inherited and 'disabled' or '',
                    'url': absoluteURL(activity, self.request),
                    'pos': pos}
 

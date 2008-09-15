@@ -62,18 +62,11 @@
               tal:content="num" />
         </tal:block>
       </select>
-      <input type="checkbox" name="delete:list" disabled=""
-             tal:attributes="value activity/name;
-                             disabled activity/disabled" />
+      <input type="checkbox" name="delete:list"
+             tal:attributes="value activity/name" />
 
-      <a tal:condition="not:activity/inherited"
-         tal:content="activity/title"
-         tal:attributes="href activity/url">Inherited Activity</a>
-
-      <span tal:condition="activity/inherited">
-        <span tal:content="activity/title">Inherited Activity</span>
-        <span i18n:translate="">(inherited)</span>
-      </span>
+      <a tal:content="activity/title"
+         tal:attributes="href activity/url">Activity</a>
 
     </div>
     <div class="controls">
