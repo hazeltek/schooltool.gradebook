@@ -436,6 +436,14 @@ answer any time:
   >>> quizScore.getBestScore()
   Decimal("21")
 
+We want non-numeric data to raise a ValueError rather than a unicode conversion
+error:
+
+  >>> quizScore.fromUnicode('This causes a ValueError.')
+  Traceback (most recent call last):
+  ...
+  ValueError
+
 Since we have not defined a minimum passing grade, we cannot get a meaningful
 answer from the passing score evaluation:
 
