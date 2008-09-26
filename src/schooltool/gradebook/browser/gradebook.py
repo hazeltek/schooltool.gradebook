@@ -150,12 +150,13 @@ class GradebookOverview(SectionFinder):
                     grades.append({'activity': act_hash, 'value': '-',
                                    'has_value': False})
 
-            average = str(gradebook.getWorksheetAverage(worksheet, student))
+            total, average = gradebook.getWorksheetTotalAverage(worksheet, 
+                student)
 
             rows.append(
                 {'student': {'title': student.title, 'id': student.username},
-                 'grades': grades,
-                 'average': average})
+                 'grades': grades, 'total': str(total),
+                 'average': str(average)})
 
         # Do the sorting
         key, reverse = self.sortKey
@@ -184,8 +185,9 @@ class FinalGradesView(SectionFinder):
         for student in students:
             grades = []
             for worksheet in gradebook.worksheets:
-                average = str(gradebook.getWorksheetAverage(worksheet, student))
-                grades.append({'value': average})
+                total, average = gradebook.getWorksheetTotalAverage(worksheet, 
+                    student)
+                grades.append({'value': str(average)})
             calculated = gradebook.getFinalGrade(student)
             final = gradebook.getAdjustedFinalGrade(self.person, student)
             adj_dict = gradebook.getFinalGradeAdjustment(self.person, student)

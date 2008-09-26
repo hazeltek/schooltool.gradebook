@@ -59,6 +59,9 @@
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
      </th>
      <th>
+       <div i18n:translate="">Total</div>
+     </th>
+     <th>
        <div i18n:translate="">Average</div>
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
@@ -88,6 +91,11 @@
            tal:content="row/student/title">
           Tom Hoffman
         </a>
+      </td>
+      <td>
+	    <tal:if condition="row/total|nothing">
+	      <b><span tal:replace="row/total" /></b>
+	    </tal:if>
       </td>
       <td>
 	    <tal:if condition="row/average|nothing">

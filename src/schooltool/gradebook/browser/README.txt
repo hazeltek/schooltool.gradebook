@@ -352,10 +352,14 @@ The screen will return to the grade overview, where the grades are no visible:
     True
 
 Also, there will be an average grade displayed that the teacher can use to
-formulate a final grade.
+formulate a final grade.  The total used to establish the average also appears
+in the column before it.
 
-    >>> '>61%<' in stephan.contents
-    True
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Claudia Richter...
+    ...92</b>...
+    ...61%</b>...
 
 Now let's enter again and change a grade:
 

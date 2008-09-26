@@ -118,7 +118,7 @@ class GradebookBase(object):
         else:
             return []
 
-    def getWorksheetAverage(self, worksheet, student):
+    def getWorksheetTotalAverage(self, worksheet, student):
         total = 0
         count = 0
         for activity in self.getWorksheetActivities(worksheet):
@@ -128,9 +128,9 @@ class GradebookBase(object):
                 total += ev.value - ss.min
                 count += ss.max - ss.min
         if count:
-            return int((float(100 * total) / float(count)) + 0.5)
+            return total, int((float(100 * total) / float(count)) + 0.5)
         else:
-            return 0
+            return 0, 0
 
     def getCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
@@ -233,7 +233,7 @@ class GradebookBase(object):
     def getFinalGrade(self, student):
         total = 0
         for worksheet in self.worksheets:
-            average = self.getWorksheetAverage(worksheet, student)
+            tot, average = self.getWorksheetTotalAverage(worksheet, student)
             if average >= 90:
                 grade = 4
             elif average >= 80:
