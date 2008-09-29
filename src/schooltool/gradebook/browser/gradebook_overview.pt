@@ -50,7 +50,12 @@
        View Final Grades
     </a>
     <br /><br />
-  </form>
+
+  <div class="message" style="color:red; padding:1em"
+       tal:condition="view/message"
+       tal:content="view/message">
+    Message
+  </div>
 
   <table class="grades" border="1">
     <tr>
@@ -103,10 +108,9 @@
 	    </tal:if>
       </td>
       <td tal:repeat="grade row/grades">
-        <a href=""
-           tal:attributes="href
-        string:grade.html?student=${row/student/id}&activity=${grade/activity}"
-           tal:content="grade/value" />
+        <input type="text" name="" value="" size="4"
+               tal:attributes="name string:${grade/activity}_${row/student/id}; 
+                               value grade/value" />
       </td>
     </tr>
     <tr tal:condition="nothing" class="Statistic" tal:repeat="stat view/statistics">
@@ -122,6 +126,11 @@
     </tr>
   </table>
 
+  <div class="controls">
+    <tal:block metal:use-macro="view/@@standard_macros/update-button" />
+  </div>
+
+  </form>
 </div>
 </body>
 </html>
