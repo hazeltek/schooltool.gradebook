@@ -31,11 +31,6 @@
       factory=".requirement.requirementNamespace"
       />
 
-  <subscriber
-      for="zope.app.container.interfaces.IObjectRemovedEvent"
-      handler=".requirement.garbageCollect"
-      />
-
   <!-- Requirement Content -->
 
   <class class=".requirement.Requirement">
@@ -52,18 +47,6 @@
         permission="schooltool.edit"
         interface="zope.app.container.interfaces.IWriteContainer"
         />
-  </class>
-
-  <class class=".requirement.InheritedRequirement">
-    <require like_class=".requirement.Requirement" />
-    <require
-        permission="zope.View"
-        attributes="original"
-        />
-  </class>
-
-  <class class=".requirement.PersistentInheritedRequirement">
-    <require like_class=".requirement.InheritedRequirement" />
   </class>
 
   <!-- Scoresystem Content -->

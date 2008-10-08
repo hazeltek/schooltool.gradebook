@@ -28,182 +28,11 @@ The requirement is now available in the group:
   >>> sorted(program.keys())
   [u'forloop']
 
-But the interesting part is the inheritance of requirements. Let's say
-that the programming group above is defined as a requirement for any
-programming class. Now we would like to extend that requirement to a Python
-programming class:
+We can also delete requirements from the groups:
 
-  >>> pyprogram = requirement.Requirement(
-  ...     u'Python Programming', program)
-  >>> pyprogram[u'iter'] = requirement.Requirement(u'Create an iterator.')
-
-So now the lookup of all requirements in ``pyprogram`` should be the generic and
-python-specific requirements:
-
-  >>> sorted(pyprogram.keys())
-  [u'forloop', u'iter']
-
-When looking at the requirements, one should be able to make the difference
-between inherited and locally defined requirements:
-
-  >>> pyprogram[u'iter']
-  Requirement(u'Create an iterator.')
-
-  >>> pyprogram[u'forloop']
-  InheritedRequirement(Requirement(u'Write a for loop.'))
-
-You can also check for the ``IInheritedRequirement`` interface.
-
-  >>> interfaces.IInheritedRequirement.providedBy(pyprogram[u'forloop'])
-  True
-
-You can also inspect and manage the bases:
-
-  >>> pyprogram.bases
-  [Requirement(u'Programming')]
-
-  >>> pyprogram.removeBase(program)
-  >>> sorted(pyprogram.keys())
-  [u'iter']
-
-  >>> pyprogram.addBase(program)
-  >>> sorted(pyprogram.keys())
-  [u'forloop', u'iter']
-
-For solidarity's sake, lets try removing a base that has more than one item in
-it.  There was a bug related to removing bases with multiple keys.  This is
-what was happening:
-
-  >>> a = [1,2]
-  >>> for item in a: a.remove(item)
-  >>> a
-  [2]
-
-It should be:
-
-  >>> a = [1,2]
-  >>> for item in list(a): a.remove(item)
-  >>> a
+  >>> del program[u'forloop']
+  >>> sorted(program.keys())
   []
-
-In terms of our requirement package, we will add another requirement to the
-program requirement (which is a base of pyprogram).
-
-  >>> program[u'whileloop'] = requirement.Requirement(u"While Loop")
-  >>> sorted(pyprogram.keys())
-  [u'forloop', u'iter', u'whileloop']
-
-  >>> pyprogram.removeBase(program)
-  >>> sorted(pyprogram.keys())
-  [u'iter']
-
-  >>> pyprogram.addBase(program)
-  >>> sorted(pyprogram.keys())
-  [u'forloop', u'iter', u'whileloop']
-
-Now we will remove the whileloop requirement so we don't have to change
-everything in the doctest.
-
-  >>> del program['whileloop']
-  >>> sorted(pyprogram.keys())
-  [u'forloop', u'iter']
-
-Let's now look at a more advanced case. Let's say that the state of Virginia
-requires all students to take a programming class that fulfills the
-programming requirement:
-
-  >>> va = requirement.Requirement(u'Virginia')
-  >>> va[u'program'] = program
-
-Now, Yorktown High School (which is in Virginia) teaches Python and thus
-requires the Python requirement. However, Yorktown HS must still fulfill the
-state requirement:
-
-  >>> yhs = requirement.Requirement(u'Yorktown HS', va)
-  >>> sorted(yhs[u'program'].keys())
-  [u'forloop']
-
-  >>> yhs[u'program'][u'iter'] = requirement.Requirement(u'Create an iterator.')
-
-  >>> sorted(yhs[u'program'].keys())
-  [u'forloop', u'iter']
-
-  >>> sorted(va[u'program'].keys())
-  [u'forloop']
-
-Another tricky case is when the base is added later:
-
-  >>> yhs = requirement.Requirement(u'Yorktown HS')
-  >>> yhs[u'program'] = requirement.Requirement(u'Programming')
-  >>> yhs[u'program'][u'iter'] = requirement.Requirement(u'Create an iterator.')
-
-  >>> yhs.addBase(va)
-  >>> sorted(yhs[u'program'].keys())
-  [u'forloop', u'iter']
-
-  >>> yhs[u'program'][u'iter']
-  Requirement(u'Create an iterator.')
-
-  >>> yhs[u'program'][u'forloop']
-  InheritedRequirement(Requirement(u'Write a for loop.'))
-
-We can also delete requirements from the groups. However, we should only be
-able to delete locally defined requirements and not inherited ones:
-
-  >>> del yhs[u'program'][u'iter']
-  >>> sorted(yhs[u'program'].keys())
-  [u'forloop']
-
-  >>> del yhs[u'program'][u'forloop']
-  Traceback (most recent call last):
-  ...
-  KeyError: u'forloop'
-
-If we override the forloop requirement however, we should be able to delete the
-locally created forloop requirement.  After this, the InheritedRequirement that
-has just been overridden should reappear and the forloop should still be
-available as a key.
-
-  >>> yhs[u'program'][u'forloop'] = requirement.Requirement(
-  ...     u'Write a python for loop.')
-  >>> yhs[u'program'][u'forloop']
-  Requirement(u'Write a python for loop.')
-  >>> del yhs[u'program'][u'forloop']
-  >>> yhs[u'program'].keys()
-  [u'forloop']
-  >>> yhs[u'program'][u'forloop']
-  InheritedRequirement(Requirement(u'Write a for loop.'))
-
-Furthermore, sometimes it's the case where we only want to inherit one or more
-of the requirements from a particular base.  In this case we just add the
-specific requirement we want to inherit as we would add a normal requirement,
-instead of adding the base.  the ``__setitem__`` method will see that the
-requirement we are adding is part of another requirement, and will make it a
-``PersistentInheritedRequirement`` object instead.
-
-``PersistentInheritedRequirement`` is just like the ``InheritedRequirement``
-class except that is is persistent.  Since requirements are wrapped by the
-``InheritedRequirement`` class on the fly, they must be wrapped every time
-they are accessed based on the rules of inheritance (governed by bases).
-The ``PersistentInheritedRequirement`` class allows us to make a more arbitrary
-wrapping, as is necessary here.
-
-  >>> yhs.removeBase(va)
-  >>> yhs[u'program'].keys()
-  []
-  >>> yhs[u'program'][u'forloop'] = va[u'program'][u'forloop']
-  >>> yhs[u'program'][u'forloop']
-  PersistentInheritedRequirement(Requirement(u'Write a for loop.'))
-  >>> yhs[u'program'][u'forloop'].__parent__.__parent__
-  Requirement(u'Yorktown HS')
-  >>> va[u'program'][u'forloop'].__parent__.__parent__
-  Requirement(u'Virginia')
-  >>> del yhs[u'program'][u'forloop']
-  >>> yhs[u'program'].keys()
-  []
-  >>> va[u'program'].keys()
-  [u'forloop']
-  >>> yhs.addBase(va)
 
 Finally, requirements are ordered containers, which means that you can change
 the order of the dependency requirements. Let's first create a new
@@ -214,9 +43,6 @@ requirements structure:
   >>> physics[u'mech'] = requirement.Requirement(u'Mechanics')
   >>> physics[u'rel'] = requirement.Requirement(u'Special Relativity')
   >>> physics[u'elec'] = requirement.Requirement(u'Electromagnetism')
-
-  >>> college_physics = requirement.Requirement(u'College Physics', physics)
-  >>> college_physics[u'quant'] = requirement.Requirement(u'Quantum Mechanics')
 
 Now let's have a look at the original order:
 
@@ -241,293 +67,10 @@ allows you to specify a new position for a given name:
   >>> physics.keys()
   [u'mech', u'rel', u'thermo', u'elec']
 
-Now, the order of physics requirement purposefully does not change the order
-of the college physics requirement and vice versa:
-
-  >>> college_physics.keys()
-  [u'thermo', u'mech', u'rel', u'elec', u'quant']
-
-  >>> college_physics.changePosition(u'mech', 0)
-  >>> college_physics.changePosition(u'elec', 2)
-  >>> college_physics.changePosition(u'quant', 3)
-  >>> college_physics.keys()
-  [u'mech', u'thermo', u'elec', u'quant', u'rel']
-
-  >>> physics.keys()
-  [u'mech', u'rel', u'thermo', u'elec']
-
 There are many more high-level ordering functions that could be provided. But
 we wanted to keep the ``IRequirement`` interface a simple as possible and the
 idea is that you can implement adapters that use the ``updateOrder()`` method
 to provide high-level ordering APIs if desired.
-
-
-Removing Requirements from Bases
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Removing a requirement from a base requirement tree should
-remove the key from all of its subrequirement.  This is easier to explain with
-code:
-
-  >>> mathReqs = requirement.Requirement(u'Math Reqs')
-  >>> mathReqs[u'addition'] = requirement.Requirement(u'Addition')
-  >>> mathReqs.keys()
-  [u'addition']
-  >>> algebraReqs = requirement.Requirement(u'Algebra Reqs')
-  >>> algebraReqs.addBase(mathReqs)
-  >>> algebraReqs.keys()
-  [u'addition']
-
-  >>> del mathReqs[u'addition']
-  >>> mathReqs.keys()
-  []
-  >>> algebraReqs.keys()
-  []
-
-
-Overriding Requirements
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Now let's have a look at a case where the more specific requirement overrides
-a dependency requirement of one of its bases. First we create a global
-citizenship requirement that requires a person to be "good" globally.
-
-  >>> citizenship = requirement.Requirement(u'Global Citizenship')
-  >>> goodPerson = requirement.Requirement(u'Be a good person globally.')
-  >>> citizenship['goodPerson'] = goodPerson
-
-Now we create a local citizen requirement. Initially the local citizenship
-inherits the "good person" requirement from the global citizenship:
-
-  >>> localCitizenship = requirement.Requirement(
-  ...     u'A Local Citizenship Requirement')
-  >>> localCitizenship.addBase(citizenship)
-  >>> print localCitizenship.values()
-  [InheritedRequirement(Requirement(u'Be a good person globally.'))]
-
-Now we override the "good person" requirement with a local one:
-
-  >>> localGoodPerson = requirement.Requirement(u'Be a good person locally.')
-  >>> localCitizenship['goodPerson'] = localGoodPerson
-  >>> print localCitizenship.values()
-  [Requirement(u'Be a good person locally.')]
-
-This behavior is a design decision we made. But it is coherent with the
-behavior of real inheritance and acquisition. Another policy might be that you
-can never override a requirement like that and an error should occur. This is,
-however, much more difficult, since adding bases becomes a very complex task
-that would envolve complex conflict resolution.
-
-
-Complex Inheritance Patterns
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-__Note__: You probably want to skip this section, if you read this file for
-          the first time. It is not important for your understanding of the
-          package.
-
-Requirement inheritance can be very complex. The following section tests for
-those complex cases and ensures that they are working correctly. Let's first
-setup a 3-level requirement path:
-
-  >>> animal = requirement.Requirement(u'Animal')
-  >>> dog = requirement.Requirement(u'Dog', animal)
-  >>> hound = requirement.Requirement(u'Hound', dog)
-
-  >>> animal.keys()
-  []
-  >>> dog.keys()
-  []
-  >>> hound.keys()
-  []
-
-  >>> animal[u'categories'] = requirement.Requirement(u'Categories')
-
-  >>> animal.keys()
-  [u'categories']
-  >>> dog.keys()
-  [u'categories']
-  >>> hound.keys()
-  [u'categories']
-
-Now, one of the tricky parts is to get the key management done correctly, when
-a base higher-up is added or removed.
-
-  >>> lifeform = requirement.Requirement(u'Lifeform')
-  >>> lifeform[u'characteristics'] = requirement.Requirement(u'Characteristics')
-
-  >>> animal.addBase(lifeform)
-  >>> lifeform.keys()
-  [u'characteristics']
-  >>> animal.keys()
-  [u'categories', u'characteristics']
-  >>> dog.keys()
-  [u'categories', u'characteristics']
-  >>> hound.keys()
-  [u'categories', u'characteristics']
-
-  >>> animal.removeBase(lifeform)
-  >>> lifeform.keys()
-  [u'characteristics']
-  >>> animal.keys()
-  [u'categories']
-  >>> dog.keys()
-  [u'categories']
-  >>> hound.keys()
-  [u'categories']
-
-Another case is where you have multiple bases and two or more bases have a
-requirement with the same name. In this case the name should still be only
-listed once and the first listed base's value is chosen.
-
-  >>> mamal = requirement.Requirement(u'Mamal')
-  >>> mamal[u'categories'] = requirement.Requirement(u'Categories')
-
-  >>> dog.addBase(mamal)
-  >>> dog.keys()
-  [u'categories']
-  >>> hound.keys()
-  [u'categories']
-
-  >>> dog.values()
-  [InheritedRequirement(Requirement(u'Categories'))]
-  >>> dog[u'categories'].original is animal[u'categories']
-  True
-  >>> dog[u'categories'].original is mamal[u'categories']
-  False
-
-  >>> dog.removeBase(animal)
-  >>> dog.keys()
-  [u'categories']
-  >>> hound.keys()
-  [u'categories']
-
-  >>> dog.values()
-  [InheritedRequirement(Requirement(u'Categories'))]
-  >>> dog[u'categories'].original is animal[u'categories']
-  False
-  >>> dog[u'categories'].original is mamal[u'categories']
-  True
-
-Finally, let's make sure that when getting a value, it is wrapped with
-inherited requirement wrappers for every level of inheritance:
-
-  >>> mamal[u'categories']
-  Requirement(u'Categories')
-  >>> dog[u'categories']
-  InheritedRequirement(Requirement(u'Categories'))
-  >>> hound[u'categories']
-  InheritedRequirement(InheritedRequirement(Requirement(u'Categories')))
-
-Another complicated case is when requirements are added to a base using keys
-that already exist. This is sort of the reverse of overriding a
-requirement.
-
-  >>> courseReq = requirement.Requirement(u'Course Requirements')
-  >>> secReq = requirement.Requirement(u'Section Requirements')
-  >>> secReq.addBase(courseReq)
-
-Normally we would add requirements to the group of course requiremnts, then
-later override or add to these requirments as needed in the group of section
-requirements. Instead we will add to the section requirements first, then add
-requirements using the same keys to the course grouping.  The original section
-requirements should then inherit from the course requirements.
-
-  >>> secReq[u'behavior'] = requirement.Requirement(u'Do not be tardy')
-  >>> secReq[u'behavior'].bases
-  []
-  >>> courseReq[u'behavior'] = requirement.Requirement(u'Good Behavior')
-
-Had we done this requirements in the opposite order, then the 'Do not
-be tardy' requirements would inherit from the 'Good Behavior' requirements.
-We want to have this behavior regardless of the order in which we create the
-requirements.
-
-  >>> secReq[u'behavior'].bases
-  [Requirement(u'Good Behavior')]
-  >>> secReq.keys()
-  [u'behavior']
-
-A simple helper function is used to unwrap requirements:
-
-  >>> requirement.unwrapRequirement(mamal[u'categories'])
-  Requirement(u'Categories')
-  >>> requirement.unwrapRequirement(dog[u'categories'])
-  Requirement(u'Categories')
-  >>> requirement.unwrapRequirement(hound[u'categories'])
-  Requirement(u'Categories')
-
-The unwrapper also works for subclasses of Requirement.  To show this we will
-first create a simple subclass.
-
-  >>> class SpecialRequirement(requirement.Requirement):
-  ...     pass
-  >>> topLevel = SpecialRequirement(u'Global Top Level')
-  >>> topLevel['subone'] = SpecialRequirement(u'Global Sub Level One')
-  >>> localLevel = SpecialRequirement(u'Local Top Level')
-  >>> localLevel.addBase(topLevel)
-  >>> localLevel['subone']
-  InheritedRequirement(SpecialRequirement(u'Global Sub Level One'))
-  >>> requirement.unwrapRequirement(localLevel['subone'])
-  SpecialRequirement(u'Global Sub Level One')
-
-One can also quickly get the requirement's key using the
-``getRequirementKey()`` function:
-
-  >>> key1 = hash(requirement.getRequirementKey(mamal[u'categories']))
-  >>> str(key1)
-  '...'
-
-This function also unwraps inherited requirements, so that the key is always
-the same:
-
-  >>> key2 = hash(requirement.getRequirementKey(dog[u'categories']))
-  >>> key1 == key2
-  True
-
-
-Handling Sub Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~
-__Note__: You probably want to skip this section, if you read this file for
-          the first time. It is not important for your understanding of the
-          package.
-
-Requirements do not only keep track of what other requirements they are
-inheriting from (in the list of bases), but also the requirements that inherit
-it.  In terms of object oriented programming, Requirements keep track of both
-base classes and direct subclasses.
-
-  >>> mathreq = requirement.Requirement(u"Math Requirements")
-  >>> algebra = requirement.Requirement(u"Algebra Requirements")
-  >>> algebra.addBase(mathreq)
-
-Here we have created a general math requirement from which the algebra
-requirement inherits.  All requirements that inherit from mathreq are stored
-in a list called subs.
-
-  >>> algebra in mathreq.subs
-  True
-
-When we remove the mathreq base from algebra, then algebra should also be
-removed from mathreq.subs
-
-  >>> algebra.removeBase(mathreq)
-  >>> algebra in mathreq.subs
-  False
-
-When requirements get deleted, they should also be removed from whatever subs
-they are in.  But this only makes sense in the context of containment where we
-really do not care about objects which can not be located with a url.  Thus,
-to enable this feature, we have to register a subcriber to ObjectRemovedEvent.
-
-  >>> from zope import component
-  >>> component.provideHandler(requirement.garbageCollect)
-
-  >>> algebra.addBase(mathreq)
-  >>> highSchoolMath = requirement.Requirement("High School Math")
-  >>> highSchoolMath['algebra'] = algebra
-  >>> del highSchoolMath['algebra']
-  >>> algebra in mathreq.subs
-  False
 
 
 Requirement Adapters
@@ -561,33 +104,17 @@ the requirements, it is empty.
 
   >>> len(req)
   0
-  >>> len(req.bases)
-  0
 
-If we want to add requirements to this course, there are two methods.  First we
-can use inheritance as shown above:
+One can add requirements to the course by directly adding new requirements:
 
-  >>> req.addBase(yhs[u'program'])
+  >>> req[u'program'] = requirement.Requirement(u'Programming')
+  >>> req[u'program'][u'iter'] = requirement.Requirement(u'Create an iterator.')
   >>> sorted(req.keys())
-  [u'forloop']
-  >>> req[u'forloop']
-  InheritedRequirement(InheritedRequirement(Requirement(u'Write a for loop.')))
-
-Now if we add requirements to the Yorktown High School programming
-requirements, they will show up as well.
-
-  >>> yhs[u'program'][u'iter'] = requirement.Requirement(u'Create an iterator.')
-  >>> sorted(req.keys())
-  [u'forloop', u'iter']
-
-The second method for adding requirements to the course is by directly adding
-new requirements:
-
-  >>> req[u'decorator'] = requirement.Requirement(u'Create a decorator!')
-  >>> sorted(req.keys())
-  [u'decorator', u'forloop', u'iter']
-  >>> req[u'decorator']
-  Requirement(u'Create a decorator!')
+  [u'program']
+  >>> sorted(req[u'program'].keys())
+  [u'iter']
+  >>> req[u'program'][u'iter']
+  Requirement(u'Create an iterator.')
 
 
 Score Systems
@@ -909,6 +436,14 @@ answer any time:
   >>> quizScore.getBestScore()
   Decimal("21")
 
+We want non-numeric data to raise a ValueError rather than a unicode conversion
+error:
+
+  >>> quizScore.fromUnicode('This causes a ValueError.')
+  Traceback (most recent call last):
+  ...
+  ValueError
+
 Since we have not defined a minimum passing grade, we cannot get a meaningful
 answer from the passing score evaluation:
 
@@ -1089,9 +624,9 @@ in the programming class.
 
   >>> pf = scoresystem.PassFail
   >>> from schooltool.requirement import evaluation
-  >>> ev = evaluation.Evaluation(req[u'iter'], pf, 'Pass', teacher)
+  >>> ev = evaluation.Evaluation(req[u'program'][u'iter'], pf, 'Pass', teacher)
   >>> ev.requirement
-  InheritedRequirement(Requirement(u'Create an iterator.'))
+  Requirement(u'Create an iterator.')
   >>> ev.scoreSystem
   <GlobalDiscreteValuesScoreSystem u'Pass/Fail'>
   >>> ev.value
@@ -1115,7 +650,7 @@ evaluations.
 
   >>> name = evals.addEvaluation(ev)
   >>> sorted(evals.values())
-  [<Evaluation for In...nt(Requirement(u'Create an iterator.')), value='Pass'>]
+  [<Evaluation for Requirement(u'Create an iterator.'), value='Pass'>]
 
 Now that the evaluation is added, the evaluatee is also available:
 

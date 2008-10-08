@@ -157,12 +157,14 @@ def doctest_SampleGrades():
         >>> student = list(section.members)[0]
         >>> student.title
         'Cristina Garrett'
-        >>> for ev in gradebook.getEvaluationsForStudent(student):
+        >>> evals = list(gradebook.getEvaluationsForStudent(student))
+        >>> evals.sort(key=lambda e: repr(e[1].requirement))
+        >>> for ev in evals:
         ...     print ev[1]
+        <Evaluation for <Activity 'Final Exam'>, value=57>
         <Evaluation for <Activity 'First Semester Project'>, value=76>
         <Evaluation for <Activity 'Midterm Exam'>, value=52>
         <Evaluation for <Activity 'Second Semester Project'>, value=72>
-        <Evaluation for <Activity 'Final Exam'>, value=57>
 
     """
 

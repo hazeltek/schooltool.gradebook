@@ -44,6 +44,14 @@ class Activities(requirement.Requirement):
     def worksheets(self):
         return self.values()
 
+    def resetCurrentWorksheet(self, person):
+        person = proxy.removeSecurityProxy(person)
+        if self.worksheets:
+            default = self.worksheets[0]
+        else:
+            default = None
+        self.setCurrentWorksheet(person, default)
+
     def getCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)

@@ -83,7 +83,7 @@ class SectionFinder(object):
             css = 'inactive-menu-item'
             if section == gradebook.context:
                 css = 'active-menu-item'
-            yield {'url': url, 'title': title, 'css': css}
+            yield {'obj': section, 'url': url, 'title': title, 'css': css}
 
     def getCurrentSection(self):
         section = self.context.__parent__
@@ -94,31 +94,69 @@ class GradebookOverview(SectionFinder):
     """Gradebook Overview/Table"""
 
     def update(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        self.message = ''
+
         """Retrieve sorting information and store changes of it."""
         self.person = IPerson(self.request.principal)
         if 'sort_by' in self.request:
             sort_by = self.request['sort_by']
-            key, reverse = self.context.getSortKey(self.person)
+            key, reverse = gradebook.getSortKey(self.person)
             if sort_by == key:
                 reverse = not reverse
             else:
                 reverse=False
-            self.context.setSortKey(self.person, (sort_by, reverse))
-        self.sortKey = self.context.getSortKey(self.person)
+            gradebook.setSortKey(self.person, (sort_by, reverse))
+        self.sortKey = gradebook.getSortKey(self.person)
 
         """Handle change of current section."""
         if 'currentSection' in self.request:
             for section in self.getSections(True):
                 if section['title'] == self.request['currentSection']:
+                    if section['obj'] == gradebook.context:
+                        break
                     self.request.response.redirect(section['url'])
-                    break
+                    return
 
         """Handle change of current worksheet."""
         if 'currentWorksheet' in self.request:
-            for worksheet in self.context.worksheets:
+            for worksheet in gradebook.worksheets:
                 if worksheet.title == self.request['currentWorksheet']:
-                    self.context.setCurrentWorksheet(self.person, worksheet)
-                    break
+                    if worksheet == gradebook.getCurrentWorksheet(self.person):
+                        break
+                    gradebook.setCurrentWorksheet(self.person, worksheet)
+                    return
+
+        """Handle changes to scores."""
+        evaluator = getName(IPerson(self.request.principal))
+        for student in self.context.students:
+            for activity in gradebook.activities:
+                # Create a hash and see whether it is in the request
+                act_hash = str(hash(IKeyReference(activity)))
+                cell_name = '%s_%s' % (act_hash, student.username)
+                if cell_name in self.request:
+                    # If a value is present, create an evaluation, if the
+                    # score is different
+                    try:
+                        score = activity.scoresystem.fromUnicode(
+                            self.request[cell_name])
+                    except (zope.schema.ValidationError, ValueError):
+                        self.message = _(
+                            'The grade $value for activity $name is not valid.',
+                            mapping={'value': self.request[cell_name],
+                                     'name': activity.title})
+                        return
+                    ev = gradebook.getEvaluation(student, activity)
+                    # Delete the score
+                    if ev is not None and score is UNSCORED:
+                        self.context.removeEvaluation(student, activity)
+                    # Do nothing
+                    elif ev is None and score is UNSCORED:
+                        continue
+                    # Replace the score or add new one/
+                    elif ev is None or score != ev.value:
+                        self.context.evaluate(
+                            student, activity, score, evaluator)
 
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
@@ -144,30 +182,34 @@ class GradebookOverview(SectionFinder):
             for act_hash, activity in activities:
                 ev = gradebook.getEvaluation(student, activity)
                 if ev is not None and ev.value is not UNSCORED:
-                    grades.append({'activity': act_hash, 'value': ev.value,
-                                   'has_value': True})
+                    value = ev.value
                 else:
-                    grades.append({'activity': act_hash, 'value': '-',
-                                   'has_value': False})
+                    value = ''
 
-            average = str(gradebook.getWorksheetAverage(worksheet, student))
+                cell_name = '%s_%s' % (act_hash, student.username)
+                if cell_name in self.request:
+                    value = self.request[cell_name]
+
+                grades.append({'activity': act_hash, 'value': value})
+
+            total, average = gradebook.getWorksheetTotalAverage(worksheet, 
+                student)
 
             rows.append(
                 {'student': {'title': student.title, 'id': student.username},
-                 'grades': grades,
-                 'average': average})
+                 'grades': grades, 'total': str(total),
+                 'average': str(average)})
 
         # Do the sorting
         key, reverse = self.sortKey
         def generateKey(row):
             if key != 'student':
-                grades = dict([(str(grade['activity']), (grade['has_value'],
-                                                         grade['value']))
+                grades = dict([(str(grade['activity']), grade['value'])
                                for grade in row['grades']])
-                if not grades.get(key, [None])[0]:
+                if not grades.get(key, ''):
                     return (1, row['student']['title'])
                 else:
-                    return (0, grades.get(key)[1])
+                    return (0, grades.get(key))
             return row['student']['title']
 
         return sorted(rows, key=generateKey, reverse=reverse)
@@ -184,8 +226,9 @@ class FinalGradesView(SectionFinder):
         for student in students:
             grades = []
             for worksheet in gradebook.worksheets:
-                average = str(gradebook.getWorksheetAverage(worksheet, student))
-                grades.append({'value': average})
+                total, average = gradebook.getWorksheetTotalAverage(worksheet, 
+                    student)
+                grades.append({'value': str(average)})
             calculated = gradebook.getFinalGrade(student)
             final = gradebook.getAdjustedFinalGrade(self.person, student)
             adj_dict = gradebook.getFinalGradeAdjustment(self.person, student)
@@ -205,6 +248,14 @@ class FinalGradesView(SectionFinder):
         return rows
 
     def update(self):
+        """Handle change of current section."""
+        self.person = IPerson(self.request.principal)
+        if 'currentSection' in self.request:
+            for section in self.getSections(True):
+                if section['title'] == self.request['currentSection']:
+                    self.request.response.redirect(section['url'])
+                    break
+
         """Retrieve final grade adjustments and store changes to them."""
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)

@@ -300,20 +300,51 @@ that the activities view referenced.
 
     >>> stephan.getLink('Return to Gradebook').click()
 
-The initial gradebook screen is a simple spreadsheet. In order to prevent
-accidental score submission, we do not allow to enter grades in this
-table. Instead you select a row (student), column (activity) or cell (student,
-activity) to enter the scores.
-
-Since we just loaded up the gradebook for the first time, the current worksheet
-will be the first one, Week 1.  Only the activities for that worksheet should
-appear.
+The initial gradebook screen is a simple spreadsheet.  Since we just loaded up
+the gradebook for the first time, the current worksheet will be the first one,
+Week 1.  Only the activities for that worksheet should appear.
 
     >>> 'HW 1' in stephan.contents and 'Quiz' in stephan.contents
     True
     >>> 'HW 2' in stephan.contents or 'Final</a>' in stephan.contents
     False
 
+We can enter a score into any cell.  Let's enter one for Claudia's HW 1
+activity.  We'll do some trickery to calculate the cell name, taking advantage
+of the fact that it's the first cell.
+
+    >>> search_text = '<input type="text" name="'
+    >>> index = stephan.contents.find(search_text) + len(search_text)
+    >>> txt = stephan.contents[index:]
+    >>> cell_name = txt[:txt.find('"')]
+    >>> stephan.getControl(name=cell_name).value = '56'
+    >>> stephan.getControl('Update').click()
+
+We should see the score reflected in the spreadsheet.
+
+    >>> stephan.getControl(name=cell_name).value
+    '56'
+
+If we enter an invalid score, we will get an error message.
+
+    >>> stephan.getControl(name=cell_name).value = 'Bad'
+    >>> stephan.getControl('Update').click()
+    >>> 'The grade Bad for activity HW 1 is not valid.' in stephan.contents
+    True
+
+We can change the score and see the change reflected in the spreadsheet.
+
+    >>> stephan.getControl(name=cell_name).value = '88'
+    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl(name=cell_name).value
+    '88'
+
+Finally, we can remove the score by clearing out the cell.
+
+    >>> stephan.getControl(name=cell_name).value = ''
+    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl(name=cell_name).value
+    ''
 
 
 Entering Scores for a Row (Student)
@@ -346,23 +377,27 @@ Also note that all the other entered values should be retained:
 
 The screen will return to the grade overview, where the grades are no visible:
 
-    >>> '>36<' in stephan.contents
+    >>> 'value="36"' in stephan.contents
     True
-    >>> '>56<' in stephan.contents
+    >>> 'value="56"' in stephan.contents
     True
 
 Also, there will be an average grade displayed that the teacher can use to
-formulate a final grade.
+formulate a final grade.  The total used to establish the average also appears
+in the column before it.
 
-    >>> '>61%<' in stephan.contents
-    True
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Claudia Richter...
+    ...92</b>...
+    ...61%</b>...
 
 Now let's enter again and change a grade:
 
     >>> stephan.getLink('Claudia Richter').click()
     >>> stephan.getControl('HW 1').value = u'46'
     >>> stephan.getControl('Update').click()
-    >>> '>46<' in stephan.contents
+    >>> 'value="46"' in stephan.contents
     True
 
 When you want to delete an evaluation altogether, simply blank the value:
@@ -370,7 +405,7 @@ When you want to delete an evaluation altogether, simply blank the value:
     >>> stephan.getLink('Claudia Richter').click()
     >>> stephan.getControl('HW 1').value = u''
     >>> stephan.getControl('Update').click()
-    >>> '>46<' in stephan.contents
+    >>> 'value="46"' in stephan.contents
     False
 
 Of course, you can also abort the grading.
@@ -385,7 +420,7 @@ Let's put Claudia's grade back in:
     >>> stephan.getLink('Claudia Richter').click()
     >>> stephan.getControl('HW 1').value = u'36'
     >>> stephan.getControl('Update').click()
-    >>> '>36<' in stephan.contents
+    >>> 'value="36"' in stephan.contents
     True
 
 
@@ -423,11 +458,11 @@ Also note that all the other entered values should be retained:
 The screen will return to the grade overview, where the grades are now
 visible:
 
-    >>> '>40<' in stephan.contents
+    >>> 'value="40"' in stephan.contents
     True
-    >>> '>42<' in stephan.contents
+    >>> 'value="42"' in stephan.contents
     True
-    >>> '>36<' in stephan.contents
+    >>> 'value="36"' in stephan.contents
     True
 
 Now let's enter again and change a grade:
@@ -435,7 +470,7 @@ Now let's enter again and change a grade:
     >>> stephan.getLink('HW 1').click()
     >>> stephan.getControl('Claudia Richter').value = u'48'
     >>> stephan.getControl('Update').click()
-    >>> '>48<' in stephan.contents
+    >>> 'value="48"' in stephan.contents
     True
 
 When you want to delete an evaluation altogether, simply blank the value:
@@ -443,7 +478,7 @@ When you want to delete an evaluation altogether, simply blank the value:
     >>> stephan.getLink('HW 1').click()
     >>> stephan.getControl('Claudia Richter').value = u''
     >>> stephan.getControl('Update').click()
-    >>> '>98<' in stephan.contents
+    >>> 'value="98"' in stephan.contents
     False
 
 Of course, you can also abort the grading.
@@ -467,70 +502,13 @@ We'll set the current worksheet back to week 1 for the rest of the tests.
 
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
 
+We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
 
-Entering Scores for a Cell (Student, Activity)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-When you click directly on the grade, you can also edit it. Let's day that we
-want to modify Claudia's Quiz grade. Until now she had a 56:
-
-    >>> stephan.getLink('56').click()
-
-The screen that opens gives you several pieces of information, such as the
-student's name,
-
-    >>> 'Claudia Richter' in stephan.contents
-    True
-
-the activity name,
-
-    >>> 'Quiz' in stephan.contents
-    True
-
-the (due) date of the activity,
-
-    # Cannot show the value because it is variable
-    >>> '(Due) Date' in stephan.contents
-    True
-
-the last modification date,
-
-    # Cannot show the value because it is variable
-    >>> 'Modification Date' in stephan.contents
-    True
-
-and the maximum score:
-
-    >>> '100' in stephan.contents
-    True
-
-This for also allows you to delete the evaluation, which is sometimes
-necessary:
-
-    >>> stephan.getControl('Grade').value
-    '56'
-    >>> stephan.getControl('Delete').click()
-    >>> stephan.getControl('Grade').value
-    ''
-
-Now let's enter a new grade:
-
-    >>> stephan.getControl('Grade').value = '86'
+    >>> stephan.getLink('Quiz').click()
+    >>> stephan.getControl('Claudia Richter').value = u'86'
     >>> stephan.getControl('Update').click()
     >>> stephan.url
     'http://localhost/sections/1/gradebook/index.html'
-    >>> '>86<' in stephan.contents
-    True
-
-Of course, you can also cancel actions:
-
-    >>> stephan.getLink('86').click()
-    >>> stephan.getControl('Grade').value = '66'
-    >>> stephan.getControl('Cancel').click()
-    >>> stephan.url
-    'http://localhost/sections/1/gradebook/index.html'
-    >>> '>86<' in stephan.contents
-    True
 
 
 Sorting

@@ -30,7 +30,7 @@ from zope.traversing.api import getName
 from schooltool.app.browser import app
 from schooltool.gradebook import interfaces
 from schooltool.person.interfaces import IPerson
-from schooltool.requirement import requirement
+
 
 class ActivitiesView(object):
     """A Group Container view."""
@@ -50,14 +50,8 @@ class ActivitiesView(object):
         pos = 0
         for activity in self.context.getCurrentActivities(self.person):
             pos += 1
-            inherited = False
-            if zope.security.proxy.isinstance(activity, requirement.InheritedRequirement):
-                inherited = True
-                activity = requirement.unwrapRequirement(activity)
             yield {'name': getName(activity),
                    'title': activity.title,
-                   'inherited': inherited,
-                   'disabled': inherited and 'disabled' or '',
                    'url': absoluteURL(activity, self.request),
                    'pos': pos}
 
@@ -78,6 +72,11 @@ class ActivitiesView(object):
         if 'DELETE' in self.request:
             for name in self.request.get('delete', []):
                 del self.currentWorksheet[name]
+
+        elif 'DELETE_WORKSHEET' in self.request:
+            name = self.request.get('DELETE_WORKSHEET')
+            del self.context[name]
+            self.context.resetCurrentWorksheet(self.person)
 
         elif 'form-submitted' in self.request:
             old_pos = 0
@@ -100,6 +99,11 @@ class ActivitiesView(object):
 
 class WorksheetAddView(app.BaseAddView):
     """A view for adding a worksheet."""
+
+    def nextURL(self):
+        person = IPerson(self.request.principal, None)
+        self.context.context.resetCurrentWorksheet(person)
+        return absoluteURL(self.context.context, self.request)
 
 
 class ActivityAddView(app.BaseAddView):
@@ -127,6 +131,18 @@ class WorksheetEditView(BaseEditView):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+
+class WorksheetDeleteView(object):
+    """A view for deleting a worksheet."""
+
+    def update(self):
+        next_url = absoluteURL(self.context.__parent__, self.request)
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(next_url)
+        elif 'DELETE' in self.request:
+            next_url += '?DELETE_WORKSHEET=' + self.context.__name__
+            self.request.response.redirect(next_url)
 
 
 class ActivityEditView(BaseEditView):

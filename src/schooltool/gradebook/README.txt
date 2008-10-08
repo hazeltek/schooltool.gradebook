@@ -319,8 +319,8 @@ a cell in the worksheet.
 We can get a student average for the worksheet, an integer percentage that
 can later be used to formulate a letter grade.
 
-    >>> gradebook.getWorksheetAverage(week1, paul)
-    82
+    >>> gradebook.getWorksheetTotalAverage(week1, paul)
+    (Decimal("90"), 82)
 
 
 Sorting by Column
@@ -371,10 +371,10 @@ with a different letter grade, supplying a reason if they wish.
 
 First let's see what Paul's grades are for the two worksheets:
 
-    >>> gradebook.getWorksheetAverage(week1, paul)
-    82
-    >>> gradebook.getWorksheetAverage(week2, paul)
-    97
+    >>> gradebook.getWorksheetTotalAverage(week1, paul)
+    (Decimal("90"), 82)
+    >>> gradebook.getWorksheetTotalAverage(week2, paul)
+    (Decimal("111"), 97)
     
 Paul got a B in the first week and an A in the second week.  Averaging them
 together and rounding should yield an A.

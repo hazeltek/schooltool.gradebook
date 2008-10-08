@@ -249,7 +249,10 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         if rawScore == '':
             return UNSCORED
 
-        score = Decimal(rawScore)
+        try:
+            score = Decimal(rawScore)
+        except:
+            raise ValueError
 
         if not self.isValidScore(score):
             raise zope.schema.ValidationError(
