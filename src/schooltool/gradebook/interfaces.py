@@ -50,6 +50,15 @@ class IActivities(interfaces.IRequirement):
 class IWorksheet(interfaces.IRequirement):
     '''A list of activities that must be fulfilled in a course or section.'''
 
+    def getCategoryWeights():
+        """Get the category weights for the worksheet.  This method will
+           return a list of (category, weight) tuples, the weight being
+           a Decimal object."""
+
+    def setCategoryWeight(category, weight):
+        """Set the weight for the given category.  Any numeric type is 
+           acceptable"""
+
     container.constraints.containers(IActivities)
     container.constraints.contains('.IActivity')
 

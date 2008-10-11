@@ -143,25 +143,25 @@ a test.
     >>> week1['homework'] = activity.Activity(
     ...     title=u'HW 1',
     ...     description=u'Week 1 Homework',
-    ...     category=u'Assginment',
+    ...     category=u'assignment',
     ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=10))
     >>> hw1 = week1['homework']
     >>> week1['quiz'] = activity.Activity(
     ...     title=u'Quiz',
     ...     description=u'End of Week Quiz',
-    ...     category=u'Exam',
+    ...     category=u'exam',
     ...     scoresystem=scoresystem.PercentScoreSystem)
     >>> quiz = week1['quiz']
     >>> week2['homework'] = activity.Activity(
     ...     title=u'HW 2',
     ...     description=u'Week 2 Homework',
-    ...     category=u'Assginment',
+    ...     category=u'assignment',
     ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=15))
     >>> hw2 = week2['homework']
     >>> week2['final'] = activity.Activity(
     ...     title=u'Final',
     ...     description=u'Final Exam',
-    ...     category=u'Exam',
+    ...     category=u'exam',
     ...     scoresystem=scoresystem.PercentScoreSystem)
     >>> final = week2['final']
 
@@ -247,7 +247,7 @@ Of course there are some safety precautions:
 
     >>> hw3 = activity.Activity(
     ...     title=u'HW 3',
-    ...     category=u'Assginment',
+    ...     category=u'assignment',
     ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=10))
 
     >>> gradebook.evaluate(student=claudia, activity=hw3, score=8)
@@ -408,4 +408,45 @@ Trying to set the adjustment to an illegal letter will yield a ValueError.
     ...
     ValueError: Adjustment final grade 'F' is not a valid grade.
 
+
+Weighting Categories
+--------------------
+
+By default, the gradebook calculates worksheet averages by weighting each
+activitiy by its possible number of points.  For example, a quiz that is
+graded on a ten point scale will have on tenth the weight of an exam graded
+on a hundred point scale.  However, there are cases where a teacher may want
+to assign an arbitrary weight to a whole category of activities.  In other
+words, all quizes averaged together could have a 40% weight, and the exams
+have a 60% weight.  Therefore, we need to allow the teacher to override the
+default behaviour for a given worksheet with a cotegory weighting or their
+choosing.
+
+Let's look again at our current worksheet for our gradebook.  We see that
+there's a quiz with 10 possible points and an exam with 100.  Paul got a
+10 out of 10 on the homework and an 80 out of 100 on the quiz.  The default
+calculation of the average would be (10 + 80) / (10 + 100) = 82%.
+
+    >>> sorted(gradebook.getCurrentEvaluationsForStudent(stephan, paul),
+    ...        key=lambda x: x[0].title)
+    [(<Activity u'HW 1'>, <Evaluation for <Activity u'HW 1'>, value=10>),
+     (<Activity u'Quiz'>, <Evaluation for <Activity u'Quiz'>, value=80>)]
+    >>> gradebook.getWorksheetTotalAverage(week1, paul)
+    (Decimal("90"), 82)
+
+Let's create some category weights for the current worksheet.
+
+    >>> from decimal import Decimal
+    >>> sorted(week1.getCategoryWeights().items())
+    []
+    >>> week1.setCategoryWeight('assignment', Decimal("0.35"))
+    >>> week1.setCategoryWeight('exam', Decimal("0.65"))
+    >>> sorted(week1.getCategoryWeights().items())
+    [('assignment', Decimal("0.35")), ('exam', Decimal("0.65"))]
+
+Now we will see that the average for paul will change to reflect the new
+calculation of (10 * 0.35) + (80 * 0.65) = 55.5% 
+
+    >>> gradebook.getWorksheetTotalAverage(week1, paul)
+    (Decimal("90"), Decimal("55.50"))
 

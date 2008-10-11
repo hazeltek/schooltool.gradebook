@@ -59,7 +59,8 @@ def tearDown(test):
 
 
 def test_suite():
-    optionflags=doctest.NORMALIZE_WHITESPACE|doctest.ELLIPSIS
+    optionflags=(doctest.NORMALIZE_WHITESPACE|doctest.ELLIPSIS|
+                 doctest.REPORT_ONLY_FIRST_FAILURE)
     return unittest.TestSuite((
         doctest.DocFileSuite('../README.txt',
                              setUp=setUp, tearDown=tearDown,

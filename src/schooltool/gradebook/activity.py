@@ -36,6 +36,7 @@ from schooltool.gradebook import interfaces
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
+CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
 
 class Activities(requirement.Requirement):
     zope.interface.implements(interfaces.IActivities)
@@ -82,7 +83,20 @@ class Activities(requirement.Requirement):
 
 
 class Worksheet(requirement.Requirement):
-    zope.interface.implements(interfaces.IWorksheet)
+    zope.interface.implements(interfaces.IWorksheet, 
+                              annotation.interfaces.IAttributeAnnotatable)
+
+    def getCategoryWeights(self):
+        ann = annotation.interfaces.IAnnotations(self)
+        if CATEGORY_WEIGHTS_KEY not in ann:
+            ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
+        return ann[CATEGORY_WEIGHTS_KEY]
+
+    def setCategoryWeight(self, category, weight):
+        ann = annotation.interfaces.IAnnotations(self)
+        if CATEGORY_WEIGHTS_KEY not in ann:
+            ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
+        ann[CATEGORY_WEIGHTS_KEY][category] = weight
 
 
 class Activity(requirement.Requirement):
