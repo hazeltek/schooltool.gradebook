@@ -23,6 +23,7 @@ $Id$
 __docformat__ = 'reStructuredText'
 
 import zope.interface
+from zope.app import container
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.common import SchoolToolMessage as _
 
@@ -43,9 +44,14 @@ class IActivities(interfaces.IRequirement):
     def getCurrentActivities():
         """Get the activities for the currently active worksheet."""
 
+    container.constraints.contains('.IWorksheet')
+
 
 class IWorksheet(interfaces.IRequirement):
     '''A list of activities that must be fulfilled in a course or section.'''
+
+    container.constraints.containers(IActivities)
+    container.constraints.contains('.IActivity')
 
 
 class IActivity(interfaces.IRequirement):
@@ -71,6 +77,8 @@ class IActivity(interfaces.IRequirement):
         title=_("Date"),
         description=_("The date the activity was created."),
         required=True)
+
+    container.constraints.containers(IWorksheet)
 
 
 class IEditGradebook(zope.interface.Interface):
