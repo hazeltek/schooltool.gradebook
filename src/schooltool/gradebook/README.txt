@@ -439,15 +439,16 @@ Let's create some category weights for the current worksheet.
     >>> from decimal import Decimal
     >>> sorted(week1.getCategoryWeights().items())
     []
-    >>> week1.setCategoryWeight('assignment', Decimal("0.35"))
-    >>> week1.setCategoryWeight('exam', Decimal("0.65"))
+    >>> week1.setCategoryWeight('assignment', Decimal("0.38"))
+    >>> week1.setCategoryWeight('exam', Decimal("0.62"))
     >>> sorted(week1.getCategoryWeights().items())
-    [('assignment', Decimal("0.35")), ('exam', Decimal("0.65"))]
+    [('assignment', Decimal("0.38")), ('exam', Decimal("0.62"))]
 
 Now we will see that the average for paul will change to reflect the new
-calculation of (10 * 0.35) + (80 * 0.65) = 55.5% which rounds to 56%.
+calculation of ((10/10) * 0.38) + ((80/100) * 0.62) = 87.6% which rounds up
+to 88%.
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("90"), 56)
+    (Decimal("90"), 88)
 
 

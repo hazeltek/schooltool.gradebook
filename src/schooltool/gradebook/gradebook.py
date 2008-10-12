@@ -124,17 +124,20 @@ class GradebookBase(object):
         weights = worksheet.getCategoryWeights()
         if weights:
             totals = {}
+            average_totals = {}
             for activity in self.getWorksheetActivities(worksheet):
                 ev = self.getEvaluation(student, activity)
                 if ev is not None and ev.value is not UNSCORED:
                     ss = ev.requirement.scoresystem
                     totals.setdefault(activity.category, Decimal(0))
                     totals[activity.category] += ev.value - ss.min
+                    average_totals.setdefault(activity.category, Decimal(0))
+                    average_totals[activity.category] += (ev.value - ss.min) / (ss.max - ss.min)
             average = Decimal(0)
-            for category, value in totals.items():
+            for category, value in average_totals.items():
                 if category in weights:
-                    average += value * weights[category]
-            return sum(totals.values()), int(round(average))
+                    average += value * weights[category] 
+            return sum(totals.values()), int(round(average*100))
         else:
             total = 0
             count = 0

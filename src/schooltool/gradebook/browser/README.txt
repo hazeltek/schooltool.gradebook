@@ -654,28 +654,29 @@ to 100.  We should get an error message to that effect.
 If we get the weights to add up to 100, hitting 'Update' will succeed and return
 us to the gradebook.  There we will note the effect of the weighting.
 
-    >>> stephan.getControl('Exam').value = u'65'
+    >>> stephan.getControl('Assignment').value = u'38'
+    >>> stephan.getControl('Exam').value = u'62'
     >>> stephan.getControl('Update').click()
     >>> print stephan.contents
     <BLANKLINE>
     ...Claudia Richter...
-    ...56%</b>...
+    ...53%</b>...
     ...Tom Hoffman...
-    ...15%</b>...
+    ...32%</b>...
     ...Paul Cardune...
-    ...14%</b>...
+    ...30%</b>...
 
 Finally, we'll test hitting the 'Cancel' button.  It should return to the
 gradebook without changing the weights.
 
     >>> stephan.getLink('Weight Categories').click()
     >>> stephan.getControl('Exam').value
-    '65'
+    '62'
     >>> stephan.getControl('Exam').value = u'85'
     >>> stephan.getControl('Cancel').click()
     >>> stephan.getLink('Weight Categories').click()
     >>> stephan.getControl('Exam').value
-    '65'
+    '62'
     
 
 My Grades
