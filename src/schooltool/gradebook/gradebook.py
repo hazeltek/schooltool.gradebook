@@ -122,7 +122,21 @@ class GradebookBase(object):
         if worksheet is None:
             return 0, 0
         weights = worksheet.getCategoryWeights()
+
+        # weight by categories
         if weights:
+            adjusted_weights = {}
+            for activity in self.getWorksheetActivities(worksheet):
+                ev = self.getEvaluation(student, activity)
+                category = activity.category
+                if ev is not None and ev.value is not UNSCORED:
+                    adjusted_weights[category] = weights[category]
+            total_percentage = 0
+            for key in adjusted_weights:
+                total_percentage += adjusted_weights[key]
+            for key in adjusted_weights:
+                adjusted_weights[key] /= total_percentage
+
             totals = {}
             average_totals = {}
             for activity in self.getWorksheetActivities(worksheet):
@@ -132,12 +146,16 @@ class GradebookBase(object):
                     totals.setdefault(activity.category, Decimal(0))
                     totals[activity.category] += ev.value - ss.min
                     average_totals.setdefault(activity.category, Decimal(0))
-                    average_totals[activity.category] += (ev.value - ss.min) / (ss.max - ss.min)
+                    average_totals[activity.category] += ((ev.value - ss.min) / 
+                        (ss.max - ss.min))
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights:
-                    average += value * weights[category] 
+                    average += value * adjusted_weights[category] 
             return sum(totals.values()), int(round(average*100))
+        
+        # when not weighting categories, the default is to weight the
+        # evaulations by activities.
         else:
             total = 0
             count = 0

@@ -451,4 +451,17 @@ to 88%.
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
     (Decimal("90"), 88)
 
+We need to be able to ignore activities that are not scored when making our
+calculation because it is not fair to punish a student for an activity that
+the teacher has not yet graded.  We will test this by removing one of the
+evaluations for Paul, say, the grade for HW 1.
+
+    >>> gradebook.removeEvaluation(student=paul, activity=hw1)
+
+Now, the calculation will be (80/100) * 100% = 80% because the other
+category, assignment, is no longer represented with a score.
+
+    >>> gradebook.getWorksheetTotalAverage(week1, paul)
+    (Decimal("80"), 80)
+
 
