@@ -150,6 +150,13 @@
       />
   <menuItem
       menu="schooltool_actions"
+      title="View Final Grades"
+      for="..interfaces.IGradebook"
+      action="final.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
       title="Return to Gradebook"
       for="..interfaces.IActivities"
       action="../gradebook/index.html"

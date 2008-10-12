@@ -45,10 +45,6 @@
             tal:content="worksheet/title" />
       </tal:block>
     </select>
-    <a class="button-ok" title="View Final Grades"
-       tal:attributes="href string:${context/@@absolute_url}/final.html">
-       View Final Grades
-    </a>
     <a class="button-ok" title="Weight Categories"
        tal:condition="context/worksheets"
        tal:define="worksheet view/getCurrentWorksheet"
