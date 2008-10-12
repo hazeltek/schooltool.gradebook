@@ -445,8 +445,9 @@ Let's create some category weights for the current worksheet.
     [('assignment', Decimal("0.35")), ('exam', Decimal("0.65"))]
 
 Now we will see that the average for paul will change to reflect the new
-calculation of (10 * 0.35) + (80 * 0.65) = 55.5% 
+calculation of (10 * 0.35) + (80 * 0.65) = 55.5% which rounds to 56%.
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("90"), Decimal("55.50"))
+    (Decimal("90"), 56)
+
 

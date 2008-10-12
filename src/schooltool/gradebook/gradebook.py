@@ -119,6 +119,8 @@ class GradebookBase(object):
             return []
 
     def getWorksheetTotalAverage(self, worksheet, student):
+        if worksheet is None:
+            return 0, 0
         weights = worksheet.getCategoryWeights()
         if weights:
             totals = {}
@@ -132,7 +134,7 @@ class GradebookBase(object):
             for category, value in totals.items():
                 if category in weights:
                     average += value * weights[category]
-            return sum(totals.values()), average  
+            return sum(totals.values()), int(round(average))
         else:
             total = 0
             count = 0
@@ -143,7 +145,7 @@ class GradebookBase(object):
                     total += ev.value - ss.min
                     count += ss.max - ss.min
             if count:
-                return total, int((float(100 * total) / float(count)) + 0.5)
+                return total, int(round(Decimal(100 * total) / Decimal(count)))
             else:
                 return 0, 0
 

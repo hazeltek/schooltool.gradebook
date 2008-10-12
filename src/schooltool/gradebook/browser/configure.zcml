@@ -82,6 +82,13 @@
       template="worksheet_delete.pt"
       permission="schooltool.edit"
       />
+  <page
+      name="weights.html"
+      for="..interfaces.IWorksheet"
+      class=".activity.WeightCategoriesView"
+      template="weight_categories.pt"
+      permission="schooltool.edit"
+      />
 
   <!-- Activities -->
   <configure package="schooltool.skin">

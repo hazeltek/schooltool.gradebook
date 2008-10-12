@@ -43,13 +43,13 @@
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__
-                    addBase removeBase title"
+                    title getCategoryWeights"
         />
     <require
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
         set_schema=".interfaces.IWorksheet"
-        attributes="changePosition"
+        attributes="changePosition setCategoryWeight"
         />
   </class>
 

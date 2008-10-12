@@ -20,6 +20,8 @@
 
 $Id$
 """
+from decimal import Decimal, InvalidOperation
+
 import zope.security.proxy
 from zope.app.form.browser.editview import EditView
 from zope.security.checker import canWrite
@@ -27,8 +29,11 @@ from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.api import getName
 
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser import app
+from schooltool.common import SchoolToolMessage as _
 from schooltool.gradebook import interfaces
+from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 
 
@@ -150,4 +155,65 @@ class ActivityEditView(BaseEditView):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__.__parent__, self.request)
+
+
+class WeightCategoriesView(object):
+    """A view for providing category weights for the worksheet context."""
+
+    def nextURL(self):
+        section = self.context.__parent__.__parent__
+        return absoluteURL(section, self.request) + '/gradebook'
+
+    def update(self):
+        self.message = ''
+        language = 'en' # XXX this need to be dynamic
+        categories = getCategories(ISchoolToolApplication(None))
+
+        newValues = {}
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+
+        elif 'UPDATE_SUBMIT' in self.request:
+            for category in sorted(categories.getKeys()):
+                if category in self.request and self.request[category]:
+                    value = self.request[category]
+                    try:
+                        value = Decimal(value)
+                        if value < 0 or value > 100:
+                            raise ValueError
+                    except (InvalidOperation, ValueError):
+                        self.message = _('$value is not a valid weight.',
+                            mapping={'value': value})
+                        break
+                    newValues[category] = value
+            else:
+                total = 0
+                for category in newValues:
+                    total += newValues[category]
+                if total != Decimal(100):
+                    self.message = _('Category weights must add up to 100.')
+                else:
+                    for category in newValues:
+                        self.context.setCategoryWeight(category, 
+                            newValues[category] / 100)
+                    self.request.response.redirect(self.nextURL())
+
+        weights = self.context.getCategoryWeights()
+        self.rows = []
+        for category in sorted(categories.getKeys()):
+            if category in self.request:
+                weight = self.request[category]
+            else:
+                weight = str(weights.get(category, '') * 100)
+                if '.' in weight:
+                    while weight.endswith('0'):
+                        weight = weight[:-1]
+                    if weight[-1] == '.':
+                        weight = weight[:-1]
+            row = {
+                'category': category,
+                'category_value': categories.getValue(category, language),
+                'weight': weight,
+                }
+            self.rows.append(row)
 
