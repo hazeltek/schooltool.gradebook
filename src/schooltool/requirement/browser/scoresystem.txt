@@ -355,7 +355,7 @@ possible errors first in the min and then in the max widget:
   >>> widget.getInputValue()
   Traceback (most recent call last):
   ...
-  ConversionError: (u'Invalid integer data', <exceptions.ValueError ...>)
+  ConversionError: (u'Invalid integer data', ...)
   >>> print widget.error()
   <span class="error">Invalid integer data</span>
 
@@ -368,7 +368,7 @@ possible errors first in the min and then in the max widget:
   >>> widget.getInputValue()
   Traceback (most recent call last):
   ...
-  ConversionError: (u'Invalid integer data', <exceptions.ValueError ...>)
+  ConversionError: (u'Invalid integer data', ...)
   >>> print widget.error()
   <span class="error">Invalid integer data</span>
 

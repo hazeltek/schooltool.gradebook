@@ -18,8 +18,10 @@ Next we are creating the base requirement for graduation:
 We want to create a course to provide some context:
 
   >>> from schooltool.course.course import Course
+  >>> from schooltool.course.course import CourseContainer
 
-  >>> econ = school[u'courses'][u'econ'] = Course()
+  >>> courses = CourseContainer()
+  >>> econ = courses[u'econ'] = Course()
   >>> econ.title = u'Economics'
   >>> econ.title
   u'Economics'
@@ -40,9 +42,11 @@ Now we'll create a section of the economics course.  It also implements
 ``IRequirement``:
 
   >>> from schooltool.course.section import Section
+  >>> from schooltool.course.section import SectionContainer
 
+  >>> sections = SectionContainer()
   >>> econ_section = Section(u"3rd Period Econ.")
-  >>> school[u'sections'][u'3rd-econ'] = econ_section
+  >>> sections[u'3rd-econ'] = econ_section
 
   >>> sec_req = interfaces.IRequirement(econ_section)
   >>> sec_req

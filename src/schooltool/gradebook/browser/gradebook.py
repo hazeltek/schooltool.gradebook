@@ -20,6 +20,8 @@
 
 $Id$
 """
+from schooltool.course.interfaces import ILearner
+from schooltool.course.interfaces import IInstructor
 __docformat__ = 'reStructuredText'
 import zope.schema
 from zope.security import proxy
@@ -43,14 +45,8 @@ class GradebookStartup(object):
 
     def update(self):
         self.person = IPerson(self.request.principal)
-        self.sectionsTaught = []
-        self.sectionsAttended = []
-
-        for section in ISchoolToolApplication(None)['sections'].values():
-            if self.person in section.instructors:
-                self.sectionsTaught.append(section)
-            if self.person in section.members:
-                self.sectionsAttended.append(section)
+        self.sectionsTaught = list(IInstructor(self.person).sections())
+        self.sectionsAttended = list(ILearner(self.person).sections())
 
         if self.sectionsTaught:
             section = self.sectionsTaught[0]
@@ -69,16 +65,20 @@ class SectionFinder(object):
 
     def getSections(self, isTeacher):
         gradebook = proxy.removeSecurityProxy(self.context)
-        for section in ISchoolToolApplication(None)['sections'].values():
-            if isTeacher and not self.person in section.instructors:
-                continue
-            if not isTeacher and not self.person in section.members:
-                continue
+
+        sectionsTaught = list(IInstructor(self.person).sections())
+        sectionsAttended = list(ILearner(self.person).sections())
+        for section in sectionsTaught:
             url = absoluteURL(section, self.request)
-            if isTeacher:
-                url += '/gradebook'
-            else:
-                url += '/mygrades'
+            url += '/gradebook'
+            title = '%s - %s' % (list(section.courses)[0].title, section.title)
+            css = 'inactive-menu-item'
+            if section == gradebook.context:
+                css = 'active-menu-item'
+            yield {'obj': section, 'url': url, 'title': title, 'css': css}
+        for section in sectionsAttended:
+            url = absoluteURL(section, self.request)
+            url += '/mygrades'
             title = '%s - %s' % (list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
             if section == gradebook.context:

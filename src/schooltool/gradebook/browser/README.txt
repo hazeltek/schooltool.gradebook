@@ -60,9 +60,15 @@ We can also change the default category:
     >>> manager.getControl('Default Category').value
     ['exam']
 
+Se up the school year and a couple of terms:
+
+   >>> setup.addSchoolYear('2007', '07/01/01', '07/12/31')
+   >>> setup.addTerm('Winter', '2007-01-01', '2007-06-01', schoolyear='2007')
+
 Next the administrator defines the courses that are available in the school.
 
-    >>> manager.getLink('Manage').click()
+    >>> manager.reload()
+    >>> manager.getLink('2007').click()
     >>> manager.getLink('Courses').click()
     >>> manager.getLink('New Course').click()
     >>> manager.getControl('Title').value = 'Physics I'
@@ -79,7 +85,7 @@ Every term, the administrators of a school are going to setup sections. So
 let's add a section for our course:
 
     >>> from schooltool.app.browser.ftests import setup
-    >>> setup.addSection('Physics I')
+    >>> setup.addSection('Physics I', '2007', 'Winter')
 
 But what would a section be without some students and a teacher?
 
@@ -91,7 +97,7 @@ But what would a section be without some students and a teacher?
 
 Now we can add those people to the section:
 
-    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('2007').click()
     >>> manager.getLink('Courses').click()
     >>> manager.getLink('Physics I').click()
     >>> manager.getLink('(1)').click()
@@ -413,7 +419,7 @@ Of course, you can also abort the grading.
     >>> stephan.getLink('Claudia Richter').click()
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
-    'http://localhost/sections/1/gradebook/index.html'
+    'http://localhost/schoolyears/2007/winter/sections/1/gradebook/index.html'
 
 Let's put Claudia's grade back in:
 
@@ -486,7 +492,7 @@ Of course, you can also abort the grading.
     >>> stephan.getLink('HW 1').click()
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
-    'http://localhost/sections/1/gradebook/index.html'
+    'http://localhost/schoolyears/2007/winter/sections/1/gradebook/index.html'
 
 Let's enter some grades for the second worksheet, 'Week 2', so that we have
 some interesting numbers for the final grades view.
@@ -508,7 +514,7 @@ We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
     >>> stephan.getControl('Claudia Richter').value = u'86'
     >>> stephan.getControl('Update').click()
     >>> stephan.url
-    'http://localhost/sections/1/gradebook/index.html'
+    'http://localhost/schoolyears/2007/winter/sections/1/gradebook/index.html'
 
 
 Sorting
@@ -551,7 +557,7 @@ the average for each worksheet, the final calulated grade, an adjusted final
 grade which equal the calculated final grade unless they have entered an
 adjustment.  At first we will have no adjustments entered.
 
-    >>> url = 'http://localhost/sections/1/gradebook/final.html'
+    >>> url = 'http://localhost/schoolyears/2007/winter/sections/1/gradebook/final.html'
     >>> stephan.open(url)
     >>> print stephan.contents
     <BLANKLINE>
@@ -622,7 +628,7 @@ will take her directly to her grades for that section.
     >>> claudia = setup.logIn('claudia', 'pwd')
     >>> claudia.getLink('Gradebook').click()
     >>> claudia.url
-    'http://localhost/sections/1/mygrades'
+    'http://localhost/schoolyears/2007/winter/sections/1/mygrades'
     >>> 'HW 1' in claudia.contents and 'Quiz' in claudia.contents
     True
     >>> 'HW 2' in claudia.contents or 'Final' in claudia.contents
@@ -657,8 +663,8 @@ In order to test the second scenario, we will have to create a second section
 that has Stephan, teacher of the first Physics I section (1), attending a
 second section rather than teaching.
 
-    >>> setup.addSection('Physics I')
-    >>> manager.getLink('Manage').click()
+    >>> setup.addSection('Physics I', '2007', 'Winter')
+    >>> manager.getLink('2007').click()
     >>> manager.getLink('Courses').click()
     >>> manager.getLink('Physics I').click()
     >>> manager.getLink('(2)').click()
@@ -716,18 +722,18 @@ to see a gradebook and certainly don't have a mygrades view.
     >>> from zope.testbrowser.testing import Browser
     >>> unauth = Browser()
     >>> unauth.handleErrors = False
-    >>> unauth.open('http://localhost/sections/1/gradebook')
+    >>> unauth.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     Traceback (most recent call last):
     ...
     Unauthorized: ...
-    >>> unauth.open('http://localhost/sections/1/mygrades')
+    >>> unauth.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     Traceback (most recent call last):
     ...
     Unauthorized: ...
 
 For managers, the default is to allow them to view. but not edit.
 
-    >>> manager.open('http://localhost/sections/1/gradebook')
+    >>> manager.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     >>> print manager.contents
     <BLANKLINE>
     ...Physics I (1)...
@@ -748,7 +754,7 @@ the permission to do it:
 
 And try again:
 
-    >>> manager.open('http://localhost/sections/1/gradebook')
+    >>> manager.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     >>> manager.getLink('HW 1').click()
     >>> manager.getControl(name='tom').value = '45'
     >>> manager.getControl('Update').click()
@@ -762,7 +768,7 @@ Let's set the setting back to cover our tracks:
 
 A teacher should be able to view and edit his own gradebook.
 
-    >>> stephan.open('http://localhost/sections/1/gradebook')
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     >>> print stephan.contents
     <BLANKLINE>
     ...Physics I (1)...
@@ -774,19 +780,19 @@ A teacher should be able to view and edit his own gradebook.
 Students won't be able to see each other's grade's because the mygrades view
 uses the request's principal to determine which grades to display.
 
-    >>> claudia.open('http://localhost/sections/1/mygrades')
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     >>> print claudia.contents
     <BLANKLINE>
     ... Current Grade: 86%...
     >>> tom = setup.logIn('tom', 'pwd')
-    >>> tom.open('http://localhost/sections/1/mygrades')
+    >>> tom.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     >>> print tom.contents
     <BLANKLINE>
     ...Current Grade: 88%...
 
 Students should not be able to view a teacher's gradebook.
 
-    >>> claudia.open('http://localhost/sections/1/gradebook')
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     Traceback (most recent call last):
     ...
     Unauthorized: ...

@@ -20,6 +20,10 @@
 
 $Id$
 """
+from zope.component import adapts
+from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
+from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.app.interfaces import IApplicationStartUpEvent
 __docformat__ = 'reStructuredText'
 import persistent.dict
 
@@ -296,18 +300,29 @@ class GradebookEditorsCrowd(AggregateCrowd, ConfigurableCrowd):
                 AggregateCrowd.contains(self, principal))
 
 
+def setUpDefaultCategories(dict):
+    dict.addValue('assignment', 'en', _('Assignment'))
+    dict.addValue('essay', 'en', _('Essay'))
+    dict.addValue('exam', 'en', _('Exam'))
+    dict.addValue('homework', 'en', _('Homework'))
+    dict.addValue('journal', 'en', _('Journal'))
+    dict.addValue('lab', 'en', _('Lab'))
+    dict.addValue('presentation', 'en', _('Presentation'))
+    dict.addValue('project', 'en', _('Project'))
+    dict.setDefaultLanguage('en')
+    dict.setDefaultKey('assignment')
+
+
+class GradebookAppStartup(ObjectEventAdapterSubscriber):
+    adapts(IApplicationStartUpEvent, ISchoolToolApplication)
+
+    def __call__(self):
+        dict = getCategories(self.object)
+        if not dict.getKeys():
+            setUpDefaultCategories(dict)
+
+
 class GradebookInit(InitBase):
     def __call__(self):
-        from schooltool.app.interfaces import ISchoolToolApplication
         dict = getCategories(self.app)
-        dict.addValue('assignment', 'en', _('Assignment'))
-        dict.addValue('essay', 'en', _('Essay'))
-        dict.addValue('exam', 'en', _('Exam'))
-        dict.addValue('homework', 'en', _('Homework'))
-        dict.addValue('journal', 'en', _('Journal'))
-        dict.addValue('lab', 'en', _('Lab'))
-        dict.addValue('presentation', 'en', _('Presentation'))
-        dict.addValue('project', 'en', _('Project'))
-        dict.setDefaultLanguage('en')
-        dict.setDefaultKey('assignment')
-
+        setUpDefaultCategories(dict)

@@ -184,4 +184,7 @@
 
   </configure>
 
+  <adapter factory=".gradebook.GradebookAppStartup"
+           name="gradebook_startup_init" />
+
 </configure>
