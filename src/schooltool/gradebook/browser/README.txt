@@ -137,8 +137,8 @@ one section.
     >>> stephan.getLink('Gradebook').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...Physics I (1)...
     ...View Final Grades...
+    ...Physics I (1)...
     ...Claudia...
     ...Paul...
     ...Tom...
@@ -616,6 +616,75 @@ reason will appear in the view in its place.
     ...value="because"...
 
 
+Category Weighting
+------------------
+
+Let's create some category weights for the current worksheet.
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.getLink('Weight Categories').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Category weights for worksheet Week 1...
+    ...Assignment...
+    ...Exam...
+    ...Lab...
+    ...Lab Report...
+    ...Project...
+
+First we'll show what happens when a value is invalid.  The only valid weights
+will be numbers between 0 and 100.
+
+    >>> stephan.getControl('Assignment').value = u'bad value'
+    >>> stephan.getControl('Update').click()
+    >>> 'bad value is not a valid weight.' in stephan.contents
+    True
+    >>> stephan.getControl('Assignment').value = u'-1'
+    >>> stephan.getControl('Update').click()
+    >>> '-1 is not a valid weight.' in stephan.contents
+    True
+    >>> stephan.getControl('Assignment').value = u'101'
+    >>> stephan.getControl('Update').click()
+    >>> '101 is not a valid weight.' in stephan.contents
+    True
+
+We'll fill in valid values for Assignment and Exam, but they will not add up
+to 100.  We should get an error message to that effect.  
+
+    >>> stephan.getControl('Assignment').value = u'35'
+    >>> stephan.getControl('Exam').value = u'64'
+    >>> stephan.getControl('Update').click()
+    >>> 'Category weights must add up to 100.' in stephan.contents
+    True
+
+If we get the weights to add up to 100, hitting 'Update' will succeed and return
+us to the gradebook.  There we will note the effect of the weighting.
+
+    >>> stephan.getControl('Assignment').value = u'38'
+    >>> stephan.getControl('Exam').value = u'62'
+    >>> stephan.getControl('Update').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Claudia Richter...
+    ...86%</b>...
+    ...Tom Hoffman...
+    ...84%</b>...
+    ...Paul Cardune...
+    ...80%</b>...
+
+Finally, we'll test hitting the 'Cancel' button.  It should return to the
+gradebook without changing the weights.
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Exam').value
+    '62'
+    >>> stephan.getControl('Exam').value = u'85'
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Exam').value
+    '62'
+    
+
 My Grades
 ---------
 
@@ -698,8 +767,8 @@ second section rather than teaching.
     >>> stephan.getLink('Classes you teach').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...Physics I (1)...
     ...View Final Grades...
+    ...Physics I (1)...
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you attend').click()
@@ -736,8 +805,8 @@ For managers, the default is to allow them to view. but not edit.
     >>> manager.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     >>> print manager.contents
     <BLANKLINE>
-    ...Physics I (1)...
     ...View Final Grades...
+    ...Physics I (1)...
     >>> manager.getLink('HW 1').click()
     Traceback (most recent call last):
     ...
@@ -771,8 +840,8 @@ A teacher should be able to view and edit his own gradebook.
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     >>> print stephan.contents
     <BLANKLINE>
-    ...Physics I (1)...
     ...View Final Grades...
+    ...Physics I (1)...
     >>> stephan.getLink('HW 1').click()
     >>> stephan.getControl(name='tom').value = '44'
     >>> stephan.getControl('Update').click()

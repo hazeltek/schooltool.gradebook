@@ -82,6 +82,13 @@
       template="worksheet_delete.pt"
       permission="schooltool.edit"
       />
+  <page
+      name="weights.html"
+      for="..interfaces.IWorksheet"
+      class=".activity.WeightCategoriesView"
+      template="weight_categories.pt"
+      permission="schooltool.edit"
+      />
 
   <!-- Activities -->
   <configure package="schooltool.skin">
@@ -139,6 +146,13 @@
       title="Activities"
       for="..interfaces.IGradebook"
       action="../activities/index.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="View Final Grades"
+      for="..interfaces.IGradebook"
+      action="final.html"
       permission="schooltool.view"
       />
   <menuItem

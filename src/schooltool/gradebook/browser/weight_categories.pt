@@ -1,0 +1,44 @@
+<tal:tag condition="view/update" />
+<html metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">
+    Weight Categories
+  </title>
+</head>
+<body>
+<div metal:fill-slot="body">
+  <h1 tal:content="string: Category weights for worksheet ${context/title}" />
+
+  <div class="message" style="color:red; padding:1em"
+       tal:condition="view/message"
+       tal:content="view/message">
+    Message
+  </div>
+  <br />
+
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/weights.html">
+    <table>
+      <tr tal:repeat="row view/rows">
+        <td>
+          <label tal:attributes="for row/category" 
+                 tal:content="row/category_value" />
+        </td>
+        <td>
+          <input type="text" tal:attributes="id row/category; name row/category; 
+                                             value row/weight" />
+        </td>
+      </tr>
+    </table>
+    <div class="controls">
+      <tal:block metal:use-macro="view/@@standard_macros/update-button" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+
+  </form>
+
+</div>
+</body>
+</html>
+
