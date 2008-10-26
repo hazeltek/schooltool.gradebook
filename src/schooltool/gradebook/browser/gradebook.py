@@ -29,6 +29,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.viewlet import viewlet
 from zope.traversing.api import getName
+from zope.publisher.browser import BrowserView
 
 from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -36,6 +37,8 @@ from schooltool.gradebook import interfaces
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.common import SchoolToolMessage as _
+
+from datetime import datetime
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
@@ -59,8 +62,29 @@ class GradebookStartup(object):
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
 
+class GradebookBase(BrowserView):
 
-class SectionFinder(object):
+    def __init__(self, context, request):
+        super(GradebookBase,self).__init__(context,request)
+        self.changed = False
+
+    @property
+    def time(self):
+        t = datetime.now()
+        return "%s-%s-%s %s:%s:%s" % (t.year,t.month,t.day,t.hour,t.minute,t.second)
+        
+    @property
+    def students(self):
+        return self.context.students
+
+    def breakJSString(self,origstr):
+        newstr = str(origstr)
+        newstr = "\\'".join(newstr.split("'"))
+        newstr = '\\"'.join(newstr.split('"'))
+        return newstr
+
+
+class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
 
     def getSections(self, isTeacher):
@@ -150,11 +174,13 @@ class GradebookOverview(SectionFinder):
                     # Delete the score
                     if ev is not None and score is UNSCORED:
                         self.context.removeEvaluation(student, activity)
+                        self.changed = True
                     # Do nothing
                     elif ev is None and score is UNSCORED:
                         continue
                     # Replace the score or add new one/
                     elif ev is None or score != ev.value:
+                        self.changed = True
                         self.context.evaluate(
                             student, activity, score, evaluator)
 
@@ -191,7 +217,7 @@ class GradebookOverview(SectionFinder):
                     value = self.request[cell_name]
 
                 grades.append({'activity': act_hash, 'value': value})
-
+            
             total, average = gradebook.getWorksheetTotalAverage(worksheet, 
                 student)
 
@@ -509,4 +535,3 @@ class MyGradesView(SectionFinder):
 
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
-

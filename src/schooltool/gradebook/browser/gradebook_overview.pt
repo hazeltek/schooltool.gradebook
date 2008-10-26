@@ -5,12 +5,34 @@
   <title metal:fill-slot="title" i18n:translate="">
     Gradebook
   </title>
+  <metal:block fill-slot="extrahead">
+    <script type="text/javascript" src="gradebook_overview.js">
+    </script>
+  </metal:block>
 </head>
 <body>
 <div metal:fill-slot="body">
 
-  <form method="post"
-        tal:attributes="action string:${context/@@absolute_url}">
+    <h1 style="color: red" id="javascript-warning">
+    Your browser either has Javascript turned off, or it is not supported. 
+    Javascript is <b>required</b> for the gradebook.
+    Please enable Javascript or use a browser with Javascript.
+    </h1>
+    <script type="text/javascript">
+      <!--
+	  document.getElementById("javascript-warning").innerHTML = "";
+	  //-->
+    </script>
+    <form method="post"
+  	tal:attributes="action string:${context/@@absolute_url}">
+    <div tal:condition="view/changed"
+         id="warning">
+      <span id="warningtext"> Evaluations changes saved at <span tal:content="view/time">some time</span>. Remember to click "Save" to submit any further changes.</span>
+    </div>
+    <div tal:condition="python: not view.changed"
+         id="warning">
+      <span id="warningtext"> Changes are not saved as they are typed. Click "Save" to save them.</span>
+    </div>
     <tal:if condition="python:not list(view.getSections(True))">
       <span tal:content="string:Section: ${view/getCurrentSection}" />
     </tal:if>
@@ -90,6 +112,23 @@
        <div tal:content="activity/max" />
      </th>
     </tr>
+    
+    <tr>
+      <td colspan="3">  </td>
+      <td tal:repeat="activity view/activities">
+	<input type="text"
+	       class="fd"
+	       tal:attributes="id string:fd_${activity/hash};
+			       onkeyup string:checkFillDown('${activity/hash}')">
+	<input type="button"
+	       style="display: none"
+	       class="fdbtn"
+	       value="Go"
+	       tal:attributes="id string:fdbtn_${activity/hash};
+			       onclick string:performFillDown('${activity/hash}')">
+      </td>
+    </tr>
+    
     <tr tal:repeat="row view/table">
       <td>
         <a href=""
@@ -110,9 +149,11 @@
 	    </tal:if>
       </td>
       <td tal:repeat="grade row/grades">
-        <input type="text" name="" value="" size="4"
-               tal:attributes="name string:${grade/activity}_${row/student/id}; 
-                               value grade/value" />
+        <input type="text" name="" value=""
+               tal:attributes="name string:${grade/activity}_${row/student/id};
+			       id string:${grade/activity}_${row/student/id}; 
+                               value grade/value;
+			       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}')"/>
       </td>
     </tr>
     <tr tal:condition="nothing" class="Statistic" tal:repeat="stat view/statistics">

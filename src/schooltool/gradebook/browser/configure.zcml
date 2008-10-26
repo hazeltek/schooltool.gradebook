@@ -17,6 +17,18 @@
       file="gradebook.css"
       layer="schooltool.skin.ISchoolToolLayer" />
 
+  <!-- Javascript -->
+  <page
+     name="gradebook_overview.js"
+     for="..gradebook.Gradebook"
+     template="gradebook_overview.js.pt"
+     permission="schooltool.edit"
+     class=".gradebook.GradebookOverview"
+     layer="schooltool.skin.ISchoolToolLayer"
+     />
+     
+  
+
   <!-- Categories -->
   <form
       label="Activity Categories"

@@ -45,3 +45,11 @@ div.topmenu li.active-menu-item a:hover {
       background-color: #aaaaaa;
 }
 
+div#warning {
+    text-align: center;
+    font-weight: bold;
+    margin: 1em;
+    padding: .5em;
+    border: medium double black;
+    
+}

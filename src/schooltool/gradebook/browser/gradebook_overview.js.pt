@@ -1,0 +1,107 @@
+/* This is the Javascript to be included when rendering the gradebook overview. */
+var errorbg = "#F66";
+var changedbg = "lightgreen";
+var warningbg = "yellow";
+var defaultbg = "transparent"; 
+var defaulttext = 'Changes are not saved as they are typed. Click "Save" to save them.';
+
+
+var numstudents = <tal:block replace="python: len(view.students)"/> 
+var students = new Array(numstudents);
+<tal:loop repeat="student view/students">
+     students[<tal:block replace="repeat/student/index"/>] = '<tal:block replace="python: view.breakJSString(student.username)"/>';
+     </tal:loop>
+
+
+var edited = false;
+
+/*function unloadWarn()
+{
+    /// XXX Not compatible with all browsers XXX
+    return false;
+}
+
+window.onbeforeunload = unloadWarn;
+*/
+function setWarning(text, bg){
+    document.getElementById('warningtext').innerHTML = text;
+    document.getElementById('warning').style.backgroundColor = bg;
+}
+
+function checkValid(e,name){
+    edited = true;
+    if(e!=null)  // Make sure the element is selected after movement
+	{
+	    var keynum;
+	    if(window.event) // IE
+		{ 
+		    keynum = e.keyCode;
+		}
+	    else if(e.which) // Netscape/Firefox/Opera
+		{
+		    keynum = e.which;
+		}
+	    if ((keynum==13)||(keynum==37)||(keynum==38)||(keynum==39)||(keynum==40) )
+		{
+		    document.getElementById(name).select();
+		    return true;
+		}
+	}
+    var element = document.getElementById(name);
+    var value = element.value;
+    setWarning(defaulttext,defaultbg);
+    element.style.backgroundColor = changedbg;
+    /*
+    for(var index in scores){
+	if (value==scores[index]) {  
+	    element.style.backgroundColor = changedbg; 
+	    return true;} }  
+    element.style.backgroundColor = warningbg;
+    return false;*/
+    return true;    
+} 
+
+
+
+function performFillDown(activity) {
+    var val = document.getElementById("fd_"+activity).value;
+    if (val=='') return;
+    /* ####### EXCLUDED BECAUSE NO WAY TO CHECK VALIDITY #######
+    var invalid = new Boolean(true);
+    for(var index in scores){
+	if (val==scores[index]) {  
+	    invalid = false;
+	} }  
+    document.getElementById('fd'+compid).style.backgroundColor = defaultbg;
+    if (invalid==true){
+	document.getElementById('fd'+compid).style.backgroundColor = warningbg;
+	setWarning('You may not apply the fill-down to an invalid grade',errorbg);
+	return;}*/
+    for(j=0;j!=numstudents;j++){
+	document.getElementById(activity+"_"+students[j]).value=val;
+	checkValid(null,activity+"_"+students[j]);
+    }
+    document.getElementById("fd_"+activity).value = "";
+    document.getElementById("fd_"+activity).backgroundColor = defaultbg;
+    document.getElementById("fdbtn_"+activity).style.display = 'none' ;
+    setWarning(defaulttext,defaultbg);
+}
+
+function checkFillDown(name)
+{
+    if (checkValid(null,'fd_'+name))
+	{
+	    var el = document.getElementById('fdbtn_'+name);
+	    el.style.display='block';
+	    if (document.getElementById('fd_'+name).value==''){
+		document.getElementById('fd_'+name).style.backgroundColor=defaultbg;
+		el.style.display='none';
+	    }
+	}
+    else
+	{
+	    document.getElementById('fdbtn_'+name).style.display='none';
+	    if (document.getElementById('fd_'+name).value=='')
+		document.getElementById('fd_'+name).style.backgroundColor=defaultbg;
+	}
+}
