@@ -136,8 +136,8 @@ Both worksheets start out empty.
     >>> list(week2.items())
     []
     
-We will add two activities to each worksheet, a homework assignment and
-a test.
+We will add three activities to each worksheet, a homework assignment, a project
+with a letter-grade score system, and a test.
 
     >>> from schooltool.requirement import scoresystem
     >>> week1['homework'] = activity.Activity(
@@ -146,6 +146,12 @@ a test.
     ...     category=u'assignment',
     ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=10))
     >>> hw1 = week1['homework']
+    >>> week1['project'] = activity.Activity(
+    ...     title=u'Project 1',
+    ...     description=u'Week 1 Project',
+    ...     category=u'project',
+    ...     scoresystem=scoresystem.AmericanLetterScoreSystem)
+    >>> project1 = week1['project']
     >>> week1['quiz'] = activity.Activity(
     ...     title=u'Quiz',
     ...     description=u'End of Week Quiz',
@@ -158,6 +164,12 @@ a test.
     ...     category=u'assignment',
     ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=15))
     >>> hw2 = week2['homework']
+    >>> week2['project'] = activity.Activity(
+    ...     title=u'Project 2',
+    ...     description=u'Week 2 Project',
+    ...     category=u'project',
+    ...     scoresystem=scoresystem.AmericanLetterScoreSystem)
+    >>> project2 = week2['project']
     >>> week2['final'] = activity.Activity(
     ...     title=u'Final',
     ...     description=u'Final Exam',
@@ -173,9 +185,11 @@ describing the type of score that can be associated with the activity.
 Now we note that both worksheets have the activities in them.
 
     >>> list(week1.items())
-    [('homework', <Activity u'HW 1'>), ('quiz', <Activity u'Quiz'>)]
+    [('homework', <Activity u'HW 1'>), ('project', <Activity u'Project 1'>),
+     ('quiz', <Activity u'Quiz'>)]
     >>> list(week2.items())
-    [('homework', <Activity u'HW 2'>), ('final', <Activity u'Final'>)]
+    [('homework', <Activity u'HW 2'>), ('project', <Activity u'Project 2'>),
+     ('final', <Activity u'Final'>)]
 
 
 Evaluations
@@ -195,9 +209,9 @@ Already the gradebook has worksheets which it got from the section.
 Those worksheets have, int turn, the activities we added to them.
 
     >>> gradebook.getWorksheetActivities(week1)
-    [<Activity u'HW 1'>, <Activity u'Quiz'>]
+    [<Activity u'HW 1'>, <Activity u'Project 1'>, <Activity u'Quiz'>]
     >>> gradebook.getWorksheetActivities(week2)
-    [<Activity u'HW 2'>, <Activity u'Final'>]
+    [<Activity u'HW 2'>, <Activity u'Project 2'>, <Activity u'Final'>]
 
 The current worksheet for the teacher will automatically be set to the first
 one.
@@ -205,7 +219,7 @@ one.
     >>> gradebook.getCurrentWorksheet(stephan)
     Worksheet(u'Week 1')
     >>> gradebook.getCurrentActivities(stephan)
-    [<Activity u'HW 1'>, <Activity u'Quiz'>]
+    [<Activity u'HW 1'>, <Activity u'Project 1'>, <Activity u'Quiz'>]
     
 We can change it to be the second worksheet.
 
@@ -213,7 +227,7 @@ We can change it to be the second worksheet.
     >>> gradebook.getCurrentWorksheet(stephan)
     Worksheet(u'Week 2')
     >>> gradebook.getCurrentActivities(stephan)
-    [<Activity u'HW 2'>, <Activity u'Final'>]
+    [<Activity u'HW 2'>, <Activity u'Project 2'>, <Activity u'Final'>]
 
 Let's enter some grades:
 
@@ -225,6 +239,10 @@ Let's enter some grades:
     >>> gradebook.evaluate(student=paul, activity=quiz, score=80)
     >>> gradebook.evaluate(student=claudia, activity=quiz, score=99)
 
+    >>> gradebook.evaluate(student=tom, activity=project1, score='B')
+    >>> gradebook.evaluate(student=paul, activity=project1, score='C')
+    >>> gradebook.evaluate(student=claudia, activity=project1, score='C')
+
     >>> gradebook.evaluate(student=tom, activity=hw2, score=10)
     >>> gradebook.evaluate(student=paul, activity=hw2, score=12)
     >>> gradebook.evaluate(student=claudia, activity=hw2, score=14)
@@ -232,6 +250,10 @@ Let's enter some grades:
     >>> gradebook.evaluate(student=tom, activity=final, score=85)
     >>> gradebook.evaluate(student=paul, activity=final, score=99)
     >>> gradebook.evaluate(student=claudia, activity=final, score=90)
+
+    >>> gradebook.evaluate(student=tom, activity=project2, score='D')
+    >>> gradebook.evaluate(student=paul, activity=project2, score='A')
+    >>> gradebook.evaluate(student=claudia, activity=project2, score='B')
 
 Of course there are some safety precautions:
 
@@ -295,11 +317,13 @@ activities and evaluations for it.
     >>> gradebook.setCurrentWorksheet(stephan, week1)
     >>> sorted(gradebook.getCurrentActivities(stephan),
     ...        key=lambda x: x.title)
-    [<Activity u'HW 1'>, <Activity u'Quiz'>]
+    [<Activity u'HW 1'>, <Activity u'Project 1'>, <Activity u'Quiz'>]
 
     >>> sorted(gradebook.getCurrentEvaluationsForStudent(stephan, paul),
     ...        key=lambda x: x[0].title)
     [(<Activity u'HW 1'>, <Evaluation for <Activity u'HW 1'>, value=10>),
+     (<Activity u'Project 1'>, <Evaluation for <Activity u'Project 1'>,
+      value='C'>),
      (<Activity u'Quiz'>, <Evaluation for <Activity u'Quiz'>, value=80>)]
 
 For a given activity, we can query the grades for all students for that
@@ -320,7 +344,7 @@ We can get a student average for the worksheet, an integer percentage that
 can later be used to formulate a letter grade.
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("90"), 82)
+    (Decimal("92"), 81)
 
 
 Sorting by Column
@@ -372,9 +396,9 @@ with a different letter grade, supplying a reason if they wish.
 First let's see what Paul's grades are for the two worksheets:
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("90"), 82)
+    (Decimal("92"), 81)
     >>> gradebook.getWorksheetTotalAverage(week2, paul)
-    (Decimal("111"), 97)
+    (Decimal("115"), 97)
     
 Paul got a B in the first week and an A in the second week.  Averaging them
 together and rounding should yield an A.
@@ -423,16 +447,19 @@ default behaviour for a given worksheet with a cotegory weighting or their
 choosing.
 
 Let's look again at our current worksheet for our gradebook.  We see that
-there's a quiz with 10 possible points and an exam with 100.  Paul got a
-10 out of 10 on the homework and an 80 out of 100 on the quiz.  The default
-calculation of the average would be (10 + 80) / (10 + 100) = 82%.
+there's a homework assignment with 10 possible points, a project with 4 possible
+points, and an exam with 100.  Paul got a 10 out of 10 on the homework, a 2 out
+of 4 for the project, and an 80 out of 100 on the quiz.  The default calculation
+of the average would be (10 + 2 + 80) / (10 + 4 + 100) = 81%.
 
     >>> sorted(gradebook.getCurrentEvaluationsForStudent(stephan, paul),
     ...        key=lambda x: x[0].title)
     [(<Activity u'HW 1'>, <Evaluation for <Activity u'HW 1'>, value=10>),
+     (<Activity u'Project 1'>, <Evaluation for <Activity u'Project 1'>,
+      value='C'>),
      (<Activity u'Quiz'>, <Evaluation for <Activity u'Quiz'>, value=80>)]
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("90"), 82)
+    (Decimal("92"), 81)
 
 Let's create some category weights for the current worksheet.
 
@@ -444,12 +471,18 @@ Let's create some category weights for the current worksheet.
     >>> sorted(week1.getCategoryWeights().items())
     [('assignment', Decimal("0.38")), ('exam', Decimal("0.62"))]
 
+We left out the project category intentionally to test handling the case
+where the user creates an activity with a category that is not weighted.
+We will deal with this case by ignoring the activity while calulating
+the average.
+
 Now we will see that the average for paul will change to reflect the new
 calculation of ((10/10) * 0.38) + ((80/100) * 0.62) = 87.6% which rounds up
-to 88%.
+to 88%.  Once again, the total is 92 even though only 90 points will factor
+into the average.
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("90"), 88)
+    (Decimal("92"), 88)
 
 We need to be able to ignore activities that are not scored when making our
 calculation because it is not fair to punish a student for an activity that
@@ -459,9 +492,10 @@ evaluations for Paul, say, the grade for HW 1.
     >>> gradebook.removeEvaluation(student=paul, activity=hw1)
 
 Now, the calculation will be (80/100) * 100% = 80% because the other
-category, assignment, is no longer represented with a score.
+category, assignment, is no longer represented with a score.  As above, the
+project score of 2 is included in the total, but not the average.
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("80"), 80)
+    (Decimal("82"), 80)
 
 
