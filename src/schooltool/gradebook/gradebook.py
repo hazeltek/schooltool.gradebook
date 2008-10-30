@@ -47,6 +47,8 @@ from schooltool.securitypolicy.crowds import AdministratorsCrowd
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.category import getCategories
 from schooltool.requirement.scoresystem import UNSCORED
+from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.common import SchoolToolMessage as _
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
@@ -134,7 +136,8 @@ class GradebookBase(object):
                 ev = self.getEvaluation(student, activity)
                 category = activity.category
                 if ev is not None and ev.value is not UNSCORED:
-                    adjusted_weights[category] = weights[category]
+                    if category in weights:
+                        adjusted_weights[category] = weights[category]
             total_percentage = 0
             for key in adjusted_weights:
                 total_percentage += adjusted_weights[key]
@@ -147,11 +150,21 @@ class GradebookBase(object):
                 ev = self.getEvaluation(student, activity)
                 if ev is not None and ev.value is not UNSCORED:
                     ss = ev.requirement.scoresystem
+                    if IDiscreteValuesScoreSystem.providedBy(ss):
+                        minimum = ss.scores[-1][1]
+                        maximum = ss.scores[0][1]
+                        value = ss.getNumericalValue(ev.value)
+                    elif IRangedValuesScoreSystem.providedBy(ss):
+                        minimum = ss.min
+                        maximum = ss.max
+                        value = ev.value
+                    else:
+                        continue
                     totals.setdefault(activity.category, Decimal(0))
-                    totals[activity.category] += ev.value - ss.min
+                    totals[activity.category] += value - minimum
                     average_totals.setdefault(activity.category, Decimal(0))
-                    average_totals[activity.category] += ((ev.value - ss.min) / 
-                        (ss.max - ss.min))
+                    average_totals[activity.category] += ((value - minimum) / 
+                        (maximum - minimum))
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights:
@@ -167,8 +180,18 @@ class GradebookBase(object):
                 ev = self.getEvaluation(student, activity)
                 if ev is not None and ev.value is not UNSCORED:
                     ss = ev.requirement.scoresystem
-                    total += ev.value - ss.min
-                    count += ss.max - ss.min
+                    if IDiscreteValuesScoreSystem.providedBy(ss):
+                        minimum = ss.scores[-1][1]
+                        maximum = ss.scores[0][1]
+                        value = ss.getNumericalValue(ev.value)
+                    elif IRangedValuesScoreSystem.providedBy(ss):
+                        minimum = ss.min
+                        maximum = ss.max
+                        value = ev.value
+                    else:
+                        continue
+                    total += value - minimum
+                    count += maximum - minimum
             if count:
                 return total, int(round(Decimal(100 * total) / Decimal(count)))
             else:
