@@ -171,19 +171,6 @@
       permission="schooltool.edit"
       crowds="section_instructors grade_editors" />
 
-  <!-- sample data -->
-  <configure
-      xmlns:zcml="http://namespaces.zope.org/zcml"
-      zcml:condition="have devmode">
-
-    <utility
-        factory=".sampledata.SampleGrades"
-        provides="schooltool.sampledata.interfaces.ISampleDataPlugin"
-        name="grades"
-        />
-
-  </configure>
-
   <adapter factory=".gradebook.GradebookAppStartup"
            name="gradebook_startup_init" />
 
