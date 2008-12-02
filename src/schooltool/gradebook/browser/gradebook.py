@@ -37,6 +37,9 @@ from schooltool.gradebook import interfaces
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.common import SchoolToolMessage as _
+from schooltool.requirement.interfaces import IValuesScoreSystem
+from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 
 from datetime import datetime
 
@@ -72,7 +75,7 @@ class GradebookBase(BrowserView):
     def time(self):
         t = datetime.now()
         return "%s-%s-%s %s:%s:%s" % (t.year,t.month,t.day,t.hour,t.minute,t.second)
-        
+
     @property
     def students(self):
         return self.context.students
@@ -217,8 +220,8 @@ class GradebookOverview(SectionFinder):
                     value = self.request[cell_name]
 
                 grades.append({'activity': act_hash, 'value': value})
-            
-            total, average = gradebook.getWorksheetTotalAverage(worksheet, 
+
+            total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
 
             rows.append(
@@ -252,7 +255,7 @@ class FinalGradesView(SectionFinder):
         for student in students:
             grades = []
             for worksheet in gradebook.worksheets:
-                total, average = gradebook.getWorksheetTotalAverage(worksheet, 
+                total, average = gradebook.getWorksheetTotalAverage(worksheet,
                     student)
                 grades.append({'value': str(average)})
             calculated = gradebook.getFinalGrade(student)
@@ -334,7 +337,7 @@ class GradeStudent(object):
 
     def update(self):
         self.person = IPerson(self.request.principal)
-        
+
         if 'CANCEL' in self.request:
             self.request.response.redirect('index.html')
 
@@ -499,6 +502,25 @@ class Grade(object):
             self.request.response.redirect('index.html')
 
 
+def getScoreSystemDiscreteValues(ss):
+    if IDiscreteValuesScoreSystem.providedBy(ss):
+        return (ss.scores[-1][1], ss.scores[0][1])
+    elif IRangedValuesScoreSystem.providedBy(ss):
+        return (ss.min, ss.max)
+    return (0, 0)
+
+
+def getEvaluationDiscreteValue(ev):
+    ss = ev.requirement.scoresystem
+    if IDiscreteValuesScoreSystem.providedBy(ss):
+        val = ss.getNumericalValue(ev.value)
+        if val is not None:
+            return val
+    elif IRangedValuesScoreSystem.providedBy(ss):
+        return ev.value
+    return 0
+
+
 class MyGradesView(SectionFinder):
     """Student view of own grades."""
 
@@ -517,16 +539,23 @@ class MyGradesView(SectionFinder):
         count = 0
         for activity in self.context.getCurrentActivities(self.person):
             activity = proxy.removeSecurityProxy(activity)
-            ev = self.context.getEvaluation(self.person, activity)
+            ev = proxy.removeSecurityProxy(
+                self.context.getEvaluation(self.person, activity))
+
             if ev is not None and ev.value is not UNSCORED:
                 ss = ev.requirement.scoresystem
-                grade = '%d/%d' % (ev.value, ss.max)
-                total += ev.value - ss.min
-                count += ss.max - ss.min
+                if IValuesScoreSystem.providedBy(ss):
+                    grade = '%s / %s' % (ev.value, ss.getBestScore())
+                    s_min, s_max = getScoreSystemDiscreteValues(ss)
+                    value = getEvaluationDiscreteValue(ev)
+                    total += value - s_min
+                    count += s_max - s_min
+                else:
+                    grade = ev.value
             else:
                 grade = None
-            self.table.append({'activity': activity.title, 
-                               'possible': activity.scoresystem.max,
+
+            self.table.append({'activity': activity.title,
                                'grade': grade})
         if count:
             self.average = int((float(100 * total) / float(count)) + 0.5)

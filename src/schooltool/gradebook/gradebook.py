@@ -163,14 +163,14 @@ class GradebookBase(object):
                     totals.setdefault(activity.category, Decimal(0))
                     totals[activity.category] += value - minimum
                     average_totals.setdefault(activity.category, Decimal(0))
-                    average_totals[activity.category] += ((value - minimum) / 
+                    average_totals[activity.category] += ((value - minimum) /
                         (maximum - minimum))
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights:
-                    average += value * adjusted_weights[category] 
+                    average += value * adjusted_weights[category]
             return sum(totals.values()), int(round(average*100))
-        
+
         # when not weighting categories, the default is to weight the
         # evaulations by activities.
         else:
@@ -274,13 +274,13 @@ class GradebookBase(object):
         else:
             adjustments = ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id]
             student_id = hash(IKeyReference(student))
-            return adjustments.get(student_id, 
+            return adjustments.get(student_id,
                 {'adjustment': '', 'reason': ''})
 
     def setFinalGradeAdjustment(self, person, student, adjustment, reason):
         if adjustment not in 'ABCDE':
             raise ValueError(
-                "Adjustment final grade '%s' is not a valid grade." % 
+                "Adjustment final grade '%s' is not a valid grade." %
                 adjustment)
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)

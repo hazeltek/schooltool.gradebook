@@ -8,24 +8,24 @@ div.topmenu {
       font-weight: normal;
 }
 
-div.topmenu ul{ 
+div.topmenu ul{
       list-style: none;
       padding: 0px;
       margin: 0px;
 }
 
-div.topmenu li{ 
+div.topmenu li{
       float: left;
       font-weight: bold;
       height: 50px;
       border-top: 1px solid #900;
-      border-right: 1px solid #900;   
+      border-right: 1px solid #900;
 }
 div.topmenu li.active-menu-item{
       background-color: #999999;
       height: 49px;
 }
-div.topmenu li.inactive-menu-item{ 
+div.topmenu li.inactive-menu-item{
 /**/
 }
 div.topmenu li a{
@@ -38,10 +38,10 @@ div.topmenu li a{
 div.topmenu li a:visited {text-decoration:none;}
 div.topmenu li a:active {text-decoration:none;}
 div.topmenu li a:hover {
-      background-color: #eeeeee; 
+      background-color: #eeeeee;
       color: #900;
 }
-div.topmenu li.active-menu-item a:hover { 
+div.topmenu li.active-menu-item a:hover {
       background-color: #aaaaaa;
 }
 
@@ -51,5 +51,37 @@ div#warning {
     margin: 1em;
     padding: .5em;
     border: medium double black;
-    
+
 }
+
+table.schooltool_gradebook {
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+table.schooltool_gradebook th {
+    padding: .25em;
+    border: solid 1px black;
+    background: #eeeeee;
+}
+
+table.schooltool_gradebook td {
+    padding: .25em;
+    border: solid 1px black;
+    text-align: center;
+}
+
+table.schooltool_gradebook td.empty {
+    padding: .25em;
+    border: 0px;
+    text-align: right;
+}
+
+table.schooltool_gradebook input[type="text"] {
+    width: 90%;
+}
+
+table.schooltool_gradebook .final_grade {
+    color: blue;
+}
+
