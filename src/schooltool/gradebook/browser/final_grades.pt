@@ -38,13 +38,13 @@
     <b tal:condition="view/error_message"
        style="color: red" tal:content="view/error_message" />
     <br /><br />
-    <table class="grades" border="1">
+    <table class="schooltool_gradebook">
       <tr>
        <th>Name</th>
        <th tal:repeat="worksheet context/worksheets"
            tal:content="worksheet/title" />
        <th>Calculated Grade</th>
-       <th style="color: blue">Final Grade</th>
+       <th class="final_grade">Final Grade</th>
        <th>Adjustment</th>
        <th>Reason</th>
       </tr>
@@ -53,17 +53,17 @@
         <td tal:repeat="grade row/grades"
             tal:content="grade/value" />
         <td tal:content="row/calculated" />
-        <td tal:content="row/final" style="color: blue" />
+        <td tal:content="row/final" class="final_grade" />
         <td>
           <input type="text" size="1" maxlength="1"
-                 tal:attributes="id row/adjustment/id;  
-                                 name row/adjustment/id; 
+                 tal:attributes="id row/adjustment/id;
+                                 name row/adjustment/id;
                                  value row/adjustment/value" />
         </td>
         <td>
           <input type="text" size="30"
-                 tal:attributes="id row/reason/id;  
-                                 name row/reason/id; 
+                 tal:attributes="id row/reason/id;
+                                 name row/reason/id;
                                  value row/reason/value" />
         </td>
       </tr>

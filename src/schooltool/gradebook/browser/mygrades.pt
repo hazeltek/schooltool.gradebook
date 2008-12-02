@@ -11,9 +11,9 @@
 
   <div class="topmenu">
     <ul>
-      <li tal:attributes="class section/css" 
+      <li tal:attributes="class section/css"
           tal:repeat="section python:view.getSections(False)">
-        <a tal:attributes="href section/url" 
+        <a tal:attributes="href section/url"
            tal:content="structure section/title"/>
       </li>
     </ul>
@@ -38,11 +38,11 @@
     <br /><br />
   </form>
 
-  <h3 tal:condition="view/average" 
+  <h3 tal:condition="view/average"
         tal:content="string: Current Grade: ${view/average}%">Average</h3>
   <h3 tal:condition="not: view/average">Nothing Graded</h3>
   <br />
-  <table class="grades" border="1">
+  <table class="schooltool_gradebook">
     <tr>
      <th>
        <div i18n:translate="">Activity</div>

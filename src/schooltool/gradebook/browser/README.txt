@@ -649,7 +649,7 @@ will be numbers between 0 and 100.
     True
 
 We'll fill in valid values for Assignment and Exam, but they will not add up
-to 100.  We should get an error message to that effect.  
+to 100.  We should get an error message to that effect.
 
     >>> stephan.getControl('Assignment').value = u'35'
     >>> stephan.getControl('Exam').value = u'64'
@@ -683,7 +683,7 @@ gradebook without changing the weights.
     >>> stephan.getLink('Weight Categories').click()
     >>> stephan.getControl('Exam').value
     '62'
-    
+
 
 My Grades
 ---------
@@ -705,7 +705,7 @@ will take her directly to her grades for that section.
     >>> claudia.contents.find('Current Grade: 86%') \
     ...     < claudia.contents.find('HW 1') \
     ...     < claudia.contents.find('Quiz') \
-    ...     < claudia.contents.find('86/100')
+    ...     < claudia.contents.find('86 / 100')
     True
 
 
@@ -714,7 +714,7 @@ Gradebook Startup View
 
 Now that we've tested both the teacher's gradebook and the student's mygrades
 views, we'll want to more thoroughly test the view that get's launched when
-the user clicks on the 'Gradebook' tab.  Up until now, the startup view has 
+the user clicks on the 'Gradebook' tab.  Up until now, the startup view has
 automatically redirected both the teacher and the student to the gradebook and
 mygrades views respectively.  But what if the user neither attends or teachers
 any classes, like a site manager, or if the user both teachers AND attends
@@ -754,10 +754,10 @@ second section rather than teaching.
     ...Tom Hoffman...
     ...Students...
     ...Stephan Richter...
- 
+
  Now, when Stephan clicks on the 'Gradebook' tab, he will get a startup view
  that allows him to go to either his gradebook or his mygrades views.
- 
+
     >>> stephan.getLink('Gradebook').click()
     >>> print stephan.contents
     <BLANKLINE>
