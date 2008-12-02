@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <configure
     xmlns="http://namespaces.zope.org/browser"
-    xmlns:zope="http://namespaces.zope.org/zope">
+    xmlns:zope="http://namespaces.zope.org/zope"
+    i18n_domain="schooltool">
 
   <!-- CSS -->
   <viewlet
@@ -12,8 +13,8 @@
       permission="zope.View"
       />
 
-  <resource 
-      name="gradebook.css" 
+  <resource
+      name="gradebook.css"
       file="gradebook.css"
       layer="schooltool.skin.ISchoolToolLayer" />
 
@@ -26,8 +27,8 @@
      class=".gradebook.GradebookOverview"
      layer="schooltool.skin.ISchoolToolLayer"
      />
-     
-  
+
+
 
   <!-- Categories -->
   <form
