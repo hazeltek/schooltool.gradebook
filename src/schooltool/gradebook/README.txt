@@ -498,4 +498,27 @@ project score of 2 is included in the total, but not the average.
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
     (Decimal("82"), 80)
 
+Let's add that evaluation back to test another edge case.
+
+    >>> gradebook.evaluate(student=paul, activity=hw1, score=10)
+
+We need to test handling having more than one activity of the same category,
+so let's add another homework assignment and an evaluation for it.
+
+    >>> week1['homework3'] = activity.Activity(
+    ...     title=u'HW 3',
+    ...     description=u'Week 1 Homework 3',
+    ...     category=u'assignment',
+    ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=10))
+    >>> hw3 = week1['homework3']
+    >>> gradebook = interfaces.IGradebook(sectionA)
+    >>> gradebook.evaluate(student=paul, activity=hw3, score=9)
+
+Now we will see that the average for paul will change to reflect the new
+calculation of (((10 + 9)/(10 + 10)) * 0.38) + ((80/100) * 0.62) = 86%.
+Once again, the total is 101 even though only 99 points will factor
+into the average.
+
+    >>> gradebook.getWorksheetTotalAverage(week1, paul)
+    (Decimal("101"), 86)
 
