@@ -63,7 +63,7 @@ We can also change the default category:
 Se up the school year and a couple of terms:
 
    >>> setup.addSchoolYear('2007', '07/01/01', '07/12/31')
-   >>> setup.addTerm('Winter', '2007-01-01', '2007-06-01', schoolyear='2007')
+   >>> setup.addTerm('Winter', '07/01/01', '07/06/01', schoolyear='2007')
 
 Next the administrator defines the courses that are available in the school.
 
