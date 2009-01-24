@@ -4,20 +4,17 @@
     xmlns="http://namespaces.zope.org/zope">
 
   <!-- Category Vocabulary -->
-
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
       component="schooltool.gradebook.category.CategoryVocabulary"
       name="schooltool.gradebook.categories"
       />
-
   <adapter
       for="schooltool.app.interfaces.ISchoolToolApplication"
       factory=".gradebook.GradebookInit"
       name="schooltool.gradebook" />
 
   <!-- Activity Adapters -->
-
   <adapter
       for="schooltool.course.interfaces.ISection"
       provides=".interfaces.IActivities"
@@ -26,7 +23,6 @@
       />
 
   <!-- Activity Content and Security -->
-
   <class class=".activity.Activities">
     <require
         permission="schooltool.view"
@@ -37,7 +33,6 @@
         set_schema=".interfaces.IActivities"
         />
   </class>
-
   <class class=".activity.Worksheet">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
@@ -52,7 +47,6 @@
         attributes="changePosition setCategoryWeight"
         />
   </class>
-
   <class class=".activity.Activity">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
@@ -70,7 +64,6 @@
 
 
   <!-- Gradebook Adapter -->
-
   <class class=".gradebook.Gradebook">
     <require
         permission="schooltool.view"
@@ -82,15 +75,13 @@
 
   <!-- This adapter locates itself. -->
   <adapter
-      for="schooltool.course.interfaces.ISection"
+      for=".interfaces.IWorksheet"
       provides=".interfaces.IGradebook"
       factory=".gradebook.Gradebook"
       trusted="true"
       />
 
-
   <!-- MyGrades Adapter -->
-
   <class class=".gradebook.MyGrades">
     <require
         permission="schooltool.view"
@@ -113,21 +104,18 @@
       />
 
   <!-- Pluggable traverser plugins for HTTP paths -->
-
   <adapterTraverserPlugin
       for="schooltool.course.interfaces.ISection"
       layer="zope.publisher.interfaces.http.IHTTPRequest"
       name="activities"
       adapter="schooltool.gradebook.interfaces.IActivities"
       />
-
   <adapterTraverserPlugin
-      for="schooltool.course.interfaces.ISection"
+      for="schooltool.gradebook.interfaces.IWorksheet"
       layer="zope.publisher.interfaces.http.IHTTPRequest"
       name="gradebook"
       adapter="schooltool.gradebook.interfaces.IGradebook"
       />
-
   <adapterTraverserPlugin
       for="schooltool.course.interfaces.ISection"
       layer="zope.publisher.interfaces.http.IHTTPRequest"
@@ -136,36 +124,31 @@
       />
 
   <!-- apidoc help setup -->
-
   <configure
       xmlns:zcml="http://namespaces.zope.org/zcml"
       xmlns:apidoc="http://namespaces.zope.org/apidoc"
       zcml:condition="have apidoc">
-
     <apidoc:bookchapter
         id="gradebook"
         title="Gradebook API"
         parent="schooltool"
         doc_path="README.txt" />
-
   </configure>
 
   <include package=".browser" />
 
+  <!-- security settings -->
   <security:setting
       key="administration_can_grade_students"
       text="Administration can grade students"
       default="False" />
-
   <security:crowd
       name="grade_editors"
       factory=".gradebook.GradebookEditorsCrowd" />
-
   <security:allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.view"
       crowds="administration section_instructors" />
-
   <security:allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.edit"

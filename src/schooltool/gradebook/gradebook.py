@@ -61,13 +61,14 @@ class GradebookBase(object):
         self.context = context
         # To make URL creation happy
         self.__parent__ = context
+        self.section = self.context.__parent__.__parent__
         # Establish worksheets and all activities
-        self.worksheets = list(interfaces.IActivities(context).values())
+        self.worksheets = list(interfaces.IActivities(self.section).values())
         self.activities = []
         for worksheet in self.worksheets:
             for activity in worksheet.values():
                 self.activities.append(activity)
-        self.students = list(self.context.members)
+        self.students = list(self.section.members)
 
     def _checkStudent(self, student):
         if student not in self.students:
@@ -209,7 +210,7 @@ class GradebookBase(object):
             default = self.worksheets[0]
         else:
             default = None
-        section_id = hash(IKeyReference(self.context))
+        section_id = hash(IKeyReference(self.section))
         return ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
 
     def setCurrentWorksheet(self, person, worksheet):
@@ -218,7 +219,7 @@ class GradebookBase(object):
         ann = annotation.interfaces.IAnnotations(person)
         if CURRENT_WORKSHEET_KEY not in ann:
             ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.context))
+        section_id = hash(IKeyReference(self.section))
         ann[CURRENT_WORKSHEET_KEY][section_id] = worksheet
 
     def getCurrentActivities(self, person):
@@ -245,7 +246,7 @@ class GradebookBase(object):
     def getEvaluationsForActivity(self, activity):
         """See interfaces.IGradebook"""
         self._checkActivity(activity)
-        for student in self.context.members:
+        for student in self.section.members:
             evaluations = requirement.interfaces.IEvaluations(student)
             if activity in evaluations:
                 yield student, evaluations[activity]
@@ -255,7 +256,7 @@ class GradebookBase(object):
         ann = annotation.interfaces.IAnnotations(person)
         if GRADEBOOK_SORTING_KEY not in ann:
             ann[GRADEBOOK_SORTING_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.context))
+        section_id = hash(IKeyReference(self.section))
         return ann[GRADEBOOK_SORTING_KEY].get(section_id, ('student', False))
 
     def setSortKey(self, person, value):
@@ -263,7 +264,7 @@ class GradebookBase(object):
         ann = annotation.interfaces.IAnnotations(person)
         if GRADEBOOK_SORTING_KEY not in ann:
             ann[GRADEBOOK_SORTING_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.context))
+        section_id = hash(IKeyReference(self.section))
         ann[GRADEBOOK_SORTING_KEY][section_id] = value
 
     def getFinalGradeAdjustment(self, person, student):
@@ -271,7 +272,7 @@ class GradebookBase(object):
         ann = annotation.interfaces.IAnnotations(person)
         if FINAL_GRADE_ADJUSTMENT_KEY not in ann:
             ann[FINAL_GRADE_ADJUSTMENT_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.context))
+        section_id = hash(IKeyReference(self.section))
         if section_id not in ann[FINAL_GRADE_ADJUSTMENT_KEY]:
             return {'adjustment': '', 'reason': ''}
         else:
@@ -289,7 +290,7 @@ class GradebookBase(object):
         ann = annotation.interfaces.IAnnotations(person)
         if FINAL_GRADE_ADJUSTMENT_KEY not in ann:
             ann[FINAL_GRADE_ADJUSTMENT_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.context))
+        section_id = hash(IKeyReference(self.section))
         if section_id not in ann[FINAL_GRADE_ADJUSTMENT_KEY]:
             adjustments = persistent.dict.PersistentDict()
             ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id] = adjustments
@@ -329,7 +330,7 @@ class GradebookBase(object):
 
 class Gradebook(GradebookBase):
     zope.interface.implements(interfaces.IGradebook)
-    zope.component.adapts(course.interfaces.ISection)
+    zope.component.adapts(interfaces.IWorksheet)
 
     def __init__(self, context):
         super(Gradebook, self).__init__(context)
@@ -339,7 +340,7 @@ class Gradebook(GradebookBase):
 
 class MyGrades(GradebookBase):
     zope.interface.implements(interfaces.IMyGrades)
-    zope.component.adapts(course.interfaces.ISection)
+    zope.component.adapts(interfaces.IWorksheet)
 
     def __init__(self, context):
         super(MyGrades, self).__init__(context)
