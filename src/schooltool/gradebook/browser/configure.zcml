@@ -72,7 +72,7 @@
         content_factory="schooltool.gradebook.activity.Worksheet"
         permission="schooltool.edit"
         template="templates/simple_add.pt"
-        class="schooltool.gradebook.browser.activity.WorksheetAddView">
+        class="schooltool.gradebook.browser.worksheet.WorksheetAddView">
       <widget field="description" height="5" />
     </addform>
     <editform
@@ -83,15 +83,22 @@
         fields="title"
         permission="schooltool.edit"
         template="templates/simple_edit.pt"
-        class="schooltool.gradebook.browser.activity.WorksheetEditView"
+        class="schooltool.gradebook.browser.worksheet.WorksheetEditView"
         menu="schooltool_actions"
         title="Edit"
         />
   </configure>
   <page
+      name="index.html"
+      for="..interfaces.IWorksheet"
+      class=".worksheet.WorksheetView"
+      template="worksheet_overview.pt"
+      permission="schooltool.view"
+      />
+  <page
       name="delete.html"
       for="..interfaces.IWorksheet"
-      class=".activity.WorksheetDeleteView"
+      class=".worksheet.WorksheetDeleteView"
       template="worksheet_delete.pt"
       permission="schooltool.edit"
       />
@@ -149,9 +156,23 @@
   <!-- Menu items -->
   <menuItem
       menu="schooltool_actions"
+      title="New Activity"
+      for="..interfaces.IWorksheet"
+      action="+/addActivity.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
       title="Activities"
       for="schooltool.course.interfaces.ISection"
       action="activities/index.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="New Worksheet"
+      for="..interfaces.IActivities"
+      action="+/addWorksheet.html"
       permission="schooltool.view"
       />
   <menuItem
