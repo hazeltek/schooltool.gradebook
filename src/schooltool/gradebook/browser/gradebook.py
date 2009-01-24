@@ -56,7 +56,7 @@ class GradebookStartup(object):
 
         if self.sectionsTaught:
             section = self.sectionsTaught[0]
-            self.gradebookURL = absoluteURL(section, self.request) + '/gradebook'
+            self.gradebookURL = absoluteURL(section, self.request)+ '/gradebook'
             if not self.sectionsAttended:
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
@@ -65,16 +65,32 @@ class GradebookStartup(object):
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
 
+class SectionGradebookRedirectView(BrowserView):
+    def __init__(self, context, request):
+        super(SectionGradebookRedirectView, self).__init__(context, request)
+        person = IPerson(self.request.principal)
+        activities = interfaces.IActivities(self.context)
+        current_worksheet = activities.getCurrentWorksheet(person)
+        url = absoluteURL(activities, self.request)
+        if current_worksheet:
+            url = absoluteURL(current_worksheet, self.request)
+        self.request.response.redirect(url)
+
+    def __call__(self):
+        return "Redirecting..."
+        
+
 class GradebookBase(BrowserView):
 
     def __init__(self, context, request):
-        super(GradebookBase,self).__init__(context,request)
+        super(GradebookBase, self).__init__(context, request)
         self.changed = False
 
     @property
     def time(self):
         t = datetime.now()
-        return "%s-%s-%s %s:%s:%s" % (t.year,t.month,t.day,t.hour,t.minute,t.second)
+        return "%s-%s-%s %s:%s:%s" % (t.year, t.month, t.day,
+                                      t.hour, t.minute, t.second)
 
     @property
     def students(self):
