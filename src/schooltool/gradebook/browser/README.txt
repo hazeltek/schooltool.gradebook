@@ -160,7 +160,15 @@ adding activities to the section:
     >>> 'Week 2' in stephan.contents
     True
 
-Note that 'Week 1' is the currently selected worksheet.
+To return to the gradebook for this section, we will click on the
+'Return to Gradebook' link.  The worksheet being viewed has become the current
+worksheet, and therefore this link reaches the same page as the gradebook tab.
+This link provides better navigation flow.
+
+    >>> stephan.getLink('Return to Gradebook').click()
+
+Note that back in the gradebook, 'Week 1' the worksheet that was being viewed
+is now the currently selected worksheet.
 
     >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
     ...  stephan.contents
@@ -169,6 +177,8 @@ Note that 'Week 1' is the currently selected worksheet.
 Now, let's add some activities to it.  First we'll verify that the activities
 add view has the right list of existing score systems.
 
+    >>> stephan.getLink('Activities').click()
+    >>> stephan.getLink('Week 1').click()
     >>> stephan.getLink('New Activity').click()
     >>> print analyze.queryHTML('id("field.scoresystem.existing")', stephan.contents)[0]
     <select id="field.scoresystem.existing" name="field.scoresystem.existing" size="1">
@@ -205,7 +215,6 @@ the activities overview after successfully being added.
     >>> stephan.getControl('Add').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...New Worksheet...
     ...New Activity...
     ...HW 1...
 
@@ -229,8 +238,9 @@ but only out of 50. So let's edit it:
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Apply').click()
 
-Now let's change the current workskeet to 'Week 2'.
+Now let's change the current worksheet to 'Week 2'.
 
+    >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
     >>> '<option value="Week 2" selected="selected">Week 2</option>' in \
     ...  stephan.contents
@@ -238,6 +248,8 @@ Now let's change the current workskeet to 'Week 2'.
 
 Now we'll add some activities to it.
 
+    >>> stephan.getLink('Activities').click()
+    >>> stephan.getLink('Week 2').click()
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 2'
     >>> stephan.getControl('Description').value = 'Homework 2'
@@ -289,6 +301,7 @@ You can also delete activities that you have created:
 Fianlly, let's change the current workskeet back to 'Week 1'.  This setting
 of current worksheet will be in effect for the gradebook as well.
 
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
     >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
     ...  stephan.contents
@@ -297,14 +310,6 @@ of current worksheet will be in effect for the gradebook as well.
 
 Grading
 -------
-
-Now that we have both students and activities, we can enter the gradebook.
-We'll use the link registered for IActivities that gets us there.  This
-link, called 'Return to Gradebook' is different than the 'Gradebook' tab
-itself in that it takes the user back to the gradebook for the same section
-that the activities view referenced.
-
-    >>> stephan.getLink('Return to Gradebook').click()
 
 The initial gradebook screen is a simple spreadsheet.  Since we just loaded up
 the gradebook for the first time, the current worksheet will be the first one,
