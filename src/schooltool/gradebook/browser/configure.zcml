@@ -242,6 +242,12 @@
       permission="schooltool.view"
       />
   <page
+      name="mygrades"
+      for="schooltool.course.interfaces.ISection"
+      class=".gradebook.SectionGradebookRedirectView"
+      permission="schooltool.view"
+      />
+  <page
       name="index.html"
       for="..interfaces.IGradebook"
       class=".gradebook.GradebookOverview"

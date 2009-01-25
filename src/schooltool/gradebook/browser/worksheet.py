@@ -109,6 +109,7 @@ class WorksheetDeleteView(object):
     """A view for deleting a worksheet."""
 
     def update(self):
+        import pdb; pdb.set_trace()
         next_url = absoluteURL(self.context.__parent__, self.request)
         if 'CANCEL' in self.request:
             self.request.response.redirect(next_url)

@@ -68,21 +68,28 @@ class GradebookStartup(object):
 
 
 class SectionGradebookRedirectView(BrowserView):
-    """A view for redirecting from a section to its current worksheet."""
+    """A view for redirecting from a section to either the gradebook for its
+       current worksheet or the final grades view for the section.
+       In the case of final grades for the section, the query string,
+       ?final=yes is used to isntruct this view to redirect to the final grades
+       view instead of the gradebook"""
 
-    def __init__(self, context, request):
-        super(SectionGradebookRedirectView, self).__init__(context, request)
+    def __call__(self):
         person = IPerson(self.request.principal)
         activities = interfaces.IActivities(self.context)
         current_worksheet = activities.getCurrentWorksheet(person)
         url = absoluteURL(activities, self.request)
         if current_worksheet is not None:
             url = absoluteURL(current_worksheet, self.request)
+            if 'mygrades' in self.request['PATH_INFO']:
+                url += '/mygrades'
+            else:
+                url += '/gradebook'
+            if 'final' in self.request:
+                url += '/final.html'
         self.request.response.redirect(url)
-
-    def __call__(self):
         return "Redirecting..."
-        
+
 
 class GradebookBase(BrowserView):
 
@@ -303,18 +310,20 @@ class FinalGradesView(SectionFinder):
         return rows
 
     def update(self):
-        """Handle change of current section."""
-        self.person = IPerson(self.request.principal)
-        if 'currentSection' in self.request:
-            for section in self.getSections(True):
-                if section['title'] == self.request['currentSection']:
-                    self.request.response.redirect(section['url'])
-                    break
-
-        """Retrieve final grade adjustments and store changes to them."""
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
         students = sorted(self.context.students, key=lambda x: x.title)
+
+        """Handle change of current section."""
+        if 'currentSection' in self.request:
+            for section in self.getSections(True):
+                if section['title'] == self.request['currentSection']:
+                    if section['obj'] != ISection(gradebook):
+                        self.request.response.redirect(section['url'] + \
+                            '?final=yes')
+                    break
+
+        """Retrieve final grade adjustments and store changes to them."""
         self.error_message = ''
         for student in students:
             adj_id = 'adj_' + student.username

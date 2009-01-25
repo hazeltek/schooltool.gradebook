@@ -90,7 +90,7 @@
 
   <!-- This adapter locates itself. -->
   <adapter
-      for="schooltool.course.interfaces.ISection"
+      for=".interfaces.IWorksheet"
       provides=".interfaces.IMyGrades"
       factory=".gradebook.MyGrades"
       trusted="true"
