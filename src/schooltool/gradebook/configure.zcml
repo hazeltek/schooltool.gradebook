@@ -96,11 +96,16 @@
       trusted="true"
       />
 
-  <!-- Adapter to get the gradebook's section. -->
+  <!-- Adapters to get to a section. -->
   <adapter
       for=".interfaces.IGradebook"
       provides="schooltool.course.interfaces.ISection"
       factory=".gradebook.getGradebookSection"
+      />
+  <adapter
+      for=".interfaces.IWorksheet"
+      provides="schooltool.course.interfaces.ISection"
+      factory=".gradebook.getWorksheetSection"
       />
 
   <!-- Pluggable traverser plugins for HTTP paths -->
@@ -110,18 +115,13 @@
       name="activities"
       adapter="schooltool.gradebook.interfaces.IActivities"
       />
-  <adapterTraverserPlugin
-      for="schooltool.gradebook.interfaces.IWorksheet"
-      layer="zope.publisher.interfaces.http.IHTTPRequest"
-      name="gradebook"
-      adapter="schooltool.gradebook.interfaces.IGradebook"
-      />
-  <adapterTraverserPlugin
-      for="schooltool.course.interfaces.ISection"
-      layer="zope.publisher.interfaces.http.IHTTPRequest"
-      name="mygrades"
-      adapter="schooltool.gradebook.interfaces.IMyGrades"
-      />
+
+  <!-- special traversal adapter for traversing from worksheet to gradebook -->
+  <adapter
+      for=".interfaces.IWorksheet
+           zope.publisher.interfaces.http.IHTTPRequest"
+      provides="zope.publisher.interfaces.IPublishTraverse"
+      factory=".gradebook.WorksheetGradebookTraverser" />
 
   <!-- apidoc help setup -->
   <configure

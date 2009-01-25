@@ -24,7 +24,7 @@
 	  //-->
     </script>
     <form method="post"
-  	tal:attributes="action string:${context/@@absolute_url}">
+          tal:attributes="action string:${context/@@absolute_url}">
     <div tal:condition="view/changed"
          id="warning">
       <span id="warningtext"> Evaluations changes saved at <span tal:content="view/time">some time</span>. Remember to click "Update" to submit any further changes.</span>

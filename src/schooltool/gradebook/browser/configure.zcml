@@ -12,7 +12,6 @@
       class=".gradebook.GradebookCSSViewlet"
       permission="zope.View"
       />
-
   <resource
       name="gradebook.css"
       file="gradebook.css"
@@ -27,8 +26,6 @@
      class=".gradebook.GradebookOverview"
      layer="schooltool.skin.ISchoolToolLayer"
      />
-
-
 
   <!-- Categories -->
   <form
@@ -91,7 +88,13 @@
   <page
       name="index.html"
       for="..interfaces.IWorksheet"
-      class=".worksheet.WorksheetView"
+      class=".worksheet.WorksheetGradebookView"
+      permission="schooltool.view"
+      />
+  <page
+      name="manage.html"
+      for="..interfaces.IWorksheet"
+      class=".worksheet.WorksheetManageView"
       template="worksheet_overview.pt"
       permission="schooltool.view"
       />
@@ -153,21 +156,16 @@
       name="edit.html"
       />
 
-  <!-- Menu items -->
+  <!-- Menu items for ISection -->
   <menuItem
       menu="schooltool_actions"
-      title="New Activity"
-      for="..interfaces.IWorksheet"
-      action="+/addActivity.html"
-      permission="schooltool.view"
-      />
-  <menuItem
-      menu="schooltool_actions"
-      title="Activities"
+      title="Gradebook"
       for="schooltool.course.interfaces.ISection"
-      action="activities/index.html"
+      action="gradebook"
       permission="schooltool.view"
       />
+
+  <!-- Menu items for IActivities -->
   <menuItem
       menu="schooltool_actions"
       title="New Worksheet"
@@ -177,9 +175,34 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Activities"
+      title="Return to Gradebook"
+      for="..interfaces.IActivities"
+      action="../gradebook"
+      permission="schooltool.view"
+      />
+
+  <!-- Menu items for IWorksheet-->
+  <menuItem
+      menu="schooltool_actions"
+      title="New Activity"
+      for="..interfaces.IWorksheet"
+      action="+/addActivity.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Return to Gradebook"
+      for="..interfaces.IWorksheet"
+      action="gradebook"
+      permission="schooltool.view"
+      />
+
+  <!-- Menu items for IGradebook-->
+  <menuItem
+      menu="schooltool_actions"
+      title="Worksheets"
       for="..interfaces.IGradebook"
-      action="../activities/index.html"
+      action="../../index.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -191,16 +214,16 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Return to Gradebook"
-      for="..interfaces.IActivities"
-      action="../gradebook/index.html"
+      title="New Activity"
+      for="..interfaces.IGradebook"
+      action="../+/addActivity.html"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
-      title="Gradebook"
-      for="schooltool.course.interfaces.ISection"
-      action="gradebook/index.html"
+      title="Manage Activities"
+      for="..interfaces.IGradebook"
+      action="../manage.html"
       permission="schooltool.view"
       />
 

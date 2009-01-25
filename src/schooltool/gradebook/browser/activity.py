@@ -50,7 +50,7 @@ class ActivitiesView(object):
             pos += 1
             yield {'name': getName(worksheet),
                    'title': worksheet.title,
-                   'url': absoluteURL(worksheet, self.request),
+                   'url': absoluteURL(worksheet, self.request) + '/manage.html',
                    'pos': pos}
 
     def positions(self):
@@ -107,7 +107,8 @@ class ActivityEditView(BaseEditView):
     """A view for editing activity info."""
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__.__parent__, self.request)
+        return absoluteURL(self.context.__parent__, self.request) + \
+            '/manage.html'
 
 
 class WeightCategoriesView(object):

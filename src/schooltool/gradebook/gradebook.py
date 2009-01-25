@@ -34,6 +34,9 @@ import zope.interface
 from zope.security import proxy
 from zope import annotation
 from zope.app.keyreference.interfaces import IKeyReference
+from zope.interface import implements
+from zope.location.location import LocationProxy
+from zope.publisher.interfaces import IPublishTraverse
 
 from schooltool import course, requirement
 from schooltool.traverser import traverser
@@ -54,6 +57,36 @@ from schooltool.common import SchoolToolMessage as _
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 FINAL_GRADE_ADJUSTMENT_KEY = 'schooltool.gradebook.finalgradeadjustment'
+
+
+class WorksheetGradebookTraverser(object):
+    '''Traverser that goes from a worksheet to the gradebook'''
+
+    implements(IPublishTraverse)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        context = proxy.removeSecurityProxy(self.context)
+        try:
+            activity = context[name]
+            return activity
+        except KeyError:
+            if name == 'gradebook':
+                gb = interfaces.IGradebook(context)
+                gb = LocationProxy(gb, self.context, name)
+                gb.__setattr__('__parent__', gb.__parent__)
+                return gb
+            elif name == 'mygrades':
+                gb = interfaces.IMyGrades(context)
+                gb = LocationProxy(gb, self.context, name)
+                gb.__setattr__('__parent__', gb.__parent__)
+                return gb
+            else:
+                return zope.component.queryMultiAdapter(
+                    (self.context, request), name=name)
 
 
 class GradebookBase(object):
@@ -346,6 +379,11 @@ class MyGrades(GradebookBase):
         super(MyGrades, self).__init__(context)
         # To make URL creation happy
         self.__name__ = 'mygrades'
+
+
+def getWorksheetSection(worksheet):
+    """Adapt IWorksheet to ISection."""
+    return worksheet.__parent__.__parent__
 
 
 def getGradebookSection(gradebook):

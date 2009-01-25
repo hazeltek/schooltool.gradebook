@@ -26,6 +26,7 @@ from zope.security.checker import canWrite
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.form.browser.editview import EditView
+from zope.publisher.browser import BrowserView
 
 from schooltool.app.browser import app
 from schooltool.gradebook import interfaces
@@ -33,7 +34,19 @@ from schooltool.gradebook.browser.activity import BaseEditView
 from schooltool.person.interfaces import IPerson
 
 
-class WorksheetView(object):
+class WorksheetGradebookView(BrowserView):
+    """A view that redirects from the worksheet to its gradebook."""
+
+    def __init__(self, context, request):
+        super(WorksheetGradebookView, self).__init__(context, request)
+        url = absoluteURL(self.context, self.request) + '/gradebook'
+        self.request.response.redirect(url)
+
+    def __call__(self):
+        return "Redirecting..."
+
+
+class WorksheetManageView(object):
     """A Worksheet view."""
 
     __used_for__ = interfaces.IWorksheet
