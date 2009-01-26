@@ -48,9 +48,10 @@ function checkValid(e,name){
 		}
 	}
     var element = document.getElementById(name);
+    var elementCell = document.getElementById(name+'_cell')
     var value = element.value;
     setWarning(defaulttext,defaultbg);
-    element.style.backgroundColor = changedbg;
+    elementCell.style.backgroundColor = changedbg;
     /*
     for(var index in scores){
 	if (value==scores[index]) {  
@@ -64,7 +65,7 @@ function checkValid(e,name){
 
 
 function performFillDown(activity) {
-    var val = document.getElementById("fd_"+activity).value;
+    var val = document.getElementById('fd_'+activity).value;
     if (val=='') return;
     /* ####### EXCLUDED BECAUSE NO WAY TO CHECK VALIDITY #######
     var invalid = new Boolean(true);
@@ -78,12 +79,12 @@ function performFillDown(activity) {
 	setWarning('You may not apply the fill-down to an invalid grade',errorbg);
 	return;}*/
     for(j=0;j!=numstudents;j++){
-	document.getElementById(activity+"_"+students[j]).value=val;
-	checkValid(null,activity+"_"+students[j]);
+	document.getElementById(activity+'_'+students[j]).value=val;
+	checkValid(null,activity+'_'+students[j]);
     }
-    document.getElementById("fd_"+activity).value = "";
-    document.getElementById("fd_"+activity).backgroundColor = defaultbg;
-    document.getElementById("fdbtn_"+activity).style.display = 'none' ;
+    document.getElementById('fd_'+activity).value = '';
+    document.getElementById('fd_'+activity+'_cell').backgroundColor = defaultbg;
+    document.getElementById('fdbtn_'+activity).style.display = 'none';
     setWarning(defaulttext,defaultbg);
 }
 
@@ -94,7 +95,7 @@ function checkFillDown(name)
 	    var el = document.getElementById('fdbtn_'+name);
 	    el.style.display='block';
 	    if (document.getElementById('fd_'+name).value==''){
-		document.getElementById('fd_'+name).style.backgroundColor=defaultbg;
+		document.getElementById('fd_'+name+'_cell').style.backgroundColor=defaultbg;
 		el.style.display='none';
 	    }
 	}
@@ -102,6 +103,6 @@ function checkFillDown(name)
 	{
 	    document.getElementById('fdbtn_'+name).style.display='none';
 	    if (document.getElementById('fd_'+name).value=='')
-		document.getElementById('fd_'+name).style.backgroundColor=defaultbg;
+		document.getElementById('fd_'+name+'_cell').style.backgroundColor=defaultbg;
 	}
 }

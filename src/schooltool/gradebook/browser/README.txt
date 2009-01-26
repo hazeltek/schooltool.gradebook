@@ -343,9 +343,11 @@ We can enter a score into any cell.  Let's enter one for Claudia's HW 1
 activity.  We'll do some trickery to calculate the cell name, taking advantage
 of the fact that it's the first cell.
 
-    >>> search_text = '<input type="text" name="'
-    >>> index = stephan.contents.find(search_text) + len(search_text)
-    >>> txt = stephan.contents[index:]
+    >>> index = stephan.contents.find('student=claudia')
+    >>> contents = stephan.contents[index:]
+    >>> search_text = 'name="'
+    >>> index = contents.find(search_text) + len(search_text)
+    >>> txt = contents[index:]
     >>> cell_name = txt[:txt.find('"')]
     >>> stephan.getControl(name=cell_name).value = '56'
     >>> stephan.getControl('Update').click()

@@ -83,23 +83,24 @@
 
   <table class="schooltool_gradebook">
     <tr>
-     <th>
+     <th class="cell header">
        <div i18n:translate="">Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
      </th>
-     <th>
+     <th class="cell header">
        <div i18n:translate="">Total</div>
      </th>
-     <th>
+     <th class="cell header">
        <div i18n:translate="">Average</div>
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
-     <th tal:repeat="activity view/activities">
+     <th class="cell title header" tal:repeat="activity view/activities">
        <div>
          <a href=""
-            tal:attributes="href
-                string:gradeActivity.html?activity=${activity/hash}"
-            tal:content="activity/title">
+            tal:attributes="href 
+                            string:gradeActivity.html?activity=${activity/hash};
+                            title activity/longTitle"
+            tal:content="activity/shortTitle">
            HW 1
          </a>
        </div>
@@ -113,51 +114,81 @@
      </th>
     </tr>
 
+    <tr>
+      <td colspan="3" class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
+      <td class="cell padded fd_cell" tal:repeat="activity view/activities"
+          tal:attributes="id string:fd_${activity/hash}_cell">
+        <input type="text" size="4"
+               class="data fd"
+               tal:attributes="id string:fd_${activity/hash};
+                   onkeyup string:checkFillDown('${activity/hash}')">
+        <input type="button"
+               style="display: none"
+               class="fdbtn"
+               value="Apply"
+               tal:attributes="id string:fdbtn_${activity/hash};
+                   onclick string:performFillDown('${activity/hash}')">
+      </td>
+    </tr>
 
     <tr tal:repeat="row view/table">
-      <td>
-        <a href=""
-           tal:attributes="href
-               string:gradeStudent.html?student=${row/student/id}"
-           tal:content="row/student/title">
-          Tom Hoffman
-        </a>
-      </td>
-      <td>
-	    <tal:if condition="row/total|nothing">
-	      <b><span tal:replace="row/total" /></b>
-	    </tal:if>
-      </td>
-      <td>
-	    <tal:if condition="row/average|nothing">
-	      <b><span tal:replace="row/average" />%</b>
-	    </tal:if>
-      </td>
-      <td tal:repeat="grade row/grades">
-        <input type="text" name="" value="" size="4"
-               tal:attributes="name string:${grade/activity}_${row/student/id};
-			       id string:${grade/activity}_${row/student/id};
-                               value grade/value;
-			       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}')"/>
-      </td>
+      <tal:if condition="repeat/row/even">
+        <td class="cell padded even">
+          <a href=""
+             tal:attributes="href
+                 string:gradeStudent.html?student=${row/student/id}"
+             tal:content="row/student/title">
+            Tom Hoffman
+          </a>
+        </td>
+        <td class="cell padded even">
+	      <tal:if condition="row/total|nothing">
+	        <b><span tal:replace="row/total" /></b>
+	      </tal:if>
+        </td>
+        <td class="cell padded even">
+	      <tal:if condition="row/average|nothing">
+	        <b><span tal:replace="row/average" />%</b>
+	      </tal:if>
+        </td>
+        <td class="cell even" tal:repeat="grade row/grades"
+            tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+          <input class="data" type="text" name="" value="" size="4"
+                 tal:attributes="name string:${grade/activity}_${row/student/id};
+  			       id string:${grade/activity}_${row/student/id};
+                                 value grade/value;
+  			       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}')"/>
+        </td>
+      </tal:if>
+      <tal:if condition="repeat/row/odd">
+        <td class="cell padded odd">
+          <a href=""
+             tal:attributes="href
+                 string:gradeStudent.html?student=${row/student/id}"
+             tal:content="row/student/title">
+            Tom Hoffman
+          </a>
+        </td>
+        <td class="cell padded odd">
+	      <tal:if condition="row/total|nothing">
+	        <b><span tal:replace="row/total" /></b>
+	      </tal:if>
+        </td>
+        <td class="cell padded odd">
+	      <tal:if condition="row/average|nothing">
+	        <b><span tal:replace="row/average" />%</b>
+	      </tal:if>
+        </td>
+        <td class="cell odd" tal:repeat="grade row/grades"
+            tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+          <input class="data" type="text" name="" value="" size="4"
+                 tal:attributes="name string:${grade/activity}_${row/student/id};
+  			       id string:${grade/activity}_${row/student/id};
+                                 value grade/value;
+  			       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}')"/>
+        </td>
+      </tal:if>
     </tr>
-
-    <tr>
-      <td colspan="3" class="empty" i18n:translate="">Apply a grade for all students:</td>
-      <td tal:repeat="activity view/activities">
-	<input type="text" size="4"
-	       class="fd"
-	       tal:attributes="id string:fd_${activity/hash};
-			       onkeyup string:checkFillDown('${activity/hash}')">
-	<input type="button"
-	       style="display: none"
-	       class="fdbtn"
-	       value="Apply"
-	       tal:attributes="id string:fdbtn_${activity/hash};
-			       onclick string:performFillDown('${activity/hash}')">
-      </td>
-    </tr>
-
   </table>
 
   <div class="controls">

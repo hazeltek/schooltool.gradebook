@@ -225,11 +225,17 @@ class GradebookOverview(SectionFinder):
 
     def activities(self):
         """Get  a list of all activities."""
-        result = [
-            {'title': activity.title,
-             'max':activity.scoresystem.getBestScore(),
-             'hash': hash(IKeyReference(activity))}
-            for activity in self.context.getCurrentActivities(self.person)]
+        result = []
+        for activity in self.context.getCurrentActivities(self.person):
+            shortTitle = activity.title
+            if len(activity.title) > 14:
+                shortTitle = activity.title[0:11] + '...'
+                
+            result.append({'shortTitle': shortTitle,
+                           'longTitle': activity.title,
+                           'max': activity.scoresystem.getBestScore(),
+                           'hash': hash(IKeyReference(activity))})
+            
         return result
 
     def table(self):
