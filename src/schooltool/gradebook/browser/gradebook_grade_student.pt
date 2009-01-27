@@ -28,8 +28,8 @@
 
     <table class="schooltool_gradebook">
       <tr>
-       <th i18n:translate="">Activity</th>
-       <th tal:repeat="activity view/activities">
+       <th class="cell header" i18n:translate="">Activity</th>
+       <th class="cell header" tal:repeat="activity view/activities">
          <label for=""
                 tal:attributes="for activity/hash"
                 tal:content="activity/title">
@@ -39,9 +39,9 @@
        </th>
      </tr>
      <tr>
-       <td>Grade</td>
-       <td tal:repeat="grade view/grades">
-         <input type="text" name="" value="" size="4"
+       <td class="cell odd">Grade</td>
+       <td class="cell odd" tal:repeat="grade view/grades">
+         <input class="data" type="text" name="" value="" size="4"
              tal:attributes="name grade/activity;
                              id grade/activity;
                              value grade/value" />

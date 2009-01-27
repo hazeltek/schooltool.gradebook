@@ -12,7 +12,6 @@
       class=".gradebook.GradebookCSSViewlet"
       permission="zope.View"
       />
-
   <resource
       name="gradebook.css"
       file="gradebook.css"
@@ -27,8 +26,6 @@
      class=".gradebook.GradebookOverview"
      layer="schooltool.skin.ISchoolToolLayer"
      />
-
-
 
   <!-- Categories -->
   <form
@@ -72,7 +69,7 @@
         content_factory="schooltool.gradebook.activity.Worksheet"
         permission="schooltool.edit"
         template="templates/simple_add.pt"
-        class="schooltool.gradebook.browser.activity.WorksheetAddView">
+        class="schooltool.gradebook.browser.worksheet.WorksheetAddView">
       <widget field="description" height="5" />
     </addform>
     <editform
@@ -83,15 +80,28 @@
         fields="title"
         permission="schooltool.edit"
         template="templates/simple_edit.pt"
-        class="schooltool.gradebook.browser.activity.WorksheetEditView"
+        class="schooltool.gradebook.browser.worksheet.WorksheetEditView"
         menu="schooltool_actions"
         title="Edit"
         />
   </configure>
   <page
+      name="index.html"
+      for="..interfaces.IWorksheet"
+      class=".worksheet.WorksheetGradebookView"
+      permission="schooltool.view"
+      />
+  <page
+      name="manage.html"
+      for="..interfaces.IWorksheet"
+      class=".worksheet.WorksheetManageView"
+      template="worksheet_overview.pt"
+      permission="schooltool.view"
+      />
+  <page
       name="delete.html"
       for="..interfaces.IWorksheet"
-      class=".activity.WorksheetDeleteView"
+      class=".worksheet.WorksheetDeleteView"
       template="worksheet_delete.pt"
       permission="schooltool.edit"
       />
@@ -146,19 +156,53 @@
       name="edit.html"
       />
 
-  <!-- Menu items -->
+  <!-- Menu items for ISection -->
   <menuItem
       menu="schooltool_actions"
-      title="Activities"
+      title="Gradebook"
       for="schooltool.course.interfaces.ISection"
-      action="activities/index.html"
+      action="gradebook"
+      permission="schooltool.view"
+      />
+
+  <!-- Menu items for IActivities -->
+  <menuItem
+      menu="schooltool_actions"
+      title="New Worksheet"
+      for="..interfaces.IActivities"
+      action="+/addWorksheet.html"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
-      title="Activities"
+      title="Return to Gradebook"
+      for="..interfaces.IActivities"
+      action="../gradebook"
+      permission="schooltool.view"
+      />
+
+  <!-- Menu items for IWorksheet-->
+  <menuItem
+      menu="schooltool_actions"
+      title="New Activity"
+      for="..interfaces.IWorksheet"
+      action="+/addActivity.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Return to Gradebook"
+      for="..interfaces.IWorksheet"
+      action="gradebook"
+      permission="schooltool.view"
+      />
+
+  <!-- Menu items for IGradebook-->
+  <menuItem
+      menu="schooltool_actions"
+      title="Worksheets"
       for="..interfaces.IGradebook"
-      action="../activities/index.html"
+      action="../../index.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -170,16 +214,16 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Return to Gradebook"
-      for="..interfaces.IActivities"
-      action="../gradebook/index.html"
+      title="New Activity"
+      for="..interfaces.IGradebook"
+      action="../+/addActivity.html"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
-      title="Gradebook"
-      for="schooltool.course.interfaces.ISection"
-      action="gradebook/index.html"
+      title="Manage Activities"
+      for="..interfaces.IGradebook"
+      action="../manage.html"
       permission="schooltool.view"
       />
 
@@ -189,6 +233,18 @@
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".gradebook.GradebookStartup"
       template="gradebook_startup.pt"
+      permission="schooltool.view"
+      />
+  <page
+      name="gradebook"
+      for="schooltool.course.interfaces.ISection"
+      class=".gradebook.SectionGradebookRedirectView"
+      permission="schooltool.view"
+      />
+  <page
+      name="mygrades"
+      for="schooltool.course.interfaces.ISection"
+      class=".gradebook.SectionGradebookRedirectView"
       permission="schooltool.view"
       />
   <page

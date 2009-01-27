@@ -199,7 +199,7 @@ Now that all of our activities have been defined, we can finally enter some
 grades using the gradebook.
 
     >>> from schooltool.gradebook import interfaces
-    >>> gradebook = interfaces.IGradebook(sectionA)
+    >>> gradebook = interfaces.IGradebook(week1)
     
 Already the gradebook has worksheets which it got from the section.
 
@@ -511,7 +511,7 @@ so let's add another homework assignment and an evaluation for it.
     ...     category=u'assignment',
     ...     scoresystem=scoresystem.RangedValuesScoreSystem(max=10))
     >>> hw3 = week1['homework3']
-    >>> gradebook = interfaces.IGradebook(sectionA)
+    >>> gradebook = interfaces.IGradebook(week1)
     >>> gradebook.evaluate(student=paul, activity=hw3, score=9)
 
 Now we will see that the average for paul will change to reflect the new

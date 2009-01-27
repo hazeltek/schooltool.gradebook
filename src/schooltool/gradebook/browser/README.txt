@@ -133,35 +133,49 @@ taken directly to the gradebook view for the first section in the
 list of sections he teachers.  In this case, he only teachers the
 one section.
 
+However, since his section has not yet been set up to have any worksheets,
+he will be redirected to the 'Worksheets' view so that he can add a worksheet.
+
     >>> stephan = setup.logIn('stephan', 'pwd')
     >>> stephan.getLink('Gradebook').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...View Final Grades...
-    ...Physics I (1)...
-    ...Claudia...
-    ...Paul...
-    ...Tom...
+    ...Worksheets...
+    ...Delete...
 
-Now we can use the 'Activities' link to get us to the view for
-adding activities to the section:
-
-    >>> stephan.getLink('Activities').click()
+Now, we can use the 'New Worksheet' action link to create our first worksheet.
 
     >>> stephan.getLink('New Worksheet').click()
     >>> stephan.getControl('Title').value = 'Week 1'
     >>> stephan.getControl('Add').click()
     >>> 'Week 1' in stephan.contents
     True
-
     >>> stephan.getLink('New Worksheet').click()
     >>> stephan.getControl('Title').value = 'Week 2'
     >>> stephan.getControl('Add').click()
-    >>> 'Week 2' in stephan.contents
-    True
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Worksheets...
+    ...Week 1...
+    ...Week 2...
+    ...Delete...
 
-Note that 'Week 1' is the currently selected worksheet.
+To return to the gradebook for this section, we will click on the
+'Return to Gradebook' link.  Since this is the first time Stephan has
+entered the gradebook for this section, the current worksheet will default
+to the first one.
 
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Worksheet...
+    ...View Final Grades...
+    ...New Activity...
+    ...Manage Activities...
+    ...Physics I (1)...
+    ...Claudia...
+    ...Paul...
+    ...Tom...
     >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
     ...  stephan.contents
     True
@@ -195,7 +209,7 @@ potentially be left out by the user are title and scoresystem.
 
 Now we will fill in all of the required fields, first creating an activity that
 uses an existing score system.  We'll note that the new activity appears in
-the activities overview after successfully being added.
+the gradebook after successfully being added.
 
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
@@ -205,8 +219,10 @@ the activities overview after successfully being added.
     >>> stephan.getControl('Add').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...New Worksheet...
+    ...Worksheet...
+    ...View Final Grades...
     ...New Activity...
+    ...Manage Activities...
     ...HW 1...
 
 We'll add a second activity.
@@ -222,15 +238,30 @@ We'll add a second activity.
     True
 
 But, oh, we really did not want to make Homework 1 out of a hundred points,
-but only out of 50. So let's edit it:
+but only out of 50. So let's edit it.  To do this, we need to go to use
+the 'Manage Activities' link.  This presents us with a view of the current
+worksheet's activities with links to edit them.
+
+    >>> stephan.getLink('Manage Activities').click()
+    >>> print stephan.contents
+    <BLANKLINE>
+    ...Edit...
+    ...New Activity...
+    ...Return to Gradebook...
+    ...HW 1...
+    ...Quiz...
+    ...Delete...
+
+Now let's click on 'HW 1' to change its score system.
 
     >>> stephan.getLink('HW 1').click()
     >>> stephan.getControl('Custom score system').click()
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Apply').click()
 
-Now let's change the current workskeet to 'Week 2'.
+Now let's change the current worksheet to 'Week 2'.
 
+    >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
     >>> '<option value="Week 2" selected="selected">Week 2</option>' in \
     ...  stephan.contents
@@ -247,7 +278,6 @@ Now we'll add some activities to it.
     >>> stephan.getControl('Add').click()
     >>> 'HW 2' in stephan.contents
     True
-
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
@@ -264,6 +294,7 @@ list. In the browser you should usually just select the new position and some
 Javascript would submit the form. Since Javascript is not working in the
 tests, we submit, the form manually:
 
+    >>> stephan.getLink('Manage Activities').click()
     >>> stephan.open(stephan.url+'?form-submitted=&pos.Activity-3=3')
     >>> stephan.contents.find('HW 2') \
     ...     < stephan.contents.find('Final')
@@ -278,9 +309,9 @@ You can also delete activities that you have created:
     >>> stephan.getControl(
     ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
+    >>> stephan.getLink('Manage Activities').click()
     >>> 'HW 3' in stephan.contents
     True
-
     >>> stephan.getControl(name='delete:list').value = ['Activity-3']
     >>> stephan.getControl('Delete').click()
     >>> 'HW 3' in stephan.contents
@@ -289,6 +320,7 @@ You can also delete activities that you have created:
 Fianlly, let's change the current workskeet back to 'Week 1'.  This setting
 of current worksheet will be in effect for the gradebook as well.
 
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
     >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
     ...  stephan.contents
@@ -297,14 +329,6 @@ of current worksheet will be in effect for the gradebook as well.
 
 Grading
 -------
-
-Now that we have both students and activities, we can enter the gradebook.
-We'll use the link registered for IActivities that gets us there.  This
-link, called 'Return to Gradebook' is different than the 'Gradebook' tab
-itself in that it takes the user back to the gradebook for the same section
-that the activities view referenced.
-
-    >>> stephan.getLink('Return to Gradebook').click()
 
 The initial gradebook screen is a simple spreadsheet.  Since we just loaded up
 the gradebook for the first time, the current worksheet will be the first one,
@@ -319,9 +343,11 @@ We can enter a score into any cell.  Let's enter one for Claudia's HW 1
 activity.  We'll do some trickery to calculate the cell name, taking advantage
 of the fact that it's the first cell.
 
-    >>> search_text = '<input type="text" name="'
-    >>> index = stephan.contents.find(search_text) + len(search_text)
-    >>> txt = stephan.contents[index:]
+    >>> index = stephan.contents.find('student=claudia')
+    >>> contents = stephan.contents[index:]
+    >>> search_text = 'name="'
+    >>> index = contents.find(search_text) + len(search_text)
+    >>> txt = contents[index:]
     >>> cell_name = txt[:txt.find('"')]
     >>> stephan.getControl(name=cell_name).value = '56'
     >>> stephan.getControl('Update').click()
@@ -419,7 +445,7 @@ Of course, you can also abort the grading.
     >>> stephan.getLink('Claudia Richter').click()
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
-    'http://localhost/schoolyears/2007/winter/sections/1/gradebook/index.html'
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
 
 Let's put Claudia's grade back in:
 
@@ -492,7 +518,7 @@ Of course, you can also abort the grading.
     >>> stephan.getLink('HW 1').click()
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
-    'http://localhost/schoolyears/2007/winter/sections/1/gradebook/index.html'
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
 
 Let's enter some grades for the second worksheet, 'Week 2', so that we have
 some interesting numbers for the final grades view.
@@ -514,7 +540,7 @@ We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
     >>> stephan.getControl('Claudia Richter').value = u'86'
     >>> stephan.getControl('Update').click()
     >>> stephan.url
-    'http://localhost/schoolyears/2007/winter/sections/1/gradebook/index.html'
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
 
 
 Sorting
@@ -557,8 +583,7 @@ the average for each worksheet, the final calulated grade, an adjusted final
 grade which equal the calculated final grade unless they have entered an
 adjustment.  At first we will have no adjustments entered.
 
-    >>> url = 'http://localhost/schoolyears/2007/winter/sections/1/gradebook/final.html'
-    >>> stephan.open(url)
+    >>> stephan.getLink('View Final Grades').click()
     >>> print stephan.contents
     <BLANKLINE>
     ...Claudia Richter...
@@ -579,7 +604,9 @@ adjustment.  At first we will have no adjustments entered.
 
 Now, let's adjust Claudia's grade to be a B becuase we like her so much.
 
-    >>> stephan.open(url + '?adj_claudia=B&reason_claudia=because')
+    >>> stephan.getControl(name='adj_claudia').value = u'B'
+    >>> stephan.getControl(name='reason_claudia').value = u'because'
+    >>> stephan.getControl('Update').click()
     >>> print stephan.contents
     <BLANKLINE>
     ...Claudia Richter...
@@ -603,7 +630,9 @@ Now, let's adjust Claudia's grade to be a B becuase we like her so much.
 Invalid grades will result in an error message, and the original value and
 reason will appear in the view in its place.
 
-    >>> stephan.open(url + '?adj_claudia=F&reason_claudia=failure')
+    >>> stephan.getControl(name='adj_claudia').value = u'F'
+    >>> stephan.getControl(name='reason_claudia').value = u'failure'
+    >>> stephan.getControl('Update').click()
     >>> print stephan.contents
     <BLANKLINE>
     ...Adjustment final grade 'F' is not a valid grade...
@@ -695,9 +724,10 @@ Claudia is only a student and only attends the one section, the 'Gradebook' tab
 will take her directly to her grades for that section.
 
     >>> claudia = setup.logIn('claudia', 'pwd')
+
     >>> claudia.getLink('Gradebook').click()
     >>> claudia.url
-    'http://localhost/schoolyears/2007/winter/sections/1/mygrades'
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
     >>> 'HW 1' in claudia.contents and 'Quiz' in claudia.contents
     True
     >>> 'HW 2' in claudia.contents or 'Final' in claudia.contents
@@ -755,8 +785,17 @@ second section rather than teaching.
     ...Students...
     ...Stephan Richter...
 
- Now, when Stephan clicks on the 'Gradebook' tab, he will get a startup view
- that allows him to go to either his gradebook or his mygrades views.
+We'll have Tom set up a worksheet.
+
+    >>> tom = setup.logIn('tom', 'pwd')
+    >>> tom.getLink('Gradebook').click()
+    >>> tom.getLink('Classes you teach').click()
+    >>> tom.getLink('New Worksheet').click()
+    >>> tom.getControl('Title').value = 'Week 1'
+    >>> tom.getControl('Add').click()
+
+Now, when Stephan clicks on the 'Gradebook' tab, he will get a startup view
+that allows him to go to either his gradebook or his mygrades views.
 
     >>> stephan.getLink('Gradebook').click()
     >>> print stephan.contents
@@ -795,6 +834,7 @@ to see a gradebook and certainly don't have a mygrades view.
     Traceback (most recent call last):
     ...
     Unauthorized: ...
+
     >>> unauth.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     Traceback (most recent call last):
     ...
