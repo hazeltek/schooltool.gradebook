@@ -46,6 +46,9 @@ from datetime import datetime
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
+DISCRETE_SCORE_SYSTEM = 'd'
+RANGED_SCORE_SYSTEM = 'r'
+
 
 class GradebookStartup(object):
     """A view for entry into into the gradebook or mygrades views."""
@@ -116,9 +119,10 @@ class GradebookBase(BrowserView):
         for activity in gradebook.getWorksheetActivities(worksheet):
             ss = activity.scoresystem
             if IDiscreteValuesScoreSystem.providedBy(ss):
-                result = ['d'] + [score[0] for score in ss.scores]
+                result = [DISCRETE_SCORE_SYSTEM] + [score[0] 
+                    for score in ss.scores]
             else:
-                result = ['r', ss.min, ss.max]
+                result = [RANGED_SCORE_SYSTEM, ss.min, ss.max]
             resultStr = ', '.join(["'%s'" % str(value) 
                 for value in result])
             results[hash(IKeyReference(activity))] = resultStr

@@ -1,5 +1,4 @@
 /* This is the Javascript to be included when rendering the gradebook overview. */
-var errorbg = "#F66";
 var changedbg = "lightgreen";
 var warningbg = "yellow";
 var errorbg = "red";
@@ -62,6 +61,7 @@ function checkValid(e,name){
     if (value == '')
         return true;
 
+    // handle validation of discrete score system
     var actScores = scores[activity];
     if (actScores[0] == 'd')
     {
@@ -73,6 +73,8 @@ function checkValid(e,name){
         element.style.backgroundColor = errorbg;
         return false;   
     }
+
+    // handle validation of ranged score system
     else
     {
         var min = parseInt(actScores[1]);
