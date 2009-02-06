@@ -2,9 +2,9 @@
 var errorbg = "#F66";
 var changedbg = "lightgreen";
 var warningbg = "yellow";
+var errorbg = "red";
 var defaultbg = "transparent"; 
 var defaulttext = 'Changes are not saved as they are typed. Click "Save" to save them.';
-
 
 var numstudents = <tal:block replace="python: len(view.students)"/> 
 var students = new Array(numstudents);
@@ -12,6 +12,11 @@ var students = new Array(numstudents);
      students[<tal:block replace="repeat/student/index"/>] = '<tal:block replace="python: view.breakJSString(student.username)"/>';
      </tal:loop>
 
+var numscores = <tal:block replace="python: len(view.scores)"/>;
+var scores = new Object();
+<tal:loop repeat="activity view/scores">
+    scores['<tal:block replace="activity" />'] = new Array(<tal:block replace="python: view.scores[activity]" />);
+</tal:loop>
 
 var edited = false;
 
@@ -29,6 +34,7 @@ function setWarning(text, bg){
 }
 
 function checkValid(e,name){
+    var activity = name.split('_')[0];
     edited = true;
     if(e!=null)  // Make sure the element is selected after movement
 	{
@@ -51,15 +57,37 @@ function checkValid(e,name){
     var elementCell = document.getElementById(name+'_cell')
     var value = element.value;
     setWarning(defaulttext,defaultbg);
-    elementCell.style.backgroundColor = changedbg;
-    /*
-    for(var index in scores){
-	if (value==scores[index]) {  
-	    element.style.backgroundColor = changedbg; 
-	    return true;} }  
-    element.style.backgroundColor = warningbg;
-    return false;*/
-    return true;    
+    element.style.backgroundColor = changedbg;
+
+    if (value == '')
+        return true;
+
+    var actScores = scores[activity];
+    if (actScores[0] == 'd')
+    {
+        for(var index in actScores)
+        {
+	        if (index > 0 && value == actScores[index])
+	            return true;
+	    }  
+        element.style.backgroundColor = errorbg;
+        return false;   
+    }
+    else
+    {
+        var min = parseInt(actScores[1]);
+        var max = parseInt(actScores[2]);
+        var intValue = parseInt(value);
+        var regex = /[0-9]+$/;
+        if (!value.match(regex) || intValue < min)
+        {
+            element.style.backgroundColor = errorbg;
+            return false;   
+        }
+        if (intValue > max)
+            element.style.backgroundColor = warningbg;
+        return true;
+    }
 } 
 
 

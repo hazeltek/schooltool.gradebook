@@ -107,6 +107,23 @@ class GradebookBase(BrowserView):
     def students(self):
         return self.context.students
 
+    @property
+    def scores(self):
+        results = {}
+        person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        worksheet = gradebook.getCurrentWorksheet(person)
+        for activity in gradebook.getWorksheetActivities(worksheet):
+            ss = activity.scoresystem
+            if IDiscreteValuesScoreSystem.providedBy(ss):
+                result = ['d'] + [score[0] for score in ss.scores]
+            else:
+                result = ['r', ss.min, ss.max]
+            resultStr = ', '.join(["'%s'" % str(value) 
+                for value in result])
+            results[hash(IKeyReference(activity))] = resultStr
+        return results
+
     def breakJSString(self,origstr):
         newstr = str(origstr)
         newstr = "\\'".join(newstr.split("'"))
