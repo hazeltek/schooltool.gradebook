@@ -1,10 +1,5 @@
 /* This is the Javascript to be included when rendering the gradebook overview. */
-var changedbg = "lightgreen";
-var warningbg = "yellow";
-var errorbg = "red";
-var defaultbg = "transparent"; 
 var defaulttext = 'Changes are not saved as they are typed. Click "Save" to save them.';
-
 var numstudents = <tal:block replace="python: len(view.students)"/> 
 var students = new Array(numstudents);
 <tal:loop repeat="student view/students">
@@ -29,11 +24,13 @@ window.onbeforeunload = unloadWarn;
 */
 function setWarning(text, bg){
     document.getElementById('warningtext').innerHTML = text;
-    document.getElementById('warning').style.backgroundColor = bg;
+    changeBackgroundColor('warning', bg);
 }
 
 function checkValid(e,name){
     var activity = name.split('_')[0];
+    if(activity == "fd")
+        activity = name.split('_')[1];
     edited = true;
     if(e!=null)  // Make sure the element is selected after movement
 	{
@@ -53,10 +50,10 @@ function checkValid(e,name){
 		}
 	}
     var element = document.getElementById(name);
-    var elementCell = document.getElementById(name+'_cell')
+    var elementCell = document.getElementById(name+'_cell');
     var value = element.value;
-    setWarning(defaulttext,defaultbg);
-    element.style.backgroundColor = changedbg;
+    setWarning(defaulttext, 'default_bg');
+    changeBackgroundColor(name+'_cell', 'default_bg');
 
     if (value == '')
         return true;
@@ -67,10 +64,10 @@ function checkValid(e,name){
     {
         for(var index in actScores)
         {
-	        if (index > 0 && value == actScores[index])
-	            return true;
-	    }  
-        element.style.backgroundColor = errorbg;
+               if (index > 0 && value == actScores[index])
+                   return true;
+        }  
+        changeBackgroundColor(name+'_cell', 'error_bg');
         return false;   
     }
 
@@ -83,56 +80,67 @@ function checkValid(e,name){
         var regex = /[0-9]+$/;
         if (!value.match(regex) || intValue < min)
         {
-            element.style.backgroundColor = errorbg;
+            changeBackgroundColor(name+'_cell', 'error_bg');
             return false;   
         }
         if (intValue > max)
-            element.style.backgroundColor = warningbg;
-        return true;
+        {
+            changeBackgroundColor(name+'_cell', 'warning_bg');
+            return true;
+        }
     }
+
+    changeBackgroundColor(name+'_cell', 'changed_bg');
+    return true;    
 } 
 
 
 
 function performFillDown(activity) {
-    var val = document.getElementById('fd_'+activity).value;
-    if (val=='') return;
-    /* ####### EXCLUDED BECAUSE NO WAY TO CHECK VALIDITY #######
-    var invalid = new Boolean(true);
-    for(var index in scores){
-	if (val==scores[index]) {  
-	    invalid = false;
-	} }  
-    document.getElementById('fd'+compid).style.backgroundColor = defaultbg;
-    if (invalid==true){
-	document.getElementById('fd'+compid).style.backgroundColor = warningbg;
-	setWarning('You may not apply the fill-down to an invalid grade',errorbg);
-	return;}*/
-    for(j=0;j!=numstudents;j++){
-	document.getElementById(activity+'_'+students[j]).value=val;
-	checkValid(null,activity+'_'+students[j]);
+    var fd = document.getElementById('fd_'+activity);
+    if (fd.value=='') return false;
+    changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
+    if (checkValid(null, 'fd_'+activity) == false)  {
+    	changeBackgroundColor('fd_'+activity+'_cell', 'warning_bg');
+	    setWarning('You may not apply the fill-down to an invalid grade', 'error_bg');
+	    return false;
+	}
+    for(j=0;j!=numstudents;j++) {
+    	document.getElementById(activity+'_'+students[j]).value=fd.value;
+	    checkValid(null,activity+'_'+students[j]);
     }
     document.getElementById('fd_'+activity).value = '';
-    document.getElementById('fd_'+activity+'_cell').backgroundColor = defaultbg;
     document.getElementById('fdbtn_'+activity).style.display = 'none';
-    setWarning(defaulttext,defaultbg);
+    changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
+    setWarning(defaulttext, 'default_bg');
 }
 
-function checkFillDown(name)
+function checkFillDown(activity)
 {
-    if (checkValid(null,'fd_'+name))
+    var fd = document.getElementById('fd_'+activity);
+    if (checkValid(null, 'fd_'+activity))
 	{
-	    var el = document.getElementById('fdbtn_'+name);
+	    var el = document.getElementById('fdbtn_'+activity);
 	    el.style.display='block';
-	    if (document.getElementById('fd_'+name).value==''){
-		document.getElementById('fd_'+name+'_cell').style.backgroundColor=defaultbg;
-		el.style.display='none';
+	    if (document.getElementById('fd_'+activity).value=='')  {
+	    	changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
+	    	el.style.display='none';
 	    }
 	}
     else
 	{
-	    document.getElementById('fdbtn_'+name).style.display='none';
-	    if (document.getElementById('fd_'+name).value=='')
-		document.getElementById('fd_'+name+'_cell').style.backgroundColor=defaultbg;
+	    document.getElementById('fdbtn_'+activity).style.display='none';
+	    if (document.getElementById('fd_'+activity).value=='')  {
+    		changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
+		}
 	}
+}
+
+function changeBackgroundColor(id, class)    {
+    obj = document.getElementById(id);
+    $(obj).removeClass('default_bg');
+    $(obj).removeClass('changed_bg');
+    $(obj).removeClass('warning_bg');
+    $(obj).removeClass('error_bg');
+    $(obj).addClass(class);
 }
