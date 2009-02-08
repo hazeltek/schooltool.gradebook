@@ -24,15 +24,20 @@ __docformat__ = 'reStructuredText'
 
 import datetime
 import persistent.dict
+import rwproperty
+from decimal import Decimal
 
 import zope.interface
 from zope import annotation
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.security import proxy
+from zope.component import queryAdapter, getAdapters
+from zope.schema.interfaces import IVocabularyFactory
 
 from schooltool.common import SchoolToolMessage as _
-from schooltool.requirement import requirement
+from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
+from schooltool.gradebook.interfaces import IExternalActivities
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
@@ -131,3 +136,75 @@ def getSectionActivities(context):
 
 # Convention to make adapter introspectable
 getSectionActivities.factory = Activities
+
+
+class LinkedActivity(Activity):
+    zope.interface.implements(interfaces.ILinkedActivity)
+
+    def __init__(self, external_activity, category, points):
+        custom = scoresystem.RangedValuesScoreSystem(
+            u'generated', min=Decimal(0), max=Decimal(points))
+        zope.interface.directlyProvides(
+            custom, scoresystem.ICustomScoreSystem)
+        super(LinkedActivity, self).__init__(external_activity.title,
+                                             category,
+                                             custom,
+                                             external_activity.description)
+        self.source = external_activity.source
+        self.external_activity_id = external_activity.external_activity_id
+
+    @rwproperty.getproperty
+    def points(self):
+        return int(self.scoresystem.max)
+
+    @rwproperty.setproperty
+    def points(self, value):
+        self.scoresystem.max = Decimal(value)
+
+    def getExternalActivity(self):
+        section = self.__parent__.__parent__.__parent__
+        adapter = queryAdapter(section, interfaces.IExternalActivities,
+                               name=self.source)
+        if adapter is not None:
+            return adapter.getExternalActivity(self.external_activity_id)
+
+
+class ExternalActivitiesSource(object):
+    zope.interface.implements(interfaces.IExternalActivitiesSource)
+
+    def __init__(self, context):
+        self.section = context
+
+    def activities(self):
+        result = []
+        for name, adapter in getAdapters((self.section,),
+                                         interfaces.IExternalActivities):
+            for external_activity in adapter.getExternalActivities():
+                result.append((adapter, external_activity))
+        return sorted(result, key=self.sortByTitles())
+
+    def sortByTitles(self):
+        return lambda x:(x[0].title, x[1].title)
+    
+    def __iter__(self):
+        return iter(self.activities())
+
+    def __len__(self):
+        return len(self.activities())
+
+    def __contains__(self, other_tuple):
+        try:
+            adapter = other_tuple[0]
+            external_activity = other_tuple[1]
+            return bool([value for value in self.activities()
+                         if value[1] == external_activity])
+        except (IndexError,):
+            return False
+
+
+class ExternalActivitiesVocabulary(object):
+    zope.interface.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        section = context.context.__parent__.__parent__
+        return ExternalActivitiesSource(section)

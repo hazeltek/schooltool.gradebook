@@ -23,18 +23,51 @@ $Id$
 from decimal import Decimal, InvalidOperation
 
 import zope.security.proxy
+from zope.viewlet.viewlet import ViewletBase
 from zope.app.form.browser.editview import EditView
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.api import getName
+from zope.app.form.browser.interfaces import ITerms, IWidgetInputErrorView
+from zope.schema.vocabulary import SimpleTerm
+from zope.app.form.interfaces import WidgetsError, WidgetInputError
+from zope.schema.interfaces import IVocabularyFactory
+from zope.component import queryAdapter, getAdapter
+from zope.formlib import form
+from zope import interface, schema
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser import app
 from schooltool.common import SchoolToolMessage as _
-from schooltool.gradebook import interfaces
+from schooltool.gradebook import interfaces, activity
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
+from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
+
+
+class ILinkedActivityFields(interface.Interface):
+
+    external_activity = schema.Choice(
+        title=_(u"External Activity"),
+        description=_(u"The external activity"),
+        vocabulary="schooltool.gradebook.external_activities",
+        required=True)
+
+
+class LinkedActivityFields(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def external_activity(self):
+        section = self.context.__parent__.__parent__.__parent__
+        adapter = getAdapter(section, interfaces.IExternalActivities,
+                             name=self.context.source)
+        return (adapter,
+                adapter.getExternalActivity(self.context.external_activity_id))
 
 
 class ActivitiesView(object):
@@ -90,6 +123,44 @@ class ActivityAddView(app.BaseAddView):
         return absoluteURL(self.context.__parent__, self.request)
 
 
+class LinkedActivityAddView(form.AddForm):
+    """A view for adding a linked activity."""
+
+    form_fields = form.Fields(ILinkedActivityFields,
+                              interfaces.ILinkedActivity)
+    form_fields = form_fields.select("external_activity", "category", "points")
+
+    label = _(u"Add an External Activity")
+    template = ViewPageTemplateFile("templates/linkedactivity_add.pt")
+
+    def create(self, data):
+        adapter = data.get("external_activity")[0]
+        external_activity = data.get("external_activity")[1]
+        category = data.get("category")
+        points = data.get("points")
+        return activity.LinkedActivity(external_activity, category, points)
+
+    @form.action(_("Add"), condition=form.haveInputWidgets)
+    def handle_add(self, action, data):
+        self.createAndAdd(data)
+
+    @form.action(_("Cancel"), validator=lambda *x:())
+    def handle_cancel_action(self, action, data):
+        self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
+
+    def updateGrades(self, linked_activity):
+        LinkedActivityGradesUpdater().update(linked_activity, self.request)
+
+    def add(self, object):
+        ob = self.context.add(object)
+        self.updateGrades(object)
+        self._finished_add = True
+        return ob
+
+
 class BaseEditView(EditView):
     """A base class for edit views that need special redirect."""
 
@@ -109,6 +180,31 @@ class ActivityEditView(BaseEditView):
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request) + \
             '/manage.html'
+
+
+class LinkedActivityEditView(form.EditForm):
+    """A view for editing a linked activity."""
+
+    form_fields = form.Fields(
+        form.Fields(ILinkedActivityFields, for_display=True),
+        interfaces.ILinkedActivity)
+    form_fields = form_fields.select("external_activity", "title",
+                                     "description", "category", "points")
+
+    label = _(u"Edit External Activity")
+    template = ViewPageTemplateFile("templates/linkedactivity_edit.pt")
+
+    @form.action(_("Apply"), condition=form.haveInputWidgets)
+    def handle_edit(self, action, data):
+        form.applyChanges(self.context, self.form_fields, data)
+        self.request.response.redirect(self.nextURL())
+
+    @form.action(_("Cancel"), validator=lambda *x:())
+    def handle_cancel_action(self, action, data):
+        self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
 
 
 class WeightCategoriesView(object):
@@ -171,3 +267,46 @@ class WeightCategoriesView(object):
                 }
             self.rows.append(row)
 
+
+class ExternalActivitiesTerms(object):
+    """Terms for external activities"""
+
+    zope.interface.implements(ITerms)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def getTerm(self, value):
+        try:
+            adapter = value[0]
+            external_activity = value[1]
+            title = "%s - %s" % (adapter.title, external_activity.title)
+            token = "%s-%s" % (external_activity.source,
+                             external_activity.external_activity_id)
+            return SimpleTerm(value=value, title=title, token=token)
+        except (AttributeError, IndexError,):
+            return SimpleTerm(value=None,
+                              title=_(u"The external activity couldn't be"
+                                      u" found"), token="")
+
+    def getValue(self, token):
+        source = token.split("-")[0]
+        external_activity_id = token.split("-")[-1]
+        adapter = queryAdapter(self.context.section,
+                               interfaces.IExternalActivities,
+                               name=source)
+        if adapter is not None and \
+           adapter.getExternalActivity(external_activity_id) is not None:
+            external_activity = adapter.getExternalActivity(external_activity_id)
+            external_activity.source = adapter.source
+            external_activity.external_activity_id = external_activity_id
+            return (adapter, external_activity)
+        raise LookupError(token)
+
+
+class UpdateGradesActionMenuViewlet(ViewletBase):
+    """Viewlet for hiding update grades button for broken linked activities"""
+
+    def external_activity_exists(self):
+        return self.context.getExternalActivity() is not None

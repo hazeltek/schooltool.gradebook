@@ -11,6 +11,28 @@
   <include package="schooltool.requirement" />
   <include package="schooltool.gradebook" />
 
+  <class class="schooltool.gradebook.tests.stubs.ExternalActivityStub">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+	permission="schooltool.view"
+        attributes="keys __iter__ values items __len__
+                    addBase removeBase
+                    source external_activity_id title description getGrade"
+        />
+    <require
+	permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema="schooltool.gradebook.interfaces.IExternalActivity"
+        />
+  </class>
+
+  <adapter
+      for="schooltool.course.interfaces.ISection"
+      provides="schooltool.gradebook.interfaces.IExternalActivities"
+      factory="schooltool.gradebook.tests.stubs.SampleSource"
+      name="samplesource"
+      />
+
   <browser:defaultSkin name="SchoolTool" />
 
 </configure>
