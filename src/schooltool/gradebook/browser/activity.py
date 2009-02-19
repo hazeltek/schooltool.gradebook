@@ -23,18 +23,26 @@ $Id$
 from decimal import Decimal, InvalidOperation
 
 import zope.security.proxy
+from zope.app.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.schema import TextLine
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.api import getName
 
+from z3c.form import form, field, button
+
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser import app
 from schooltool.common import SchoolToolMessage as _
 from schooltool.gradebook import interfaces
+from schooltool.gradebook.activity import Activity
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
+from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
 
 class ActivitiesView(object):
@@ -83,11 +91,52 @@ class ActivitiesView(object):
                     self.context.changePosition(name, new_pos-1)
 
 
-class ActivityAddView(app.BaseAddView):
+class ActivityAddView(form.AddForm):
     """A view for adding an activity."""
+    label = _("Add new activity")
+    template = ViewPageTemplateFile('add_edit_activity.pt')
+
+    fields = field.Fields(interfaces.IActivity).select('title', 'description',
+                                                       'category')
+    fields += field.Fields(IRangedValuesScoreSystem).select('min', 'max')
+
+    def updateActions(self):
+        super(ActivityAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    @button.buttonAndHandler(_('Add'), name='add')
+    def handleAdd(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        obj = self.createAndAdd(data)
+        if obj is not None:
+            # mark only as finished if we get the new object
+            self._finishedAdd = True
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
+
+    def create(self, data):
+        scoresystem = RangedValuesScoreSystem(
+            u'generated', min=data['min'], max=data['max'])
+        activity = Activity(data['title'], data['category'], scoresystem,
+                            data['description'])
+        return activity
+
+    def add(self, activity):
+        """Add activity to the worksheet."""
+        chooser = INameChooser(self.context)
+        name = chooser.chooseName('', activity)
+        self.context[name] = activity
+        return activity
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        return absoluteURL(self.context, self.request)
 
 
 class BaseEditView(EditView):
@@ -103,12 +152,34 @@ class BaseEditView(EditView):
             return status
 
 
-class ActivityEditView(BaseEditView):
-    """A view for editing activity info."""
+class ActivityEditView(form.EditForm):
+    """Edit form for basic person."""
+    form.extends(form.EditForm)
+    template = ViewPageTemplateFile('add_edit_activity.pt')
+
+    fields = field.Fields(interfaces.IActivity).select('title', 'description',
+                                                       'category')
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def updateActions(self):
+        super(ActivityEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    def applyChanges(self, data):
+        super(ActivityEditView, self).applyChanges(data)
+        self.request.response.redirect(self.nextURL())
+
+    @property
+    def label(self):
+        return _(u'Change information for ${fullname}',
+                 mapping={'fullname': self.context.title})
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request) + \
-            '/manage.html'
+        return absoluteURL(self.context.__parent__, self.request)
 
 
 class WeightCategoriesView(object):
