@@ -906,3 +906,149 @@ Students should not be able to view a teacher's gradebook.
     ...
     Unauthorized: ...
 
+
+External Activities
+-------------------
+
+External activities allow to get grades for a worksheet activity from
+another schooltool module.
+
+Before we test external activities, we are going to record the current
+state of the gradebook:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
+    ...  stephan.contents
+    True
+    >>> stephan.getLink('Manage Activities').click()
+
+We have two regular activities. One assignment:
+
+    >>> stephan.getLink('HW 1').click()
+    >>> '<option selected="selected" value="assignment">Assignment</option>' \
+    ... in stephan.contents
+    True
+    >>> stephan.getControl('Cancel').click()
+
+And one exam:
+
+    >>> stephan.getLink('Quiz').click()
+    >>> '<option selected="selected" value="exam">Exam</option>' in \
+    ... stephan.contents
+    True
+    >>> stephan.getControl('Cancel').click()
+
+And our grades are:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Name...Total...Average...HW 1...Quiz...
+    ...Claudia Richter...<b>86</b>...<b>86%</b>...86...
+    ...Tom Hoffman...<b>44</b>...<b>88%</b>...44...
+    ...Paul Cardune...<b>40</b>...<b>80%</b>...40...
+
+This state should change after we update the grades from external
+activities. Remember that the gradebook has weighting defined?:
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Category weights for worksheet Week 1...
+    ...Assignment...38...
+    ...Exam...62...
+    ...Lab...
+
+This is important since external activities should be weightable. Now,
+let's go back to the 'Activities' view of Stephan's teaching
+gradebook:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getLink('Manage Activities').click()
+
+We should have a 'New External Activity' button to add external
+activities:
+
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Edit...
+    ...New Activity...New External Activity...
+    ...Return to Gradebook...
+
+Let's add a new external activity as an assignment. For this test we
+have registered two external utilities stubs titled "Hardware" and
+"HTML":
+
+    >>> stephan.getLink('New External Activity').click()
+    >>> hardware_token = "samplesource-hardware"
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Add an External Activity...
+    >>> stephan.getControl('External Activity').value = [hardware_token]
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Points').value = '15'
+    >>> stephan.getControl('Add').click()
+
+Adding an external activity gets us back to the gradebook index view
+where we can see the external activity which by default has been
+loaded with the latest grades:
+
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Name...Total...Average...HW 1...Quiz...Hardware...
+    ...Claudia Richter...92.00...69%...86...6.00...
+    ...Tom Hoffman...53.00...82%...44...9.00...
+    ...Paul Cardune...40...80%...40...
+
+Let's edit the external activity. The form doesn't allow to edit the
+score system. The edit view also shows an 'Update Grades' button to
+recalculate the activity grades from the external activity:
+
+    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Hardware').click()
+    >>> 'score system' not in stephan.contents
+    True
+    >>> 'Maximum' not in stephan.contents
+    True
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Update Grades...
+    ...<h3>Edit External Activity</h3>...
+    ...External Activity...Sample Source - Hardware...
+    ...Title...Hardware...
+    ...Description...Hardware description...
+    ...Category...
+    ...<option...selected="selected"...value="assignment"...>Assignment...
+    ...Points...15...
+    >>> stephan.getControl('Title').value = u"Hardware Assignment"
+    >>> stephan.getControl('Description').value = "The Hardware assignment"
+    >>> stephan.getControl('Points').value = '25'
+    >>> stephan.getControl('Apply').click()
+
+Let's go back to the edit form to update the activity's grades using
+the 'Update Grades' button:
+
+    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Hardware Assignment').click()
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Update Grades...
+    ...<h3>Edit External Activity</h3>...
+    ...External Activity...Sample Source - Hardware...
+    ...Title...Hardware Assignment...
+    ...Description...The Hardware assignment...
+    ...Category...
+    ...<option...selected="selected"...value="assignment"...>Assignment...
+    ...Points...25...
+    >>> stephan.getLink('Update Grades').click()
+
+This takes us to the gradebook where the averages should have
+changed taking into account the weighting:
+
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Name...Total...Average...HW 1...Quiz...Hardware As...
+    ...Claudia Richter...96.00...69%...86...10.00...
+    ...Tom Hoffman...59.00...79%...44...15.00...
+    ...Paul Cardune...40...80%...40...

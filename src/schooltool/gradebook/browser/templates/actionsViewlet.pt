@@ -1,0 +1,4 @@
+  <div class="content-nav" tal:condition="view/external_activity_exists">
+    <a tal:attributes="href string:${context/@@absolute_url}/${view/link}"
+       tal:content="view/title">Title</a>
+  </div>

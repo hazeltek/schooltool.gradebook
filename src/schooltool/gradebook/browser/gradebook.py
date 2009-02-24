@@ -43,6 +43,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 
 from datetime import datetime
+import decimal
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
@@ -626,3 +627,32 @@ class MyGradesView(SectionFinder):
 
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
+
+
+class LinkedActivityGradesUpdater(object):
+    """Functionality to update grades from a linked activity"""
+
+    def update(self, linked_activity, request):
+        evaluator = getName(IPerson(request.principal))
+        external_activity = linked_activity.getExternalActivity()
+        if external_activity is None:
+            msg = "Couldn't find an ExternalActivity match for %s"
+            raise LookupError(msg % external_activity.title)
+        worksheet = linked_activity.__parent__
+        gradebook = interfaces.IGradebook(worksheet)
+        for student in gradebook.students:
+            external_grade = external_activity.getGrade(student)
+            if external_grade is not None:
+                score = decimal.Decimal("%.2f" % external_grade) * \
+                        decimal.Decimal(linked_activity.points)
+                gradebook.evaluate(student, linked_activity, score, evaluator)
+
+
+class UpdateLinkedActivityGrades(LinkedActivityGradesUpdater):
+    """A view for updating the grades of a linked activity."""
+
+    def __call__(self):
+        self.update(self.context, self.request)
+        next_url = absoluteURL(self.context.__parent__, self.request) + \
+                   '/gradebook'
+        self.request.response.redirect(next_url)
