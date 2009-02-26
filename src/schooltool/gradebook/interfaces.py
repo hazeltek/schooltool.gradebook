@@ -22,10 +22,31 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-import zope.interface
+from zope.interface import Interface, Attribute
+import zope.schema
 from zope.app import container
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.common import SchoolToolMessage as _
+
+
+class IGradebookRoot(Interface):
+    """The root of gradebook data"""
+
+    templates = Attribute("""Container of report sheet templates""")
+
+    deployed = Attribute("""Container of deployed report sheet templates""")
+
+
+class IGradebookTemplates(container.interfaces.IContainer):
+    """Container of Report Sheet Templates"""
+
+    container.constraints.contains('schooltool.gradebook.interfaces.IWorksheet')
+
+
+class IGradebookDeployed(container.interfaces.IContainer):
+    """Container of Deployed Report Sheet Templates (by term)"""
+
+    container.constraints.contains('schooltool.gradebook.interfaces.IWorksheet')
 
 
 class IActivities(interfaces.IRequirement):
@@ -90,7 +111,7 @@ class IActivity(interfaces.IRequirement):
     container.constraints.containers(IWorksheet)
 
 
-class IEditGradebook(zope.interface.Interface):
+class IEditGradebook(Interface):
 
     def evaluate(student, activity, score, evaluator=None):
         """Evaluate a student for an activity"""
@@ -102,7 +123,7 @@ class IEditGradebook(zope.interface.Interface):
         """Set the final grade adjustment for the given student."""
     
 
-class IReadGradebook(zope.interface.Interface):
+class IReadGradebook(Interface):
 
     worksheets = zope.schema.List(
         title=_('Worksheets'),
@@ -183,7 +204,7 @@ class IGradebook(IReadGradebook, IEditGradebook):
     """
 
 
-class IMyGrades(zope.interface.Interface):
+class IMyGrades(Interface):
     """The students gradebook for a section.
 
     This interface provides an API that allows the studentto see their

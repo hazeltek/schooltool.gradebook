@@ -3,6 +3,12 @@
     xmlns:security="http://schooltool.org/securitypolicy"
     xmlns="http://namespaces.zope.org/zope">
 
+  <!-- Gradebook Root adapter -->
+  <adapter
+      for="None"
+      provides=".interfaces.IGradebookRoot"
+      factory=".gradebook_init.getGradebookRoot" />
+
   <!-- Category Vocabulary -->
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
@@ -11,7 +17,7 @@
       />
   <adapter
       for="schooltool.app.interfaces.ISchoolToolApplication"
-      factory=".gradebook.GradebookInit"
+      factory=".gradebook_init.GradebookInit"
       name="schooltool.gradebook" />
 
   <!-- Activity Adapters -->
@@ -154,7 +160,7 @@
       permission="schooltool.edit"
       crowds="section_instructors grade_editors" />
 
-  <adapter factory=".gradebook.GradebookAppStartup"
+  <adapter factory=".gradebook_init.GradebookAppStartup"
            name="gradebook_startup_init" />
 
 </configure>

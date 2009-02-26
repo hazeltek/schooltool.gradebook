@@ -7,23 +7,42 @@ activities to be graded and each row is a student. Since SchoolTool is an
 object-oriented application, we have the unique oppurtunity to implement it a
 little bit different and to provide some unique features.
 
+First we'll set up the site and initialize the gradebook related data.
+
+    >>> from schooltool.testing import setup
+    >>> school = setup.setUpSchoolToolSite()
+    >>> from schooltool.gradebook.gradebook_init import GradebookInit
+    >>> plugin = GradebookInit(school)
+    >>> plugin()
+
+We note that there is a special gradebook root object attached to the
+application root.  We find it using the supplied adapter.
+
+    >>> from zope.component import provideAdapter
+    >>> from schooltool.gradebook.interfaces import IGradebookRoot
+    >>> from schooltool.gradebook.interfaces import IGradebookTemplates
+    >>> from schooltool.gradebook.interfaces import IGradebookDeployed
+    >>> from schooltool.gradebook.gradebook_init import getGradebookRoot
+    >>> provideAdapter(getGradebookRoot,
+    ...                adapts=[None],
+    ...                provides=IGradebookRoot)
+    >>> gradebook_root = IGradebookRoot(None)
+    >>> from zope.interface.verify import verifyObject
+    >>> verifyObject(IGradebookRoot, gradebook_root)
+    True
+    >>> verifyObject(IGradebookTemplates, gradebook_root.templates)
+    True
+    >>> verifyObject(IGradebookDeployed, gradebook_root.deployed)
+    True
+
+
 Categories
 ----------
 
 When the SchoolTool instance is initially setup, it is part of the
 administations job to setup activity categories. Activity categories can be
-"homework", "paper", "test", "final exam", etc.
-
-    >>> from schooltool.testing import setup
-    >>> school = setup.setUpSchoolToolSite()
-
-By default, some categories should be available in the vocabulary. Since this
-is a test, we have to set them up manually:
-
-    >>> from schooltool.testing import registry
-    >>> from schooltool.gradebook.gradebook import GradebookInit
-    >>> plugin = GradebookInit(school)
-    >>> plugin()
+"homework", "paper", "test", "final exam", etc.  By default, some categories
+are already available in the vocabulary.
 
 The categories are managed by a special option storage vocabulary. As soon as
 the SchoolTool application is registered as a site, the vocabulary can be
