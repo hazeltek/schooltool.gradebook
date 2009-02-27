@@ -1,0 +1,40 @@
+============
+Report Cards
+============
+
+The end goal of having users enter grades is for parents to receive a
+report card from the school after each grading period has ended.  To facilitate
+this, the admin user will set up report sheet templates at the application
+level, then choose on to deploy to a given term.  This deployment will
+result in a special worksheet being inserted into every section for that
+term so that the teachers can enter the final grades of the grading period.
+Finally, the admin user will be able to request report cards to be printed
+after each gradding period has ended.
+
+Let's start by setting up the application and logging in as manager.
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+    >>> manager = Browser('manager', 'schooltool')
+
+The first step is to set up the report sheet templates.  This is done from
+the Manage tab.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+
+We see that there are no report worksheets yet.  We'll add one.
+
+    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getControl('Title').value = 'Test'
+    >>> manager.getControl('Add').click()
+
+Now we see that the new report worksheet appears in the list.  We'll click
+on it to add a report activity to it.  We need only fill in the title as the
+other required fields default to the first value in the vocabulary.
+
+    >>> manager.getLink('Test').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 1'
+    >>> manager.getControl('Add').click()
+

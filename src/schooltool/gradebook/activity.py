@@ -99,6 +99,10 @@ class Worksheet(requirement.Requirement):
         ann[CATEGORY_WEIGHTS_KEY][category] = weight
 
 
+class ReportWorksheet(requirement.Requirement):
+    zope.interface.implements(interfaces.IReportWorksheet)
+
+
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)
 
@@ -114,6 +118,11 @@ class Activity(requirement.Requirement):
 
     def __repr__(self):
         return '<%s %r>' %(self.__class__.__name__, self.title)
+
+
+class ReportActivity(Activity):
+    zope.interface.implements(interfaces.IReportActivity)
+
 
 def getSectionActivities(context):
     '''IAttributeAnnotatable object to IActivities adapter.'''

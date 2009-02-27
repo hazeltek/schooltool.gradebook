@@ -16,10 +16,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-"""Gradebook Views
-
-$Id$
 """
+Gradebook Views
+"""
+
 from schooltool.course.interfaces import ILearner
 from schooltool.course.interfaces import IInstructor
 __docformat__ = 'reStructuredText'

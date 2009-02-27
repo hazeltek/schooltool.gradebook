@@ -19,20 +19,35 @@ We note that there is a special gradebook root object attached to the
 application root.  We find it using the supplied adapter.
 
     >>> from zope.component import provideAdapter
+    >>> from schooltool.app.interfaces import ISchoolToolApplication
     >>> from schooltool.gradebook.interfaces import IGradebookRoot
     >>> from schooltool.gradebook.interfaces import IGradebookTemplates
     >>> from schooltool.gradebook.interfaces import IGradebookDeployed
     >>> from schooltool.gradebook.gradebook_init import getGradebookRoot
     >>> provideAdapter(getGradebookRoot,
-    ...                adapts=[None],
+    ...                adapts=[ISchoolToolApplication],
     ...                provides=IGradebookRoot)
-    >>> gradebook_root = IGradebookRoot(None)
+    >>> gradebook_root = IGradebookRoot(ISchoolToolApplication(None))
     >>> from zope.interface.verify import verifyObject
     >>> verifyObject(IGradebookRoot, gradebook_root)
     True
     >>> verifyObject(IGradebookTemplates, gradebook_root.templates)
     True
     >>> verifyObject(IGradebookDeployed, gradebook_root.deployed)
+    True
+
+We also need adapters to get from the gradebook root to its attributes for
+use during travesal adaptation.  These adapters must locate themselves in the
+gradebook root object so that traversal works.
+
+    >>> from schooltool.gradebook.gradebook_init import getGradebookTemplates
+    >>> provideAdapter(getGradebookTemplates,
+    ...                adapts=[IGradebookRoot],
+    ...                provides=IGradebookTemplates)
+    >>> templates = IGradebookTemplates(gradebook_root)
+    >>> verifyObject(IGradebookTemplates, templates)
+    True
+    >>> templates is gradebook_root.templates
     True
 
 

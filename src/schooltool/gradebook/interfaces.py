@@ -24,7 +24,8 @@ __docformat__ = 'reStructuredText'
 
 from zope.interface import Interface, Attribute
 import zope.schema
-from zope.app import container
+from zope.app.container.interfaces import IContainer, IContained
+from zope.app.container.constraints import containers, contains
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.common import SchoolToolMessage as _
 
@@ -37,16 +38,16 @@ class IGradebookRoot(Interface):
     deployed = Attribute("""Container of deployed report sheet templates""")
 
 
-class IGradebookTemplates(container.interfaces.IContainer):
+class IGradebookTemplates(interfaces.IRequirement):
     """Container of Report Sheet Templates"""
 
-    container.constraints.contains('schooltool.gradebook.interfaces.IWorksheet')
+    contains('.IReportWorksheet')
 
 
-class IGradebookDeployed(container.interfaces.IContainer):
+class IGradebookDeployed(interfaces.IRequirement):
     """Container of Deployed Report Sheet Templates (by term)"""
 
-    container.constraints.contains('schooltool.gradebook.interfaces.IWorksheet')
+    contains('.IReportWorksheet')
 
 
 class IActivities(interfaces.IRequirement):
@@ -65,7 +66,7 @@ class IActivities(interfaces.IRequirement):
     def getCurrentActivities():
         """Get the activities for the currently active worksheet."""
 
-    container.constraints.contains('.IWorksheet')
+    contains('.IWorksheet')
 
 
 class IWorksheet(interfaces.IRequirement):
@@ -80,8 +81,15 @@ class IWorksheet(interfaces.IRequirement):
         """Set the weight for the given category.  Any numeric type is 
            acceptable"""
 
-    container.constraints.containers(IActivities)
-    container.constraints.contains('.IActivity')
+    containers(IActivities)
+    contains('.IActivity')
+
+
+class IReportWorksheet(interfaces.IRequirement):
+    '''A list of report card activities that get copied into sections.'''
+
+    containers(IGradebookTemplates, IGradebookDeployed)
+    contains('.IReportActivity')
 
 
 class IActivity(interfaces.IRequirement):
@@ -108,7 +116,13 @@ class IActivity(interfaces.IRequirement):
         description=_("The date the activity was created."),
         required=True)
 
-    container.constraints.containers(IWorksheet)
+    containers(IWorksheet)
+
+
+class IReportActivity(IActivity):
+    '''An activity to be deployed to section activities'''
+
+    containers(IReportWorksheet)
 
 
 class IEditGradebook(Interface):

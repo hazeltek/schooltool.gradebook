@@ -93,8 +93,8 @@ class WorksheetAddView(app.BaseAddView):
     """A view for adding a worksheet."""
 
     def nextURL(self):
-        person = IPerson(self.request.principal, None)
-        self.context.context.resetCurrentWorksheet(person)
+        #person = IPerson(self.request.principal, None)
+        #self.context.context.resetCurrentWorksheet(person)
         return absoluteURL(self.context.context, self.request)
 
 

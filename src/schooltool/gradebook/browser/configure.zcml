@@ -4,6 +4,15 @@
     xmlns:zope="http://namespaces.zope.org/zope"
     i18n_domain="schooltool">
 
+  <!-- Gradebook Root Traverser -->
+  <zope:view
+      for="schooltool.gradebook.interfaces.IGradebookRoot"
+      type="zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+      factory="schooltool.traverser.browser.PluggableBrowserTraverser"
+      permission="zope.Public"
+      />
+
   <!-- CSS -->
   <viewlet
       name="gradebook_css"
@@ -27,6 +36,15 @@
      layer="schooltool.skin.ISchoolToolLayer"
      />
 
+  <!-- Report Sheet Templates view -->
+  <page
+      name="index.html"
+      for="..interfaces.IGradebookTemplates"
+      class=".report_card.TemplatesView"
+      template="templates_overview.pt"
+      permission="schooltool.edit"
+      />
+
   <!-- Categories -->
   <form
       label="Activity Categories"
@@ -48,6 +66,32 @@
       link="gradebook.html"
       order="310"
       />
+
+  <!-- Manage Tab -->
+  <configure package="schooltool.skin">
+    <navigationViewlet
+        name="report_sheet_templates"
+        for="*"
+        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
+        template="templates/navigationViewlet.pt"
+        class="schooltool.skin.skin.NavigationViewlet"
+        permission="schooltool.edit"
+        link="gradebook/templates/index.html"
+        title="Report Sheet Templates"
+        order="210"
+        />
+    <navigationViewlet
+        name="categories"
+        for="*"
+        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
+        template="templates/navigationViewlet.pt"
+        class="schooltool.skin.skin.NavigationViewlet"
+        permission="schooltool.edit"
+        link="categories.html"
+        title="Activity Categories"
+        order="200"
+        />
+  </configure>
 
   <!-- Activities overview -->
   <page
@@ -72,11 +116,35 @@
         class="schooltool.gradebook.browser.worksheet.WorksheetAddView">
       <widget field="description" height="5" />
     </addform>
+    <addform
+        label="Add a Report Worksheet"
+        name="addReportWorksheet.html"
+        schema="schooltool.gradebook.interfaces.IReportWorksheet"
+        fields="title"
+        arguments="title"
+        content_factory="schooltool.gradebook.activity.ReportWorksheet"
+        permission="schooltool.edit"
+        template="templates/simple_add.pt"
+        class="schooltool.gradebook.browser.worksheet.WorksheetAddView">
+      <widget field="description" height="5" />
+    </addform>
     <editform
         label="Edit Worksheet"
         name="edit.html"
         for="schooltool.gradebook.interfaces.IWorksheet"
         schema="schooltool.gradebook.interfaces.IWorksheet"
+        fields="title"
+        permission="schooltool.edit"
+        template="templates/simple_edit.pt"
+        class="schooltool.gradebook.browser.worksheet.WorksheetEditView"
+        menu="schooltool_actions"
+        title="Edit"
+        />
+    <editform
+        label="Edit Report Worksheet"
+        name="edit.html"
+        for="schooltool.gradebook.interfaces.IReportWorksheet"
+        schema="schooltool.gradebook.interfaces.IReportWorksheet"
         fields="title"
         permission="schooltool.edit"
         template="templates/simple_edit.pt"
@@ -99,6 +167,13 @@
       permission="schooltool.view"
       />
   <page
+      name="manage.html"
+      for="..interfaces.IReportWorksheet"
+      class=".worksheet.WorksheetManageView"
+      template="worksheet_overview.pt"
+      permission="schooltool.view"
+      />
+  <page
       name="delete.html"
       for="..interfaces.IWorksheet"
       class=".worksheet.WorksheetDeleteView"
@@ -115,17 +190,6 @@
 
   <!-- Activities -->
   <configure package="schooltool.skin">
-    <navigationViewlet
-        name="categories"
-        for="*"
-        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
-        template="templates/navigationViewlet.pt"
-        class="schooltool.skin.skin.NavigationViewlet"
-        permission="schooltool.edit"
-        link="categories.html"
-        title="Activity Categories"
-        order="200"
-        />
     <addform
         label="Add an Activity"
         name="addActivity.html"
@@ -155,6 +219,25 @@
       for="..interfaces.IActivity"
       name="edit.html"
       />
+  <defaultView
+      for="..interfaces.IReportActivity"
+      name="edit.html"
+      />
+  <page
+     name="addReportActivity.html"
+     for="schooltool.gradebook.interfaces.IReportWorksheet"
+     class=".report_card.ReportActivityAddView"
+     permission="schooltool.edit"
+     menu="schooltool_actions"
+     title="New Report Activity"/>
+  <page
+      name="edit.html"
+      for="schooltool.gradebook.interfaces.IReportActivity"
+      class=".report_card.ReportActivityEditView"
+      permission="schooltool.edit"
+      menu="schooltool_actions"
+      title="Edit"
+      />
 
   <!-- Menu items for ISection -->
   <menuItem
@@ -166,6 +249,13 @@
       />
 
   <!-- Menu items for IActivities -->
+  <menuItem
+      menu="schooltool_actions"
+      title="New Report Worksheet"
+      for="..interfaces.IGradebookTemplates"
+      action="+/addReportWorksheet.html"
+      permission="schooltool.view"
+      />
   <menuItem
       menu="schooltool_actions"
       title="New Worksheet"

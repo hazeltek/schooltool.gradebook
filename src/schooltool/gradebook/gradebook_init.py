@@ -21,8 +21,10 @@ Gradebook Initialization
 """
 
 from zope.app.container import btree
+from zope.app.container.contained import contained
 from zope.component import adapts
 from zope.interface import implements
+from zope.security.proxy import removeSecurityProxy
 
 from schooltool.app.app import InitBase
 from schooltool.app.interfaces import IApplicationStartUpEvent
@@ -32,6 +34,7 @@ from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
 from schooltool.gradebook.interfaces import IGradebookDeployed
 from schooltool.gradebook.category import getCategories
+from schooltool.requirement.requirement import Requirement
 
 from schooltool.common import SchoolToolMessage as _
 
@@ -44,17 +47,17 @@ class GradebookRoot(object):
     implements(IGradebookRoot)
 
     def __init__(self):
-        self.templates = GradebookTemplates()
-        self.deployed = GradebookDeployed()
+        self.templates = GradebookTemplates(_('Report Sheet Templates'))
+        self.deployed = GradebookDeployed(_('Deployed Report Sheets'))
 
 
-class GradebookTemplates(btree.BTreeContainer):
+class GradebookTemplates(Requirement):
     """Container of Report Sheet Templates"""
 
     implements(IGradebookTemplates)
 
 
-class GradebookDeployed(btree.BTreeContainer):
+class GradebookDeployed(Requirement):
     """Container of Deployed Report Sheet Templates (by term)"""
 
     implements(IGradebookDeployed)
@@ -97,7 +100,13 @@ class GradebookInit(InitBase):
         setUpDefaultCategories(dict)
 
 
-def getGradebookRoot(context):
-    app = ISchoolToolApplication(None)
+def getGradebookRoot(app):
     return app[GRADEBOOK_ROOT_KEY]
+
+
+def getGradebookTemplates(root):
+    root = removeSecurityProxy(root)
+    templates = removeSecurityProxy(root.templates)
+    contained(templates, root, 'templates')
+    return templates
 

@@ -3,11 +3,15 @@
     xmlns:security="http://schooltool.org/securitypolicy"
     xmlns="http://namespaces.zope.org/zope">
 
-  <!-- Gradebook Root adapter -->
+  <!-- Gradebook Root adapters -->
   <adapter
-      for="None"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
       provides=".interfaces.IGradebookRoot"
       factory=".gradebook_init.getGradebookRoot" />
+  <adapter
+      for=".interfaces.IGradebookRoot"
+      provides=".interfaces.IGradebookTemplates"
+      factory=".gradebook_init.getGradebookTemplates" />
 
   <!-- Category Vocabulary -->
   <utility
@@ -29,6 +33,36 @@
       />
 
   <!-- Activity Content and Security -->
+  <class class=".gradebook_init.GradebookRoot">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookRoot"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookRoot"
+        />
+  </class>
+  <class class=".gradebook_init.GradebookTemplates">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookTemplates"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookTemplates"
+        />
+  </class>
+  <class class=".gradebook_init.GradebookDeployed">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookDeployed"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookDeployed"
+        />
+  </class>
   <class class=".activity.Activities">
     <require
         permission="schooltool.view"
@@ -53,18 +87,43 @@
         attributes="changePosition setCategoryWeight"
         />
   </class>
+  <class class=".activity.ReportWorksheet">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__ title"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.IReportWorksheet"
+        attributes="changePosition"
+        />
+  </class>
   <class class=".activity.Activity">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__
-                    addBase removeBase
                     title description category scoresystem date"
         />
     <require
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
         set_schema=".interfaces.IActivity"
+        />
+  </class>
+  <class class=".activity.ReportActivity">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__
+                    title description category scoresystem date"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.IReportActivity"
         />
   </class>
 
@@ -115,6 +174,20 @@
       />
 
   <!-- Pluggable traverser plugins for HTTP paths -->
+  <adapterTraverserPlugin
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="gradebook"
+      adapter="schooltool.gradebook.interfaces.IGradebookRoot"
+      permission="schooltool.edit"
+      />
+  <adapterTraverserPlugin
+      for="schooltool.gradebook.interfaces.IGradebookRoot"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="templates"
+      adapter="schooltool.gradebook.interfaces.IGradebookTemplates"
+      permission="schooltool.edit"
+      />
   <adapterTraverserPlugin
       for="schooltool.course.interfaces.ISection"
       layer="zope.publisher.interfaces.http.IHTTPRequest"
