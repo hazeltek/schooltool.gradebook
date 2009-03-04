@@ -22,7 +22,8 @@ Report Card Views
 
 from zope.app.container.interfaces import INameChooser
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.interface import Interface
+from zope.component import adapts
+from zope.interface import Interface, implements
 from zope.schema import Choice
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
@@ -49,7 +50,7 @@ class TemplatesView(object):
             pos += 1
             yield {'name': getName(worksheet),
                    'title': worksheet.title,
-                   'url': absoluteURL(worksheet, self.request) + '/manage.html',
+                   'url': absoluteURL(worksheet, self.request),
                    'pos': pos}
 
     def positions(self):
@@ -89,6 +90,23 @@ class IExistingScoreSystem(Interface):
         title=_('Exisiting Score System'),
         vocabulary='schooltool.requirement.scoresystems',
         required=True)
+
+
+class ExistingScoresSystem(object):
+    implements(IExistingScoreSystem)
+    adapts(IReportActivity)
+
+    def __init__(self, context):
+        self.__dict__['context'] = context
+
+    def __setattr__(self, name, value):
+        if name == 'scoresystem':
+            self.context.scoresystem = value
+        else:
+            setattr(self.context, name, value)
+
+    def __getattr__(self, name):
+        return getattr(self.context, name)
 
 
 class ReportActivityAddView(form.AddForm):
@@ -134,7 +152,7 @@ class ReportActivityAddView(form.AddForm):
         return activity
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/manage.html'
+        return absoluteURL(self.context, self.request)
 
 
 class ReportActivityEditView(form.EditForm):

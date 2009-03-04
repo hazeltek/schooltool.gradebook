@@ -167,7 +167,7 @@
       permission="schooltool.view"
       />
   <page
-      name="manage.html"
+      name="index.html"
       for="..interfaces.IReportWorksheet"
       class=".worksheet.WorksheetManageView"
       template="worksheet_overview.pt"
@@ -379,5 +379,8 @@
       template="gradebook_grade.pt"
       permission="schooltool.edit"
       />
+
+  <zope:adapter
+      factory=".report_card.ExistingScoresSystem" />
 
 </configure>

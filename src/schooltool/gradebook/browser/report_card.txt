@@ -23,18 +23,53 @@ the Manage tab.
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()
 
-We see that there are no report worksheets yet.  We'll add one.
+We see that there are no report worksheets yet.
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+
+We'll add one.
 
     >>> manager.getLink('New Report Worksheet').click()
     >>> manager.getControl('Title').value = 'Test'
     >>> manager.getControl('Add').click()
 
-Now we see that the new report worksheet appears in the list.  We'll click
-on it to add a report activity to it.  We need only fill in the title as the
-other required fields default to the first value in the vocabulary.
+Now we see that the new report worksheet appears in the list.
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schooltool.gradebook/templates/ReportWorksheet">Test</a>
+
+We'll click on it to view its activities.  We see that there are none.
 
     >>> manager.getLink('Test').click()
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+
+To add a report activity to it, we'll click on the supplied link.  We need only
+fill in the title as the other required fields default to the first value
+in the vocabulary.
+
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Activity 1'
     >>> manager.getControl('Add').click()
+
+Now we see that the new report activity appears in the list.
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schooltool.gradebook/templates/ReportWorksheet/ReportActivity">Activity 1</a>
+
+Next, we'll click on the newly added activity link to edit its score system.
+We see that, when it was added, it was defaulted to the first existing score
+system in the list.
+
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Exisiting Score System').value
+    ['100 Points']
+
+We'll change it, apply the change, and revisit the activity to see that the
+change took.
+
+    >>> manager.getControl('Exisiting Score System').value = ['Letter Grade']
+    >>> manager.getControl('Apply').click()
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Exisiting Score System').value
+    ['Letter Grade']
 
