@@ -32,9 +32,11 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 
 from z3c.form import form, field, button
 
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as _
 from schooltool.person.interfaces import IPerson
 
+from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IReportActivity
 from schooltool.gradebook.activity import ReportActivity
 
@@ -184,4 +186,27 @@ class ReportActivityEditView(form.EditForm):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+
+class DeployReportWorksheetView(object):
+    """A view for deploying a report sheet template to a term"""
+
+    @property
+    def worksheets(self):
+        """Get  a list of all report worksheets."""
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        for worksheet in root.templates.values():
+            yield {'name': getName(worksheet),
+                   'title': worksheet.title}
+
+    def update(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+
+        if 'form-submitted' in self.request:
+            if 'DEPLOY' in self.request:
+                pass
+            self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
 

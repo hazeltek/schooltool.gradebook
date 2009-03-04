@@ -73,3 +73,39 @@ change took.
     >>> manager.getControl('Exisiting Score System').value
     ['Letter Grade']
 
+
+Report Worksheet Deployment
+---------------------------
+
+Now that we've set up report sheet templates, we want to choose one of them
+to deploy to all sections in a given term.  We'll need to set up one of our
+terms with some sections.  Of course, we'll need a teacher and some students
+in order to do that.
+
+    >>> setup.addPerson('Teacher One', 'teacher1', 'pwd')
+    >>> setup.addPerson('Student One', 'student1', 'pwd')
+    >>> setup.addPerson('Student Two', 'student2', 'pwd')
+    >>> setup.addCourse('CompSci I', '2005-2006')
+    >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
+    ...                  title='Morning CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+    >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
+    ...                  title='Afternoon CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+
+We'll navigate to the 'Spring' term where we just created the two sections,
+and we'll click on the 'Deploy Report Worksheet' link.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Spring').click()
+    >>> term_url = manager.url
+    >>> manager.getLink('Deploy Report Worksheet').click()
+
+Hitting the 'Cancel' button brings us back to the term view.
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url == term_url
+    True
+

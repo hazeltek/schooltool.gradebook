@@ -380,6 +380,24 @@
       permission="schooltool.edit"
       />
 
+  <!-- Menu items for ITerm-->
+  <menuItem
+      menu="schooltool_actions"
+      title="Deploy Report Worksheet"
+      for="schooltool.term.interfaces.ITerm"
+      action="deploy_report_worksheet.html"
+      permission="schooltool.edit"
+      />
+
+  <!-- Views for ITerm-->
+  <page
+      name="deploy_report_worksheet.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".report_card.DeployReportWorksheetView"
+      template="deploy_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
+
   <zope:adapter
       factory=".report_card.ExistingScoresSystem" />
 
