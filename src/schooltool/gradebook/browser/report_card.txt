@@ -109,3 +109,42 @@ Hitting the 'Cancel' button brings us back to the term view.
     >>> manager.url == term_url
     True
 
+Now we'll go back to the view and this time hit the 'Deploy' button.  This will
+also bring us back to the term view.
+
+    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Deploy').click()
+    >>> manager.url == term_url
+    True
+
+To make sure the deployment worked, we'll navigate to each section and make sure
+the worksheet and its activities are there.  We'll start with the first section.
+
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Morning CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Test</a>
+    >>> manager.getLink('Test').click()
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/Activity">Activity 1</a>
+
+The other section should also have the same worksheet deployed.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Spring').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Afternoon CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Test</a>
+    >>> manager.getLink('Test').click()
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/Activity">Activity 1</a>
+

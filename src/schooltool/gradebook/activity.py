@@ -86,6 +86,8 @@ class Worksheet(requirement.Requirement):
     zope.interface.implements(interfaces.IWorksheet, 
                               annotation.interfaces.IAttributeAnnotatable)
 
+    deployed = False
+
     def getCategoryWeights(self):
         ann = annotation.interfaces.IAnnotations(self)
         if CATEGORY_WEIGHTS_KEY not in ann:

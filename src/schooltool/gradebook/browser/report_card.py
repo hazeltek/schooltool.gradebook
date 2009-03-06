@@ -34,11 +34,12 @@ from z3c.form import form, field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as _
+from schooltool.course.interfaces import ISectionContainer
 from schooltool.person.interfaces import IPerson
 
 from schooltool.gradebook.interfaces import IGradebookRoot
-from schooltool.gradebook.interfaces import IReportActivity
-from schooltool.gradebook.activity import ReportActivity
+from schooltool.gradebook.interfaces import IActivities, IReportActivity
+from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
 
 
 class TemplatesView(object):
@@ -200,12 +201,41 @@ class DeployReportWorksheetView(object):
                    'title': worksheet.title}
 
     def update(self):
-        root = IGradebookRoot(ISchoolToolApplication(None))
-
         if 'form-submitted' in self.request:
             if 'DEPLOY' in self.request:
-                pass
+                self.deploy()
             self.request.response.redirect(self.nextURL())
+
+    def deploy(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        worksheet = root.templates[self.request['reportWorksheet']]
+
+        # copy worksheet template to deployed container
+        term = self.context
+        schoolyear = term.__parent__
+        deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
+        deployedWorksheet = Worksheet(worksheet.title)
+        root.deployed[deployedKey] = deployedWorksheet
+        self.copyActivities(worksheet, deployedWorksheet)
+
+        # now copy the template to all sections in the term
+        sections = ISectionContainer(term)
+        for section in sections.values():
+            activities = IActivities(section)
+            worksheetCopy = Worksheet(deployedWorksheet.title)
+            worksheetCopy.deployed = True
+            chooser = INameChooser(activities)
+            name = chooser.chooseName('', worksheetCopy)
+            activities[name] = worksheetCopy
+            self.copyActivities(deployedWorksheet, worksheetCopy)
+
+    def copyActivities(self, sourceWorksheet, destWorksheet):
+        for activity in sourceWorksheet.values():
+            activityCopy = Activity(activity.title, activity.category,
+                                    activity.scoresystem, activity.description)
+            chooser = INameChooser(destWorksheet)
+            name = chooser.chooseName('', activityCopy)
+            destWorksheet[name] = activityCopy
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)

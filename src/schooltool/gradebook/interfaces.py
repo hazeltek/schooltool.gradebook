@@ -72,6 +72,11 @@ class IActivities(interfaces.IRequirement):
 class IWorksheet(interfaces.IRequirement):
     '''A list of activities that must be fulfilled in a course or section.'''
 
+    deployed = zope.schema.Bool(
+        title=u"Deployed Worksheet",
+        required=False
+        )
+
     def getCategoryWeights():
         """Get the category weights for the worksheet.  This method will
            return a list of (category, weight) tuples, the weight being
