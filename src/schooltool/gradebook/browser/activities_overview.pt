@@ -29,6 +29,7 @@
         </tal:block>
       </select>
       <input type="checkbox" name="delete:list"
+             tal:condition="not: worksheet/deployed"
              tal:attributes="value worksheet/name" />
 
       <a tal:content="worksheet/title"

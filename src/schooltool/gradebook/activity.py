@@ -104,6 +104,8 @@ class Worksheet(requirement.Requirement):
 class ReportWorksheet(requirement.Requirement):
     zope.interface.implements(interfaces.IReportWorksheet)
 
+    deployed = False
+
 
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)

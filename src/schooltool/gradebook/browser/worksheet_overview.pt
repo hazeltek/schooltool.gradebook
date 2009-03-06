@@ -30,6 +30,7 @@
         </tal:block>
       </select>
       <input type="checkbox" name="delete:list"
+             tal:condition="not: activity/deployed"
              tal:attributes="value activity/name" />
 
       <a tal:content="activity/title"

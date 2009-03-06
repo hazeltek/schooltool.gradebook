@@ -51,7 +51,8 @@ class ActivitiesView(object):
             yield {'name': getName(worksheet),
                    'title': worksheet.title,
                    'url': absoluteURL(worksheet, self.request) + '/manage.html',
-                   'pos': pos}
+                   'pos': pos,
+                   'deployed': worksheet.deployed}
 
     def positions(self):
         return range(1, len(self.context.values())+1)

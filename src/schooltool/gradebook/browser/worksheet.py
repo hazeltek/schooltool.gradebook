@@ -58,7 +58,8 @@ class WorksheetManageView(object):
             yield {'name': getName(activity),
                    'title': activity.title,
                    'url': absoluteURL(activity, self.request),
-                   'pos': pos}
+                   'pos': pos,
+                   'deployed': self.context.deployed}
 
     def canModify(self):
         return canWrite(self.context, 'title')

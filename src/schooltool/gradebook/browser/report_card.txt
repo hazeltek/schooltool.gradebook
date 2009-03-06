@@ -119,6 +119,8 @@ also bring us back to the term view.
 
 To make sure the deployment worked, we'll navigate to each section and make sure
 the worksheet and its activities are there.  We'll start with the first section.
+In addition to testing for the presence of the worksheet and activity, we'll
+make sure that there is no checkbox available to delete either of them.
 
     >>> manager.getLink('Sections').click()
     >>> manager.getLink('Morning CompSci I').click()
@@ -127,10 +129,16 @@ the worksheet and its activities are there.  We'll start with the first section.
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Test</a>
-    >>> manager.getLink('Test').click()
 
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/Activity">Activity 1</a>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
 
 The other section should also have the same worksheet deployed.
 
@@ -143,8 +151,14 @@ The other section should also have the same worksheet deployed.
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Test</a>
-    >>> manager.getLink('Test').click()
 
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/Activity">Activity 1</a>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
 

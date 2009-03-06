@@ -77,7 +77,7 @@
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
         permission="schooltool.view"
-        attributes="keys __iter__ values items __len__
+        attributes="keys __iter__ values items __len__ deployed
                     title getCategoryWeights"
         />
     <require
@@ -91,7 +91,7 @@
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
         permission="schooltool.view"
-        attributes="keys __iter__ values items __len__ title"
+        attributes="keys __iter__ values items __len__ title deployed"
         />
     <require
         permission="schooltool.edit"
