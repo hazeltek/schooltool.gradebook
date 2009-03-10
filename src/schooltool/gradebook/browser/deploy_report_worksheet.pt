@@ -1,22 +1,20 @@
 <tal:define define="dummy view/update"/>
 <html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
 <head>
-  <title metal:fill-slot="title" i18n:translate="">Deploy Report Worksheet</title>
+  <title metal:fill-slot="title" i18n:translate="">Deploy Report Worksheet Template</title>
 </head>
 <body>
 
 <h1 metal:fill-slot="content-header"
-    i18n:translate="">Deploy Report Worksheet</h1>
+    i18n:translate="">Deploy Report Worksheet Template</h1>
 
 <metal:block metal:fill-slot="body"
              tal:define="worksheets view/worksheets">
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}/deploy_report_worksheet.html">
     <input type="hidden" name="form-submitted" value="" />
-    <label for="ReportWorksheet" i18n:translate="">
-        Please select a report worksheet template to deploy
-    </label>
-    <select name="reportWorksheet">
+    <label for="reportWorksheet" i18n:translate="">Template</label>
+    <select id="reportWorksheet" name="reportWorksheet">
       <tal:block repeat="worksheet view/worksheets">
         <option tal:attributes="value worksheet/name"
                 tal:content="worksheet/title" />

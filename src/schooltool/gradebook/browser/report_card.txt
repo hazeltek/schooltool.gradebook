@@ -73,6 +73,18 @@ change took.
     >>> manager.getControl('Exisiting Score System').value
     ['Letter Grade']
 
+Later we will want to test the handling of deployment of multiple templates
+to a term, so here we'll set up a second template.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getControl('Title').value = 'Test2'
+    >>> manager.getControl('Add').click()
+    >>> manager.getLink('Test2').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 2'
+    >>> manager.getControl('Add').click()
 
 Report Worksheet Deployment
 ---------------------------
@@ -110,17 +122,22 @@ Hitting the 'Cancel' button brings us back to the term view.
     True
 
 Now we'll go back to the view and this time hit the 'Deploy' button.  This will
-also bring us back to the term view.
+also bring us back to the term view.  First we'll deploy the first template,
+then the second.
 
     >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet']
     >>> manager.getControl('Deploy').click()
     >>> manager.url == term_url
     True
+    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet-2']
+    >>> manager.getControl('Deploy').click()
 
 To make sure the deployment worked, we'll navigate to each section and make sure
-the worksheet and its activities are there.  We'll start with the first section.
-In addition to testing for the presence of the worksheet and activity, we'll
-make sure that there is no checkbox available to delete either of them.
+the worksheets and activities are there.  We'll start with the first section.
+In addition to testing for the presence of the worksheets and activities, we'll
+make sure that there is no checkbox available to delete any of them.
 
     >>> manager.getLink('Sections').click()
     >>> manager.getLink('Morning CompSci I').click()
@@ -129,6 +146,7 @@ make sure that there is no checkbox available to delete either of them.
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet-2/manage.html">Test2</a>
 
     >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True
@@ -140,10 +158,21 @@ make sure that there is no checkbox available to delete either of them.
     >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True
 
+    >>> manager.open(term_url)
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Morning CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+    >>> manager.getLink('Test2').click()
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet-2/Activity">Activity 2</a>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
 The other section should also have the same worksheet deployed.
 
-    >>> manager.getLink('2005-2006').click()
-    >>> manager.getLink('Spring').click()
+    >>> manager.open(term_url)
     >>> manager.getLink('Sections').click()
     >>> manager.getLink('Afternoon CompSci I').click()
     >>> manager.getLink('Gradebook', index=1).click()
@@ -151,6 +180,7 @@ The other section should also have the same worksheet deployed.
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet-2/manage.html">Test2</a>
 
     >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True
@@ -158,6 +188,18 @@ The other section should also have the same worksheet deployed.
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/Activity">Activity 1</a>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> manager.open(term_url)
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Afternoon CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+    >>> manager.getLink('Test2').click()
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet-2/Activity">Activity 2</a>
 
     >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True

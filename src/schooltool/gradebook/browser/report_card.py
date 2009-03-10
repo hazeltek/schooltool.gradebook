@@ -215,7 +215,9 @@ class DeployReportWorksheetView(object):
         schoolyear = term.__parent__
         deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
         deployedWorksheet = Worksheet(worksheet.title)
-        root.deployed[deployedKey] = deployedWorksheet
+        chooser = INameChooser(root.deployed)
+        name = chooser.chooseName(deployedKey, deployedWorksheet)
+        root.deployed[name] = deployedWorksheet
         self.copyActivities(worksheet, deployedWorksheet)
 
         # now copy the template to all sections in the term
