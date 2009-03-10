@@ -522,3 +522,159 @@ into the average.
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
     (Decimal("101"), 86)
 
+
+External Activities
+-------------------
+
+External Activities allow other schooltool modules to provide grades
+that can be used in worksheets.
+
+This will make possible, for example, to integrate CanDo skilldrivers
+(or assignments) grades into the schooltool gradebook.
+
+In order to integrate with the schooltool gradebook, the external
+module must register a named adapter that adapts a section and
+provides the IExternalActivities interface:
+
+    >>> from zope.component import getAdapters, getAdapter
+    >>> sorted(list(getAdapters((sectionA,),
+    ...                         interfaces.IExternalActivities)))
+    [(u'someproduct', <ExternalActivities...>),
+     (u'thirdparty', <ExternalActivities...>)]
+
+These named adapters must have a ``source`` attribute that should
+match under wich the adapter was registered in Zope::
+
+    >>> someproduct = getAdapter(sectionA,
+    ...                          interfaces.IExternalActivities,
+    ...                          name=u"someproduct")
+    >>> someproduct.source
+    'someproduct'
+
+They also have a ``title`` attribute used for presentation::
+
+    >>> someproduct.title
+    u'Some Product'
+
+They also have a ``getExternalActivities()`` method that returns a
+list of IExternalActivity objects that the adapter provides:
+
+    >>> someproduct.getExternalActivities()
+    [<ExternalActivity u'Some1'>]
+    >>> thirdparty = getAdapter(sectionA,
+    ...                         interfaces.IExternalActivities,
+    ...                         name=u"thirdparty")
+    >>> thirdparty.getExternalActivities()
+    [<ExternalActivity u'Third1'>, <ExternalActivity u'Third2'>,
+     <ExternalActivity u'Third3'>]
+
+ExternalActivity objects have an external_activity_id attribute:
+
+    >>> someproduct.getExternalActivities()[0].external_activity_id
+    u'some1'
+
+This allow the adapters to look up and return an external activity,
+using its ``getExternalActivity(activity_id)`` method:
+
+    >>> someproduct.getExternalActivity("some1")
+    <ExternalActivity u'Some1'>
+
+If the adapter cannot find an external activity for an id, None should
+be returned:
+
+    >>> someproduct.getExternalActivity("non_existent") is None
+    True
+
+An ExternalActivity object also has a ``title`` and a ``description``
+attribute that are used for presentation:
+
+    >>> someproduct.getExternalActivity("some1").title
+    u'Some1'
+    >>> someproduct.getExternalActivity("some1").description
+    u'Some1 description'
+
+It provides a ``getGrade(student)`` method that returns a percentage
+for the given student:
+
+    >>> external_activity = someproduct.getExternalActivities()[0]
+    >>> external_activity.getGrade(paul)
+    Decimal("0.5")
+
+If the student doesn't have a grade for that external activity, None
+should be returned:
+
+    >>> other_external_activity = thirdparty.getExternalActivities()[1]
+    >>> other_external_activity.getGrade(paul) is None
+    True
+
+
+Linked Activities
+-----------------
+
+External activities are not persitent objects, but rather proxies for a source
+of grades within a schooltool plugin like cando.  In order to present the
+values of an external activity in the gradebook, we need to create a special
+kind of activity called LinkedActivity that has the attributes necessary for
+linking up with the external activity.  The LinkedActivity object subtypes
+Activity:
+
+    >>> some1 = someproduct.getExternalActivity("some1")
+    >>> week1["external1"] = activity.LinkedActivity(
+    ...     external_activity=some1,
+    ...     category=u"assignment",
+    ...     points=15)
+    >>> linked_activity = week1["external1"]
+    >>> linked_activity
+    <LinkedActivity u'Some1'>
+    >>> interfaces.IActivity.providedBy(linked_activity)
+    True
+
+To be able to extract information from an external activity, a linked
+activity stores the name of the source (since it can be many) and the
+id of the external activity in that source. It also provides a
+``getExternalActivity()`` method that returns the external activity to
+which it is linked:
+
+    >>> linked_activity.getExternalActivity()
+    <ExternalActivity u'Some1'>
+
+If the method cannot find a match, it returns None:
+   
+    >>> week1["non_existent"] = activity.LinkedActivity(
+    ...     external_activity=some1,
+    ...     category=u"assignment",
+    ...     points=25)
+    >>> non_existent = week1["non_existent"]
+    >>> non_existent.external_activity_id = "non_existent"
+    >>> non_existent.getExternalActivity() is None
+    True
+
+Since LinkedActivity is an Activity, it provides a ``title`` and a
+``description`` attribute. Both of these are set at the beginning with
+the attributes from the external activity:
+
+    >>> linked_activity.getExternalActivity().title
+    u'Some1'
+    >>> linked_activity.getExternalActivity().description
+    u'Some1 description'
+    >>> linked_activity.title
+    u'Some1'
+    >>> linked_activity.description
+    u'Some1 description'
+
+An integer attribute called ``points`` is used to set a custom score
+system for the linked activity and it's also used to calculate the
+actual worksheet grade for the linked activity:
+
+    >>> linked_activity.points
+    15
+    >>> linked_activity.scoresystem
+    <RangedValuesScoreSystem u'generated'>
+    >>> linked_activity.scoresystem.max
+    Decimal("15")
+
+If the points attribute changes, the score system also changes:
+
+    >>> linked_activity.points = 20
+    >>> linked_activity.scoresystem.max
+    Decimal("20")
