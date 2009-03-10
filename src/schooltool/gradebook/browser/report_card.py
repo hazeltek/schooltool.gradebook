@@ -34,12 +34,25 @@ from z3c.form import form, field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as _
-from schooltool.course.interfaces import ISectionContainer
+from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
+from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IActivities, IReportActivity
 from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
+
+
+def copyActivities(sourceWorksheet, destWorksheet):
+    """Copy the activities from the source worksheet to the destination."""
+
+    for activity in sourceWorksheet.values():
+        activityCopy = Activity(activity.title, activity.category,
+                                activity.scoresystem, activity.description)
+        chooser = INameChooser(destWorksheet)
+        name = chooser.chooseName('', activityCopy)
+        destWorksheet[name] = activityCopy
 
 
 class TemplatesView(object):
@@ -212,13 +225,13 @@ class DeployReportWorksheetView(object):
 
         # copy worksheet template to deployed container
         term = self.context
-        schoolyear = term.__parent__
+        schoolyear = ISchoolYear(term)
         deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
         deployedWorksheet = Worksheet(worksheet.title)
         chooser = INameChooser(root.deployed)
         name = chooser.chooseName(deployedKey, deployedWorksheet)
         root.deployed[name] = deployedWorksheet
-        self.copyActivities(worksheet, deployedWorksheet)
+        copyActivities(worksheet, deployedWorksheet)
 
         # now copy the template to all sections in the term
         sections = ISectionContainer(term)
@@ -229,16 +242,30 @@ class DeployReportWorksheetView(object):
             chooser = INameChooser(activities)
             name = chooser.chooseName('', worksheetCopy)
             activities[name] = worksheetCopy
-            self.copyActivities(deployedWorksheet, worksheetCopy)
-
-    def copyActivities(self, sourceWorksheet, destWorksheet):
-        for activity in sourceWorksheet.values():
-            activityCopy = Activity(activity.title, activity.category,
-                                    activity.scoresystem, activity.description)
-            chooser = INameChooser(destWorksheet)
-            name = chooser.chooseName('', activityCopy)
-            destWorksheet[name] = activityCopy
+            copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
+
+
+def handleSectionAdded(event):
+    """Make sure the same worksheets are deployed to newly added sections."""
+
+    obj = event.object
+    if not ISection.providedBy(obj):
+        return
+    root = IGradebookRoot(ISchoolToolApplication(None))
+    term = ITerm(obj)
+    schoolyear = ISchoolYear(term)
+    deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
+    for key in root.deployed:
+        if key.startswith(deployedKey):
+            deployedWorksheet = root.deployed[key]
+            activities = IActivities(obj)
+            worksheetCopy = Worksheet(deployedWorksheet.title)
+            worksheetCopy.deployed = True
+            chooser = INameChooser(activities)
+            name = chooser.chooseName('', worksheetCopy)
+            activities[name] = worksheetCopy
+            copyActivities(deployedWorksheet, worksheetCopy)
 

@@ -217,3 +217,35 @@ The other section should also have the same worksheet deployed.
     >>> '<a>' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True
 
+For data integrity's sake, we have to have a subscriber to a new section event
+to automatically add the same worksheets to it that are already deployed to the
+other sections.  We'll add a third section to test this.
+
+    >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
+    ...                  title='Evening CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+
+    >>> manager.open(term_url)
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Evening CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet-2/manage.html">Test2</a>
+
+    >>> manager.getLink('Test').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 1</span>
+
+    >>> manager.open(term_url)
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Evening CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+    >>> manager.getLink('Test2').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 2</span>
+
