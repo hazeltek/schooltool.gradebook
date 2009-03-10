@@ -37,6 +37,8 @@ class IGradebookRoot(Interface):
 
     deployed = Attribute("""Container of deployed report sheet templates""")
 
+    layouts = Attribute("""Container of report card layouts""")
+
 
 class IGradebookTemplates(interfaces.IRequirement):
     """Container of Report Sheet Templates"""
@@ -48,6 +50,12 @@ class IGradebookDeployed(interfaces.IRequirement):
     """Container of Deployed Report Sheet Templates (by term)"""
 
     contains('.IReportWorksheet')
+
+
+class IGradebookLayouts(interfaces.IRequirement):
+    """Container of Report Card Layouts (by schoolyear)"""
+
+    contains('.IReportLayout')
 
 
 class IActivities(interfaces.IRequirement):
@@ -128,6 +136,16 @@ class IReportActivity(IActivity):
     '''An activity to be deployed to section activities'''
 
     containers(IReportWorksheet)
+
+
+class IReportLayout(Interface):
+    '''The layout of the report card for the school year'''
+
+    columns = zope.schema.List(
+        title=_('Columns'),
+        description=_('Columns to be printed in the report card.'))
+
+    containers(IGradebookLayouts)
 
 
 class IEditGradebook(Interface):

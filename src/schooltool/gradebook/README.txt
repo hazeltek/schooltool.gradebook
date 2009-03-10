@@ -23,6 +23,7 @@ application root.  We find it using the supplied adapter.
     >>> from schooltool.gradebook.interfaces import IGradebookRoot
     >>> from schooltool.gradebook.interfaces import IGradebookTemplates
     >>> from schooltool.gradebook.interfaces import IGradebookDeployed
+    >>> from schooltool.gradebook.interfaces import IGradebookLayouts
     >>> from schooltool.gradebook.gradebook_init import getGradebookRoot
     >>> provideAdapter(getGradebookRoot,
     ...                adapts=[ISchoolToolApplication],
@@ -34,6 +35,8 @@ application root.  We find it using the supplied adapter.
     >>> verifyObject(IGradebookTemplates, gradebook_root.templates)
     True
     >>> verifyObject(IGradebookDeployed, gradebook_root.deployed)
+    True
+    >>> verifyObject(IGradebookLayouts, gradebook_root.layouts)
     True
 
 We also need adapters to get from the gradebook root to its attributes for

@@ -63,6 +63,16 @@
         set_schema=".interfaces.IGradebookDeployed"
         />
   </class>
+  <class class=".gradebook_init.GradebookLayouts">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookLayouts"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookLayouts"
+        />
+  </class>
   <class class=".activity.Activities">
     <require
         permission="schooltool.view"
@@ -126,6 +136,15 @@
         set_schema=".interfaces.IReportActivity"
         />
   </class>
+  <class class=".gradebook_init.ReportLayout">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IReportLayout"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IReportLayout"
+        />
 
 
   <!-- Gradebook Adapter -->

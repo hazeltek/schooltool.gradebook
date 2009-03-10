@@ -20,8 +20,9 @@
 Gradebook Initialization
 """
 
+from persistent import Persistent
 from zope.app.container import btree
-from zope.app.container.contained import contained
+from zope.app.container.contained import contained, Contained
 from zope.component import adapts
 from zope.interface import implements
 from zope.security.proxy import removeSecurityProxy
@@ -33,6 +34,7 @@ from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
 from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
 from schooltool.gradebook.interfaces import IGradebookDeployed
+from schooltool.gradebook.interfaces import IGradebookLayouts, IReportLayout
 from schooltool.gradebook.category import getCategories
 from schooltool.requirement.requirement import Requirement
 
@@ -49,6 +51,7 @@ class GradebookRoot(object):
     def __init__(self):
         self.templates = GradebookTemplates(_('Report Sheet Templates'))
         self.deployed = GradebookDeployed(_('Deployed Report Sheets'))
+        self.layouts = GradebookLayouts(_('Report Card Layouts'))
 
 
 class GradebookTemplates(Requirement):
@@ -61,6 +64,20 @@ class GradebookDeployed(Requirement):
     """Container of Deployed Report Sheet Templates (by term)"""
 
     implements(IGradebookDeployed)
+
+
+class GradebookLayouts(Requirement):
+    """Container of Report Card Layouts (by schoolyear)"""
+
+    implements(IGradebookLayouts)
+
+
+class ReportLayout(Persistent, Contained):
+    """The layout of the report card for the school year"""
+
+    implements(IReportLayout)
+
+    columns = []
 
 
 def setUpGradebookRoot(app):
