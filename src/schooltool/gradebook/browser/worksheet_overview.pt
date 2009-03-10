@@ -33,8 +33,11 @@
              tal:condition="not: activity/deployed"
              tal:attributes="value activity/name" />
 
-      <a tal:content="activity/title"
+      <a tal:condition="not: activity/deployed"
+         tal:content="activity/title"
          tal:attributes="href activity/url">Activity</a>
+      <span tal:condition="activity/deployed"
+            tal:content="activity/title">Activity</span>
 
     </div>
     <div class="controls" tal:condition="view/canModify">
