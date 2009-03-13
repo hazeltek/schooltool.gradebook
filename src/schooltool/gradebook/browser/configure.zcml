@@ -398,6 +398,24 @@
       permission="schooltool.edit"
       />
 
+  <!-- Menu items for ISchoolYear-->
+  <menuItem
+      menu="schooltool_actions"
+      title="Layout Report Card"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      action="layout_report_card.html"
+      permission="schooltool.edit"
+      />
+
+  <!-- Views for ISchoolYear-->
+  <page
+      name="layout_report_card.html"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".report_card.LayoutReportCardView"
+      template="layout_report_card.pt"
+      permission="schooltool.edit"
+      />
+
   <zope:adapter
       factory=".report_card.ExistingScoresSystem" />
 

@@ -241,3 +241,115 @@ other sections.  We'll add a third section to test this.
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
     <span>Activity 2</span>
 
+
+Report Card Layout
+------------------
+
+Now that we have some templates deployed, we can move on to setting up the
+layout of the report cards that will be printed after each marking period.
+Each column in a report card will represent a marking period, that being
+an activity within a report worksheet within a term deployment.  At the end
+of each marking period, the resulting report card will contain all of the
+columns for the current school year that have grades entered by the
+teachers.  This way, the admin user can set up the layout for the entire
+year at the beginning, and the report card will automatically show only
+those columns for the marking periods to date.
+
+To demonstrate this, we will need to set up at least one section in the Fall
+term and deploy yet a third template to it.
+
+    >>> setup.addSection('CompSci I', '2005-2006', 'Fall',
+    ...                  title='Evening CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getControl('Title').value = 'Test3'
+    >>> manager.getControl('Add').click()
+    >>> manager.getLink('Test3').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 3'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> term_url = manager.url
+    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet-3']
+    >>> manager.getControl('Deploy').click()
+
+Now the choices for our columns will be selectable over (term, worksheet,
+activity).  Lets call up the column layout view and inspect the choices
+we have.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Layout Report Card').click()
+
+The view starts off with no columns set up.  The 'New Column' select control is
+the only list box present.
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
+    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
+    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+
+We'll add a first column to the layout.
+
+    >>> manager.getControl('New Column').value = ['fall|Test3|Activity 3']
+    >>> manager.getControl('Update').click()
+
+Now the view has the first column and the select control below it to add
+another column.
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
+    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
+    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
+    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
+    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+
+We can change the first column to another activity.  We'll see that the change
+has taken effect.
+
+    >>> manager.getControl('Column1').value = ['spring|Test|Activity 1']
+    >>> manager.getControl('Update').click()
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
+    <option selected="selected" value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
+    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
+    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
+    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+
+If we want, we can delete the column.  We'll see that the view no longer has
+any columns.
+
+    >>> manager.getControl(name='delete:list').value = ['Column1']
+    >>> manager.getControl('Update').click()
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
+    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
+    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+
+Finally, we'll add three columns to our layout for testing the report cards.
+
+    >>> manager.getControl('New Column').value = ['fall|Test3|Activity 3']
+    >>> manager.getControl('Update').click()
+    >>> manager.getControl('New Column').value = ['spring|Test|Activity 1']
+    >>> manager.getControl('Update').click()
+    >>> manager.getControl('New Column').value = ['spring|Test2|Activity 2']
+    >>> manager.getControl('Update').click()
+

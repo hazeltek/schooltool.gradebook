@@ -22,7 +22,7 @@ Report Card Views
 
 from zope.app.container.interfaces import INameChooser
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.component import adapts
+from zope.component import adapts, queryUtility
 from zope.interface import Interface, implements
 from zope.schema import Choice
 from zope.security.checker import canWrite
@@ -37,11 +37,12 @@ from schooltool.common import SchoolToolMessage as _
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
-from schooltool.term.interfaces import ITerm
+from schooltool.term.interfaces import ITerm, IDateManager
 
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IActivities, IReportActivity
 from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
+from schooltool.gradebook.gradebook_init import ReportLayout
 
 
 def copyActivities(sourceWorksheet, destWorksheet):
@@ -246,6 +247,78 @@ class DeployReportWorksheetView(object):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
+
+
+class LayoutReportCardView(object):
+    """A view for laying out the columns of the schoolyear's report card"""
+
+    @property
+    def columns(self):
+        """Get  a list of the existing layout columns."""
+        results = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyearKey = self.context.__name__
+        if schoolyearKey in root.layouts:
+            current_columns = root.layouts[schoolyearKey].columns
+        else:
+            current_columns  = []
+        for index, column in enumerate(current_columns):
+            result = {
+                'label': 'Column%s' % (index + 1),
+                'value': column,
+                }
+            results.append(result)
+        return results
+
+    @property
+    def choices(self):
+        """Get  a list of the possible choices for layout columns."""
+        results = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        for term in self.context.values():
+            deployedKey = '%s_%s' % (self.context.__name__, term.__name__)
+            for key in root.deployed:
+                if key.startswith(deployedKey):
+                    deployedWorksheet = root.deployed[key]
+                    for activity in deployedWorksheet.values():
+                        name = '%s - %s - %s' % (term.title,
+                            deployedWorksheet.title, activity.title)
+                        value = '%s|%s|%s' % (term.__name__,
+                            deployedWorksheet.title, activity.title)
+                        result = {
+                            'name': name,
+                            'value': value,
+                            }
+                        results.append(result)
+        return results
+
+    def update(self):
+        if 'Update' in self.request:
+            self.changeColumns()
+
+    def changeColumns(self):
+        columns = []
+        index = 1
+        while True:
+            label = 'Column%s' % index
+            index += 1
+            if label not in self.request:
+                break
+            if 'delete' in self.request:
+                if label in self.request['delete']:
+                    continue
+            columns.append(self.request[label])
+        if len(self.request['newColumn']):
+            columns.append(self.request['newColumn'])
+
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyearKey = self.context.__name__
+        if schoolyearKey not in root.layouts:
+            if not len(columns):
+                return
+            root.layouts[schoolyearKey] = ReportLayout()
+        layout = root.layouts[schoolyearKey]
+        layout.columns = columns
 
 
 def handleSectionAdded(event):
