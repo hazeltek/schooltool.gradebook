@@ -180,42 +180,14 @@ to the first one.
     ...  stephan.contents
     True
 
-Now, let's add some activities to it.  First we'll verify that the activities
-add view has the right list of existing score systems.
+Now, let's add some activities to it.  After adding the first activity we'll
+note that the new activity appears in the gradebook.
 
     >>> stephan.getLink('New Activity').click()
-    >>> print analyze.queryHTML('id("field.scoresystem.existing")', stephan.contents)[0]
-    <select id="field.scoresystem.existing" name="field.scoresystem.existing" size="1">
-      <option selected="selected" value="">(no value)</option>
-      <option value="100 Points">100 Points</option>
-      <option value="Extended Letter Grade">Extended Letter Grade</option>
-      <option value="Letter Grade">Letter Grade</option>
-      <option value="Pass/Fail">Pass/Fail</option>
-      <option value="Percent">Percent</option>
-    </select>
-
-Now we'll test what happens when we try to add the activity without filling in
-all of the required fields.  The only fields that are required and could
-potentially be left out by the user are title and scoresystem.
-
-    >>> stephan.getControl('Add').click()
-    >>> print stephan.contents
-    <BLANKLINE>
-    ...There are <strong>2</strong> input errors...
-    ...A brief title of the requirement...
-    ...Required input is missing...
-    ...The activity scoresystem...
-    ...Required input is missing...
-
-Now we will fill in all of the required fields, first creating an activity that
-uses an existing score system.  We'll note that the new activity appears in
-the gradebook after successfully being added.
-
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
     >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
+    >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
     >>> print stephan.contents
     <BLANKLINE>
@@ -231,14 +203,11 @@ We'll add a second activity.
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
     >>> stephan.getControl('Category').value = ['exam']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> 'Quiz' in stephan.contents
     True
 
-But, oh, we really did not want to make Homework 1 out of a hundred points,
-but only out of 50. So let's edit it.  To do this, we need to go to use
+We'll test editing an activity's description.  To do this, we need to go to use
 the 'Manage Activities' link.  This presents us with a view of the current
 worksheet's activities with links to edit them.
 
@@ -252,16 +221,14 @@ worksheet's activities with links to edit them.
     ...Quiz...
     ...Delete...
 
-Now let's click on 'HW 1' to change its score system.
+Now let's click on 'HW 1' to change its description.
 
     >>> stephan.getLink('HW 1').click()
-    >>> stephan.getControl('Custom score system').click()
-    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Description').value = 'Homework One'
     >>> stephan.getControl('Apply').click()
 
 Now let's change the current worksheet to 'Week 2'.
 
-    >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
     >>> '<option value="Week 2" selected="selected">Week 2</option>' in \
     ...  stephan.contents
@@ -273,8 +240,6 @@ Now we'll add some activities to it.
     >>> stephan.getControl('Title').value = 'HW 2'
     >>> stephan.getControl('Description').value = 'Homework 2'
     >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> 'HW 2' in stephan.contents
     True
@@ -282,8 +247,6 @@ Now we'll add some activities to it.
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
     >>> stephan.getControl('Category').value = ['exam']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> 'Final' in stephan.contents
     True
@@ -306,8 +269,6 @@ You can also delete activities that you have created:
     >>> stephan.getControl('Title').value = 'HW 3'
     >>> stephan.getControl('Description').value = 'Homework 3'
     >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> stephan.getLink('Manage Activities').click()
     >>> 'HW 3' in stephan.contents
@@ -926,18 +887,28 @@ state of the gradebook:
 We have two regular activities. One assignment:
 
     >>> stephan.getLink('HW 1').click()
-    >>> '<option selected="selected" value="assignment">Assignment</option>' \
-    ... in stephan.contents
-    True
+    >>> stephan.getControl('Category').displayValue
+    ['Assignment']
     >>> stephan.getControl('Cancel').click()
+
+# XXX Cancel does not return you back where you came from!
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.getLink('Manage Activities').click()
 
 And one exam:
 
     >>> stephan.getLink('Quiz').click()
-    >>> '<option selected="selected" value="exam">Exam</option>' in \
-    ... stephan.contents
-    True
+    >>> stephan.getControl('Category').displayValue
+    ['Exam']
     >>> stephan.getControl('Cancel').click()
+
+# XXX Cancel does not return you back where you came from!
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.getLink('Manage Activities').click()
 
 And our grades are:
 

@@ -114,6 +114,21 @@
       />
 
   <!-- Activities -->
+  <page
+     name="addActivity.html"
+     for="schooltool.gradebook.interfaces.IWorksheet"
+     class=".activity.ActivityAddView"
+     permission="schooltool.edit"
+     menu="schooltool_actions"
+     title="Add Activity"/>
+  <page
+      name="edit.html"
+      for="schooltool.gradebook.interfaces.IActivity"
+      class=".activity.ActivityEditView"
+      permission="schooltool.edit"
+      menu="schooltool_actions"
+      title="Edit"
+      />
   <configure package="schooltool.skin">
     <navigationViewlet
         name="categories"
@@ -126,31 +141,8 @@
         title="Activity Categories"
         order="200"
         />
-    <addform
-        label="Add an Activity"
-        name="addActivity.html"
-        schema="schooltool.gradebook.interfaces.IActivity"
-        fields="title description category scoresystem"
-        arguments="title category scoresystem"
-        content_factory="schooltool.gradebook.activity.Activity"
-        permission="schooltool.edit"
-        template="templates/simple_add.pt"
-        class="schooltool.gradebook.browser.activity.ActivityAddView">
-      <widget field="description" height="5" />
-    </addform>
-    <editform
-        label="Edit Activity"
-        name="edit.html"
-        for="schooltool.gradebook.interfaces.IActivity"
-        schema="schooltool.gradebook.interfaces.IActivity"
-        fields="title description category scoresystem"
-        permission="schooltool.edit"
-        template="templates/simple_edit.pt"
-        class="schooltool.gradebook.browser.activity.ActivityEditView"
-        menu="schooltool_actions"
-        title="Edit"
-        />
   </configure>
+
   <defaultView
       for="..interfaces.IActivity"
       name="edit.html"
@@ -176,6 +168,7 @@
       for="..interfaces.ILinkedActivity"
       name="edit.html"
       />
+
   <!-- Menu items for ISection -->
   <menuItem
       menu="schooltool_actions"
@@ -206,7 +199,7 @@
       menu="schooltool_actions"
       title="New Activity"
       for="..interfaces.IWorksheet"
-      action="+/addActivity.html"
+      action="addActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -243,7 +236,7 @@
       menu="schooltool_actions"
       title="New Activity"
       for="..interfaces.IGradebook"
-      action="../+/addActivity.html"
+      action="../addActivity.html"
       permission="schooltool.view"
       />
   <menuItem
