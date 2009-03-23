@@ -344,12 +344,7 @@ any columns.
     <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
     <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
 
-Finally, we'll add three columns to our layout for testing the report cards.
-
-    >>> manager.getControl('New Column').value = ['fall|Test3|Activity 3']
-    >>> manager.getControl('Update').click()
-    >>> manager.getControl('New Column').value = ['spring|Test|Activity 1']
-    >>> manager.getControl('Update').click()
-    >>> manager.getControl('New Column').value = ['spring|Test2|Activity 2']
-    >>> manager.getControl('Update').click()
+Since testing pdf files is not what we want to do, there will be no functional
+tests for the report cards themselves.  Instead, we will have unit tests of
+the reportlab stories in another file. 
 

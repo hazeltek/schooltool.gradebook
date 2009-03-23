@@ -271,7 +271,7 @@
       permission="schooltool.view"
       />
 
-  <!-- Menu items for IWorksheet-->
+  <!-- Menu items for IWorksheet -->
   <menuItem
       menu="schooltool_actions"
       title="New Activity"
@@ -287,7 +287,7 @@
       permission="schooltool.view"
       />
 
-  <!-- Menu items for IGradebook-->
+  <!-- Menu items for IGradebook -->
   <menuItem
       menu="schooltool_actions"
       title="Worksheets"
@@ -380,7 +380,7 @@
       permission="schooltool.edit"
       />
 
-  <!-- Menu items for ITerm-->
+  <!-- Menu items for ITerm -->
   <menuItem
       menu="schooltool_actions"
       title="Deploy Report Worksheet"
@@ -389,7 +389,7 @@
       permission="schooltool.edit"
       />
 
-  <!-- Views for ITerm-->
+  <!-- Views for ITerm -->
   <page
       name="deploy_report_worksheet.html"
       for="schooltool.term.interfaces.ITerm"
@@ -398,7 +398,7 @@
       permission="schooltool.edit"
       />
 
-  <!-- Menu items for ISchoolYear-->
+  <!-- Menu items for ISchoolYear -->
   <menuItem
       menu="schooltool_actions"
       title="Layout Report Card"
@@ -407,12 +407,46 @@
       permission="schooltool.edit"
       />
 
-  <!-- Views for ISchoolYear-->
+  <!-- Views for ISchoolYear -->
   <page
       name="layout_report_card.html"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".report_card.LayoutReportCardView"
       template="layout_report_card.pt"
+      permission="schooltool.edit"
+      />
+
+  <!-- Menu items for IBasicPerson-->
+  <menuItem
+      menu="schooltool_actions"
+      title="Print Report Card"
+      for="schooltool.person.interfaces.IPerson"
+      action="print_report_card.html"
+      permission="schooltool.edit"
+      />
+
+  <!-- Views for IBasicPerson-->
+  <page
+      name="print_report_card.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.StudentReportCardPDFView"
+      permission="schooltool.edit"
+      />
+
+  <!-- Menu items for IGroup -->
+  <menuItem
+      menu="schooltool_actions"
+      title="Print Report Card"
+      for="schooltool.group.interfaces.IGroup"
+      action="print_report_card.html"
+      permission="schooltool.edit"
+      />
+
+  <!-- Views for IGroup -->
+  <page
+      name="print_report_card.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".pdf_views.GroupReportCardPDFView"
       permission="schooltool.edit"
       />
 
