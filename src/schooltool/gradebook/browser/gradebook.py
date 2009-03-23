@@ -41,6 +41,7 @@ from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.term.interfaces import ITerm
 
 from datetime import datetime
 
@@ -146,7 +147,9 @@ class SectionFinder(GradebookBase):
         for section in sectionsTaught:
             url = absoluteURL(section, self.request)
             url += '/gradebook'
-            title = '%s - %s' % (list(section.courses)[0].title, section.title)
+            term = ITerm(section)
+            title = '%s - %s - %s' % (term.title, 
+                list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
             if section == gradebook.context:
                 css = 'active-menu-item'
@@ -154,7 +157,9 @@ class SectionFinder(GradebookBase):
         for section in sectionsAttended:
             url = absoluteURL(section, self.request)
             url += '/mygrades'
-            title = '%s - %s' % (list(section.courses)[0].title, section.title)
+            term = ITerm(section)
+            title = '%s - %s - %s' % (term.title, 
+                list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
             if section == gradebook.context:
                 css = 'active-menu-item'
@@ -162,7 +167,9 @@ class SectionFinder(GradebookBase):
 
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
-        return '%s - %s' % (list(section.courses)[0].title, section.title)
+        term = ITerm(section)
+        return '%s - %s - %s' % (term.title, 
+            list(section.courses)[0].title, section.title)
 
 
 class GradebookOverview(SectionFinder):
