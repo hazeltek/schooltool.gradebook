@@ -126,26 +126,20 @@ class ReportCard(object):
         return story
 
     def getActivity(self, section, layout):
-        termName, worksheetTitle, activityTitle = layout.split('|')
-        term = ITerm(section)
-        if term.__name__ != termName:
-            return None
-        for worksheet in IActivities(section).values():
-            if worksheet.deployed and worksheet.title == worksheetTitle:
-                for activity in worksheet.values():
-                    if activity.title == activityTitle:
-                        return activity
+        termName, worksheetName, activityName = layout.split('|')
+        activities = IActivities(section)
+        if worksheetName in activities:
+            return activities[worksheetName][activityName]
         return None
 
     def getLayoutTermTitle(self, layout):
-        termName, worksheetTitle, activityTitle = layout.split('|')
-        for term in self.schoolyear.values():
-            if term.__name__ != termName:
-                return term.title
+        termName, worksheetName, activityName = layout.split('|')
+        return self.schoolyear[termName].title
 
     def getLayoutActivityTitle(self, layout):
-        termName, worksheetTitle, activityTitle = layout.split('|')
-        return activityTitle
+        termName, worksheetName, activityName = layout.split('|')
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        return root.deployed[worksheetName][activityName].title
 
     def buildScores(self, student):
         sections = list(ILearner(student).sections())

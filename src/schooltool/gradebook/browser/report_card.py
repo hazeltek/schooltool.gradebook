@@ -48,12 +48,10 @@ from schooltool.gradebook.gradebook_init import ReportLayout
 def copyActivities(sourceWorksheet, destWorksheet):
     """Copy the activities from the source worksheet to the destination."""
 
-    for activity in sourceWorksheet.values():
+    for key, activity in sourceWorksheet.items():
         activityCopy = Activity(activity.title, activity.category,
                                 activity.scoresystem, activity.description)
-        chooser = INameChooser(destWorksheet)
-        name = chooser.chooseName('', activityCopy)
-        destWorksheet[name] = activityCopy
+        destWorksheet[key] = activityCopy
 
 
 class TemplatesView(object):
@@ -240,9 +238,7 @@ class DeployReportWorksheetView(object):
             activities = IActivities(section)
             worksheetCopy = Worksheet(deployedWorksheet.title)
             worksheetCopy.deployed = True
-            chooser = INameChooser(activities)
-            name = chooser.chooseName('', worksheetCopy)
-            activities[name] = worksheetCopy
+            activities[deployedWorksheet.__name__] = worksheetCopy
             copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
@@ -284,7 +280,7 @@ class LayoutReportCardView(object):
                         name = '%s - %s - %s' % (term.title,
                             deployedWorksheet.title, activity.title)
                         value = '%s|%s|%s' % (term.__name__,
-                            deployedWorksheet.title, activity.title)
+                            deployedWorksheet.__name__, activity.__name__)
                         result = {
                             'name': name,
                             'value': value,
@@ -337,8 +333,6 @@ def handleSectionAdded(event):
             activities = IActivities(obj)
             worksheetCopy = Worksheet(deployedWorksheet.title)
             worksheetCopy.deployed = True
-            chooser = INameChooser(activities)
-            name = chooser.chooseName('', worksheetCopy)
-            activities[name] = worksheetCopy
+            activities[key] = worksheetCopy
             copyActivities(deployedWorksheet, worksheetCopy)
 

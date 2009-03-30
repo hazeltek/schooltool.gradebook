@@ -148,8 +148,8 @@ the activities will be spans instead of links so that they can't be edited.
     >>> worksheets_url = manager.url
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Test</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet-2/manage.html">Test2</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring-2/manage.html">Test2</a>
 
     >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True
@@ -185,8 +185,8 @@ The other section should also have the same worksheet deployed.
     >>> worksheets_url = manager.url
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Test</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet-2/manage.html">Test2</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring-2/manage.html">Test2</a>
 
     >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
     True
@@ -229,8 +229,8 @@ other sections.  We'll add a third section to test this.
     >>> worksheets_url = manager.url
 
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet/manage.html">Test</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet-2/manage.html">Test2</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring-2/manage.html">Test2</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
@@ -292,45 +292,45 @@ the only list box present.
 
     >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
-    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
-    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
-    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
 We'll add a first column to the layout.
 
-    >>> manager.getControl('New Column').value = ['fall|Test3|Activity 3']
+    >>> manager.getControl('New Column').value = ['fall|2005-2006_fall|ReportActivity']
     >>> manager.getControl('Update').click()
 
 Now the view has the first column and the select control below it to add
 another column.
 
     >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
-    <option selected="selected" value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
-    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
-    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+    <option selected="selected" value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
     >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
-    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
-    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
-    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
 We can change the first column to another activity.  We'll see that the change
 has taken effect.
 
-    >>> manager.getControl('Column1').value = ['spring|Test|Activity 1']
+    >>> manager.getControl('Column1').value = ['spring|2005-2006_spring|ReportActivity']
     >>> manager.getControl('Update').click()
 
     >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
-    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
-    <option selected="selected" value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
-    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option selected="selected" value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
     >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
-    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
-    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
-    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
 If we want, we can delete the column.  We'll see that the view no longer has
 any columns.
@@ -340,9 +340,9 @@ any columns.
 
     >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
-    <option value="fall|Test3|Activity 3">Fall - Test3 - Activity 3</option>
-    <option value="spring|Test|Activity 1">Spring - Test - Activity 1</option>
-    <option value="spring|Test2|Activity 2">Spring - Test2 - Activity 2</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
 Since testing pdf files is not what we want to do, there will be no functional
 tests for the report cards themselves.  Instead, we will have unit tests of
