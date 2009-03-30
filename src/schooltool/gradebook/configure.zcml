@@ -146,7 +146,29 @@
         set_schema=".interfaces.IReportLayout"
         />
   </class>
+  <class class=".activity.LinkedActivity">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__
+                    addBase removeBase
+                    source external_activity_id title description category
+		    scoresystem date points getExternalActivity"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.ILinkedActivity"
+        />
+  </class>
 
+  <!-- External Activities Vocabulary -->
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      factory="schooltool.gradebook.activity.ExternalActivitiesVocabulary"
+      name="schooltool.gradebook.external_activities"
+      />
 
   <!-- Gradebook Adapter -->
   <class class=".gradebook.Gradebook">

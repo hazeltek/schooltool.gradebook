@@ -180,42 +180,14 @@ to the first one.
     ...  stephan.contents
     True
 
-Now, let's add some activities to it.  First we'll verify that the activities
-add view has the right list of existing score systems.
+Now, let's add some activities to it.  After adding the first activity we'll
+note that the new activity appears in the gradebook.
 
     >>> stephan.getLink('New Activity').click()
-    >>> print analyze.queryHTML('id("field.scoresystem.existing")', stephan.contents)[0]
-    <select id="field.scoresystem.existing" name="field.scoresystem.existing" size="1">
-      <option selected="selected" value="">(no value)</option>
-      <option value="100 Points">100 Points</option>
-      <option value="Extended Letter Grade">Extended Letter Grade</option>
-      <option value="Letter Grade">Letter Grade</option>
-      <option value="Pass/Fail">Pass/Fail</option>
-      <option value="Percent">Percent</option>
-    </select>
-
-Now we'll test what happens when we try to add the activity without filling in
-all of the required fields.  The only fields that are required and could
-potentially be left out by the user are title and scoresystem.
-
-    >>> stephan.getControl('Add').click()
-    >>> print stephan.contents
-    <BLANKLINE>
-    ...There are <strong>2</strong> input errors...
-    ...A brief title of the requirement...
-    ...Required input is missing...
-    ...The activity scoresystem...
-    ...Required input is missing...
-
-Now we will fill in all of the required fields, first creating an activity that
-uses an existing score system.  We'll note that the new activity appears in
-the gradebook after successfully being added.
-
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
     >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
+    >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
     >>> print stephan.contents
     <BLANKLINE>
@@ -231,14 +203,11 @@ We'll add a second activity.
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
     >>> stephan.getControl('Category').value = ['exam']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> 'Quiz' in stephan.contents
     True
 
-But, oh, we really did not want to make Homework 1 out of a hundred points,
-but only out of 50. So let's edit it.  To do this, we need to go to use
+We'll test editing an activity's description.  To do this, we need to go to use
 the 'Manage Activities' link.  This presents us with a view of the current
 worksheet's activities with links to edit them.
 
@@ -252,16 +221,14 @@ worksheet's activities with links to edit them.
     ...Quiz...
     ...Delete...
 
-Now let's click on 'HW 1' to change its score system.
+Now let's click on 'HW 1' to change its description.
 
     >>> stephan.getLink('HW 1').click()
-    >>> stephan.getControl('Custom score system').click()
-    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Description').value = 'Homework One'
     >>> stephan.getControl('Apply').click()
 
 Now let's change the current worksheet to 'Week 2'.
 
-    >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
     >>> '<option value="Week 2" selected="selected">Week 2</option>' in \
     ...  stephan.contents
@@ -273,8 +240,6 @@ Now we'll add some activities to it.
     >>> stephan.getControl('Title').value = 'HW 2'
     >>> stephan.getControl('Description').value = 'Homework 2'
     >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> 'HW 2' in stephan.contents
     True
@@ -282,8 +247,6 @@ Now we'll add some activities to it.
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
     >>> stephan.getControl('Category').value = ['exam']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> 'Final' in stephan.contents
     True
@@ -306,8 +269,6 @@ You can also delete activities that you have created:
     >>> stephan.getControl('Title').value = 'HW 3'
     >>> stephan.getControl('Description').value = 'Homework 3'
     >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl(
-    ...     name='field.scoresystem.existing').value = ['100 Points']
     >>> stephan.getControl('Add').click()
     >>> stephan.getLink('Manage Activities').click()
     >>> 'HW 3' in stephan.contents
@@ -906,3 +867,159 @@ Students should not be able to view a teacher's gradebook.
     ...
     Unauthorized: ...
 
+
+External Activities
+-------------------
+
+External activities allow to get grades for a worksheet activity from
+another schooltool module.
+
+Before we test external activities, we are going to record the current
+state of the gradebook:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
+    ...  stephan.contents
+    True
+    >>> stephan.getLink('Manage Activities').click()
+
+We have two regular activities. One assignment:
+
+    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getControl('Category').displayValue
+    ['Assignment']
+    >>> stephan.getControl('Cancel').click()
+
+# XXX Cancel does not return you back where you came from!
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.getLink('Manage Activities').click()
+
+And one exam:
+
+    >>> stephan.getLink('Quiz').click()
+    >>> stephan.getControl('Category').displayValue
+    ['Exam']
+    >>> stephan.getControl('Cancel').click()
+
+# XXX Cancel does not return you back where you came from!
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.getLink('Manage Activities').click()
+
+And our grades are:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Name...Total...Average...HW 1...Quiz...
+    ...Claudia Richter...<b>86</b>...<b>86%</b>...86...
+    ...Tom Hoffman...<b>44</b>...<b>88%</b>...44...
+    ...Paul Cardune...<b>40</b>...<b>80%</b>...40...
+
+This state should change after we update the grades from external
+activities. Remember that the gradebook has weighting defined?:
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Category weights for worksheet Week 1...
+    ...Assignment...38...
+    ...Exam...62...
+    ...Lab...
+
+This is important since external activities should be weightable. Now,
+let's go back to the 'Activities' view of Stephan's teaching
+gradebook:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getLink('Manage Activities').click()
+
+We should have a 'New External Activity' button to add external
+activities:
+
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Edit...
+    ...New Activity...New External Activity...
+    ...Return to Gradebook...
+
+Let's add a new external activity as an assignment. For this test we
+have registered two external utilities stubs titled "Hardware" and
+"HTML":
+
+    >>> stephan.getLink('New External Activity').click()
+    >>> hardware_token = "samplesource-hardware"
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Add an External Activity...
+    >>> stephan.getControl('External Activity').value = [hardware_token]
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Points').value = '15'
+    >>> stephan.getControl('Add').click()
+
+Adding an external activity gets us back to the gradebook index view
+where we can see the external activity which by default has been
+loaded with the latest grades:
+
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Name...Total...Average...HW 1...Quiz...Hardware...
+    ...Claudia Richter...92.00...69%...86...6.00...
+    ...Tom Hoffman...53.00...82%...44...9.00...
+    ...Paul Cardune...40...80%...40...
+
+Let's edit the external activity. The form doesn't allow to edit the
+score system. The edit view also shows an 'Update Grades' button to
+recalculate the activity grades from the external activity:
+
+    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Hardware').click()
+    >>> 'score system' not in stephan.contents
+    True
+    >>> 'Maximum' not in stephan.contents
+    True
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Update Grades...
+    ...<h3>Edit External Activity</h3>...
+    ...External Activity...Sample Source - Hardware...
+    ...Title...Hardware...
+    ...Description...Hardware description...
+    ...Category...
+    ...<option...selected="selected"...value="assignment"...>Assignment...
+    ...Points...15...
+    >>> stephan.getControl('Title').value = u"Hardware Assignment"
+    >>> stephan.getControl('Description').value = "The Hardware assignment"
+    >>> stephan.getControl('Points').value = '25'
+    >>> stephan.getControl('Apply').click()
+
+Let's go back to the edit form to update the activity's grades using
+the 'Update Grades' button:
+
+    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Hardware Assignment').click()
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Update Grades...
+    ...<h3>Edit External Activity</h3>...
+    ...External Activity...Sample Source - Hardware...
+    ...Title...Hardware Assignment...
+    ...Description...The Hardware assignment...
+    ...Category...
+    ...<option...selected="selected"...value="assignment"...>Assignment...
+    ...Points...25...
+    >>> stephan.getLink('Update Grades').click()
+
+This takes us to the gradebook where the averages should have
+changed taking into account the weighting:
+
+    >>> stephan.contents
+    <BLANKLINE>
+    ...Name...Total...Average...HW 1...Quiz...Hardware As...
+    ...Claudia Richter...96.00...69%...86...10.00...
+    ...Tom Hoffman...59.00...79%...44...15.00...
+    ...Paul Cardune...40...80%...40...

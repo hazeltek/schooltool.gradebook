@@ -189,32 +189,21 @@
       />
 
   <!-- Activities -->
-  <configure package="schooltool.skin">
-    <addform
-        label="Add an Activity"
-        name="addActivity.html"
-        schema="schooltool.gradebook.interfaces.IActivity"
-        fields="title description category scoresystem"
-        arguments="title category scoresystem"
-        content_factory="schooltool.gradebook.activity.Activity"
-        permission="schooltool.edit"
-        template="templates/simple_add.pt"
-        class="schooltool.gradebook.browser.activity.ActivityAddView">
-      <widget field="description" height="5" />
-    </addform>
-    <editform
-        label="Edit Activity"
-        name="edit.html"
-        for="schooltool.gradebook.interfaces.IActivity"
-        schema="schooltool.gradebook.interfaces.IActivity"
-        fields="title description category scoresystem"
-        permission="schooltool.edit"
-        template="templates/simple_edit.pt"
-        class="schooltool.gradebook.browser.activity.ActivityEditView"
-        menu="schooltool_actions"
-        title="Edit"
-        />
-  </configure>
+  <page
+     name="addActivity.html"
+     for="schooltool.gradebook.interfaces.IWorksheet"
+     class=".activity.ActivityAddView"
+     permission="schooltool.edit"
+     menu="schooltool_actions"
+     title="Add Activity"/>
+  <page
+      name="edit.html"
+      for="schooltool.gradebook.interfaces.IActivity"
+      class=".activity.ActivityEditView"
+      permission="schooltool.edit"
+      menu="schooltool_actions"
+      title="Edit"
+      />
   <defaultView
       for="..interfaces.IActivity"
       name="edit.html"
@@ -237,6 +226,27 @@
       permission="schooltool.edit"
       menu="schooltool_actions"
       title="Edit"
+      />
+  <page
+      for="zope.app.container.interfaces.IAdding"
+      name="addLinkedActivity.html"
+      class="schooltool.gradebook.browser.activity.LinkedActivityAddView"
+      permission="schooltool.edit"
+      />
+  <page
+      for="schooltool.gradebook.interfaces.ILinkedActivity"
+      name="edit.html"
+      class="schooltool.gradebook.browser.activity.LinkedActivityEditView"
+      permission="schooltool.edit"
+      />
+  <zope:adapter
+      for="schooltool.gradebook.interfaces.ILinkedActivity"
+      provides="schooltool.gradebook.browser.activity.ILinkedActivityFields"
+      factory=".activity.LinkedActivityFields"
+      />
+  <defaultView
+      for="..interfaces.ILinkedActivity"
+      name="edit.html"
       />
 
   <!-- Menu items for ISection -->
@@ -276,7 +286,14 @@
       menu="schooltool_actions"
       title="New Activity"
       for="..interfaces.IWorksheet"
-      action="+/addActivity.html"
+      action="addActivity.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="New External Activity"
+      for="..interfaces.IWorksheet"
+      action="+/addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -306,7 +323,14 @@
       menu="schooltool_actions"
       title="New Activity"
       for="..interfaces.IGradebook"
-      action="../+/addActivity.html"
+      action="../addActivity.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="New External Activity"
+      for="..interfaces.IGradebook"
+      action="../+/addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -315,6 +339,27 @@
       for="..interfaces.IGradebook"
       action="../manage.html"
       permission="schooltool.view"
+      />
+
+  <!-- Menu items for ILinkedActivity -->
+  <!-- <menuItem
+      menu="schooltool_actions"
+      title="Update Grades"
+      for="schooltool.gradebook.interfaces.ILinkedActivity"
+      action="updateGrades.html"
+      permission="schooltool.edit"
+      /> -->
+
+  <navigationViewlet
+      name="update_grades"
+      for="schooltool.gradebook.interfaces.ILinkedActivity"
+      manager="schooltool.skin.IActionMenuManager"
+      template="templates/actionsViewlet.pt"
+      class=".activity.UpdateGradesActionMenuViewlet"
+      permission="schooltool.edit"
+      link="updateGrades.html"
+      title="Update Grades"
+      order="0"
       />
 
   <!-- Gradebook -->
@@ -378,6 +423,20 @@
       class=".gradebook.Grade"
       template="gradebook_grade.pt"
       permission="schooltool.edit"
+      />
+  <page
+      name="updateGrades.html"
+      for="..interfaces.ILinkedActivity"
+      class=".gradebook.UpdateLinkedActivityGrades"
+      permission="schooltool.edit"
+      />
+
+  <!-- Terms -->
+
+  <zope:adapter
+      for="schooltool.gradebook.interfaces.IExternalActivitiesSource
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      factory="schooltool.gradebook.browser.activity.ExternalActivitiesTerms"
       />
 
   <!-- Menu items for ITerm -->

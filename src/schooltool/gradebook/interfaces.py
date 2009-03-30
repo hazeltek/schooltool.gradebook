@@ -26,6 +26,9 @@ from zope.interface import Interface, Attribute
 import zope.schema
 from zope.app.container.interfaces import IContainer, IContained
 from zope.app.container.constraints import containers, contains
+import zope.interface
+from zope.app import container
+from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.common import SchoolToolMessage as _
 
@@ -263,3 +266,90 @@ class IMyGrades(Interface):
     def setCurrentWorksheet(worksheet):
         """Set the currently active worksheet."""
 
+
+class ILinkedActivity(IActivity):
+    """An activity that can be linked to an external activity"""
+
+    source = zope.schema.TextLine(
+        title=_(u"External Activity Source"),
+        description=_(u"The registration name of the source"),
+        required=True)
+        
+    external_activity_id = zope.schema.TextLine(
+        title=_(u"External Activity ID"),
+        description=_(u"A unique identifier for the external activity"),
+        required=True)
+    
+    points = zope.schema.Int(
+        title=_(u"Points"),
+        description=_(u"Points value to calculate the activity grade"),
+        min=0,
+        required=True)
+
+    def getExternalActivity():
+        """Returns the external activity to which this activity is linked.
+
+        Return None if it cannot find an appropiate external activity"""
+
+
+class IExternalActivitiesSource(IIterableSource):
+    """Source with all external activities"""
+
+
+# These should be provided by plugin programmers
+
+class IExternalActivities(zope.interface.Interface):
+    """External activities of a section"""
+ 
+    source = zope.schema.TextLine(
+        title=_(u"External Activity Source"),
+        description=_(u"The name under which the adapter is registered"),
+        required=True)
+
+    title = zope.schema.TextLine(
+        title=_(u"Title"),
+        description=_(u"A brief title of the external activities source"),
+        required=True)
+
+    def getExternalActivities():
+        """Return a list of IExternalActivity objects for its context
+        section"""
+
+    def getExternalActivity(external_activity_id):
+        """Return an IExternalActivity object matching the provided id.
+
+        Return None if it cannot find an appropiate external activity"""
+
+
+class IExternalActivity(zope.interface.Interface):
+    """An external activity"""
+
+    source = zope.schema.TextLine(
+        title=_(u"External Activity Source"),
+        description=_(u"The registration name of the source"),
+        required=True)
+        
+    external_activity_id = zope.schema.TextLine(
+        title=_(u"External Activity ID"),
+        description=_(u"A unique identifier for the external activity"),
+        required=True)
+    
+    title = zope.schema.TextLine(
+        title=_(u"Title"),
+        description=_(u"A brief title of the external activity."),
+        required=True)
+
+    description = zope.schema.Text(
+        title=_("Description"),
+        description=_("A detailed description of the external activity."),
+        required=False)
+
+    def getGrade(student):
+        """Get the grade for an external activity.
+
+        Return a Decimal percentage representing the grade for the
+        given student. If there is no grade for that student for that
+        external activity, None should be returned"""
+
+    def __eq__(another):
+        """Compare equality with other external activities"""
