@@ -28,17 +28,8 @@
               tal:content="num" />
         </tal:block>
       </select>
-      <input type="checkbox" name="delete:list"
-             tal:condition="not: worksheet/deployed"
-             tal:attributes="value worksheet/name" />
-
       <a tal:content="worksheet/title"
          tal:attributes="href worksheet/url">Worksheet</a>
-
-    </div>
-    <div class="controls">
-      <tal:block tal:condition="view/canModify"
-                 metal:use-macro="view/@@standard_macros/delete-button" />
     </div>
   </form>
 

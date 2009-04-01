@@ -174,13 +174,6 @@
       permission="schooltool.view"
       />
   <page
-      name="delete.html"
-      for="..interfaces.IWorksheet"
-      class=".worksheet.WorksheetDeleteView"
-      template="worksheet_delete.pt"
-      permission="schooltool.edit"
-      />
-  <page
       name="weights.html"
       for="..interfaces.IWorksheet"
       class=".activity.WeightCategoriesView"

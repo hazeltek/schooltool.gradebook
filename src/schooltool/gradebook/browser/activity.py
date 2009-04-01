@@ -111,11 +111,7 @@ class ActivitiesView(object):
             # is unauthenticated should add the relevant code
             raise Unauthorized("You don't have the permission to do this.")
 
-        if 'DELETE' in self.request:
-            for name in self.request.get('delete', []):
-                del self.context[name]
-
-        elif 'form-submitted' in self.request:
+        if 'form-submitted' in self.request:
             old_pos = 0
             for worksheet in self.context.values():
                 old_pos += 1
