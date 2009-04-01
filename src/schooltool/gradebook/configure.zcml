@@ -3,6 +3,16 @@
     xmlns:security="http://schooltool.org/securitypolicy"
     xmlns="http://namespaces.zope.org/zope">
 
+  <!-- Gradebook Root adapters -->
+  <adapter
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      provides=".interfaces.IGradebookRoot"
+      factory=".gradebook_init.getGradebookRoot" />
+  <adapter
+      for=".interfaces.IGradebookRoot"
+      provides=".interfaces.IGradebookTemplates"
+      factory=".gradebook_init.getGradebookTemplates" />
+
   <!-- Category Vocabulary -->
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
@@ -11,7 +21,7 @@
       />
   <adapter
       for="schooltool.app.interfaces.ISchoolToolApplication"
-      factory=".gradebook.GradebookInit"
+      factory=".gradebook_init.GradebookInit"
       name="schooltool.gradebook" />
 
   <!-- Activity Adapters -->
@@ -23,6 +33,46 @@
       />
 
   <!-- Activity Content and Security -->
+  <class class=".gradebook_init.GradebookRoot">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookRoot"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookRoot"
+        />
+  </class>
+  <class class=".gradebook_init.GradebookTemplates">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookTemplates"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookTemplates"
+        />
+  </class>
+  <class class=".gradebook_init.GradebookDeployed">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookDeployed"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookDeployed"
+        />
+  </class>
+  <class class=".gradebook_init.GradebookLayouts">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IGradebookLayouts"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IGradebookLayouts"
+        />
+  </class>
   <class class=".activity.Activities">
     <require
         permission="schooltool.view"
@@ -37,7 +87,7 @@
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
         permission="schooltool.view"
-        attributes="keys __iter__ values items __len__
+        attributes="keys __iter__ values items __len__ deployed
                     title getCategoryWeights"
         />
     <require
@@ -47,18 +97,53 @@
         attributes="changePosition setCategoryWeight"
         />
   </class>
+  <class class=".activity.ReportWorksheet">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__ title deployed"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.IReportWorksheet"
+        attributes="changePosition"
+        />
+  </class>
   <class class=".activity.Activity">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__
-                    addBase removeBase
                     title description category scoresystem date"
         />
     <require
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
         set_schema=".interfaces.IActivity"
+        />
+  </class>
+  <class class=".activity.ReportActivity">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__
+                    title description category scoresystem date"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.IReportActivity"
+        />
+  </class>
+  <class class=".gradebook_init.ReportLayout">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IReportLayout"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IReportLayout"
         />
   </class>
   <class class=".activity.LinkedActivity">
@@ -132,6 +217,20 @@
 
   <!-- Pluggable traverser plugins for HTTP paths -->
   <adapterTraverserPlugin
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="gradebook"
+      adapter="schooltool.gradebook.interfaces.IGradebookRoot"
+      permission="schooltool.edit"
+      />
+  <adapterTraverserPlugin
+      for="schooltool.gradebook.interfaces.IGradebookRoot"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="templates"
+      adapter="schooltool.gradebook.interfaces.IGradebookTemplates"
+      permission="schooltool.edit"
+      />
+  <adapterTraverserPlugin
       for="schooltool.course.interfaces.ISection"
       layer="zope.publisher.interfaces.http.IHTTPRequest"
       name="activities"
@@ -176,7 +275,7 @@
       permission="schooltool.edit"
       crowds="section_instructors grade_editors" />
 
-  <adapter factory=".gradebook.GradebookAppStartup"
+  <adapter factory=".gradebook_init.GradebookAppStartup"
            name="gradebook_startup_init" />
 
 </configure>

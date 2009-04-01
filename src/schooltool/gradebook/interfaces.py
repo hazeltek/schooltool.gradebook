@@ -22,11 +22,43 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
+from zope.interface import Interface, Attribute
+import zope.schema
+from zope.app.container.interfaces import IContainer, IContained
+from zope.app.container.constraints import containers, contains
 import zope.interface
 from zope.app import container
 from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.common import SchoolToolMessage as _
+
+
+class IGradebookRoot(Interface):
+    """The root of gradebook data"""
+
+    templates = Attribute("""Container of report sheet templates""")
+
+    deployed = Attribute("""Container of deployed report sheet templates""")
+
+    layouts = Attribute("""Container of report card layouts""")
+
+
+class IGradebookTemplates(interfaces.IRequirement):
+    """Container of Report Sheet Templates"""
+
+    contains('.IReportWorksheet')
+
+
+class IGradebookDeployed(interfaces.IRequirement):
+    """Container of Deployed Report Sheet Templates (by term)"""
+
+    contains('.IReportWorksheet')
+
+
+class IGradebookLayouts(interfaces.IRequirement):
+    """Container of Report Card Layouts (by schoolyear)"""
+
+    contains('.IReportLayout')
 
 
 class IActivities(interfaces.IRequirement):
@@ -45,11 +77,16 @@ class IActivities(interfaces.IRequirement):
     def getCurrentActivities():
         """Get the activities for the currently active worksheet."""
 
-    container.constraints.contains('.IWorksheet')
+    contains('.IWorksheet')
 
 
 class IWorksheet(interfaces.IRequirement):
     '''A list of activities that must be fulfilled in a course or section.'''
+
+    deployed = zope.schema.Bool(
+        title=u"Deployed Worksheet",
+        required=False
+        )
 
     def getCategoryWeights():
         """Get the category weights for the worksheet.  This method will
@@ -60,8 +97,15 @@ class IWorksheet(interfaces.IRequirement):
         """Set the weight for the given category.  Any numeric type is 
            acceptable"""
 
-    container.constraints.containers(IActivities)
-    container.constraints.contains('.IActivity')
+    containers(IActivities)
+    contains('.IActivity')
+
+
+class IReportWorksheet(interfaces.IRequirement):
+    '''A list of report card activities that get copied into sections.'''
+
+    containers(IGradebookTemplates, IGradebookDeployed)
+    contains('.IReportActivity')
 
 
 class IActivity(interfaces.IRequirement):
@@ -88,10 +132,26 @@ class IActivity(interfaces.IRequirement):
         description=_("The date the activity was created."),
         required=True)
 
-    container.constraints.containers(IWorksheet)
+    containers(IWorksheet)
 
 
-class IEditGradebook(zope.interface.Interface):
+class IReportActivity(IActivity):
+    '''An activity to be deployed to section activities'''
+
+    containers(IReportWorksheet)
+
+
+class IReportLayout(Interface):
+    '''The layout of the report card for the school year'''
+
+    columns = zope.schema.List(
+        title=_('Columns'),
+        description=_('Columns to be printed in the report card.'))
+
+    containers(IGradebookLayouts)
+
+
+class IEditGradebook(Interface):
 
     def evaluate(student, activity, score, evaluator=None):
         """Evaluate a student for an activity"""
@@ -103,7 +163,7 @@ class IEditGradebook(zope.interface.Interface):
         """Set the final grade adjustment for the given student."""
     
 
-class IReadGradebook(zope.interface.Interface):
+class IReadGradebook(Interface):
 
     worksheets = zope.schema.List(
         title=_('Worksheets'),
@@ -184,7 +244,7 @@ class IGradebook(IReadGradebook, IEditGradebook):
     """
 
 
-class IMyGrades(zope.interface.Interface):
+class IMyGrades(Interface):
     """The students gradebook for a section.
 
     This interface provides an API that allows the studentto see their

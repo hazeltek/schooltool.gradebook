@@ -16,21 +16,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-"""Gradebook Implementation
-
-$Id$
 """
-from zope.component import adapts
-from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
+Gradebook Implementation
+"""
+
+from zope.component import adapts, queryMultiAdapter
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.app.interfaces import IApplicationStartUpEvent
 __docformat__ = 'reStructuredText'
 import persistent.dict
 
 from decimal import Decimal
 
-import zope.component
-import zope.interface
 from zope.security import proxy
 from zope import annotation
 from zope.app.keyreference.interfaces import IKeyReference
@@ -40,7 +36,6 @@ from zope.publisher.interfaces import IPublishTraverse
 
 from schooltool import course, requirement
 from schooltool.traverser import traverser
-from schooltool.app.app import InitBase
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
 from schooltool.securitypolicy.crowds import AggregateCrowd
 from schooltool.securitypolicy.crowds import ManagersCrowd
@@ -48,7 +43,8 @@ from schooltool.securitypolicy.crowds import ClerksCrowd
 from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
-from schooltool.gradebook.category import getCategories
+from schooltool.gradebook.activity import Activities
+from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -57,7 +53,7 @@ from schooltool.common import SchoolToolMessage as _
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 FINAL_GRADE_ADJUSTMENT_KEY = 'schooltool.gradebook.finalgradeadjustment'
-
+        
 
 class WorksheetGradebookTraverser(object):
     '''Traverser that goes from a worksheet to the gradebook'''
@@ -85,8 +81,7 @@ class WorksheetGradebookTraverser(object):
                 gb.__setattr__('__parent__', gb.__parent__)
                 return gb
             else:
-                return zope.component.queryMultiAdapter(
-                    (self.context, request), name=name)
+                return queryMultiAdapter((self.context, request), name=name)
 
 
 class GradebookBase(object):
@@ -96,7 +91,9 @@ class GradebookBase(object):
         self.__parent__ = context
         self.section = self.context.__parent__.__parent__
         # Establish worksheets and all activities
-        self.worksheets = list(interfaces.IActivities(self.section).values())
+        activities = interfaces.IActivities(self.section)
+        ensureAtLeastOneWorksheet(activities)
+        self.worksheets = list(activities.values())
         self.activities = []
         for worksheet in self.worksheets:
             for activity in worksheet.values():
@@ -362,8 +359,8 @@ class GradebookBase(object):
 
 
 class Gradebook(GradebookBase):
-    zope.interface.implements(interfaces.IGradebook)
-    zope.component.adapts(interfaces.IWorksheet)
+    implements(interfaces.IGradebook)
+    adapts(interfaces.IWorksheet)
 
     def __init__(self, context):
         super(Gradebook, self).__init__(context)
@@ -372,8 +369,8 @@ class Gradebook(GradebookBase):
 
 
 class MyGrades(GradebookBase):
-    zope.interface.implements(interfaces.IMyGrades)
-    zope.component.adapts(interfaces.IWorksheet)
+    implements(interfaces.IMyGrades)
+    adapts(interfaces.IWorksheet)
 
     def __init__(self, context):
         super(MyGrades, self).__init__(context)
@@ -402,30 +399,3 @@ class GradebookEditorsCrowd(AggregateCrowd, ConfigurableCrowd):
         return (ConfigurableCrowd.contains(self, principal) and
                 AggregateCrowd.contains(self, principal))
 
-
-def setUpDefaultCategories(dict):
-    dict.addValue('assignment', 'en', _('Assignment'))
-    dict.addValue('essay', 'en', _('Essay'))
-    dict.addValue('exam', 'en', _('Exam'))
-    dict.addValue('homework', 'en', _('Homework'))
-    dict.addValue('journal', 'en', _('Journal'))
-    dict.addValue('lab', 'en', _('Lab'))
-    dict.addValue('presentation', 'en', _('Presentation'))
-    dict.addValue('project', 'en', _('Project'))
-    dict.setDefaultLanguage('en')
-    dict.setDefaultKey('assignment')
-
-
-class GradebookAppStartup(ObjectEventAdapterSubscriber):
-    adapts(IApplicationStartUpEvent, ISchoolToolApplication)
-
-    def __call__(self):
-        dict = getCategories(self.object)
-        if not dict.getKeys():
-            setUpDefaultCategories(dict)
-
-
-class GradebookInit(InitBase):
-    def __call__(self):
-        dict = getCategories(self.app)
-        setUpDefaultCategories(dict)

@@ -1,0 +1,347 @@
+============
+Report Cards
+============
+
+The end goal of having users enter grades is for parents to receive a
+report card from the school after each grading period has ended.  To facilitate
+this, the admin user will set up report sheet templates at the application
+level, then choose on to deploy to a given term.  This deployment will
+result in a special worksheet being inserted into every section for that
+term so that the teachers can enter the final grades of the grading period.
+Finally, the admin user will be able to request report cards to be printed
+after each gradding period has ended.
+
+Let's start by setting up the application and logging in as manager.
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+    >>> manager = Browser('manager', 'schooltool')
+
+The first step is to set up the report sheet templates.  This is done from
+the Manage tab.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+
+We see that there are no report worksheets yet.
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+
+We'll add one.
+
+    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getControl('Title').value = 'Test'
+    >>> manager.getControl('Add').click()
+
+Now we see that the new report worksheet appears in the list.
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schooltool.gradebook/templates/ReportWorksheet">Test</a>
+
+We'll click on it to view its activities.  We see that there are none.
+
+    >>> manager.getLink('Test').click()
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+
+To add a report activity to it, we'll click on the supplied link.  We need only
+fill in the title as the other required fields default to the first value
+in the vocabulary.
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 1'
+    >>> manager.getControl('Add').click()
+
+Now we see that the new report activity appears in the list.
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schooltool.gradebook/templates/ReportWorksheet/ReportActivity">Activity 1</a>
+
+Next, we'll click on the newly added activity link to edit its score system.
+We see that, when it was added, it was defaulted to the first existing score
+system in the list.
+
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Exisiting Score System').value
+    ['100 Points']
+
+We'll change it, apply the change, and revisit the activity to see that the
+change took.
+
+    >>> manager.getControl('Exisiting Score System').value = ['Letter Grade']
+    >>> manager.getControl('Apply').click()
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Exisiting Score System').value
+    ['Letter Grade']
+
+Later we will want to test the handling of deployment of multiple templates
+to a term, so here we'll set up a second template.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getControl('Title').value = 'Test2'
+    >>> manager.getControl('Add').click()
+    >>> manager.getLink('Test2').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 2'
+    >>> manager.getControl('Add').click()
+
+
+Report Worksheet Deployment
+---------------------------
+
+Now that we've set up report sheet templates, we want to choose one of them
+to deploy to all sections in a given term.  We'll need to set up one of our
+terms with some sections.  Of course, we'll need a teacher and some students
+in order to do that.
+
+    >>> setup.addPerson('Teacher One', 'teacher1', 'pwd')
+    >>> setup.addPerson('Student One', 'student1', 'pwd')
+    >>> setup.addPerson('Student Two', 'student2', 'pwd')
+    >>> setup.addCourse('CompSci I', '2005-2006')
+    >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
+    ...                  title='Morning CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+    >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
+    ...                  title='Afternoon CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+
+We'll navigate to the 'Spring' term where we just created the two sections,
+and we'll click on the 'Deploy Report Worksheet' link.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Spring').click()
+    >>> term_url = manager.url
+    >>> manager.getLink('Deploy Report Worksheet').click()
+
+Hitting the 'Cancel' button brings us back to the term view.
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url == term_url
+    True
+
+Now we'll go back to the view and this time hit the 'Deploy' button.  This will
+also bring us back to the term view.  First we'll deploy the first template,
+then the second.
+
+    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Deploy').click()
+    >>> manager.url == term_url
+    True
+    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet-2']
+    >>> manager.getControl('Deploy').click()
+
+To make sure the deployment worked, we'll navigate to each section and make sure
+the worksheets and activities are there.  We'll start with the first section.
+In addition to testing for the presence of the worksheets and activities, we'll
+make sure that there is no checkbox available to delete any of them.  Also,
+the activities will be spans instead of links so that they can't be edited.
+
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Morning CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+    >>> worksheets_url = manager.url
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring-2/manage.html">Test2</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Sheet1</a>
+
+    >>> manager.getLink('Test').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 1</span>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> '<a>' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> manager.open(worksheets_url)
+    >>> manager.getLink('Test2').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 2</span>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> '<a>' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+The other section should also have the same worksheet deployed.
+
+    >>> manager.open(term_url)
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Afternoon CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+    >>> worksheets_url = manager.url
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring-2/manage.html">Test2</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Sheet1</a>
+
+    >>> manager.getLink('Test').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 1</span>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> '<a>' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> manager.open(worksheets_url)
+    >>> manager.getLink('Test2').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 2</span>
+
+    >>> 'checkbox' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+    >>> '<a>' not in analyze.queryHTML("id('content-body')", manager.contents)[0]
+    True
+
+For data integrity's sake, we have to have a subscriber to a new section event
+to automatically add the same worksheets to it that are already deployed to the
+other sections.  We'll add a third section to test this.
+
+    >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
+    ...                  title='Evening CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+
+    >>> manager.open(term_url)
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Evening CompSci I').click()
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.getLink('Worksheets').click()
+    >>> worksheets_url = manager.url
+
+    >>> analyze.printQuery("id('content-body')//a", manager.contents)
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring/manage.html">Test</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring-2/manage.html">Test2</a>
+    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet/manage.html">Sheet1</a>
+
+    >>> manager.getLink('Test').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 1</span>
+
+    >>> manager.open(worksheets_url)
+    >>> manager.getLink('Test2').click()
+    >>> analyze.printQuery("id('content-body')//span", manager.contents)
+    <span>Activity 2</span>
+
+
+Report Card Layout
+------------------
+
+Now that we have some templates deployed, we can move on to setting up the
+layout of the report cards that will be printed after each marking period.
+Each column in a report card will represent a marking period, that being
+an activity within a report worksheet within a term deployment.  At the end
+of each marking period, the resulting report card will contain all of the
+columns for the current school year that have grades entered by the
+teachers.  This way, the admin user can set up the layout for the entire
+year at the beginning, and the report card will automatically show only
+those columns for the marking periods to date.
+
+To demonstrate this, we will need to set up at least one section in the Fall
+term and deploy yet a third template to it.
+
+    >>> setup.addSection('CompSci I', '2005-2006', 'Fall',
+    ...                  title='Evening CompSci I',
+    ...                  instructors=['Teacher One'],
+    ...                  members=['Student One','Student Two'])
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getControl('Title').value = 'Test3'
+    >>> manager.getControl('Add').click()
+    >>> manager.getLink('Test3').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 3'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> term_url = manager.url
+    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet-3']
+    >>> manager.getControl('Deploy').click()
+
+Now the choices for our columns will be selectable over (term, worksheet,
+activity).  Lets call up the column layout view and inspect the choices
+we have.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Layout Report Card').click()
+
+The view starts off with no columns set up.  The 'New Column' select control is
+the only list box present.
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+We'll add a first column to the layout.
+
+    >>> manager.getControl('New Column').value = ['fall|2005-2006_fall|ReportActivity']
+    >>> manager.getControl('Update').click()
+
+Now the view has the first column and the select control below it to add
+another column.
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+We can change the first column to another activity.  We'll see that the change
+has taken effect.
+
+    >>> manager.getControl('Column1').value = ['spring|2005-2006_spring|ReportActivity']
+    >>> manager.getControl('Update').click()
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option selected="selected" value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+If we want, we can delete the column.  We'll see that the view no longer has
+any columns.
+
+    >>> manager.getControl(name='delete:list').value = ['Column1']
+    >>> manager.getControl('Update').click()
+
+    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+Since testing pdf files is not what we want to do, there will be no functional
+tests for the report cards themselves.  Instead, we will have unit tests of
+the reportlab stories in another file. 
+

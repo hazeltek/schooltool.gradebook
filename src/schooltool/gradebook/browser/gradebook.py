@@ -16,10 +16,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-"""Gradebook Views
-
-$Id$
 """
+Gradebook Views
+"""
+
 from schooltool.course.interfaces import ILearner
 from schooltool.course.interfaces import IInstructor
 __docformat__ = 'reStructuredText'
@@ -35,12 +35,14 @@ from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISection
 from schooltool.gradebook import interfaces
+from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.term.interfaces import ITerm
 
 from datetime import datetime
 import decimal
@@ -81,6 +83,7 @@ class SectionGradebookRedirectView(BrowserView):
     def __call__(self):
         person = IPerson(self.request.principal)
         activities = interfaces.IActivities(self.context)
+        ensureAtLeastOneWorksheet(activities)
         current_worksheet = activities.getCurrentWorksheet(person)
         url = absoluteURL(activities, self.request)
         if current_worksheet is not None:
@@ -147,7 +150,9 @@ class SectionFinder(GradebookBase):
         for section in sectionsTaught:
             url = absoluteURL(section, self.request)
             url += '/gradebook'
-            title = '%s - %s' % (list(section.courses)[0].title, section.title)
+            term = ITerm(section)
+            title = '%s - %s - %s' % (term.title, 
+                list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
             if section == gradebook.context:
                 css = 'active-menu-item'
@@ -155,7 +160,9 @@ class SectionFinder(GradebookBase):
         for section in sectionsAttended:
             url = absoluteURL(section, self.request)
             url += '/mygrades'
-            title = '%s - %s' % (list(section.courses)[0].title, section.title)
+            term = ITerm(section)
+            title = '%s - %s - %s' % (term.title, 
+                list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
             if section == gradebook.context:
                 css = 'active-menu-item'
@@ -163,7 +170,9 @@ class SectionFinder(GradebookBase):
 
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
-        return '%s - %s' % (list(section.courses)[0].title, section.title)
+        term = ITerm(section)
+        return '%s - %s - %s' % (term.title, 
+            list(section.courses)[0].title, section.title)
 
 
 class GradebookOverview(SectionFinder):
