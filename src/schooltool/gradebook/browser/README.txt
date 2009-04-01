@@ -133,23 +133,30 @@ taken directly to the gradebook view for the first section in the
 list of sections he teachers.  In this case, he only teachers the
 one section.
 
-However, since his section has not yet been set up to have any worksheets,
-he will be redirected to the 'Worksheets' view so that he can add a worksheet.
+Since his section has not yet been set up to have any worksheets, a default
+worksheet called, 'Sheet1', will automatically be created.
 
     >>> stephan = setup.logIn('stephan', 'pwd')
     >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Worksheets').click()
     >>> print stephan.contents
     <BLANKLINE>
     ...Worksheets...
+    ...Sheet1...
     ...Delete...
+    >>> #stephan.serve()
 
-Now, we can use the 'New Worksheet' action link to create our first worksheet.
+First, we will change the title of our default worksheet to 'Week 1'.
 
-    >>> stephan.getLink('New Worksheet').click()
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.getLink('Edit').click()
     >>> stephan.getControl('Title').value = 'Week 1'
-    >>> stephan.getControl('Add').click()
+    >>> stephan.getControl('Apply').click()
     >>> 'Week 1' in stephan.contents
     True
+
+Then, we can use the 'New Worksheet' action link to create our second worksheet.
+
     >>> stephan.getLink('New Worksheet').click()
     >>> stephan.getControl('Title').value = 'Week 2'
     >>> stephan.getControl('Add').click()
@@ -751,9 +758,11 @@ We'll have Tom set up a worksheet.
     >>> tom = setup.logIn('tom', 'pwd')
     >>> tom.getLink('Gradebook').click()
     >>> tom.getLink('Classes you teach').click()
-    >>> tom.getLink('New Worksheet').click()
+    >>> tom.getLink('Worksheets').click()
+    >>> tom.getLink('Sheet1').click()
+    >>> tom.getLink('Edit').click()
     >>> tom.getControl('Title').value = 'Week 1'
-    >>> tom.getControl('Add').click()
+    >>> tom.getControl('Apply').click()
 
 Now, when Stephan clicks on the 'Gradebook' tab, he will get a startup view
 that allows him to go to either his gradebook or his mygrades views.

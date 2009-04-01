@@ -35,6 +35,7 @@ from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISection
 from schooltool.gradebook import interfaces
+from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.common import SchoolToolMessage as _
@@ -82,6 +83,7 @@ class SectionGradebookRedirectView(BrowserView):
     def __call__(self):
         person = IPerson(self.request.principal)
         activities = interfaces.IActivities(self.context)
+        ensureAtLeastOneWorksheet(activities)
         current_worksheet = activities.getCurrentWorksheet(person)
         url = absoluteURL(activities, self.request)
         if current_worksheet is not None:

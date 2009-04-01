@@ -29,6 +29,7 @@ from decimal import Decimal
 
 import zope.interface
 from zope import annotation
+from zope.app.container.interfaces import INameChooser
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
@@ -43,8 +44,27 @@ ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
 
+
+def ensureAtLeastOneWorksheet(activities):
+    for worksheet in activities.values():
+        if not worksheet.deployed:
+            return
+    sheet1 = Worksheet(_('Sheet1'))
+    chooser = INameChooser(activities)
+    name = chooser.chooseName('', sheet1)
+    activities[name] = sheet1
+
+
 class Activities(requirement.Requirement):
     zope.interface.implements(interfaces.IActivities)
+
+    def _getDefaultWorksheet(self):
+        for worksheet in self.worksheets:
+            if not worksheet.deployed:
+                return worksheet
+        if len(self.worksheets):
+            return self.worksheets[0]
+        return None
 
     @property
     def worksheets(self):
@@ -52,10 +72,7 @@ class Activities(requirement.Requirement):
 
     def resetCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
-        if self.worksheets:
-            default = self.worksheets[0]
-        else:
-            default = None
+        default = self._getDefaultWorksheet()
         self.setCurrentWorksheet(person, default)
 
     def getCurrentWorksheet(self, person):
@@ -63,10 +80,7 @@ class Activities(requirement.Requirement):
         ann = annotation.interfaces.IAnnotations(person)
         if CURRENT_WORKSHEET_KEY not in ann:
             ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
-        if self.worksheets:
-            default = self.worksheets[0]
-        else:
-            default = None
+        default = self._getDefaultWorksheet()
         section_id = hash(IKeyReference(self.__parent__))
         return ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
 

@@ -44,6 +44,7 @@ from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import Activities
+from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -52,7 +53,7 @@ from schooltool.common import SchoolToolMessage as _
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 FINAL_GRADE_ADJUSTMENT_KEY = 'schooltool.gradebook.finalgradeadjustment'
-
+        
 
 class WorksheetGradebookTraverser(object):
     '''Traverser that goes from a worksheet to the gradebook'''
@@ -90,7 +91,9 @@ class GradebookBase(object):
         self.__parent__ = context
         self.section = self.context.__parent__.__parent__
         # Establish worksheets and all activities
-        self.worksheets = list(interfaces.IActivities(self.section).values())
+        activities = interfaces.IActivities(self.section)
+        ensureAtLeastOneWorksheet(activities)
+        self.worksheets = list(activities.values())
         self.activities = []
         for worksheet in self.worksheets:
             for activity in worksheet.values():
