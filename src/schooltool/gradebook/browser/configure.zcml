@@ -333,6 +333,13 @@
       action="../manage.html"
       permission="schooltool.view"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Weight Categories"
+      for="..interfaces.IGradebook"
+      action="../weights.html"
+      permission="schooltool.view"
+      />
 
   <!-- Special navagation viewlet for update linked activity grades action -->
   <navigationViewlet
