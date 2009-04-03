@@ -454,21 +454,34 @@ class GradeActivity(object):
 
     message = ''
 
+    def activities(self):
+        """Get  a list of all activities."""
+        result = []
+        for activity in self.context.getCurrentActivities(self.person):
+            shortTitle = activity.title
+            if len(activity.title) > 14:
+                shortTitle = activity.title[0:11] + '...'
+                
+            result.append({'shortTitle': shortTitle,
+                           'longTitle': activity.title,
+                           'max': activity.scoresystem.getBestScore(),
+                           'hash': hash(IKeyReference(activity))})
+
     @property
     def activity(self):
-        if hasattr(self, '_activity'):
-            return self._activity
         act_hash = int(self.request['activity'])
         for activity in self.context.activities:
             if hash(IKeyReference(activity)) == act_hash:
-                self._activity = activity
-                return activity
+                return {'title': activity.title,
+                        'max': activity.scoresystem.getBestScore(),
+                        'hash': hash(IKeyReference(activity)),
+                         'obj': activity}
 
     @property
     def grades(self):
         gradebook = proxy.removeSecurityProxy(self.context)
         for student in self.context.students:
-            ev = gradebook.getEvaluation(student, self.activity)
+            ev = gradebook.getEvaluation(student, self.activity['obj'])
             value = self.request.get(student.username)
             if ev is not None and ev.value is not UNSCORED:
                 value = value or ev.value
@@ -483,7 +496,7 @@ class GradeActivity(object):
             self.request.response.redirect('index.html')
 
         elif 'UPDATE_SUBMIT' in self.request:
-            activity = self.activity
+            activity = self.activity['obj']
             evaluator = getName(IPerson(self.request.principal))
             gradebook = proxy.removeSecurityProxy(self.context)
             # Iterate through all students
