@@ -295,9 +295,13 @@ class GradebookOverview(SectionFinder):
                 student)
 
             rows.append(
-                {'student': {'title': student.title, 'id': student.username},
+                {'student': {'title': student.title, 
+                             'id': student.username,
+                             'url': absoluteURL(student, self.request),
+                            },
                  'grades': grades, 'total': str(total),
-                 'average': str(average)})
+                 'average': str(average)
+                })
 
         # Do the sorting
         key, reverse = self.sortKey
@@ -375,97 +379,10 @@ class FinalGradesView(SectionFinder):
                         self.error_message = str(e)
 
 
-class GradeStudent(object):
-    """Grading a single student."""
-
-    message = ''
-
-    @property
-    def student(self):
-        id = self.request['student']
-        school = app.getSchoolToolApplication()
-        return school['persons'][id]
-
-    @property
-    def activities(self):
-        return [
-            {'title': activity.title,
-             'max': activity.scoresystem.getBestScore(),
-             'hash': hash(IKeyReference(activity))}
-            for activity in self.context.getCurrentActivities(self.person)]
-
-    def grades(self):
-        activities = [(hash(IKeyReference(activity)), activity)
-            for activity in self.context.getCurrentActivities(self.person)]
-        student = self.student
-        gradebook = proxy.removeSecurityProxy(self.context)
-        for act_hash, activity in activities:
-            ev = gradebook.getEvaluation(student, activity)
-            value = self.request.get(str(act_hash))
-            if ev is not None and ev.value is not UNSCORED:
-                yield {'activity': act_hash, 'value': value or ev.value}
-            else:
-                yield {'activity': act_hash, 'value': value or ''}
-
-    def update(self):
-        self.person = IPerson(self.request.principal)
-
-        if 'CANCEL' in self.request:
-            self.request.response.redirect('index.html')
-
-        elif 'UPDATE_SUBMIT' in self.request:
-            student = self.student
-            evaluator = getName(IPerson(self.request.principal))
-            gradebook = proxy.removeSecurityProxy(self.context)
-            # Iterate through all activities
-            for activity in self.context.activities:
-                # Create a hash and see whether it is in the request
-                act_hash = str(hash(IKeyReference(activity)))
-                if act_hash in self.request:
-
-                    # If a value is present, create an evaluation, if the
-                    # score is different
-                    try:
-                        score = activity.scoresystem.fromUnicode(
-                            self.request[act_hash])
-                    except (zope.schema.ValidationError, ValueError):
-                        self.message = _(
-                            'The grade $value for activity $name is not valid.',
-                            mapping={'value': self.request[act_hash],
-                                     'name': activity.title})
-                        return
-                    ev = gradebook.getEvaluation(student, activity)
-                    # Delete the score
-                    if ev is not None and score is UNSCORED:
-                        self.context.removeEvaluation(student, activity)
-                    # Do nothing
-                    elif ev is None and score is UNSCORED:
-                        continue
-                    # Replace the score or add new one/
-                    elif ev is None or score != ev.value:
-                        self.context.evaluate(
-                            student, activity, score, evaluator)
-
-            self.request.response.redirect('index.html')
-
-
 class GradeActivity(object):
     """Grading a single activity"""
 
     message = ''
-
-    def activities(self):
-        """Get  a list of all activities."""
-        result = []
-        for activity in self.context.getCurrentActivities(self.person):
-            shortTitle = activity.title
-            if len(activity.title) > 14:
-                shortTitle = activity.title[0:11] + '...'
-                
-            result.append({'shortTitle': shortTitle,
-                           'longTitle': activity.title,
-                           'max': activity.scoresystem.getBestScore(),
-                           'hash': hash(IKeyReference(activity))})
 
     @property
     def activity(self):
@@ -526,63 +443,6 @@ class GradeActivity(object):
                     elif ev is None or score != ev.value:
                         self.context.evaluate(
                             student, activity, score, evaluator)
-
-            self.request.response.redirect('index.html')
-
-
-class Grade(object):
-    """Grading a specific activity for a student."""
-
-    @property
-    def student(self):
-        id = self.request['student']
-        school = app.getSchoolToolApplication()
-        return school['persons'][id]
-
-    @property
-    def activity(self):
-        if hasattr(self, '_activity'):
-            return self._activity
-        act_hash = int(self.request['activity'])
-        for activity in self.context.activities:
-            if hash(IKeyReference(activity)) == act_hash:
-                self._activity = activity
-                return activity
-
-    @property
-    def activityInfo(self):
-        formatter = self.request.locale.dates.getFormatter('date', 'short')
-        return {'title': self.activity.title,
-                'date': formatter.format(self.activity.date),
-                'maxScore': self.activity.scoresystem.getBestScore()}
-
-    @property
-    def evaluationInfo(self):
-        formatter = self.request.locale.dates.getFormatter('dateTime', 'short')
-        gradebook = proxy.removeSecurityProxy(self.context)
-        ev = gradebook.getEvaluation(self.student, self.activity)
-        if ev is not None and ev.value is not UNSCORED:
-            return {'value': ev.value,
-                    'time': formatter.format(ev.time)}
-        else:
-            return {'value': '', 'time': ''}
-
-    def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect('index.html')
-
-        elif 'DELETE' in self.request:
-            self.context.removeEvaluation(self.student, self.activity)
-
-        elif 'UPDATE_SUBMIT' in self.request:
-            evaluator = getName(IPerson(self.request.principal))
-
-            score = self.activity.scoresystem.fromUnicode(self.request['grade'])
-            gradebook = proxy.removeSecurityProxy(self.context)
-            ev = gradebook.getEvaluation(self.student, self.activity)
-            if ev is None or score != ev.value:
-                self.context.evaluate(
-                    self.student, self.activity, score, evaluator)
 
             self.request.response.redirect('index.html')
 

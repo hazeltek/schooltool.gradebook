@@ -121,8 +121,7 @@
       <tal:if condition="repeat/row/even">
         <td class="cell padded even">
           <a href=""
-             tal:attributes="href
-                 string:gradeStudent.html?student=${row/student/id}"
+             tal:attributes="href row/student/url"
              tal:content="row/student/title">
             Tom Hoffman
           </a>
@@ -149,8 +148,7 @@
       <tal:if condition="repeat/row/odd">
         <td class="cell padded odd">
           <a href=""
-             tal:attributes="href
-                 string:gradeStudent.html?student=${row/student/id}"
+             tal:attributes="href row/student/url"
              tal:content="row/student/title">
             Tom Hoffman
           </a>

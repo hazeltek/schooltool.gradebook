@@ -308,7 +308,7 @@ We can enter a score into any cell.  Let's enter one for Claudia's HW 1
 activity.  We'll do some trickery to calculate the cell name, taking advantage
 of the fact that it's the first cell.
 
-    >>> index = stephan.contents.find('student=claudia')
+    >>> index = stephan.contents.find('claudia')
     >>> contents = stephan.contents[index:]
     >>> search_text = 'name="'
     >>> index = contents.find(search_text) + len(search_text)
@@ -343,82 +343,10 @@ Finally, we can remove the score by clearing out the cell.
     >>> stephan.getControl(name=cell_name).value
     ''
 
+We need to put the score back for future tests to pass.
 
-Entering Scores for a Row (Student)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Let's say we want to enter the grades for Claudia. All we do is to simply
-click on her name:
-
-    >>> stephan.getLink('Claudia Richter').click()
-
-Now we just enter the grades:
-
-    >>> stephan.getControl('HW 1').value = u'-1'
-    >>> stephan.getControl('Quiz').value = u'56'
+    >>> stephan.getControl(name=cell_name).value = '36'
     >>> stephan.getControl('Update').click()
-
-But since I entered an invlaid value for Homework 1, we get an error message:
-
-    >>> 'The grade -1 for activity HW 1 is not valid.' in stephan.contents
-    True
-
-Also note that all the other entered values should be retained:
-
-    >>> 'value="-1"' in stephan.contents
-    True
-    >>> 'value="56"' in stephan.contents
-    True
-    >>> stephan.getControl('HW 1').value = u'36'
-    >>> stephan.getControl('Update').click()
-
-The screen will return to the grade overview, where the grades are no visible:
-
-    >>> 'value="36"' in stephan.contents
-    True
-    >>> 'value="56"' in stephan.contents
-    True
-
-Also, there will be an average grade displayed that the teacher can use to
-formulate a final grade.  The total used to establish the average also appears
-in the column before it.
-
-    >>> print stephan.contents
-    <BLANKLINE>
-    ...Claudia Richter...
-    ...92</b>...
-    ...61%</b>...
-
-Now let's enter again and change a grade:
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('HW 1').value = u'46'
-    >>> stephan.getControl('Update').click()
-    >>> 'value="46"' in stephan.contents
-    True
-
-When you want to delete an evaluation altogether, simply blank the value:
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('HW 1').value = u''
-    >>> stephan.getControl('Update').click()
-    >>> 'value="46"' in stephan.contents
-    False
-
-Of course, you can also abort the grading.
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('Cancel').click()
-    >>> stephan.url
-    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
-
-Let's put Claudia's grade back in:
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('HW 1').value = u'36'
-    >>> stephan.getControl('Update').click()
-    >>> 'value="36"' in stephan.contents
-    True
 
 
 Entering Scores for a Column (Activity)
