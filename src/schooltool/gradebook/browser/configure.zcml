@@ -334,15 +334,7 @@
       permission="schooltool.view"
       />
 
-  <!-- Menu items for ILinkedActivity -->
-  <!-- <menuItem
-      menu="schooltool_actions"
-      title="Update Grades"
-      for="schooltool.gradebook.interfaces.ILinkedActivity"
-      action="updateGrades.html"
-      permission="schooltool.edit"
-      /> -->
-
+  <!-- Special navagation viewlet for update linked activity grades action -->
   <navigationViewlet
       name="update_grades"
       for="schooltool.gradebook.interfaces.ILinkedActivity"
