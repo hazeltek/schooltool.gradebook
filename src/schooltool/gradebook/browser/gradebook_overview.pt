@@ -25,14 +25,6 @@
     </script>
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
-    <div tal:condition="view/changed"
-         id="warning">
-      <span id="warningtext"> Evaluations changes saved at <span tal:content="view/time">some time</span>. Remember to click "Update" to submit any further changes.</span>
-    </div>
-    <div tal:condition="python: not view.changed"
-         id="warning">
-      <span id="warningtext"> Changes are not saved as they are typed. Click "Update" to save them.</span>
-    </div>
     <tal:if condition="python:not list(view.getSections(True))">
       <span tal:content="string:Section: ${view/getCurrentSection}" />
     </tal:if>
@@ -91,7 +83,7 @@
        <div i18n:translate="">Total</div>
      </th>
      <th class="cell header">
-       <div i18n:translate="">Average</div>
+       <div i18n:translate="">Ave.</div>
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
      <th class="cell title header" tal:repeat="activity view/activities">
