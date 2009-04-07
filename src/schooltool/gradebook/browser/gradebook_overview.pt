@@ -81,7 +81,7 @@
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
      <th class="cell title header" tal:repeat="activity view/activities">
-       <div>
+       <div class="padded">
          <a href=""
             tal:attributes="href 
                             string:gradeActivity.html?activity=${activity/hash};

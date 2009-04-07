@@ -128,8 +128,8 @@ class ActivityAddView(z3cform.AddForm):
     label = _("Add new activity")
     template = ViewPageTemplateFile('add_edit_activity.pt')
 
-    fields = field.Fields(interfaces.IActivity).select('title', 'description',
-                                                       'category')
+    fields = field.Fields(interfaces.IActivity)
+    fields = fields.select('title', 'label', 'description', 'category')
     fields += field.Fields(IRangedValuesScoreSystem).select('min', 'max')
 
     def updateActions(self):
@@ -157,7 +157,7 @@ class ActivityAddView(z3cform.AddForm):
         scoresystem = RangedValuesScoreSystem(
             u'generated', min=data['min'], max=data['max'])
         activity = Activity(data['title'], data['category'], scoresystem,
-                            data['description'])
+                            data['description'], data['label'])
         return activity
 
     def add(self, activity):
@@ -227,8 +227,8 @@ class ActivityEditView(z3cform.EditForm):
     z3cform.extends(z3cform.EditForm)
     template = ViewPageTemplateFile('add_edit_activity.pt')
 
-    fields = field.Fields(interfaces.IActivity).select('title', 'description',
-                                                       'category')
+    fields = field.Fields(interfaces.IActivity)
+    fields = fields.select('title', 'label', 'description', 'category')
 
     @button.buttonAndHandler(_("Cancel"))
     def handle_cancel_action(self, action):
@@ -258,7 +258,7 @@ class LinkedActivityEditView(form.EditForm):
     form_fields = form.Fields(
         form.Fields(ILinkedActivityFields, for_display=True),
         interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "title",
+    form_fields = form_fields.select("external_activity", "title", 'label',
                                      "description", "category", "points")
 
     label = _(u"Edit External Activity")

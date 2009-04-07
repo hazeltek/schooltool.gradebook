@@ -129,9 +129,12 @@ class ReportWorksheet(requirement.Requirement):
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)
 
+    label = None
+
     def __init__(self, title, category, scoresystem,
-                 description=None, date=None):
+                 description=None, label=None, date=None):
         super(Activity, self).__init__(title)
+        self.label = label
         self.description = description
         self.category = category
         self.scoresystem = scoresystem
@@ -171,12 +174,11 @@ class LinkedActivity(Activity):
     def __init__(self, external_activity, category, points):
         custom = scoresystem.RangedValuesScoreSystem(
             u'generated', min=Decimal(0), max=Decimal(points))
-        zope.interface.directlyProvides(
-            custom, scoresystem.ICustomScoreSystem)
         super(LinkedActivity, self).__init__(external_activity.title,
                                              category,
                                              custom,
-                                             external_activity.description)
+                                             external_activity.description,
+                                             external_activity.label)
         self.source = external_activity.source
         self.external_activity_id = external_activity.external_activity_id
 

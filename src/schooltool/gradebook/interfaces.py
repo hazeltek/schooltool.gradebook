@@ -111,6 +111,11 @@ class IReportWorksheet(interfaces.IRequirement):
 class IActivity(interfaces.IRequirement):
     '''An activity to be graded'''
 
+    label = zope.schema.TextLine(
+        title=_(u"Label"),
+        description=_("The column label for the activity in the gradebook."),
+        required=False)
+
     description = zope.schema.Text(
         title=_("Description"),
         description=_("A detailed description of the activity."),
@@ -338,6 +343,11 @@ class IExternalActivity(zope.interface.Interface):
         title=_(u"Title"),
         description=_(u"A brief title of the external activity."),
         required=True)
+
+    label = zope.schema.TextLine(
+        title=_(u"Label"),
+        description=_("The column label for the activity in the gradebook."),
+        required=False)
 
     description = zope.schema.Text(
         title=_("Description"),

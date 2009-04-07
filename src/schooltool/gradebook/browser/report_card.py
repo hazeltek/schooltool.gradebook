@@ -51,7 +51,8 @@ def copyActivities(sourceWorksheet, destWorksheet):
 
     for key, activity in sourceWorksheet.items():
         activityCopy = Activity(activity.title, activity.category,
-                                activity.scoresystem, activity.description)
+                                activity.scoresystem, activity.description,
+                                activity.label)
         destWorksheet[key] = activityCopy
 
 
@@ -130,7 +131,8 @@ class ReportActivityAddView(form.AddForm):
     label = _("Add new activity")
     template = ViewPageTemplateFile('add_edit_report_activity.pt')
 
-    fields = field.Fields(IReportActivity).select('title', 'description')
+    fields = field.Fields(IReportActivity)
+    fields = fields.select('title', 'label', 'description')
     fields += field.Fields(IExistingScoreSystem)
 
     def updateActions(self):
@@ -157,7 +159,8 @@ class ReportActivityAddView(form.AddForm):
     def create(self, data):
         categories = getCategories(ISchoolToolApplication(None))
         activity = ReportActivity(data['title'], categories.getDefaultKey(), 
-                                  data['scoresystem'], data['description'])
+                                  data['scoresystem'], data['description'],
+                                  data['label'])
         return activity
 
     def add(self, activity):
@@ -176,7 +179,8 @@ class ReportActivityEditView(form.EditForm):
     form.extends(form.EditForm)
     template = ViewPageTemplateFile('add_edit_report_activity.pt')
 
-    fields = field.Fields(IReportActivity).select('title', 'description')
+    fields = field.Fields(IReportActivity)
+    fields = fields.select('title', 'label', 'description')
     fields += field.Fields(IExistingScoreSystem)
 
     @button.buttonAndHandler(_("Cancel"))

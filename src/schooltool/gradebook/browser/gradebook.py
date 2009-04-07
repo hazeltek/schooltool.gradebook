@@ -258,9 +258,11 @@ class GradebookOverview(SectionFinder):
         """Get  a list of all activities."""
         result = []
         for activity in self.context.getCurrentActivities(self.person):
-            shortTitle = activity.title
-            if len(activity.title) > 14:
-                shortTitle = activity.title[0:11] + '...'
+            shortTitle = activity.label
+            if shortTitle is None or len(shortTitle) == 0:
+                shortTitle = activity.title
+                if len(shortTitle) > 5:
+                    shortTitle = shortTitle[:5].strip()
                 
             result.append({'shortTitle': shortTitle,
                            'longTitle': activity.title,

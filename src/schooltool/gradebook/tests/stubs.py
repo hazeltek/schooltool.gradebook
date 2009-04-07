@@ -31,10 +31,12 @@ class ExternalActivityStub(object):
 
     zope.interface.implements(interfaces.IExternalActivity)
     
-    def __init__(self, source, ID, title, description=None, grades={}):
+    def __init__(self, source, ID, title, description=None, label=None, 
+                 grades={}):
         self.source = source
         self.external_activity_id = ID
         self.title = title
+        self.label = label
         self.description = description
         self.grades = grades
 
@@ -101,6 +103,7 @@ class SampleSource(ExternalActivitiesStub):
                                                    u"hardware",
                                                    u"Hardware",
                                                    u"Hardware description",
+                                                   u"Hardware Label",
                                                    grades={"claudia": \
                                                            Decimal("0.4"),
                                                            "tom": \
@@ -108,6 +111,7 @@ class SampleSource(ExternalActivitiesStub):
                   "html": ExternalActivityStub(u"samplesource",
                                                u"html",
                                                u"HTML",
+                                               u"HTML Label",
                                                grades={"claudia": \
                                                        Decimal("0.8"),
                                                        "paul": \
