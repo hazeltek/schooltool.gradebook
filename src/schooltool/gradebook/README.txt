@@ -659,7 +659,8 @@ Activity:
     >>> week1["external1"] = activity.LinkedActivity(
     ...     external_activity=some1,
     ...     category=u"assignment",
-    ...     points=15)
+    ...     points=15,
+    ...     label=u"Some1")
     >>> linked_activity = week1["external1"]
     >>> linked_activity
     <LinkedActivity u'Some1'>
@@ -680,7 +681,8 @@ If the method cannot find a match, it returns None:
     >>> week1["non_existent"] = activity.LinkedActivity(
     ...     external_activity=some1,
     ...     category=u"assignment",
-    ...     points=25)
+    ...     points=25,
+    ...     label=u"Some1")
     >>> non_existent = week1["non_existent"]
     >>> non_existent.external_activity_id = "non_existent"
     >>> non_existent.getExternalActivity() is None
@@ -715,3 +717,4 @@ If the points attribute changes, the score system also changes:
     >>> linked_activity.points = 20
     >>> linked_activity.scoresystem.max
     Decimal("20")
+

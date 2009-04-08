@@ -171,14 +171,14 @@ getSectionActivities.factory = Activities
 class LinkedActivity(Activity):
     zope.interface.implements(interfaces.ILinkedActivity)
 
-    def __init__(self, external_activity, category, points):
+    def __init__(self, external_activity, category, points, label):
         custom = scoresystem.RangedValuesScoreSystem(
             u'generated', min=Decimal(0), max=Decimal(points))
         super(LinkedActivity, self).__init__(external_activity.title,
                                              category,
                                              custom,
                                              external_activity.description,
-                                             external_activity.label)
+                                             label)
         self.source = external_activity.source
         self.external_activity_id = external_activity.external_activity_id
 

@@ -176,7 +176,8 @@ class LinkedActivityAddView(form.AddForm):
 
     form_fields = form.Fields(ILinkedActivityFields,
                               interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "category", "points")
+    form_fields = form_fields.select("external_activity", "label", "category",
+                                     "points")
 
     label = _(u"Add an External Activity")
     template = ViewPageTemplateFile("templates/linkedactivity_add.pt")
@@ -186,7 +187,9 @@ class LinkedActivityAddView(form.AddForm):
         external_activity = data.get("external_activity")[1]
         category = data.get("category")
         points = data.get("points")
-        return activity.LinkedActivity(external_activity, category, points)
+        label = data.get("label")
+        return activity.LinkedActivity(external_activity, category, points,
+                                       label)
 
     @form.action(_("Add"), condition=form.haveInputWidgets)
     def handle_add(self, action, data):

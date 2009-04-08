@@ -344,11 +344,6 @@ class IExternalActivity(zope.interface.Interface):
         description=_(u"A brief title of the external activity."),
         required=True)
 
-    label = zope.schema.TextLine(
-        title=_(u"Label"),
-        description=_("The column label for the activity in the gradebook."),
-        required=False)
-
     description = zope.schema.Text(
         title=_("Description"),
         description=_("A detailed description of the external activity."),
