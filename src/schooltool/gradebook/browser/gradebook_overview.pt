@@ -25,6 +25,7 @@
     </script>
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
+
     <tal:if condition="python:not list(view.getSections(True))">
       <span tal:content="string:Section: ${view/getCurrentSection}" />
     </tal:if>
@@ -44,21 +45,6 @@
         </tal:block>
       </select>
     </tal:if>
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <label for="currentWorksheet" i18n:translate="">Worksheet</label>
-    <select name="currentWorksheet"
-            onchange="this.form.submit()">
-      <tal:block repeat="worksheet context/worksheets">
-        <option value="1"
-            tal:condition="python:worksheet != view.getCurrentWorksheet()"
-            tal:attributes="value worksheet/title"
-            tal:content="worksheet/title" />
-        <option value="1" selected="selected"
-            tal:condition="python:worksheet == view.getCurrentWorksheet()"
-            tal:attributes="value worksheet/title"
-            tal:content="worksheet/title" />
-      </tal:block>
-    </select>
 
     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <input type="checkbox" checked name="due_date" 
@@ -86,6 +72,21 @@
        tal:content="view/message">
     Message
   </div>
+
+  <table class="month_tabs">
+    <tr>
+      <tal:block repeat="worksheet view/worksheets">
+        <td class="active_tab">
+          <a tal:condition="not: worksheet/current"
+             tal:attributes="href worksheet/url"
+             tal:content="worksheet/title" />
+          <span style="font-weight: bold;"
+                tal:condition="worksheet/current"
+                tal:content="worksheet/title" />
+        </td>
+      </tal:block>
+    <tr>
+  </table>
 
   <table class="schooltool_gradebook">
     <tr>

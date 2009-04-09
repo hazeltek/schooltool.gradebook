@@ -180,8 +180,7 @@ to the first one.
     ...Claudia...
     ...Paul...
     ...Tom...
-    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
-    ...  stephan.contents
+    >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
 
 Now, let's add some activities to it.  After adding the first activity we'll
@@ -233,9 +232,8 @@ Now let's click on 'HW 1' to change its description.
 
 Now let's change the current worksheet to 'Week 2'.
 
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
-    >>> '<option value="Week 2" selected="selected">Week 2</option>' in \
-    ...  stephan.contents
+    >>> stephan.getLink('Week 2').click()
+    >>> '<span style="font-weight: bold;">Week 2</span>' in stephan.contents
     True
 
 Now we'll add some activities to it.
@@ -286,9 +284,8 @@ Fianlly, let's change the current workskeet back to 'Week 1'.  This setting
 of current worksheet will be in effect for the gradebook as well.
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
-    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
-    ...  stephan.contents
+    >>> stephan.getLink('Week 1').click()
+    >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
 
 
@@ -416,7 +413,7 @@ Of course, you can also abort the grading.
 Let's enter some grades for the second worksheet, 'Week 2', so that we have
 some interesting numbers for the final grades view.
 
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
+    >>> stephan.getLink('Week 2').click()
     >>> stephan.getLink('HW 2').click()
     >>> stephan.getControl('Paul Cardune').value = u'90'
     >>> stephan.getControl('Tom Hoffman').value = u'72'
@@ -425,7 +422,7 @@ some interesting numbers for the final grades view.
 
 We'll set the current worksheet back to week 1 for the rest of the tests.
 
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
+    >>> stephan.getLink('Week 1').click()
 
 We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
 
@@ -813,8 +810,7 @@ state of the gradebook:
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you teach').click()
-    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
-    ...  stephan.contents
+    >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
     >>> stephan.getLink('Manage Activities').click()
 

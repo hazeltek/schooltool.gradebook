@@ -207,17 +207,6 @@ class GradebookOverview(SectionFinder):
                     self.request.response.redirect(section['url'])
                     return
 
-        """Handle change of current worksheet."""
-        if 'currentWorksheet' in self.request:
-            for worksheet in gradebook.worksheets:
-                if worksheet.title == self.request['currentWorksheet']:
-                    if worksheet == gradebook.getCurrentWorksheet(self.person):
-                        break
-                    gradebook.setCurrentWorksheet(self.person, worksheet)
-                    url = absoluteURL(worksheet, self.request)
-                    self.request.response.redirect(url)
-                    return
-
         """Handle changes to due date filter"""
         if 'num_weeks' in self.request:
             flag, weeks = gradebook.getDueDateFilter(self.person)
@@ -274,6 +263,17 @@ class GradebookOverview(SectionFinder):
     def getCurrentWeeks(self):
         flag, weeks = self.context.getDueDateFilter(self.person)
         return weeks
+
+    def worksheets(self):
+        results = []
+        for worksheet in self.context.worksheets:
+            result = {
+                'title': worksheet.title,
+                'url': absoluteURL(worksheet, self.request) + '/gradebook',
+                'current': worksheet == self.getCurrentWorksheet(),
+                }
+            results.append(result)
+        return results
 
     def activities(self):
         """Get  a list of all activities."""
