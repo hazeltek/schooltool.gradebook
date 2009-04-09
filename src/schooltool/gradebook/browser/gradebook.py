@@ -44,7 +44,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.term.interfaces import ITerm
 
-from datetime import datetime
+import datetime
 import decimal
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
@@ -106,7 +106,7 @@ class GradebookBase(BrowserView):
 
     @property
     def time(self):
-        t = datetime.now()
+        t = datetime.datetime.now()
         return "%s-%s-%s %s:%s:%s" % (t.year, t.month, t.day,
                                       t.hour, t.minute, t.second)
 
@@ -218,6 +218,16 @@ class GradebookOverview(SectionFinder):
                     self.request.response.redirect(url)
                     return
 
+        """Handle changes to due date filter"""
+        if 'num_weeks' in self.request:
+            flag, weeks = gradebook.getDueDateFilter(self.person)
+            if 'due_date' in self.request:
+                flag = True
+            else:
+                flag = False
+            weeks = self.request['num_weeks']
+            gradebook.setDueDateFilter(self.person, flag, weeks)
+
         """Handle changes to scores."""
         evaluator = getName(IPerson(self.request.principal))
         for student in self.context.students:
@@ -254,10 +264,23 @@ class GradebookOverview(SectionFinder):
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
 
+    def getDueDateFilter(self):
+        flag, weeks = self.context.getDueDateFilter(self.person)
+        return flag
+
+    def weeksChoices(self):
+        return [unicode(choice) for choice in range(1, 10)]
+
+    def getCurrentWeeks(self):
+        flag, weeks = self.context.getDueDateFilter(self.person)
+        return weeks
+
     def activities(self):
         """Get  a list of all activities."""
         result = []
         for activity in self.context.getCurrentActivities(self.person):
+            if self.isFiltered(activity):
+                continue
             shortTitle = activity.label
             if shortTitle is None or len(shortTitle) == 0:
                 shortTitle = activity.title
@@ -271,12 +294,20 @@ class GradebookOverview(SectionFinder):
             
         return result
 
+    def isFiltered(self, activity):
+        flag, weeks = self.context.getDueDateFilter(self.person)
+        if not flag:
+            return False
+        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        return activity.due_date < cutoff
+
     def table(self):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
         activities = [(hash(IKeyReference(activity)), activity)
-            for activity in gradebook.getWorksheetActivities(worksheet)]
+            for activity in gradebook.getWorksheetActivities(worksheet)
+            if not self.isFiltered(activity)]
         rows = []
         for student in self.context.students:
             grades = []

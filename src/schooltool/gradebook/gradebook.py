@@ -53,6 +53,7 @@ from schooltool.common import SchoolToolMessage as _
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 FINAL_GRADE_ADJUSTMENT_KEY = 'schooltool.gradebook.finalgradeadjustment'
+DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
         
 
 class WorksheetGradebookTraverser(object):
@@ -251,6 +252,18 @@ class GradebookBase(object):
             ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
         section_id = hash(IKeyReference(self.section))
         ann[CURRENT_WORKSHEET_KEY][section_id] = worksheet
+
+    def getDueDateFilter(self, person):
+        person = proxy.removeSecurityProxy(person)
+        ann = annotation.interfaces.IAnnotations(person)
+        if DUE_DATE_FILTER_KEY not in ann:
+            return (False, '9')
+        return ann[DUE_DATE_FILTER_KEY]
+
+    def setDueDateFilter(self, person, flag, weeks):
+        person = proxy.removeSecurityProxy(person)
+        ann = annotation.interfaces.IAnnotations(person)
+        ann[DUE_DATE_FILTER_KEY] = (flag, weeks)
 
     def getCurrentActivities(self, person):
         worksheet = self.getCurrentWorksheet(person)

@@ -129,7 +129,8 @@ class ActivityAddView(z3cform.AddForm):
     template = ViewPageTemplateFile('add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
-    fields = fields.select('title', 'label', 'description', 'category')
+    fields = fields.select('title', 'label', 'due_date', 'description', 
+                           'category')
     fields += field.Fields(IRangedValuesScoreSystem).select('min', 'max')
 
     def updateActions(self):
@@ -176,8 +177,8 @@ class LinkedActivityAddView(form.AddForm):
 
     form_fields = form.Fields(ILinkedActivityFields,
                               interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "label", "category",
-                                     "points")
+    form_fields = form_fields.select("external_activity", "due_date", "label",
+                                     "category", "points")
 
     label = _(u"Add an External Activity")
     template = ViewPageTemplateFile("templates/linkedactivity_add.pt")
@@ -188,8 +189,9 @@ class LinkedActivityAddView(form.AddForm):
         category = data.get("category")
         points = data.get("points")
         label = data.get("label")
+        due_date = data.get("due_date")
         return activity.LinkedActivity(external_activity, category, points,
-                                       label)
+                                       label, due_date)
 
     @form.action(_("Add"), condition=form.haveInputWidgets)
     def handle_add(self, action, data):
@@ -231,7 +233,8 @@ class ActivityEditView(z3cform.EditForm):
     template = ViewPageTemplateFile('add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
-    fields = fields.select('title', 'label', 'description', 'category')
+    fields = fields.select('title', 'label', 'due_date', 'description',
+                           'category')
 
     @button.buttonAndHandler(_("Cancel"))
     def handle_cancel_action(self, action):
@@ -262,7 +265,8 @@ class LinkedActivityEditView(form.EditForm):
         form.Fields(ILinkedActivityFields, for_display=True),
         interfaces.ILinkedActivity)
     form_fields = form_fields.select("external_activity", "title", 'label',
-                                     "description", "category", "points")
+                                     'due_date', "description", "category",
+                                     "points")
 
     label = _(u"Edit External Activity")
     template = ViewPageTemplateFile("templates/linkedactivity_edit.pt")

@@ -115,7 +115,7 @@
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__
-                    title label description category scoresystem date"
+                    title label due_date description category scoresystem date"
         />
     <require
         permission="schooltool.edit"
@@ -128,7 +128,7 @@
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__
-                    title label description category scoresystem date"
+                    title label due_date description category scoresystem date"
         />
     <require
         permission="schooltool.edit"
@@ -151,7 +151,7 @@
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__
-                    addBase removeBase label
+                    addBase removeBase label due_date
                     source external_activity_id title description category
 		    scoresystem date points getExternalActivity"
         />

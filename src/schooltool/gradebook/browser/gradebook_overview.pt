@@ -44,7 +44,7 @@
         </tal:block>
       </select>
     </tal:if>
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <label for="currentWorksheet" i18n:translate="">Worksheet</label>
     <select name="currentWorksheet"
             onchange="this.form.submit()">
@@ -59,6 +59,26 @@
             tal:content="worksheet/title" />
       </tal:block>
     </select>
+
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="checkbox" checked name="due_date" 
+           tal:condition="view/getDueDateFilter" />
+    <input type="checkbox" name="due_date:list" 
+           tal:condition="not: view/getDueDateFilter" />
+    <span>show only activities due in past</span>
+    <select name="num_weeks">
+      <tal:block repeat="weeks view/weeksChoices">
+        <option value="1"
+            tal:condition="python:weeks != view.getCurrentWeeks()"
+            tal:attributes="value weeks"
+            tal:content="weeks" />
+        <option value="1" selected="selected"
+            tal:condition="python:weeks == view.getCurrentWeeks()"
+            tal:attributes="value weeks"
+            tal:content="weeks" />
+      </tal:block>
+    </select>
+    <span>weeks</span>
     <br /><br />
 
   <div class="message" style="color:red; padding:1em"
