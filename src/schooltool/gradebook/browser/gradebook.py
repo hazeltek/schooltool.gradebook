@@ -142,37 +142,49 @@ class GradebookBase(BrowserView):
 class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
 
-    def getSections(self, isTeacher):
-        gradebook = proxy.removeSecurityProxy(self.context)
+    def getUserSections(self, isTeacher):
+        if isTeacher:
+            return list(IInstructor(self.person).sections())
+        else:
+            return list(ILearner(self.person).sections())
 
-        sectionsTaught = list(IInstructor(self.person).sections())
-        sectionsAttended = list(ILearner(self.person).sections())
-        for section in sectionsTaught:
-            url = absoluteURL(section, self.request)
-            url += '/gradebook'
+    def getTerms(self, isTeacher):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentTerm = ITerm(currentSection)
+        terms = []
+        for section in self.getUserSections(isTeacher):
             term = ITerm(section)
-            title = '%s - %s - %s' % (term.title, 
-                list(section.courses)[0].title, section.title)
-            css = 'inactive-menu-item'
-            if section == gradebook.context:
-                css = 'active-menu-item'
-            yield {'obj': section, 'url': url, 'title': title, 'css': css}
-        for section in sectionsAttended:
-            url = absoluteURL(section, self.request)
-            url += '/mygrades'
+            if term not in terms:
+                terms.append(term)
+        return [{'title': term.title} for term in terms]
+
+    def getSections(self, isTeacher):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentTerm = ITerm(currentSection)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        for section in self.getUserSections(isTeacher):
             term = ITerm(section)
-            title = '%s - %s - %s' % (term.title, 
-                list(section.courses)[0].title, section.title)
+            if term != currentTerm:
+                continue
+            url = absoluteURL(section, self.request)
+            if isTeacher:
+                url += '/gradebook'
+            else:
+                url += '/mygrades'
+            title = '%s - %s' % (list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
-            if section == gradebook.context:
+            if section == currentSection:
                 css = 'active-menu-item'
             yield {'obj': section, 'url': url, 'title': title, 'css': css}
 
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
+        return '%s - %s' % (list(section.courses)[0].title, section.title)
+
+    def getCurrentTerm(self):
+        section = ISection(proxy.removeSecurityProxy(self.context))
         term = ITerm(section)
-        return '%s - %s - %s' % (term.title, 
-            list(section.courses)[0].title, section.title)
+        return term.title
 
 
 class GradebookOverview(SectionFinder):
@@ -197,6 +209,26 @@ class GradebookOverview(SectionFinder):
                 reverse=False
             gradebook.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = gradebook.getSortKey(self.person)
+
+        """Handle change of current term."""
+        if 'currentTerm' in self.request:
+            currentSection = ISection(proxy.removeSecurityProxy(self.context))
+            currentCourse = list(currentSection.courses)[0]
+            currentTerm = ITerm(currentSection)
+            requestTitle = self.request['currentTerm']
+            if requestTitle != currentTerm.title:
+                newSection = None
+                for section in self.getUserSections(True):
+                    term = ITerm(section)
+                    if term.title == requestTitle:
+                        if currentCourse == list(section.courses)[0]:
+                            newSection = section
+                            break
+                        if newSection is None:
+                            newSection = section
+                url = absoluteURL(newSection, self.request) + '/gradebook'
+                self.request.response.redirect(url)
+                return
 
         """Handle change of current section."""
         if 'currentSection' in self.request:

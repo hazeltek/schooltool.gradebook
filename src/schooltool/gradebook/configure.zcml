@@ -210,6 +210,11 @@
       factory=".gradebook.getGradebookSection"
       />
   <adapter
+      for=".interfaces.IMyGrades"
+      provides="schooltool.course.interfaces.ISection"
+      factory=".gradebook.getMyGradesSection"
+      />
+  <adapter
       for=".interfaces.IWorksheet"
       provides="schooltool.course.interfaces.ISection"
       factory=".gradebook.getWorksheetSection"

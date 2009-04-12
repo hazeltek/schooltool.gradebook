@@ -401,6 +401,11 @@ def getGradebookSection(gradebook):
     return course.interfaces.ISection(gradebook.context)
 
 
+def getMyGradesSection(gradebook):
+    """Adapt IMyGrades to ISection."""
+    return course.interfaces.ISection(gradebook.context)
+
+
 class GradebookEditorsCrowd(AggregateCrowd, ConfigurableCrowd):
     setting_key = 'administration_can_grade_students'
 

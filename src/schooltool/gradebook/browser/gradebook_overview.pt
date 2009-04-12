@@ -27,7 +27,30 @@
           tal:attributes="action string:${context/@@absolute_url}">
 
     <tal:if condition="python:not list(view.getSections(True))">
-      <span tal:content="string:Section: ${view/getCurrentSection}" />
+      <b>Term:</b>
+      <span tal:content="view/getCurrentTerm" />
+    </tal:if>
+    <tal:if condition="python:list(view.getTerms(True))">
+      <label for="currentTerm" i18n:translate="">Term</label>
+      <select name="currentTerm"
+              onchange="this.form.submit()">
+        <tal:block repeat="term python:view.getTerms(True)">
+          <option value="1"
+              tal:condition="python:term['title'] != view.getCurrentTerm()"
+              tal:attributes="value term/title"
+              tal:content="term/title" />
+          <option value="1" selected="selected"
+              tal:condition="python:term['title'] == view.getCurrentTerm()"
+              tal:attributes="value term/title"
+              tal:content="term/title" />
+        </tal:block>
+      </select>
+    </tal:if>
+
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <tal:if condition="python:not list(view.getSections(True))">
+      <b>Section:</b>
+      <span tal:content="view/getCurrentSection" />
     </tal:if>
     <tal:if condition="python:list(view.getSections(True))">
       <label for="currentSection" i18n:translate="">Section</label>
