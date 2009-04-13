@@ -22,6 +22,8 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
+import datetime
+
 from zope.interface import Interface, Attribute
 import zope.schema
 from zope.app.container.interfaces import IContainer, IContained
@@ -110,6 +112,17 @@ class IReportWorksheet(interfaces.IRequirement):
 
 class IActivity(interfaces.IRequirement):
     '''An activity to be graded'''
+
+    due_date = zope.schema.Date(
+        title=_("Due Date"),
+        description=_("The date the activity is due to be graded."),
+        required=True,
+        default = datetime.date.today())
+
+    label = zope.schema.TextLine(
+        title=_(u"Label"),
+        description=_("The column label for the activity in the gradebook."),
+        required=False)
 
     description = zope.schema.Text(
         title=_("Description"),
@@ -211,6 +224,12 @@ class IReadGradebook(Interface):
 
     def setCurrentWorksheet(person, worksheet):
         """Set the user's currently active worksheet."""
+
+    def getDueDateFilter(person):
+        """Get the user's current due date filter setting."""
+
+    def setDueDateFilter(person, flag, weeks):
+        """Set the user's current due date filter setting."""
 
     def getCurrentActivities(person):
         """Get the activities for the user's currently active worksheet."""

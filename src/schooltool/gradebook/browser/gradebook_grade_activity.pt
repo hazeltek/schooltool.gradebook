@@ -5,9 +5,14 @@
   <title metal:fill-slot="title" i18n:translate="">
     Gradebook
   </title>
+  <metal:block fill-slot="extrahead">
+    <script type="text/javascript" src="gradebook_overview.js">
+    </script>
+  </metal:block>
 </head>
 <body>
-<div metal:fill-slot="body">
+<div metal:fill-slot="body"
+     tal:define="activity view/activity">
 
   <h3 i18n:translate="">
     Grade <span tal:replace="view/activity/title" i18n:name="name" />
@@ -28,29 +33,64 @@
 
     <table class="schooltool_gradebook">
       <tr>
-       <th i18n:translate="">Name</th>
-       <th tal:define="activity view/activity">
-         <div tal:content="activity/title">
-           HW 1
-         </div>
-         <div tal:content="activity/max|nothing" />
-       </th>
-     </tr>
-     <tr tal:repeat="grade view/grades">
-       <td>
-         <label for=""
-             tal:attributes="for grade/student/id"
-             tal:content="grade/student/title">
-           Tom Hoffman
-         </label>
-       </td>
-       <td>
-         <input type="text" name="" value="" size="4"
-             tal:attributes="name grade/student/id;
-                             id grade/student/id;
-                             value grade/value" />
-       </td>
-     </tr>
+        <th class="cell header" i18n:translate="">Name</th>
+        <th class="cell header">
+          <div tal:content="activity/title">
+            HW 1
+          </div>
+          <div tal:content="activity/max|nothing" />
+        </th>
+      </tr>
+
+      <tr>
+        <td class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
+        <td class="cell padded fd_cell"
+            tal:attributes="id string:fd_${activity/hash}_cell">
+          <input type="text" size="4"
+                 class="data fd"
+                 tal:attributes="id string:fd_${activity/hash};
+                     onkeyup string:checkFillDown('${activity/hash}')">
+          <input type="button"
+                 style="display: none"
+                 class="fdbtn"
+                 value="Apply"
+                 tal:attributes="id string:fdbtn_${activity/hash};
+                     onclick string:performFillDown('${activity/hash}')">
+        </td>
+      </tr>
+
+      <tr tal:repeat="grade view/grades">
+        <tal:if condition="repeat/grade/even">
+          <td class="cell padded even">
+            <label for=""
+                tal:attributes="for grade/student/id"
+                tal:content="grade/student/title">
+              Tom Hoffman
+            </label>
+          </td>
+          <td class="cell even">
+            <input class="data" type="text" name="" value="" size="4"
+                tal:attributes="name grade/student/id;
+                                id grade/student/id;
+                                value grade/value" />
+          </td>
+        </tal:if>
+        <tal:if condition="repeat/grade/odd">
+          <td class="cell padded odd">
+            <label for=""
+                tal:attributes="for grade/student/id"
+                tal:content="grade/student/title">
+              Tom Hoffman
+            </label>
+          </td>
+          <td class="cell odd">
+            <input class="data" type="text" name="" value="" size="4"
+                tal:attributes="name grade/student/id;
+                                id grade/student/id;
+                                value grade/value" />
+          </td>
+        </tal:if>
+      </tr>
     </table>
 
     <div class="controls">

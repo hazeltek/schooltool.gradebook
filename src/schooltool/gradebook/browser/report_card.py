@@ -42,6 +42,7 @@ from schooltool.term.interfaces import ITerm, IDateManager
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IActivities, IReportActivity
 from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
+from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout
 
 
@@ -50,7 +51,8 @@ def copyActivities(sourceWorksheet, destWorksheet):
 
     for key, activity in sourceWorksheet.items():
         activityCopy = Activity(activity.title, activity.category,
-                                activity.scoresystem, activity.description)
+                                activity.scoresystem, activity.description,
+                                activity.label)
         destWorksheet[key] = activityCopy
 
 
@@ -129,8 +131,8 @@ class ReportActivityAddView(form.AddForm):
     label = _("Add new activity")
     template = ViewPageTemplateFile('add_edit_report_activity.pt')
 
-    fields = field.Fields(IReportActivity).select('title', 'description',
-                                                  'category')
+    fields = field.Fields(IReportActivity)
+    fields = fields.select('title', 'label', 'description')
     fields += field.Fields(IExistingScoreSystem)
 
     def updateActions(self):
@@ -155,8 +157,10 @@ class ReportActivityAddView(form.AddForm):
         self.request.response.redirect(url)
 
     def create(self, data):
-        activity = ReportActivity(data['title'], data['category'], 
-                                  data['scoresystem'], data['description'])
+        categories = getCategories(ISchoolToolApplication(None))
+        activity = ReportActivity(data['title'], categories.getDefaultKey(), 
+                                  data['scoresystem'], data['description'],
+                                  data['label'])
         return activity
 
     def add(self, activity):
@@ -175,8 +179,8 @@ class ReportActivityEditView(form.EditForm):
     form.extends(form.EditForm)
     template = ViewPageTemplateFile('add_edit_report_activity.pt')
 
-    fields = field.Fields(IReportActivity).select('title', 'description',
-                                                  'category')
+    fields = field.Fields(IReportActivity)
+    fields = fields.select('title', 'label', 'description')
     fields += field.Fields(IExistingScoreSystem)
 
     @button.buttonAndHandler(_("Cancel"))

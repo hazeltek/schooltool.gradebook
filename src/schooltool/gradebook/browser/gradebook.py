@@ -44,7 +44,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.term.interfaces import ITerm
 
-from datetime import datetime
+import datetime
 import decimal
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
@@ -106,7 +106,7 @@ class GradebookBase(BrowserView):
 
     @property
     def time(self):
-        t = datetime.now()
+        t = datetime.datetime.now()
         return "%s-%s-%s %s:%s:%s" % (t.year, t.month, t.day,
                                       t.hour, t.minute, t.second)
 
@@ -142,37 +142,49 @@ class GradebookBase(BrowserView):
 class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
 
-    def getSections(self, isTeacher):
-        gradebook = proxy.removeSecurityProxy(self.context)
+    def getUserSections(self, isTeacher):
+        if isTeacher:
+            return list(IInstructor(self.person).sections())
+        else:
+            return list(ILearner(self.person).sections())
 
-        sectionsTaught = list(IInstructor(self.person).sections())
-        sectionsAttended = list(ILearner(self.person).sections())
-        for section in sectionsTaught:
-            url = absoluteURL(section, self.request)
-            url += '/gradebook'
+    def getTerms(self, isTeacher):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentTerm = ITerm(currentSection)
+        terms = []
+        for section in self.getUserSections(isTeacher):
             term = ITerm(section)
-            title = '%s - %s - %s' % (term.title, 
-                list(section.courses)[0].title, section.title)
-            css = 'inactive-menu-item'
-            if section == gradebook.context:
-                css = 'active-menu-item'
-            yield {'obj': section, 'url': url, 'title': title, 'css': css}
-        for section in sectionsAttended:
-            url = absoluteURL(section, self.request)
-            url += '/mygrades'
+            if term not in terms:
+                terms.append(term)
+        return [{'title': term.title} for term in terms]
+
+    def getSections(self, isTeacher):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentTerm = ITerm(currentSection)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        for section in self.getUserSections(isTeacher):
             term = ITerm(section)
-            title = '%s - %s - %s' % (term.title, 
-                list(section.courses)[0].title, section.title)
+            if term != currentTerm:
+                continue
+            url = absoluteURL(section, self.request)
+            if isTeacher:
+                url += '/gradebook'
+            else:
+                url += '/mygrades'
+            title = '%s - %s' % (list(section.courses)[0].title, section.title)
             css = 'inactive-menu-item'
-            if section == gradebook.context:
+            if section == currentSection:
                 css = 'active-menu-item'
             yield {'obj': section, 'url': url, 'title': title, 'css': css}
 
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
+        return '%s - %s' % (list(section.courses)[0].title, section.title)
+
+    def getCurrentTerm(self):
+        section = ISection(proxy.removeSecurityProxy(self.context))
         term = ITerm(section)
-        return '%s - %s - %s' % (term.title, 
-            list(section.courses)[0].title, section.title)
+        return term.title
 
 
 class GradebookOverview(SectionFinder):
@@ -198,6 +210,26 @@ class GradebookOverview(SectionFinder):
             gradebook.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = gradebook.getSortKey(self.person)
 
+        """Handle change of current term."""
+        if 'currentTerm' in self.request:
+            currentSection = ISection(proxy.removeSecurityProxy(self.context))
+            currentCourse = list(currentSection.courses)[0]
+            currentTerm = ITerm(currentSection)
+            requestTitle = self.request['currentTerm']
+            if requestTitle != currentTerm.title:
+                newSection = None
+                for section in self.getUserSections(True):
+                    term = ITerm(section)
+                    if term.title == requestTitle:
+                        if currentCourse == list(section.courses)[0]:
+                            newSection = section
+                            break
+                        if newSection is None:
+                            newSection = section
+                url = absoluteURL(newSection, self.request) + '/gradebook'
+                self.request.response.redirect(url)
+                return
+
         """Handle change of current section."""
         if 'currentSection' in self.request:
             for section in self.getSections(True):
@@ -207,16 +239,15 @@ class GradebookOverview(SectionFinder):
                     self.request.response.redirect(section['url'])
                     return
 
-        """Handle change of current worksheet."""
-        if 'currentWorksheet' in self.request:
-            for worksheet in gradebook.worksheets:
-                if worksheet.title == self.request['currentWorksheet']:
-                    if worksheet == gradebook.getCurrentWorksheet(self.person):
-                        break
-                    gradebook.setCurrentWorksheet(self.person, worksheet)
-                    url = absoluteURL(worksheet, self.request)
-                    self.request.response.redirect(url)
-                    return
+        """Handle changes to due date filter"""
+        if 'num_weeks' in self.request:
+            flag, weeks = gradebook.getDueDateFilter(self.person)
+            if 'due_date' in self.request:
+                flag = True
+            else:
+                flag = False
+            weeks = self.request['num_weeks']
+            gradebook.setDueDateFilter(self.person, flag, weeks)
 
         """Handle changes to scores."""
         evaluator = getName(IPerson(self.request.principal))
@@ -254,13 +285,39 @@ class GradebookOverview(SectionFinder):
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
 
+    def getDueDateFilter(self):
+        flag, weeks = self.context.getDueDateFilter(self.person)
+        return flag
+
+    def weeksChoices(self):
+        return [unicode(choice) for choice in range(1, 10)]
+
+    def getCurrentWeeks(self):
+        flag, weeks = self.context.getDueDateFilter(self.person)
+        return weeks
+
+    def worksheets(self):
+        results = []
+        for worksheet in self.context.worksheets:
+            result = {
+                'title': worksheet.title,
+                'url': absoluteURL(worksheet, self.request) + '/gradebook',
+                'current': worksheet == self.getCurrentWorksheet(),
+                }
+            results.append(result)
+        return results
+
     def activities(self):
         """Get  a list of all activities."""
         result = []
         for activity in self.context.getCurrentActivities(self.person):
-            shortTitle = activity.title
-            if len(activity.title) > 14:
-                shortTitle = activity.title[0:11] + '...'
+            if self.isFiltered(activity):
+                continue
+            shortTitle = activity.label
+            if shortTitle is None or len(shortTitle) == 0:
+                shortTitle = activity.title
+                if len(shortTitle) > 5:
+                    shortTitle = shortTitle[:5].strip()
                 
             result.append({'shortTitle': shortTitle,
                            'longTitle': activity.title,
@@ -269,12 +326,20 @@ class GradebookOverview(SectionFinder):
             
         return result
 
+    def isFiltered(self, activity):
+        flag, weeks = self.context.getDueDateFilter(self.person)
+        if not flag:
+            return False
+        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        return activity.due_date < cutoff
+
     def table(self):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
         activities = [(hash(IKeyReference(activity)), activity)
-            for activity in gradebook.getWorksheetActivities(worksheet)]
+            for activity in gradebook.getWorksheetActivities(worksheet)
+            if not self.isFiltered(activity)]
         rows = []
         for student in self.context.students:
             grades = []
@@ -295,9 +360,13 @@ class GradebookOverview(SectionFinder):
                 student)
 
             rows.append(
-                {'student': {'title': student.title, 'id': student.username},
+                {'student': {'title': student.title, 
+                             'id': student.username,
+                             'url': absoluteURL(student, self.request),
+                            },
                  'grades': grades, 'total': str(total),
-                 'average': str(average)})
+                 'average': str(average)
+                })
 
         # Do the sorting
         key, reverse = self.sortKey
@@ -375,80 +444,6 @@ class FinalGradesView(SectionFinder):
                         self.error_message = str(e)
 
 
-class GradeStudent(object):
-    """Grading a single student."""
-
-    message = ''
-
-    @property
-    def student(self):
-        id = self.request['student']
-        school = app.getSchoolToolApplication()
-        return school['persons'][id]
-
-    @property
-    def activities(self):
-        return [
-            {'title': activity.title,
-             'max': activity.scoresystem.getBestScore(),
-             'hash': hash(IKeyReference(activity))}
-            for activity in self.context.getCurrentActivities(self.person)]
-
-    def grades(self):
-        activities = [(hash(IKeyReference(activity)), activity)
-            for activity in self.context.getCurrentActivities(self.person)]
-        student = self.student
-        gradebook = proxy.removeSecurityProxy(self.context)
-        for act_hash, activity in activities:
-            ev = gradebook.getEvaluation(student, activity)
-            value = self.request.get(str(act_hash))
-            if ev is not None and ev.value is not UNSCORED:
-                yield {'activity': act_hash, 'value': value or ev.value}
-            else:
-                yield {'activity': act_hash, 'value': value or ''}
-
-    def update(self):
-        self.person = IPerson(self.request.principal)
-
-        if 'CANCEL' in self.request:
-            self.request.response.redirect('index.html')
-
-        elif 'UPDATE_SUBMIT' in self.request:
-            student = self.student
-            evaluator = getName(IPerson(self.request.principal))
-            gradebook = proxy.removeSecurityProxy(self.context)
-            # Iterate through all activities
-            for activity in self.context.activities:
-                # Create a hash and see whether it is in the request
-                act_hash = str(hash(IKeyReference(activity)))
-                if act_hash in self.request:
-
-                    # If a value is present, create an evaluation, if the
-                    # score is different
-                    try:
-                        score = activity.scoresystem.fromUnicode(
-                            self.request[act_hash])
-                    except (zope.schema.ValidationError, ValueError):
-                        self.message = _(
-                            'The grade $value for activity $name is not valid.',
-                            mapping={'value': self.request[act_hash],
-                                     'name': activity.title})
-                        return
-                    ev = gradebook.getEvaluation(student, activity)
-                    # Delete the score
-                    if ev is not None and score is UNSCORED:
-                        self.context.removeEvaluation(student, activity)
-                    # Do nothing
-                    elif ev is None and score is UNSCORED:
-                        continue
-                    # Replace the score or add new one/
-                    elif ev is None or score != ev.value:
-                        self.context.evaluate(
-                            student, activity, score, evaluator)
-
-            self.request.response.redirect('index.html')
-
-
 class GradeActivity(object):
     """Grading a single activity"""
 
@@ -456,19 +451,19 @@ class GradeActivity(object):
 
     @property
     def activity(self):
-        if hasattr(self, '_activity'):
-            return self._activity
         act_hash = int(self.request['activity'])
         for activity in self.context.activities:
             if hash(IKeyReference(activity)) == act_hash:
-                self._activity = activity
-                return activity
+                return {'title': activity.title,
+                        'max': activity.scoresystem.getBestScore(),
+                        'hash': hash(IKeyReference(activity)),
+                         'obj': activity}
 
     @property
     def grades(self):
         gradebook = proxy.removeSecurityProxy(self.context)
         for student in self.context.students:
-            ev = gradebook.getEvaluation(student, self.activity)
+            ev = gradebook.getEvaluation(student, self.activity['obj'])
             value = self.request.get(student.username)
             if ev is not None and ev.value is not UNSCORED:
                 value = value or ev.value
@@ -483,7 +478,7 @@ class GradeActivity(object):
             self.request.response.redirect('index.html')
 
         elif 'UPDATE_SUBMIT' in self.request:
-            activity = self.activity
+            activity = self.activity['obj']
             evaluator = getName(IPerson(self.request.principal))
             gradebook = proxy.removeSecurityProxy(self.context)
             # Iterate through all students
@@ -513,63 +508,6 @@ class GradeActivity(object):
                     elif ev is None or score != ev.value:
                         self.context.evaluate(
                             student, activity, score, evaluator)
-
-            self.request.response.redirect('index.html')
-
-
-class Grade(object):
-    """Grading a specific activity for a student."""
-
-    @property
-    def student(self):
-        id = self.request['student']
-        school = app.getSchoolToolApplication()
-        return school['persons'][id]
-
-    @property
-    def activity(self):
-        if hasattr(self, '_activity'):
-            return self._activity
-        act_hash = int(self.request['activity'])
-        for activity in self.context.activities:
-            if hash(IKeyReference(activity)) == act_hash:
-                self._activity = activity
-                return activity
-
-    @property
-    def activityInfo(self):
-        formatter = self.request.locale.dates.getFormatter('date', 'short')
-        return {'title': self.activity.title,
-                'date': formatter.format(self.activity.date),
-                'maxScore': self.activity.scoresystem.getBestScore()}
-
-    @property
-    def evaluationInfo(self):
-        formatter = self.request.locale.dates.getFormatter('dateTime', 'short')
-        gradebook = proxy.removeSecurityProxy(self.context)
-        ev = gradebook.getEvaluation(self.student, self.activity)
-        if ev is not None and ev.value is not UNSCORED:
-            return {'value': ev.value,
-                    'time': formatter.format(ev.time)}
-        else:
-            return {'value': '', 'time': ''}
-
-    def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect('index.html')
-
-        elif 'DELETE' in self.request:
-            self.context.removeEvaluation(self.student, self.activity)
-
-        elif 'UPDATE_SUBMIT' in self.request:
-            evaluator = getName(IPerson(self.request.principal))
-
-            score = self.activity.scoresystem.fromUnicode(self.request['grade'])
-            gradebook = proxy.removeSecurityProxy(self.context)
-            ev = gradebook.getEvaluation(self.student, self.activity)
-            if ev is None or score != ev.value:
-                self.context.evaluate(
-                    self.student, self.activity, score, evaluator)
 
             self.request.response.redirect('index.html')
 

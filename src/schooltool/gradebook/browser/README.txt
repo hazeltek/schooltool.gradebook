@@ -180,8 +180,7 @@ to the first one.
     ...Claudia...
     ...Paul...
     ...Tom...
-    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
-    ...  stephan.contents
+    >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
 
 Now, let's add some activities to it.  After adding the first activity we'll
@@ -233,9 +232,8 @@ Now let's click on 'HW 1' to change its description.
 
 Now let's change the current worksheet to 'Week 2'.
 
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
-    >>> '<option value="Week 2" selected="selected">Week 2</option>' in \
-    ...  stephan.contents
+    >>> stephan.getLink('Week 2').click()
+    >>> '<span style="font-weight: bold;">Week 2</span>' in stephan.contents
     True
 
 Now we'll add some activities to it.
@@ -286,9 +284,8 @@ Fianlly, let's change the current workskeet back to 'Week 1'.  This setting
 of current worksheet will be in effect for the gradebook as well.
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
-    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
-    ...  stephan.contents
+    >>> stephan.getLink('Week 1').click()
+    >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
 
 
@@ -308,7 +305,7 @@ We can enter a score into any cell.  Let's enter one for Claudia's HW 1
 activity.  We'll do some trickery to calculate the cell name, taking advantage
 of the fact that it's the first cell.
 
-    >>> index = stephan.contents.find('student=claudia')
+    >>> index = stephan.contents.find('claudia')
     >>> contents = stephan.contents[index:]
     >>> search_text = 'name="'
     >>> index = contents.find(search_text) + len(search_text)
@@ -343,82 +340,10 @@ Finally, we can remove the score by clearing out the cell.
     >>> stephan.getControl(name=cell_name).value
     ''
 
+We need to put the score back for future tests to pass.
 
-Entering Scores for a Row (Student)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Let's say we want to enter the grades for Claudia. All we do is to simply
-click on her name:
-
-    >>> stephan.getLink('Claudia Richter').click()
-
-Now we just enter the grades:
-
-    >>> stephan.getControl('HW 1').value = u'-1'
-    >>> stephan.getControl('Quiz').value = u'56'
+    >>> stephan.getControl(name=cell_name).value = '36'
     >>> stephan.getControl('Update').click()
-
-But since I entered an invlaid value for Homework 1, we get an error message:
-
-    >>> 'The grade -1 for activity HW 1 is not valid.' in stephan.contents
-    True
-
-Also note that all the other entered values should be retained:
-
-    >>> 'value="-1"' in stephan.contents
-    True
-    >>> 'value="56"' in stephan.contents
-    True
-    >>> stephan.getControl('HW 1').value = u'36'
-    >>> stephan.getControl('Update').click()
-
-The screen will return to the grade overview, where the grades are no visible:
-
-    >>> 'value="36"' in stephan.contents
-    True
-    >>> 'value="56"' in stephan.contents
-    True
-
-Also, there will be an average grade displayed that the teacher can use to
-formulate a final grade.  The total used to establish the average also appears
-in the column before it.
-
-    >>> print stephan.contents
-    <BLANKLINE>
-    ...Claudia Richter...
-    ...92</b>...
-    ...61%</b>...
-
-Now let's enter again and change a grade:
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('HW 1').value = u'46'
-    >>> stephan.getControl('Update').click()
-    >>> 'value="46"' in stephan.contents
-    True
-
-When you want to delete an evaluation altogether, simply blank the value:
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('HW 1').value = u''
-    >>> stephan.getControl('Update').click()
-    >>> 'value="46"' in stephan.contents
-    False
-
-Of course, you can also abort the grading.
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('Cancel').click()
-    >>> stephan.url
-    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
-
-Let's put Claudia's grade back in:
-
-    >>> stephan.getLink('Claudia Richter').click()
-    >>> stephan.getControl('HW 1').value = u'36'
-    >>> stephan.getControl('Update').click()
-    >>> 'value="36"' in stephan.contents
-    True
 
 
 Entering Scores for a Column (Activity)
@@ -488,7 +413,7 @@ Of course, you can also abort the grading.
 Let's enter some grades for the second worksheet, 'Week 2', so that we have
 some interesting numbers for the final grades view.
 
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%202')
+    >>> stephan.getLink('Week 2').click()
     >>> stephan.getLink('HW 2').click()
     >>> stephan.getControl('Paul Cardune').value = u'90'
     >>> stephan.getControl('Tom Hoffman').value = u'72'
@@ -497,7 +422,7 @@ some interesting numbers for the final grades view.
 
 We'll set the current worksheet back to week 1 for the rest of the tests.
 
-    >>> stephan.open(stephan.url+'?form-submitted=&currentWorksheet=Week%201')
+    >>> stephan.getLink('Week 1').click()
 
 We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
 
@@ -885,8 +810,7 @@ state of the gradebook:
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you teach').click()
-    >>> '<option value="Week 1" selected="selected">Week 1</option>' in \
-    ...  stephan.contents
+    >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
     >>> stephan.getLink('Manage Activities').click()
 
@@ -921,7 +845,7 @@ And our grades are:
     >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.contents
     <BLANKLINE>
-    ...Name...Total...Average...HW 1...Quiz...
+    ...Name...Total...Ave...HW 1...Quiz...
     ...Claudia Richter...<b>86</b>...<b>86%</b>...86...
     ...Tom Hoffman...<b>44</b>...<b>88%</b>...44...
     ...Paul Cardune...<b>40</b>...<b>80%</b>...40...
@@ -973,7 +897,7 @@ loaded with the latest grades:
 
     >>> stephan.contents
     <BLANKLINE>
-    ...Name...Total...Average...HW 1...Quiz...Hardware...
+    ...Name...Total...Ave...HW 1...Quiz...Hardware...
     ...Claudia Richter...92.00...69%...86...6.00...
     ...Tom Hoffman...53.00...82%...44...9.00...
     ...Paul Cardune...40...80%...40...
@@ -1025,7 +949,7 @@ changed taking into account the weighting:
 
     >>> stephan.contents
     <BLANKLINE>
-    ...Name...Total...Average...HW 1...Quiz...Hardware As...
+    ...Name...Total...Ave...HW 1...Quiz...Hardware As...
     ...Claudia Richter...96.00...69%...86...10.00...
     ...Tom Hoffman...59.00...79%...44...15.00...
     ...Paul Cardune...40...80%...40...

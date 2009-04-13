@@ -333,16 +333,15 @@
       action="../manage.html"
       permission="schooltool.view"
       />
-
-  <!-- Menu items for ILinkedActivity -->
-  <!-- <menuItem
+  <menuItem
       menu="schooltool_actions"
-      title="Update Grades"
-      for="schooltool.gradebook.interfaces.ILinkedActivity"
-      action="updateGrades.html"
-      permission="schooltool.edit"
-      /> -->
+      title="Weight Categories"
+      for="..interfaces.IGradebook"
+      action="../weights.html"
+      permission="schooltool.view"
+      />
 
+  <!-- Special navagation viewlet for update linked activity grades action -->
   <navigationViewlet
       name="update_grades"
       for="schooltool.gradebook.interfaces.ILinkedActivity"
@@ -397,24 +396,10 @@
       permission="schooltool.view"
       />
   <page
-      name="gradeStudent.html"
-      for="..interfaces.IGradebook"
-      class=".gradebook.GradeStudent"
-      template="gradebook_grade_student.pt"
-      permission="schooltool.edit"
-      />
-  <page
       name="gradeActivity.html"
       for="..interfaces.IGradebook"
       class=".gradebook.GradeActivity"
       template="gradebook_grade_activity.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="grade.html"
-      for="..interfaces.IGradebook"
-      class=".gradebook.Grade"
-      template="gradebook_grade.pt"
       permission="schooltool.edit"
       />
   <page

@@ -83,7 +83,7 @@ table.schooltool_gradebook .final_grade {
 }
 
 .title {
-    width: 90px;
+    width: 40px;
 }
 
 .fd_cell {
@@ -108,7 +108,6 @@ table.schooltool_gradebook .final_grade {
 input.data {
   font-family: monospace;
   border: 0px;
-  width: 90px;
   background-color: transparent;
   text-align: center;
 }

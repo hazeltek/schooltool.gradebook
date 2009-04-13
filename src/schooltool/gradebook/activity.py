@@ -129,12 +129,19 @@ class ReportWorksheet(requirement.Requirement):
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)
 
+    label = None
+    due_date = datetime.date.today()
+
     def __init__(self, title, category, scoresystem,
-                 description=None, date=None):
+                 description=None, label=None, due_date=None, date=None):
         super(Activity, self).__init__(title)
+        self.label = label
         self.description = description
         self.category = category
         self.scoresystem = scoresystem
+        if not due_date:
+            due_date = datetime.date.today()
+        self.due_date = due_date
         if not date:
             date = datetime.date.today()
         self.date = date
@@ -168,15 +175,16 @@ getSectionActivities.factory = Activities
 class LinkedActivity(Activity):
     zope.interface.implements(interfaces.ILinkedActivity)
 
-    def __init__(self, external_activity, category, points):
+    def __init__(self, external_activity, category, points, label,
+                 due_date=None):
         custom = scoresystem.RangedValuesScoreSystem(
             u'generated', min=Decimal(0), max=Decimal(points))
-        zope.interface.directlyProvides(
-            custom, scoresystem.ICustomScoreSystem)
         super(LinkedActivity, self).__init__(external_activity.title,
                                              category,
                                              custom,
-                                             external_activity.description)
+                                             external_activity.description,
+                                             label,
+                                             due_date)
         self.source = external_activity.source
         self.external_activity_id = external_activity.external_activity_id
 
