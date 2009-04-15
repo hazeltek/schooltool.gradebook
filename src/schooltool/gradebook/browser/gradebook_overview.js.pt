@@ -22,10 +22,6 @@ var edited = false;
 
 window.onbeforeunload = unloadWarn;
 */
-function setWarning(text, bg){
-    document.getElementById('warningtext').innerHTML = text;
-    changeBackgroundColor('warning', bg);
-}
 
 function checkValid(e,name){
     var activity = name.split('_')[0];
@@ -52,7 +48,6 @@ function checkValid(e,name){
     var element = document.getElementById(name);
     var elementCell = document.getElementById(name+'_cell');
     var value = element.value;
-    setWarning(defaulttext, 'default_bg');
     changeBackgroundColor(name+'_cell', 'default_bg');
 
     if (value == '')
@@ -102,7 +97,6 @@ function performFillDown(activity) {
     changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
     if (checkValid(null, 'fd_'+activity) == false)  {
     	changeBackgroundColor('fd_'+activity+'_cell', 'warning_bg');
-	    setWarning('You may not apply the fill-down to an invalid grade', 'error_bg');
 	    return false;
 	}
     for(j=0;j!=numstudents;j++) {
@@ -112,7 +106,6 @@ function performFillDown(activity) {
     document.getElementById('fd_'+activity).value = '';
     document.getElementById('fdbtn_'+activity).style.display = 'none';
     changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
-    setWarning(defaulttext, 'default_bg');
 }
 
 function checkFillDown(activity)
