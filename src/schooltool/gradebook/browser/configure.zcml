@@ -307,13 +307,6 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="View Final Grades"
-      for="..interfaces.IGradebook"
-      action="final.html"
-      permission="schooltool.view"
-      />
-  <menuItem
-      menu="schooltool_actions"
       title="New Activity"
       for="..interfaces.IGradebook"
       action="../addActivity.html"
@@ -379,13 +372,6 @@
       for="..interfaces.IGradebook"
       class=".gradebook.GradebookOverview"
       template="gradebook_overview.pt"
-      permission="schooltool.view"
-      />
-  <page
-      name="final.html"
-      for="..interfaces.IGradebook"
-      class=".gradebook.FinalGradesView"
-      template="final_grades.pt"
       permission="schooltool.view"
       />
   <page

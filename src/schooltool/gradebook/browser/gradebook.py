@@ -401,67 +401,6 @@ class GradebookOverview(SectionFinder):
             return ''
 
 
-class FinalGradesView(SectionFinder):
-    """Final Grades Table for all students in the section"""
-
-    def table(self):
-        """Generate the table of grades."""
-        gradebook = proxy.removeSecurityProxy(self.context)
-        rows = []
-        students = sorted(self.context.students, key=lambda x: x.title)
-        for student in students:
-            grades = []
-            for worksheet in gradebook.worksheets:
-                total, average = gradebook.getWorksheetTotalAverage(worksheet,
-                    student)
-                grades.append({'value': str(average)})
-            calculated = gradebook.getFinalGrade(student)
-            final = gradebook.getAdjustedFinalGrade(self.person, student)
-            adj_dict = gradebook.getFinalGradeAdjustment(self.person, student)
-            adj_id = 'adj_' + student.username
-            adj_value = adj_dict['adjustment']
-            reason_id = 'reason_' + student.username
-            reason_value = adj_dict['reason']
-
-            rows.append(
-                {'student': student,
-                 'grades': grades,
-                 'calculated': calculated,
-                 'final': final,
-                 'adjustment': {'id': adj_id, 'value': adj_value},
-                 'reason': {'id': reason_id, 'value': reason_value}})
-
-        return rows
-
-    def update(self):
-        self.person = IPerson(self.request.principal)
-        gradebook = proxy.removeSecurityProxy(self.context)
-        students = sorted(self.context.students, key=lambda x: x.title)
-
-        """Handle change of current section."""
-        if 'currentSection' in self.request:
-            for section in self.getSections(True):
-                if section['title'] == self.request['currentSection']:
-                    if section['obj'] != ISection(gradebook):
-                        self.request.response.redirect(section['url'] + \
-                            '?final=yes')
-                    break
-
-        """Retrieve final grade adjustments and store changes to them."""
-        self.error_message = ''
-        for student in students:
-            adj_id = 'adj_' + student.username
-            if adj_id in self.request:
-                adj_value = self.request[adj_id]
-                reason_value = self.request['reason_' + student.username]
-                try:
-                    gradebook.setFinalGradeAdjustment(self.person, student,
-                        adj_value, reason_value)
-                except ValueError, e:
-                    if not self.error_message:
-                        self.error_message = str(e)
-
-
 class GradeActivity(object):
     """Grading a single activity"""
 
