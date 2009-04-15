@@ -1,5 +1,4 @@
 /* This is the Javascript to be included when rendering the gradebook overview. */
-var defaulttext = 'Changes are not saved as they are typed. Click "Save" to save them.';
 var numstudents = <tal:block replace="python: len(view.students)"/> 
 var students = new Array(numstudents);
 <tal:loop repeat="student view/students">
@@ -14,14 +13,28 @@ var scores = new Object();
 
 var edited = false;
 
-/*function unloadWarn()
+function setNotEdited()
 {
-    /// XXX Not compatible with all browsers XXX
-    return false;
+    edited = false;
 }
 
-window.onbeforeunload = unloadWarn;
-*/
+function checkChanges()
+{
+    if (!edited)
+        return;
+    warningText = '<tal:block replace="view/warningText" />';
+    saveFlag = window.confirm(warningText);
+    if (saveFlag == true)
+        {
+        button = document.getElementsByName('UPDATE_SUBMIT')[0];
+        button.click();
+        }
+    else
+        return true;
+}
+
+window.onunload = checkChanges;
+
 
 function checkValid(e,name){
     var activity = name.split('_')[0];

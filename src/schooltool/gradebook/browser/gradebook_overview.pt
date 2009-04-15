@@ -220,7 +220,8 @@
   </table>
 
   <div class="controls">
-    <tal:block metal:use-macro="view/@@standard_macros/update-button" />
+    <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" 
+           onclick="setNotEdited()"/>
   </div>
 
   </form>

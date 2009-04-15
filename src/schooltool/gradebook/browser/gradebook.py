@@ -138,6 +138,9 @@ class GradebookBase(BrowserView):
         newstr = '\\"'.join(newstr.split('"'))
         return newstr
 
+    @property
+    def warningText(self):
+        return _('You have some changes that have not been saved.  Click OK to save now or CANCEL to continue without saving.')
 
 class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
