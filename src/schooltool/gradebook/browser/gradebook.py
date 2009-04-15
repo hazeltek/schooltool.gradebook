@@ -142,6 +142,7 @@ class GradebookBase(BrowserView):
     def warningText(self):
         return _('You have some changes that have not been saved.  Click OK to save now or CANCEL to continue without saving.')
 
+
 class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
 
@@ -313,9 +314,7 @@ class GradebookOverview(SectionFinder):
     def activities(self):
         """Get  a list of all activities."""
         result = []
-        for activity in self.context.getCurrentActivities(self.person):
-            if self.isFiltered(activity):
-                continue
+        for activity in self.getFilteredActivities():
             shortTitle = activity.label
             if shortTitle is None or len(shortTitle) == 0:
                 shortTitle = activity.title
@@ -336,13 +335,17 @@ class GradebookOverview(SectionFinder):
         cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
+    def getFilteredActivities(self):
+        activities = self.context.getCurrentActivities(self.person)
+        return[activity for activity in activities
+               if not self.isFiltered(activity)]
+
     def table(self):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
         activities = [(hash(IKeyReference(activity)), activity)
-            for activity in gradebook.getWorksheetActivities(worksheet)
-            if not self.isFiltered(activity)]
+            for activity in self.getFilteredActivities()]
         rows = []
         for student in self.context.students:
             grades = []
@@ -384,6 +387,18 @@ class GradebookOverview(SectionFinder):
             return row['student']['title']
 
         return sorted(rows, key=generateKey, reverse=reverse)
+
+    @property
+    def firstCellId(self):
+        self.person = IPerson(self.request.principal)
+        activities = self.getFilteredActivities();
+        students = self.context.students
+        if len(activities) and len(students):
+            act_hash = hash(IKeyReference(activities[0]))
+            student_id = students[0].username
+            return '%s_%s' % (act_hash, student_id)
+        else:
+            return ''
 
 
 class FinalGradesView(SectionFinder):
