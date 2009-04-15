@@ -126,20 +126,19 @@ class ReportCard(object):
         return story
 
     def getActivity(self, section, layout):
-        termName, worksheetName, activityName = layout.split('|')
+        termName, worksheetName, activityName = layout.source.split('|')
         activities = IActivities(section)
         if worksheetName in activities:
             return activities[worksheetName][activityName]
         return None
 
-    def getLayoutTermTitle(self, layout):
-        termName, worksheetName, activityName = layout.split('|')
-        return self.schoolyear[termName].title
-
-    def getLayoutActivityTitle(self, layout):
-        termName, worksheetName, activityName = layout.split('|')
+    def getLayoutActivityHeading(self, layout):
+        termName, worksheetName, activityName = layout.source.split('|')
         root = IGradebookRoot(ISchoolToolApplication(None))
-        return root.deployed[worksheetName][activityName].title
+        heading = root.deployed[worksheetName][activityName].title
+        if len(layout.heading):
+            heading = layout.heading
+        return heading[:5]
 
     def buildScores(self, student):
         sections = list(ILearner(student).sections())
@@ -167,30 +166,22 @@ class ReportCard(object):
                 if score is not None and score.value is not UNSCORED:
                     byCourse[course] = str(score.value)
             if len(byCourse):
-                scores[layout] = byCourse
-
-        row = [_para('', self.styles['bold'])]
-        for layout in layouts:
-            if layout not in scores:
-                continue
-            label = self.getLayoutTermTitle(layout)
-            row.append(_para(label, self.styles['bold']))
-        rows = [row]
+                scores[layout.source] = byCourse
 
         row = [_para(_('Courses'), self.styles['bold'])]
         for layout in layouts:
-            if layout not in scores:
+            if layout.source not in scores:
                 continue
-            label = self.getLayoutActivityTitle(layout)
+            label = self.getLayoutActivityHeading(layout)
             row.append(_para(label, self.styles['bold']))
-        rows.append(row)
+        rows = [row]
 
         for course in courses:
             row = [_para(course.title, self.styles['default'])]
             for layout in layouts:
-                if layout not in scores:
+                if layout.source not in scores:
                     continue
-                byCourse = scores[layout]
+                byCourse = scores[layout.source]
                 score = byCourse.get(course, '')
                 row.append(_para(score, self.styles['default']))
             rows.append(row)
