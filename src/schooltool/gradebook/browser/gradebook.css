@@ -117,3 +117,9 @@ input.data:focus {
   border: 0px;
 }
 
+.description {
+    background-color: #CCC;
+    height: 4em;
+    width: 0px;
+}
+

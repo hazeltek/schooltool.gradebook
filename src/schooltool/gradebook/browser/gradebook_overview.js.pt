@@ -11,8 +11,15 @@ var scores = new Object();
     scores['<tal:block replace="activity" />'] = new Array(<tal:block replace="python: view.scores[activity]" />);
 </tal:loop>
 
+var numdescriptions = <tal:block replace="python: len(view.descriptions)"/> 
+var descriptions = new Array(numdescriptions);
+<tal:loop repeat="activity view/descriptions">
+     descriptions['<tal:block replace="activity/act_hash"/>'] = '<tal:block replace="activity/description"/>';
+     </tal:loop>
+
 var edited = false;
 var firstCellId = '<tal:block replace="view/firstCellId" />';
+var currentDesc = '';
 
 function setNotEdited()
 {
@@ -44,11 +51,29 @@ window.onload = setFirstCellFocus;
 window.onunload = checkChanges;
 
 
+function setDescription(activity)
+{
+    desc = document.getElementById('description');
+    currentDesc = descriptions[activity];
+    desc.innerHTML = currentDesc;
+}
+
+function tempDescription(activity)
+{
+    desc = document.getElementById('description');
+    desc.innerHTML = descriptions[activity];
+}
+
+function restoreDescription()
+{
+    desc = document.getElementById('description');
+    desc.innerHTML = currentDesc;
+}
+
 function checkValid(e,name){
     var activity = name.split('_')[0];
     if(activity == "fd")
         activity = name.split('_')[1];
-    edited = true;
     if(e!=null)  // Make sure the element is selected after movement
 	{
 	    var keynum;
@@ -60,12 +85,14 @@ function checkValid(e,name){
 		{
 		    keynum = e.which;
 		}
-	    if ((keynum==13)||(keynum==37)||(keynum==38)||(keynum==39)||(keynum==40) )
+	    if ((keynum==9)||(keynum==13)||(keynum==16)||(keynum==37)||(keynum==38)||(keynum==39)||(keynum==40) )
 		{
 		    document.getElementById(name).select();
 		    return true;
 		}
 	}
+
+    edited = true;
     var element = document.getElementById(name);
     var elementCell = document.getElementById(name+'_cell');
     var value = element.value;

@@ -132,7 +132,7 @@ class GradebookBase(BrowserView):
             results[hash(IKeyReference(activity))] = resultStr
         return results
 
-    def breakJSString(self,origstr):
+    def breakJSString(self, origstr):
         newstr = str(origstr)
         newstr = "\\'".join(newstr.split("'"))
         newstr = '\\"'.join(newstr.split('"'))
@@ -391,7 +391,7 @@ class GradebookOverview(SectionFinder):
     @property
     def firstCellId(self):
         self.person = IPerson(self.request.principal)
-        activities = self.getFilteredActivities();
+        activities = self.getFilteredActivities()
         students = self.context.students
         if len(activities) and len(students):
             act_hash = hash(IKeyReference(activities[0]))
@@ -399,6 +399,21 @@ class GradebookOverview(SectionFinder):
             return '%s_%s' % (act_hash, student_id)
         else:
             return ''
+
+    @property
+    def descriptions(self):
+        self.person = IPerson(self.request.principal)
+        results = []
+        for activity in self.getFilteredActivities():
+            description = activity.description
+            if description is None:
+                description = ''
+            result = {
+                'act_hash': hash(IKeyReference(activity)),
+                'description': self.breakJSString(description),
+                }
+            results.append(result)
+        return results
 
 
 class GradeActivity(object):
