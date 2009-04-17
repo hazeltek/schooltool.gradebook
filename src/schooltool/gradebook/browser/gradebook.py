@@ -134,6 +134,8 @@ class GradebookBase(BrowserView):
 
     def breakJSString(self, origstr):
         newstr = str(origstr)
+        newstr = newstr.replace('\n', '')
+        newstr = newstr.replace('\r', '')
         newstr = "\\'".join(newstr.split("'"))
         newstr = '\\"'.join(newstr.split('"'))
         return newstr
