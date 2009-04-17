@@ -23,6 +23,8 @@ $Id$
 from decimal import Decimal, InvalidOperation
 
 import zope.security.proxy
+import xlwt
+from StringIO import StringIO
 
 from zope.viewlet.viewlet import ViewletBase
 from zope.app.container.interfaces import INameChooser
@@ -55,6 +57,8 @@ from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
+from schooltool.requirement.scoresystem import UNSCORED
+from schooltool.export import export
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -387,3 +391,46 @@ class UpdateGradesActionMenuViewlet(ViewletBase):
 
     def external_activity_exists(self):
         return self.context.getExternalActivity() is not None
+
+
+class WorksheetsExportView(export.ExcelExportView):
+    """A view for exporting worksheets to a XLS file"""
+
+    def print_headers(self, ws, worksheet):
+        gradebook = interfaces.IGradebook(worksheet)
+        activities = gradebook.getWorksheetActivities(worksheet)
+        headers = [export.Header('Name')] + \
+                  [export.Header(activity.title) for activity in activities]
+        for col, header in enumerate(headers):
+            self.write(ws, 0, col, header.data, **header.style) 
+
+    def print_grades(self, ws, worksheet):
+        gradebook = interfaces.IGradebook(worksheet)
+        activities = gradebook.getWorksheetActivities(worksheet)
+        starting_row = 1
+        for row, student in enumerate(gradebook.students):
+            cells = [export.Text(student.title)]
+            for activity in activities:
+                ev = gradebook.getEvaluation(student, activity)
+                if ev is not None and ev.value is not UNSCORED:
+                    value = ev.value
+                else:
+                    value = ''
+                cells.append(export.Text(value))
+            for col, cell in enumerate(cells):
+                self.write(ws, starting_row+row, col, cell.data, **cell.style) 
+
+    def export_worksheets(self, wb):
+        for worksheet in self.context.values():
+            ws = wb.add_sheet(worksheet.title)
+            self.print_headers(ws, worksheet)
+            self.print_grades(ws, worksheet)
+
+    def __call__(self):
+        wb = xlwt.Workbook()
+        self.export_worksheets(wb)
+        datafile = StringIO()
+        wb.save(datafile)
+        data = datafile.getvalue()
+        self.setUpHeaders(data)
+        return data

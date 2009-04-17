@@ -101,6 +101,12 @@
       template="activities_overview.pt"
       permission="schooltool.view"
       />
+  <page
+      name="export.xls"
+      for="..interfaces.IActivities"
+      class=".activity.WorksheetsExportView"
+      permission="schooltool.view"
+      />
 
   <!-- Worksheets -->
   <configure package="schooltool.skin">
@@ -187,8 +193,7 @@
      for="schooltool.gradebook.interfaces.IWorksheet"
      class=".activity.ActivityAddView"
      permission="schooltool.edit"
-     menu="schooltool_actions"
-     title="Add Activity"/>
+     />
   <page
       name="edit.html"
       for="schooltool.gradebook.interfaces.IActivity"
@@ -264,6 +269,13 @@
       title="New Worksheet"
       for="..interfaces.IActivities"
       action="+/addWorksheet.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Export XLS"
+      for="..interfaces.IActivities"
+      action="export.xls"
       permission="schooltool.view"
       />
   <menuItem

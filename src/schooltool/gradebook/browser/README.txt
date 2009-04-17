@@ -799,6 +799,17 @@ Students should not be able to view a teacher's gradebook.
     Unauthorized: ...
 
 
+Export Worksheets as XLS
+------------------------
+
+Gradebook's worksheets can be exported to a XLS file:
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('Export XLS').click()
+    >>> stephan.headers.get('Content-Type')
+    'application/excel'
+
+
 External Activities
 -------------------
 
@@ -808,7 +819,7 @@ another schooltool module.
 Before we test external activities, we are going to record the current
 state of the gradebook:
 
-    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.open('http://localhost/gradebook.html')
     >>> stephan.getLink('Classes you teach').click()
     >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
