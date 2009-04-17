@@ -16,48 +16,56 @@
     <table>
       <tr>
         <td></td>
-        <td></td>
+        <td align="center">Source</td>
+        <td align="center">Heading</td>
         <td>Remove?</td>
       </tr>
 
       <tal:block repeat="column view/columns">
         <tr>
           <td>
-            <label tal:attributes="for column/label"
-                   tal:content="column/label" />
+            <label tal:attributes="for column/source_name"
+                   tal:content="column/source_name" />
           </td>
           <td>
-            <select tal:attributes="id column/label; name column/label">
+            <select tal:attributes="id column/source_name; name column/source_name">
               <tal:block repeat="choice view/choices">
-              <option tal:condition="python: choice['value'] == column['value']"
+              <option tal:condition="python: choice['value'] == column['source_value']"
                       selected
                       tal:attributes="value choice/value"
                       tal:content="choice/name" />
-              <option tal:condition="python: choice['value'] != column['value']"
+              <option tal:condition="python: choice['value'] != column['source_value']"
                       tal:attributes="value choice/value"
                       tal:content="choice/name" />
               </tal:block>
             </select>
           </td>
           <td align="center">
+            <input type="text"
+                   tal:attributes="name column/heading_name; value column/heading_value" />
+          </td>
+          <td align="center">
             <input type="checkbox" name="delete:list"
-                   tal:attributes="value column/label" />
+                   tal:attributes="value column/source_name" />
           </td>
         </tr>
       </tal:block>
 
       <tr>
         <td>
-          <label for="newColumn" i18n:translate="">New Column</label>
+          <label for="new_source" i18n:translate="">New Column</label>
         </td>
         <td>
-          <select id="newColumn" name="newColumn">
+          <select id="new_source" name="new_source">
             <option selected value="">Choose a column to add</option>
             <tal:block repeat="choice view/choices">
               <option tal:attributes="value choice/value"
                       tal:content="choice/name" />
             </tal:block>
           </select>
+        </td>
+        <td>
+          <input type="text" name="new_heading" />
         </td>
       </tr>
 

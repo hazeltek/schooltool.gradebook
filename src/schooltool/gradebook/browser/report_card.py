@@ -43,7 +43,7 @@ from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IActivities, IReportActivity
 from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
 from schooltool.gradebook.category import getCategories
-from schooltool.gradebook.gradebook_init import ReportLayout
+from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
 
 
 def copyActivities(sourceWorksheet, destWorksheet):
@@ -264,8 +264,10 @@ class LayoutReportCardView(object):
             current_columns  = []
         for index, column in enumerate(current_columns):
             result = {
-                'label': 'Column%s' % (index + 1),
-                'value': column,
+                'source_name': 'Column%s' % (index + 1),
+                'source_value': column.source,
+                'heading_name': 'Heading%s' % (index + 1),
+                'heading_value': column.heading,
                 }
             results.append(result)
         return results
@@ -300,16 +302,21 @@ class LayoutReportCardView(object):
         columns = []
         index = 1
         while True:
-            label = 'Column%s' % index
+            source_name = 'Column%s' % index
+            heading_name = 'Heading%s' % index
             index += 1
-            if label not in self.request:
+            if source_name not in self.request:
                 break
             if 'delete' in self.request:
-                if label in self.request['delete']:
+                if source_name in self.request['delete']:
                     continue
-            columns.append(self.request[label])
-        if len(self.request['newColumn']):
-            columns.append(self.request['newColumn'])
+            column = ReportColumn(self.request[source_name], 
+                                  self.request[heading_name])
+            columns.append(column)
+        if len(self.request['new_source']):
+            column = ReportColumn(self.request['new_source'], 
+                                  self.request['new_heading'])
+            columns.append(column)
 
         root = IGradebookRoot(ISchoolToolApplication(None))
         schoolyearKey = self.context.__name__

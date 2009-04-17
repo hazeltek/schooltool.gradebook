@@ -132,11 +132,17 @@ class GradebookBase(BrowserView):
             results[hash(IKeyReference(activity))] = resultStr
         return results
 
-    def breakJSString(self,origstr):
+    def breakJSString(self, origstr):
         newstr = str(origstr)
+        newstr = newstr.replace('\n', '')
+        newstr = newstr.replace('\r', '')
         newstr = "\\'".join(newstr.split("'"))
         newstr = '\\"'.join(newstr.split('"'))
         return newstr
+
+    @property
+    def warningText(self):
+        return _('You have some changes that have not been saved.  Click OK to save now or CANCEL to continue without saving.')
 
 
 class SectionFinder(GradebookBase):
@@ -309,10 +315,9 @@ class GradebookOverview(SectionFinder):
 
     def activities(self):
         """Get  a list of all activities."""
+        self.person = IPerson(self.request.principal)
         result = []
-        for activity in self.context.getCurrentActivities(self.person):
-            if self.isFiltered(activity):
-                continue
+        for activity in self.getFilteredActivities():
             shortTitle = activity.label
             if shortTitle is None or len(shortTitle) == 0:
                 shortTitle = activity.title
@@ -333,13 +338,17 @@ class GradebookOverview(SectionFinder):
         cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
+    def getFilteredActivities(self):
+        activities = self.context.getCurrentActivities(self.person)
+        return[activity for activity in activities
+               if not self.isFiltered(activity)]
+
     def table(self):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
         activities = [(hash(IKeyReference(activity)), activity)
-            for activity in gradebook.getWorksheetActivities(worksheet)
-            if not self.isFiltered(activity)]
+            for activity in self.getFilteredActivities()]
         rows = []
         for student in self.context.students:
             grades = []
@@ -382,66 +391,32 @@ class GradebookOverview(SectionFinder):
 
         return sorted(rows, key=generateKey, reverse=reverse)
 
-
-class FinalGradesView(SectionFinder):
-    """Final Grades Table for all students in the section"""
-
-    def table(self):
-        """Generate the table of grades."""
-        gradebook = proxy.removeSecurityProxy(self.context)
-        rows = []
-        students = sorted(self.context.students, key=lambda x: x.title)
-        for student in students:
-            grades = []
-            for worksheet in gradebook.worksheets:
-                total, average = gradebook.getWorksheetTotalAverage(worksheet,
-                    student)
-                grades.append({'value': str(average)})
-            calculated = gradebook.getFinalGrade(student)
-            final = gradebook.getAdjustedFinalGrade(self.person, student)
-            adj_dict = gradebook.getFinalGradeAdjustment(self.person, student)
-            adj_id = 'adj_' + student.username
-            adj_value = adj_dict['adjustment']
-            reason_id = 'reason_' + student.username
-            reason_value = adj_dict['reason']
-
-            rows.append(
-                {'student': student,
-                 'grades': grades,
-                 'calculated': calculated,
-                 'final': final,
-                 'adjustment': {'id': adj_id, 'value': adj_value},
-                 'reason': {'id': reason_id, 'value': reason_value}})
-
-        return rows
-
-    def update(self):
+    @property
+    def firstCellId(self):
         self.person = IPerson(self.request.principal)
-        gradebook = proxy.removeSecurityProxy(self.context)
-        students = sorted(self.context.students, key=lambda x: x.title)
+        activities = self.getFilteredActivities()
+        students = self.context.students
+        if len(activities) and len(students):
+            act_hash = hash(IKeyReference(activities[0]))
+            student_id = students[0].username
+            return '%s_%s' % (act_hash, student_id)
+        else:
+            return ''
 
-        """Handle change of current section."""
-        if 'currentSection' in self.request:
-            for section in self.getSections(True):
-                if section['title'] == self.request['currentSection']:
-                    if section['obj'] != ISection(gradebook):
-                        self.request.response.redirect(section['url'] + \
-                            '?final=yes')
-                    break
-
-        """Retrieve final grade adjustments and store changes to them."""
-        self.error_message = ''
-        for student in students:
-            adj_id = 'adj_' + student.username
-            if adj_id in self.request:
-                adj_value = self.request[adj_id]
-                reason_value = self.request['reason_' + student.username]
-                try:
-                    gradebook.setFinalGradeAdjustment(self.person, student,
-                        adj_value, reason_value)
-                except ValueError, e:
-                    if not self.error_message:
-                        self.error_message = str(e)
+    @property
+    def descriptions(self):
+        self.person = IPerson(self.request.principal)
+        results = []
+        for activity in self.getFilteredActivities():
+            description = activity.title
+            if activity.description is not None and len(activity.description):
+                description += ' (%s)' % activity.description
+            result = {
+                'act_hash': hash(IKeyReference(activity)),
+                'description': self.breakJSString(description),
+                }
+            results.append(result)
+        return results
 
 
 class GradeActivity(object):

@@ -94,11 +94,20 @@ class ReportCard(object):
             fontSize=16, leading=22,
             alignment=enums.TA_CENTER, spaceAfter=6)
 
-        self.table_style = TableStyle(
+        self.student_info_table_style = TableStyle(
           [('LEFTPADDING', (0, 0), (-1, -1), 1),
            ('RIGHTPADDING', (0, 0), (-1, -1), 1),
            ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+          ])
+
+        self.grades_table_style = TableStyle(
+          [('LEFTPADDING', (0, 0), (-1, -1), 1),
+           ('RIGHTPADDING', (0, 0), (-1, -1), 1),
+           ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
+           ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+           ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+           ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
           ])
 
     def buildLogo(self, filename):
@@ -121,25 +130,24 @@ class ReportCard(object):
         story = []
 
         widths = [2.5 * units.cm, '50%']
-        story.append(Table(rows, widths, style=self.table_style))
+        story.append(Table(rows, widths, style=self.student_info_table_style))
 
         return story
 
     def getActivity(self, section, layout):
-        termName, worksheetName, activityName = layout.split('|')
+        termName, worksheetName, activityName = layout.source.split('|')
         activities = IActivities(section)
         if worksheetName in activities:
             return activities[worksheetName][activityName]
         return None
 
-    def getLayoutTermTitle(self, layout):
-        termName, worksheetName, activityName = layout.split('|')
-        return self.schoolyear[termName].title
-
-    def getLayoutActivityTitle(self, layout):
-        termName, worksheetName, activityName = layout.split('|')
+    def getLayoutActivityHeading(self, layout):
+        termName, worksheetName, activityName = layout.source.split('|')
         root = IGradebookRoot(ISchoolToolApplication(None))
-        return root.deployed[worksheetName][activityName].title
+        heading = root.deployed[worksheetName][activityName].title
+        if len(layout.heading):
+            heading = layout.heading
+        return heading[:5]
 
     def buildScores(self, student):
         sections = list(ILearner(student).sections())
@@ -167,35 +175,26 @@ class ReportCard(object):
                 if score is not None and score.value is not UNSCORED:
                     byCourse[course] = str(score.value)
             if len(byCourse):
-                scores[layout] = byCourse
+                scores[layout.source] = byCourse
 
-        row = [_para('', self.styles['bold'])]
-        for layout in layouts:
-            if layout not in scores:
-                continue
-            label = self.getLayoutTermTitle(layout)
+        scoredLayouts = [l for l in layouts if l.source in scores]
+
+        row = [_para(_('Courses'), self.styles['bold'])]
+        for layout in scoredLayouts:
+            label = self.getLayoutActivityHeading(layout)
             row.append(_para(label, self.styles['bold']))
         rows = [row]
 
-        row = [_para(_('Courses'), self.styles['bold'])]
-        for layout in layouts:
-            if layout not in scores:
-                continue
-            label = self.getLayoutActivityTitle(layout)
-            row.append(_para(label, self.styles['bold']))
-        rows.append(row)
-
         for course in courses:
             row = [_para(course.title, self.styles['default'])]
-            for layout in layouts:
-                if layout not in scores:
-                    continue
-                byCourse = scores[layout]
+            for layout in scoredLayouts:
+                byCourse = scores[layout.source]
                 score = byCourse.get(course, '')
                 row.append(_para(score, self.styles['default']))
             rows.append(row)
 
-        story = [Table(rows, style=self.table_style)]
+        widths = [8.2 * units.cm] + [1.2 * units.cm] * len(scoredLayouts)
+        story = [Table(rows, widths, style=self.grades_table_style)]
         return story
 
     def buildStudentStory(self, student):

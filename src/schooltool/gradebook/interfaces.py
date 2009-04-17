@@ -164,6 +164,14 @@ class IReportLayout(Interface):
     containers(IGradebookLayouts)
 
 
+class IReportColumn(Interface):
+    '''A column of a report card layout'''
+
+    source = Attribute("""Source of the report card column data""")
+
+    heading = Attribute("""Label of the report card column""")
+
+
 class IEditGradebook(Interface):
 
     def evaluate(student, activity, score, evaluator=None):
