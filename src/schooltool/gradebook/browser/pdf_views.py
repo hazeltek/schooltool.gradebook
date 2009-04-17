@@ -94,11 +94,20 @@ class ReportCard(object):
             fontSize=16, leading=22,
             alignment=enums.TA_CENTER, spaceAfter=6)
 
-        self.table_style = TableStyle(
+        self.student_info_table_style = TableStyle(
           [('LEFTPADDING', (0, 0), (-1, -1), 1),
            ('RIGHTPADDING', (0, 0), (-1, -1), 1),
            ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+          ])
+
+        self.grades_table_style = TableStyle(
+          [('LEFTPADDING', (0, 0), (-1, -1), 1),
+           ('RIGHTPADDING', (0, 0), (-1, -1), 1),
+           ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
+           ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+           ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+           ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
           ])
 
     def buildLogo(self, filename):
@@ -121,7 +130,7 @@ class ReportCard(object):
         story = []
 
         widths = [2.5 * units.cm, '50%']
-        story.append(Table(rows, widths, style=self.table_style))
+        story.append(Table(rows, widths, style=self.student_info_table_style))
 
         return story
 
@@ -168,25 +177,24 @@ class ReportCard(object):
             if len(byCourse):
                 scores[layout.source] = byCourse
 
+        scoredLayouts = [l for l in layouts if l.source in scores]
+
         row = [_para(_('Courses'), self.styles['bold'])]
-        for layout in layouts:
-            if layout.source not in scores:
-                continue
+        for layout in scoredLayouts:
             label = self.getLayoutActivityHeading(layout)
             row.append(_para(label, self.styles['bold']))
         rows = [row]
 
         for course in courses:
             row = [_para(course.title, self.styles['default'])]
-            for layout in layouts:
-                if layout.source not in scores:
-                    continue
+            for layout in scoredLayouts:
                 byCourse = scores[layout.source]
                 score = byCourse.get(course, '')
                 row.append(_para(score, self.styles['default']))
             rows.append(row)
 
-        story = [Table(rows, style=self.table_style)]
+        widths = [8.2 * units.cm] + [1.2 * units.cm] * len(scoredLayouts)
+        story = [Table(rows, widths, style=self.grades_table_style)]
         return story
 
     def buildStudentStory(self, student):
