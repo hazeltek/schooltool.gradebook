@@ -313,6 +313,7 @@ class GradebookOverview(SectionFinder):
 
     def activities(self):
         """Get  a list of all activities."""
+        self.person = IPerson(self.request.principal)
         result = []
         for activity in self.getFilteredActivities():
             shortTitle = activity.label

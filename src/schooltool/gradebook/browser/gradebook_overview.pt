@@ -155,17 +155,17 @@
       <td colspan="3" class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
       <td class="cell padded fd_cell" tal:repeat="activity view/activities"
           tal:attributes="id string:fd_${activity/hash}_cell">
-        <input type="text" size="4"
-               class="data fd"
+        <input type="text" size="4" class="data fd"
+               onkeydown="spreadsheetBehaviour(event)"
                tal:attributes="id string:fd_${activity/hash};
-                   onkeyup string:checkFillDown('${activity/hash}')">
+                               onkeyup string:checkFillDown('${activity/hash}');
+                               onfocus string:handleCellFocus(this, '${activity/hash}')">
         <input type="button"
                style="display: none"
                class="fdbtn"
                value="Apply"
                tal:attributes="id string:fdbtn_${activity/hash};
-                   onclick string:performFillDown('${activity/hash}');
-                   onfocus string:setDescription('${activity/hash}')">
+                               onclick string:performFillDown('${activity/hash}')">
       </td>
     </tr>
 
@@ -191,11 +191,12 @@
         <td class="cell even" tal:repeat="grade row/grades"
             tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
           <input class="data" type="text" name="" value="" size="4"
+                 onkeydown="spreadsheetBehaviour(event)"
                  tal:attributes="name string:${grade/activity}_${row/student/id};
                                  id string:${grade/activity}_${row/student/id};
                                  value grade/value;
                                  onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                 onfocus string:setDescription('${grade/activity}')"/>
+                                 onfocus string:handleCellFocus(this, '${grade/activity}')"/>
         </td>
       </tal:if>
       <tal:if condition="repeat/row/odd">
@@ -219,11 +220,12 @@
         <td class="cell odd" tal:repeat="grade row/grades"
             tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
           <input class="data" type="text" name="" value="" size="4"
+                 onkeydown="spreadsheetBehaviour(event)"
                  tal:attributes="name string:${grade/activity}_${row/student/id};
                                  id string:${grade/activity}_${row/student/id};
                                  value grade/value;
                                  onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                 onfocus string:setDescription('${grade/activity}')"/>
+                                 onfocus string:handleCellFocus(this, '${grade/activity}')"/>
         </td>
       </tal:if>
     </tr>

@@ -5,6 +5,12 @@ var students = new Array(numstudents);
      students[<tal:block replace="repeat/student/index"/>] = '<tal:block replace="python: view.breakJSString(student.username)"/>';
      </tal:loop>
 
+var numactivities = <tal:block replace="python: len(view.activities())"/> 
+var activities = new Array(numactivities);
+<tal:loop repeat="activity view/activities">
+     activities[<tal:block replace="repeat/activity/index"/>] = '<tal:block replace="activity/hash"/>';
+     </tal:loop>
+
 var numscores = <tal:block replace="python: len(view.scores)"/>;
 var scores = new Object();
 <tal:loop repeat="activity view/scores">
@@ -19,6 +25,7 @@ var descriptions = new Array(numdescriptions);
 
 var edited = false;
 var firstCellId = '<tal:block replace="view/firstCellId" />';
+var currentCell;
 var currentDesc = '';
 
 function setNotEdited()
@@ -51,6 +58,13 @@ window.onload = setFirstCellFocus;
 window.onunload = checkChanges;
 
 
+function handleCellFocus(cell, activity)
+{
+    currentCell = cell;
+    cell.select();
+    setDescription(activity);
+}
+
 function setDescription(activity)
 {
     desc = document.getElementById('description');
@@ -70,26 +84,84 @@ function restoreDescription()
     desc.innerHTML = currentDesc;
 }
 
-function checkValid(e,name){
+function spreadsheetBehaviour(e)
+{
+    var keynum;
+    if(window.event) // IE
+    {
+        keynum = e.keyCode;
+    }
+    else if(e.which) // Netscape/Firefox/Opera
+    {
+        keynum = e.which;
+    }
+
+    var my_name = currentCell.id;
+    var s, a, done;
+    done = new Boolean(false);
+
+    for (s = 0; s != numstudents; s++)
+    {
+        for (a = 0; a != numactivities; a++)
+        {
+            try_name = activities[a] + '_' + students[s]
+            if (try_name == my_name)
+            {
+                done = true;
+                break;
+            }
+        }
+        if (done == true)
+            break;
+    }
+
+    var i_stayed_put = new Boolean(true);
+    if (keynum == 37) // left arrow
+    {
+        if (a != 0) { a--; i_stayed_put = false;}
+    }
+    if (keynum == 39) // right arrow
+    {
+        if (a != numactivities - 1) {a++; i_stayed_put = false;}
+    }
+    if (keynum == 38) // up arrow
+    {
+        if (s != 0) {s--; i_stayed_put = false;}
+    }
+    if ((keynum == 40) || (keynum == 13)) // down arrow or enter
+    {
+        if (s != numstudents - 1) {s++; i_stayed_put = false;}
+    }
+
+    if (i_stayed_put == true)
+        return true;
+    var newname = activities[a] + '_' + students[s];
+    var el = document.getElementsByName(newname)[0]
+    el.focus();
+    return false;
+}
+
+function checkValid(e, name)
+{
     var activity = name.split('_')[0];
     if(activity == "fd")
         activity = name.split('_')[1];
-    if(e!=null)  // Make sure the element is selected after movement
+    if (e == null)
+        return true;
+
+    var keynum;
+    if(window.event) // IE
+	{ 
+	    keynum = e.keyCode;
+	}
+    else if(e.which) // Netscape/Firefox/Opera
 	{
-	    var keynum;
-	    if(window.event) // IE
-		{ 
-		    keynum = e.keyCode;
-		}
-	    else if(e.which) // Netscape/Firefox/Opera
-		{
-		    keynum = e.which;
-		}
-	    if ((keynum==9)||(keynum==13)||(keynum==16)||(keynum==37)||(keynum==38)||(keynum==39)||(keynum==40) )
-		{
-		    document.getElementById(name).select();
-		    return true;
-		}
+	    keynum = e.which;
+	}
+    if (keynum < 48 || (keynum > 57 && keynum < 65) || (keynum > 90 && keynum < 97) || keynum > 122)
+	{
+	    document.getElementById(name).select();
+	    return true;
 	}
 
     edited = true;
@@ -135,9 +207,7 @@ function checkValid(e,name){
 
     changeBackgroundColor(name+'_cell', 'changed_bg');
     return true;    
-} 
-
-
+}
 
 function performFillDown(activity) {
     var fd = document.getElementById('fd_'+activity);
