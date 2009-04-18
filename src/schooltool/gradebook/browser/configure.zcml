@@ -64,7 +64,7 @@
       template="gradebook_tab.pt"
       permission="schooltool.view"
       link="gradebook.html"
-      order="310"
+      order="100"
       />
 
   <!-- Manage Tab -->
