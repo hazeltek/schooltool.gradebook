@@ -149,6 +149,18 @@ class ReportCard(object):
             heading = layout.heading
         return heading[:5]
 
+    def getCourseTitle(self, course, sections):
+        teachers = []
+        for section in sections:
+            if course == list(section.courses)[0]:
+                for teacher in section.instructors:
+                    if teacher not in teachers:
+                        teachers.append(teacher)
+        teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name) 
+            for teacher in teachers]
+        teacherNames = ', '.join(teacherNames)
+        return '%s (%s)' % (course.title, teacherNames)
+
     def buildScores(self, student):
         sections = list(ILearner(student).sections())
         evaluations = IEvaluations(student)
@@ -186,7 +198,8 @@ class ReportCard(object):
         rows = [row]
 
         for course in courses:
-            row = [_para(course.title, self.styles['default'])]
+            title = self.getCourseTitle(course, sections)
+            row = [_para(title, self.styles['default'])]
             for layout in scoredLayouts:
                 byCourse = scores[layout.source]
                 score = byCourse.get(course, '')
