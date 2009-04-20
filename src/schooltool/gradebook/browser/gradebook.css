@@ -58,7 +58,6 @@ table.schooltool_gradebook {
     border: solid 1px #808080;
     border-spacing: 0px;
     border-collapse: collapse;
-    margin:7px 0 0;
 }
 
 table.schooltool_gradebook .final_grade {
@@ -120,7 +119,7 @@ input.data:focus {
 
 .description {
     background-color: #CCC;
-    height: 4em;
+    height: 3em;
     width: 0px;
 }
 

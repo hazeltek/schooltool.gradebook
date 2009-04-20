@@ -409,8 +409,6 @@ class GradebookOverview(SectionFinder):
         results = []
         for activity in self.getFilteredActivities():
             description = activity.title
-            if activity.description is not None and len(activity.description):
-                description += ' (%s)' % activity.description
             result = {
                 'act_hash': hash(IKeyReference(activity)),
                 'description': self.breakJSString(description),
