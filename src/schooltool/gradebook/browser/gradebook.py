@@ -306,7 +306,7 @@ class GradebookOverview(SectionFinder):
         results = []
         for worksheet in self.context.worksheets:
             result = {
-                'title': worksheet.title,
+                'title': worksheet.title[:10],
                 'url': absoluteURL(worksheet, self.request) + '/gradebook',
                 'current': worksheet == self.getCurrentWorksheet(),
                 }

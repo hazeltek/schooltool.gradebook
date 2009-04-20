@@ -128,14 +128,15 @@ class ReportCard(object):
     def getCourseTitle(self, course, sections):
         teachers = []
         for section in sections:
-            if course == list(section.courses)[0]:
+            if course == tuple(section.courses):
                 for teacher in section.instructors:
                     if teacher not in teachers:
                         teachers.append(teacher)
+        courseTitles = ', '.join(c.title for c in course)
         teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name) 
             for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
-        return '%s (%s)' % (course.title, teacherNames)
+        return '%s (%s)' % (courseTitles, teacherNames)
 
     def buildScores(self, student):
         sections = list(ILearner(student).sections())
@@ -148,7 +149,7 @@ class ReportCard(object):
 
         courses = []
         for section in sections:
-            course = list(section.courses)[0]
+            course = tuple(section.courses)
             if course not in courses:
                 courses.append(course)
 
