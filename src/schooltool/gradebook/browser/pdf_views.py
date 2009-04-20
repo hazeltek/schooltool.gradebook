@@ -87,19 +87,12 @@ class ReportCard(object):
         self.styles['title'] = ParagraphStyle(
             name='Title', fontName=pdfcal.SANS_BOLD,
             fontSize=20, leading=22,
-            alignment=enums.TA_CENTER, spaceAfter=6)
+            alignment=enums.TA_LEFT, spaceAfter=6)
 
         self.styles['subtitle'] = ParagraphStyle(
             name='Subtitle', fontName=pdfcal.SANS_BOLD,
             fontSize=16, leading=22,
-            alignment=enums.TA_CENTER, spaceAfter=6)
-
-        self.student_info_table_style = TableStyle(
-          [('LEFTPADDING', (0, 0), (-1, -1), 1),
-           ('RIGHTPADDING', (0, 0), (-1, -1), 1),
-           ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
-           ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-          ])
+            alignment=enums.TA_LEFT, spaceAfter=6)
 
         self.grades_table_style = TableStyle(
           [('LEFTPADDING', (0, 0), (-1, -1), 1),
@@ -116,23 +109,6 @@ class ReportCard(object):
         logo.drawHeight = width * (logo.imageHeight / float(logo.imageWidth))
         logo.drawWidth = width
         return logo
-
-    def buildStudentInfo(self, student):
-        student_name = u'%s %s' % (
-            student.first_name, student.last_name)
-
-        rows = []
-        rows.append(
-            [_para(_('Student:'), self.styles['bold']),
-             _para(student_name, self.styles['default'])]
-             )
-
-        story = []
-
-        widths = [2.5 * units.cm, '50%']
-        story.append(Table(rows, widths, style=self.student_info_table_style))
-
-        return story
 
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
@@ -214,14 +190,16 @@ class ReportCard(object):
         story = []
         if self.logo is not None:
             story.append(self.logo)
-        story.append(_para(_('Report Card'), self.styles['title']))
 
-        story.extend(self.buildStudentInfo(student))
+        report_card_text = _('Report Card') + ': ' + self.schoolyear.title
+        story.append(_para(report_card_text, self.styles['title']))
 
-        # append horizontal rule
-        story.append(HRFlowable(
-            width='90%', color=colors.black,
-            spaceBefore=0.5*units.cm, spaceAfter=0.5*units.cm))
+        student_name = u'%s %s' % (
+            student.first_name, student.last_name)
+        student_text = _('Student') + ': ' + student_name
+        story.append(_para(student_text, self.styles['title']))
+
+        story.append(_para('', self.styles['title']))
 
         story.extend(self.buildScores(student))
 
