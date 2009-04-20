@@ -341,7 +341,3 @@ any columns.
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
-Since testing pdf files is not what we want to do, there will be no functional
-tests for the report cards themselves.  Instead, we will have unit tests of
-the reportlab stories in another file. 
-
