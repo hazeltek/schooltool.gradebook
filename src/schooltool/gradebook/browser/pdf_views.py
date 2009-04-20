@@ -87,19 +87,12 @@ class ReportCard(object):
         self.styles['title'] = ParagraphStyle(
             name='Title', fontName=pdfcal.SANS_BOLD,
             fontSize=20, leading=22,
-            alignment=enums.TA_CENTER, spaceAfter=6)
+            alignment=enums.TA_LEFT, spaceAfter=6)
 
         self.styles['subtitle'] = ParagraphStyle(
             name='Subtitle', fontName=pdfcal.SANS_BOLD,
             fontSize=16, leading=22,
-            alignment=enums.TA_CENTER, spaceAfter=6)
-
-        self.student_info_table_style = TableStyle(
-          [('LEFTPADDING', (0, 0), (-1, -1), 1),
-           ('RIGHTPADDING', (0, 0), (-1, -1), 1),
-           ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
-           ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-          ])
+            alignment=enums.TA_LEFT, spaceAfter=6)
 
         self.grades_table_style = TableStyle(
           [('LEFTPADDING', (0, 0), (-1, -1), 1),
@@ -117,23 +110,6 @@ class ReportCard(object):
         logo.drawWidth = width
         return logo
 
-    def buildStudentInfo(self, student):
-        student_name = u'%s %s' % (
-            student.first_name, student.last_name)
-
-        rows = []
-        rows.append(
-            [_para(_('Student:'), self.styles['bold']),
-             _para(student_name, self.styles['default'])]
-             )
-
-        story = []
-
-        widths = [2.5 * units.cm, '50%']
-        story.append(Table(rows, widths, style=self.student_info_table_style))
-
-        return story
-
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
         activities = IActivities(section)
@@ -149,6 +125,19 @@ class ReportCard(object):
             heading = layout.heading
         return heading[:5]
 
+    def getCourseTitle(self, course, sections):
+        teachers = []
+        for section in sections:
+            if course == tuple(section.courses):
+                for teacher in section.instructors:
+                    if teacher not in teachers:
+                        teachers.append(teacher)
+        courseTitles = ', '.join(c.title for c in course)
+        teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name) 
+            for teacher in teachers]
+        teacherNames = ', '.join(teacherNames)
+        return '%s (%s)' % (courseTitles, teacherNames)
+
     def buildScores(self, student):
         sections = list(ILearner(student).sections())
         evaluations = IEvaluations(student)
@@ -160,7 +149,7 @@ class ReportCard(object):
 
         courses = []
         for section in sections:
-            course = list(section.courses)[0]
+            course = tuple(section.courses)
             if course not in courses:
                 courses.append(course)
 
@@ -186,7 +175,8 @@ class ReportCard(object):
         rows = [row]
 
         for course in courses:
-            row = [_para(course.title, self.styles['default'])]
+            title = self.getCourseTitle(course, sections)
+            row = [_para(title, self.styles['default'])]
             for layout in scoredLayouts:
                 byCourse = scores[layout.source]
                 score = byCourse.get(course, '')
@@ -201,14 +191,16 @@ class ReportCard(object):
         story = []
         if self.logo is not None:
             story.append(self.logo)
-        story.append(_para(_('Report Card'), self.styles['title']))
 
-        story.extend(self.buildStudentInfo(student))
+        report_card_text = _('Report Card') + ': ' + self.schoolyear.title
+        story.append(_para(report_card_text, self.styles['title']))
 
-        # append horizontal rule
-        story.append(HRFlowable(
-            width='90%', color=colors.black,
-            spaceBefore=0.5*units.cm, spaceAfter=0.5*units.cm))
+        student_name = u'%s %s' % (
+            student.first_name, student.last_name)
+        student_text = _('Student') + ': ' + student_name
+        story.append(_para(student_text, self.styles['title']))
+
+        story.append(_para('', self.styles['title']))
 
         story.extend(self.buildScores(student))
 

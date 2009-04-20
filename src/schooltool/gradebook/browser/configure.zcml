@@ -428,12 +428,19 @@
   <page
       name="deploy_report_worksheet.html"
       for="schooltool.term.interfaces.ITerm"
-      class=".report_card.DeployReportWorksheetView"
+      class=".report_card.DeployReportWorksheetTermView"
       template="deploy_report_worksheet.pt"
       permission="schooltool.edit"
       />
 
   <!-- Menu items for ISchoolYear -->
+  <menuItem
+      menu="schooltool_actions"
+      title="Deploy Report Worksheet"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      action="deploy_report_worksheet.html"
+      permission="schooltool.edit"
+      />
   <menuItem
       menu="schooltool_actions"
       title="Layout Report Card"
@@ -443,6 +450,13 @@
       />
 
   <!-- Views for ISchoolYear -->
+  <page
+      name="deploy_report_worksheet.html"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".report_card.DeployReportWorksheetSchoolYearView"
+      template="deploy_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
   <page
       name="layout_report_card.html"
       for="schooltool.schoolyear.interfaces.ISchoolYear"

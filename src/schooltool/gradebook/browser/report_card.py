@@ -205,8 +205,8 @@ class ReportActivityEditView(form.EditForm):
         return absoluteURL(self.context.__parent__, self.request)
 
 
-class DeployReportWorksheetView(object):
-    """A view for deploying a report sheet template to a term"""
+class DeployReportWorksheetBaseView(object):
+    """The base class for deploying a report sheet template"""
 
     @property
     def worksheets(self):
@@ -222,12 +222,14 @@ class DeployReportWorksheetView(object):
                 self.deploy()
             self.request.response.redirect(self.nextURL())
 
-    def deploy(self):
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+    def deployTerm(self, term):
         root = IGradebookRoot(ISchoolToolApplication(None))
         worksheet = root.templates[self.request['reportWorksheet']]
 
-        # copy worksheet template to deployed container
-        term = self.context
+        # copy worksheet template to the term
         schoolyear = ISchoolYear(term)
         deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
         deployedWorksheet = Worksheet(worksheet.title)
@@ -245,8 +247,20 @@ class DeployReportWorksheetView(object):
             activities[deployedWorksheet.__name__] = worksheetCopy
             copyActivities(deployedWorksheet, worksheetCopy)
 
-    def nextURL(self):
-        return absoluteURL(self.context, self.request)
+
+class DeployReportWorksheetSchoolYearView(DeployReportWorksheetBaseView):
+    """A view for deploying a report sheet template to a schoolyear"""
+
+    def deploy(self):
+        for term in self.context.values():
+            self.deployTerm(term)
+
+
+class DeployReportWorksheetTermView(DeployReportWorksheetBaseView):
+    """A view for deploying a report sheet template to a term"""
+
+    def deploy(self):
+        self.deployTerm(self.context)
 
 
 class LayoutReportCardView(object):
