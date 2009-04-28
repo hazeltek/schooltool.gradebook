@@ -96,7 +96,7 @@
     Message
   </div>
 
-  <table class="month_tabs">
+  <table class="schooltool_gradebook">
     <tr>
       <tal:block repeat="worksheet view/worksheets">
         <td class="active_tab">

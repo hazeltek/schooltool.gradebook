@@ -123,3 +123,19 @@ input.data:focus {
     width: 0px;
 }
 
+td.inactive_tab {
+    border-left: solid 1px #bbb;
+    padding: .5ex;
+    background-color: #eee;
+    width: 90px;
+    text-align: center;
+}
+
+td.active_tab {
+    border-left: solid 1px #bbb;
+    padding: .5ex;
+    background-color: #ddd;
+    width: 90px;
+    text-align: center;
+}
+
