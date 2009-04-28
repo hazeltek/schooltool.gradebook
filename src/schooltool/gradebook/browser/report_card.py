@@ -104,7 +104,7 @@ class IExistingScoreSystem(Interface):
     """A schema used to choose an existing score system."""
 
     scoresystem = Choice(
-        title=_('Exisiting Score System'),
+        title=_('Existing Score System'),
         vocabulary='schooltool.requirement.scoresystems',
         required=True)
 
