@@ -183,6 +183,23 @@ class SectionFinder(GradebookBase):
                 css = 'active-menu-item'
             yield {'obj': section, 'url': url, 'title': title, 'css': css}
 
+    @property
+    def worksheets(self):
+        results = []
+        for worksheet in self.context.worksheets:
+            url = absoluteURL(worksheet, self.request)
+            if self.isTeacher:
+                url += '/gradebook'
+            else:
+                url += '/mygrades'
+            result = {
+                'title': worksheet.title[:10],
+                'url': url,
+                'current': worksheet == self.getCurrentWorksheet(),
+                }
+            results.append(result)
+        return results
+
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
         return '%s - %s' % (list(section.courses)[0].title, section.title)
@@ -192,9 +209,42 @@ class SectionFinder(GradebookBase):
         term = ITerm(section)
         return term.title
 
+    def handleTermChange(self):
+        if 'currentTerm' in self.request:
+            currentSection = ISection(proxy.removeSecurityProxy(self.context))
+            currentCourse = list(currentSection.courses)[0]
+            currentTerm = ITerm(currentSection)
+            requestTitle = self.request['currentTerm']
+            if requestTitle != currentTerm.title:
+                newSection = None
+                for section in self.getUserSections(self.isTeacher):
+                    term = ITerm(section)
+                    if term.title == requestTitle:
+                        if currentCourse == list(section.courses)[0]:
+                            newSection = section
+                            break
+                        if newSection is None:
+                            newSection = section
+                url = absoluteURL(newSection, self.request) + '/gradebook'
+                self.request.response.redirect(url)
+                return True
+        return False
+
+    def handleSectionChange(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        if 'currentSection' in self.request:
+            for section in self.getSections(self.isTeacher):
+                if section['title'] == self.request['currentSection']:
+                    if section['obj'] == ISection(gradebook):
+                        break
+                    self.request.response.redirect(section['url'])
+                    return True
+        return False
 
 class GradebookOverview(SectionFinder):
     """Gradebook Overview/Table"""
+
+    isTeacher = True
 
     def update(self):
         self.person = IPerson(self.request.principal)
@@ -217,33 +267,12 @@ class GradebookOverview(SectionFinder):
         self.sortKey = gradebook.getSortKey(self.person)
 
         """Handle change of current term."""
-        if 'currentTerm' in self.request:
-            currentSection = ISection(proxy.removeSecurityProxy(self.context))
-            currentCourse = list(currentSection.courses)[0]
-            currentTerm = ITerm(currentSection)
-            requestTitle = self.request['currentTerm']
-            if requestTitle != currentTerm.title:
-                newSection = None
-                for section in self.getUserSections(True):
-                    term = ITerm(section)
-                    if term.title == requestTitle:
-                        if currentCourse == list(section.courses)[0]:
-                            newSection = section
-                            break
-                        if newSection is None:
-                            newSection = section
-                url = absoluteURL(newSection, self.request) + '/gradebook'
-                self.request.response.redirect(url)
-                return
+        if self.handleTermChange():
+            return
 
         """Handle change of current section."""
-        if 'currentSection' in self.request:
-            for section in self.getSections(True):
-                if section['title'] == self.request['currentSection']:
-                    if section['obj'] == ISection(gradebook):
-                        break
-                    self.request.response.redirect(section['url'])
-                    return
+        if self.handleSectionChange():
+            return
 
         """Handle changes to due date filter"""
         if 'num_weeks' in self.request:
@@ -301,17 +330,6 @@ class GradebookOverview(SectionFinder):
     def getCurrentWeeks(self):
         flag, weeks = self.context.getDueDateFilter(self.person)
         return weeks
-
-    def worksheets(self):
-        results = []
-        for worksheet in self.context.worksheets:
-            result = {
-                'title': worksheet.title[:10],
-                'url': absoluteURL(worksheet, self.request) + '/gradebook',
-                'current': worksheet == self.getCurrentWorksheet(),
-                }
-            results.append(result)
-        return results
 
     def activities(self):
         """Get  a list of all activities."""
@@ -508,15 +526,23 @@ def getEvaluationDiscreteValue(ev):
 class MyGradesView(SectionFinder):
     """Student view of own grades."""
 
+    isTeacher = False
+
     def update(self):
         self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
 
-        """Handle change of current worksheet."""
-        if 'currentWorksheet' in self.request:
-            for worksheet in self.context.worksheets:
-                if worksheet.title == self.request['currentWorksheet']:
-                    self.context.setCurrentWorksheet(self.person, worksheet)
-                    break
+        """Make sure the current worksheet matches the current url"""
+        worksheet = gradebook.context
+        gradebook.setCurrentWorksheet(self.person, worksheet)
+
+        """Handle change of current term."""
+        if self.handleTermChange():
+            return
+
+        """Handle change of current section."""
+        if self.handleSectionChange():
+            return
 
         self.table = []
         total = 0

@@ -9,55 +9,101 @@
 <body>
 <div metal:fill-slot="body">
 
-  <div class="topmenu">
-    <ul>
-      <li tal:attributes="class section/css"
-          tal:repeat="section python:view.getSections(False)">
-        <a tal:attributes="href section/url"
-           tal:content="structure section/title"/>
-      </li>
-    </ul>
-  </div>
-  <br />
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
-    <label for="currentWorksheet" i18n:translate="">Worksheet</label>
-    <select name="currentWorksheet"
-            onchange="this.form.submit()">
-      <tal:block repeat="worksheet context/worksheets">
-        <option value="1"
-            tal:condition="python:worksheet != view.getCurrentWorksheet()"
-            tal:attributes="value worksheet/title"
-            tal:content="worksheet/title" />
-        <option value="1" selected="selected"
-            tal:condition="python:worksheet == view.getCurrentWorksheet()"
-            tal:attributes="value worksheet/title"
-            tal:content="worksheet/title" />
-      </tal:block>
-    </select>
+    <tal:if condition="python:not list(view.getSections(False))">
+      <b>Term:</b>
+      <span tal:content="view/getCurrentTerm" />
+    </tal:if>
+    <tal:if condition="python:list(view.getTerms(False))">
+      <label for="currentTerm" i18n:translate="">Term</label>
+      <select name="currentTerm"
+              onchange="this.form.submit()">
+        <tal:block repeat="term python:view.getTerms(False)">
+          <option value="1"
+              tal:condition="python:term['title'] != view.getCurrentTerm()"
+              tal:attributes="value term/title"
+              tal:content="term/title" />
+          <option value="1" selected="selected"
+              tal:condition="python:term['title'] == view.getCurrentTerm()"
+              tal:attributes="value term/title"
+              tal:content="term/title" />
+        </tal:block>
+      </select>
+    </tal:if>
+
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <tal:if condition="python:not list(view.getSections(False))">
+      <b>Section:</b>
+      <span tal:content="view/getCurrentSection" />
+    </tal:if>
+    <tal:if condition="python:list(view.getSections(False))">
+      <label for="currentSection" i18n:translate="">Section</label>
+      <select name="currentSection"
+              onchange="this.form.submit()">
+        <tal:block repeat="section python:view.getSections(False)">
+          <option value="1"
+              tal:condition="python:section['title'] != view.getCurrentSection()"
+              tal:attributes="value section/title"
+              tal:content="section/title" />
+          <option value="1" selected="selected"
+              tal:condition="python:section['title'] == view.getCurrentSection()"
+              tal:attributes="value section/title"
+              tal:content="section/title" />
+        </tal:block>
+      </select>
+    </tal:if>
     <br /><br />
   </form>
 
-  <h3 tal:condition="view/average"
-        tal:content="string: Current Grade: ${view/average}%">Average</h3>
-  <h3 tal:condition="not: view/average">Nothing Graded</h3>
-  <br />
   <table class="schooltool_gradebook">
     <tr>
-     <th>
+      <tal:block repeat="worksheet view/worksheets">
+        <td class="active_tab">
+          <a tal:condition="not: worksheet/current"
+             tal:attributes="href worksheet/url"
+             tal:content="worksheet/title" />
+          <span style="font-weight: bold;"
+                tal:condition="worksheet/current"
+                tal:content="worksheet/title" />
+        </td>
+      </tal:block>
+    <tr>
+  </table>
+
+  <table class="schooltool_gradebook">
+    <tr>
+      <td colspan="2" class="description">
+        <div tal:condition="view/average"
+             tal:content="string: Current Grade: ${view/average}%">Average</div>
+        <div tal:condition="not: view/average">Nothing Graded</div>
+      </td>
+    </tr>
+    <tr>
+     <th class="cell header">
        <div i18n:translate="">Activity</div>
      </th>
-     <th>
+     <th class="cell header">
        <div i18n:translate="">Grade</div>
      </th>
     </tr>
     <tr tal:repeat="row view/table">
-      <td>
-        <div tal:content="row/activity">Activity</div>
-      </td>
-      <td>
-        <div tal:content="row/grade">Grade</div>
-      </td>
+      <tal:if condition="repeat/row/odd">
+        <td class="even cell padded">
+          <div tal:content="row/activity">Activity</div>
+        </td>
+        <td class="even cell padded">
+          <div tal:content="row/grade">Grade</div>
+        </td>
+      </tal:if>
+      <tal:if condition="repeat/row/even">
+        <td class="odd cell padded">
+          <div tal:content="row/activity">Activity</div>
+        </td>
+        <td class="odd cell padded">
+          <div tal:content="row/grade">Grade</div>
+        </td>
+      </tal:if>
     </tr>
   </table>
 
