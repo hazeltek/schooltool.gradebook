@@ -324,7 +324,7 @@ class GradebookOverview(SectionFinder):
             shortTitle = shortTitle.replace(' ', '')
             if len(shortTitle) > 5:
                 shortTitle = shortTitle[:5].strip()
-                
+
             result.append({'shortTitle': shortTitle,
                            'longTitle': activity.title,
                            'max': activity.scoresystem.getBestScore(),
