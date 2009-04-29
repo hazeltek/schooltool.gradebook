@@ -350,7 +350,7 @@ Entering Scores for a Column (Activity)
 Let's say we want to enter the grades for Homework 1. All we do is to simply
 click on the activity's name:
 
-    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getLink('HW1').click()
 
 Now we just enter the grades. Since Claudia has already a grade, we only need
 to grade Paul and Tom:
@@ -387,7 +387,7 @@ visible:
 
 Now let's enter again and change a grade:
 
-    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getLink('HW1').click()
     >>> stephan.getControl('Claudia Richter').value = u'48'
     >>> stephan.getControl('Update').click()
     >>> 'value="48"' in stephan.contents
@@ -395,7 +395,7 @@ Now let's enter again and change a grade:
 
 When you want to delete an evaluation altogether, simply blank the value:
 
-    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getLink('HW1').click()
     >>> stephan.getControl('Claudia Richter').value = u''
     >>> stephan.getControl('Update').click()
     >>> 'value="98"' in stephan.contents
@@ -403,7 +403,7 @@ When you want to delete an evaluation altogether, simply blank the value:
 
 Of course, you can also abort the grading.
 
-    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getLink('HW1').click()
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
@@ -411,7 +411,7 @@ Of course, you can also abort the grading.
 Let's enter some grades for the second worksheet, 'Week 2'.
 
     >>> stephan.getLink('Week 2').click()
-    >>> stephan.getLink('HW 2').click()
+    >>> stephan.getLink('HW2').click()
     >>> stephan.getControl('Paul Cardune').value = u'90'
     >>> stephan.getControl('Tom Hoffman').value = u'72'
     >>> stephan.getControl('Claudia Richter').value = u'42'
@@ -662,7 +662,7 @@ For managers, the default is to allow them to view. but not edit.
     >>> print manager.contents
     <BLANKLINE>
     ...Physics I (1)...
-    >>> manager.getLink('HW 1').click()
+    >>> manager.getLink('HW1').click()
     Traceback (most recent call last):
     ...
     Unauthorized: ...
@@ -679,7 +679,7 @@ the permission to do it:
 And try again:
 
     >>> manager.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
-    >>> manager.getLink('HW 1').click()
+    >>> manager.getLink('HW1').click()
     >>> manager.getControl(name='tom').value = '45'
     >>> manager.getControl('Update').click()
 
@@ -696,7 +696,7 @@ A teacher should be able to view and edit his own gradebook.
     >>> print stephan.contents
     <BLANKLINE>
     ...Physics I (1)...
-    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getLink('HW1').click()
     >>> stephan.getControl(name='tom').value = '44'
     >>> stephan.getControl('Update').click()
 
@@ -886,3 +886,4 @@ changed taking into account the weighting:
     ...Claudia Richter...96.00...69%...86...10.00...
     ...Tom Hoffman...59.00...79%...44...15.00...
     ...Paul Cardune...40...80%...40...
+

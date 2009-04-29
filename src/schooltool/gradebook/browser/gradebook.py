@@ -148,32 +148,32 @@ class GradebookBase(BrowserView):
 class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
 
-    def getUserSections(self, isTeacher):
-        if isTeacher:
+    def getUserSections(self):
+        if self.isTeacher:
             return list(IInstructor(self.person).sections())
         else:
             return list(ILearner(self.person).sections())
 
-    def getTerms(self, isTeacher):
+    def getTerms(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
         terms = []
-        for section in self.getUserSections(isTeacher):
+        for section in self.getUserSections():
             term = ITerm(section)
             if term not in terms:
                 terms.append(term)
         return [{'title': term.title} for term in terms]
 
-    def getSections(self, isTeacher):
+    def getSections(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
         gradebook = proxy.removeSecurityProxy(self.context)
-        for section in self.getUserSections(isTeacher):
+        for section in self.getUserSections():
             term = ITerm(section)
             if term != currentTerm:
                 continue
             url = absoluteURL(section, self.request)
-            if isTeacher:
+            if self.isTeacher:
                 url += '/gradebook'
             else:
                 url += '/mygrades'
@@ -182,6 +182,23 @@ class SectionFinder(GradebookBase):
             if section == currentSection:
                 css = 'active-menu-item'
             yield {'obj': section, 'url': url, 'title': title, 'css': css}
+
+    @property
+    def worksheets(self):
+        results = []
+        for worksheet in self.context.worksheets:
+            url = absoluteURL(worksheet, self.request)
+            if self.isTeacher:
+                url += '/gradebook'
+            else:
+                url += '/mygrades'
+            result = {
+                'title': worksheet.title[:10],
+                'url': url,
+                'current': worksheet == self.getCurrentWorksheet(),
+                }
+            results.append(result)
+        return results
 
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
@@ -192,9 +209,42 @@ class SectionFinder(GradebookBase):
         term = ITerm(section)
         return term.title
 
+    def handleTermChange(self):
+        if 'currentTerm' in self.request:
+            currentSection = ISection(proxy.removeSecurityProxy(self.context))
+            currentCourse = list(currentSection.courses)[0]
+            currentTerm = ITerm(currentSection)
+            requestTitle = self.request['currentTerm']
+            if requestTitle != currentTerm.title:
+                newSection = None
+                for section in self.getUserSections():
+                    term = ITerm(section)
+                    if term.title == requestTitle:
+                        if currentCourse == list(section.courses)[0]:
+                            newSection = section
+                            break
+                        if newSection is None:
+                            newSection = section
+                url = absoluteURL(newSection, self.request) + '/gradebook'
+                self.request.response.redirect(url)
+                return True
+        return False
+
+    def handleSectionChange(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        if 'currentSection' in self.request:
+            for section in self.getSections():
+                if section['title'] == self.request['currentSection']:
+                    if section['obj'] == ISection(gradebook):
+                        break
+                    self.request.response.redirect(section['url'])
+                    return True
+        return False
 
 class GradebookOverview(SectionFinder):
     """Gradebook Overview/Table"""
+
+    isTeacher = True
 
     def update(self):
         self.person = IPerson(self.request.principal)
@@ -217,33 +267,12 @@ class GradebookOverview(SectionFinder):
         self.sortKey = gradebook.getSortKey(self.person)
 
         """Handle change of current term."""
-        if 'currentTerm' in self.request:
-            currentSection = ISection(proxy.removeSecurityProxy(self.context))
-            currentCourse = list(currentSection.courses)[0]
-            currentTerm = ITerm(currentSection)
-            requestTitle = self.request['currentTerm']
-            if requestTitle != currentTerm.title:
-                newSection = None
-                for section in self.getUserSections(True):
-                    term = ITerm(section)
-                    if term.title == requestTitle:
-                        if currentCourse == list(section.courses)[0]:
-                            newSection = section
-                            break
-                        if newSection is None:
-                            newSection = section
-                url = absoluteURL(newSection, self.request) + '/gradebook'
-                self.request.response.redirect(url)
-                return
+        if self.handleTermChange():
+            return
 
         """Handle change of current section."""
-        if 'currentSection' in self.request:
-            for section in self.getSections(True):
-                if section['title'] == self.request['currentSection']:
-                    if section['obj'] == ISection(gradebook):
-                        break
-                    self.request.response.redirect(section['url'])
-                    return
+        if self.handleSectionChange():
+            return
 
         """Handle changes to due date filter"""
         if 'num_weeks' in self.request:
@@ -302,17 +331,6 @@ class GradebookOverview(SectionFinder):
         flag, weeks = self.context.getDueDateFilter(self.person)
         return weeks
 
-    def worksheets(self):
-        results = []
-        for worksheet in self.context.worksheets:
-            result = {
-                'title': worksheet.title[:10],
-                'url': absoluteURL(worksheet, self.request) + '/gradebook',
-                'current': worksheet == self.getCurrentWorksheet(),
-                }
-            results.append(result)
-        return results
-
     def activities(self):
         """Get  a list of all activities."""
         self.person = IPerson(self.request.principal)
@@ -321,9 +339,10 @@ class GradebookOverview(SectionFinder):
             shortTitle = activity.label
             if shortTitle is None or len(shortTitle) == 0:
                 shortTitle = activity.title
-                if len(shortTitle) > 5:
-                    shortTitle = shortTitle[:5].strip()
-                
+            shortTitle = shortTitle.replace(' ', '')
+            if len(shortTitle) > 5:
+                shortTitle = shortTitle[:5].strip()
+
             result.append({'shortTitle': shortTitle,
                            'longTitle': activity.title,
                            'max': activity.scoresystem.getBestScore(),
@@ -507,15 +526,23 @@ def getEvaluationDiscreteValue(ev):
 class MyGradesView(SectionFinder):
     """Student view of own grades."""
 
+    isTeacher = False
+
     def update(self):
         self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
 
-        """Handle change of current worksheet."""
-        if 'currentWorksheet' in self.request:
-            for worksheet in self.context.worksheets:
-                if worksheet.title == self.request['currentWorksheet']:
-                    self.context.setCurrentWorksheet(self.person, worksheet)
-                    break
+        """Make sure the current worksheet matches the current url"""
+        worksheet = gradebook.context
+        gradebook.setCurrentWorksheet(self.person, worksheet)
+
+        """Handle change of current term."""
+        if self.handleTermChange():
+            return
+
+        """Handle change of current section."""
+        if self.handleSectionChange():
+            return
 
         self.table = []
         total = 0

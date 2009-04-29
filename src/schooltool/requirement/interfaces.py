@@ -44,7 +44,7 @@ class IRequirement(zope.app.container.interfaces.IOrderedContainer,
 
     title = zope.schema.TextLine(
         title=u'Title',
-        description=u'A brief title of the requirement.',
+        description=u'',
         required=True)
 
     def changePosition(name, pos):

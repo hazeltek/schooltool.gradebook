@@ -26,15 +26,15 @@
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
 
-    <tal:if condition="python:not list(view.getSections(True))">
+    <tal:if condition="python:not list(view.getSections())">
       <b>Term:</b>
       <span tal:content="view/getCurrentTerm" />
     </tal:if>
-    <tal:if condition="python:list(view.getTerms(True))">
+    <tal:if condition="python:list(view.getTerms())">
       <label for="currentTerm" i18n:translate="">Term</label>
       <select name="currentTerm"
               onchange="this.form.submit()">
-        <tal:block repeat="term python:view.getTerms(True)">
+        <tal:block repeat="term python:view.getTerms()">
           <option value="1"
               tal:condition="python:term['title'] != view.getCurrentTerm()"
               tal:attributes="value term/title"
@@ -48,15 +48,15 @@
     </tal:if>
 
     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <tal:if condition="python:not list(view.getSections(True))">
+    <tal:if condition="python:not list(view.getSections())">
       <b>Section:</b>
       <span tal:content="view/getCurrentSection" />
     </tal:if>
-    <tal:if condition="python:list(view.getSections(True))">
+    <tal:if condition="python:list(view.getSections())">
       <label for="currentSection" i18n:translate="">Section</label>
       <select name="currentSection"
               onchange="this.form.submit()">
-        <tal:block repeat="section python:view.getSections(True)">
+        <tal:block repeat="section python:view.getSections()">
           <option value="1"
               tal:condition="python:section['title'] != view.getCurrentSection()"
               tal:attributes="value section/title"
@@ -96,7 +96,7 @@
     Message
   </div>
 
-  <table class="month_tabs">
+  <table class="schooltool_gradebook">
     <tr>
       <tal:block repeat="worksheet view/worksheets">
         <td class="active_tab">

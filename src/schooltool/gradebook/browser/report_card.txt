@@ -61,16 +61,16 @@ We see that, when it was added, it was defaulted to the first existing score
 system in the list.
 
     >>> manager.getLink('Activity 1').click()
-    >>> manager.getControl('Exisiting Score System').value
+    >>> manager.getControl('Existing Score System').value
     ['100 Points']
 
 We'll change it, apply the change, and revisit the activity to see that the
 change took.
 
-    >>> manager.getControl('Exisiting Score System').value = ['Letter Grade']
+    >>> manager.getControl('Existing Score System').value = ['Letter Grade']
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
-    >>> manager.getControl('Exisiting Score System').value
+    >>> manager.getControl('Existing Score System').value
     ['Letter Grade']
 
 Later we will want to test the handling of deployment of multiple templates
