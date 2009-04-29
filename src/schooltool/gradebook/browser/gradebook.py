@@ -148,32 +148,32 @@ class GradebookBase(BrowserView):
 class SectionFinder(GradebookBase):
     """Base class for GradebookOverview and MyGradesView"""
 
-    def getUserSections(self, isTeacher):
-        if isTeacher:
+    def getUserSections(self):
+        if self.isTeacher:
             return list(IInstructor(self.person).sections())
         else:
             return list(ILearner(self.person).sections())
 
-    def getTerms(self, isTeacher):
+    def getTerms(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
         terms = []
-        for section in self.getUserSections(isTeacher):
+        for section in self.getUserSections():
             term = ITerm(section)
             if term not in terms:
                 terms.append(term)
         return [{'title': term.title} for term in terms]
 
-    def getSections(self, isTeacher):
+    def getSections(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
         gradebook = proxy.removeSecurityProxy(self.context)
-        for section in self.getUserSections(isTeacher):
+        for section in self.getUserSections():
             term = ITerm(section)
             if term != currentTerm:
                 continue
             url = absoluteURL(section, self.request)
-            if isTeacher:
+            if self.isTeacher:
                 url += '/gradebook'
             else:
                 url += '/mygrades'
@@ -217,7 +217,7 @@ class SectionFinder(GradebookBase):
             requestTitle = self.request['currentTerm']
             if requestTitle != currentTerm.title:
                 newSection = None
-                for section in self.getUserSections(self.isTeacher):
+                for section in self.getUserSections():
                     term = ITerm(section)
                     if term.title == requestTitle:
                         if currentCourse == list(section.courses)[0]:
@@ -233,7 +233,7 @@ class SectionFinder(GradebookBase):
     def handleSectionChange(self):
         gradebook = proxy.removeSecurityProxy(self.context)
         if 'currentSection' in self.request:
-            for section in self.getSections(self.isTeacher):
+            for section in self.getSections():
                 if section['title'] == self.request['currentSection']:
                     if section['obj'] == ISection(gradebook):
                         break
