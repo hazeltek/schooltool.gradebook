@@ -20,35 +20,37 @@
 Gradebook Views
 """
 
-from schooltool.course.interfaces import ILearner
-from schooltool.course.interfaces import IInstructor
 __docformat__ = 'reStructuredText'
+
+import datetime
+import decimal
+
+from zope.app.keyreference.interfaces import IKeyReference
 from zope.component import queryUtility
-import zope.schema
+from zope.publisher.browser import BrowserView
+from zope.schema import ValidationError
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
-from zope.traversing.browser.absoluteurl import absoluteURL
-from zope.app.keyreference.interfaces import IKeyReference
-from zope.viewlet import viewlet
 from zope.traversing.api import getName
-from zope.publisher.browser import BrowserView
+from zope.traversing.browser.absoluteurl import absoluteURL
+from zope.viewlet import viewlet
 
 from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISection
+from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import PercentScoreSystem
 from schooltool.term.interfaces import ITerm
 
-import datetime
-import decimal
+from schooltool.common import SchoolToolMessage as _
+
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
@@ -276,7 +278,6 @@ class SectionFinder(GradebookBase):
             self.apply_all_colspan += 1
         if not self.average_hide:
             self.apply_all_colspan += 1
-        #self.apply_all_colspan = str(self.apply_all_colspan)
 
 
 class GradebookOverview(SectionFinder):
@@ -338,7 +339,7 @@ class GradebookOverview(SectionFinder):
                     try:
                         score = activity.scoresystem.fromUnicode(
                             self.request[cell_name])
-                    except (zope.schema.ValidationError, ValueError):
+                    except (ValidationError, ValueError):
                         self.message = _(
                             'The grade $value for activity $name is not valid.',
                             mapping={'value': self.request[cell_name],
@@ -524,7 +525,7 @@ class GradeActivity(object):
                     try:
                         score = activity.scoresystem.fromUnicode(
                             self.request[id])
-                    except (zope.schema.ValidationError, ValueError):
+                    except (ValidationError, ValueError):
                         self.message = _(
                             'The grade $value for $name is not valid.',
                             mapping={'value': self.request[id],
