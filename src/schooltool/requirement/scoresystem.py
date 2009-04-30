@@ -22,12 +22,12 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
+from decimal import Decimal
+
+from zope.app.component.vocabulary import UtilityVocabulary
 import zope.interface
 import zope.schema
 import zope.security.checker
-from zope.app.component.vocabulary import UtilityVocabulary
-
-from decimal import Decimal
 
 from schooltool.requirement import interfaces
 
@@ -35,6 +35,7 @@ from schooltool.requirement import interfaces
 def ScoreSystemsVocabulary(context):
     return UtilityVocabulary(context,
                              interface=interfaces.IScoreSystem)
+
 
 class UNSCORED(object):
     """This object behaves like a string.
@@ -49,8 +50,10 @@ class UNSCORED(object):
     def __repr__(self):
         return 'UNSCORED'
 
+
 zope.security.checker.BasicTypes[UNSCORED] = zope.security.checker.NoProxy
 UNSCORED = UNSCORED()
+
 
 class AbstractScoreSystem(object):
     zope.interface.implements(interfaces.IScoreSystem)
@@ -87,6 +90,7 @@ class CommentScoreSystem(AbstractScoreSystem):
 
     def __reduce__(self):
         return 'CommentScoreSystem'
+
 
 # Singelton
 CommentScoreSystem = CommentScoreSystem(
@@ -179,6 +183,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         value = self.getNumericalValue(score) - minimum
         return value / (maximum - minimum)
 
+
 class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 
     def __init__(self, name, *args, **kwargs):
@@ -187,6 +192,7 @@ class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 
     def __reduce__(self):
         return self.__name__
+
 
 PassFail = GlobalDiscreteValuesScoreSystem(
     'PassFail',
@@ -271,6 +277,7 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         value = self.getNumericalValue(score) - self.min
         return value / (self.max - self.min)
 
+
 class GlobalRangedValuesScoreSystem(RangedValuesScoreSystem):
 
     def __init__(self, name, *args, **kwargs):
@@ -294,9 +301,12 @@ HundredPointsScoreSystem = GlobalRangedValuesScoreSystem(
 class ICustomScoreSystem(zope.interface.Interface):
     """Marker interface for score systems created in the widget."""
 
+
 class IScoreSystemField(zope.schema.interfaces.IField):
     """A field that represents score system."""
+
 
 class ScoreSystemField(zope.schema.Field):
     """Score System Field."""
     zope.interface.implements(IScoreSystemField)
+
