@@ -261,11 +261,15 @@ class SectionFinder(GradebookBase):
         column_keys_dict = dict(column_keys)
         prefs = columnPreferences.get('total', {})
         self.total_hide = prefs.get('hide', False)
-        self.total_label = prefs.get('label', column_keys_dict['total'])
+        self.total_label = prefs.get('label', '')
+        if len(self.total_label) == 0:
+            self.total_label = column_keys_dict['total']
         self.total_scoresystem = prefs.get('scoresystem', default_scoresystem)
         prefs = columnPreferences.get('average', {})
         self.average_hide = prefs.get('hide', False)
-        self.average_label = prefs.get('label', column_keys_dict['average'])
+        self.average_label = prefs.get('label', '')
+        if len(self.average_label) == 0:
+            self.average_label = column_keys_dict['average']
         self.average_scoresystem = prefs.get('scoresystem', default_scoresystem)
         self.apply_all_colspan = 1
         if not self.total_hide:
