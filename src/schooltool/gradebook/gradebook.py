@@ -23,7 +23,7 @@ Gradebook Implementation
 from zope.component import adapts, queryMultiAdapter
 from schooltool.app.interfaces import ISchoolToolApplication
 __docformat__ = 'reStructuredText'
-import persistent.dict
+from persistent.dict import PersistentDict
 
 from decimal import Decimal
 
@@ -54,6 +54,7 @@ GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 FINAL_GRADE_ADJUSTMENT_KEY = 'schooltool.gradebook.finalgradeadjustment'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
+COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
         
 
 class WorksheetGradebookTraverser(object):
@@ -236,7 +237,7 @@ class GradebookBase(object):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)
         if CURRENT_WORKSHEET_KEY not in ann:
-            ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
+            ann[CURRENT_WORKSHEET_KEY] = PersistentDict()
         if self.worksheets:
             default = self.worksheets[0]
         else:
@@ -249,7 +250,7 @@ class GradebookBase(object):
         worksheet = proxy.removeSecurityProxy(worksheet)
         ann = annotation.interfaces.IAnnotations(person)
         if CURRENT_WORKSHEET_KEY not in ann:
-            ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
+            ann[CURRENT_WORKSHEET_KEY] = PersistentDict()
         section_id = hash(IKeyReference(self.section))
         ann[CURRENT_WORKSHEET_KEY][section_id] = worksheet
 
@@ -264,6 +265,18 @@ class GradebookBase(object):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)
         ann[DUE_DATE_FILTER_KEY] = (flag, weeks)
+
+    def getColumnPreferences(self, person):
+        person = proxy.removeSecurityProxy(person)
+        ann = annotation.interfaces.IAnnotations(person)
+        if COLUMN_PREFERENCES_KEY not in ann:
+            return PersistentDict()
+        return ann[COLUMN_PREFERENCES_KEY]
+
+    def setColumnPreferences(self, person, columnPreferences):
+        person = proxy.removeSecurityProxy(person)
+        ann = annotation.interfaces.IAnnotations(person)
+        ann[COLUMN_PREFERENCES_KEY] = PersistentDict(columnPreferences)
 
     def getCurrentActivities(self, person):
         worksheet = self.getCurrentWorksheet(person)
@@ -298,7 +311,7 @@ class GradebookBase(object):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)
         if GRADEBOOK_SORTING_KEY not in ann:
-            ann[GRADEBOOK_SORTING_KEY] = persistent.dict.PersistentDict()
+            ann[GRADEBOOK_SORTING_KEY] = PersistentDict()
         section_id = hash(IKeyReference(self.section))
         return ann[GRADEBOOK_SORTING_KEY].get(section_id, ('student', False))
 
@@ -306,7 +319,7 @@ class GradebookBase(object):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)
         if GRADEBOOK_SORTING_KEY not in ann:
-            ann[GRADEBOOK_SORTING_KEY] = persistent.dict.PersistentDict()
+            ann[GRADEBOOK_SORTING_KEY] = PersistentDict()
         section_id = hash(IKeyReference(self.section))
         ann[GRADEBOOK_SORTING_KEY][section_id] = value
 
@@ -314,7 +327,7 @@ class GradebookBase(object):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)
         if FINAL_GRADE_ADJUSTMENT_KEY not in ann:
-            ann[FINAL_GRADE_ADJUSTMENT_KEY] = persistent.dict.PersistentDict()
+            ann[FINAL_GRADE_ADJUSTMENT_KEY] = PersistentDict()
         section_id = hash(IKeyReference(self.section))
         if section_id not in ann[FINAL_GRADE_ADJUSTMENT_KEY]:
             return {'adjustment': '', 'reason': ''}
@@ -332,10 +345,10 @@ class GradebookBase(object):
         person = proxy.removeSecurityProxy(person)
         ann = annotation.interfaces.IAnnotations(person)
         if FINAL_GRADE_ADJUSTMENT_KEY not in ann:
-            ann[FINAL_GRADE_ADJUSTMENT_KEY] = persistent.dict.PersistentDict()
+            ann[FINAL_GRADE_ADJUSTMENT_KEY] = PersistentDict()
         section_id = hash(IKeyReference(self.section))
         if section_id not in ann[FINAL_GRADE_ADJUSTMENT_KEY]:
-            adjustments = persistent.dict.PersistentDict()
+            adjustments = PersistentDict()
             ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id] = adjustments
         else:
             adjustments = ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id]

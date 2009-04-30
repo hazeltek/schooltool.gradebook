@@ -239,6 +239,12 @@ class IReadGradebook(Interface):
     def setDueDateFilter(person, flag, weeks):
         """Set the user's current due date filter setting."""
 
+    def getColumnPreferences(person):
+        """Get the user's column preferences."""
+
+    def setColumnPreferences(columnPreferences):
+        """Set the user's column preferences."""
+
     def getCurrentActivities(person):
         """Get the activities for the user's currently active worksheet."""
 

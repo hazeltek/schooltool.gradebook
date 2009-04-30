@@ -345,6 +345,13 @@
       action="../weights.html"
       permission="schooltool.view"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Column Preferences"
+      for="..interfaces.IGradebook"
+      action="column_preferences.html"
+      permission="schooltool.view"
+      />
 
   <!-- Special navagation viewlet for update linked activity grades action -->
   <navigationViewlet
@@ -405,6 +412,13 @@
       for="..interfaces.ILinkedActivity"
       class=".gradebook.UpdateLinkedActivityGrades"
       permission="schooltool.edit"
+      />
+  <page
+      name="column_preferences.html"
+      for="..interfaces.IGradebook"
+      class=".gradebook.GradebookColumnPreferences"
+      template="gradebook_column_preferences.pt"
+      permission="schooltool.view"
       />
 
   <!-- Terms -->

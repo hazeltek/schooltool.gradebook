@@ -23,7 +23,9 @@ Gradebook Views
 from schooltool.course.interfaces import ILearner
 from schooltool.course.interfaces import IInstructor
 __docformat__ = 'reStructuredText'
+from zope.component import queryUtility
 import zope.schema
+from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.keyreference.interfaces import IKeyReference
@@ -42,6 +44,7 @@ from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.requirement.scoresystem import PercentScoreSystem
 from schooltool.term.interfaces import ITerm
 
 import datetime
@@ -51,6 +54,9 @@ GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
 DISCRETE_SCORE_SYSTEM = 'd'
 RANGED_SCORE_SYSTEM = 'r'
+
+column_keys = [('total', _("Total")), ('average', _("Ave."))]
+default_scoresystem = PercentScoreSystem.__name__
 
 
 class GradebookStartup(object):
@@ -241,6 +247,34 @@ class SectionFinder(GradebookBase):
                     return True
         return False
 
+    def processColumnPreferences(self):
+        if self.isTeacher:
+            person = self.person
+        else:
+            section = ISection(gradebook)
+            instructors = list(section.instructors)
+            if len(instructors) == 0:
+                return {}
+            person = instructors[0]
+        gradebook = proxy.removeSecurityProxy(self.context)
+        columnPreferences = gradebook.getColumnPreferences(person)
+        column_keys_dict = dict(column_keys)
+        prefs = columnPreferences.get('total', {})
+        self.total_hide = prefs.get('hide', False)
+        self.total_label = prefs.get('label', column_keys_dict['total'])
+        self.total_scoresystem = prefs.get('scoresystem', default_scoresystem)
+        prefs = columnPreferences.get('average', {})
+        self.average_hide = prefs.get('hide', False)
+        self.average_label = prefs.get('label', column_keys_dict['average'])
+        self.average_scoresystem = prefs.get('scoresystem', default_scoresystem)
+        self.apply_all_colspan = 1
+        if not self.total_hide:
+            self.apply_all_colspan += 1
+        if not self.average_hide:
+            self.apply_all_colspan += 1
+        #self.apply_all_colspan = str(self.apply_all_colspan)
+
+
 class GradebookOverview(SectionFinder):
     """Gradebook Overview/Table"""
 
@@ -254,6 +288,9 @@ class GradebookOverview(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
+
+        """Retrieve column preferences."""
+        self.processColumnPreferences()
 
         """Retrieve sorting information and store changes of it."""
         if 'sort_by' in self.request:
@@ -603,3 +640,67 @@ class UpdateLinkedActivityGrades(LinkedActivityGradesUpdater):
         next_url = absoluteURL(self.context.__parent__, self.request) + \
                    '/gradebook'
         self.request.response.redirect(next_url)
+
+
+class GradebookColumnPreferences(BrowserView):
+    """A view for editing a teacher's gradebook column preferences."""
+
+    def update(self):
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+
+        if 'UPDATE_SUBMIT' in self.request:
+            columnPreferences = gradebook.getColumnPreferences(self.person)
+            for key, name in column_keys:
+                prefs = columnPreferences.setdefault(key, {})
+                if 'hide_' + key in self.request:
+                    prefs['hide'] = True
+                else:
+                    prefs['hide'] = False
+                if 'label_' + key in self.request:
+                    prefs['label'] = self.request['label_' + key]
+                else:
+                    prefs['label'] = ''
+                prefs['scoresystem'] = self.request['scoresystem_' + key]
+            gradebook.setColumnPreferences(self.person, columnPreferences)
+
+        if 'CANCEL' in self.request or 'UPDATE_SUBMIT' in self.request:
+            self.request.response.redirect('index.html')
+
+    @property
+    def columns(self):
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        results = []
+        columnPreferences = gradebook.getColumnPreferences(self.person)
+        for key, name in column_keys:
+            prefs = columnPreferences.get(key, {})
+            hide = prefs.get('hide', False)
+            label = prefs.get('label', '')
+            scoresystem = prefs.get('scoresystem', default_scoresystem)
+            result = {
+                'name': name,
+                'hide_name': 'hide_' + key,
+                'hide_value': hide,
+                'label_name': 'label_' + key,
+                'label_value': label,
+                'scoresystem_name': 'scoresystem_' + key,
+                'scoresystem_value': scoresystem,
+                }
+            results.append(result)
+        return results
+
+    @property
+    def scoresystems(self):
+        factory = queryUtility(IVocabularyFactory, 
+                               'schooltool.requirement.scoresystems')
+        vocab = factory(None)
+        results = []
+        for term in vocab:
+            result = {
+                'name': term.token,
+                'value': term.value.__name__,
+                }
+            results.append(result)
+        return results
+

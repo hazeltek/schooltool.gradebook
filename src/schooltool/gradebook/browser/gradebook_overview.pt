@@ -114,7 +114,7 @@
   <table class="schooltool_gradebook">
     <tr tal:condition="python:len(view.descriptions) > 0">
       <td id="description" class="description"
-          tal:attributes="colspan python:len(view.descriptions) + 3" />
+          tal:attributes="colspan python:len(view.descriptions) + view.apply_all_colspan" />
     </tr>
 
     <tr>
@@ -122,11 +122,11 @@
        <div i18n:translate="">Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
      </th>
-     <th class="cell header">
-       <div i18n:translate="">Total</div>
+     <th tal:condition="not: view/total_hide" class="cell padded header">
+       <div tal:content="view/total_label" />
      </th>
-     <th class="cell header">
-       <div i18n:translate="">Ave.</div>
+     <th tal:condition="not: view/average_hide" class="cell padded header">
+       <div tal:content="view/average_label" />
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
      <th class="cell title header" tal:repeat="activity view/activities">
@@ -152,7 +152,8 @@
     </tr>
 
     <tr>
-      <td colspan="3" class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
+      <td tal:attributes="colspan view/apply_all_colspan"
+          class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
       <td class="cell padded fd_cell" tal:repeat="activity view/activities"
           tal:attributes="id string:fd_${activity/hash}_cell">
         <input type="text" size="4" class="data fd"
@@ -178,12 +179,12 @@
             Tom Hoffman
           </a>
         </td>
-        <td class="cell padded even">
+        <td tal:condition="not: view/total_hide" class="cell padded even">
 	      <tal:if condition="row/total|nothing">
 	        <b><span tal:replace="row/total" /></b>
 	      </tal:if>
         </td>
-        <td class="cell padded even">
+        <td tal:condition="not: view/average_hide" class="cell padded even">
 	      <tal:if condition="row/average|nothing">
 	        <b><span tal:replace="row/average" />%</b>
 	      </tal:if>
@@ -207,12 +208,12 @@
             Tom Hoffman
           </a>
         </td>
-        <td class="cell padded odd">
+        <td tal:condition="not: view/total_hide" class="cell padded odd">
 	      <tal:if condition="row/total|nothing">
 	        <b><span tal:replace="row/total" /></b>
 	      </tal:if>
         </td>
-        <td class="cell padded odd">
+        <td tal:condition="not: view/average_hide" class="cell padded odd">
 	      <tal:if condition="row/average|nothing">
 	        <b><span tal:replace="row/average" />%</b>
 	      </tal:if>
