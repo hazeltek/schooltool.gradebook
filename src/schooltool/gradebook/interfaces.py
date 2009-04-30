@@ -179,9 +179,6 @@ class IEditGradebook(Interface):
 
     def removeEvaluation(student, activity):
         """Remove evaluation."""
-        
-    def setFinalGradeAdjustment(person, student, adjustment, reason):
-        """Set the final grade adjustment for the given student."""
     
 
 class IReadGradebook(Interface):
@@ -258,15 +255,6 @@ class IReadGradebook(Interface):
         sort by student title or the hash of the activity. The second entry
         specifies whether the sorting is reversed.
         """
-
-    def getFinalGradeAdjustment(person, student):
-        """Get the final grade adjustment for the given student."""
-
-    def getFinalGrade(student):
-        """Get the final grade for the given student."""
-
-    def getAdjustedFinalGrade(person, student):
-        """Get the adjusted final grade for the given student."""
 
 
 class IGradebook(IReadGradebook, IEditGradebook):
