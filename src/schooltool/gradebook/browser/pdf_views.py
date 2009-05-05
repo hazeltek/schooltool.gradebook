@@ -55,7 +55,7 @@ def _para(text, style):
     elif isinstance(text, unicode):
         text = text.encode('utf-8')
     else:
-        text = str(text)
+        text = unicode(text)
     return Paragraph(cgi.escape(text), style)
 
 
@@ -162,7 +162,7 @@ class ReportCard(object):
                     continue
                 score = evaluations.get(activity, None)
                 if score is not None and score.value is not UNSCORED:
-                    byCourse[course] = str(score.value)
+                    byCourse[course] = unicode(score.value)
             if len(byCourse):
                 scores[layout.source] = byCourse
 

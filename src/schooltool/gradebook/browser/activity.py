@@ -335,7 +335,7 @@ class WeightCategoriesView(object):
             if category in self.request:
                 weight = self.request[category]
             else:
-                weight = str(weights.get(category, '') * 100)
+                weight = unicode(weights.get(category, '') * 100)
                 if '.' in weight:
                     while weight.endswith('0'):
                         weight = weight[:-1]
