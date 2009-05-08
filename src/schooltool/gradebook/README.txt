@@ -427,9 +427,6 @@ This will be rounded to the nearest integer and mapped to a letter grade.
 We will hard-code this as 4 -> A, 3 -> B, ... 0 -> E until we have a customer 
 that needs it done differently.  
 
-The teacher will have the ability to override this value at his/her discretion 
-with a different letter grade, supplying a reason if they wish.
-
 First let's see what Paul's grades are for the two worksheets:
 
     >>> gradebook.getWorksheetTotalAverage(week1, paul)
@@ -442,32 +439,6 @@ together and rounding should yield an A.
     
     >>> gradebook.getFinalGrade(paul)
     'A'
-
-Now let's say that Stephan felt that Paul's B in week 1 weighs more heavily
-than his A in the second week.  He could indicate this by setting an override
-value for Paul of 'B', stating the reason for the adjustment.
-
-    >>> adjustment = gradebook.getFinalGradeAdjustment(stephan, paul)
-    >>> sorted(adjustment.items())
-    [('adjustment', ''), ('reason', '')]
-    >>> gradebook.setFinalGradeAdjustment(stephan, paul, 'B',
-    ...     'week 1 more important than week 2')
-    >>> adjustment = gradebook.getFinalGradeAdjustment(stephan, paul)
-    >>> sorted(adjustment.items())
-    [('adjustment', 'B'), ('reason', 'week 1 more important than week 2')]
-
-Paul's adjusted final grade will be a B.
-
-    >>> gradebook.getAdjustedFinalGrade(stephan, paul)
-    'B'
-
-Trying to set the adjustment to an illegal letter will yield a ValueError.
-
-    >>> gradebook.setFinalGradeAdjustment(stephan, paul, 'F',
-    ...     'week 1 more important than week 2')
-    Traceback (most recent call last):
-    ...
-    ValueError: Adjustment final grade 'F' is not a valid grade.
 
 
 Weighting Categories

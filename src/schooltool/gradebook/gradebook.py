@@ -52,7 +52,6 @@ from schooltool.common import SchoolToolMessage as _
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
-FINAL_GRADE_ADJUSTMENT_KEY = 'schooltool.gradebook.finalgradeadjustment'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
         
 
@@ -310,38 +309,6 @@ class GradebookBase(object):
         section_id = hash(IKeyReference(self.section))
         ann[GRADEBOOK_SORTING_KEY][section_id] = value
 
-    def getFinalGradeAdjustment(self, person, student):
-        person = proxy.removeSecurityProxy(person)
-        ann = annotation.interfaces.IAnnotations(person)
-        if FINAL_GRADE_ADJUSTMENT_KEY not in ann:
-            ann[FINAL_GRADE_ADJUSTMENT_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.section))
-        if section_id not in ann[FINAL_GRADE_ADJUSTMENT_KEY]:
-            return {'adjustment': '', 'reason': ''}
-        else:
-            adjustments = ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id]
-            student_id = hash(IKeyReference(student))
-            return adjustments.get(student_id,
-                {'adjustment': '', 'reason': ''})
-
-    def setFinalGradeAdjustment(self, person, student, adjustment, reason):
-        if adjustment not in 'ABCDE':
-            raise ValueError(
-                "Adjustment final grade '%s' is not a valid grade." %
-                adjustment)
-        person = proxy.removeSecurityProxy(person)
-        ann = annotation.interfaces.IAnnotations(person)
-        if FINAL_GRADE_ADJUSTMENT_KEY not in ann:
-            ann[FINAL_GRADE_ADJUSTMENT_KEY] = persistent.dict.PersistentDict()
-        section_id = hash(IKeyReference(self.section))
-        if section_id not in ann[FINAL_GRADE_ADJUSTMENT_KEY]:
-            adjustments = persistent.dict.PersistentDict()
-            ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id] = adjustments
-        else:
-            adjustments = ann[FINAL_GRADE_ADJUSTMENT_KEY][section_id]
-        student_id = hash(IKeyReference(student))
-        adjustments[student_id] = {'adjustment': adjustment, 'reason': reason}
-
     def getFinalGrade(self, student):
         total = 0
         for worksheet in self.worksheets:
@@ -361,14 +328,6 @@ class GradebookBase(object):
         final = int((float(total) / float(len(self.worksheets))) + 0.5)
         letter_grade = {4: 'A', 3: 'B', 2: 'C', 1: 'D', 0: 'E'}
         return letter_grade[final]
-
-    def getAdjustedFinalGrade(self, person, student):
-        final = self.getFinalGrade(student)
-        adjustment = self.getFinalGradeAdjustment(person, student)
-        if adjustment['adjustment']:
-            return adjustment['adjustment']
-        else:
-            return final
 
 
 class Gradebook(GradebookBase):

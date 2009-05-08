@@ -436,6 +436,34 @@ class GradebookOverview(SectionFinder):
         return results
 
 
+class SummaryView(SectionFinder):
+    """Final Grades Table for all students in the section"""
+
+    isTeacher = True
+
+    def table(self):
+        """Generate the table of grades."""
+        gradebook = proxy.removeSecurityProxy(self.context)
+        rows = []
+        students = sorted(self.context.students, key=lambda x: x.title)
+        for student in students:
+            grades = []
+            for worksheet in gradebook.worksheets:
+                total, average = gradebook.getWorksheetTotalAverage(worksheet,
+                    student)
+                grades.append({'value': str(average)})
+            calculated = gradebook.getFinalGrade(student)
+
+            row = {
+                'student': student,
+                'grades': grades,
+                'calculated': calculated,
+                }
+            rows.append(row)
+
+        return rows
+
+
 class GradeActivity(object):
     """Grading a single activity"""
 
