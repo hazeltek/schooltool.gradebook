@@ -312,6 +312,8 @@ class GradebookBase(object):
     def getFinalGrade(self, student):
         total = 0
         for worksheet in self.worksheets:
+            if worksheet.deployed:
+                continue
             tot, average = self.getWorksheetTotalAverage(worksheet, student)
             if average >= 90:
                 grade = 4

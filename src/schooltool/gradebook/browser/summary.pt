@@ -18,7 +18,7 @@
     <tr>
      <th class="cell header fully_padded">Name</th>
      <th class="cell header fully_padded"
-         tal:repeat="worksheet context/worksheets"
+         tal:repeat="worksheet view/worksheets"
          tal:content="worksheet/title" />
      <th class="cell header fully_padded">Calculated Final Grade</th>
     </tr>

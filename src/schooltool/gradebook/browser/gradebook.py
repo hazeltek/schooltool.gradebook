@@ -448,7 +448,7 @@ class SummaryView(SectionFinder):
         students = sorted(self.context.students, key=lambda x: x.title)
         for student in students:
             grades = []
-            for worksheet in gradebook.worksheets:
+            for worksheet in self.worksheets:
                 total, average = gradebook.getWorksheetTotalAverage(worksheet,
                     student)
                 grades.append({'value': str(average)})
@@ -462,6 +462,13 @@ class SummaryView(SectionFinder):
             rows.append(row)
 
         return rows
+
+    @property
+    def worksheets(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        return [worksheet
+                for worksheet in gradebook.worksheets
+                if not worksheet.deployed]
 
 
 class GradeActivity(object):
