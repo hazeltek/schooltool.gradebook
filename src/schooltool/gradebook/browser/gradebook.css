@@ -147,3 +147,7 @@ td.active_tab {
 .bordered {
     border: solid 1px black;
 }
+
+.bold {
+    font-weight: bold;
+}

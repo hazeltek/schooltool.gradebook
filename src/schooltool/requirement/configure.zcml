@@ -95,6 +95,13 @@
         />
   </class>
 
+  <class class=".scoresystem.CustomScoreSystem">
+    <require
+        permission="schooltool.edit"
+        interface=".interfaces.ICustomScoreSystem"
+        />
+  </class>
+
   <!-- Score System registrations -->
 
   <utility
@@ -174,5 +181,27 @@
   </class>
 
   <include package=".browser" />
+
+  <!-- ScoreSystemsProxy adapter -->
+  <class class=".scoresystem.ScoreSystemsProxy">
+    <require
+        permission="schooltool.edit"
+        interface=".interfaces.IScoreSystemsProxy" />
+  </class>
+  <adapter
+      for="schooltool.app.app.SchoolToolApplication"
+      provides=".interfaces.IScoreSystemsProxy"
+      factory=".scoresystem.ScoreSystemsProxy"
+      trusted="true"
+      />
+
+  <!-- Pluggable traverser plugins for HTTP paths -->
+  <adapterTraverserPlugin
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="scoresystems"
+      adapter=".interfaces.IScoreSystemsProxy"
+      permission="schooltool.edit"
+      />
 
 </configure>

@@ -47,12 +47,14 @@ def test_suite():
                              setUp=setUp, tearDown=tearDown,
                              globs={'pprint': doctestunit.pprint},
                              optionflags=doctest.NORMALIZE_WHITESPACE|
-                                         doctest.ELLIPSIS),
+                                         doctest.ELLIPSIS|
+                                         doctest.REPORT_ONLY_FIRST_FAILURE),
         doctest.DocFileSuite('grades.txt',
                              setUp=setUp, tearDown=tearDown,
                              globs={'pprint': doctestunit.pprint},
                              optionflags=doctest.NORMALIZE_WHITESPACE|
-                                         doctest.ELLIPSIS),
+                                         doctest.ELLIPSIS|
+                                         doctest.REPORT_ONLY_FIRST_FAILURE),
         ))
 
 if __name__ == '__main__':

@@ -24,12 +24,20 @@ __docformat__ = 'restructuredtext'
 
 from decimal import Decimal
 
+from persistent import Persistent
+
 from zope.app.component.vocabulary import UtilityVocabulary
+from zope.component import adapts, queryMultiAdapter
+from zope.interface import implements
 import zope.interface
 import zope.schema
 import zope.security.checker
+from zope.security.proxy import removeSecurityProxy
 
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces
+from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.interfaces import IScoreSystemsProxy
 
 
 def ScoreSystemsVocabulary(context):
@@ -130,6 +138,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
     scores = None
     _minPassingScore = None
     _bestScore = None
+    hidden = False
 
     def __init__(self, title=None, description=None,
                  scores=None, bestScore=None, minPassingScore=None):
@@ -145,12 +154,12 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
             return None
         if self._minPassingScore is None:
             return None
-        scores = dict(self.scores)
+        scores = self.scoresDict()
         return scores[score] >= scores[self._minPassingScore]
 
     def isValidScore(self, score):
         """See interfaces.IScoreSystem"""
-        scores = dict(self.scores).keys()
+        scores = self.scoresDict().keys()
         return score in scores + [UNSCORED]
 
     def getBestScore(self):
@@ -171,7 +180,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if score is UNSCORED:
             return None
-        scores = dict(self.scores)
+        scores = self.scoresDict()
         return scores[score]
 
     def getFractionalValue(self, score):
@@ -183,6 +192,9 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         value = self.getNumericalValue(score) - minimum
         return value / (maximum - minimum)
 
+    def scoresDict(self):
+        scores = [(score, value) for score, value, percent in self.scores]
+        return dict(scores)
 
 class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 
@@ -197,22 +209,37 @@ class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 PassFail = GlobalDiscreteValuesScoreSystem(
     'PassFail',
     u'Pass/Fail', u'Pass or Fail score system.',
-    [(u'Pass', Decimal(1)), (u'Fail', Decimal(0))], u'Pass', u'Pass')
+    [(u'Pass', Decimal(1), Decimal(60)), 
+     (u'Fail', Decimal(0), Decimal(0))], 
+     u'Pass', u'Pass')
 
 AmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'AmericanLetterScoreSystem',
     u'Letter Grade', u'American Letter Grade',
-    [('A', Decimal(4)), ('B', Decimal(3)), ('C', Decimal(2)),
-     ('D', Decimal(1)), ('F', Decimal(0))], 'A', 'D')
+    [('A', Decimal(4), Decimal(90)), 
+     ('B', Decimal(3), Decimal(80)), 
+     ('C', Decimal(2), Decimal(70)),
+     ('D', Decimal(1), Decimal(60)), 
+     ('F', Decimal(0), Decimal(0))], 
+     'A', 'D')
 
 ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'ExtendedAmericanLetterScoreSystem',
     u'Extended Letter Grade', u'American Extended Letter Grade',
-    [('A+', Decimal('4.0')), ('A', Decimal('4.0')), ('A-', Decimal('3.7')),
-     ('B+', Decimal('3.3')), ('B', Decimal('3.0')), ('B-', Decimal('2.7')),
-     ('C+', Decimal('2.3')), ('C', Decimal('2.0')), ('C-', Decimal('1.7')),
-     ('D+', Decimal('1.3')), ('D', Decimal('1.0')), ('D-', Decimal('0.7')),
-     ('F',  Decimal('0.0'))], 'A+', 'D-')
+    [('A+', Decimal('4.0'), Decimal(98)), 
+     ('A', Decimal('4.0'), Decimal(93)), 
+     ('A-', Decimal('3.7'), Decimal(90)),
+     ('B+', Decimal('3.3'), Decimal(88)), 
+     ('B', Decimal('3.0'), Decimal(83)), 
+     ('B-', Decimal('2.7'), Decimal(80)),
+     ('C+', Decimal('2.3'), Decimal(78)), 
+     ('C', Decimal('2.0'), Decimal(73)), 
+     ('C-', Decimal('1.7'), Decimal(70)),
+     ('D+', Decimal('1.3'), Decimal(68)), 
+     ('D', Decimal('1.0'), Decimal(63)), 
+     ('D-', Decimal('0.7'), Decimal(60)),
+     ('F',  Decimal('0.0'), Decimal(0))], 
+     'A+', 'D-')
 
 
 class RangedValuesScoreSystem(AbstractValuesScoreSystem):
@@ -309,4 +336,54 @@ class IScoreSystemField(zope.schema.interfaces.IField):
 class ScoreSystemField(zope.schema.Field):
     """Score System Field."""
     zope.interface.implements(IScoreSystemField)
+
+
+class CustomScoreSystem(DiscreteValuesScoreSystem, Persistent):
+    """ScoreSystem class for custom (user-created) score systems"""
+
+    implements(interfaces.ICustomScoreSystem)
+
+
+class ScoreSystemsProxy(object):
+    """The Proxy class for adding/editing score systems"""
+
+    implements(IScoreSystemsProxy)
+    adapts(ISchoolToolApplication)
+
+    def __init__(self, app):
+        self.app = app
+        self.siteManager = app.getSiteManager()
+        self.__parent__ = app
+        self.__name__ = 'scoresystems'
+
+    def getScoreSystems(self):
+        """Return list of tuples (name, scoresystem)"""
+        results = []
+        for name, util in sorted(self.siteManager.getUtilitiesFor(
+                                 interfaces.ICustomScoreSystem)):
+            util = removeSecurityProxy(util)
+            if util.hidden:
+                continue
+            results.append((name, util))
+        return results
+
+    def addScoreSystem(self, scoresystem):
+        """Add scoresystem to app utilitiles"""
+        names = [name for name, util in self.getScoreSystems()]
+        name = u''.join([c for c in scoresystem.title.lower()
+                         if c.isalnum() or c == ' ']).replace(' ', '-')
+        n = name
+        i = 1
+        while n in names:
+            n = name + u'-' + unicode(i)
+            i += 1
+        self.siteManager.registerUtility(scoresystem, 
+            interfaces.ICustomScoreSystem, name=n)
+
+    def getScoreSystem(self, name):
+        """Get scoresystem from app utilitiles by the given name"""
+        for n, util in self.getScoreSystems():
+            if n == name:
+                return removeSecurityProxy(util)
+        raise KeyError
 

@@ -1,0 +1,44 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">Score Systems</title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">Score Systems</h1>
+
+<metal:block metal:fill-slot="body"
+             tal:define="scoresystems view/scoresystems">
+
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/index.html">
+    <input type="hidden" name="form-submitted" value="" />
+
+    <table class="schooltool_gradebook">
+      <tr>
+        <th class="cell header fully_padded">Hide?</th>
+        <th class="cell header fully_padded">Score System</th>
+      </tr>
+
+      <tr class="bordered"
+          tal:repeat="scoresystem scoresystems">
+        <td class="cell fully_padded">
+          <input type="checkbox"
+                 tal:attributes="name scoresystem/hide_name;" />
+        </td>
+        <td class="cell fully_padded">
+          <a tal:content="scoresystem/title"
+             tal:attributes="href scoresystem/url">Score System</a>
+        </td>
+      </tr>
+    </table>
+
+    <div class="controls">
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+    </div>
+
+  </form>
+</metal:block>
+</body>
+</html>
