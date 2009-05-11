@@ -1,0 +1,39 @@
+<html metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">
+    Gradebook
+  </title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">Section Worksheet Summary</h1>
+
+<div metal:fill-slot="body">
+
+  <span tal:content="string:Section: ${view/getCurrentSection}" />
+  <div style="height: 11px;"></div>
+  <table class="schooltool_gradebook">
+    <tr>
+     <th class="cell header fully_padded">Name</th>
+     <th class="cell header fully_padded"
+         tal:repeat="worksheet view/worksheets"
+         tal:content="worksheet/title" />
+     <th class="cell header fully_padded">Calculated Final Grade</th>
+    </tr>
+    <tr class="bordered"
+        tal:repeat="row view/table">
+      <td class="cell fully_padded"
+          tal:content="row/student/title" />
+      <td class="cell fully_padded"
+          tal:repeat="grade row/grades"
+          tal:content="grade/value" />
+      <td class="cell fully_padded"
+          tal:content="row/calculated" />
+    </tr>
+  </table>
+
+</div>
+</body>
+</html>

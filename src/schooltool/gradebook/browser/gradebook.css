@@ -78,6 +78,11 @@ table.schooltool_gradebook .final_grade {
     padding-right: .25em;
 }
 
+.fully_padded {
+    padding: .25em;
+    padding: .25em;
+}
+
 .header {
     background-color: #DDD;
 }
@@ -137,5 +142,9 @@ td.active_tab {
     background-color: #ddd;
     width: 90px;
     text-align: center;
+}
+
+.bordered {
+    border: solid 1px black;
 }
 
