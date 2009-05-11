@@ -55,7 +55,7 @@ def _para(text, style):
     elif isinstance(text, unicode):
         text = text.encode('utf-8')
     else:
-        text = unicode(text)
+        text = str(text)
     return Paragraph(cgi.escape(text), style)
 
 
