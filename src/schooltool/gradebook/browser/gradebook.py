@@ -127,13 +127,13 @@ class GradebookBase(BrowserView):
                     for score in ss.scores]
             else:
                 result = [RANGED_SCORE_SYSTEM, ss.min, ss.max]
-            resultStr = ', '.join(["'%s'" % str(value) 
+            resultStr = ', '.join(["'%s'" % unicode(value) 
                 for value in result])
             results[hash(IKeyReference(activity))] = resultStr
         return results
 
     def breakJSString(self, origstr):
-        newstr = str(origstr)
+        newstr = unicode(origstr)
         newstr = newstr.replace('\n', '')
         newstr = newstr.replace('\r', '')
         newstr = "\\'".join(newstr.split("'"))
@@ -289,7 +289,7 @@ class GradebookOverview(SectionFinder):
         for student in self.context.students:
             for activity in gradebook.activities:
                 # Create a hash and see whether it is in the request
-                act_hash = str(hash(IKeyReference(activity)))
+                act_hash = unicode(hash(IKeyReference(activity)))
                 cell_name = '%s_%s' % (act_hash, student.username)
                 if cell_name in self.request:
                     # If a value is present, create an evaluation, if the
@@ -392,15 +392,15 @@ class GradebookOverview(SectionFinder):
                              'id': student.username,
                              'url': absoluteURL(student, self.request),
                             },
-                 'grades': grades, 'total': str(total),
-                 'average': str(average)
+                 'grades': grades, 'total': unicode(total),
+                 'average': unicode(average)
                 })
 
         # Do the sorting
         key, reverse = self.sortKey
         def generateKey(row):
             if key != 'student':
-                grades = dict([(str(grade['activity']), grade['value'])
+                grades = dict([(unicode(grade['activity']), grade['value'])
                                for grade in row['grades']])
                 if not grades.get(key, ''):
                     return (1, row['student']['title'])

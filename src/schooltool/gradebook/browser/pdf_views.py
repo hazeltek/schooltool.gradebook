@@ -162,7 +162,7 @@ class ReportCard(object):
                     continue
                 score = evaluations.get(activity, None)
                 if score is not None and score.value is not UNSCORED:
-                    byCourse[course] = str(score.value)
+                    byCourse[course] = unicode(score.value)
             if len(byCourse):
                 scores[layout.source] = byCourse
 
