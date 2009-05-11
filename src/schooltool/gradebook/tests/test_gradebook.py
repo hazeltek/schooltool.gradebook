@@ -33,6 +33,7 @@ from zope.app.testing import setup
 # Has to be imported before
 import schooltool.app
 import schooltool.requirement.testing
+import schooltool.course.interfaces
 from schooltool import course, person, requirement
 from schooltool.relationship.tests import setUpRelationships
 from schooltool.gradebook import activity, gradebook, interfaces
