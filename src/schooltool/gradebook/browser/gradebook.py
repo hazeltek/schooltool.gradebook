@@ -58,7 +58,12 @@ DISCRETE_SCORE_SYSTEM = 'd'
 RANGED_SCORE_SYSTEM = 'r'
 
 column_keys = [('total', _("Total")), ('average', _("Ave."))]
-default_scoresystem = PercentScoreSystem.__name__
+
+
+def escName(name):
+    """converts title-based scoresystem name to querystring format"""
+    chars = [c for c in name.lower() if c.isalnum() or c == ' ']
+    return u''.join(chars).replace(' ', '-')
 
 
 class GradebookStartup(object):
@@ -266,13 +271,13 @@ class SectionFinder(GradebookBase):
         self.total_label = prefs.get('label', '')
         if len(self.total_label) == 0:
             self.total_label = column_keys_dict['total']
-        self.total_scoresystem = prefs.get('scoresystem', default_scoresystem)
+        self.total_scoresystem = prefs.get('scoresystem', '')
         prefs = columnPreferences.get('average', {})
         self.average_hide = prefs.get('hide', False)
         self.average_label = prefs.get('label', '')
         if len(self.average_label) == 0:
             self.average_label = column_keys_dict['average']
-        self.average_scoresystem = prefs.get('scoresystem', default_scoresystem)
+        self.average_scoresystem = prefs.get('scoresystem', '')
         self.apply_all_colspan = 1
         if not self.total_hide:
             self.apply_all_colspan += 1
@@ -666,7 +671,8 @@ class GradebookColumnPreferences(BrowserView):
                     prefs['label'] = self.request['label_' + key]
                 else:
                     prefs['label'] = ''
-                prefs['scoresystem'] = self.request['scoresystem_' + key]
+                if key != 'total':
+                    prefs['scoresystem'] = self.request['scoresystem_' + key]
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
         if 'CANCEL' in self.request or 'UPDATE_SUBMIT' in self.request:
@@ -682,7 +688,7 @@ class GradebookColumnPreferences(BrowserView):
             prefs = columnPreferences.get(key, {})
             hide = prefs.get('hide', False)
             label = prefs.get('label', '')
-            scoresystem = prefs.get('scoresystem', default_scoresystem)
+            scoresystem = prefs.get('scoresystem', '')
             result = {
                 'name': name,
                 'hide_name': 'hide_' + key,
@@ -698,13 +704,17 @@ class GradebookColumnPreferences(BrowserView):
     @property
     def scoresystems(self):
         factory = queryUtility(IVocabularyFactory, 
-                               'schooltool.requirement.scoresystems')
+                               'schooltool.requirement.discretescoresystems')
         vocab = factory(None)
-        results = []
+        result = {
+            'name': _('-- No score system --'),
+            'value': '',
+            }
+        results = [result]
         for term in vocab:
             result = {
                 'name': term.token,
-                'value': term.value.__name__,
+                'value': escName(term.token),
                 }
             results.append(result)
         return results

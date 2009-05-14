@@ -35,17 +35,19 @@
                    tal:attributes="name column/label_name; value column/label_value" />
           </td>
           <td class="cell fully_padded">
-            <select tal:attributes="id column/scoresystem_name; name column/scoresystem_name">
-              <tal:block repeat="scoresystem view/scoresystems">
-              <option tal:condition="python: scoresystem['value'] == column['scoresystem_value']"
-                      selected
-                      tal:attributes="value scoresystem/value"
-                      tal:content="scoresystem/name" />
-              <option tal:condition="python: scoresystem['value'] != column['scoresystem_value']"
-                      tal:attributes="value scoresystem/value"
-                      tal:content="scoresystem/name" />
-              </tal:block>
-            </select>
+            <tal:block condition="python: column['hide_name'] != 'hide_total'">
+              <select tal:attributes="id column/scoresystem_name; name column/scoresystem_name">
+                <tal:block repeat="scoresystem view/scoresystems">
+                  <option tal:condition="python: scoresystem['value'] == column['scoresystem_value']"
+                          selected
+                          tal:attributes="value scoresystem/value"
+                          tal:content="scoresystem/name" />
+                  <option tal:condition="python: scoresystem['value'] != column['scoresystem_value']"
+                          tal:attributes="value scoresystem/value"
+                          tal:content="scoresystem/name" />
+                </tal:block>
+              </select>
+            </tal:block>
           </td>
         </tr>
       </tal:block>
