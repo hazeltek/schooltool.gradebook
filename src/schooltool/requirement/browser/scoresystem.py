@@ -48,6 +48,12 @@ PERCENTS_MUST_DESCEND =  _('Score percentages must go in descending order.')
 LAST_PERCENT_NOT_ZERO =   _('The last percentage must be zero.')
 
 
+def escName(name):
+    """converts title-based scoresystem name to querystring format"""
+    chars = [c for c in name.lower() if c.isalnum() or c == ' ']
+    return u''.join(chars).replace(' ', '-')
+
+
 class ScoreSystemsView(BrowserView):
     """A view for maintaining user-created scoresystem utilities"""
 
@@ -55,7 +61,7 @@ class ScoreSystemsView(BrowserView):
         if 'form-submitted' in self.request:
             for name, ss in self.context.getScoreSystems():
                 ss = removeSecurityProxy(ss)
-                if 'hide_' + name in self.request:
+                if 'hide_' + escName(name) in self.request:
                     ss.hidden = True
 
     def scoresystems(self):
@@ -65,8 +71,8 @@ class ScoreSystemsView(BrowserView):
             ss = removeSecurityProxy(ss)
             result = {
                 'title': ss.title,
-                'url': '%s?name=%s' % (url, name),
-                'hide_name': 'hide_' + name,
+                'url': '%s?name=%s' % (url, escName(name)),
+                'hide_name': 'hide_' + escName(name),
                 }
             results.append(result)
         return results
@@ -219,7 +225,10 @@ class ScoreSystemViewView(BrowserView):
 
     def getScoreSystem(self):
         name = self.request['QUERY_STRING'].split('=')[1]
-        return removeSecurityProxy(self.context.getScoreSystem(name))
+        for n, ss in self.context.getScoreSystems():
+            if escName(n) == name:
+                return removeSecurityProxy(ss)
+        raise KeyError
 
 
 class IWidgetData(interfaces.IRangedValuesScoreSystem):

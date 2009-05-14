@@ -45,6 +45,11 @@ def ScoreSystemsVocabulary(context):
                              interface=interfaces.IScoreSystem)
 
 
+def DiscreteScoreSystemsVocabulary(context):
+    return UtilityVocabulary(context,
+                             interface=interfaces.IDiscreteValuesScoreSystem)
+
+
 class UNSCORED(object):
     """This object behaves like a string.
 
@@ -370,8 +375,7 @@ class ScoreSystemsProxy(object):
     def addScoreSystem(self, scoresystem):
         """Add scoresystem to app utilitiles"""
         names = [name for name, util in self.getScoreSystems()]
-        name = u''.join([c for c in scoresystem.title.lower()
-                         if c.isalnum() or c == ' ']).replace(' ', '-')
+        name = scoresystem.title
         n = name
         i = 1
         while n in names:

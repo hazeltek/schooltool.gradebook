@@ -887,13 +887,83 @@ Now, when we ask the proxy for what score systems it has, it will return both
 of the newly added ones.
 
     >>> ssProxy.getScoreSystems()
-    [(u'custom-1', <CustomScoreSystem 'Custom 1'>), 
-     (u'custom-2', <CustomScoreSystem 'Custom 2'>)]
+    [(u'Custom 1', <CustomScoreSystem 'Custom 1'>), 
+     (u'Custom 2', <CustomScoreSystem 'Custom 2'>)]
 
 We can get one of them by name.
 
-    >>> ssProxy.getScoreSystem('custom-1')
+    >>> ssProxy.getScoreSystem('Custom 1')
     <CustomScoreSystem 'Custom 1'>
+
+
+Score System Vocabularies
+-------------------------
+
+Score System vocabularies are used to provide a pulldown for fields
+requiring scoresystem input.  Let's register the utilities.
+
+    >>> from zope.component import provideUtility
+    >>> from schooltool.requirement import scoresystem
+
+First, the discrete values score systems.
+
+    >>> zope.component.provideUtility(
+    ...     scoresystem.PassFail, interfaces.IDiscreteValuesScoreSystem,
+    ...     u'Pass/Fail')
+    >>> zope.component.provideUtility(
+    ...     scoresystem.AmericanLetterScoreSystem, interfaces.IDiscreteValuesScoreSystem,
+    ...     u'Letter Grade')
+    >>> zope.component.provideUtility(
+    ...     scoresystem.ExtendedAmericanLetterScoreSystem, interfaces.IDiscreteValuesScoreSystem,
+    ...     u'Extended Letter Grade')
+
+Secondly, the ranged values score systems.
+
+    >>> zope.component.provideUtility(
+    ...     scoresystem.PercentScoreSystem, interfaces.IScoreSystem,
+    ...     u'Percent')
+    >>> zope.component.provideUtility(
+    ...     scoresystem.HundredPointsScoreSystem, interfaces.IScoreSystem,
+    ...     u'100 Points')
+
+Finally, the vocabularies.
+
+    >>> from zope.schema.vocabulary import getVocabularyRegistry
+    >>> getVocabularyRegistry().register(
+    ...     'schooltool.requirement.scoresystems',
+    ...     scoresystem.ScoreSystemsVocabulary)
+    >>> getVocabularyRegistry().register(
+    ...     'schooltool.requirement.discretescoresystems',
+    ...     scoresystem.DiscreteScoreSystemsVocabulary)
+
+Now, when we access the vocabularies as the application views will, we can test
+that they deliver the desired list of utilities.  
+
+First the discrete values score systems vocabulary, used when only discrete
+values score systems are valid, like when converting an average into a discrete
+grade.  Note the presence of the custom score systems we just created.
+
+    >>> from zope.app.component.vocabulary import UtilityVocabulary
+    >>> vocab = UtilityVocabulary(None, interface=interfaces.IDiscreteValuesScoreSystem)
+    >>> for v in vocab: print v
+    <UtilityTerm Custom 1, instance of CustomScoreSystem>
+    <UtilityTerm Custom 2, instance of CustomScoreSystem>
+    <UtilityTerm Extended Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Pass/Fail, instance of GlobalDiscreteValuesScoreSystem>
+
+Secondly, we have the general score systems vocabulary, returning all score
+systems registered.  This is used for report sheet activities.
+
+    >>> vocab = UtilityVocabulary(None, interface=interfaces.IScoreSystem)
+    >>> for v in vocab: print v
+    <UtilityTerm 100 Points, instance of GlobalRangedValuesScoreSystem>
+    <UtilityTerm Custom 1, instance of CustomScoreSystem>
+    <UtilityTerm Custom 2, instance of CustomScoreSystem>
+    <UtilityTerm Extended Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Pass/Fail, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Percent, instance of GlobalRangedValuesScoreSystem>
 
 
 Epilogue

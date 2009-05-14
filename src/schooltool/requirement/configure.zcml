@@ -101,17 +101,22 @@
       name="schooltool.requirement.scoresystems"
       />
   <utility
-      provides="schooltool.requirement.interfaces.IScoreSystem"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component=".scoresystem.DiscreteScoreSystemsVocabulary"
+      name="schooltool.requirement.discretescoresystems"
+      />
+  <utility
+      provides="schooltool.requirement.interfaces.IDiscreteValuesScoreSystem"
       component=".scoresystem.PassFail"
       name="Pass/Fail"
       />
   <utility
-      provides="schooltool.requirement.interfaces.IScoreSystem"
+      provides="schooltool.requirement.interfaces.IDiscreteValuesScoreSystem"
       component=".scoresystem.AmericanLetterScoreSystem"
       name="Letter Grade"
       />
   <utility
-      provides="schooltool.requirement.interfaces.IScoreSystem"
+      provides="schooltool.requirement.interfaces.IDiscreteValuesScoreSystem"
       component=".scoresystem.ExtendedAmericanLetterScoreSystem"
       name="Extended Letter Grade"
       />
