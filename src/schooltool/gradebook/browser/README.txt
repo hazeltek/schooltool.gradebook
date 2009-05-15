@@ -615,7 +615,7 @@ will take her directly to her grades for that section.
     True
     >>> 'HW 2' in claudia.contents or 'Final' in claudia.contents
     False
-    >>> claudia.contents.find('Current Grade: 86%') \
+    >>> claudia.contents.find('Ave.: 86%') \
     ...     < claudia.contents.find('HW 1') \
     ...     < claudia.contents.find('Quiz') \
     ...     < claudia.contents.find('86 / 100')
@@ -774,12 +774,12 @@ uses the request's principal to determine which grades to display.
     >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     >>> print claudia.contents
     <BLANKLINE>
-    ... Current Grade: 86%...
+    ... Ave.: 86%...
     >>> tom = setup.logIn('tom', 'pwd')
     >>> tom.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     >>> print tom.contents
     <BLANKLINE>
-    ...Current Grade: 88%...
+    ...Ave.: 88%...
 
 Students should not be able to view a teacher's gradebook.
 
