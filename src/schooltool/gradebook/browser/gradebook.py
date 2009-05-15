@@ -46,7 +46,6 @@ from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
-from schooltool.requirement.scoresystem import PercentScoreSystem
 from schooltool.term.interfaces import ITerm
 
 from schooltool.common import SchoolToolMessage as _
@@ -64,6 +63,27 @@ def escName(name):
     """converts title-based scoresystem name to querystring format"""
     chars = [c for c in name.lower() if c.isalnum() or c == ' ']
     return u''.join(chars).replace(' ', '-')
+
+
+def getScoreSystemFromEscName(name):
+    """converts escaped scoresystem title to scoresystem"""
+    factory = queryUtility(IVocabularyFactory, 
+                           'schooltool.requirement.discretescoresystems')
+    vocab = factory(None)
+    for term in vocab:
+        if name == escName(term.token):
+            return term.value
+    return None
+
+
+def convertAverage(average, scoresystem):
+    """converts average to display value of the given scoresystem"""
+    if scoresystem is None:
+        return '%s%%' % average
+    for score in scoresystem.scores:
+        if average >= score[2]:
+            return score[0]
+    raise ValueError
 
 
 class GradebookStartup(object):
@@ -255,6 +275,7 @@ class SectionFinder(GradebookBase):
         return False
 
     def processColumnPreferences(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
         if self.isTeacher:
             person = self.person
         else:
@@ -263,7 +284,6 @@ class SectionFinder(GradebookBase):
             if len(instructors) == 0:
                 return {}
             person = instructors[0]
-        gradebook = proxy.removeSecurityProxy(self.context)
         columnPreferences = gradebook.getColumnPreferences(person)
         column_keys_dict = dict(column_keys)
         prefs = columnPreferences.get('total', {})
@@ -271,13 +291,13 @@ class SectionFinder(GradebookBase):
         self.total_label = prefs.get('label', '')
         if len(self.total_label) == 0:
             self.total_label = column_keys_dict['total']
-        self.total_scoresystem = prefs.get('scoresystem', '')
         prefs = columnPreferences.get('average', {})
         self.average_hide = prefs.get('hide', False)
         self.average_label = prefs.get('label', '')
         if len(self.average_label) == 0:
             self.average_label = column_keys_dict['average']
-        self.average_scoresystem = prefs.get('scoresystem', '')
+        self.average_scoresystem = getScoreSystemFromEscName(
+            prefs.get('scoresystem', ''))
         self.apply_all_colspan = 1
         if not self.total_hide:
             self.apply_all_colspan += 1
@@ -434,13 +454,15 @@ class GradebookOverview(SectionFinder):
             total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
 
+            average = convertAverage(average, self.average_scoresystem)
+
             rows.append(
                 {'student': {'title': student.title, 
                              'id': student.username,
                              'url': absoluteURL(student, self.request),
                             },
                  'grades': grades, 'total': str(total),
-                 'average': str(average)
+                 'average': average,
                 })
 
         # Do the sorting
@@ -591,6 +613,9 @@ class MyGradesView(SectionFinder):
         if self.handleSectionChange():
             return
 
+        """Retrieve column preferences."""
+        self.processColumnPreferences()
+
         self.table = []
         total = 0
         count = 0
@@ -614,8 +639,10 @@ class MyGradesView(SectionFinder):
 
             self.table.append({'activity': activity.title,
                                'grade': grade})
+
         if count:
-            self.average = int((float(100 * total) / float(count)) + 0.5)
+            average = int((float(100 * total) / float(count)) + 0.5)
+            self.average = convertAverage(average, self.average_scoresystem)
         else:
             self.average = None
 

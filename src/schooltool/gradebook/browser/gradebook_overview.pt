@@ -186,7 +186,7 @@
         </td>
         <td tal:condition="not: view/average_hide" class="cell padded even">
 	      <tal:if condition="row/average|nothing">
-	        <b><span tal:replace="row/average" />%</b>
+	        <b><span tal:replace="row/average" /></b>
 	      </tal:if>
         </td>
         <td class="cell even" tal:repeat="grade row/grades"
@@ -215,7 +215,7 @@
         </td>
         <td tal:condition="not: view/average_hide" class="cell padded odd">
 	      <tal:if condition="row/average|nothing">
-	        <b><span tal:replace="row/average" />%</b>
+	        <b><span tal:replace="row/average" /></b>
 	      </tal:if>
         </td>
         <td class="cell odd" tal:repeat="grade row/grades"
