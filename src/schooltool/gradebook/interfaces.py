@@ -256,6 +256,9 @@ class IReadGradebook(Interface):
         specifies whether the sorting is reversed.
         """
 
+    def getFinalGrade(student):
+        """Get the final grade for the given student."""
+
 
 class IGradebook(IReadGradebook, IEditGradebook):
     """The gradebook of a section.

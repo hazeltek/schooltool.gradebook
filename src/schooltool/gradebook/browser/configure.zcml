@@ -319,6 +319,13 @@
       />
   <menuItem
       menu="schooltool_actions"
+      title="Summary"
+      for="..interfaces.IGradebook"
+      action="summary.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
       title="New Activity"
       for="..interfaces.IGradebook"
       action="../addActivity.html"
@@ -391,6 +398,13 @@
       for="..interfaces.IGradebook"
       class=".gradebook.GradebookOverview"
       template="gradebook_overview.pt"
+      permission="schooltool.view"
+      />
+  <page
+      name="summary.html"
+      for="..interfaces.IGradebook"
+      class=".gradebook.SummaryView"
+      template="summary.pt"
       permission="schooltool.view"
       />
   <page
