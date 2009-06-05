@@ -78,6 +78,13 @@ to the 'Manage' tab and clicks on the 'Score Systems' link.
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Score Systems').click()
 
+We see the score systems that come with schooltool.
+
+    >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
+    <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
+    <a href="http://localhost/scoresystems/view.html?name=letter-grade">Letter Grade</a>
+    <a href="http://localhost/scoresystems/view.html?name=passfail">Pass/Fail</a>
+
 To add a new score system, the user clicks 'Add Score System'.
 
     >>> manager.getLink('Add Score System').click()
@@ -86,22 +93,18 @@ To add a new score system, the user clicks 'Add Score System'.
     >>> update_url = base_url + '&UPDATE_SUBMIT'
     >>> save_url = base_url + '&SAVE'
 
-We'll send the form values necessary to add a score system called 'Pass/Fail'.
-
-    >>> first_try = save_url + '&title=Pass/Fail&displayed1=P&value1=1&percent1=60'
-    >>> first_try = first_try + '&displayed2=F&value2=0&percent2=0'
-    >>> manager.open(first_try)
-
 We'll send the form values necessary to add a score system called 'Good/Bad'.
 
-    >>> second_try = save_url + '&title=Good/Bad&displayed1=G&value1=1&percent1=60'
-    >>> second_try = second_try + '&displayed2=B&value2=0&percent2=0'
-    >>> manager.open(second_try)
+    >>> url = save_url + '&title=Good/Bad&displayed1=G&value1=1&percent1=60'
+    >>> url = url + '&displayed2=B&value2=0&percent2=0'
+    >>> manager.open(url)
 
 Now we see the two score systems in the list.
 
     >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
+    <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
     <a href="http://localhost/scoresystems/view.html?name=goodbad">Good/Bad</a>
+    <a href="http://localhost/scoresystems/view.html?name=letter-grade">Letter Grade</a>
     <a href="http://localhost/scoresystems/view.html?name=passfail">Pass/Fail</a>
 
 Let's hide the 'Pass/Fail' one.
@@ -109,10 +112,12 @@ Let's hide the 'Pass/Fail' one.
     >>> hide_url = manager.url + '?form-submitted&hide_passfail'
     >>> manager.open(hide_url)
 
-Now there should only be the 'Good/Bad' one.
+Now we won't see it in the list.
 
     >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
+    <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
     <a href="http://localhost/scoresystems/view.html?name=goodbad">Good/Bad</a>
+    <a href="http://localhost/scoresystems/view.html?name=letter-grade">Letter Grade</a>
 
 Let's click on 'Good/Bad' and test it's view.
 

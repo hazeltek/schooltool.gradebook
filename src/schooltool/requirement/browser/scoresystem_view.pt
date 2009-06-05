@@ -17,7 +17,7 @@
     <tr>
       <th class="cell header fully_padded">Score Displayed</th>
       <th class="cell header fully_padded">Score Value</th>
-      <th class="cell header fully_padded">Low Persntage</th>
+      <th class="cell header fully_padded">Low Percentage</th>
     </tr>
 
     <tal:block repeat="score view/scores">
