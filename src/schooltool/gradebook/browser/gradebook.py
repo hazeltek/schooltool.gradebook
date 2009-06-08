@@ -781,3 +781,11 @@ class GradebookColumnPreferences(BrowserView):
             results.append(result)
         return results
 
+
+class NoCurrentTerm(BrowserView):
+    """A view for informing the user of the need to set up a schoolyear
+       and at least one term."""
+
+    def update(self):
+        pass
+

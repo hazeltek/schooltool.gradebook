@@ -436,7 +436,6 @@
       />
 
   <!-- Terms -->
-
   <zope:adapter
       for="schooltool.gradebook.interfaces.IExternalActivitiesSource
            zope.publisher.interfaces.browser.IBrowserRequest"
@@ -502,7 +501,7 @@
       permission="schooltool.edit"
       />
 
-  <!-- Views for IBasicPerson-->
+  <!-- Views for IBasicPerson -->
   <page
       name="print_report_card.html"
       for="schooltool.person.interfaces.IPerson"
@@ -525,6 +524,15 @@
       for="schooltool.group.interfaces.IGroup"
       class=".pdf_views.GroupReportCardPDFView"
       permission="schooltool.edit"
+      />
+
+  <!-- Views for ISchoolToolApplication -->
+  <page
+      name="no_current_term.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".gradebook.NoCurrentTerm"
+      template="no_current_term.pt"
+      permission="schooltool.view"
       />
 
   <zope:adapter
