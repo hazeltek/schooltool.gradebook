@@ -3,8 +3,54 @@
            xmlns:zope="http://namespaces.zope.org/zope"
            i18n_domain="schooltool">
 
-  <!-- Score system widget registration -->
+  <!-- Manage Tab -->
+  <configure package="schooltool.skin">
+    <navigationViewlet
+        name="scoresystems"
+        for="*"
+        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
+        template="templates/navigationViewlet.pt"
+        class="schooltool.skin.skin.NavigationViewlet"
+        permission="schooltool.edit"
+        link="scoresystems"
+        title="Score Systems"
+        order="220"
+        />
+  </configure>
 
+  <!-- Menu items for IScoreSystemsProxy -->
+  <menuItem
+      menu="schooltool_actions"
+      title="Add Score System"
+      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
+      action="add.html"
+      permission="schooltool.edit"
+      />
+
+  <!-- Score System Views -->
+  <page
+      name="index.html"
+      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
+      class=".scoresystem.ScoreSystemsView"
+      template="scoresystems_overview.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="add.html"
+      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
+      class=".scoresystem.ScoreSystemAddView"
+      template="scoresystem_add.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="view.html"
+      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
+      class=".scoresystem.ScoreSystemViewView"
+      template="scoresystem_view.pt"
+      permission="schooltool.edit"
+      />
+
+  <!-- Score system widget registration -->
   <zope:view
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       for="schooltool.requirement.scoresystem.IScoreSystemField"
@@ -12,7 +58,6 @@
       factory=".scoresystem.ScoreSystemWidget"
       permission="zope.Public"
       />
-
   <page
       name="index.html"
       for="schooltool.requirement.interfaces.IRequirement"
@@ -22,14 +67,12 @@
       menu="zmi_views"
       title="View"
       />
-
   <page
       name="treenode"
       for="schooltool.requirement.interfaces.IRequirement"
       template="treenode.pt"
       permission="schooltool.view"
       />
-
   <containerViews
       for="..interfaces.IRequirement"
       contents="zope.ManageContent"

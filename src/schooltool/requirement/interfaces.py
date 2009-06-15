@@ -116,11 +116,20 @@ class IValuesScoreSystem(IScoreSystem):
 class IDiscreteValuesScoreSystem(IValuesScoreSystem):
     """A score system that consists of discrete values."""
 
+    hidden = zope.schema.Bool(
+        title=u"Hidden Score System",
+        required=False
+        )
+
     scores = zope.schema.List(
         title=u'Scores',
-        description=u'A list of 2-tuples of the form (score, numerical value).',
+        description=u'A list of 3-tuples of the form (score, value, percent).',
         value_type=zope.schema.Tuple(),
         required=True)
+
+
+class ICustomScoreSystem(IDiscreteValuesScoreSystem):
+    """A user-created score system that consists of discrete values."""
 
 
 class IRangedValuesScoreSystem(IValuesScoreSystem):
@@ -231,4 +240,17 @@ class IEvaluationsQuery(zope.interface.Interface):
         The returned ``IEvaluations`` object *must* have the same parent and
         name that the original ``IEvaluations`` object had.
         """
+
+
+class IScoreSystemsProxy(zope.interface.Interface):
+    """The Proxy class for adding/editing score systems"""
+
+    def getScoreSystems():
+        """Return list of tuples (name, scoresystem)"""
+
+    def addScoreSystem(scoresystem):
+        """Add scoresystem to app utilitiles"""
+
+    def getScoreSystem(name):
+        """Get scoresystem from app utilitiles by the given name"""
 

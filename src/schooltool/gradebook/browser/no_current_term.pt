@@ -1,0 +1,16 @@
+<tal:tag condition="view/update" />
+<html metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">
+    No Current Term
+  </title>
+</head>
+<body>
+<div metal:fill-slot="body">
+  <h1>The operation you attempted cannot be completed because there are curently 
+     no terms set up in your SchoolTool instance. Please have a user with
+     administation access set up at least one term and try the operation again.</h1>
+</div>
+</body>
+</html>

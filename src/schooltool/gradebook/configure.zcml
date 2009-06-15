@@ -284,4 +284,11 @@
   <adapter factory=".gradebook_init.GradebookAppStartup"
            name="gradebook_startup_init" />
 
+  <!-- generations -->
+  <utility
+      name="schooltool.gradebook"
+      provides="zope.app.generations.interfaces.ISchemaManager"
+      component=".generations.schemaManager"
+      />
+
 </configure>

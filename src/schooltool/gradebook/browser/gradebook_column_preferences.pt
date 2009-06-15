@@ -1,0 +1,67 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">Set Column Preferences</title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">Set Column Preferences</h1>
+
+<metal:block metal:fill-slot="body">
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/column_preferences.html">
+    <input type="hidden" name="form-submitted" value="" />
+
+    <table class="schooltool_gradebook">
+      <tr>
+        <th class="cell header fully_padded">Column Type</th>
+        <th class="cell header fully_padded">Hide?</th>
+        <th class="cell header fully_padded">Label</th>
+        <th class="cell header fully_padded">Score System</th>
+      </tr>
+
+      <tal:block repeat="column view/columns">
+        <tr class="bordered">
+          <td class="cell fully_padded">
+            <div tal:content="column/name" />
+          </td>
+          <td class="cell fully_padded">
+            <input type="checkbox"
+                   tal:attributes="name column/hide_name; checked column/hide_value" />
+          </td>
+          <td class="cell fully_padded">
+            <input type="text"
+                   tal:attributes="name column/label_name; value column/label_value" />
+          </td>
+          <td class="cell fully_padded">
+            <tal:block condition="python: column['hide_name'] != 'hide_total'">
+              <select tal:attributes="id column/scoresystem_name; name column/scoresystem_name">
+                <tal:block repeat="scoresystem view/scoresystems">
+                  <option tal:condition="python: scoresystem['value'] == column['scoresystem_value']"
+                          selected
+                          tal:attributes="value scoresystem/value"
+                          tal:content="scoresystem/name" />
+                  <option tal:condition="python: scoresystem['value'] != column['scoresystem_value']"
+                          tal:attributes="value scoresystem/value"
+                          tal:content="scoresystem/name" />
+                </tal:block>
+              </select>
+            </tal:block>
+          </td>
+        </tr>
+      </tal:block>
+
+    </table>
+    <div style="height: 11px;"></div>
+
+    <div class="controls">
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+      <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+    </div>
+  </form>
+
+</metal:block>
+</body>
+</html>
+

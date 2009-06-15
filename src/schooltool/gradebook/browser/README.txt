@@ -7,8 +7,8 @@ gradebook. The first task the administrator has to complete during the
 SchoolTool setup is the configuration of the categories. So let's log in as a
 manager:
 
-   >>> from schooltool.app.browser.ftests import setup
-   >>> manager = setup.logInManager()
+    >>> from schooltool.app.browser.ftests import setup
+    >>> manager = setup.logIn('manager', 'schooltool')
 
 
 Initial School Setup
@@ -557,6 +557,74 @@ gradebook without changing the weights.
     '62'
 
 
+Column Preferences
+------------------
+
+Teachers may want to hide or change the label of the summary columns or, in
+the case of the average column, they may want to choose a score system to
+be used in converting the average to a discrete value.  To support this, we
+provide the column preferences view.
+
+First we will add a custom score system which we will use as a column
+preference.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Score Systems').click()
+    >>> manager.getLink('Add Score System').click()
+    >>> url = manager.url + '?form-submitted&SAVE&title=Good/Bad'
+    >>> url = url + '&displayed1=G&value1=1&percent1=60'
+    >>> url = url + '&displayed2=B&value2=0&percent2=0'
+    >>> manager.open(url)
+
+We'll start by calling up the current column preferences and note that there
+are none set yet.
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.getLink('Column Preferences').click()
+    >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
+    <input type="checkbox" name="hide_total" />
+    <input type="text" name="label_total" value="" />
+    <input type="checkbox" name="hide_average" />
+    <input type="text" name="label_average" value="" />
+
+    >>> analyze.printQuery("id('content-body')/form/table//option", stephan.contents)
+    <option selected="selected" value="">-- No score system --</option>
+    <option value="extended-letter-grade">Extended Letter Grade</option>
+    <option value="goodbad">Good/Bad</option>
+    <option value="letter-grade">Letter Grade</option>
+    <option value="passfail">Pass/Fail</option>
+
+Now we'll set all of the preferences to something and test that the changes
+were saved.
+
+    >>> url = stephan.url + '?form-submitted&UPDATE_SUBMIT'
+    >>> url += '&hide_total=on&label_total=Summe'
+    >>> url += '&hide_average=on&label_average=Durchschnitt'
+    >>> url += '&scoresystem_average=goodbad'
+    >>> stephan.open(url)
+
+    >>> stephan.getLink('Column Preferences').click()
+    >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
+    <input type="checkbox" checked="checked" name="hide_total" />
+    <input type="text" name="label_total" value="Summe" />
+    <input type="checkbox" checked="checked" name="hide_average" />
+    <input type="text" name="label_average" value="Durchschnitt" />
+
+    >>> analyze.printQuery("id('content-body')/form/table//option", stephan.contents)
+    <option value="">-- No score system --</option>
+    <option value="extended-letter-grade">Extended Letter Grade</option>
+    <option selected="selected" value="goodbad">Good/Bad</option>
+    <option value="letter-grade">Letter Grade</option>
+    <option value="passfail">Pass/Fail</option>
+
+Finally, we will reset the preferences to none so that the rest of the tests
+pass.
+
+    >>> url = stephan.url + '?form-submitted&UPDATE_SUBMIT'
+    >>> url += '&scoresystem_average='
+    >>> stephan.open(url)
+
+
 My Grades
 ---------
 
@@ -575,7 +643,7 @@ will take her directly to her grades for that section.
     True
     >>> 'HW 2' in claudia.contents or 'Final' in claudia.contents
     False
-    >>> claudia.contents.find('Current Grade: 86%') \
+    >>> claudia.contents.find('Ave.: 86%') \
     ...     < claudia.contents.find('HW 1') \
     ...     < claudia.contents.find('Quiz') \
     ...     < claudia.contents.find('86 / 100')
@@ -737,12 +805,12 @@ uses the request's principal to determine which grades to display.
     >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     >>> print claudia.contents
     <BLANKLINE>
-    ... Current Grade: 86%...
+    ... Ave.: 86%...
     >>> tom = setup.logIn('tom', 'pwd')
     >>> tom.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
     >>> print tom.contents
     <BLANKLINE>
-    ...Current Grade: 88%...
+    ...Ave.: 88%...
 
 Students should not be able to view a teacher's gradebook.
 

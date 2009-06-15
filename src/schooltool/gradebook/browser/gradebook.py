@@ -20,37 +20,70 @@
 Gradebook Views
 """
 
-from schooltool.course.interfaces import ILearner
-from schooltool.course.interfaces import IInstructor
 __docformat__ = 'reStructuredText'
-import zope.schema
-from zope.security import proxy
-from zope.traversing.browser.absoluteurl import absoluteURL
+
+import datetime
+import decimal
+
 from zope.app.keyreference.interfaces import IKeyReference
-from zope.viewlet import viewlet
-from zope.traversing.api import getName
+from zope.component import queryUtility
 from zope.publisher.browser import BrowserView
+from zope.schema import ValidationError
+from zope.schema.interfaces import IVocabularyFactory
+from zope.security import proxy
+from zope.traversing.api import getName
+from zope.traversing.browser.absoluteurl import absoluteURL
+from zope.viewlet import viewlet
 
 from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISection
+from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.term.interfaces import ITerm
 
-import datetime
-import decimal
+from schooltool.common import SchoolToolMessage as _
+
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
 DISCRETE_SCORE_SYSTEM = 'd'
 RANGED_SCORE_SYSTEM = 'r'
+
+column_keys = [('total', _("Total")), ('average', _("Ave."))]
+
+
+def escName(name):
+    """converts title-based scoresystem name to querystring format"""
+    chars = [c for c in name.lower() if c.isalnum() or c == ' ']
+    return u''.join(chars).replace(' ', '-')
+
+
+def getScoreSystemFromEscName(name):
+    """converts escaped scoresystem title to scoresystem"""
+    factory = queryUtility(IVocabularyFactory, 
+                           'schooltool.requirement.discretescoresystems')
+    vocab = factory(None)
+    for term in vocab:
+        if name == escName(term.token):
+            return term.value
+    return None
+
+
+def convertAverage(average, scoresystem):
+    """converts average to display value of the given scoresystem"""
+    if scoresystem is None:
+        return '%s%%' % average
+    for score in scoresystem.scores:
+        if average >= score[2]:
+            return score[0]
+    raise ValueError
 
 
 class GradebookStartup(object):
@@ -241,6 +274,37 @@ class SectionFinder(GradebookBase):
                     return True
         return False
 
+    def processColumnPreferences(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        if self.isTeacher:
+            person = self.person
+        else:
+            section = ISection(gradebook)
+            instructors = list(section.instructors)
+            if len(instructors) == 0:
+                return {}
+            person = instructors[0]
+        columnPreferences = gradebook.getColumnPreferences(person)
+        column_keys_dict = dict(column_keys)
+        prefs = columnPreferences.get('total', {})
+        self.total_hide = prefs.get('hide', False)
+        self.total_label = prefs.get('label', '')
+        if len(self.total_label) == 0:
+            self.total_label = column_keys_dict['total']
+        prefs = columnPreferences.get('average', {})
+        self.average_hide = prefs.get('hide', False)
+        self.average_label = prefs.get('label', '')
+        if len(self.average_label) == 0:
+            self.average_label = column_keys_dict['average']
+        self.average_scoresystem = getScoreSystemFromEscName(
+            prefs.get('scoresystem', ''))
+        self.apply_all_colspan = 1
+        if not self.total_hide:
+            self.apply_all_colspan += 1
+        if not self.average_hide:
+            self.apply_all_colspan += 1
+
+
 class GradebookOverview(SectionFinder):
     """Gradebook Overview/Table"""
 
@@ -254,6 +318,9 @@ class GradebookOverview(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
+
+        """Retrieve column preferences."""
+        self.processColumnPreferences()
 
         """Retrieve sorting information and store changes of it."""
         if 'sort_by' in self.request:
@@ -297,7 +364,7 @@ class GradebookOverview(SectionFinder):
                     try:
                         score = activity.scoresystem.fromUnicode(
                             self.request[cell_name])
-                    except (zope.schema.ValidationError, ValueError):
+                    except (ValidationError, ValueError):
                         self.message = _(
                             'The grade $value for activity $name is not valid.',
                             mapping={'value': self.request[cell_name],
@@ -386,6 +453,8 @@ class GradebookOverview(SectionFinder):
 
             total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
+
+            average = convertAverage(average, self.average_scoresystem)
 
             rows.append(
                 {'student': {'title': student.title, 
@@ -518,7 +587,7 @@ class GradeActivity(object):
                     try:
                         score = activity.scoresystem.fromUnicode(
                             self.request[id])
-                    except (zope.schema.ValidationError, ValueError):
+                    except (ValidationError, ValueError):
                         self.message = _(
                             'The grade $value for $name is not valid.',
                             mapping={'value': self.request[id],
@@ -579,6 +648,9 @@ class MyGradesView(SectionFinder):
         if self.handleSectionChange():
             return
 
+        """Retrieve column preferences."""
+        self.processColumnPreferences()
+
         self.table = []
         total = 0
         count = 0
@@ -602,8 +674,10 @@ class MyGradesView(SectionFinder):
 
             self.table.append({'activity': activity.title,
                                'grade': grade})
+
         if count:
-            self.average = int((float(100 * total) / float(count)) + 0.5)
+            average = int((float(100 * total) / float(count)) + 0.5)
+            self.average = convertAverage(average, self.average_scoresystem)
         else:
             self.average = None
 
@@ -638,3 +712,80 @@ class UpdateLinkedActivityGrades(LinkedActivityGradesUpdater):
         next_url = absoluteURL(self.context.__parent__, self.request) + \
                    '/gradebook'
         self.request.response.redirect(next_url)
+
+
+class GradebookColumnPreferences(BrowserView):
+    """A view for editing a teacher's gradebook column preferences."""
+
+    def update(self):
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+
+        if 'UPDATE_SUBMIT' in self.request:
+            columnPreferences = gradebook.getColumnPreferences(self.person)
+            for key, name in column_keys:
+                prefs = columnPreferences.setdefault(key, {})
+                if 'hide_' + key in self.request:
+                    prefs['hide'] = True
+                else:
+                    prefs['hide'] = False
+                if 'label_' + key in self.request:
+                    prefs['label'] = self.request['label_' + key]
+                else:
+                    prefs['label'] = ''
+                if key != 'total':
+                    prefs['scoresystem'] = self.request['scoresystem_' + key]
+            gradebook.setColumnPreferences(self.person, columnPreferences)
+
+        if 'CANCEL' in self.request or 'UPDATE_SUBMIT' in self.request:
+            self.request.response.redirect('index.html')
+
+    @property
+    def columns(self):
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        results = []
+        columnPreferences = gradebook.getColumnPreferences(self.person)
+        for key, name in column_keys:
+            prefs = columnPreferences.get(key, {})
+            hide = prefs.get('hide', False)
+            label = prefs.get('label', '')
+            scoresystem = prefs.get('scoresystem', '')
+            result = {
+                'name': name,
+                'hide_name': 'hide_' + key,
+                'hide_value': hide,
+                'label_name': 'label_' + key,
+                'label_value': label,
+                'scoresystem_name': 'scoresystem_' + key,
+                'scoresystem_value': scoresystem,
+                }
+            results.append(result)
+        return results
+
+    @property
+    def scoresystems(self):
+        factory = queryUtility(IVocabularyFactory, 
+                               'schooltool.requirement.discretescoresystems')
+        vocab = factory(None)
+        result = {
+            'name': _('-- No score system --'),
+            'value': '',
+            }
+        results = [result]
+        for term in vocab:
+            result = {
+                'name': term.token,
+                'value': escName(term.token),
+                }
+            results.append(result)
+        return results
+
+
+class NoCurrentTerm(BrowserView):
+    """A view for informing the user of the need to set up a schoolyear
+       and at least one term."""
+
+    def update(self):
+        pass
+

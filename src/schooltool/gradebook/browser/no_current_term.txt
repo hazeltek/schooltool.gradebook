@@ -1,0 +1,25 @@
+===============
+No Current Term
+===============
+
+If a schooltool operation relies on there being at least one term set up, and
+the administator has not gotten around to doing that, we need to fail
+gracefully.  That means giving the user an error message rather than crashing.
+
+Let's log in as manager and create a student.
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> manager = Browser('manager', 'schooltool')
+    >>> setup.addPerson('Student One', 'student1', 'pwd')
+
+We'll navigate to the student and request a report card, an operation that is
+impossible without there being at least one term set up.  We'll test that the
+user gets redirected to the error page.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Persons').click()
+    >>> manager.getLink('Student One').click()
+    >>> manager.getLink('Print Report Card').click()
+    >>> manager.url
+    'http://localhost/no_current_term.html'
+

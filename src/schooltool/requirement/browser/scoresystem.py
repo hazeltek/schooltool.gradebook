@@ -21,13 +21,215 @@
 $Id$
 """
 __docformat__ = 'reStructuredText'
+
+from decimal import Decimal
+
 import zope.interface
 import zope.schema
 from zope.app import form
 from zope.app.pagetemplate import ViewPageTemplateFile
+from zope.publisher.browser import BrowserView
+from zope.security.proxy import removeSecurityProxy
+from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement import interfaces, scoresystem
+
+
+MISSING_TITLE = _('The Title field must not be empty.')
+VALUE_NOT_NUMERIC = _('Value field must contain a valid number.')
+PERCENT_NOT_NUMERIC = _('Percent field must contain a valid number.')
+NO_NEGATIVE_VALUES = _('All values must be non-negative.')
+NO_NEGATIVE_PERCENTS = _('All percentages must be non-negative.')
+NO_PERCENTS_OVER_100 = _('Percentages cannot be greater than 100.')
+MUST_HAVE_AT_LEAST_2_SCORES = _('A score system must have at least two scores.')
+VALUES_MUST_DESCEND =  _('Score values must go in descending order.')
+PERCENTS_MUST_DESCEND =  _('Score percentages must go in descending order.')
+LAST_PERCENT_NOT_ZERO =   _('The last percentage must be zero.')
+
+
+def escName(name):
+    """converts title-based scoresystem name to querystring format"""
+    chars = [c for c in name.lower() if c.isalnum() or c == ' ']
+    return u''.join(chars).replace(' ', '-')
+
+
+class ScoreSystemsView(BrowserView):
+    """A view for maintaining user-created scoresystem utilities"""
+
+    def update(self):
+        if 'form-submitted' in self.request:
+            for name, ss in self.context.getScoreSystems():
+                ss = removeSecurityProxy(ss)
+                if 'hide_' + escName(name) in self.request:
+                    ss.hidden = True
+
+    def scoresystems(self):
+        url = absoluteURL(self.context, self.request) + '/view.html'
+        results = []
+        for name, ss in self.context.getScoreSystems():
+            ss = removeSecurityProxy(ss)
+            result = {
+                'title': ss.title,
+                'url': '%s?name=%s' % (url, escName(name)),
+                'hide_name': 'hide_' + escName(name),
+                }
+            results.append(result)
+        return results
+
+
+class ScoreSystemAddView(BrowserView):
+    """A view for adding a user-created scoresystem utility"""
+
+    def update(self):
+        self.message = ''
+
+        if 'form-submitted' in self.request:
+            if 'CANCEL' in self.request:
+                self.request.response.redirect(self.nextURL())
+
+            if not self.validateForm():
+                return
+            if 'SAVE' in self.request:
+                if not self.validateScores():
+                    return
+                target = scoresystem.CustomScoreSystem()
+                self.updateScoreSystem(target)
+                self.context.addScoreSystem(target)
+                self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+    def scores(self):
+        rownum = 1
+        results = []
+        for displayed, value, percent in self.getRequestScores():
+            results.append(self.buildScoreRow(rownum, displayed, value, 
+                percent))
+            rownum += 1
+        results.append(self.buildScoreRow(rownum, '', '', ''))
+        return results
+
+    def buildScoreRow(self, rownum, displayed, value, percent):
+        return {
+            'displayed_name': 'displayed' + unicode(rownum),
+            'displayed_value': displayed,
+            'value_name': 'value' + unicode(rownum),
+            'value_value': value,
+            'percent_name': 'percent' + unicode(rownum),
+            'percent_value': percent,
+            }
+
+    def getRequestScores(self):
+        rownum = 0
+        results = []
+        while True:
+            rownum += 1
+            displayed_name = 'displayed' + unicode(rownum)
+            value_name = 'value' + unicode(rownum)
+            percent_name = 'percent' + unicode(rownum)
+            if displayed_name not in self.request:
+                break
+            if not len(self.request[displayed_name]):
+                continue
+            result = (self.request[displayed_name],
+                      self.request[value_name],
+                      self.request[percent_name])
+            results.append(result)
+        return results
+
+    def validateForm(self):
+        title = self.request['title']
+        if not len(title):
+            return self.setMessage(MISSING_TITLE)
+
+        scores = []
+        for displayed, value, percent in self.getRequestScores():
+            try:
+                decimal_value = Decimal(value)
+            except:
+                return self.setMessage(VALUE_NOT_NUMERIC)
+            if decimal_value < 0:
+                return self.setMessage(NO_NEGATIVE_VALUES)
+            try:
+                decimal_percent = Decimal(percent)
+            except:
+                return self.setMessage(PERCENT_NOT_NUMERIC)
+            if decimal_percent < 0:
+                return self.setMessage(NO_NEGATIVE_PERCENTS)
+            if decimal_percent > 100:
+                return self.setMessage(NO_PERCENTS_OVER_100)
+            scores.append([displayed, decimal_value, decimal_percent])
+
+        self.validTitle = title
+        self.validScores = scores
+        return True
+
+    def validateScores(self):
+        if len(self.validScores) < 2:
+            return self.setMessage(MUST_HAVE_AT_LEAST_2_SCORES)
+
+        last_value, last_percent = None, None
+        for displayed, value, percent in self.validScores:
+            if last_value is not None:
+                if value >= last_value:
+                    return self.setMessage(VALUES_MUST_DESCEND)
+            if last_percent is not None:
+                if percent >= last_percent:
+                    return self.setMessage(PERCENTS_MUST_DESCEND)
+            last_value = value
+            last_percent = percent
+
+        if last_percent <> 0:
+            return self.setMessage(LAST_PERCENT_NOT_ZERO)
+
+        return True
+
+    def setMessage(self, message):
+        self.message = message
+        return False
+
+    def updateScoreSystem(self, target):
+        target.title = self.validTitle
+        target.scores = self.validScores
+        target._bestScore = target.scores[0][1]
+
+    @property
+    def title_value(self):
+        if 'form-submitted' in self.request:
+            return self.request['title']
+        else:
+            return ''
+
+
+class ScoreSystemViewView(BrowserView):
+    """A view for viewing a user-created scoresystem utility"""
+
+    def scores(self):
+        target = self.getScoreSystem()
+        return [self.buildScoreRow(displayed, value, percent)
+                for displayed, value, percent in target.scores]
+
+    def buildScoreRow(self, displayed, value, percent):
+        return {
+            'displayed_value': displayed,
+            'value_value': value,
+            'percent_value': percent,
+            }
+
+    @property
+    def title_value(self):
+        target = self.getScoreSystem()
+        return target.title
+
+    def getScoreSystem(self):
+        name = self.request['QUERY_STRING'].split('=')[1]
+        for n, ss in self.context.getScoreSystems():
+            if escName(n) == name:
+                return removeSecurityProxy(ss)
+        raise KeyError
+
 
 class IWidgetData(interfaces.IRangedValuesScoreSystem):
     """A schema used to generate the score system widget."""

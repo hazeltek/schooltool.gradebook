@@ -1,0 +1,65 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">Add Score System</title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">Add Score System</h1>
+
+<metal:block metal:fill-slot="body">
+
+  <div class="message" style="color:red; padding:1em"
+       tal:condition="view/message"
+       tal:content="view/message">
+    Message
+  </div>
+
+
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/add.html">
+    <input type="hidden" name="form-submitted" value="" />
+
+    <label for="title" class="bold padded" i18n:translate="">Title</label>
+    <input type="text" name="title" id="title"
+           tal:attributes="value view/title_value" />
+    <span>&nbsp&nbsp</span>
+    <input type="submit" class="button-ok" name="SAVE" value="Submit" />
+    <div style="height: 31px;"></div>
+
+    <table class="schooltool_gradebook">
+      <tr>
+        <th class="cell header fully_padded">Score Displayed</th>
+        <th class="cell header fully_padded">Score Value</th>
+        <th class="cell header fully_padded">Low Persntage</th>
+      </tr>
+
+      <tal:block repeat="score view/scores">
+        <tr class="bordered">
+          <td class="cell fully_padded">
+            <input type="text"
+                   tal:attributes="name score/displayed_name; value score/displayed_value" />
+          </td>
+          <td class="cell fully_padded">
+            <input type="text"
+                   tal:attributes="name score/value_name; value score/value_value" />
+          </td>
+          <td class="cell fully_padded">
+            <input type="text"
+                   tal:attributes="name score/percent_name; value score/percent_value" />
+          </td>
+        </tr>
+      </tal:block>
+
+    </table>
+    <div style="height: 11px;"></div>
+
+    <div class="controls">
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+      <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+    </div>
+  </form>
+</metal:block>
+</body>
+</html>
