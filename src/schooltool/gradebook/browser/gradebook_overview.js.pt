@@ -160,7 +160,6 @@ function checkValid(e, name)
 	}
     if (keynum < 48 || (keynum > 57 && keynum < 65) || (keynum > 90 && keynum < 97) || keynum > 122)
 	{
-	    document.getElementById(name).select();
 	    return true;
 	}
 

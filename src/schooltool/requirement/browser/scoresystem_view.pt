@@ -1,0 +1,41 @@
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">View Score System</title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">View Score System</h1>
+
+<metal:block metal:fill-slot="body">
+
+  <b>Title:</b>
+  <span tal:content="view/title_value" />
+  <div style="height: 31px;"></div>
+
+  <table class="schooltool_gradebook">
+    <tr>
+      <th class="cell header fully_padded">Score Displayed</th>
+      <th class="cell header fully_padded">Score Value</th>
+      <th class="cell header fully_padded">Low Percentage</th>
+    </tr>
+
+    <tal:block repeat="score view/scores">
+      <tr class="bordered">
+        <td class="cell fully_padded">
+          <span tal:content="score/displayed_value" />
+        </td>
+        <td class="cell fully_padded">
+          <span tal:content="score/value_value" />
+        </td>
+        <td class="cell fully_padded">
+          <span tal:content="score/percent_value" />
+        </td>
+      </tr>
+    </tal:block>
+
+  </table>
+
+</metal:block>
+</body>
+</html>

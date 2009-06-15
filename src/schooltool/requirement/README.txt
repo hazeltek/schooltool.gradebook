@@ -179,7 +179,8 @@ follows:
   >>> from decimal import Decimal
   >>> check = scoresystem.DiscreteValuesScoreSystem(
   ...    u'Check', u'Check-mark score system',
-  ...    [('+', Decimal(1)), ('v', Decimal(0)), ('-', Decimal(-1))])
+  ...    [('+', Decimal(1), Decimal(80)), ('v', Decimal(0), Decimal(60)),
+  ...     ('-', Decimal(-1), Decimal(0))])
 
 The first and second arguments of the constructor are the title and
 description. The third argument is a list that really represents a mapping
@@ -247,9 +248,9 @@ provide more useful results:
   >>> from schooltool.requirement import scoresystem
   >>> check = scoresystem.DiscreteValuesScoreSystem(
   ...    u'Check', u'Check-mark score system',
-  ...    [('+', Decimal(1)),
-  ...     ('v', Decimal(0)),
-  ...     ('-', Decimal(-1))],
+  ...    [('+', Decimal(1), Decimal(80)),
+  ...     ('v', Decimal(0), Decimal(60)),
+  ...     ('-', Decimal(-1), Decimal(0))],
   ...     minPassingScore='v')
   >>> check
   <DiscreteValuesScoreSystem u'Check'>
@@ -279,7 +280,8 @@ better than implicit anyways:
   >>> from schooltool.requirement import scoresystem
   >>> check = scoresystem.DiscreteValuesScoreSystem(
   ...    u'Check', u'Check-mark score system',
-  ...    [('+', Decimal(1)), ('v', Decimal(0)), ('-', Decimal(-1))],
+  ...    [('+', Decimal(1), Decimal(80)), ('v', Decimal(0), Decimal(60)), 
+  ...     ('-', Decimal(-1)), Decimal(0)],
   ...    bestScore='+', minPassingScore='v')
 
   >>> check.getBestScore()
@@ -297,7 +299,8 @@ systems are global ones, they reduce very efficiently for pickling.
   >>> scoresystem.PassFail.title
   u'Pass/Fail'
   >>> scoresystem.PassFail.scores
-  [(u'Pass', Decimal("1")), (u'Fail', Decimal("0"))]
+  [(u'Pass', Decimal("1"), Decimal("60")), 
+   (u'Fail', Decimal("0"), Decimal("0"))]
   >>> scoresystem.PassFail.isValidScore('Pass')
   True
   >>> scoresystem.PassFail.isPassingScore('Pass')
@@ -324,8 +327,9 @@ systems are global ones, they reduce very efficiently for pickling.
   >>> scoresystem.AmericanLetterScoreSystem.title
   u'Letter Grade'
   >>> scoresystem.AmericanLetterScoreSystem.scores
-  [('A', Decimal("4")), ('B', Decimal("3")), ('C', Decimal("2")),
-   ('D', Decimal("1")), ('F', Decimal("0"))]
+  [('A', Decimal("4"), Decimal("90")), ('B', Decimal("3"), Decimal("80")), 
+   ('C', Decimal("2"), Decimal("70")), ('D', Decimal("1"), Decimal("60")), 
+   ('F', Decimal("0"), Decimal("0"))]
   >>> scoresystem.AmericanLetterScoreSystem.isValidScore('C')
   True
   >>> scoresystem.AmericanLetterScoreSystem.isValidScore('E')
@@ -353,7 +357,7 @@ systems are global ones, they reduce very efficiently for pickling.
   'ExtendedAmericanLetterScoreSystem'
   >>> scoresystem.ExtendedAmericanLetterScoreSystem.title
   u'Extended Letter Grade'
-  >>> [s for s, v in scoresystem.ExtendedAmericanLetterScoreSystem.scores]
+  >>> [s for s, v, p in scoresystem.ExtendedAmericanLetterScoreSystem.scores]
   ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F']
   >>> scoresystem.ExtendedAmericanLetterScoreSystem.isValidScore('B-')
   True
@@ -841,6 +845,126 @@ This section demonstrates the implementation of the ``IMapping`` API.
 
   >>> len(evals)
   2
+
+
+The ScoresSystemsProxy
+~~~~~~~~~~~~~~~~~~~~~~
+
+Score systems are utilities that are pre-created in code (eventually we will
+migrate these to the application's site manager) and user created ones that
+we add to the site manager by way of the ScoresSystemsProxy class.
+
+First we'll set up the site and initialize the app object.
+
+    >>> from schooltool.testing import setup
+    >>> app = setup.setUpSchoolToolSite()
+
+The ScoresSystemsProxy class is itself an adapter of the app object.
+
+    >>> from schooltool.app.interfaces import ISchoolToolApplication
+    >>> from schooltool.requirement.interfaces import IScoreSystemsProxy
+    >>> from schooltool.requirement.scoresystem import ScoreSystemsProxy
+    >>> from zope.component import provideAdapter
+    >>> provideAdapter(ScoreSystemsProxy)
+    >>> ssProxy = IScoreSystemsProxy(app)
+    >>> ssProxy
+    <schooltool.requirement.scoresystem.ScoreSystemsProxy object at ...>
+
+At fist, there are no scoresystems registered with the app.
+
+    >>> ssProxy.getScoreSystems()
+    []
+
+We'll create a couple of custom score systems and add them to the proxy.
+
+    >>> from schooltool.requirement.scoresystem import CustomScoreSystem
+    >>> custom1 = CustomScoreSystem('Custom 1')
+    >>> ssProxy.addScoreSystem( custom1)
+    >>> custom2 = CustomScoreSystem('Custom 2')
+    >>> ssProxy.addScoreSystem(custom2)
+
+Now, when we ask the proxy for what score systems it has, it will return both
+of the newly added ones.
+
+    >>> ssProxy.getScoreSystems()
+    [(u'Custom 1', <CustomScoreSystem 'Custom 1'>), 
+     (u'Custom 2', <CustomScoreSystem 'Custom 2'>)]
+
+We can get one of them by name.
+
+    >>> ssProxy.getScoreSystem('Custom 1')
+    <CustomScoreSystem 'Custom 1'>
+
+
+Score System Vocabularies
+-------------------------
+
+Score System vocabularies are used to provide a pulldown for fields
+requiring scoresystem input.  Let's register the utilities.
+
+    >>> from zope.component import provideUtility
+    >>> from schooltool.requirement import scoresystem
+
+First, the discrete values score systems.
+
+    >>> zope.component.provideUtility(
+    ...     scoresystem.PassFail, interfaces.IDiscreteValuesScoreSystem,
+    ...     u'Pass/Fail')
+    >>> zope.component.provideUtility(
+    ...     scoresystem.AmericanLetterScoreSystem, interfaces.IDiscreteValuesScoreSystem,
+    ...     u'Letter Grade')
+    >>> zope.component.provideUtility(
+    ...     scoresystem.ExtendedAmericanLetterScoreSystem, interfaces.IDiscreteValuesScoreSystem,
+    ...     u'Extended Letter Grade')
+
+Secondly, the ranged values score systems.
+
+    >>> zope.component.provideUtility(
+    ...     scoresystem.PercentScoreSystem, interfaces.IScoreSystem,
+    ...     u'Percent')
+    >>> zope.component.provideUtility(
+    ...     scoresystem.HundredPointsScoreSystem, interfaces.IScoreSystem,
+    ...     u'100 Points')
+
+Finally, the vocabularies.
+
+    >>> from zope.schema.vocabulary import getVocabularyRegistry
+    >>> getVocabularyRegistry().register(
+    ...     'schooltool.requirement.scoresystems',
+    ...     scoresystem.ScoreSystemsVocabulary)
+    >>> getVocabularyRegistry().register(
+    ...     'schooltool.requirement.discretescoresystems',
+    ...     scoresystem.DiscreteScoreSystemsVocabulary)
+
+Now, when we access the vocabularies as the application views will, we can test
+that they deliver the desired list of utilities.  
+
+First the discrete values score systems vocabulary, used when only discrete
+values score systems are valid, like when converting an average into a discrete
+grade.  Note the presence of the custom score systems we just created.
+
+    >>> from zope.app.component.vocabulary import UtilityVocabulary
+    >>> vocab = UtilityVocabulary(None, interface=interfaces.IDiscreteValuesScoreSystem)
+    >>> for v in vocab: print v
+    <UtilityTerm Custom 1, instance of CustomScoreSystem>
+    <UtilityTerm Custom 2, instance of CustomScoreSystem>
+    <UtilityTerm Extended Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Pass/Fail, instance of GlobalDiscreteValuesScoreSystem>
+
+Secondly, we have the general score systems vocabulary, returning all score
+systems registered.  This is used for report sheet activities.
+
+    >>> vocab = UtilityVocabulary(None, interface=interfaces.IScoreSystem)
+    >>> for v in vocab: print v
+    <UtilityTerm 100 Points, instance of GlobalRangedValuesScoreSystem>
+    <UtilityTerm Custom 1, instance of CustomScoreSystem>
+    <UtilityTerm Custom 2, instance of CustomScoreSystem>
+    <UtilityTerm Extended Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Pass/Fail, instance of GlobalDiscreteValuesScoreSystem>
+    <UtilityTerm Percent, instance of GlobalRangedValuesScoreSystem>
+
 
 Epilogue
 --------

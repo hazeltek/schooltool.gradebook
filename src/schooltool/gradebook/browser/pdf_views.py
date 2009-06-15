@@ -35,6 +35,7 @@ from reportlab.platypus.tables import Table, TableStyle
 from zope.component import getUtility, queryAdapter
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
+from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser import pdfcal
@@ -256,6 +257,13 @@ class BasePDFView(BrowserView):
 
     def __call__(self):
         """Return the PDF of a report card for each student."""
+        current_term = getUtility(IDateManager).current_term
+        if current_term is None:
+            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
+            next_url += '/no_current_term.html'
+            self.request.response.redirect(next_url)
+            return
+
         if self.pdf_support_disabled:
             return translate(self.pdf_disabled_text, context=self.request)
 

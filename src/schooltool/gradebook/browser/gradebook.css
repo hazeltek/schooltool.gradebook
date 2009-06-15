@@ -148,3 +148,7 @@ td.active_tab {
     border: solid 1px black;
 }
 
+.bold {
+    font-weight: bold;
+}
+
