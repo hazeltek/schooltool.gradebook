@@ -49,6 +49,17 @@ Next, we add a new category:
     >>> 'Lab Report' in manager.contents
     True
 
+We can also add categories with non ASCII characters:
+
+    >>> 'Calificación' in manager.contents
+    False
+
+    >>> manager.getControl('New Category').value = 'Calificación'
+    >>> manager.getControl('Add').click()
+
+    >>> 'Calificación' in manager.contents
+    True
+
 We can also change the default category:
 
     >>> manager.getControl('Default Category').value
