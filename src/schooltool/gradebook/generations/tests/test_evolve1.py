@@ -102,7 +102,7 @@ def doctest_evolve1():
 
         >>> temp_act.scoresystem
         <GlobalDiscreteValuesScoreSystem u'Pass/Fail'>
-s        >>> dep_act.scoresystem
+        >>> dep_act.scoresystem
         <GlobalDiscreteValuesScoreSystem u'Letter Grade'>
         >>> activity.scoresystem
         <GlobalDiscreteValuesScoreSystem u'Extended Letter Grade'>
