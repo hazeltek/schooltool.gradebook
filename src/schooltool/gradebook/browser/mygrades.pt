@@ -73,7 +73,7 @@
 
   <table class="schooltool_gradebook">
     <tr tal:condition="not: view/average_hide">
-      <td colspan="2" class="description">
+      <td colspan="2" class="gradebook_description">
         <div tal:condition="view/average"
              tal:content="string: ${view/average_label}: ${view/average}">Average</div>
         <div tal:condition="not: view/average">Nothing Graded</div>
