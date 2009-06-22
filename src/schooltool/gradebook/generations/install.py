@@ -27,6 +27,5 @@ import evolve1
 
 
 def evolve(context):
-    print 'installing database'
     evolve1.evolve(context)
 
