@@ -435,6 +435,15 @@
       permission="schooltool.view"
       />
 
+  <!-- Student Gradebook -->
+  <page
+      name="index.html"
+      for="..interfaces.IStudentGradebook"
+      class=".gradebook.GradeStudent"
+      template="grade_student.pt"
+      permission="schooltool.edit"
+      />
+
   <!-- Terms -->
   <zope:adapter
       for="schooltool.gradebook.interfaces.IExternalActivitiesSource

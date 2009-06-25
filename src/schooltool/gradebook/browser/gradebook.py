@@ -26,14 +26,18 @@ import datetime
 import decimal
 
 from zope.app.keyreference.interfaces import IKeyReference
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.publisher.browser import BrowserView
-from zope.schema import ValidationError
+from zope.schema import ValidationError, Text, TextLine
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.viewlet import viewlet
+
+from z3c.form import form as z3cform
+from z3c.form import field, button
 
 from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -459,7 +463,8 @@ class GradebookOverview(SectionFinder):
             rows.append(
                 {'student': {'title': student.title, 
                              'id': student.username,
-                             'url': absoluteURL(student, self.request),
+                             'url': absoluteURL(self.context, self.request) +
+                                    ('/%s' % student.username) 
                             },
                  'grades': grades, 'total': unicode(total),
                  'average': unicode(average)
@@ -788,4 +793,120 @@ class NoCurrentTerm(BrowserView):
 
     def update(self):
         pass
+
+
+class GradeStudent(z3cform.EditForm):
+    """Edit form for a student's grades."""
+    z3cform.extends(z3cform.EditForm)
+    template = ViewPageTemplateFile('grade_student.pt')
+
+    def __init__(self, context, request):
+        super(GradeStudent, self).__init__(context, request)
+
+    def update(self):
+        self.person = IPerson(self.request.principal)
+        for index, activity in enumerate(self.getFilteredActivities()):
+            newSchemaFld = TextLine(
+                title=activity.title,
+                description=activity.description,
+                constraint=activity.scoresystem.fromUnicode,
+                required=False)
+            newSchemaFld.__name__ = str(hash(IKeyReference(activity)))
+            newSchemaFld.interface = interfaces.IStudentGradebookForm
+            newFormFld = field.Field(newSchemaFld)
+            self.fields += field.Fields(newFormFld)
+        super(GradeStudent, self).update()
+
+    @button.buttonAndHandler(_("Previous"))
+    def handle_previous_action(self, action):
+        if self.applyData():
+            return
+        prev, next = self.prevNextStudent()
+        if prev is not None:
+            url = '%s/%s' % (self.nextURL(), prev.username)
+            self.request.response.redirect(url)
+
+    @button.buttonAndHandler(_("Next"))
+    def handle_next_action(self, action):
+        if self.applyData():
+            return
+        prev, next = self.prevNextStudent()
+        if next is not None:
+            url = '%s/%s' % (self.nextURL(), next.username)
+            self.request.response.redirect(url)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def applyData(self):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return True
+        changes = self.applyChanges(data)
+        if changes:
+            self.status = self.successMessage
+        else:
+            self.status = self.noChangesMessage
+        return False
+
+    def updateActions(self):
+        super(GradeStudent, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['previous'].addClass('button-ok')
+        self.actions['next'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+        prev, next = self.prevNextStudent()
+        if prev is None:
+            del self.actions['previous']
+        if next is None:
+            del self.actions['next']
+
+    def applyChanges(self, data):
+        super(GradeStudent, self).applyChanges(data)
+        self.request.response.redirect(self.nextURL())
+
+    def prevNextStudent(self):
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        section = ISection(gradebook)
+        student = self.context.student
+
+        prev, next = None, None
+        members = [member for name, member in
+                   sorted([(m.last_name + m.first_name, m) for m in section.members])]
+        if len(members) < 2:
+            return prev, next
+        for index, member in enumerate(members):
+            if member == student:
+                if index == 0:
+                    next = members[1]
+                elif index == len(members) - 1:
+                    prev = members[-2]
+                else:
+                    prev = members[index - 1]
+                    next = members[index + 1]
+                break
+        return prev, next
+
+    def isFiltered(self, activity):
+        flag, weeks = self.context.gradebook.getDueDateFilter(self.person)
+        if not flag:
+            return False
+        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        return activity.due_date < cutoff
+
+    def getFilteredActivities(self):
+        activities = self.context.gradebook.getCurrentActivities(self.person)
+        return[activity for activity in activities
+               if not self.isFiltered(activity)]
+
+    @property
+    def label(self):
+        return _(u'Enter grades for ${fullname}',
+                 mapping={'fullname': self.context.student.title})
+
+    def nextURL(self):
+        return absoluteURL(self.context.gradebook, self.request)
 

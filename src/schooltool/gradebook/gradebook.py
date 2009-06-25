@@ -30,11 +30,14 @@ from decimal import Decimal
 from zope.security import proxy
 from zope import annotation
 from zope.app.keyreference.interfaces import IKeyReference
+from zope.component import adapts, queryMultiAdapter, getMultiAdapter
 from zope.interface import implements
 from zope.location.location import LocationProxy
 from zope.publisher.interfaces import IPublishTraverse
+from zope.security.proxy import removeSecurityProxy
 
 from schooltool import course, requirement
+from schooltool.basicperson.interfaces import IBasicPerson
 from schooltool.traverser import traverser
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
 from schooltool.securitypolicy.crowds import AggregateCrowd
@@ -45,7 +48,7 @@ from schooltool.securitypolicy.crowds import AdministratorsCrowd
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import Activities
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
-from schooltool.requirement.scoresystem import UNSCORED
+from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.common import SchoolToolMessage as _
@@ -83,6 +86,35 @@ class WorksheetGradebookTraverser(object):
                 return gb
             else:
                 return queryMultiAdapter((self.context, request), name=name)
+
+
+class StudentGradebookTraverser(object):
+    '''Traverser that goes from a section's gradebook to a student
+    gradebook using the student's username as the path in the url.'''
+
+    implements(IPublishTraverse)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        app = ISchoolToolApplication(None)
+        context = removeSecurityProxy(self.context)
+
+        try:
+            student = app['persons'][name]
+        except KeyError:
+            return queryMultiAdapter((self.context, request), name=name)
+
+        try:
+            gb = getMultiAdapter((student, context), interfaces.IStudentGradebook)
+        except ValueError:
+            return queryMultiAdapter((self.context, request), name=name)
+
+        # location looks like http://host/path/to/gradebook/studentsUsername
+        gb = LocationProxy(gb, self.context, name)
+        return gb
 
 
 class GradebookBase(object):
@@ -364,6 +396,49 @@ class MyGrades(GradebookBase):
         # To make URL creation happy
         self.__name__ = 'mygrades'
 
+
+class StudentGradebook(object):
+    """Adapter of student and gradebook used for grading one student at a
+       time"""
+    implements(interfaces.IStudentGradebook)
+    adapts(IBasicPerson, interfaces.IGradebook)
+
+    def __init__(self, student, gradebook):
+        self.student = student
+        self.gradebook = gradebook
+        activities = [(unicode(hash(IKeyReference(activity))), activity)
+            for activity in gradebook.activities]
+        self.activities = dict(activities)
+
+
+class StudentGradebookFormAdapter(object):
+    """Adapter used by grade student view to interact with student
+       gradebook"""
+    implements(interfaces.IStudentGradebookForm)
+    adapts(interfaces.IStudentGradebook)
+
+    def __init__(self, context):
+        self.__dict__['context'] = context
+
+    def __setattr__(self, name, value):
+        activity = self.context.activities[name]
+        evaluator = None
+        try:
+            score = activity.scoresystem.fromUnicode(value)
+            self.context.gradebook.evaluate(self.context.student, activity,
+                                            score, evaluator)
+        except ScoreValidationError:
+            pass
+
+    def __getattr__(self, name):
+        activity = self.context.activities[name]
+        ev = self.context.gradebook.getEvaluation(self.context.student, 
+                                                  activity)
+        if ev is not None:
+            return ev.value
+        else:
+            return ''
+    
 
 def getWorksheetSection(worksheet):
     """Adapt IWorksheet to ISection."""

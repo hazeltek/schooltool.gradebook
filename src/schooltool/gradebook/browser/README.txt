@@ -89,11 +89,11 @@ let's add a section for our course:
 
 But what would a section be without some students and a teacher?
 
-    >>> from schooltool.app.browser.ftests.setup import addPerson
-    >>> addPerson('Paul Cardune', 'paul', 'pwd')
-    >>> addPerson('Tom Hoffman', 'tom', 'pwd')
-    >>> addPerson('Claudia Richter', 'claudia', 'pwd')
-    >>> addPerson('Stephan Richter', 'stephan', 'pwd')
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
 
 Now we can add those people to the section:
 
@@ -103,17 +103,14 @@ Now we can add those people to the section:
     >>> manager.getLink('(1)').click()
 
     >>> manager.getLink('edit individuals').click()
-    >>> manager.getControl('Paul Cardune').click()
-    >>> manager.getControl('Tom Hoffman').click()
-    >>> manager.getControl('Claudia Richter').click()
+    >>> manager.getControl(name='add_item.paul').value = 'checked'
+    >>> manager.getControl(name='add_item.tom').value = 'checked'
+    >>> manager.getControl(name='add_item.claudia').value = 'checked'
     >>> manager.getControl('Add').click()
     >>> manager.getControl('OK').click()
 
-    >>> 'Paul Cardune' in manager.contents
-    True
-
     >>> manager.getLink('edit instructors').click()
-    >>> manager.getControl('Stephan Richter').click()
+    >>> manager.getControl(name='add_item.stephan').value = 'checked'
     >>> manager.getControl('Add').click()
     >>> manager.getControl('OK').click()
 
@@ -177,9 +174,9 @@ to the first one.
     ...New Activity...
     ...Manage Activities...
     ...Physics I (1)...
-    ...Claudia...
-    ...Paul...
-    ...Tom...
+    ...Cardune, Paul...
+    ...Hoffman, Tom...
+    ...Richter, Claudia...
     >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
 
@@ -357,13 +354,13 @@ click on the activity's name:
 Now we just enter the grades. Since Claudia has already a grade, we only need
 to grade Paul and Tom:
 
-    >>> stephan.getControl('Paul Cardune').value = u'-1'
-    >>> stephan.getControl('Tom Hoffman').value = u'42'
+    >>> stephan.getControl('Cardune, Paul').value = u'-1'
+    >>> stephan.getControl('Hoffman, Tom').value = u'42'
     >>> stephan.getControl('Update').click()
 
 Again, we entered an invalid value, this time for Paul:
 
-    >>> 'The grade -1 for Paul Cardune is not valid.' in stephan.contents
+    >>> 'The grade -1 for Cardune, Paul is not valid.' in stephan.contents
     True
 
 Also note that all the other entered values should be retained:
@@ -374,7 +371,7 @@ Also note that all the other entered values should be retained:
     True
     >>> 'value="36"' in stephan.contents
     True
-    >>> stephan.getControl('Paul Cardune').value = u'40'
+    >>> stephan.getControl('Cardune, Paul').value = u'40'
     >>> stephan.getControl('Update').click()
 
 The screen will return to the grade overview, where the grades are now
@@ -390,7 +387,7 @@ visible:
 Now let's enter again and change a grade:
 
     >>> stephan.getLink('HW1').click()
-    >>> stephan.getControl('Claudia Richter').value = u'48'
+    >>> stephan.getControl('Richter, Claudia').value = u'48'
     >>> stephan.getControl('Update').click()
     >>> 'value="48"' in stephan.contents
     True
@@ -398,7 +395,7 @@ Now let's enter again and change a grade:
 When you want to delete an evaluation altogether, simply blank the value:
 
     >>> stephan.getLink('HW1').click()
-    >>> stephan.getControl('Claudia Richter').value = u''
+    >>> stephan.getControl('Richter, Claudia').value = u''
     >>> stephan.getControl('Update').click()
     >>> 'value="98"' in stephan.contents
     False
@@ -415,9 +412,9 @@ some interesting numbers for the summary view.
 
     >>> stephan.getLink('Week 2').click()
     >>> stephan.getLink('HW2').click()
-    >>> stephan.getControl('Paul Cardune').value = u'90'
-    >>> stephan.getControl('Tom Hoffman').value = u'72'
-    >>> stephan.getControl('Claudia Richter').value = u'42'
+    >>> stephan.getControl('Cardune, Paul').value = u'90'
+    >>> stephan.getControl('Hoffman, Tom').value = u'72'
+    >>> stephan.getControl('Richter, Claudia').value = u'42'
     >>> stephan.getControl('Update').click()
 
 We'll set the current worksheet back to week 1 for the rest of the tests.
@@ -427,10 +424,68 @@ We'll set the current worksheet back to week 1 for the rest of the tests.
 We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
 
     >>> stephan.getLink('Quiz').click()
-    >>> stephan.getControl('Claudia Richter').value = u'86'
+    >>> stephan.getControl('Richter, Claudia').value = u'86'
     >>> stephan.getControl('Update').click()
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
+
+
+Entering Scores for a Row (Student)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With the introduction of the comment score system, we need to provide the user
+with a way of entering comments into the gradebook.  Since comments have
+arbitrary length, we need a special view for entering them.  We will provide
+a row view (by student) for this purpose.  When the user clicks on a student,
+they will see a form with one field for each activity, comments having the
+fckEditor widget, the rest of the score system types just having a TextLine
+widget.
+
+Additionally, the user will have two special buttons, 'Previous' and 'Next',
+which allows them to go from student to student without having to return to
+the gradebook spreadsheet each time.  'Apply' and 'Cancel' return to the
+spreadsheet as one would expect.
+
+We'll start by clicking on Paul and testing the contents of the form.
+Since Paul is the first student in the list of students, there will be
+no 'Previous' button.
+ 
+    >>> stephan.getLink('Cardune, Paul').click()
+    >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
+    <h3>Enter grades for Cardune, Paul</h3>
+    >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
+    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
+    <input type="submit" id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" />
+    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+
+When we click on the 'Next' button it takes us to the middle student, Tom.
+Here we will see both a 'Previous' and a 'Next' button.
+
+    >>> stephan.getControl('Next').click()
+    >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
+    <h3>Enter grades for Hoffman, Tom</h3>
+    >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
+    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
+    <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
+    <input type="submit" id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" />
+    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+
+When we click on the 'Next' button it takes us to the last student, Claudia.
+Here we will see no 'Next' button.
+
+    >>> stephan.getControl('Next').click()
+    >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
+    <h3>Enter grades for Richter, Claudia</h3>
+    >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
+    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
+    <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
+    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+
+Hitting the 'Cancel' button takes the user back to the gradebook.
+
+    >>> stephan.getControl('Cancel').click()
+    >>> analyze.printQuery("id('content-body')/div/form/span[3]", stephan.contents)
+    <span>show only activities due in past</span>
 
 
 Sorting
@@ -440,9 +495,9 @@ Another feature of the gradebook is the ability to sort each column in a
 descending and ascending fashion. By default the student's name is sorted
 alphabetically:
 
-    >>> stephan.contents.find('Claudia') \
-    ...     < stephan.contents.find('Paul') \
-    ...     < stephan.contents.find('Tom')
+    >>> stephan.contents.find('Carduner, Paul') \
+    ...     < stephan.contents.find('Hoffman, Tom') \
+    ...     < stephan.contents.find('Richter, Claudia')
     True
 
 Then we want to sort by grade in Homework 1, so we should have:
@@ -474,18 +529,18 @@ the average for each worksheet and the final calulated grade.
     >>> stephan.getLink('Summary').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...Claudia Richter...
-    ...86</td>...
-    ...42</td>...
-    ...C</td>...
-    ...Paul Cardune...
+    ...Paul...
     ...80</td>...
     ...90</td>...
     ...A</td>...
-    ...Tom Hoffman...
+    ...Tom...
     ...84</td>...
     ...72</td>...
     ...B</td>...
+    ...Claudia...
+    ...86</td>...
+    ...42</td>...
+    ...C</td>...
     >>> stephan.open(stephan.url[:stephan.url.rfind('/')])
 
 
@@ -537,11 +592,11 @@ us to the gradebook.  There we will note the effect of the weighting.
     >>> stephan.getControl('Update').click()
     >>> print stephan.contents
     <BLANKLINE>
-    ...Claudia Richter...
+    ...Claudia...
     ...86%</b>...
-    ...Tom Hoffman...
+    ...Tom...
     ...84%</b>...
-    ...Paul Cardune...
+    ...Paul...
     ...80%</b>...
 
 Finally, we'll test hitting the 'Cancel' button.  It should return to the
@@ -680,21 +735,14 @@ second section rather than teaching.
     >>> manager.getLink('(2)').click()
 
     >>> manager.getLink('edit individuals').click()
-    >>> manager.getControl('Stephan Richter').click()
+    >>> manager.getControl(name='add_item.stephan').value = 'checked'
     >>> manager.getControl('Add').click()
     >>> manager.getControl('OK').click()
 
     >>> manager.getLink('edit instructors').click()
-    >>> manager.getControl('Tom Hoffman').click()
+    >>> manager.getControl(name='add_item.tom').value = 'checked'
     >>> manager.getControl('Add').click()
     >>> manager.getControl('OK').click()
-
-    >>> print manager.contents
-    <BLANKLINE>
-    ...Instructors...
-    ...Tom Hoffman...
-    ...Students...
-    ...Stephan Richter...
 
 We'll have Tom set up a worksheet.
 
@@ -878,9 +926,9 @@ And our grades are:
     >>> stephan.contents
     <BLANKLINE>
     ...Name...Total...Ave...HW 1...Quiz...
-    ...Claudia Richter...<b>86</b>...<b>86%</b>...86...
-    ...Tom Hoffman...<b>44</b>...<b>88%</b>...44...
-    ...Paul Cardune...<b>40</b>...<b>80%</b>...40...
+    ...Claudia...<b>86</b>...<b>86%</b>...86...
+    ...Tom...<b>44</b>...<b>88%</b>...44...
+    ...Paul...<b>40</b>...<b>80%</b>...40...
 
 This state should change after we update the grades from external
 activities. Remember that the gradebook has weighting defined?:
@@ -930,9 +978,9 @@ loaded with the latest grades:
     >>> stephan.contents
     <BLANKLINE>
     ...Name...Total...Ave...HW 1...Quiz...Hardware...
-    ...Claudia Richter...92.00...69%...86...6.00...
-    ...Tom Hoffman...53.00...82%...44...9.00...
-    ...Paul Cardune...40...80%...40...
+    ...Claudia...92.00...69%...86...6.00...
+    ...Tom...53.00...82%...44...9.00...
+    ...Paul...40...80%...40...
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
@@ -982,7 +1030,7 @@ changed taking into account the weighting:
     >>> stephan.contents
     <BLANKLINE>
     ...Name...Total...Ave...HW 1...Quiz...Hardware As...
-    ...Claudia Richter...96.00...69%...86...10.00...
-    ...Tom Hoffman...59.00...79%...44...15.00...
-    ...Paul Cardune...40...80%...40...
+    ...Claudia...96.00...69%...86...10.00...
+    ...Tom...59.00...79%...44...15.00...
+    ...Paul...40...80%...40...
 

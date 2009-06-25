@@ -40,6 +40,15 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemsProxy
 
 
+class ScoreValidationError(zope.schema.ValidationError):
+    """Validation error for scores"""
+    def __init__(self, score):
+        self.score = score
+
+    def doc(self):
+        return "'%s' is not a valid score." % self.score
+
+
 def ScoreSystemsVocabulary(context):
     return UtilityVocabulary(context,
                              interface=interfaces.IScoreSystem)
@@ -177,8 +186,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
             return UNSCORED
 
         if not self.isValidScore(rawScore):
-            raise zope.schema.ValidationError(
-                "'%s' is not a valid score." %rawScore)
+            raise ScoreValidationError(rawScore)
         return rawScore
 
     def getNumericalValue(self, score):
@@ -290,11 +298,10 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         try:
             score = Decimal(rawScore)
         except:
-            raise ValueError
+            raise ScoreValidationError(rawScore)
 
         if not self.isValidScore(score):
-            raise zope.schema.ValidationError(
-                "%r is not a valid score." %score)
+            raise ScoreValidationError(rawScore)
         return score
 
     def getNumericalValue(self, score):

@@ -229,7 +229,7 @@ to a valid score.
   >>> check.fromUnicode('f')
   Traceback (most recent call last):
   ...
-  ValidationError: 'f' is not a valid score.
+  ScoreValidationError
 
   >>> check.fromUnicode('') is scoresystem.UNSCORED
   True
@@ -446,7 +446,7 @@ error:
   >>> quizScore.fromUnicode('This causes a ValueError.')
   Traceback (most recent call last):
   ...
-  ValueError
+  ScoreValidationError
 
 Since we have not defined a minimum passing grade, we cannot get a meaningful
 answer from the passing score evaluation:

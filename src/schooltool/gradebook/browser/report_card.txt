@@ -95,18 +95,19 @@ to deploy to all sections in a given term.  We'll need to set up one of our
 terms with some sections.  Of course, we'll need a teacher and some students
 in order to do that.
 
-    >>> setup.addPerson('Teacher One', 'teacher1', 'pwd')
-    >>> setup.addPerson('Student One', 'student1', 'pwd')
-    >>> setup.addPerson('Student Two', 'student2', 'pwd')
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Teacher1', 'One', 'teacher1', 'pwd')
+    >>> addPerson('Student1', 'One', 'student1', 'pwd')
+    >>> addPerson('Student2', 'Two', 'student2', 'pwd')
     >>> setup.addCourse('CompSci I', '2005-2006')
     >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
     ...                  title='Morning CompSci I',
-    ...                  instructors=['Teacher One'],
-    ...                  members=['Student One','Student Two'])
+    ...                  instructors=['Teacher1'],
+    ...                  members=['Student1','Student2'])
     >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
     ...                  title='Afternoon CompSci I',
-    ...                  instructors=['Teacher One'],
-    ...                  members=['Student One','Student Two'])
+    ...                  instructors=['Teacher1'],
+    ...                  members=['Student1','Student2'])
 
 We'll navigate to the 'Spring' term where we just created the two sections,
 and we'll click on the 'Deploy Report Worksheet' link.
@@ -214,8 +215,8 @@ other sections.  We'll add a third section to test this.
 
     >>> setup.addSection('CompSci I', '2005-2006', 'Spring',
     ...                  title='Evening CompSci I',
-    ...                  instructors=['Teacher One'],
-    ...                  members=['Student One','Student Two'])
+    ...                  instructors=['Teacher1'],
+    ...                  members=['Student1','Student2'])
 
     >>> manager.open(term_url)
     >>> manager.getLink('Sections').click()
@@ -257,8 +258,8 @@ term and deploy yet a third template to it.
 
     >>> setup.addSection('CompSci I', '2005-2006', 'Fall',
     ...                  title='Evening CompSci I',
-    ...                  instructors=['Teacher One'],
-    ...                  members=['Student One','Student Two'])
+    ...                  instructors=['Teacher1'],
+    ...                  members=['Student1','Student2'])
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()
