@@ -96,7 +96,12 @@ class AbstractScoreSystem(object):
         raise NotImplementedError
 
 
-class CommentScoreSystem(AbstractScoreSystem):
+class GlobalCommentScoreSystem(AbstractScoreSystem):
+    zope.interface.implements(interfaces.ICommentScoreSystem)
+
+    def __init__(self, title, description=None):
+        super(GlobalCommentScoreSystem, self).__init__(title, description)
+        self.__name__ = title
 
     def isValidScore(self, score):
         """See interfaces.IScoreSystem"""
@@ -115,7 +120,7 @@ class CommentScoreSystem(AbstractScoreSystem):
 
 
 # Singelton
-CommentScoreSystem = CommentScoreSystem(
+CommentScoreSystem = GlobalCommentScoreSystem(
     u'Comments', u'Scores are commentary text.')
 
 

@@ -47,6 +47,16 @@
   </class>
 
   <!-- Scoresystem Content -->
+  <class class=".scoresystem.GlobalCommentScoreSystem">
+    <require
+        permission="zope.View"
+        interface=".interfaces.ICommentScoreSystem"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IScoreSystem"
+        />
+  </class>
   <class class=".scoresystem.DiscreteValuesScoreSystem">
     <require
         permission="zope.View"
@@ -118,6 +128,11 @@
       provides="schooltool.requirement.interfaces.IScoreSystem"
       component=".scoresystem.HundredPointsScoreSystem"
       name="100 Points"
+      />
+  <utility
+      provides="schooltool.requirement.interfaces.IScoreSystem"
+      component=".scoresystem.CommentScoreSystem"
+      name="Comment"
       />
 
   <!-- Evaluations Content -->

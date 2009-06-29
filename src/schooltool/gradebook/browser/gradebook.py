@@ -28,6 +28,7 @@ import decimal
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
+from zope.html.field import HtmlFragment
 from zope.publisher.browser import BrowserView
 from zope.schema import ValidationError, Text, TextLine
 from zope.schema.interfaces import IVocabularyFactory
@@ -47,6 +48,7 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
+from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -59,6 +61,7 @@ GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 
 DISCRETE_SCORE_SYSTEM = 'd'
 RANGED_SCORE_SYSTEM = 'r'
+COMMENT_SCORE_SYSTEM = 'c'
 
 column_keys = [('total', _("Total")), ('average', _("Ave."))]
 
@@ -162,8 +165,10 @@ class GradebookBase(BrowserView):
             if IDiscreteValuesScoreSystem.providedBy(ss):
                 result = [DISCRETE_SCORE_SYSTEM] + [score[0] 
                     for score in ss.scores]
-            else:
+            elif IRangedValuesScoreSystem.providedBy(ss):
                 result = [RANGED_SCORE_SYSTEM, ss.min, ss.max]
+            else:
+                result = [COMMENT_SCORE_SYSTEM]
             resultStr = ', '.join(["'%s'" % unicode(value) 
                 for value in result])
             results[hash(IKeyReference(activity))] = resultStr
@@ -414,9 +419,13 @@ class GradebookOverview(SectionFinder):
             if len(shortTitle) > 5:
                 shortTitle = shortTitle[:5].strip()
 
+            if ICommentScoreSystem.providedBy(activity.scoresystem):
+                bestScore = ''
+            else:
+                bestScore = activity.scoresystem.getBestScore()
             result.append({'shortTitle': shortTitle,
                            'longTitle': activity.title,
-                           'max': activity.scoresystem.getBestScore(),
+                           'max': bestScore,
                            'hash': hash(IKeyReference(activity))})
             
         return result
@@ -453,7 +462,20 @@ class GradebookOverview(SectionFinder):
                 if cell_name in self.request:
                     value = self.request[cell_name]
 
-                grades.append({'activity': act_hash, 'value': value})
+                ss = activity.scoresystem
+                if ICommentScoreSystem.providedBy(ss):
+                    editable = False
+                    if value:
+                        value = '...'
+                else:
+                    editable = True
+
+                grade = {
+                    'activity': act_hash,
+                    'editable': editable,
+                    'value': value
+                    }
+                grades.append(grade)
 
             total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
@@ -806,7 +828,11 @@ class GradeStudent(z3cform.EditForm):
     def update(self):
         self.person = IPerson(self.request.principal)
         for index, activity in enumerate(self.getFilteredActivities()):
-            newSchemaFld = TextLine(
+            if ICommentScoreSystem.providedBy(activity.scoresystem):
+                field_cls = HtmlFragment
+            else:
+                field_cls = TextLine
+            newSchemaFld = field_cls(
                 title=activity.title,
                 description=activity.description,
                 constraint=activity.scoresystem.fromUnicode,

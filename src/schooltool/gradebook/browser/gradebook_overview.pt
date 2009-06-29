@@ -191,7 +191,10 @@
         </td>
         <td class="cell even" tal:repeat="grade row/grades"
             tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+          <b tal:condition="not: grade/editable"
+             tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
+                 tal:condition="grade/editable"
                  onkeydown="spreadsheetBehaviour(event)"
                  tal:attributes="name string:${grade/activity}_${row/student/id};
                                  id string:${grade/activity}_${row/student/id};
@@ -220,7 +223,10 @@
         </td>
         <td class="cell odd" tal:repeat="grade row/grades"
             tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+          <b tal:condition="not: grade/editable"
+             tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
+                 tal:condition="grade/editable"
                  onkeydown="spreadsheetBehaviour(event)"
                  tal:attributes="name string:${grade/activity}_${row/student/id};
                                  id string:${grade/activity}_${row/student/id};

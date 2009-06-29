@@ -434,7 +434,7 @@ class StudentGradebookFormAdapter(object):
         activity = self.context.activities[name]
         ev = self.context.gradebook.getEvaluation(self.context.student, 
                                                   activity)
-        if ev is not None:
+        if ev is not None and ev.value is not UNSCORED:
             return ev.value
         else:
             return ''
