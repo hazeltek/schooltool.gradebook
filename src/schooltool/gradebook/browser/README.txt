@@ -873,6 +873,11 @@ Export Worksheets as XLS
 
 Gradebook's worksheets can be exported to a XLS file:
 
+    >>> stephan.getLink('Export XLS').click()
+    >>> stephan.headers.get('Content-Type')
+    'application/excel'
+    >>> stephan.open('http://localhost/gradebook.html')
+    >>> stephan.getLink('Classes you teach').click()
     >>> stephan.getLink('Worksheets').click()
     >>> stephan.getLink('Export XLS').click()
     >>> stephan.headers.get('Content-Type')
