@@ -5,9 +5,6 @@
 </head>
 <body>
 
-<h1 metal:fill-slot="content-header"
-    i18n:translate="">Add Score System</h1>
-
 <metal:block metal:fill-slot="body">
 
   <div class="message" style="color:red; padding:1em"
@@ -17,22 +14,23 @@
   </div>
 
 
-  <form method="post"
+  <form method="post" class="addscoresystem"
         tal:attributes="action string:${context/@@absolute_url}/add.html">
     <input type="hidden" name="form-submitted" value="" />
 
+	<h3>Add Score System</h3>
+    <fieldset>
+    <legend><b>New Score System</b><legend>
     <label for="title" class="bold padded" i18n:translate="">Title</label>
     <input type="text" name="title" id="title"
            tal:attributes="value view/title_value" />
-    <span>&nbsp&nbsp</span>
-    <input type="submit" class="button-ok" name="SAVE" value="Submit" />
     <div style="height: 31px;"></div>
 
     <table class="schooltool_gradebook">
       <tr>
         <th class="cell header fully_padded">Score Displayed</th>
         <th class="cell header fully_padded">Score Value</th>
-        <th class="cell header fully_padded">Low Persntage</th>
+        <th class="cell header fully_padded">Low Percentage</th>
       </tr>
 
       <tal:block repeat="score view/scores">
@@ -53,10 +51,13 @@
       </tal:block>
 
     </table>
-    <div style="height: 11px;"></div>
+    <div class="controls">
+      <input type="submit" class="button-ok" name="SAVE" value="Add Row" />
+    </div>
+    </fieldset>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" />
       <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
     </div>
   </form>

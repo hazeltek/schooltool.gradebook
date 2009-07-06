@@ -152,3 +152,55 @@ td.active_tab {
     font-weight: bold;
 }
 
+FORM.addscoresystem, div.addscoresystem {
+    width: 48em;
+    margin: auto;
+}
+
+FORM.addscoresystem FIELDSET, div.addscoresystem FIELDSET {
+    margin: 1em;
+}
+
+FORM.addscoresystem h3, div.addscoresystem h3 {
+    margin: 0;
+    padding: 0.25em;
+}
+
+FORM.addscoresystem .controls, div.addscoresystem .controls {
+    margin: 0.5em 1em 1em 1em;
+}
+
+FORM.addscoresystem, div.addscoresystem, FORM div.oneline-form{
+    background: #eae8e3;
+    border: 1px #bab5ab solid;
+}
+
+FORM.addscoresystem h3, div.addscoresystem h3 {
+    background: #bab5ab;
+}
+
+FORM.addscoresystem FIELDSET, div.addscoresystem FIELDSET {
+    border: 1px #bab5ab solid;
+    /* Mozilla's default padding for fieldsets -- makes it nice in MSIE too */
+    padding: 0.35em 0.625em 0.75em 0.625em;
+}
+
+FORM.addscoresystem p, div.addscoresystem p {
+    margin: 0.5em;
+}
+
+FORM.addscoresystem p.hint, div.addscoresystem p.hint {
+    font-size: 80%;
+    font-style: italic;
+    color: #bab5ab;
+}
+
+FORM.addscoresystem .controls INPUT, div.addscoresystem .controls INPUT {
+    background: #fff;
+}
+
+FORM.addscoresystem DIV.label, div.addscoresystem DIV.label {
+    width: 10em;
+    padding-top: 0.5ex;
+}
+

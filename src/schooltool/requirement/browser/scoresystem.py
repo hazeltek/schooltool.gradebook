@@ -90,7 +90,7 @@ class ScoreSystemAddView(BrowserView):
 
             if not self.validateForm():
                 return
-            if 'SAVE' in self.request:
+            if 'UPDATE_SUBMIT' in self.request:
                 if not self.validateScores():
                     return
                 target = scoresystem.CustomScoreSystem()
