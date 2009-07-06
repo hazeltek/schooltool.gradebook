@@ -28,9 +28,9 @@
 
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell header fully_padded">Score Displayed</th>
-        <th class="cell header fully_padded">Score Value</th>
-        <th class="cell header fully_padded">Low Percentage</th>
+        <th class="cell header fully_padded">Score</th>
+        <th class="cell header fully_padded">Point Value</th>
+        <th class="cell header fully_padded">Minimum Percentage</th>
       </tr>
 
       <tal:block repeat="score view/scores">
