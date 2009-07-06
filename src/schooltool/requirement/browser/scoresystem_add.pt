@@ -6,19 +6,35 @@
 <body>
 
 <metal:block metal:fill-slot="body">
-
-  <div class="message" style="color:red; padding:1em"
-       tal:condition="view/message"
-       tal:content="view/message">
-    Message
-  </div>
-
-
   <form method="post" class="addscoresystem"
         tal:attributes="action string:${context/@@absolute_url}/add.html">
     <input type="hidden" name="form-submitted" value="" />
 
 	<h3>Add Score System</h3>
+
+    <div class="message" style="color:red; padding:1em"
+         tal:condition="view/message"
+         tal:content="view/message">
+      Message
+    </div>
+	<p>
+	  This form allows you to create a customized "score system" or grading scale.
+	</p>
+	<p>
+      Each score system needs a short title to identify it to users, for example, if your school's grades go from "A" to "E," the title could be "A-E."
+	</p>
+	<p>
+      A score system is made up of a sequence of possible scores with decreasing values.
+	</p>
+	<p>
+      Each score is associated with a numeric point value. For example, in the US, an "A" is usually worth 4 points, a "B," 3 points, etc. This value will be used in any calculations made with the scores, such as finding a grade point average.
+	</p>
+	<p>
+      Each score is also associated with a minimum percentage necessary to achieve the corresponding grade. For example, 95% and above is an "A," 87% and up is a "B," etc.
+	</p>
+	<p>
+      Start with the highest score. Click "Add a lower score" to add scores until you have created a score with a minimum percentage of 0.
+	</p>
     <fieldset>
     <legend><b>New Score System</b><legend>
     <label for="title" class="bold padded" i18n:translate="">Title</label>
@@ -52,7 +68,7 @@
 
     </table>
     <div class="controls">
-      <input type="submit" class="button-ok" name="SAVE" value="Add Row" />
+      <input type="submit" class="button-ok" name="SAVE" value="Add a lower score" />
     </div>
     </fieldset>
 
