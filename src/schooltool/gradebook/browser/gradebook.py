@@ -486,8 +486,9 @@ class GradebookOverview(SectionFinder):
             rows.append(
                 {'student': {'title': student.title, 
                              'id': student.username,
-                             'url': absoluteURL(self.context, self.request) +
-                                    ('/%s' % student.username) 
+                             'url': absoluteURL(student, self.request),
+                             'gradeurl': absoluteURL(self.context, self.request) +
+                                    ('/%s' % student.username),
                             },
                  'grades': grades, 'total': unicode(total),
                  'average': unicode(average)

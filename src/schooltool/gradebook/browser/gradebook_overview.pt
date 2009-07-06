@@ -179,6 +179,10 @@
              tal:content="row/student/title">
             Tom Hoffman
           </a>
+          <a href=""
+             tal:attributes="href row/student/gradeurl">
+            &gt;
+          </a>
         </td>
         <td tal:condition="not: view/total_hide" class="cell padded even">
 	      <tal:if condition="row/total|nothing">
@@ -210,6 +214,10 @@
              tal:attributes="href row/student/url"
              tal:content="row/student/title">
             Tom Hoffman
+          </a>
+          <a href=""
+             tal:attributes="href row/student/gradeurl">
+            &gt;
           </a>
         </td>
         <td tal:condition="not: view/total_hide" class="cell padded odd">
