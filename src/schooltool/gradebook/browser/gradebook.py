@@ -322,7 +322,7 @@ class GradebookOverview(SectionFinder):
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
-        self.message = ''
+        self.messages = []
 
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
@@ -374,11 +374,12 @@ class GradebookOverview(SectionFinder):
                         score = activity.scoresystem.fromUnicode(
                             self.request[cell_name])
                     except (ValidationError, ValueError):
-                        self.message = _(
+                        message = _(
                             'The grade $value for activity $name is not valid.',
                             mapping={'value': self.request[cell_name],
                                      'name': activity.title})
-                        return
+                        self.messages.append(message)
+                        continue
                     ev = gradebook.getEvaluation(student, activity)
                     # Delete the score
                     if ev is not None and score is UNSCORED:
@@ -570,8 +571,6 @@ class SummaryView(SectionFinder):
 class GradeActivity(object):
     """Grading a single activity"""
 
-    message = ''
-
     @property
     def activity(self):
         act_hash = int(self.request['activity'])
@@ -597,6 +596,7 @@ class GradeActivity(object):
                    'value': value}
 
     def update(self):
+        self.messages = []
         if 'CANCEL' in self.request:
             self.request.response.redirect('index.html')
 
@@ -615,11 +615,12 @@ class GradeActivity(object):
                         score = activity.scoresystem.fromUnicode(
                             self.request[id])
                     except (ValidationError, ValueError):
-                        self.message = _(
+                        message = _(
                             'The grade $value for $name is not valid.',
                             mapping={'value': self.request[id],
                                      'name': student.title})
-                        return
+                        self.messages.append(message)
+                        continue
                     ev = gradebook.getEvaluation(student, activity)
                     # Delete the score
                     if ev is not None and score is UNSCORED:
@@ -632,7 +633,8 @@ class GradeActivity(object):
                         self.context.evaluate(
                             student, activity, score, evaluator)
 
-            self.request.response.redirect('index.html')
+            if not len(self.messages):
+                self.request.response.redirect('index.html')
 
 
 def getScoreSystemDiscreteValues(ss):

@@ -90,11 +90,12 @@
     <span>weeks</span>
     <br /><br />
 
-  <div class="message" style="color:red; padding:1em"
-       tal:condition="view/message"
-       tal:content="view/message">
+  <div class="message" style="color:red"
+       tal:repeat="message view/messages"
+       tal:content="message">
     Message
   </div>
+  <br />
 
   <table class="schooltool_gradebook">
     <tr>
