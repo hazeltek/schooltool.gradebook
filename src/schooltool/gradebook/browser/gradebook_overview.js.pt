@@ -1,8 +1,9 @@
+<tal:tag condition="view/update" />
 /* This is the Javascript to be included when rendering the gradebook overview. */
 var numstudents = <tal:block replace="python: len(view.students)"/> 
 var students = new Array(numstudents);
-<tal:loop repeat="student view/students">
-     students[<tal:block replace="repeat/student/index"/>] = '<tal:block replace="python: view.breakJSString(student.username)"/>';
+<tal:loop repeat="row view/table">
+     students[<tal:block replace="repeat/row/index"/>] = '<tal:block replace="python: view.breakJSString(row['student']['id'])"/>';
      </tal:loop>
 
 var numactivities = <tal:block replace="python: len(view.activities())"/> 
@@ -167,6 +168,11 @@ function checkValid(e, name)
     var element = document.getElementById(name);
     var elementCell = document.getElementById(name+'_cell');
     var value = element.value;
+
+
+
+
+
     changeBackgroundColor(name+'_cell', 'default_bg');
 
     if (value == '')

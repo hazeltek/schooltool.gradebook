@@ -40,6 +40,15 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemsProxy
 
 
+class ScoreValidationError(zope.schema.ValidationError):
+    """Validation error for scores"""
+    def __init__(self, score):
+        self.score = score
+
+    def doc(self):
+        return "'%s' is not a valid score." % self.score
+
+
 def ScoreSystemsVocabulary(context):
     return UtilityVocabulary(context,
                              interface=interfaces.IScoreSystem)
@@ -87,7 +96,12 @@ class AbstractScoreSystem(object):
         raise NotImplementedError
 
 
-class CommentScoreSystem(AbstractScoreSystem):
+class GlobalCommentScoreSystem(AbstractScoreSystem):
+    zope.interface.implements(interfaces.ICommentScoreSystem)
+
+    def __init__(self, title, description=None):
+        super(GlobalCommentScoreSystem, self).__init__(title, description)
+        self.__name__ = title
 
     def isValidScore(self, score):
         """See interfaces.IScoreSystem"""
@@ -106,7 +120,7 @@ class CommentScoreSystem(AbstractScoreSystem):
 
 
 # Singelton
-CommentScoreSystem = CommentScoreSystem(
+CommentScoreSystem = GlobalCommentScoreSystem(
     u'Comments', u'Scores are commentary text.')
 
 
@@ -177,8 +191,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
             return UNSCORED
 
         if not self.isValidScore(rawScore):
-            raise zope.schema.ValidationError(
-                "'%s' is not a valid score." %rawScore)
+            raise ScoreValidationError(rawScore)
         return rawScore
 
     def getNumericalValue(self, score):
@@ -290,11 +303,10 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         try:
             score = Decimal(rawScore)
         except:
-            raise ValueError
+            raise ScoreValidationError(rawScore)
 
         if not self.isValidScore(score):
-            raise zope.schema.ValidationError(
-                "%r is not a valid score." %score)
+            raise ScoreValidationError(rawScore)
         return score
 
     def getNumericalValue(self, score):
