@@ -240,7 +240,7 @@
   </table>
 
   <div class="controls">
-    <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" 
+    <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
            onclick="setNotEdited()"/>
   </div>
 

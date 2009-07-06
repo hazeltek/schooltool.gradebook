@@ -309,7 +309,7 @@ of the fact that it's the first cell.
     >>> txt = contents[index:]
     >>> cell_name = txt[:txt.find('"')]
     >>> stephan.getControl(name=cell_name).value = '56'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
 
 We should see the score reflected in the spreadsheet.
 
@@ -319,28 +319,28 @@ We should see the score reflected in the spreadsheet.
 If we enter an invalid score, we will get an error message.
 
     >>> stephan.getControl(name=cell_name).value = 'Bad'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
     >>> 'The grade Bad for activity HW 1 is not valid.' in stephan.contents
     True
 
 We can change the score and see the change reflected in the spreadsheet.
 
     >>> stephan.getControl(name=cell_name).value = '88'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
     >>> stephan.getControl(name=cell_name).value
     '88'
 
 Finally, we can remove the score by clearing out the cell.
 
     >>> stephan.getControl(name=cell_name).value = ''
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
     >>> stephan.getControl(name=cell_name).value
     ''
 
 We need to put the score back for future tests to pass.
 
     >>> stephan.getControl(name=cell_name).value = '36'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
 
 
 Entering Scores for a Column (Activity)
@@ -356,7 +356,7 @@ to grade Paul and Tom:
 
     >>> stephan.getControl('Cardune, Paul').value = u'-1'
     >>> stephan.getControl('Hoffman, Tom').value = u'42'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
 
 Again, we entered an invalid value, this time for Paul:
 
@@ -372,7 +372,7 @@ Also note that all the other entered values should be retained:
     >>> 'value="36"' in stephan.contents
     True
     >>> stephan.getControl('Cardune, Paul').value = u'40'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
 
 The screen will return to the grade overview, where the grades are now
 visible:
@@ -388,7 +388,7 @@ Now let's enter again and change a grade:
 
     >>> stephan.getLink('HW1').click()
     >>> stephan.getControl('Richter, Claudia').value = u'48'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
     >>> 'value="48"' in stephan.contents
     True
 
@@ -396,7 +396,7 @@ When you want to delete an evaluation altogether, simply blank the value:
 
     >>> stephan.getLink('HW1').click()
     >>> stephan.getControl('Richter, Claudia').value = u''
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
     >>> 'value="98"' in stephan.contents
     False
 
@@ -415,7 +415,7 @@ some interesting numbers for the summary view.
     >>> stephan.getControl('Cardune, Paul').value = u'90'
     >>> stephan.getControl('Hoffman, Tom').value = u'72'
     >>> stephan.getControl('Richter, Claudia').value = u'42'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
 
 We'll set the current worksheet back to week 1 for the rest of the tests.
 
@@ -425,7 +425,7 @@ We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
 
     >>> stephan.getLink('Quiz').click()
     >>> stephan.getControl('Richter, Claudia').value = u'86'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook/index.html'
 
@@ -827,7 +827,7 @@ And try again:
     >>> manager.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     >>> manager.getLink('HW1').click()
     >>> manager.getControl(name='tom').value = '45'
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
 Let's set the setting back to cover our tracks:
 
@@ -845,7 +845,7 @@ A teacher should be able to view and edit his own gradebook.
     ...Physics I (1)...
     >>> stephan.getLink('HW1').click()
     >>> stephan.getControl(name='tom').value = '44'
-    >>> stephan.getControl('Update').click()
+    >>> stephan.getControl('Save').click()
 
 Students won't be able to see each other's grade's because the mygrades view
 uses the request's principal to determine which grades to display.
