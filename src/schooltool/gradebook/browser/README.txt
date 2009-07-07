@@ -461,7 +461,7 @@ We'll start by clicking on Paul and testing the contents of the form.
 Since Paul is the first student in the list of students, there will be
 no 'Previous' button.
  
-    >>> stephan.getLink('Cardune, Paul').click()
+    >>> stephan.getLink('>', index=0).click()
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Cardune, Paul</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
