@@ -796,12 +796,19 @@ It was desirable to move the security tests out of schooltool and into the
 schooltool.gradebook package where they belong, so here is where they will
 be.
 
-The first test will be for the unauthenticated user.  They should not be able
-to see a gradebook and certainly don't have a mygrades view.
+The first test will be for the unauthenticated user.  If they hit the
+'Gradebook' link at the top, they should be redirected to the login view.
 
     >>> from zope.testbrowser.testing import Browser
     >>> unauth = Browser()
     >>> unauth.handleErrors = False
+    >>> unauth.open('http://localhost/gradebook.html')
+    >>> unauth.url
+    'http://localhost/auth/@@login.html?nexturl=http://localhost/gradebook.html'
+
+They should not be able to see a gradebook and certainly don't have a mygrades
+view.
+
     >>> unauth.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
     Traceback (most recent call last):
     ...
