@@ -230,6 +230,10 @@ class ScoreSystemViewView(BrowserView):
                 return removeSecurityProxy(ss)
         raise KeyError
 
+    @property
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
 
 class IWidgetData(interfaces.IRangedValuesScoreSystem):
     """A schema used to generate the score system widget."""
