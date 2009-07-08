@@ -169,10 +169,11 @@ function checkValid(e, name)
     var elementCell = document.getElementById(name+'_cell');
     var value = element.value;
 
+    return setBackgroundColor(name, activity, value);
+}
 
-
-
-
+function setBackgroundColor(name, activity, value)
+{
     changeBackgroundColor(name+'_cell', 'default_bg');
 
     if (value == '')
@@ -223,8 +224,9 @@ function performFillDown(activity) {
 	    return false;
 	}
     for(j=0;j!=numstudents;j++) {
-    	document.getElementById(activity+'_'+students[j]).value=fd.value;
-	    checkValid(null,activity+'_'+students[j]);
+        name = activity+'_'+students[j];
+        document.getElementById(name).value = fd.value;
+        setBackgroundColor(name, activity, fd.value);
     }
     document.getElementById('fd_'+activity).value = '';
     document.getElementById('fdbtn_'+activity).style.display = 'none';
