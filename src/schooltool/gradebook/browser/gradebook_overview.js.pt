@@ -231,6 +231,7 @@ function performFillDown(activity) {
     document.getElementById('fd_'+activity).value = '';
     document.getElementById('fdbtn_'+activity).style.display = 'none';
     changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
+    edited = true;
 }
 
 function checkFillDown(activity)
