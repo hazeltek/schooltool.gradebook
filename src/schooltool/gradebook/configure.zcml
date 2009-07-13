@@ -21,7 +21,6 @@
       name="schooltool.gradebook.categories"
       />
   <adapter
-      for="schooltool.app.interfaces.ISchoolToolApplication"
       factory=".gradebook_init.GradebookInit"
       name="schooltool.gradebook" />
 
@@ -306,8 +305,9 @@
       permission="schooltool.edit"
       crowds="section_instructors grade_editors" />
 
-  <adapter factory=".gradebook_init.GradebookAppStartup"
-           name="gradebook_startup_init" />
+  <adapter
+      factory=".gradebook_init.GradebookAppStartup"
+      name="schooltool.gradebook" />
 
   <!-- generations -->
   <utility

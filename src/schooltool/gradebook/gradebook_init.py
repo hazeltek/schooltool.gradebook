@@ -27,7 +27,7 @@ from zope.component import adapts
 from zope.interface import implements
 from zope.security.proxy import removeSecurityProxy
 
-from schooltool.app.app import InitBase
+from schooltool.app.app import InitBase, StartUpBase
 from schooltool.app.interfaces import IApplicationStartUpEvent
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
@@ -111,12 +111,10 @@ def setUpDefaultCategories(dict):
     dict.setDefaultKey('assignment')
 
 
-class GradebookAppStartup(ObjectEventAdapterSubscriber):
-    adapts(IApplicationStartUpEvent, ISchoolToolApplication)
-
+class GradebookAppStartup(StartUpBase):
     def __call__(self):
-        setUpGradebookRoot(self.object)
-        dict = getCategories(self.object)
+        setUpGradebookRoot(self.app)
+        dict = getCategories(self.app)
         if not dict.getKeys():
             setUpDefaultCategories(dict)
 
