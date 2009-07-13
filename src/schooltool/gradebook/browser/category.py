@@ -34,7 +34,7 @@ from schooltool.gradebook import category
 def getKey(name):
     name = name.replace(' ', '')
     name = name.lower()
-    return name.encode('utf-8')
+    return name.encode('utf-8').encode('punycode')
 
 class ICategoriesForm(zope.interface.Interface):
     """Schema for the form."""

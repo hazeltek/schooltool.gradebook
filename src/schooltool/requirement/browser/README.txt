@@ -95,7 +95,7 @@ To add a new score system, the user clicks 'Add Score System'.
 
 We'll send the form values necessary to add a score system called 'Good/Bad'.
 
-    >>> url = save_url + '&title=Good/Bad&displayed1=G&value1=1&percent1=60'
+    >>> url = update_url + '&title=Good/Bad&displayed1=G&value1=1&percent1=60'
     >>> url = url + '&displayed2=B&value2=0&percent2=0'
     >>> manager.open(url)
 

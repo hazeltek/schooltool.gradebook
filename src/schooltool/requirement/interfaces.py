@@ -84,6 +84,10 @@ class IScoreSystem(zope.interface.Interface):
         """
 
 
+class ICommentScoreSystem(IScoreSystem):
+    """A Score System for free-form comments."""
+
+
 class IValuesScoreSystem(IScoreSystem):
     """A Score System that deal with specific score values."""
 

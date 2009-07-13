@@ -5,34 +5,48 @@
 </head>
 <body>
 
-<h1 metal:fill-slot="content-header"
-    i18n:translate="">Add Score System</h1>
-
 <metal:block metal:fill-slot="body">
-
-  <div class="message" style="color:red; padding:1em"
-       tal:condition="view/message"
-       tal:content="view/message">
-    Message
-  </div>
-
-
-  <form method="post"
+  <form method="post" class="addscoresystem"
         tal:attributes="action string:${context/@@absolute_url}/add.html">
     <input type="hidden" name="form-submitted" value="" />
 
+	<h3>Add Score System</h3>
+
+    <div class="message" style="color:red; padding:1em"
+         tal:condition="view/message"
+         tal:content="view/message">
+      Message
+    </div>
+	<p>
+	  This form allows you to create a customized "score system" or grading scale.
+	</p>
+	<p>
+      Each score system needs a short title to identify it to users, for example, if your school's grades go from "A" to "E," the title could be "A-E."
+	</p>
+	<p>
+      A score system is made up of a sequence of possible scores with decreasing values.
+	</p>
+	<p>
+      Each score is associated with a numeric point value. For example, in the US, an "A" is usually worth 4 points, a "B," 3 points, etc. This value will be used in any calculations made with the scores, such as finding a grade point average.
+	</p>
+	<p>
+      Each score is also associated with a minimum percentage necessary to achieve the corresponding grade. For example, 95% and above is an "A," 87% and up is a "B," etc.
+	</p>
+	<p>
+      Start with the highest score. Click "Add a lower score" to add scores until you have created a score with a minimum percentage of 0.
+	</p>
+    <fieldset>
+    <legend><b>New Score System</b><legend>
     <label for="title" class="bold padded" i18n:translate="">Title</label>
     <input type="text" name="title" id="title"
            tal:attributes="value view/title_value" />
-    <span>&nbsp&nbsp</span>
-    <input type="submit" class="button-ok" name="SAVE" value="Submit" />
     <div style="height: 31px;"></div>
 
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell header fully_padded">Score Displayed</th>
-        <th class="cell header fully_padded">Score Value</th>
-        <th class="cell header fully_padded">Low Persntage</th>
+        <th class="cell header fully_padded">Score</th>
+        <th class="cell header fully_padded">Point Value</th>
+        <th class="cell header fully_padded">Minimum Percentage</th>
       </tr>
 
       <tal:block repeat="score view/scores">
@@ -53,10 +67,13 @@
       </tal:block>
 
     </table>
-    <div style="height: 11px;"></div>
+    <div class="controls">
+      <input type="submit" class="button-ok" name="SAVE" value="Add a lower score" />
+    </div>
+    </fieldset>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" />
       <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
     </div>
   </form>

@@ -17,7 +17,7 @@
 
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell header fully_padded">Hide?</th>
+        <th class="cell header fully_padded">Delete?</th>
         <th class="cell header fully_padded">Score System</th>
       </tr>
 

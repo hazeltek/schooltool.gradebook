@@ -19,11 +19,12 @@
   </h3>
   <br />
 
-  <div class="message"
-       tal:condition="view/message"
-       tal:content="view/message">
+  <div class="message" style="color:red"
+       tal:repeat="message view/messages"
+       tal:content="message">
     Message
   </div>
+  <br />
 
   <form tal:attributes="action request/URL"
         method="post" enctype="multipart/form-data">
@@ -94,7 +95,7 @@
     </table>
 
     <div class="controls">
-      <tal:block metal:use-macro="view/@@standard_macros/update-button" />
+    <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" />
       <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
     </div>
 

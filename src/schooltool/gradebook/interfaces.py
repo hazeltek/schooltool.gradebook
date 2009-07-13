@@ -268,6 +268,20 @@ class IGradebook(IReadGradebook, IEditGradebook):
     """
 
 
+class IStudentGradebook(Interface):
+    """The gradebook for grading a student in a section."""
+
+    student = Attribute("""The student being graded""")
+
+    gradebook = Attribute("""The section gradebook""")
+
+    activities = Attribute("""A dictionary of activity hash to activity""")
+
+
+class IStudentGradebookForm(Interface):
+    """Interface for fields that are stored in student gradebook."""
+
+
 class IMyGrades(Interface):
     """The students gradebook for a section.
 

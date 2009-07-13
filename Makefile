@@ -23,7 +23,6 @@ buildout:
 
 .PHONY: update
 update: build
-	svn up
 	bin/buildout -n
 
 .PHONY: test
@@ -62,6 +61,15 @@ coverage-reports-html:
 	mkdir coverage/reports
 	bin/coverage
 	ln -s schooltool.gradebook.html coverage/reports/index.html
+
+.PHONY: clean
+clean:
+	rm -rf bin develop-eggs parts python
+	rm -rf build dist
+	rm -f .installed.cfg
+	rm -f ID TAGS tags
+	find . -name '*.py[co]' -exec rm -f {} \;
+
 
 .PHONY: ubuntu-environment
 ubuntu-environment:

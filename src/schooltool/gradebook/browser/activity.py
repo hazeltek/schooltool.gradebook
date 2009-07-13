@@ -59,6 +59,7 @@ from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.export import export
+from schooltool.basicperson.interfaces import IDemographics
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -399,8 +400,9 @@ class WorksheetsExportView(export.ExcelExportView):
     def print_headers(self, ws, worksheet):
         gradebook = interfaces.IGradebook(worksheet)
         activities = gradebook.getWorksheetActivities(worksheet)
-        headers = [export.Header('Name')] + \
-                  [export.Header(activity.title) for activity in activities]
+        header_labels = ['ID', 'First name', 'Last name']
+        header_labels.extend([activity.title for activity in activities])
+        headers = [export.Header(label) for label in header_labels]
         for col, header in enumerate(headers):
             self.write(ws, 0, col, header.data, **header.style) 
 
@@ -408,8 +410,12 @@ class WorksheetsExportView(export.ExcelExportView):
         gradebook = interfaces.IGradebook(worksheet)
         activities = gradebook.getWorksheetActivities(worksheet)
         starting_row = 1
-        for row, student in enumerate(gradebook.students):
-            cells = [export.Text(student.title)]
+        students = sorted(gradebook.students,
+                          key=lambda x:IDemographics(x).get('ID', ''))
+        for row, student in enumerate(students):
+            cells = [export.Text(IDemographics(student).get('ID', '')),
+                     export.Text(student.first_name),
+                     export.Text(student.last_name)]
             for activity in activities:
                 ev = gradebook.getEvaluation(student, activity)
                 if ev is not None and ev.value is not UNSCORED:

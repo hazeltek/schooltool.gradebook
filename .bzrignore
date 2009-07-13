@@ -1,1 +1,8 @@
-src/schooltool.gradebook.egg-info
+./src/schooltool.gradebook.egg-info
+./bin
+./build
+./dist
+./python
+./parts
+./develop-eggs
+./.installed.cfg

@@ -189,6 +189,23 @@
       trusted="true"
       />
 
+  <!-- Student Gradebook Adapter -->
+  <class class=".gradebook.StudentGradebook">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IStudentGradebook" />
+  </class>
+  <adapter
+      factory=".gradebook.StudentGradebook"
+      trusted="true"
+      />
+
+
+  <!-- Student Gradebook Form Adapter -->
+  <adapter
+      factory=".gradebook.StudentGradebookFormAdapter"
+      />
+
   <!-- MyGrades Adapter -->
   <class class=".gradebook.MyGrades">
     <require
@@ -249,6 +266,14 @@
            zope.publisher.interfaces.http.IHTTPRequest"
       provides="zope.publisher.interfaces.IPublishTraverse"
       factory=".gradebook.WorksheetGradebookTraverser" />
+
+  <!-- special traversal adapter for traversing from a section gradebook
+       to a student gradebook -->
+  <adapter
+      for=".interfaces.IGradebook
+           zope.publisher.interfaces.http.IHTTPRequest"
+      provides="zope.publisher.interfaces.IPublishTraverse"
+      factory=".gradebook.StudentGradebookTraverser" />
 
   <!-- apidoc help setup -->
   <configure
