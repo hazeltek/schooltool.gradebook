@@ -113,8 +113,8 @@ def setUpDefaultCategories(dict):
 
 class GradebookAppStartup(StartUpBase):
     def __call__(self):
-        setUpGradebookRoot(self.object)
-        dict = getCategories(self.object)
+        setUpGradebookRoot(self.app)
+        dict = getCategories(self.app)
         if not dict.getKeys():
             setUpDefaultCategories(dict)
 
