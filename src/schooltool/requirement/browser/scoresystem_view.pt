@@ -36,6 +36,11 @@
 
   </table>
 
+  <div class="controls" style="padding: 1em 0">
+    <a class="button-ok"
+       tal:attributes="href view/nextURL">OK</a>
+  </div>
+
 </metal:block>
 </body>
 </html>

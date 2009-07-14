@@ -49,13 +49,26 @@ function checkChanges()
         return true;
 }
 
-function setFirstCellFocus()
+function onLoadHandler()
 {
+    // highlight error values
+    for (a = 0; a < numactivities; a++)
+    {
+        activity = activities[a];
+        for (s = 0; s < numstudents; s++)
+        {
+            name = activity + '_' + students[s];
+            value = document.getElementById(name).value;
+            setBackgroundColor(name, activity, value, true);
+        }
+    }
+
+    // set focus to first cell
     if (firstCellId != '')
         document.getElementById(firstCellId).focus();
 }
 
-window.onload = setFirstCellFocus;
+window.onload = onLoadHandler;
 window.onunload = checkChanges;
 
 
@@ -169,10 +182,11 @@ function checkValid(e, name)
     var elementCell = document.getElementById(name+'_cell');
     var value = element.value;
 
+    return setBackgroundColor(name, activity, value, false);
+}
 
-
-
-
+function setBackgroundColor(name, activity, value, errors_only)
+{
     changeBackgroundColor(name+'_cell', 'default_bg');
 
     if (value == '')
@@ -184,8 +198,12 @@ function checkValid(e, name)
     {
         for(var index in actScores)
         {
-               if (index > 0 && value == actScores[index])
-                   return true;
+            if (index > 0 && value == actScores[index])
+            {
+                if (!errors_only)
+                    changeBackgroundColor(name+'_cell', 'changed_bg');
+                return true;
+            }
         }  
         changeBackgroundColor(name+'_cell', 'error_bg');
         return false;   
@@ -203,6 +221,8 @@ function checkValid(e, name)
             changeBackgroundColor(name+'_cell', 'error_bg');
             return false;   
         }
+        if (errors_only)
+            return true;
         if (intValue > max)
         {
             changeBackgroundColor(name+'_cell', 'warning_bg');
@@ -223,12 +243,14 @@ function performFillDown(activity) {
 	    return false;
 	}
     for(j=0;j!=numstudents;j++) {
-    	document.getElementById(activity+'_'+students[j]).value=fd.value;
-	    checkValid(null,activity+'_'+students[j]);
+        name = activity+'_'+students[j];
+        document.getElementById(name).value = fd.value;
+        setBackgroundColor(name, activity, fd.value, false);
     }
     document.getElementById('fd_'+activity).value = '';
     document.getElementById('fdbtn_'+activity).style.display = 'none';
     changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
+    edited = true;
 }
 
 function checkFillDown(activity)

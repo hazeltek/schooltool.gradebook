@@ -27,6 +27,7 @@ from zope.app.zopeappgenerations import getRootFolder
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISectionContainer
 from schooltool.gradebook.interfaces import IActivities, IGradebookRoot
+from schooltool.gradebook.gradebook_init import setUpGradebookRoot
 from schooltool.person.interfaces import IPersonContainer
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.requirement.interfaces import IScoreSystemsProxy
@@ -78,6 +79,7 @@ def evolve(context):
        schooltool.requirement.scoresystem to the app site manager"""
 
     app = getRootFolder(context)
+    setUpGradebookRoot(app)
     ssProxy = IScoreSystemsProxy(app)
     for ss in [PassFail, AmericanLetterScoreSystem, 
                ExtendedAmericanLetterScoreSystem]:

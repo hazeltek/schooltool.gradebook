@@ -96,6 +96,15 @@ def convertAverage(average, scoresystem):
 class GradebookStartup(object):
     """A view for entry into into the gradebook or mygrades views."""
 
+    def __call__(self):
+        if IPerson(self.request.principal, None) is None:
+            url = absoluteURL(ISchoolToolApplication(None), self.request)
+            url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
+            self.request.response.redirect(url)
+            return ''
+        template = ViewPageTemplateFile('gradebook_startup.pt')
+        return template(self)
+
     def update(self):
         self.person = IPerson(self.request.principal)
         self.sectionsTaught = list(IInstructor(self.person).sections())
@@ -322,7 +331,7 @@ class GradebookOverview(SectionFinder):
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
-        self.messages = []
+        self.message = ''
 
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
@@ -374,11 +383,8 @@ class GradebookOverview(SectionFinder):
                         score = activity.scoresystem.fromUnicode(
                             self.request[cell_name])
                     except (ValidationError, ValueError):
-                        message = _(
-                            'The grade $value for activity $name is not valid.',
-                            mapping={'value': self.request[cell_name],
-                                     'name': activity.title})
-                        self.messages.append(message)
+                        self.message = _(
+                            'Invalid scores (highlighted in red) were not saved.')
                         continue
                     ev = gradebook.getEvaluation(student, activity)
                     # Delete the score

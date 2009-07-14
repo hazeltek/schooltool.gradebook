@@ -91,8 +91,8 @@
     <br /><br />
 
   <div class="message" style="color:red"
-       tal:repeat="message view/messages"
-       tal:content="message">
+       tal:condition="view/message"
+       tal:content="view/message">
     Message
   </div>
   <br />
@@ -130,14 +130,14 @@
        <div tal:content="view/average_label" />
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
-     <th class="cell title header" tal:repeat="activity view/activities">
+     <th class="cell title header" tal:repeat="activity view/activities"
+         tal:attributes="onmouseover string:tempDescription('${activity/hash}');
+                         onmouseout string:restoreDescription()">
        <div class="padded">
          <a href=""
             tal:attributes="href 
                             string:gradeActivity.html?activity=${activity/hash};
-                            title activity/longTitle;
-                            onmouseover string:tempDescription('${activity/hash}');
-                            onmouseout string:restoreDescription()"
+                            title activity/longTitle;"
             tal:content="activity/shortTitle">
            HW 1
          </a>

@@ -130,3 +130,9 @@ Let's click on 'Good/Bad' and test it's view.
     <span>0</span>
     <span>0</span>
 
+There's an 'OK' button that takes the user back to the score systems overview.
+
+    >>> manager.getLink('OK').click()
+    >>> manager.url
+    'http://localhost/scoresystems'
+
