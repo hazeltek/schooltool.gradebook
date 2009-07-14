@@ -331,7 +331,7 @@ If we enter an invalid score, we will get an error message.
 
     >>> stephan.getControl(name=cell_name).value = 'Bad'
     >>> stephan.getControl('Save').click()
-    >>> 'The grade Bad for activity HW 1 is not valid.' in stephan.contents
+    >>> 'Invalid scores (highlighted in red) were not saved.' in stephan.contents
     True
 
 We can change the score and see the change reflected in the spreadsheet.
