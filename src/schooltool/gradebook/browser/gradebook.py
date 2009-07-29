@@ -933,8 +933,8 @@ class GradeStudent(z3cform.EditForm):
         return activity.due_date < cutoff
 
     def getFilteredActivities(self):
-        activities = self.context.gradebook.getCurrentActivities(self.person)
-        return[activity for activity in activities
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        return[activity for activity in gradebook.context.values()
                if not self.isFiltered(activity)]
 
     @property
