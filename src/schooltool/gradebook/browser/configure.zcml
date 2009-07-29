@@ -451,6 +451,13 @@
       template="grade_student.pt"
       permission="schooltool.edit"
       />
+  <page
+      name="view.html"
+      for="..interfaces.IStudentGradebook"
+      class=".gradebook.StudentGradebookView"
+      template="student_gradebook.pt"
+      permission="schooltool.edit"
+      />
 
   <!-- Terms -->
   <zope:adapter

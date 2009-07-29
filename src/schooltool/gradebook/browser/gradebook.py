@@ -46,6 +46,7 @@ from schooltool.course.interfaces import ISection
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
+from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import ICommentScoreSystem
@@ -944,4 +945,49 @@ class GradeStudent(z3cform.EditForm):
 
     def nextURL(self):
         return absoluteURL(self.context.gradebook, self.request)
+
+
+class StudentGradebookView(object):
+    """View a student gradebook."""
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+
+        self.student = '%s %s' % (self.context.student.first_name,
+            self.context.student.last_name)
+        self.worksheet = gradebook.context.title
+        self.section = '%s - %s' % (list(gradebook.section.courses)[0].title,
+            gradebook.section.title)
+
+        self.blocks = []
+        activities = [activity for activity in gradebook.context.values()
+                      if not self.isFiltered(activity)]
+        for activity in activities:
+            ev = gradebook.getEvaluation(self.context.student, activity)
+            if ev is not None and ev.value is not UNSCORED:
+                value = ev.value
+            else:
+                value = ''
+            if ICommentScoreSystem.providedBy(activity.scoresystem):
+                block = {
+                    'comment': True,
+                    'paragraphs': buildHTMLParagraphs(value),
+                    }
+            else:
+                block = {
+                    'comment': False,
+                    'content': value,
+                    }
+            block['label'] = activity.title
+            self.blocks.append(block)
+
+    def isFiltered(self, activity):
+        flag, weeks = self.context.gradebook.getDueDateFilter(self.person)
+        if not flag:
+            return False
+        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        return activity.due_date < cutoff
 
