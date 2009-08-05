@@ -44,6 +44,7 @@ from schooltool.gradebook.interfaces import IActivities, IReportActivity
 from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
 from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
+from schooltool.gradebook.gradebook_init import OutlineActivity
 
 
 def copyActivities(sourceWorksheet, destWorksheet):
@@ -287,8 +288,28 @@ class LayoutReportCardView(object):
         return results
 
     @property
+    def outline_activities(self):
+        """Get  a list of the existing layout outline activities."""
+        results = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyearKey = self.context.__name__
+        if schoolyearKey in root.layouts:
+            current_activities = root.layouts[schoolyearKey].outline_activities
+        else:
+            current_activities  = []
+        for index, activity in enumerate(current_activities):
+            result = {
+                'source_name': 'Activity%s' % (index + 1),
+                'source_value': activity.source,
+                'heading_name': 'ActivityHeading%s' % (index + 1),
+                'heading_value': activity.heading,
+                }
+            results.append(result)
+        return results
+
+    @property
     def choices(self):
-        """Get  a list of the possible choices for layout columns."""
+        """Get  a list of the possible choices for layout activities."""
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
         for term in self.context.values():
@@ -310,9 +331,20 @@ class LayoutReportCardView(object):
 
     def update(self):
         if 'Update' in self.request:
-            self.changeColumns()
+            columns = self.updatedColumns()
+            outline_activities = self.updatedOutlineActivities()
 
-    def changeColumns(self):
+            root = IGradebookRoot(ISchoolToolApplication(None))
+            schoolyearKey = self.context.__name__
+            if schoolyearKey not in root.layouts:
+                if not len(columns):
+                    return
+                root.layouts[schoolyearKey] = ReportLayout()
+            layout = root.layouts[schoolyearKey]
+            layout.columns = columns
+            layout.outline_activities = outline_activities
+
+    def updatedColumns(self):
         columns = []
         index = 1
         while True:
@@ -331,15 +363,28 @@ class LayoutReportCardView(object):
             column = ReportColumn(self.request['new_source'], 
                                   self.request['new_heading'])
             columns.append(column)
+        return columns
 
-        root = IGradebookRoot(ISchoolToolApplication(None))
-        schoolyearKey = self.context.__name__
-        if schoolyearKey not in root.layouts:
-            if not len(columns):
-                return
-            root.layouts[schoolyearKey] = ReportLayout()
-        layout = root.layouts[schoolyearKey]
-        layout.columns = columns
+    def updatedOutlineActivities(self):
+        activities = []
+        index = 1
+        while True:
+            source_name = 'Activity%s' % index
+            heading_name = 'ActivityHeading%s' % index
+            index += 1
+            if source_name not in self.request:
+                break
+            if 'delete' in self.request:
+                if source_name in self.request['delete']:
+                    continue
+            column = OutlineActivity(self.request[source_name], 
+                                     self.request[heading_name])
+            activities.append(column)
+        if len(self.request['new_activity_source']):
+            column = OutlineActivity(self.request['new_activity_source'], 
+                                     self.request['new_activity_heading'])
+            activities.append(column)
+        return activities
 
 
 def handleSectionAdded(event):

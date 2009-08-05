@@ -5,14 +5,15 @@
 </head>
 <body>
 
-<h1 metal:fill-slot="content-header"
-    i18n:translate="">Layout Report Card</h1>
-
 <metal:block metal:fill-slot="body">
-  <form method="post"
+  <form method="post" class="addscoresystem"
         tal:attributes="action string:${context/@@absolute_url}/layout_report_card.html">
     <input type="hidden" name="form-submitted" value="" />
 
+	<h3>Layout Report Card</h3>
+
+    <fieldset>
+    <legend><b>Grid Columns</b><legend>
     <table>
       <tr>
         <td></td>
@@ -70,6 +71,69 @@
       </tr>
 
     </table>
+    </fieldset>
+
+    <fieldset>
+    <legend><b>Outline Activities</b><legend>
+    <table>
+      <tr>
+        <td></td>
+        <td align="center">Source</td>
+        <td align="center">Heading</td>
+        <td>Remove?</td>
+      </tr>
+
+      <tal:block repeat="activity view/outline_activities">
+        <tr>
+          <td>
+            <label tal:attributes="for activity/source_name"
+                   tal:content="activity/source_name" />
+          </td>
+          <td>
+            <select tal:attributes="id activity/source_name; name activity/source_name">
+              <tal:block repeat="choice view/choices">
+              <option tal:condition="python: choice['value'] == activity['source_value']"
+                      selected
+                      tal:attributes="value choice/value"
+                      tal:content="choice/name" />
+              <option tal:condition="python: choice['value'] != activity['source_value']"
+                      tal:attributes="value choice/value"
+                      tal:content="choice/name" />
+              </tal:block>
+            </select>
+          </td>
+          <td align="center">
+            <input type="text"
+                   tal:attributes="name activity/heading_name; value activity/heading_value" />
+          </td>
+          <td align="center">
+            <input type="checkbox" name="delete:list"
+                   tal:attributes="value activity/source_name" />
+          </td>
+        </tr>
+      </tal:block>
+
+      <tr>
+        <td>
+          <label for="new_activity_source" i18n:translate="">New Activity</label>
+        </td>
+        <td>
+          <select id="new_activity_source" name="new_activity_source">
+            <option selected value="">Choose an activity to add</option>
+            <tal:block repeat="choice view/choices">
+              <option tal:attributes="value choice/value"
+                      tal:content="choice/name" />
+            </tal:block>
+          </select>
+        </td>
+        <td>
+          <input type="text" name="new_activity_heading" />
+        </td>
+      </tr>
+
+    </table>
+    </fieldset>
+
     <div class="controls">
       <input type="submit" class="button-ok" name="Update" value="Update" />
     </div>

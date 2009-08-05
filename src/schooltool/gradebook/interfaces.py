@@ -161,6 +161,10 @@ class IReportLayout(Interface):
         title=_('Columns'),
         description=_('Columns to be printed in the report card.'))
 
+    outline_activities = zope.schema.List(
+        title=_('Outline Activities'),
+        description=_('Activities to be printed in the outline section.'))
+
     containers(IGradebookLayouts)
 
 
@@ -170,6 +174,14 @@ class IReportColumn(Interface):
     source = Attribute("""Source of the report card column data""")
 
     heading = Attribute("""Label of the report card column""")
+
+
+class IOutlineActivity(Interface):
+    '''An outlne activity of a report card layout'''
+
+    source = Attribute("""Source of the report card outlne activity data""")
+
+    heading = Attribute("""Label of the report card outlne activity""")
 
 
 class IEditGradebook(Interface):
