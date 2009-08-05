@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd" [
+  <!ENTITY pound   "&#xA3;">
+  <!ENTITY nbsp    "&#160;">
+]>
+
+<document
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/@@rml_macros/report"
+  i18n:domain="schooltool">
+
+<stylesheet>
+  <metal:block fill-slot="extra_initialize">
+  </metal:block>
+  <metal:block fill-slot="stylesheet">
+
+    <paraStyle
+      name="normal"
+      fontName="Arial_Normal"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="bold"
+      fontName="Arial_Bold"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="h1"
+      parent="Normal"
+      fontName="Arial_Normal"
+      fontSize="14"
+      alignment="center"
+      leading="22"
+      spaceAfter="6"/>
+
+    <blockTableStyle id="grid">
+    	<lineStyle kind="OUTLINE"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+    	<lineStyle kind="INNERGRID"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+  </metal:block>
+</stylesheet>
+
+<story metal:fill-slot="story">
+
+  <tal:block repeat="student view/students">
+    <para style="h1" tal:content="student/title" />
+
+    <blockTable style="grid"
+                tal:attributes="colWidths student/widths">
+      <tr>
+        <td><para style="bold" tal:content="view/course_heading" /></td>
+        <td tal:repeat="heading student/headings">
+          <para style="bold" tal:content="heading" />
+        </td>
+      </tr>
+
+      <tr tal:repeat="row student/rows">
+        <td><para style="normal" tal:content="row/title" /></td>
+        <td tal:repeat="score row/scores">
+          <para style="normal" tal:content="score" />
+        </td>
+      </tr>
+    </blockTable>
+
+    <condPageBreak height="88cm"/>
+  </tal:block>
+
+</story>
+
+</document>
