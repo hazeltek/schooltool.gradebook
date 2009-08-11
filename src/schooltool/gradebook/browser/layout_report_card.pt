@@ -30,7 +30,7 @@
           </td>
           <td>
             <select tal:attributes="id column/source_name; name column/source_name">
-              <tal:block repeat="choice view/choices">
+              <tal:block repeat="choice view/column_choices">
               <option tal:condition="python: choice['value'] == column['source_value']"
                       selected
                       tal:attributes="value choice/value"
@@ -59,7 +59,7 @@
         <td>
           <select id="new_source" name="new_source">
             <option selected value="">Choose a column to add</option>
-            <tal:block repeat="choice view/choices">
+            <tal:block repeat="choice view/column_choices">
               <option tal:attributes="value choice/value"
                       tal:content="choice/name" />
             </tal:block>
@@ -91,7 +91,7 @@
           </td>
           <td>
             <select tal:attributes="id activity/source_name; name activity/source_name">
-              <tal:block repeat="choice view/choices">
+              <tal:block repeat="choice view/activity_choices">
               <option tal:condition="python: choice['value'] == activity['source_value']"
                       selected
                       tal:attributes="value choice/value"
@@ -120,7 +120,7 @@
         <td>
           <select id="new_activity_source" name="new_activity_source">
             <option selected value="">Choose an activity to add</option>
-            <tal:block repeat="choice view/choices">
+            <tal:block repeat="choice view/activity_choices">
               <option tal:attributes="value choice/value"
                       tal:content="choice/name" />
             </tal:block>

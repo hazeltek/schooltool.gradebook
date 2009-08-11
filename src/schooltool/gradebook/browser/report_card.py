@@ -45,6 +45,7 @@ from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
 from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
 from schooltool.gradebook.gradebook_init import OutlineActivity
+from schooltool.requirement.interfaces import ICommentScoreSystem
 
 
 def copyActivities(sourceWorksheet, destWorksheet):
@@ -308,7 +309,14 @@ class LayoutReportCardView(object):
         return results
 
     @property
-    def choices(self):
+    def column_choices(self):
+        return self.choices()
+
+    @property
+    def activity_choices(self):
+        return self.choices(no_comment=False)
+
+    def choices(self, no_comment=True):
         """Get  a list of the possible choices for layout activities."""
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -318,6 +326,9 @@ class LayoutReportCardView(object):
                 if key.startswith(deployedKey):
                     deployedWorksheet = root.deployed[key]
                     for activity in deployedWorksheet.values():
+                        if ICommentScoreSystem.providedBy(activity.scoresystem):
+                            if no_comment: 
+                                continue
                         name = '%s - %s - %s' % (term.title,
                             deployedWorksheet.title, activity.title)
                         value = '%s|%s|%s' % (term.__name__,
