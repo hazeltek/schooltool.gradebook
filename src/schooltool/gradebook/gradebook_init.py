@@ -35,7 +35,7 @@ from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
 from schooltool.gradebook.interfaces import IGradebookDeployed
 from schooltool.gradebook.interfaces import IGradebookLayouts, IReportLayout
-from schooltool.gradebook.interfaces import IReportColumn
+from schooltool.gradebook.interfaces import IReportColumn, IOutlineActivity
 from schooltool.gradebook.category import getCategories
 from schooltool.requirement.requirement import Requirement
 
@@ -80,11 +80,23 @@ class ReportLayout(Persistent, Contained):
 
     columns = []
 
+    outline_activities = []
+
 
 class ReportColumn(Persistent):
     """A column of the report card layout"""
 
     implements(IReportColumn)
+
+    def __init__(self, source, heading):
+        self.source = source
+        self.heading = heading
+
+
+class OutlineActivity(Persistent):
+    """An outlne activity of the report card layout"""
+
+    implements(IOutlineActivity)
 
     def __init__(self, source, heading):
         self.source = source

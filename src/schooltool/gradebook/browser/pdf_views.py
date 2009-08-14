@@ -20,96 +20,37 @@
 PDF Views
 """
 
-import cgi
-from cStringIO import StringIO
-
-from reportlab.lib import units
-from reportlab.lib import pagesizes
-from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate
-from reportlab.platypus import Paragraph
-from reportlab.platypus.flowables import HRFlowable, Spacer, Image, PageBreak
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.platypus.tables import Table, TableStyle
-
-from zope.component import getUtility, queryAdapter
-from zope.i18n import translate
-from zope.publisher.browser import BrowserView
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.app.browser import pdfcal
+from schooltool.app.browser.report import ReportPDFView
 from schooltool.common import SchoolToolMessage as _
-from schooltool.course.interfaces import ISection, ILearner
+from schooltool.course.interfaces import ILearner
+from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.group.interfaces import IGroup
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
 
 
-def _para(text, style):
-    """Helper which builds a reportlab Paragraph flowable"""
-    if text is None:
-        text = ''
-    elif isinstance(text, unicode):
-        text = text.encode('utf-8')
-    else:
-        text = str(text)
-    return Paragraph(cgi.escape(text), style)
+class BasePDFView(ReportPDFView):
+    """The report card (PDF) base class"""
 
+    template=ViewPageTemplateFile('report_card_rml.pt')
 
-class ReportCard(object):
-
-    styles = None # A dict of paragraph styles, initialized later
-    logo = None # A reportlab flowable to be used as logo
-    title = _('Report Cards')
-
-    def __init__(self, logo_filename, students):
-        if logo_filename is not None:
-            self.logo = self.buildLogo(logo_filename)
-        self.students = students
+    def __call__(self):
+        """Make sure there is a current term."""
         current_term = getUtility(IDateManager).current_term
+        if current_term is None:
+            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
+            next_url += '/no_current_term.html'
+            self.request.response.redirect(next_url)
+            return
         self.schoolyear = ISchoolYear(current_term)
-        self.setUpStyles()
-
-    def setUpStyles(self):
-        from reportlab.lib import enums
-        self.styles = {}
-        self.styles['default'] = ParagraphStyle(
-            name='Default', fontName=pdfcal.SANS,
-            fontSize=12, leading=12)
-
-        self.styles['bold'] = ParagraphStyle(
-            name='DefaultBold', fontName=pdfcal.SANS_BOLD,
-            fontSize=12, leading=12)
-
-        self.styles['title'] = ParagraphStyle(
-            name='Title', fontName=pdfcal.SANS_BOLD,
-            fontSize=20, leading=22,
-            alignment=enums.TA_LEFT, spaceAfter=6)
-
-        self.styles['subtitle'] = ParagraphStyle(
-            name='Subtitle', fontName=pdfcal.SANS_BOLD,
-            fontSize=16, leading=22,
-            alignment=enums.TA_LEFT, spaceAfter=6)
-
-        self.grades_table_style = TableStyle(
-          [('LEFTPADDING', (0, 0), (-1, -1), 1),
-           ('RIGHTPADDING', (0, 0), (-1, -1), 1),
-           ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
-           ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-           ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-           ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-          ])
-
-    def buildLogo(self, filename):
-        logo = Image(filename)
-        width = 8 * units.cm
-        logo.drawHeight = width * (logo.imageHeight / float(logo.imageWidth))
-        logo.drawWidth = width
-        return logo
+        return super(BasePDFView, self).__call__()
 
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
@@ -118,13 +59,15 @@ class ReportCard(object):
             return activities[worksheetName][activityName]
         return None
 
-    def getLayoutActivityHeading(self, layout):
+    def getLayoutActivityHeading(self, layout, truncate=True):
         termName, worksheetName, activityName = layout.source.split('|')
         root = IGradebookRoot(ISchoolToolApplication(None))
         heading = root.deployed[worksheetName][activityName].title
         if len(layout.heading):
             heading = layout.heading
-        return heading[:5]
+        if truncate:
+            heading = heading[:5]
+        return heading
 
     def getCourseTitle(self, course, sections):
         teachers = []
@@ -139,15 +82,42 @@ class ReportCard(object):
         teacherNames = ', '.join(teacherNames)
         return '%s (%s)' % (courseTitles, teacherNames)
 
-    def buildScores(self, student):
-        sections = list(ILearner(student).sections())
-        evaluations = IEvaluations(student)
+    @property
+    def title(self):
+        return _('Report Card') + ': ' + self.schoolyear.title
+
+    @property
+    def course_heading(self):
+        return _('Courses')
+
+    @property
+    def students(self):
+        results = []
+        for student in self.collectStudents():
+            student_name = u'%s %s' % (
+                student.first_name, student.last_name)
+            student_title = _('Student') + ': ' + student_name
+
+            sections = [section for section in ILearner(student).sections()
+                        if ISchoolYear(ITerm(section)) == self.schoolyear]
+
+            result = {
+                'title': student_title,
+                'grid': self.getGrid(student, sections),
+                'outline': self.getOutline(student, sections),
+                }
+
+            results.append(result)
+        return results
+
+    def getGrid(self, student, sections):
         root = IGradebookRoot(ISchoolToolApplication(None))
         if self.schoolyear.__name__ in root.layouts:
             layouts = root.layouts[self.schoolyear.__name__].columns
         else:
             layouts = []
 
+        evaluations = IEvaluations(student)
         courses = []
         for section in sections:
             course = tuple(section.courses)
@@ -169,118 +139,81 @@ class ReportCard(object):
 
         scoredLayouts = [l for l in layouts if l.source in scores]
 
-        row = [_para(_('Courses'), self.styles['bold'])]
+        headings = []
         for layout in scoredLayouts:
-            label = self.getLayoutActivityHeading(layout)
-            row.append(_para(label, self.styles['bold']))
-        rows = [row]
+            headings.append(self.getLayoutActivityHeading(layout))
 
+        rows = []
         for course in courses:
-            title = self.getCourseTitle(course, sections)
-            row = [_para(title, self.styles['default'])]
+            grid_scores = []
             for layout in scoredLayouts:
                 byCourse = scores[layout.source]
                 score = byCourse.get(course, '')
-                row.append(_para(score, self.styles['default']))
+                grid_scores.append(score)
+
+            row = {
+                'title': self.getCourseTitle(course, sections),
+                'scores': grid_scores,
+                }
             rows.append(row)
 
-        widths = [8.2 * units.cm] + [1.2 * units.cm] * len(scoredLayouts)
-        story = [Table(rows, widths, style=self.grades_table_style)]
-        return story
+        return {
+            'headings': headings,
+            'widths': '8.2cm' + ',1.2cm' * len(scoredLayouts),
+            'rows': rows,
+            }
 
-    def buildStudentStory(self, student):
-        story = []
-        if self.logo is not None:
-            story.append(self.logo)
+    def getOutline(self, student, sections):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if self.schoolyear.__name__ in root.layouts:
+            layouts = root.layouts[self.schoolyear.__name__].outline_activities
+        else:
+            layouts = []
+        evaluations = IEvaluations(student)
 
-        report_card_text = _('Report Card') + ': ' + self.schoolyear.title
-        story.append(_para(report_card_text, self.styles['title']))
+        section_list = []
+        for section in sections:
+            worksheets = []
+            for layout in layouts:
+                termName, worksheetName, activityName = layout.source.split('|')
+                activities = IActivities(section)
+                if worksheetName not in activities:
+                    continue
+                if activityName not in activities[worksheetName]:
+                    continue
+                activity = activities[worksheetName][activityName]
 
-        student_name = u'%s %s' % (
-            student.first_name, student.last_name)
-        student_text = _('Student') + ': ' + student_name
-        story.append(_para(student_text, self.styles['title']))
+                score = evaluations.get(activity, None)
+                if score is None or score.value is UNSCORED:
+                    continue
 
-        story.append(_para('', self.styles['title']))
+                for worksheet in worksheets:
+                    if worksheet['name'] == worksheetName:
+                        break
+                else:
+                    worksheet = {
+                        'name': worksheetName,
+                        'heading': activities[worksheetName].title,
+                        'activities': [],
+                        }
+                    worksheets.append(worksheet)
 
-        story.extend(self.buildScores(student))
+                heading = self.getLayoutActivityHeading(layout, truncate=False)
+                activity_result = {
+                    'heading': heading,
+                    'value': buildHTMLParagraphs(unicode(score.value)),
+                    }
 
-        return story
+                worksheet['activities'].append(activity_result)
 
-    def buildAggregateStory(self, students):
-        story = []
-        for student in students:
-            story.extend(self.buildStudentStory(student))
-            story.append(PageBreak())
-        return story
+            if len(worksheets):
+                section_result = {
+                    'heading': section.title,
+                    'worksheets': worksheets,
+                    }
+                section_list.append(section_result)
 
-    def renderPDF(self, story, report_title):
-        datastream = StringIO()
-        doc = SimpleDocTemplate(datastream, pagesize=pagesizes.A4)
-        title = report_title
-        doc.title = title.encode('utf-8')
-        doc.leftMargin = 0.75 * units.inch
-        doc.bottomMargin = 0.75 * units.inch
-        doc.topMargin = 0.75 * units.inch
-        doc.rightMargin = 0.75 * units.inch
-        doc.leftPadding = 0
-        doc.rightPadding = 0
-        doc.topPadding = 0
-        doc.bottomPadding = 0
-        doc.build(story)
-        return datastream.getvalue()
-
-    def __call__(self):
-        """Build and render the report"""
-        story = self.buildAggregateStory(self.students)
-        pdf_data = self.renderPDF(story, self.title)
-        return pdf_data
-
-
-class BasePDFView(BrowserView):
-    """The report card (PDF) base class"""
-
-    pdf_disabled_text = _("PDF support is disabled."
-                          "  It can be enabled by your administrator.")
-
-    def __init__(self, *args, **kw):
-        super(BasePDFView, self).__init__(*args, **kw)
-        self.students = self.collectStudents()
-
-    @property
-    def pdf_support_disabled(self):
-        return pdfcal.disabled
-
-    def buildPDF(self):
-        report = ReportCard(None, self.students)
-        return report()
-
-    def __call__(self):
-        """Return the PDF of a report card for each student."""
-        current_term = getUtility(IDateManager).current_term
-        if current_term is None:
-            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
-            next_url += '/no_current_term.html'
-            self.request.response.redirect(next_url)
-            return
-
-        if self.pdf_support_disabled:
-            return translate(self.pdf_disabled_text, context=self.request)
-
-        pdf_data = self.buildPDF()
-
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/pdf')
-        response.setHeader('Content-Length', len(pdf_data))
-        response.setHeader("pragma", "no-store,no-cache")
-        response.setHeader("cache-control",
-                           "no-cache, no-store,must-revalidate, max-age=-1")
-        response.setHeader("expires", "-1")
-        # We don't really accept ranges, but Acrobat Reader will not show the
-        # report in the browser page if this header is not provided.
-        response.setHeader('Accept-Ranges', 'bytes')
-
-        return pdf_data
+        return section_list
 
 
 class StudentReportCardPDFView(BasePDFView):

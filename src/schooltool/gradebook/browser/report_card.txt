@@ -245,16 +245,17 @@ Report Card Layout
 
 Now that we have some templates deployed, we can move on to setting up the
 layout of the report cards that will be printed after each marking period.
-Each column in a report card will represent a marking period, that being
-an activity within a report worksheet within a term deployment.  At the end
-of each marking period, the resulting report card will contain all of the
-columns for the current school year that have grades entered by the
-teachers.  This way, the admin user can set up the layout for the entire
-year at the beginning, and the report card will automatically show only
-those columns for the marking periods to date.
+The layout view supports setting up which activities appear in the grid
+and which appear in the outline portion of the report card.
 
-To demonstrate this, we will need to set up at least one section in the Fall
-term and deploy yet a third template to it.
+Typically, at the end of each marking period, an admin user will request
+a run of the report cards for the student body.  The result of that run will
+come from the grid columns and outline activities that are set up in the
+layout and the existence of grades for those activities entered by the
+teachers.
+
+We will need to set up at least one section in the Fall term and deploy yet a
+third template to it.
 
     >>> setup.addSection('CompSci I', '2005-2006', 'Fall',
     ...                  title='Evening CompSci I',
@@ -288,7 +289,7 @@ we have.
 The view starts off with no columns set up.  The 'New Column' select control is
 the only list box present.
 
-    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
@@ -302,12 +303,12 @@ We'll add a first column to the layout.
 Now the view has the first column and the select control below it to add
 another column.
 
-    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
-    >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
+    >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
@@ -319,12 +320,12 @@ has taken effect.
     >>> manager.getControl('Column1').value = ['spring|2005-2006_spring|ReportActivity']
     >>> manager.getControl('Update').click()
 
-    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option selected="selected" value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
-    >>> analyze.printQuery("id('content-body')/form/table//tr[3]/td[2]//option", manager.contents)
+    >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
@@ -336,8 +337,65 @@ any columns.
     >>> manager.getControl(name='delete:list').value = ['Column1']
     >>> manager.getControl('Update').click()
 
-    >>> analyze.printQuery("id('content-body')/form/table//tr[2]/td[2]//option", manager.contents)
+    >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+Next, we'll repeat the same set of tests for the outline activities.  For
+starters, we see only choices for outline activities to add.
+
+    >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose an activity to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+We'll add a first activity to the layout.
+
+    >>> manager.getControl('New Activity').value = ['fall|2005-2006_fall|ReportActivity']
+    >>> manager.getControl('Update').click()
+
+Now the view has the first activity and the select control below it to add
+another activity.
+
+    >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+    >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[3]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose an activity to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+We can change the first activity to another activity.  We'll see that the change
+has taken effect.
+
+    >>> manager.getControl('Activity1').value = ['spring|2005-2006_spring|ReportActivity']
+    >>> manager.getControl('Update').click()
+
+    >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option selected="selected" value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+    >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[3]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose an activity to add</option>
+    <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
+    <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
+    <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+
+If we want, we can delete the activity.  We'll see that the view no longer has
+any activities.
+
+    >>> manager.getControl(name='delete:list').value = ['Activity1']
+    >>> manager.getControl('Update').click()
+
+    >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
+    <option selected="selected" value="">Choose an activity to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
