@@ -834,6 +834,10 @@ class GradeStudent(z3cform.EditForm):
 
     def __init__(self, context, request):
         super(GradeStudent, self).__init__(context, request)
+        if 'nexturl' in self.request:
+            self.nexturl = self.request['nexturl']
+        else:
+            self.nexturl = self.gradebookURL()
 
     def update(self):
         self.person = IPerson(self.request.principal)
@@ -859,7 +863,7 @@ class GradeStudent(z3cform.EditForm):
             return
         prev, next = self.prevNextStudent()
         if prev is not None:
-            url = '%s/%s' % (self.nextURL(), prev.username)
+            url = '%s/%s' % (self.gradebookURL(), prev.username)
             self.request.response.redirect(url)
 
     @button.buttonAndHandler(_("Next"))
@@ -868,12 +872,12 @@ class GradeStudent(z3cform.EditForm):
             return
         prev, next = self.prevNextStudent()
         if next is not None:
-            url = '%s/%s' % (self.nextURL(), next.username)
+            url = '%s/%s' % (self.gradebookURL(), next.username)
             self.request.response.redirect(url)
 
     @button.buttonAndHandler(_("Cancel"))
     def handle_cancel_action(self, action):
-        self.request.response.redirect(self.nextURL())
+        self.request.response.redirect(self.nexturl)
 
     def applyData(self):
         data, errors = self.extractData()
@@ -902,7 +906,7 @@ class GradeStudent(z3cform.EditForm):
 
     def applyChanges(self, data):
         super(GradeStudent, self).applyChanges(data)
-        self.request.response.redirect(self.nextURL())
+        self.request.response.redirect(self.nexturl)
 
     def prevNextStudent(self):
         gradebook = proxy.removeSecurityProxy(self.context.gradebook)
@@ -943,7 +947,7 @@ class GradeStudent(z3cform.EditForm):
         return _(u'Enter grades for ${fullname}',
                  mapping={'fullname': self.context.student.title})
 
-    def nextURL(self):
+    def gradebookURL(self):
         return absoluteURL(self.context.gradebook, self.request)
 
 

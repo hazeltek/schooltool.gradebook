@@ -240,6 +240,7 @@ Now let's click on 'HW 1' to change its description.
 
 Now let's change the current worksheet to 'Week 2'.
 
+    >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.getLink('Week 2').click()
     >>> '<span style="font-weight: bold;">Week 2</span>' in stephan.contents
     True
