@@ -11,6 +11,10 @@
   metal:use-macro="context/@@rml_macros/report"
   i18n:domain="schooltool">
 
+<metal:block fill-slot="page_templates">
+  <tal:block content="structure view/use_template/default" />
+</metal:block>
+
 <stylesheet>
   <metal:block fill-slot="extra_initialize">
   </metal:block>

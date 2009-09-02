@@ -128,6 +128,7 @@ class BasePDFView(ReportPDFView):
         for layout in layouts:
             byCourse = {}
             for section in sections:
+                course = tuple(section.courses)
                 activity = self.getActivity(section, layout)
                 if activity is None:
                     continue
