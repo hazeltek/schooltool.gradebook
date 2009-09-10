@@ -521,13 +521,13 @@
       menu="schooltool_actions"
       title="Print Report Card"
       for="schooltool.person.interfaces.IPerson"
-      action="print_report_card.html"
+      action="report_card.pdf"
       permission="schooltool.edit"
       />
 
   <!-- Views for IBasicPerson -->
   <page
-      name="print_report_card.html"
+      name="report_card.pdf"
       for="schooltool.person.interfaces.IPerson"
       class=".pdf_views.StudentReportCardPDFView"
       permission="schooltool.edit"
@@ -538,13 +538,13 @@
       menu="schooltool_actions"
       title="Print Report Card"
       for="schooltool.group.interfaces.IGroup"
-      action="print_report_card.html"
+      action="report_card.pdf"
       permission="schooltool.edit"
       />
 
   <!-- Views for IGroup -->
   <page
-      name="print_report_card.html"
+      name="report_card.pdf"
       for="schooltool.group.interfaces.IGroup"
       class=".pdf_views.GroupReportCardPDFView"
       permission="schooltool.edit"
