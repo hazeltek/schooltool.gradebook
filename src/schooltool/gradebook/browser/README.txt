@@ -274,21 +274,6 @@ tests, we submit, the form manually:
     ...     < stephan.contents.find('Final')
     True
 
-You can also delete activities that you have created:
-
-    >>> stephan.getLink('New Activity').click()
-    >>> stephan.getControl('Title').value = 'HW 3'
-    >>> stephan.getControl('Description').value = 'Homework 3'
-    >>> stephan.getControl('Category').value = ['assignment']
-    >>> stephan.getControl('Add').click()
-    >>> stephan.getLink('Manage Activities').click()
-    >>> 'HW 3' in stephan.contents
-    True
-    >>> stephan.getControl(name='delete:list').value = ['Activity-3']
-    >>> stephan.getControl('Delete').click()
-    >>> 'HW 3' in stephan.contents
-    False
-
 Fianlly, let's change the current workskeet back to 'Week 1'.  This setting
 of current worksheet will be in effect for the gradebook as well.
 

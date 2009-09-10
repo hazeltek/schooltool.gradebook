@@ -12,7 +12,7 @@
              tal:define="activities view/activities">
 
   <form method="post"
-        tal:attributes="action string:${context/@@absolute_url}/manage.html">
+        tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />
     <div tal:repeat="activity activities">
       <select name=""
