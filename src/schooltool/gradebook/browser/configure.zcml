@@ -123,7 +123,7 @@
       <widget field="description" height="5" />
     </addform>
     <addform
-        label="Add a Report Worksheet"
+        label="Add a Report Sheet"
         name="addReportWorksheet.html"
         schema="schooltool.gradebook.interfaces.IReportWorksheet"
         fields="title"
@@ -147,7 +147,7 @@
         title="Edit"
         />
     <editform
-        label="Edit Report Worksheet"
+        label="Edit Report Sheet"
         name="edit.html"
         for="schooltool.gradebook.interfaces.IReportWorksheet"
         schema="schooltool.gradebook.interfaces.IReportWorksheet"
@@ -259,7 +259,7 @@
   <!-- Menu items for IActivities -->
   <menuItem
       menu="schooltool_actions"
-      title="New Report Worksheet"
+      title="New Report Sheet"
       for="..interfaces.IGradebookTemplates"
       action="+/addReportWorksheet.html"
       permission="schooltool.view"
@@ -469,7 +469,7 @@
   <!-- Menu items for ITerm -->
   <menuItem
       menu="schooltool_actions"
-      title="Deploy Report Worksheet"
+      title="Deploy Report Sheet"
       for="schooltool.term.interfaces.ITerm"
       action="deploy_report_worksheet.html"
       permission="schooltool.edit"
@@ -487,7 +487,7 @@
   <!-- Menu items for ISchoolYear -->
   <menuItem
       menu="schooltool_actions"
-      title="Deploy Report Worksheet"
+      title="Deploy Report Sheet"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       action="deploy_report_worksheet.html"
       permission="schooltool.edit"

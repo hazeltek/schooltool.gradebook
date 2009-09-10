@@ -29,7 +29,7 @@ We see that there are no report worksheets yet.
 
 We'll add one.
 
-    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Test'
     >>> manager.getControl('Add').click()
 
@@ -78,7 +78,7 @@ to a term, so here we'll set up a second template.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()
-    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Test2'
     >>> manager.getControl('Add').click()
     >>> manager.getLink('Test2').click()
@@ -110,12 +110,12 @@ in order to do that.
     ...                  members=['Student1','Student2'])
 
 We'll navigate to the 'Spring' term where we just created the two sections,
-and we'll click on the 'Deploy Report Worksheet' link.
+and we'll click on the 'Deploy Report Sheet' link.
 
     >>> manager.getLink('2005-2006').click()
     >>> manager.getLink('Spring').click()
     >>> term_url = manager.url
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
 
 Hitting the 'Cancel' button brings us back to the term view.
 
@@ -127,12 +127,12 @@ Now we'll go back to the view and this time hit the 'Deploy' button.  This will
 also bring us back to the term view.  First we'll deploy the first template,
 then the second.
 
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.getControl('Template').value = ['ReportWorksheet']
     >>> manager.getControl('Deploy').click()
     >>> manager.url == term_url
     True
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.getControl('Template').value = ['ReportWorksheet-2']
     >>> manager.getControl('Deploy').click()
 
@@ -264,7 +264,7 @@ third template to it.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()
-    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Test3'
     >>> manager.getControl('Add').click()
     >>> manager.getLink('Test3').click()
@@ -275,7 +275,7 @@ third template to it.
     >>> manager.getLink('2005-2006').click()
     >>> manager.getLink('Fall').click()
     >>> term_url = manager.url
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.getControl('Template').value = ['ReportWorksheet-3']
     >>> manager.getControl('Deploy').click()
 
