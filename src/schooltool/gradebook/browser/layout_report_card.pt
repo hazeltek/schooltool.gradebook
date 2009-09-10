@@ -10,7 +10,7 @@
         tal:attributes="action string:${context/@@absolute_url}/layout_report_card.html">
     <input type="hidden" name="form-submitted" value="" />
 
-	<h3>Layout Report Card</h3>
+	<h3>Report Card Layout</h3>
 
     <fieldset>
     <legend><b>Grid Columns</b><legend>
@@ -135,7 +135,8 @@
     </fieldset>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="Update" value="Update" />
+      <input type="submit" class="button-ok" name="Update" value="Save" />
+      <input type="submit" class="button-ok" name="OK" value="OK" />
     </div>
   </form>
 

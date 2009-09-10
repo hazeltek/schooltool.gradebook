@@ -341,7 +341,7 @@ class LayoutReportCardView(object):
         return results
 
     def update(self):
-        if 'Update' in self.request:
+        if 'Update' in self.request or 'OK' in self.request:
             columns = self.updatedColumns()
             outline_activities = self.updatedOutlineActivities()
 
@@ -354,6 +354,9 @@ class LayoutReportCardView(object):
             layout = root.layouts[schoolyearKey]
             layout.columns = columns
             layout.outline_activities = outline_activities
+
+            if 'OK' in self.request:
+                self.request.response.redirect(self.nextURL())
 
     def updatedColumns(self):
         columns = []
@@ -396,6 +399,9 @@ class LayoutReportCardView(object):
                                      self.request['new_activity_heading'])
             activities.append(column)
         return activities
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
 
 
 def handleSectionAdded(event):

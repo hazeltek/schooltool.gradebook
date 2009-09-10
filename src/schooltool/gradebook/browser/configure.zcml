@@ -494,7 +494,7 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Layout Report Card"
+      title="Report Card Layout"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       action="layout_report_card.html"
       permission="schooltool.edit"
