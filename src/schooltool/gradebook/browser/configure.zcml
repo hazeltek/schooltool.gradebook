@@ -526,7 +526,7 @@
   <!-- Menu items for IBasicPerson-->
   <menuItem
       menu="schooltool_actions"
-      title="Print Report Card"
+      title="Download Report Card"
       for="schooltool.person.interfaces.IPerson"
       action="report_card.pdf"
       permission="schooltool.edit"
@@ -543,7 +543,7 @@
   <!-- Menu items for IGroup -->
   <menuItem
       menu="schooltool_actions"
-      title="Print Report Card"
+      title="Download Report Card"
       for="schooltool.group.interfaces.IGroup"
       action="report_card.pdf"
       permission="schooltool.edit"
