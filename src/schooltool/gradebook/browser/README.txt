@@ -161,6 +161,15 @@ First, we will change the title of our default worksheet to 'Week 1'.
     >>> 'Week 1' in stephan.contents
     True
 
+We'll note the message that appears for empty worksheets.  Also, the fact that
+there's no delete button.
+
+    >>> stephan.getLink('Week 1').click()
+    >>> analyze.printQuery("id('content-body')/form/div[1]", stephan.contents)
+    <div>This worksheet has no activities.</div>
+    >>> analyze.printQuery("id('content-body')/form/div[3]", stephan.contents)
+    >>> stephan.getLink('Worksheets').click()
+
 Then, we can use the 'New Worksheet' action link to create our second worksheet.
 
     >>> stephan.getLink('New Worksheet').click()

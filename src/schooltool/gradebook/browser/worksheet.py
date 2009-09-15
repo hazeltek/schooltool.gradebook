@@ -33,6 +33,8 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook.browser.activity import BaseEditView
 from schooltool.person.interfaces import IPerson
 
+from schooltool.common import SchoolToolMessage as _
+
 
 class WorksheetGradebookView(BrowserView):
     """A view that redirects from the worksheet to its gradebook."""
@@ -88,6 +90,10 @@ class WorksheetManageView(object):
                 new_pos = int(self.request['pos.'+name])
                 if new_pos != old_pos:
                     self.context.changePosition(name, new_pos-1)
+
+    @property
+    def noActivitiesMessage(self):
+        return _('This worksheet has no activities.')
 
 
 class WorksheetAddView(app.BaseAddView):

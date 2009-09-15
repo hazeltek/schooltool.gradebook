@@ -308,6 +308,13 @@
       action="gradebook"
       permission="schooltool.view"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Worksheets"
+      for="..interfaces.IWorksheet"
+      action="../index.html"
+      permission="schooltool.view"
+      />
 
   <!-- Menu items for IGradebook -->
   <menuItem
