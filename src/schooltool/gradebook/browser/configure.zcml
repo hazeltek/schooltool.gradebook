@@ -361,7 +361,7 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Column Preferences"
+      title="Preferences"
       for="..interfaces.IGradebook"
       action="column_preferences.html"
       permission="schooltool.view"

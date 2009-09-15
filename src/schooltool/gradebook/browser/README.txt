@@ -641,7 +641,7 @@ We'll start by calling up the current column preferences and note that there
 are none set yet.
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.getLink('Column Preferences').click()
+    >>> stephan.getLink('Preferences').click()
     >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
     <input type="checkbox" name="hide_total" />
     <input type="text" name="label_total" value="" />
@@ -664,7 +664,7 @@ were saved.
     >>> url += '&scoresystem_average=goodbad'
     >>> stephan.open(url)
 
-    >>> stephan.getLink('Column Preferences').click()
+    >>> stephan.getLink('Preferences').click()
     >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
     <input type="checkbox" checked="checked" name="hide_total" />
     <input type="text" name="label_total" value="Summe" />
