@@ -329,7 +329,7 @@ class ILinkedActivity(IActivity):
         title=_(u"External Activity ID"),
         description=_(u"A unique identifier for the external activity"),
         required=True)
-    
+
     points = zope.schema.Int(
         title=_(u"Points"),
         description=_(u"Points value to calculate the activity grade"),

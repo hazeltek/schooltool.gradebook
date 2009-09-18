@@ -45,6 +45,13 @@
       permission="schooltool.edit"
       />
 
+  <!-- Report sheet activity vocabulary -->
+  <zope:utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component=".report_card.ReportScoreSystemsVocabulary"
+      name="schooltool.gradebook.reportscoresystems"
+      />
+
   <!-- Categories -->
   <form
       label="Activity Categories"
@@ -567,7 +574,7 @@
       />
 
   <zope:adapter
-      factory=".report_card.ExistingScoresSystem" />
+      factory=".report_card.ReportScoresSystem" />
 
   <!-- Handling sections that are added after deployment already made to a term -->
   <zope:subscriber
