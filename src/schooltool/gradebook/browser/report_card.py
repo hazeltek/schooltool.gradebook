@@ -51,7 +51,6 @@ from schooltool.requirement.interfaces import IScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
-from TreeTrace import errtrace
 
 def copyActivities(sourceWorksheet, destWorksheet):
     """Copy the activities from the source worksheet to the destination."""

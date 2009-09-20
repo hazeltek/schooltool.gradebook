@@ -17,12 +17,28 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 """
-Generations for database version upgrades.
+Evolve database to generation 1.
+
+Moves hard-coded score system utilities to the app site manager.
 """
 
-from zope.app.generations.generations import SchemaManager
+from zope.app.zopeappgenerations import getRootFolder
+from zope.security.proxy import removeSecurityProxy
 
-schemaManager = SchemaManager(
-    minimum_generation=2,
-    generation=2,
-    package_name='schooltool.gradebook.generations')
+from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.requirement.interfaces import ICustomScoreSystem
+from schooltool.requirement.scoresystem import CustomScoreSystem
+
+
+def evolve(context):
+    """Adds abbreviation column to all custom score systems"""
+
+    app = getRootFolder(context)
+    sm = app.getSiteManager()
+    for name, util in sorted(sm.getUtilitiesFor(ICustomScoreSystem)):
+        util = removeSecurityProxy(util)
+        new_scores = []
+        for score, value, percent in util.scores:
+            new_scores.append([score, '', value, percent])
+        util.scores = new_scores
+

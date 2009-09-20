@@ -216,8 +216,8 @@ class GradebookBase(object):
                 if ev is not None and ev.value is not UNSCORED:
                     ss = ev.requirement.scoresystem
                     if IDiscreteValuesScoreSystem.providedBy(ss):
-                        minimum = ss.scores[-1][1]
-                        maximum = ss.scores[0][1]
+                        minimum = ss.scores[-1][2]
+                        maximum = ss.scores[0][2]
                         value = ss.getNumericalValue(ev.value)
                     elif IRangedValuesScoreSystem.providedBy(ss):
                         minimum = ss.min
@@ -248,8 +248,8 @@ class GradebookBase(object):
                 if ev is not None and ev.value is not UNSCORED:
                     ss = ev.requirement.scoresystem
                     if IDiscreteValuesScoreSystem.providedBy(ss):
-                        minimum = ss.scores[-1][1]
-                        maximum = ss.scores[0][1]
+                        minimum = ss.scores[-1][2]
+                        maximum = ss.scores[0][2]
                         value = ss.getNumericalValue(ev.value)
                     elif IRangedValuesScoreSystem.providedBy(ss):
                         minimum = ss.min

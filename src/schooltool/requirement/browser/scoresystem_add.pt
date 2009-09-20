@@ -33,6 +33,9 @@
       Each score is also associated with a minimum percentage necessary to achieve the corresponding grade. For example, 95% and above is an "A," 87% and up is a "B," etc.
 	</p>
 	<p>
+      Enter an abbreviation for a score only if the score has more than four characters and you wish to create an alternative abbreviation for the gradebook.
+	</p>
+	<p>
       Start with the highest score. Click "Add a lower score" to add scores until you have created a score with a minimum percentage of 0.
 	</p>
     <fieldset>
@@ -45,22 +48,27 @@
     <table class="schooltool_gradebook">
       <tr>
         <th class="cell header fully_padded">Score</th>
+        <th class="cell header fully_padded">Abbreviation</th>
         <th class="cell header fully_padded">Point Value</th>
-        <th class="cell header fully_padded">Minimum Percentage</th>
+        <th class="cell header fully_padded">Low Percentage</th>
       </tr>
 
       <tal:block repeat="score view/scores">
         <tr class="bordered">
           <td class="cell fully_padded">
-            <input type="text"
+            <input type="text" class="scoresystem_add_input"
                    tal:attributes="name score/displayed_name; value score/displayed_value" />
           </td>
           <td class="cell fully_padded">
-            <input type="text"
+            <input type="text" class="scoresystem_add_input"
+                   tal:attributes="name score/abbr_name; value score/abbr_value" />
+          </td>
+          <td class="cell fully_padded">
+            <input type="text" class="scoresystem_add_input"
                    tal:attributes="name score/value_name; value score/value_value" />
           </td>
           <td class="cell fully_padded">
-            <input type="text"
+            <input type="text" class="scoresystem_add_input"
                    tal:attributes="name score/percent_name; value score/percent_value" />
           </td>
         </tr>

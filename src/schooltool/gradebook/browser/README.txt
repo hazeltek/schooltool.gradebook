@@ -633,8 +633,8 @@ preference.
     >>> manager.getLink('Score Systems').click()
     >>> manager.getLink('Add Score System').click()
     >>> url = manager.url + '?form-submitted&UPDATE_SUBMIT&title=Good/Bad'
-    >>> url = url + '&displayed1=G&value1=1&percent1=60'
-    >>> url = url + '&displayed2=B&value2=0&percent2=0'
+    >>> url = url + '&displayed1=G&abbr1=&value1=1&percent1=60'
+    >>> url = url + '&displayed2=B&abbr2=&value2=0&percent2=0'
     >>> manager.open(url)
 
 We'll start by calling up the current column preferences and note that there

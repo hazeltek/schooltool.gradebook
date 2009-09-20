@@ -16,6 +16,7 @@
   <table class="schooltool_gradebook">
     <tr>
       <th class="cell header fully_padded">Score Displayed</th>
+      <th class="cell header fully_padded">Abbreviation</th>
       <th class="cell header fully_padded">Score Value</th>
       <th class="cell header fully_padded">Low Percentage</th>
     </tr>
@@ -24,6 +25,9 @@
       <tr class="bordered">
         <td class="cell fully_padded">
           <span tal:content="score/displayed_value" />
+        </td>
+        <td class="cell fully_padded">
+          <span tal:content="score/abbr_value" />
         </td>
         <td class="cell fully_padded">
           <span tal:content="score/value_value" />
