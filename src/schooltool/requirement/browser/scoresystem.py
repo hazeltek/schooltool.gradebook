@@ -43,9 +43,11 @@ NO_NEGATIVE_VALUES = _('All values must be non-negative.')
 NO_NEGATIVE_PERCENTS = _('All percentages must be non-negative.')
 NO_PERCENTS_OVER_100 = _('Percentages cannot be greater than 100.')
 MUST_HAVE_AT_LEAST_2_SCORES = _('A score system must have at least two scores.')
-VALUES_MUST_DESCEND =  _('Score values must go in descending order.')
-PERCENTS_MUST_DESCEND =  _('Score percentages must go in descending order.')
-LAST_PERCENT_NOT_ZERO =   _('The last percentage must be zero.')
+VALUES_MUST_DESCEND = _('Score values must go in descending order.')
+PERCENTS_MUST_DESCEND = _('Score percentages must go in descending order.')
+LAST_PERCENT_NOT_ZERO = _('The last percentage must be zero.')
+DUPLICATE_DISPLAYED = _('Duplicate scores are not allowed.')
+DUPLICATE_ABBREVIATION = _('Duplicate abbreviations are not allowed.')
 
 
 def escName(name):
@@ -175,6 +177,7 @@ class ScoreSystemAddView(BrowserView):
             return self.setMessage(MUST_HAVE_AT_LEAST_2_SCORES)
 
         last_value, last_percent = None, None
+        disp_list, abbr_list = [], []
         for displayed, abbr, value, percent in self.validScores:
             if last_value is not None:
                 if value >= last_value:
@@ -182,8 +185,17 @@ class ScoreSystemAddView(BrowserView):
             if last_percent is not None:
                 if percent >= last_percent:
                     return self.setMessage(PERCENTS_MUST_DESCEND)
+            for d in disp_list:
+                if d.lower() == displayed.lower():
+                    return self.setMessage(DUPLICATE_DISPLAYED)
+            if abbr:
+                for a in abbr_list:
+                    if a.lower() == abbr.lower():
+                        return self.setMessage(DUPLICATE_ABBREVIATION)
             last_value = value
             last_percent = percent
+            disp_list.append(displayed)
+            abbr_list.append(abbr)
 
         if last_percent <> 0:
             return self.setMessage(LAST_PERCENT_NOT_ZERO)
