@@ -1,5 +1,5 @@
 <tal:define define="dummy view/update"/>
-<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool.gradebook">
 <head>
   <title metal:fill-slot="title" i18n:translate="">Report Sheet Templates</title>
 </head>

@@ -49,7 +49,7 @@ from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser import app
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook import interfaces, activity
 from schooltool.gradebook.activity import Activity
 from schooltool.gradebook.category import getCategories

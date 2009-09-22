@@ -1,4 +1,4 @@
 <a href=""
-   i18n:domain="schooltool"
+   i18n:domain="schooltool.gradebook"
    tal:attributes="href context/@@absolute_url"
    tal:content="context/title">Requirement Title</a>

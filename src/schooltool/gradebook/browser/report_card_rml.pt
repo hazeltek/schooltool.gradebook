@@ -9,7 +9,7 @@
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   metal:use-macro="context/@@rml_macros/report"
-  i18n:domain="schooltool">
+  i18n:domain="schooltool.gradebook">
 
 <stylesheet>
   <metal:block fill-slot="extra_initialize">

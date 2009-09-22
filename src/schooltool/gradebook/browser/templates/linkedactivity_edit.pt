@@ -1,4 +1,4 @@
-<html metal:use-macro="context/@@standard_macros/page" i18n:domain="schooltool">
+<html metal:use-macro="context/@@standard_macros/page" i18n:domain="schooltool.gradebook">
 <body>
 
 <span metal:fill-slot="zonki" i18n:translate="">

@@ -26,7 +26,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 from schooltool.course.interfaces import ILearner
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities

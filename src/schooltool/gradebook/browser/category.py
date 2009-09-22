@@ -26,7 +26,7 @@ import zope.interface
 import zope.schema
 from zope.app.form import utility
 
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 from schooltool.app import app
 from schooltool.gradebook import category
 

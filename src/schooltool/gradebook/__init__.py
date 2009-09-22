@@ -1,4 +1,5 @@
-# Make a package
+from zope.i18nmessageid import MessageFactory
+GradebookMessage = MessageFactory("schooltool.gradebook")
 
 def registerTestSetup():
     from schooltool.testing import registry

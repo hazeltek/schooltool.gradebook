@@ -1,4 +1,4 @@
-<fieldset i18n:domain="schooltool">
+<fieldset i18n:domain="schooltool.gradebook">
 <tal:block replace="structure view/existing_widget" />
 <p><b>-- or --</b></p>
 <p>

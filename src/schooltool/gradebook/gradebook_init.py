@@ -39,7 +39,7 @@ from schooltool.gradebook.interfaces import IReportColumn, IOutlineActivity
 from schooltool.gradebook.category import getCategories
 from schooltool.requirement.requirement import Requirement
 
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 
 GRADEBOOK_ROOT_KEY = 'schooltool.gradebook'
 

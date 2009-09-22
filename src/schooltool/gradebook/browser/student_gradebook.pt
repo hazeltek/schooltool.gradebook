@@ -1,4 +1,4 @@
-<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool.gradebook">
 <head>
   <title metal:fill-slot="title" tal:content="string: ${view/worksheet} for ${view/student} in ${view/section}" />
 </head>

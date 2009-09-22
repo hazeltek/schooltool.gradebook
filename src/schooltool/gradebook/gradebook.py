@@ -51,7 +51,7 @@ from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'

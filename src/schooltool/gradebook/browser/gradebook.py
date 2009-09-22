@@ -55,7 +55,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.term.interfaces import ITerm
 
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 
 
 GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")

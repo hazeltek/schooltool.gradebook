@@ -32,7 +32,7 @@ import zope.interface
 from zope.app import container
 from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 
 
 class IGradebookRoot(Interface):

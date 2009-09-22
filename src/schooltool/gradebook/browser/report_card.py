@@ -33,7 +33,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from z3c.form import form, field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear

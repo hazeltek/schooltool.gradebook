@@ -35,7 +35,7 @@ from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
 from zope.schema.interfaces import IVocabularyFactory
 
-from schooltool.common import SchoolToolMessage as _
+from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.interfaces import IExternalActivities
