@@ -23,6 +23,7 @@ buildout:
 
 .PHONY: update
 update: build
+	bzr up
 	bin/buildout -n
 
 .PHONY: test
@@ -38,7 +39,7 @@ ftest: build
 	bin/test -f
 
 .PHONY: release
-release:
+release: compile-translations
 	echo -n `sed -e 's/\n//' version.txt.in` > version.txt
 	echo -n "_r" >> version.txt
 	bzr revno >> version.txt
@@ -69,6 +70,27 @@ clean:
 	rm -f .installed.cfg
 	rm -f ID TAGS tags
 	find . -name '*.py[co]' -exec rm -f {} \;
+
+.PHONY: extract-translations
+extract-translations: build
+	bin/i18nextract --egg schooltool.gradebook --domain schooltool.gradebook --zcml schooltool/gradebook/translation.zcml --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
+
+.PHONY: compile-translations
+compile-translations:
+	set -e; \
+	locales=src/schooltool/gradebook/locales; \
+	for f in $${locales}/*/LC_MESSAGES/schooltool.gradebook.po; do \
+	    msgfmt -o $${f%.po}.mo $$f;\
+	done
+
+.PHONY: update-translations
+update-translations: extract-translations
+	set -e; \
+	locales=src/schooltool/gradebook/locales; \
+	for f in $${locales}/*/LC_MESSAGES/schooltool.gradebook.po; do \
+	    msgmerge -qU $$f $${locales}/schooltool.gradebook.pot ;\
+	done
+	$(MAKE) PYTHON=$(PYTHON) compile-translations
 
 
 .PHONY: ubuntu-environment
