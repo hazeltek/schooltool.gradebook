@@ -6,3 +6,4 @@
 ./parts
 ./develop-eggs
 ./.installed.cfg
+**/LC_MESSAGES/*.mo
