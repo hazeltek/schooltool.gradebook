@@ -70,6 +70,7 @@ clean:
 	rm -f .installed.cfg
 	rm -f ID TAGS tags
 	find . -name '*.py[co]' -exec rm -f {} \;
+	find . -name '*.mo' -exec rm -f {} \;
 
 .PHONY: extract-translations
 extract-translations: build
@@ -91,7 +92,6 @@ update-translations: extract-translations
 	    msgmerge -qU $$f $${locales}/schooltool.gradebook.pot ;\
 	done
 	$(MAKE) PYTHON=$(PYTHON) compile-translations
-
 
 .PHONY: ubuntu-environment
 ubuntu-environment:
