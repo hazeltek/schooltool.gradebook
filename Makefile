@@ -73,7 +73,7 @@ clean:
 
 .PHONY: extract-translations
 extract-translations: build
-	bin/i18nextract --egg schooltool.gradebook --domain schooltool.gradebook --zcml schooltool/gradebook/translation.zcml --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
+	bin/i18nextract --egg schooltool.gradebook --domain schooltool.gradebook --zcml schooltool/gradebook/translations.zcml --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
 
 .PHONY: compile-translations
 compile-translations:
