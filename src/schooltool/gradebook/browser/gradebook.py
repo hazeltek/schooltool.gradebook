@@ -46,6 +46,7 @@ from schooltool.course.interfaces import ISection
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
+from schooltool.gradebook.activity import getSourceObj
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
@@ -171,6 +172,8 @@ class GradebookBase(BrowserView):
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(person)
         for activity in gradebook.getWorksheetActivities(worksheet):
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                continue
             ss = activity.scoresystem
             if IDiscreteValuesScoreSystem.providedBy(ss):
                 result = [DISCRETE_SCORE_SYSTEM] + [score[0] 
@@ -387,16 +390,16 @@ class GradebookOverview(SectionFinder):
                         self.message = _(
                             'Invalid scores (highlighted in red) were not saved.')
                         continue
-                    ev = gradebook.getEvaluation(student, activity)
+                    value, ss = gradebook.getEvaluation(student, activity)
                     # Delete the score
-                    if ev is not None and score is UNSCORED:
+                    if value is not None and score is UNSCORED:
                         self.context.removeEvaluation(student, activity)
                         self.changed = True
                     # Do nothing
-                    elif ev is None and score is UNSCORED:
+                    elif value is None and score is UNSCORED:
                         continue
                     # Replace the score or add new one/
-                    elif ev is None or score != ev.value:
+                    elif value is None or score != value:
                         self.changed = True
                         self.context.evaluate(
                             student, activity, score, evaluator)
@@ -415,30 +418,65 @@ class GradebookOverview(SectionFinder):
         flag, weeks = self.context.getDueDateFilter(self.person)
         return weeks
 
+    def getActivityAttrs(self, activity):
+        shortTitle = activity.label
+        if shortTitle is None or len(shortTitle) == 0:
+            shortTitle = activity.title
+        shortTitle = shortTitle.replace(' ', '')
+        if len(shortTitle) > 5:
+            shortTitle = shortTitle[:5].strip()
+        longTitle = activity.title
+        if ICommentScoreSystem.providedBy(activity.scoresystem):
+            bestScore = ''
+        else:
+            bestScore = activity.scoresystem.getBestScore()
+        return shortTitle, longTitle, bestScore
+
     def activities(self):
         """Get  a list of all activities."""
         self.person = IPerson(self.request.principal)
-        result = []
+        results = []
         for activity in self.getFilteredActivities():
-            shortTitle = activity.label
-            if shortTitle is None or len(shortTitle) == 0:
-                shortTitle = activity.title
-            shortTitle = shortTitle.replace(' ', '')
-            if len(shortTitle) > 5:
-                shortTitle = shortTitle[:5].strip()
-
-            if ICommentScoreSystem.providedBy(activity.scoresystem):
-                bestScore = ''
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                scorable = False
+                source = getSourceObj(activity.source)
+                if interfaces.IActivity.providedBy(source):
+                    shortTitle, longTitle, bestScore = \
+                        self.getActivityAttrs(source)
+                    if source.label is not None and len(source.label):
+                        shortTitle = source.label
+                    if source.title is not None and len(source.title):
+                        longTitle = source.title
+                elif interfaces.IWorksheet.providedBy(source):
+                    shortTitle = source.title
+                    if len(shortTitle) > 5:
+                        shortTitle = shortTitle[:5].strip()
+                    longTitle = source.title
+                    bestScore = '100'
+                else:
+                    shortTitle = longTitle = bestScore = ''
             else:
-                bestScore = activity.scoresystem.getBestScore()
-            result.append({'shortTitle': shortTitle,
-                           'longTitle': activity.title,
-                           'max': bestScore,
-                           'hash': hash(IKeyReference(activity))})
-            
-        return result
+                scorable = not ICommentScoreSystem.providedBy(
+                    activity.scoresystem)
+                shortTitle, longTitle, bestScore = \
+                    self.getActivityAttrs(activity)
+            result = {
+                'scorable': scorable,
+                'shortTitle': shortTitle,
+                'longTitle': longTitle,
+                'max': bestScore,
+                'hash': hash(IKeyReference(activity)),
+                }
+            results.append(result)
+        return results
+
+    def scorableActivities(self):
+        """Get a list of those activities that can be scored."""
+        return [result for result in self.activities() if result['scorable']]
 
     def isFiltered(self, activity):
+        if interfaces.ILinkedColumnActivity.providedBy(activity):
+            return False
         flag, weeks = self.context.getDueDateFilter(self.person)
         if not flag:
             return False
@@ -450,6 +488,22 @@ class GradebookOverview(SectionFinder):
         return[activity for activity in activities
                if not self.isFiltered(activity)]
 
+    def getStudentActivityValue(self, student, activity):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        value, ss = gradebook.getEvaluation(student, activity)
+        if value is None:
+            value = ''
+
+        act_hash = hash(IKeyReference(activity))
+        cell_name = '%s_%s' % (act_hash, student.username)
+        if cell_name in self.request:
+            value = self.request[cell_name]
+
+        if value and ICommentScoreSystem.providedBy(activity.scoresystem):
+            value = '...'
+
+        return value
+
     def table(self):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
@@ -460,23 +514,12 @@ class GradebookOverview(SectionFinder):
         for student in self.context.students:
             grades = []
             for act_hash, activity in activities:
-                ev = gradebook.getEvaluation(student, activity)
-                if ev is not None and ev.value is not UNSCORED:
-                    value = ev.value
-                else:
-                    value = ''
-
-                cell_name = '%s_%s' % (act_hash, student.username)
-                if cell_name in self.request:
-                    value = self.request[cell_name]
-
-                ss = activity.scoresystem
-                if ICommentScoreSystem.providedBy(ss):
+                value = self.getStudentActivityValue(student, activity)
+                if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
-                    if value:
-                        value = '...'
                 else:
-                    editable = True
+                    editable = not ICommentScoreSystem.providedBy(
+                        activity.scoresystem)
 
                 grade = {
                     'activity': act_hash,
@@ -593,12 +636,12 @@ class GradeActivity(object):
     def grades(self):
         gradebook = proxy.removeSecurityProxy(self.context)
         for student in self.context.students:
-            ev = gradebook.getEvaluation(student, self.activity['obj'])
-            value = self.request.get(student.username)
-            if ev is not None and ev.value is not UNSCORED:
-                value = value or ev.value
+            reqValue = self.request.get(student.username)
+            value, ss = gradebook.getEvaluation(student, self.activity['obj'])
+            if value is None:
+                value = reqValue or ''
             else:
-                value = value or ''
+                value = reqValue or value
 
             yield {'student': {'title': student.title, 'id': student.username},
                    'value': value}
@@ -629,15 +672,15 @@ class GradeActivity(object):
                                      'name': student.title})
                         self.messages.append(message)
                         continue
-                    ev = gradebook.getEvaluation(student, activity)
+                    value, ss = gradebook.getEvaluation(student, activity)
                     # Delete the score
-                    if ev is not None and score is UNSCORED:
+                    if value is not None and score is UNSCORED:
                         self.context.removeEvaluation(student, activity)
                     # Do nothing
-                    elif ev is None and score is UNSCORED:
+                    elif value is None and score is UNSCORED:
                         continue
                     # Replace the score or add new one/
-                    elif ev is None or score != ev.value:
+                    elif value is None or score != value:
                         self.context.evaluate(
                             student, activity, score, evaluator)
 
@@ -651,17 +694,6 @@ def getScoreSystemDiscreteValues(ss):
     elif IRangedValuesScoreSystem.providedBy(ss):
         return (ss.min, ss.max)
     return (0, 0)
-
-
-def getEvaluationDiscreteValue(ev):
-    ss = ev.requirement.scoresystem
-    if IDiscreteValuesScoreSystem.providedBy(ss):
-        val = ss.getNumericalValue(ev.value)
-        if val is not None:
-            return val
-    elif IRangedValuesScoreSystem.providedBy(ss):
-        return ev.value
-    return 0
 
 
 class MyGradesView(SectionFinder):
@@ -693,19 +725,20 @@ class MyGradesView(SectionFinder):
         count = 0
         for activity in self.context.getCurrentActivities(self.person):
             activity = proxy.removeSecurityProxy(activity)
-            ev = proxy.removeSecurityProxy(
-                self.context.getEvaluation(self.person, activity))
+            value, ss = self.context.getEvaluation(self.person, activity)
 
-            if ev is not None and ev.value is not UNSCORED:
-                ss = ev.requirement.scoresystem
+            if value is not None:
                 if IValuesScoreSystem.providedBy(ss):
-                    grade = '%s / %s' % (ev.value, ss.getBestScore())
+                    grade = '%s / %s' % (value, ss.getBestScore())
                     s_min, s_max = getScoreSystemDiscreteValues(ss)
-                    value = getEvaluationDiscreteValue(ev)
+                    if IDiscreteValuesScoreSystem.providedBy(ss):
+                        value = ss.getNumericalValue(value)
+                        if value is None:
+                            value = 0
                     total += value - s_min
                     count += s_max - s_min
                 else:
-                    grade = ev.value
+                    grade = value
             else:
                 grade = None
 
@@ -970,10 +1003,8 @@ class StudentGradebookView(object):
         activities = [activity for activity in gradebook.context.values()
                       if not self.isFiltered(activity)]
         for activity in activities:
-            ev = gradebook.getEvaluation(self.context.student, activity)
-            if ev is not None and ev.value is not UNSCORED:
-                value = ev.value
-            else:
+            value, ss = gradebook.getEvaluation(self.context.student, activity)
+            if value is None:
                 value = ''
             if ICommentScoreSystem.providedBy(activity.scoresystem):
                 block = {

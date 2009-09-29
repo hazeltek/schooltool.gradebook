@@ -55,11 +55,15 @@ class WorksheetManageView(object):
     
     def activities(self):
         pos = 0
+        results = []
         for activity in list(self.context.values()):
             pos += 1
+            url = absoluteURL(activity, self.request)
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                url += '/editLinkedColumn.html'
             yield {'name': getName(activity),
                    'title': activity.title,
-                   'url': absoluteURL(activity, self.request),
+                   'url': url,
                    'pos': pos,
                    'deployed': self.context.deployed}
 

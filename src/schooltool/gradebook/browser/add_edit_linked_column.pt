@@ -1,0 +1,68 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" tal:content="view/viewTitle" />
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header" tal:content="view/viewTitle" />
+
+<metal:block metal:fill-slot="body">
+  <form method="post"
+        tal:attributes="action view/actionURL">
+    <input type="hidden" name="form-submitted" value="" />
+    <label for="title" i18n:translate="">Title</label>
+    <input type="text" name="title" 
+           tal:attributes="value view/title" />
+    <label for="label" i18n:translate="">Label</label>
+    <input type="text" name="label"
+           tal:attributes="value view/label" />
+    <label for="category" i18n:translate="">Category</label>
+    <select id="category" name="category">
+      <tal:block repeat="category view/getCategories">
+        <option tal:attributes="value category/name"
+                tal:content="category/value" />
+      </tal:block>
+    </select>
+    <br /><br />
+    <table class="schooltool_gradebook">
+      <tr>
+        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Term</th>
+        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Section</th>
+        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Worksheet</th>
+        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Activity</th>
+      </tr>
+      <tr tal:repeat="row view/getRows">
+        <tal:if condition="repeat/row/odd">
+          <td class="cell padded even" tal:content="row/term" />
+          <td class="cell padded even" tal:content="row/section" />
+          <td class="cell padded even" tal:content="row/worksheet" />
+          <td class ="even" style="padding: .1em 0 .1em">
+            <input type="submit"
+                   style="background: #83A67F; height: 1.7em; font-weight: bold;
+                          color: #FFFFFF"
+                   tal:attributes="name row/activity_name;value row/activity_value" />
+          </td>
+        </tal:if>
+        <tal:if condition="repeat/row/even">
+          <td class="cell padded odd" tal:content="row/term" />
+          <td class="cell padded odd" tal:content="row/section" />
+          <td class="cell padded odd" tal:content="row/worksheet" />
+          <td class ="odd" style="padding: .1em 0 .1em">
+            <input type="submit"
+                   style="background: #83A67F; height: 1.7em; font-weight: bold;
+                          color: #FFFFFF"
+                   tal:attributes="name row/activity_name;value row/activity_value" />
+          </td>
+        </tal:if>
+    </tr>
+    </table>
+    <div class="controls">
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+  </form>
+
+</metal:block>
+</body>
+</html>
+

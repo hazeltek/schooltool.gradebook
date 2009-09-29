@@ -135,12 +135,14 @@
                          onmouseout string:restoreDescription()">
        <div class="padded">
          <a href=""
+            tal:condition="activity/scorable"
             tal:attributes="href 
                             string:gradeActivity.html?activity=${activity/hash};
                             title activity/longTitle;"
-            tal:content="activity/shortTitle">
-           HW 1
-         </a>
+            tal:content="activity/shortTitle" />
+         <span
+            tal:condition="not: activity/scorable"
+            tal:content="activity/shortTitle" />
        </div>
        <a href="?sort_by="
           tal:attributes="href
@@ -159,6 +161,7 @@
           tal:attributes="id string:fd_${activity/hash}_cell">
         <input type="text" size="4" class="data fd"
                onkeydown="spreadsheetBehaviour(event)"
+               tal:condition="activity/scorable"
                tal:attributes="id string:fd_${activity/hash};
                                onkeyup string:checkFillDown('${activity/hash}');
                                onfocus string:handleCellFocus(this, '${activity/hash}')">
@@ -166,6 +169,7 @@
                style="display: none"
                class="fdbtn"
                value="Apply"
+               tal:condition="activity/scorable"
                tal:attributes="id string:fdbtn_${activity/hash};
                                onclick string:performFillDown('${activity/hash}')">
       </td>
@@ -196,7 +200,7 @@
         </td>
         <td class="cell even" tal:repeat="grade row/grades"
             tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-          <b tal:condition="not: grade/editable"
+          <span tal:condition="not: grade/editable"
              tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
                  tal:condition="grade/editable"
@@ -232,7 +236,7 @@
         </td>
         <td class="cell odd" tal:repeat="grade row/grades"
             tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-          <b tal:condition="not: grade/editable"
+          <span tal:condition="not: grade/editable"
              tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
                  tal:condition="grade/editable"

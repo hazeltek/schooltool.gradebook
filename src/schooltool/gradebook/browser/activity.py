@@ -26,10 +26,11 @@ import zope.security.proxy
 import xlwt
 from StringIO import StringIO
 
-from zope.viewlet.viewlet import ViewletBase
 from zope.app.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
+from zope.app.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.publisher.browser import BrowserView
 from zope.schema import TextLine
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
@@ -43,23 +44,27 @@ from zope.component import queryAdapter, getAdapter
 from zope.formlib import form
 from zope import interface, schema
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.viewlet.viewlet import ViewletBase
 
 from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser import app
+from schooltool.basicperson.interfaces import IDemographics
 from schooltool.common import SchoolToolMessage as _
+from schooltool.course.interfaces import ISection, ILearner, IInstructor
+from schooltool.export import export
 from schooltool.gradebook import interfaces, activity
-from schooltool.gradebook.activity import Activity
+from schooltool.gradebook.activity import createSourceString, getSourceObj
+from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.export import export
-from schooltool.basicperson.interfaces import IDemographics
+from schooltool.term.interfaces import ITerm
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -418,10 +423,8 @@ class WorksheetsExportView(export.ExcelExportView):
                      export.Text(student.first_name),
                      export.Text(student.last_name)]
             for activity in activities:
-                ev = gradebook.getEvaluation(student, activity)
-                if ev is not None and ev.value is not UNSCORED:
-                    value = ev.value
-                else:
+                value, ss = gradebook.getEvaluation(student, activity)
+                if value is None:
                     value = ''
                 cells.append(export.Text(value))
             for col, cell in enumerate(cells):
@@ -441,3 +444,172 @@ class WorksheetsExportView(export.ExcelExportView):
         data = datafile.getvalue()
         self.setUpHeaders(data)
         return data
+
+
+class LinkedColumnBase(BrowserView):
+    """Base class for add/edit linked column views"""
+    def __init__(self, context, request):
+        super(LinkedColumnBase, self).__init__(context, request)
+        if interfaces.IWorksheet.providedBy(self.context):
+            self.currentWorksheet = self.context
+        else:
+            self.currentWorksheet = self.context.__parent__
+        self.person = IPerson(self.request.principal)
+
+    def title(self):
+        if interfaces.IWorksheet.providedBy(self.context):
+            return ''
+        else:
+            return self.context.title
+
+    def label(self):
+        if interfaces.IWorksheet.providedBy(self.context):
+            return ''
+        else:
+            return self.context.label
+
+    def getCategories(self):
+        language = 'en' # XXX this need to be dynamic
+        categories = getCategories(ISchoolToolApplication(None))
+
+        results = []
+        for category in sorted(categories.getKeys()):
+            result = {
+                'name': category,
+                'value': categories.getValue(category, language),
+                }
+            results.append(result)
+        return results
+
+    def isLinked(self, activity):
+        return interfaces.ILinkedColumnActivity.providedBy(activity)
+
+    def getRows(self):
+        term_dict = {}
+        for section in IInstructor(self.person).sections():
+            term = ITerm(section)
+            term_dict.setdefault(term, []).append(section)
+        results = []
+        for term in sorted(term_dict.keys(), key=lambda t: t.first):
+            term_disp = term.title
+            for section_index, section in enumerate(term_dict[term]):
+                section_disp = list(section.courses)[0].title
+                worksheets = interfaces.IActivities(section).values()
+                worksheets = [worksheet for worksheet in worksheets
+                              if not worksheet.deployed
+                              and len(worksheet.values())
+                              and worksheet != self.currentWorksheet]
+                for ws_index, worksheet in enumerate(worksheets):
+                    ws_disp = worksheet.title
+                    activities = [activity for activity in worksheet.values()
+                                  if not self.isLinked(activity)]
+                    for act_index, activity in enumerate(activities):
+                        result = {
+                            'term': term_disp,
+                            'section': section_disp,
+                            'worksheet': ws_disp,
+                            'activity_name': createSourceString(activity),
+                            'activity_value': activity.title,
+                            }
+                        results.append(result)
+                        term_disp = section_disp = ws_disp = ''
+                    if len(activities):
+                        result = {
+                            'term': '',
+                            'section': '',
+                            'worksheet': '',
+                            'activity_name': createSourceString(worksheet),
+                            'activity_value': _('Average'),
+                            }
+                        results.append(result)
+        return results
+
+    def getRequestSource(self):
+        for key in self.request:
+            parts = key.split('_')
+            if len(parts) == 4:
+                try:
+                    int(parts[2])
+                    return key
+                except:
+                    pass
+        return None
+
+    def buildUpdateTarget(self, target=None):
+        title = self.request['title']
+        label = self.request['label']
+        category = self.request['category']
+        source = self.getRequestSource()
+        if not title:
+            sourceObj = getSourceObj(source)
+            if sourceObj is not None:
+                title = sourceObj.title
+        if target is None:
+            return LinkedColumnActivity(title, category, label, source)
+        else:
+            target.title = title
+            target.label = label
+            target.category = category
+            target.source = source
+
+
+class AddLinkedColumnView(LinkedColumnBase):
+    """View for adding a linked column to the gradebook"""
+
+    def viewTitle(self):
+        return _('Add Linked Column')
+
+    def actionURL(self):
+        return absoluteURL(self.context, self.request) + '/addLinkedColumn.html'
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+    def update(self):
+        if 'form-submitted' not in self.request:
+            return
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        else:
+            activity = self.buildUpdateTarget()
+            chooser = INameChooser(self.context)
+            name = chooser.chooseName('', activity)
+            self.context[name] = activity
+            self.request.response.redirect(self.nextURL())
+
+
+class EditLinkedColumnView(LinkedColumnBase):
+    """View for editing a linked column in the gradebook"""
+
+    def viewTitle(self):
+        sourceObj = getSourceObj(self.context.source)
+        if sourceObj is None:
+            details = ''
+        else:
+            if interfaces.IWorksheet.providedBy(sourceObj):
+                act_disp = _('Average')
+                worksheet = sourceObj
+            else:
+                act_disp = sourceObj.title
+                worksheet = sourceObj.__parent__
+            section = ISection(worksheet)
+            term = ITerm(section)
+        details = ' (%s - %s - %s - %s)' % (term.title, 
+            list(section.courses)[0].title, worksheet.title, act_disp)
+        return _('Edit Linked Column') + details
+
+    def actionURL(self):
+        return absoluteURL(self.context, self.request) + '/editLinkedColumn.html'
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
+
+    def update(self):
+        if 'form-submitted' not in self.request:
+            return
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        else:
+            self.buildUpdateTarget(self.context)
+            self.request.response.redirect(self.nextURL())
+

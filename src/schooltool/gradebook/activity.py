@@ -35,6 +35,7 @@ from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
 from zope.schema.interfaces import IVocabularyFactory
 
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as _
 from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
@@ -53,6 +54,45 @@ def ensureAtLeastOneWorksheet(activities):
     chooser = INameChooser(activities)
     name = chooser.chooseName('', sheet1)
     activities[name] = sheet1
+
+
+def createSourceString(sourceObj):
+    if interfaces.IActivity.providedBy(sourceObj):
+        act_hash = unicode(hash(IKeyReference(sourceObj)))
+        worksheet = sourceObj.__parent__
+    else:
+        act_hash = 'ave'
+        worksheet = sourceObj
+    section = worksheet.__parent__.__parent__
+    sectionContainer = section.__parent__
+    return '%s_%s_%s_%s' % (sectionContainer.__name__, section.__name__,
+        unicode(hash(IKeyReference(worksheet))), act_hash)
+
+
+def getSourceObj(source):
+    scid, sid, ws_hash, act_hash = source.split('_')
+
+    app = ISchoolToolApplication(None)
+    sectionContainer = app['schooltool.course.section'].get(scid, None)
+    if sectionContainer is None:
+        return None
+
+    section = sectionContainer.get(sid, None)
+    if section is None:
+        return None
+
+    for worksheet in interfaces.IActivities(section).values():
+        if ws_hash == unicode(hash(IKeyReference(worksheet))):
+            break
+    else:
+        return None
+
+    if act_hash == 'ave':
+        return worksheet
+    for activity in worksheet.values():
+        if act_hash == unicode(hash(IKeyReference(activity))):
+            return activity
+    return None
 
 
 class Activities(requirement.Requirement):
@@ -243,3 +283,13 @@ class ExternalActivitiesVocabulary(object):
     def __call__(self, context):
         section = context.context.__parent__.__parent__
         return ExternalActivitiesSource(section)
+
+
+class LinkedColumnActivity(Activity):
+    zope.interface.implements(interfaces.ILinkedColumnActivity)
+
+    def __init__(self, title, category, label, source):
+        super(LinkedColumnActivity, self).__init__(title, category, None, '',
+            label)
+        self.source = source
+

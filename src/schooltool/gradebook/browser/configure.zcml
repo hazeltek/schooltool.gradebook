@@ -253,6 +253,20 @@
       for="..interfaces.ILinkedActivity"
       name="edit.html"
       />
+  <page
+     name="addLinkedColumn.html"
+     for="schooltool.gradebook.interfaces.IWorksheet"
+     class=".activity.AddLinkedColumnView"
+     template="add_edit_linked_column.pt"
+     permission="schooltool.edit"
+     />
+  <page
+     name="editLinkedColumn.html"
+     for="schooltool.gradebook.interfaces.ILinkedColumnActivity"
+     class=".activity.EditLinkedColumnView"
+     template="add_edit_linked_column.pt"
+     permission="schooltool.edit"
+     />
 
   <!-- Menu items for ISection -->
   <menuItem
@@ -310,6 +324,13 @@
       />
   <menuItem
       menu="schooltool_actions"
+      title="New Linked Column"
+      for="..interfaces.IWorksheet"
+      action="addLinkedColumn.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
       title="Return to Gradebook"
       for="..interfaces.IWorksheet"
       action="gradebook"
@@ -350,6 +371,13 @@
       title="New External Activity"
       for="..interfaces.IGradebook"
       action="../+/addLinkedActivity.html"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="New Linked Column"
+      for="..interfaces.IGradebook"
+      action="../addLinkedColumn.html"
       permission="schooltool.view"
       />
   <menuItem

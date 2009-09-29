@@ -46,18 +46,19 @@ from schooltool.securitypolicy.crowds import ClerksCrowd
 from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
-from schooltool.gradebook.activity import Activities
+from schooltool.gradebook.activity import getSourceObj, Activities
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.common import SchoolToolMessage as _
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
 COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
-        
+
 
 class WorksheetGradebookTraverser(object):
     '''Traverser that goes from a worksheet to the gradebook'''
@@ -159,12 +160,28 @@ class GradebookBase(object):
             return True
         return False
 
-    def getEvaluation(self, student, activity, default=None):
+    def getEvaluation(self, student, activity):
         """See interfaces.IGradebook"""
         student = self._checkStudent(student)
         activity = self._checkActivity(activity)
         evaluations = requirement.interfaces.IEvaluations(student)
-        return evaluations.get(activity, default)
+        ev, value, ss = None, None, None
+        if interfaces.ILinkedColumnActivity.providedBy(activity):
+            sourceObj = getSourceObj(activity.source)
+            if interfaces.IActivity.providedBy(sourceObj):
+                ev = evaluations.get(sourceObj, None)
+                ss = sourceObj.scoresystem
+            elif interfaces.IWorksheet.providedBy(sourceObj):
+                gb = interfaces.IGradebook(sourceObj)
+                if student in gb.students:
+                    total, value = gb.getWorksheetTotalAverage(sourceObj, student) 
+                    ss = RangedValuesScoreSystem()
+        else:
+            ev = evaluations.get(activity, None)
+            ss = activity.scoresystem
+        if ev is not None and ev.value is not UNSCORED:
+            value = ev.value
+        return value, ss
 
     def evaluate(self, student, activity, score, evaluator=None):
         """See interfaces.IGradebook"""
@@ -197,9 +214,9 @@ class GradebookBase(object):
         if weights:
             adjusted_weights = {}
             for activity in self.getWorksheetActivities(worksheet):
-                ev = self.getEvaluation(student, activity)
+                value, ss = self.getEvaluation(student, activity)
                 category = activity.category
-                if ev is not None and ev.value is not UNSCORED:
+                if value is not None:
                     if category in weights:
                         adjusted_weights[category] = weights[category]
             total_percentage = 0
@@ -212,17 +229,15 @@ class GradebookBase(object):
             average_totals = {}
             average_counts = {}
             for activity in self.getWorksheetActivities(worksheet):
-                ev = self.getEvaluation(student, activity)
-                if ev is not None and ev.value is not UNSCORED:
-                    ss = ev.requirement.scoresystem
+                value, ss = self.getEvaluation(student, activity)
+                if value is not None:
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         minimum = ss.scores[-1][2]
                         maximum = ss.scores[0][2]
-                        value = ss.getNumericalValue(ev.value)
+                        value = ss.getNumericalValue(value)
                     elif IRangedValuesScoreSystem.providedBy(ss):
                         minimum = ss.min
                         maximum = ss.max
-                        value = ev.value
                     else:
                         continue
                     totals.setdefault(activity.category, Decimal(0))
@@ -244,17 +259,15 @@ class GradebookBase(object):
             total = 0
             count = 0
             for activity in self.getWorksheetActivities(worksheet):
-                ev = self.getEvaluation(student, activity)
-                if ev is not None and ev.value is not UNSCORED:
-                    ss = ev.requirement.scoresystem
+                value, ss = self.getEvaluation(student, activity)
+                if value is not None:
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         minimum = ss.scores[-1][2]
                         maximum = ss.scores[0][2]
-                        value = ss.getNumericalValue(ev.value)
+                        value = ss.getNumericalValue(value)
                     elif IRangedValuesScoreSystem.providedBy(ss):
                         minimum = ss.min
                         maximum = ss.max
-                        value = ev.value
                     else:
                         continue
                     total += value - minimum
@@ -432,12 +445,11 @@ class StudentGradebookFormAdapter(object):
 
     def __getattr__(self, name):
         activity = self.context.activities[name]
-        ev = self.context.gradebook.getEvaluation(self.context.student, 
-                                                  activity)
-        if ev is not None and ev.value is not UNSCORED:
-            return ev.value
-        else:
-            return ''
+        value, ss = self.context.gradebook.getEvaluation(self.context.student, 
+            activity)
+        if value is None:
+            value = ''
+        return value
     
 
 def getWorksheetSection(worksheet):

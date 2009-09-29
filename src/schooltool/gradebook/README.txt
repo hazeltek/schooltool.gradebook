@@ -375,7 +375,7 @@ We can get an evaluation for a student, activity pair, which represents
 a cell in the worksheet.
 
     >>> gradebook.getEvaluation(paul, hw1)
-    <Evaluation for <Activity u'HW 1'>, value=10>
+    (10, <RangedValuesScoreSystem None>)
 
 We can get a student average for the worksheet, an integer percentage that
 can later be used to formulate a letter grade.
