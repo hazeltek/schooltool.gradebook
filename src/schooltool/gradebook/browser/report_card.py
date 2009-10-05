@@ -51,6 +51,10 @@ from schooltool.requirement.interfaces import IScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
+ABSENT_HEADING = _('Absent')
+TARDY_HEADING = _('Tardy')
+ABSENT_KEY = 'absent'
+TARDY_KEY = 'tardy'
 
 def copyActivities(sourceWorksheet, destWorksheet):
     """Copy the activities from the source worksheet to the destination."""
@@ -389,13 +393,13 @@ class LayoutReportCardView(object):
 
     @property
     def column_choices(self):
-        return self.choices()
+        return self.choices(no_journal=False)
 
     @property
     def activity_choices(self):
         return self.choices(no_comment=False)
 
-    def choices(self, no_comment=True):
+    def choices(self, no_comment=True, no_journal=True):
         """Get  a list of the possible choices for layout activities."""
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -417,6 +421,17 @@ class LayoutReportCardView(object):
                             'value': value,
                             }
                         results.append(result)
+        if not no_journal:
+            result = {
+                'name': ABSENT_HEADING,
+                'value': ABSENT_KEY,
+                }
+            results.append(result)
+            result = {
+                'name': TARDY_HEADING,
+                'value': TARDY_KEY,
+                }
+            results.append(result)
         return results
 
     def update(self):

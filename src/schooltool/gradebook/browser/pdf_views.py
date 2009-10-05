@@ -28,8 +28,11 @@ from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
 from schooltool.common import SchoolToolMessage as _
 from schooltool.course.interfaces import ILearner
+from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
+    TARDY_HEADING, ABSENT_KEY, TARDY_KEY)
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
+from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.schoolyear.interfaces import ISchoolYear
@@ -52,6 +55,20 @@ class BasePDFView(ReportPDFView):
         self.schoolyear = ISchoolYear(current_term)
         return super(BasePDFView, self).__call__()
 
+    def isJournalSource(self, layout):
+        return layout.source in [ABSENT_KEY, TARDY_KEY]
+
+    def getJournalScore(self, student, section, layout):
+        jd = ISectionJournalData(section)
+        result = 0
+        for meeting in jd.recordedMeetings(student):
+            grade = jd.getGrade(student, meeting)
+            if grade == 'n' and layout.source == ABSENT_KEY:
+                result += 1
+            if grade == 'p' and layout.source == TARDY_KEY:
+                result += 1
+        return result or None
+
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
         activities = IActivities(section)
@@ -60,6 +77,10 @@ class BasePDFView(ReportPDFView):
         return None
 
     def getLayoutActivityHeading(self, layout, truncate=True):
+        if layout.source == ABSENT_KEY:
+            return ABSENT_HEADING
+        if layout.source == TARDY_KEY:
+            return TARDY_HEADING
         termName, worksheetName, activityName = layout.source.split('|')
         root = IGradebookRoot(ISchoolToolApplication(None))
         heading = root.deployed[worksheetName][activityName].title
@@ -117,7 +138,6 @@ class BasePDFView(ReportPDFView):
         else:
             layouts = []
 
-        evaluations = IEvaluations(student)
         courses = []
         for section in sections:
             course = tuple(section.courses)
@@ -125,16 +145,24 @@ class BasePDFView(ReportPDFView):
                 courses.append(course)
 
         scores = {}
+        evaluations = IEvaluations(student)
         for layout in layouts:
             byCourse = {}
             for section in sections:
                 course = tuple(section.courses)
-                activity = self.getActivity(section, layout)
-                if activity is None:
-                    continue
-                score = evaluations.get(activity, None)
-                if score is not None and score.value is not UNSCORED:
-                    byCourse[course] = unicode(score.value)
+                if self.isJournalSource(layout):
+                    score = self.getJournalScore(student, section, layout)
+                    if score is not None:
+                        if course in byCourse:
+                            score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                else:
+                    activity = self.getActivity(section, layout)
+                    if activity is None:
+                        continue
+                    score = evaluations.get(activity, None)
+                    if score is not None and score.value is not UNSCORED:
+                        byCourse[course] = unicode(score.value)
             if len(byCourse):
                 scores[layout.source] = byCourse
 
@@ -160,7 +188,7 @@ class BasePDFView(ReportPDFView):
 
         return {
             'headings': headings,
-            'widths': '8.2cm' + ',1.2cm' * len(scoredLayouts),
+            'widths': '8.2cm' + ',1.6cm' * len(scoredLayouts),
             'rows': rows,
             }
 

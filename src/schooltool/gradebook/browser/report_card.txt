@@ -333,6 +333,8 @@ the only list box present.
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 We'll add a first column to the layout.
 
@@ -346,12 +348,16 @@ another column.
     <option selected="selected" value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 We can change the first column to another activity.  We'll see that the change
 has taken effect.
@@ -363,12 +369,16 @@ has taken effect.
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option selected="selected" value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 If we want, we can delete the column.  We'll see that the view no longer has
 any columns.
@@ -381,6 +391,8 @@ any columns.
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 Next, we'll repeat the same set of tests for the outline activities.  For
 starters, we see only choices for outline activities to add.
