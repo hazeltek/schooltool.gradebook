@@ -541,6 +541,13 @@
       action="layout_report_card.html"
       permission="schooltool.edit"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Report PDFs"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      action="report_pdfs.html"
+      permission="schooltool.edit"
+      />
 
   <!-- Views for ISchoolYear -->
   <page
@@ -557,38 +564,109 @@
       template="layout_report_card.pt"
       permission="schooltool.edit"
       />
+  <page
+      name="report_pdfs.html"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".request_reports.SchoolYearReportsView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="failing_report.pdf"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".pdf_views.FailingReportPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="absences_by_day.pdf"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".pdf_views.AbsencesByDayPDFView"
+      permission="schooltool.edit"
+      />
 
   <!-- Menu items for IBasicPerson-->
   <menuItem
       menu="schooltool_actions"
-      title="Download Report Card"
+      title="Report PDFs"
       for="schooltool.person.interfaces.IPerson"
-      action="report_card.pdf"
+      action="report_pdfs.html"
       permission="schooltool.edit"
       />
 
   <!-- Views for IBasicPerson -->
+  <page
+      name="report_pdfs.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.StudentReportsView"
+      permission="schooltool.edit"
+      />
   <page
       name="report_card.pdf"
       for="schooltool.person.interfaces.IPerson"
       class=".pdf_views.StudentReportCardPDFView"
       permission="schooltool.edit"
       />
+  <page
+      name="student_detail.pdf"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.StudentDetailPDFView"
+      permission="schooltool.edit"
+      />
 
   <!-- Menu items for IGroup -->
   <menuItem
       menu="schooltool_actions"
-      title="Download Report Card"
+      title="Report PDFs"
       for="schooltool.group.interfaces.IGroup"
-      action="report_card.pdf"
+      action="report_pdfs.html"
       permission="schooltool.edit"
       />
 
   <!-- Views for IGroup -->
   <page
+      name="report_pdfs.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".request_reports.GroupReportsView"
+      permission="schooltool.edit"
+      />
+  <page
       name="report_card.pdf"
       for="schooltool.group.interfaces.IGroup"
       class=".pdf_views.GroupReportCardPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="student_detail.pdf"
+      for="schooltool.group.interfaces.IGroup"
+      class=".pdf_views.GroupDetailPDFView"
+      permission="schooltool.edit"
+      />
+
+  <!-- Menu items for ISection -->
+  <menuItem
+      menu="schooltool_actions"
+      title="Report PDFs"
+      for="schooltool.course.interfaces.ISection"
+      action="report_pdfs.html"
+      permission="schooltool.edit"
+      />
+  <page
+      name="absences_by_day.pdf"
+      for="schooltool.course.interfaces.ISection"
+      class=".pdf_views.AbsencesByDayPDFView"
+      permission="schooltool.edit"
+      />
+
+  <!-- Views for ISection -->
+  <page
+      name="report_pdfs.html"
+      for="schooltool.course.interfaces.ISection"
+      class=".request_reports.SectionReportsView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="section_absences.pdf"
+      for="schooltool.course.interfaces.ISection"
+      class=".pdf_views.SectionAbsencesPDFView"
       permission="schooltool.edit"
       />
 

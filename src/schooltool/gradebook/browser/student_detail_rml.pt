@@ -1,0 +1,127 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd" [
+  <!ENTITY pound   "&#xA3;">
+  <!ENTITY nbsp    "&#160;">
+]>
+
+<document
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/@@rml_macros/report"
+  i18n:domain="schooltool">
+
+<metal:block fill-slot="page_templates">
+  <tal:block content="structure view/use_template/default" />
+</metal:block>
+
+<stylesheet>
+  <metal:block fill-slot="extra_initialize">
+  </metal:block>
+  <metal:block fill-slot="stylesheet">
+
+    <paraStyle
+      name="normal"
+      fontName="Arial_Normal"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="bold"
+      fontName="Arial_Bold"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="heading"
+      fontName="Arial_Bold"
+      fontSize="10"
+      alignment="right"
+      leading="12"/>
+
+    <paraStyle
+      name="section_heading"
+      fontName="Arial_Bold"
+      fontSize="12"
+      alignment="center"
+      leading="12"/>
+
+    <blockTableStyle id="headings_table">
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+
+    <blockTableStyle id="grid">
+    	<lineStyle kind="OUTLINE"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+    	<lineStyle kind="INNERGRID"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+  </metal:block>
+</stylesheet>
+
+<story metal:fill-slot="story">
+
+  <tal:block repeat="student view/students">
+  <tal:block define="grades student/grades; attendance student/attendance">
+    <blockTable style="headings_table" colWidths="4cm,4cm,4cm,4cm">
+      <tr>
+        <td><para style="heading" tal:content="student/name_heading" /></td>
+        <td><para style="normal" tal:content="student/name" /></td>
+        <td><para style="heading" tal:content="student/userid_heading" /></td>
+        <td><para style="normal" tal:content="student/userid" /></td>
+      </tr>
+    </blockTable>
+    <spacer length=".5cm" />
+
+    <para style="section_heading" tal:content="view/grades_heading" />
+    <spacer length=".5cm" />
+
+    <blockTable style="grid"
+                tal:attributes="colWidths grades/widths">
+      <tr>
+        <td><para style="bold" tal:content="view/course_heading" /></td>
+        <td tal:repeat="heading grades/headings">
+          <para style="bold" tal:content="heading" />
+        </td>
+      </tr>
+
+      <tr tal:repeat="row grades/rows">
+        <td><para style="normal" tal:content="row/title" /></td>
+        <td tal:repeat="score row/scores">
+          <para style="normal" tal:content="score" />
+        </td>
+      </tr>
+    </blockTable>
+    <spacer length=".5cm" />
+
+    <para style="section_heading" tal:content="view/attendance_heading" />
+    <spacer length=".5cm" />
+
+    <blockTable style="grid"
+                tal:attributes="colWidths attendance/widths">
+      <tr>
+        <td><para style="bold" tal:content="view/date_heading" /></td>
+        <td tal:repeat="heading attendance/headings">
+          <para style="bold" tal:content="heading" />
+        </td>
+      </tr>
+
+      <tr tal:repeat="row attendance/rows">
+        <td><para style="normal" tal:content="row/title" /></td>
+        <td tal:repeat="score row/scores">
+          <para style="normal" tal:content="score" />
+        </td>
+      </tr>
+    </blockTable>
+
+    <condPageBreak height="88cm"/>
+  </tal:block>
+  </tal:block>
+
+</story>
+
+</document>
+

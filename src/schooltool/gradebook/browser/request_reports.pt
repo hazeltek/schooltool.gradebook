@@ -1,0 +1,17 @@
+<html metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" tal:content="view/title" />
+</head>
+<body>
+<div metal:fill-slot="body">
+  <h1 style="font-size: 180%" tal:content="view/title" />
+  <br />
+  <tal:block repeat="link view/links">
+    <a class="navigation_header"
+       tal:attributes="href link/url"
+       tal:content="link/content" />
+  </tal:block>
+</div>
+</body>
+</html>
