@@ -20,6 +20,8 @@
 PDF Views
 """
 
+from datetime import datetime
+
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.traversing.browser.absoluteurl import absoluteURL
@@ -432,6 +434,11 @@ class AbsencesByDayPDFView(BasePDFView):
     @property
     def title(self):
         return _('Student Absence Report')
+
+    @property
+    def date_heading(self):
+        today = datetime.now()
+        return today.strftime('%A %B %0d, %Y')
 
     @property
     def periods_heading(self):

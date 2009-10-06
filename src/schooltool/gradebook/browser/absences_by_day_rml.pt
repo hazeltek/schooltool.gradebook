@@ -61,6 +61,8 @@
 </stylesheet>
 
 <story metal:fill-slot="story">
+  <para style="section_heading" tal:content="view/date_heading" />
+  <spacer length="1cm" />
 
   <blockTable style="headings_table" colWidths="8cm,4cm">
     <tr>
