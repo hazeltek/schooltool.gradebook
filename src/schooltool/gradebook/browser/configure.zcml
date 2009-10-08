@@ -571,6 +571,13 @@
       permission="schooltool.edit"
       />
   <page
+      name="request_failing_report.html"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".request_reports.RequestFailingReportView"
+      template="request_failing_report.pt"
+      permission="schooltool.edit"
+      />
+  <page
       name="failing_report.pdf"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".pdf_views.FailingReportPDFView"

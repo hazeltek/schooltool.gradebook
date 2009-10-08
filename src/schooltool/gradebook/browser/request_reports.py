@@ -24,7 +24,12 @@ from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.publisher.browser import BrowserView
 from zope.traversing.browser.absoluteurl import absoluteURL
 
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as _
+
+from schooltool.gradebook.interfaces import IGradebookRoot
+from schooltool.requirement.interfaces import ICommentScoreSystem
+from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 
 
 class BaseView(BrowserView):
@@ -85,7 +90,7 @@ class SchoolYearReportsView(BaseView):
         url = absoluteURL(self.context, self.request)
         results = [
             {
-                'url': url +  '/failing_report.pdf',
+                'url': url +  '/request_failing_report.html',
                 'content': _('Download Failing Report'),
             },
             {
@@ -110,4 +115,88 @@ class SectionReportsView(BaseView):
             },
          ]
         return results
+
+
+class RequestFailingReportView(BrowserView):
+
+    def title(self):
+        return _('Request Failing Report')
+
+    def current_source(self):
+        if 'source' in self.request:
+            return self.request['source']
+        return ''
+
+    def getScoreSystem(self, source):
+        termName, worksheetName, activityName = source.split('|')
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        return root.deployed[worksheetName][activityName].scoresystem
+
+    def choices(self):
+        """Get  a list of the possible choices for report activities."""
+        result = {
+            'name': _('Choose a report activity'),
+            'value': '',
+            }
+        results = [result]
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        for term in self.context.values():
+            deployedKey = '%s_%s' % (self.context.__name__, term.__name__)
+            for key in root.deployed:
+                if key.startswith(deployedKey):
+                    deployedWorksheet = root.deployed[key]
+                    for activity in deployedWorksheet.values():
+                        if ICommentScoreSystem.providedBy(activity.scoresystem):
+                            continue
+                        name = '%s - %s - %s' % (term.title,
+                            deployedWorksheet.title, activity.title)
+                        value = '%s|%s|%s' % (term.__name__,
+                            deployedWorksheet.__name__, activity.__name__)
+                        result = {
+                            'name': name,
+                            'value': value,
+                            }
+                        results.append(result)
+        return results
+
+    def scores(self):
+        results = []
+        current = self.current_source()
+        if current:
+            ss = self.getScoreSystem(current)
+            if IDiscreteValuesScoreSystem.providedBy(ss):
+                result = {
+                    'name': _('Choose a minimum passing score'),
+                    'value': '',
+                    }
+                results.append(result)
+                for score in ss.scores:
+                    result = {
+                        'name': score[0],
+                        'value': score[0],
+                        }
+                    results.append(result)
+        return results
+
+    def getErrorMessage(self):
+        return _('You must specify both a report activity and a minimum passing score')
+
+    def update(self):
+        self.message = ''
+        if 'form-submitted' in self.request:
+            if 'CANCEL' in self.request:
+                self.request.response.redirect(self.nextURL())
+            elif 'DOWNLOAD' in self.request:
+                if not (self.request['source'] and self.request['score']):
+                    self.message = self.getErrorMessage()
+                else:
+                    url = '%s?activity=%s&min=%s' % (self.reportURL(),
+                        self.request['source'], self.request['score'])
+                    self.request.response.redirect(url)
+
+    def reportURL(self):
+        return absoluteURL(self.context, self.request) + '/failing_report.pdf'
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
 

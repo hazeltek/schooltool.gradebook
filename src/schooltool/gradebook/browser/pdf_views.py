@@ -376,11 +376,44 @@ class FailingReportPDFView(BasePDFView):
 
     def __call__(self):
         self.schoolyear = self.context
+        self.activity = self.getActivity()
         return super(FailingReportPDFView, self).__call__()
+
+    def getActivity(self):
+        source = self.request.get('activity', None)
+        if source is None:
+            return None
+        termName, worksheetName, activityName = source.split('|')
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        return root.deployed[worksheetName][activityName]
 
     @property
     def title(self):
         return _('Failing Report') + ': ' + self.schoolyear.title
+
+    @property
+    def worksheet_heading(self):
+        return _('Report Sheet:')
+
+    @property
+    def worksheet_value(self):
+        return self.activity.__parent__.title
+
+    @property
+    def activity_heading(self):
+        return _('Activity:')
+
+    @property
+    def activity_value(self):
+        return self.activity.title
+
+    @property
+    def score_heading(self):
+        return _('Passing Score:')
+
+    @property
+    def score_value(self):
+        return self.request.get('min', '')
 
     @property
     def heading_message(self):

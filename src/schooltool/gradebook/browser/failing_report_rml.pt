@@ -61,6 +61,21 @@
 </stylesheet>
 
 <story metal:fill-slot="story">
+  <blockTable style="headings_table" colWidths="6cm,6cm"
+              alignment="center">
+    <tr>
+      <td><para style="heading" tal:content="view/worksheet_heading" /></td>
+      <td><para style="bold" tal:content="view/worksheet_value" /></td>
+    </tr>
+    <tr>
+      <td><para style="heading" tal:content="view/activity_heading" /></td>
+      <td><para style="bold" tal:content="view/activity_value" /></td>
+    </tr>
+    <tr>
+      <td><para style="heading" tal:content="view/score_heading" /></td>
+      <td><para style="bold" tal:content="view/score_value" /></td>
+    </tr>
+  </blockTable>
 
   <spacer length=".5cm" />
   <para style="bold" tal:content="view/heading_message" />
