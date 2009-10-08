@@ -1,0 +1,40 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool">
+<head>
+  <title metal:fill-slot="title" tal:content="view/title" />
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header" tal:content="view/title" />
+
+<metal:block metal:fill-slot="body">
+  <tal:block condition="view/message">
+    <span class="message" style="color: red"
+          tal:content="view/message" />
+    <br /><br />
+  </tal:block>
+
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/request_absences_by_day.html">
+    <input type="hidden" name="form-submitted" value="" />
+    <table>
+      <tr>
+        <td>
+          <label for="day" i18n:translate="">Date</label>
+        </td>
+        <td>
+            <input type="text" id="day" name="day"
+                   tal:attributes="value view/currentDay">
+        </td>
+      </tr>
+    </table>
+    <div class="controls">
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+      <input type="submit" class="button-ok" name="DOWNLOAD" value="Download" />
+    </div>
+  </form>
+
+</metal:block>
+</body>
+</html>
+

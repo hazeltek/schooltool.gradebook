@@ -468,10 +468,23 @@ class AbsencesByDayPDFView(BasePDFView):
     def title(self):
         return _('Student Absence Report')
 
+    def getDay(self):
+        day = self.request.get('day', None)
+        if day is None:
+            return datetime.date(datetime.now())
+        try:
+            year, month, day = [int(part) for part in day.split('-')]
+            return datetime.date(datetime(year, month, day))
+        except:
+            return None
+
     @property
     def date_heading(self):
-        today = datetime.now()
-        return today.strftime('%A %B %0d, %Y')
+        day = self.getDay()
+        if day is None:
+            return ''
+        else:
+            return day.strftime('%A %B %0d, %Y')
 
     @property
     def periods_heading(self):

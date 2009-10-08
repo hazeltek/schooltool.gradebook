@@ -20,6 +20,8 @@
 Request PDF Views
 """
 
+from datetime import datetime
+
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.publisher.browser import BrowserView
 from zope.traversing.browser.absoluteurl import absoluteURL
@@ -94,7 +96,7 @@ class SchoolYearReportsView(BaseView):
                 'content': _('Download Failing Report'),
             },
             {
-                'url': url +  '/absences_by_day.pdf',
+                'url': url +  '/request_absences_by_day.html',
                 'content': _('Download Absences By Day Report'),
             },
          ]
@@ -179,7 +181,7 @@ class RequestFailingReportView(BrowserView):
         return results
 
     def getErrorMessage(self):
-        return _('You must specify both a report activity and a minimum passing score')
+        return _('You must specify both a report activity and a minimum passing score.')
 
     def update(self):
         self.message = ''
@@ -196,6 +198,51 @@ class RequestFailingReportView(BrowserView):
 
     def reportURL(self):
         return absoluteURL(self.context, self.request) + '/failing_report.pdf'
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+
+
+class RequestAbsencesByDayView(BrowserView):
+
+    def title(self):
+        return _('Request Absences By Day Report')
+
+    def currentDay(self):
+        day = self.request.get('day', None)
+        if day is None:
+            tod = datetime.now()
+            return '%d-%02d-%02d' % (tod.year, tod.month, tod.day)
+        else:
+            return day
+
+    def isValidDate(self):
+        day = self.currentDay()
+        try:
+            year, month, day = [int(part) for part in day.split('-')]
+        except:
+            return False
+        date = datetime.date(datetime(year, month, day))
+        return self.context.first <= date <= self.context.last
+
+    def getErrorMessage(self):
+        return _('You must specify a valid date within the school year.')
+
+    def update(self):
+        self.message = ''
+        if 'form-submitted' in self.request:
+            if 'CANCEL' in self.request:
+                self.request.response.redirect(self.nextURL())
+            elif 'DOWNLOAD' in self.request:
+                if not self.isValidDate():
+                    self.message = self.getErrorMessage()
+                else:
+                    url = '%s?day=%s' % (self.reportURL(),
+                        self.request['day'])
+                    self.request.response.redirect(url)
+
+    def reportURL(self):
+        return absoluteURL(self.context, self.request) + '/absences_by_day.pdf'
 
     def nextURL(self):
         return absoluteURL(self.context, self.request) + '/report_pdfs.html'
