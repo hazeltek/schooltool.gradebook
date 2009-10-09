@@ -303,32 +303,32 @@ class BaseStudentDetailPDFView(BasePDFView):
 
     def grades(self):
         return {
-            'widths': '4cm,1cm,1cm',
-            'headings': ['1', '2'],
+            'widths': '4cm,1cm,1cm,1cm,1cm',
+            'headings': ['Q1', 'Q2', 'Q3', 'Q4'],
             'rows': [
                 {
                     'title': 'English I',
-                    'scores': ['A', ''],
+                    'scores': ['A', '', 'C', ''],
                 },
                 {
                     'title': 'Algebra II',
-                    'scores': ['', 'B'],
+                    'scores': ['', 'B', 'A', ''],
                 },
             ]
         }
 
     def attendance(self):
         return {
-            'widths': '4cm,1cm,1cm',
-            'headings': ['A', 'B'],
+            'widths': '4cm,1cm,1cm,1cm,1cm,1cm,1cm,1cm,1cm',
+            'headings': ['1', '2', '3', '4', '5', '6', '7', '8'],
             'rows': [
                 {
                     'title': '9/27/09',
-                    'scores': ['', 'A1'],
+                    'scores': ['', 'A', '', 'T', '', '', '', ''],
                 },
                 {
                     'title': '10/1/09',
-                    'scores': ['T2', ''],
+                    'scores': ['T', '', '', '', 'A', '', '', ''],
                 },
             ]
         }
@@ -353,7 +353,6 @@ class StudentDetailPDFView(BaseStudentDetailPDFView):
 
 class GroupDetailPDFView(BaseStudentDetailPDFView):
     """A view for printing a report card for each person in a group"""
-
 
     def students(self):
         #return list(self.context.members)
@@ -443,12 +442,22 @@ class FailingReportPDFView(BasePDFView):
                     {
                         'course': 'English I',
                         'teacher': 'Tom Hoffman',
-                        'grade': 'A',
+                        'grade': 'D',
                     },
                     {
                         'course': 'Algebra II',
                         'teacher': 'Jeff Elkner',
-                        'grade': 'B',
+                        'grade': 'F',
+                    },
+                ],
+            },
+            {
+                'name': 'Jeff Elkner',
+                'rows': [
+                    {
+                        'course': 'English I',
+                        'teacher': 'Tom Hoffman',
+                        'grade': 'F',
                     },
                 ],
             },
@@ -507,11 +516,11 @@ class AbsencesByDayPDFView(BasePDFView):
         return [
             {
                 'name': 'Alan Elkner',
-                'periods': ['1', '2', '3', '4', '5', '', '7', ''],
+                'periods': ['A', 'T', '', 'T', '', '', '', ''],
             },
             {
                 'name': 'Tom Hoffman',
-                'periods': ['', '2', '', '4', '5', '', '7', '4'],
+                'periods': ['T', '', '', 'T', 'A', '', '', ''],
             },
         ]
 
@@ -563,8 +572,8 @@ class SectionAbsencesPDFView(BasePDFView):
         return [
             {
                 'name': 'Alan Elkner',
-                'attendance': 'A 5',
-                'total': '5',
+                'attendance': 'A 5  T 4',
+                'total': '9',
             },
             {
                 'name': 'Tom Hoffman',
