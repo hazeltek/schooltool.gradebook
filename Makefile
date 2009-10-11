@@ -70,7 +70,8 @@ clean:
 	rm -f .installed.cfg
 	rm -f ID TAGS tags
 	find . -name '*.py[co]' -exec rm -f {} \;
-	find . -name '*.mo' -exec rm -f {} \;
+	find . -name '*.mo' -exec rm -f {} +
+	find . -name 'LC_MESSAGES' -exec rmdir -p --ignore-fail-on-non-empty {} +
 
 .PHONY: extract-translations
 extract-translations: build
@@ -80,15 +81,16 @@ extract-translations: build
 compile-translations:
 	set -e; \
 	locales=src/schooltool/gradebook/locales; \
-	for f in $${locales}/*/LC_MESSAGES/schooltool.gradebook.po; do \
-	    msgfmt -o $${f%.po}.mo $$f;\
+	for f in $${locales}/*.po; do \
+	    mkdir -p $${f%.po}/LC_MESSAGES; \
+	    msgfmt -o $${f%.po}/LC_MESSAGES/schooltool.gradebook.mo $$f;\
 	done
 
 .PHONY: update-translations
 update-translations: extract-translations
 	set -e; \
 	locales=src/schooltool/gradebook/locales; \
-	for f in $${locales}/*/LC_MESSAGES/schooltool.gradebook.po; do \
+	for f in $${locales}/*.po; do \
 	    msgmerge -qU $$f $${locales}/schooltool.gradebook.pot ;\
 	done
 	$(MAKE) PYTHON=$(PYTHON) compile-translations
