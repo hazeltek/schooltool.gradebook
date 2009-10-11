@@ -25,6 +25,7 @@ __docformat__ = 'reStructuredText'
 import datetime
 import decimal
 
+from zope.app.container.interfaces import INameChooser
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
@@ -46,7 +47,8 @@ from schooltool.course.interfaces import ISection
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
-from schooltool.gradebook.activity import getSourceObj
+from schooltool.gradebook.activity import createSourceString, getSourceObj
+from schooltool.gradebook.activity import Worksheet, LinkedColumnActivity
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
@@ -64,6 +66,7 @@ GradebookCSSViewlet = viewlet.CSSViewlet("gradebook.css")
 DISCRETE_SCORE_SYSTEM = 'd'
 RANGED_SCORE_SYSTEM = 'r'
 COMMENT_SCORE_SYSTEM = 'c'
+SUMMARY_TITLE = _('Summary')
 
 column_keys = [('total', _("Total")), ('average', _("Ave."))]
 
@@ -787,6 +790,65 @@ class UpdateLinkedActivityGrades(LinkedActivityGradesUpdater):
 class GradebookColumnPreferences(BrowserView):
     """A view for editing a teacher's gradebook column preferences."""
 
+    def worksheets(self):
+        results = []
+        gradebook = proxy.removeSecurityProxy(self.context)
+        for worksheet in gradebook.context.__parent__.values():
+            if worksheet.deployed:
+                continue
+            results.append(worksheet)
+        return results
+
+    def addSummary(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        worksheets = gradebook.context.__parent__
+
+        overwrite = self.request.get('overwrite', '') == 'on'
+        if overwrite:
+            currentWorksheets = []
+            for worksheet in worksheets.values():
+                if worksheet.deployed:
+                    continue
+                if worksheet.title == SUMMARY_TITLE:
+                    while len(worksheet.values()):
+                        del worksheet[worksheet.values()[0].__name__]
+                    summary = worksheet
+                else:
+                    currentWorksheets.append(worksheet)
+            next = SUMMARY_TITLE
+        else:
+            next = self.nextSummaryTitle()
+            currentWorksheets = self.worksheets()
+            summary = Worksheet(next)
+            chooser = INameChooser(worksheets)
+            name = chooser.chooseName('', summary)
+            worksheets[name] = summary
+
+        for worksheet in currentWorksheets:
+            if worksheet.title.startswith(SUMMARY_TITLE):
+                continue
+            activity = LinkedColumnActivity(worksheet.title, u'assignment', 
+                '', createSourceString(worksheet))
+            chooser = INameChooser(summary)
+            name = chooser.chooseName('', activity)
+            summary[name] = activity
+
+    def nextSummaryTitle(self):
+        index = 1
+        next = SUMMARY_TITLE
+        while True:
+            for worksheet in self.worksheets():
+                if worksheet.title == next:
+                    break
+            else:
+                break
+            index += 1
+            next = SUMMARY_TITLE + str(index)
+        return next
+
+    def summaryFound(self):
+        return self.nextSummaryTitle() != SUMMARY_TITLE
+
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
@@ -807,7 +869,10 @@ class GradebookColumnPreferences(BrowserView):
                     prefs['scoresystem'] = self.request['scoresystem_' + key]
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
-        if 'CANCEL' in self.request or 'UPDATE_SUBMIT' in self.request:
+        if 'ADD_SUMMARY' in self.request:
+            self.addSummary()
+
+        if 'form-submitted' in self.request:
             self.request.response.redirect('index.html')
 
     @property
