@@ -32,32 +32,36 @@ if sys.version_info < (2, 4):
 import pkg_resources
 pkg_resources.require("setuptools>=0.6a11")
 
-import glob
 import os
 from setuptools import setup, find_packages
 from distutils import log
 from distutils.util import newer
 from distutils.spawn import find_executable
 
-def compile_translations(locales_dir):
-    "Compile *.po files to *.mo files in the same directory."
-    for po in glob.glob('%s/*/LC_MESSAGES/*.po' % locales_dir):
-        mo = po[:-3] + '.mo'
+from glob import glob
+
+def compile_translations(domain):
+    "Compile *.po files to *.mo files"
+    locales_dir = 'src/%s/locales' % (domain.replace('.', '/'))
+    for po in glob('%s/*.po' % locales_dir):
+        lang = os.path.basename(po)[:-3]
+        mo = "%s/%s/LC_MESSAGES/%s.mo" % (locales_dir, lang, domain)
         if newer(po, mo):
             log.info('Compile: %s -> %s' % (po, mo))
+            os.makedirs(os.path.dirname(mo))
             os.system('msgfmt -o %s %s' % (mo, po))
 
-if sys.argv[1] in ('build', 'install'):
+if len(sys.argv) > 1 and sys.argv[1] in ('build', 'install'):
     if not find_executable('msgfmt'):
         log.warn("GNU gettext msgfmt utility not found!")
         log.warn("Skip compiling po files.")
     else:
-        compile_translations('src/schooltool/gradebook/locales')
+        compile_translations('schooltool.gradebook')
 
-if sys.argv[1] == 'clean':
-    locales_dir = 'src/schooltool/gradebook/locales'
-    for mo in glob.glob('%s/*/LC_MESSAGES/*.mo' % locales_dir):
+if len(sys.argv) > 1 and sys.argv[1] == 'clean':
+    for mo in glob('src/schooltool/gradebook/locales/*/LC_MESSAGES/*.mo'):
         os.unlink(mo)
+        os.removedirs(os.path.dirname(mo))
 
 if os.path.exists("version.txt"):
     version = open("version.txt").read().strip()
@@ -88,6 +92,7 @@ setup(
     packages=find_packages('src'),
     install_requires=['schooltool',
                       'setuptools'],
+    tests_require=['zope.testing'],
     dependency_links=['http://ftp.schooltool.org/schooltool/releases/nightly/'],
     include_package_data=True,
     zip_safe=False
