@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SchoolTool Version SVN\n"
-"POT-Creation-Date: Mon Oct 12 18:53:20 2009\n"
+"POT-Creation-Date: Mon Oct 12 19:36:10 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -596,7 +596,7 @@ msgid "Points value to calculate the activity grade"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:356
-msgid "The name under which the adapter is registered"
+msgid "Name of the external activities source"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:360

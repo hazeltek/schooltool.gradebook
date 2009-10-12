@@ -353,7 +353,7 @@ class IExternalActivities(zope.interface.Interface):
  
     source = zope.schema.TextLine(
         title=_(u"External Activity Source"),
-        description=_(u"The name under which the adapter is registered"),
+        description=_(u"Name of the external activities source"),
         required=True)
 
     title = zope.schema.TextLine(
