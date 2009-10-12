@@ -10,6 +10,10 @@ manager:
     >>> from schooltool.app.browser.ftests import setup
     >>> manager = setup.logIn('manager', 'schooltool')
 
+Some imports:
+
+    >>> from schooltool.gradebook import sliceString
+
 
 Initial School Setup
 --------------------
@@ -75,6 +79,7 @@ Se up the school year and a couple of terms:
 
    >>> setup.addSchoolYear('2007', '2007-01-01', '2007-12-31')
    >>> setup.addTerm('Winter', '2007-01-01', '2007-06-01', schoolyear='2007')
+   >>> setup.addTerm('Fall', '2007-07-01', '2007-12-31', schoolyear='2007')
 
 Next the administrator defines the courses that are available in the school.
 
@@ -86,6 +91,13 @@ Next the administrator defines the courses that are available in the school.
     >>> manager.getControl('Add').click()
     >>> manager.getLink('Physics I').click()
 
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getLink('New Course').click()
+    >>> manager.getControl('Title').value = 'English I'
+    >>> manager.getControl('Add').click()
+    >>> manager.getLink('English I').click()
+
 This completes the initial school setup.
 
 
@@ -93,10 +105,11 @@ Term Setup
 ----------
 
 Every term, the administrators of a school are going to setup sections. So
-let's add a section for our course:
+let's add some sections:
 
     >>> from schooltool.app.browser.ftests import setup
     >>> setup.addSection('Physics I', '2007', 'Winter')
+    >>> setup.addSection('English I', '2007', 'Fall')
 
 But what would a section be without some students and a teacher?
 
@@ -106,11 +119,28 @@ But what would a section be without some students and a teacher?
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
 
-Now we can add those people to the section:
+Now we can add those people to our sections:
 
     >>> manager.getLink('2007').click()
     >>> manager.getLink('Courses').click()
     >>> manager.getLink('Physics I').click()
+    >>> manager.getLink('(1)').click()
+
+    >>> manager.getLink('edit individuals').click()
+    >>> manager.getControl(name='add_item.paul').value = 'checked'
+    >>> manager.getControl(name='add_item.tom').value = 'checked'
+    >>> manager.getControl(name='add_item.claudia').value = 'checked'
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
+    >>> manager.getLink('edit instructors').click()
+    >>> manager.getControl(name='add_item.stephan').value = 'checked'
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getLink('English I').click()
     >>> manager.getLink('(1)').click()
 
     >>> manager.getLink('edit individuals').click()
@@ -160,6 +190,15 @@ First, we will change the title of our default worksheet to 'Week 1'.
     >>> stephan.getControl('Apply').click()
     >>> 'Week 1' in stephan.contents
     True
+
+We'll note the message that appears for empty worksheets.  Also, the fact that
+there's no delete button.
+
+    >>> stephan.getLink('Week 1').click()
+    >>> analyze.printQuery("id('content-body')/form/div[1]", stephan.contents)
+    <div>This worksheet has no activities.</div>
+    >>> analyze.printQuery("id('content-body')/form/div[3]", stephan.contents)
+    >>> stephan.getLink('Worksheets').click()
 
 Then, we can use the 'New Worksheet' action link to create our second worksheet.
 
@@ -274,23 +313,26 @@ tests, we submit, the form manually:
     ...     < stephan.contents.find('Final')
     True
 
-You can also delete activities that you have created:
+We'll switch to the Fall term and add some activities to the English I section:
 
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=Fall')
     >>> stephan.getLink('New Activity').click()
-    >>> stephan.getControl('Title').value = 'HW 3'
-    >>> stephan.getControl('Description').value = 'Homework 3'
+    >>> stephan.getControl('Title').value = 'Lab 1'
+    >>> stephan.getControl('Description').value = 'Laboratory 1'
     >>> stephan.getControl('Category').value = ['assignment']
     >>> stephan.getControl('Add').click()
-    >>> stephan.getLink('Manage Activities').click()
-    >>> 'HW 3' in stephan.contents
+    >>> 'Lab 1' in stephan.contents
     True
-    >>> stephan.getControl(name='delete:list').value = ['Activity-3']
-    >>> stephan.getControl('Delete').click()
-    >>> 'HW 3' in stephan.contents
-    False
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Final'
+    >>> stephan.getControl('Description').value = 'Final Exam'
+    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Add').click()
+    >>> 'Final' in stephan.contents
+    True
 
-Fianlly, let's change the current workskeet back to 'Week 1'.  This setting
-of current worksheet will be in effect for the gradebook as well.
+Finally, we'll change the section back to the Winter Physics section and the
+current workskeet back to 'Week 1'.
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
     >>> stephan.getLink('Week 1').click()
@@ -639,15 +681,15 @@ preference.
     >>> manager.getLink('Score Systems').click()
     >>> manager.getLink('Add Score System').click()
     >>> url = manager.url + '?form-submitted&UPDATE_SUBMIT&title=Good/Bad'
-    >>> url = url + '&displayed1=G&value1=1&percent1=60'
-    >>> url = url + '&displayed2=B&value2=0&percent2=0'
+    >>> url = url + '&displayed1=G&abbr1=&value1=1&percent1=60'
+    >>> url = url + '&displayed2=B&abbr2=&value2=0&percent2=0'
     >>> manager.open(url)
 
 We'll start by calling up the current column preferences and note that there
 are none set yet.
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.getLink('Column Preferences').click()
+    >>> stephan.getLink('Preferences').click()
     >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
     <input type="checkbox" name="hide_total" />
     <input type="text" name="label_total" value="" />
@@ -670,7 +712,7 @@ were saved.
     >>> url += '&scoresystem_average=goodbad'
     >>> stephan.open(url)
 
-    >>> stephan.getLink('Column Preferences').click()
+    >>> stephan.getLink('Preferences').click()
     >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
     <input type="checkbox" checked="checked" name="hide_total" />
     <input type="text" name="label_total" value="Summe" />
@@ -1057,4 +1099,134 @@ changed taking into account the weighting:
     ...Claudia...96.00...69%...86...10.00...
     ...Tom...59.00...79%...44...15.00...
     ...Paul...40...80%...40...
+
+
+Column Linking
+--------------
+
+To add a spreadsheet feature we created LindedColumnActivity objects to allow
+the user to pull in columns from other worksheets.  These columns will not only
+display the contents of the source column, but the values will be factored
+into the average for the worksheet where the linked column activity lives.
+
+There are two types of linked activities, a link to an other worksheet's
+activity, or a link to the average column of the worksheet.  Activity links
+will use the score system of the source activity whereas worksheet average
+links will use an assumed 100 point system.
+ 
+We'll switch to the Fall term and enter some scores to the English I section:
+
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=Fall')
+    >>> stephan.getLink('Lab1').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'89'
+    >>> stephan.getControl('Hoffman, Tom').value = u'72'
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.getLink('Final').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'99'
+    >>> stephan.getControl('Hoffman, Tom').value = u'88'
+    >>> stephan.getControl('Save').click()
+
+We'll test the totals and averages so that we can check the linked values below:
+
+    >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    <b>188</b>
+    <b>94%</b>
+    <b>160</b>
+    <b>80%</b>
+    <b>0</b>
+    <b>0%</b>
+
+Now we'll return to the Winter Physics section and add our first linked column
+to the Week 1 worksheet:
+
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
+    >>> stephan.getLink('Week 1').click()
+    >>> stephan.getLink('New Linked Column').click()
+
+First we'll test the contents of the table of available activities and worksheet
+averages that can be chosen as the link.  We have to slice and dice the query
+results becuase the ... feature is erratic:
+
+    >>> results = analyze.queryHTML("id('content-body')/form/table//td", stephan.contents)
+    >>> slice_results = []
+    >>> for low, high in [(0, 3), (4, 7), (8, 11), (12, 15), (16, 19), (20, 23)]:
+    ...     slice_results.extend(results[low:high])
+    >>> for result in slice_results: print result
+    <td class="cell padded odd">Winter</td>
+    <td class="cell padded odd">Physics I</td>
+    <td class="cell padded odd">Week 2</td>
+    <td class="cell padded even"></td>
+    <td class="cell padded even"></td>
+    <td class="cell padded even"></td>
+    <td class="cell padded odd"></td>
+    <td class="cell padded odd"></td>
+    <td class="cell padded odd"></td>
+    <td class="cell padded even">Fall</td>
+    <td class="cell padded even">English I</td>
+    <td class="cell padded even">Sheet1</td>
+    <td class="cell padded odd"></td>
+    <td class="cell padded odd"></td>
+    <td class="cell padded odd"></td>
+    <td class="cell padded even"></td>
+    <td class="cell padded even"></td>
+    <td class="cell padded even"></td>
+
+    >>> results = analyze.queryHTML("id('content-body')/form/table//input", stephan.contents)
+    >>> for result in results: print sliceString(result, 'value', '"', endIndex=1, includeEnd=True)
+    value="HW 2"
+    value="Final"
+    value="Average"
+    value="Lab 1"
+    value="Final"
+    value="Average"
+
+We'll add a link to HW 2 from Week 2, then the average of the worksheet from the
+Fall English I section, Sheet1:
+
+    >>> stephan.getControl('HW 2').click()
+    >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.getControl('Average', index=1).click()
+
+The gradebook now has two new columns whose values are pulled in from the
+sources of the links.  First we'll test the editable fields:
+
+    >>> results = analyze.queryHTML("id('content-body')//input", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results[7:-1]: print sliceString(result, 'value', '"', endIndex=1, includeEnd=True)
+    value=""
+    value="86"
+    value="10.00"
+    value="44"
+    value=""
+    value="15.00"
+    value="40"
+    value=""
+    value=""
+
+Next we'll test the linked column data:
+
+    >>> results = analyze.queryHTML("id('content-body')//span", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results[7:]: print result
+    <span>42</span>
+    <span>0</span>
+    <span>72</span>
+    <span>80</span>
+    <span>90</span>
+    <span>94</span>
+
+Finally we'll test the totals and averages:
+
+    >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    <b>138.00</b>
+    <b>62%</b>
+    <b>211.00</b>
+    <b>77%</b>
+    <b>224</b>
+    <b>90%</b>
 

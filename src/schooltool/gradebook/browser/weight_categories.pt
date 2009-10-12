@@ -8,18 +8,29 @@
 </head>
 <body>
 <div metal:fill-slot="body">
-  <h1 tal:content="string: Category weights for worksheet ${context/title}" />
-
-  <div class="message" style="color:red; padding:1em"
-       tal:condition="view/message"
-       tal:content="view/message">
-    Message
-  </div>
-  <br />
-
-  <form method="post"
+  <form method="post" class="addscoresystem"
         tal:attributes="action string:${context/@@absolute_url}/weights.html">
-    <table>
+    <h3 tal:content="string: Category weights for worksheet ${context/title}" />
+    <br />
+
+    <p i18n:translate="">
+      This form allows you to change the weighting of categories when calculating average scores within a worksheet.
+    </p>
+    <p i18n:translate="">
+      Enter numeric values for each relevant category. The total of all values must be exactly 100.
+    </p>
+    <p i18n:translate="">
+      For example, to weight exams as 60% of the grade, homework as 20% and quizzes as 20%, enter "60" next to "Exam," 20" next to "Homework" and "20" next to "quiz."
+    </p>
+
+    <div class="message" style="color:red; padding:1em"
+         tal:condition="view/message"
+         tal:content="view/message">
+      Message
+    </div>
+    <br />
+
+    <table style="margin-left: 1em">
       <tr tal:repeat="row view/rows">
         <td>
           <label tal:attributes="for row/category" 

@@ -162,6 +162,20 @@
         set_schema=".interfaces.ILinkedActivity"
         />
   </class>
+  <class class=".activity.LinkedColumnActivity">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__
+                    label due_date source title description category
+		            scoresystem"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.ILinkedColumnActivity"
+        />
+  </class>
 
   <!-- External Activities Vocabulary -->
 

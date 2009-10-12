@@ -210,7 +210,7 @@ class IReadGradebook(Interface):
     def hasEvaluation(student, activity):
         """Check whether an evaluation exists for a student-activity pair."""
 
-    def getEvaluation(student, activity, default=None):
+    def getEvaluation(student, activity):
         """Get the evaluation of a student for a given activity."""
 
     def getCurrentEvaluationsForStudent(student):
@@ -304,7 +304,7 @@ class IMyGrades(Interface):
         title=_('Worksheets'),
         description=_('Worksheets in this gradebook.'))
 
-    def getEvaluation(student, activity, default=None):
+    def getEvaluation(student, activity):
         """Get the evaluation of a student for a given activity."""
 
     def getCurrentWorksheet():
@@ -329,7 +329,7 @@ class ILinkedActivity(IActivity):
         title=_(u"External Activity ID"),
         description=_(u"A unique identifier for the external activity"),
         required=True)
-    
+
     points = zope.schema.Int(
         title=_(u"Points"),
         description=_(u"Points value to calculate the activity grade"),
@@ -403,3 +403,13 @@ class IExternalActivity(zope.interface.Interface):
 
     def __eq__(another):
         """Compare equality with other external activities"""
+
+
+class ILinkedColumnActivity(IActivity):
+    """An activity that can be linked to an external activity"""
+
+    source = zope.schema.TextLine(
+        title=_(u"Linked Column Activity Source"),
+        description=_(u"A text string that specifies the source of the column"),
+        required=True)
+

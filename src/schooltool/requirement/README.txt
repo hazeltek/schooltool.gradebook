@@ -179,8 +179,9 @@ follows:
   >>> from decimal import Decimal
   >>> check = scoresystem.DiscreteValuesScoreSystem(
   ...    u'Check', u'Check-mark score system',
-  ...    [('+', Decimal(1), Decimal(80)), ('v', Decimal(0), Decimal(60)),
-  ...     ('-', Decimal(-1), Decimal(0))])
+  ...    [('+', '', Decimal(1), Decimal(80)),
+  ...     ('v', '', Decimal(0), Decimal(60)),
+  ...     ('-', '', Decimal(-1), Decimal(0))])
 
 The first and second arguments of the constructor are the title and
 description. The third argument is a list that really represents a mapping
@@ -248,9 +249,9 @@ provide more useful results:
   >>> from schooltool.requirement import scoresystem
   >>> check = scoresystem.DiscreteValuesScoreSystem(
   ...    u'Check', u'Check-mark score system',
-  ...    [('+', Decimal(1), Decimal(80)),
-  ...     ('v', Decimal(0), Decimal(60)),
-  ...     ('-', Decimal(-1), Decimal(0))],
+  ...    [('+', '', Decimal(1), Decimal(80)),
+  ...     ('v', '', Decimal(0), Decimal(60)),
+  ...     ('-', '', Decimal(-1), Decimal(0))],
   ...     minPassingScore='v')
   >>> check
   <DiscreteValuesScoreSystem u'Check'>
@@ -280,8 +281,9 @@ better than implicit anyways:
   >>> from schooltool.requirement import scoresystem
   >>> check = scoresystem.DiscreteValuesScoreSystem(
   ...    u'Check', u'Check-mark score system',
-  ...    [('+', Decimal(1), Decimal(80)), ('v', Decimal(0), Decimal(60)), 
-  ...     ('-', Decimal(-1)), Decimal(0)],
+  ...    [('+', '', Decimal(1), Decimal(80)),
+  ...     ('v', '', Decimal(0), Decimal(60)), 
+  ...     ('-', '', Decimal(-1)), Decimal(0)],
   ...    bestScore='+', minPassingScore='v')
 
   >>> check.getBestScore()
@@ -299,8 +301,8 @@ systems are global ones, they reduce very efficiently for pickling.
   >>> scoresystem.PassFail.title
   u'Pass/Fail'
   >>> scoresystem.PassFail.scores
-  [(u'Pass', Decimal("1"), Decimal("60")), 
-   (u'Fail', Decimal("0"), Decimal("0"))]
+  [(u'Pass', u'', Decimal("1"), Decimal("60")), 
+   (u'Fail', u'', Decimal("0"), Decimal("0"))]
   >>> scoresystem.PassFail.isValidScore('Pass')
   True
   >>> scoresystem.PassFail.isPassingScore('Pass')
@@ -327,9 +329,11 @@ systems are global ones, they reduce very efficiently for pickling.
   >>> scoresystem.AmericanLetterScoreSystem.title
   u'Letter Grade'
   >>> scoresystem.AmericanLetterScoreSystem.scores
-  [('A', Decimal("4"), Decimal("90")), ('B', Decimal("3"), Decimal("80")), 
-   ('C', Decimal("2"), Decimal("70")), ('D', Decimal("1"), Decimal("60")), 
-   ('F', Decimal("0"), Decimal("0"))]
+  [('A', u'', Decimal("4"), Decimal("90")),
+   ('B', u'', Decimal("3"), Decimal("80")), 
+   ('C', u'', Decimal("2"), Decimal("70")),
+   ('D', u'', Decimal("1"), Decimal("60")), 
+   ('F', u'', Decimal("0"), Decimal("0"))]
   >>> scoresystem.AmericanLetterScoreSystem.isValidScore('C')
   True
   >>> scoresystem.AmericanLetterScoreSystem.isValidScore('E')
@@ -357,7 +361,7 @@ systems are global ones, they reduce very efficiently for pickling.
   'ExtendedAmericanLetterScoreSystem'
   >>> scoresystem.ExtendedAmericanLetterScoreSystem.title
   u'Extended Letter Grade'
-  >>> [s for s, v, p in scoresystem.ExtendedAmericanLetterScoreSystem.scores]
+  >>> [s for s, a, v, p in scoresystem.ExtendedAmericanLetterScoreSystem.scores]
   ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F']
   >>> scoresystem.ExtendedAmericanLetterScoreSystem.isValidScore('B-')
   True

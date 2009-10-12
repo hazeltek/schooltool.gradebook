@@ -10,16 +10,16 @@
         tal:attributes="action string:${context/@@absolute_url}/layout_report_card.html">
     <input type="hidden" name="form-submitted" value="" />
 
-	<h3>Layout Report Card</h3>
+	<h3 i18n:translate="">Report Card Layout</h3>
 
     <fieldset>
-    <legend><b>Grid Columns</b><legend>
+    <legend><b i18n:translate="">Grid Columns</b><legend>
     <table>
       <tr>
         <td></td>
-        <td align="center">Source</td>
-        <td align="center">Heading</td>
-        <td>Remove?</td>
+        <td align="center" i18n:translate="">Source</td>
+        <td align="center" i18n:translate="">Heading</td>
+        <td i18n:translate="">Remove?</td>
       </tr>
 
       <tal:block repeat="column view/columns">
@@ -58,7 +58,7 @@
         </td>
         <td>
           <select id="new_source" name="new_source">
-            <option selected value="">Choose a column to add</option>
+            <option selected value="" i18n:translate="">Choose a column to add</option>
             <tal:block repeat="choice view/column_choices">
               <option tal:attributes="value choice/value"
                       tal:content="choice/name" />
@@ -74,13 +74,13 @@
     </fieldset>
 
     <fieldset>
-    <legend><b>Outline Activities</b><legend>
+    <legend><b i18n:translate="">Outline Activities</b><legend>
     <table>
       <tr>
         <td></td>
-        <td align="center">Source</td>
-        <td align="center">Heading</td>
-        <td>Remove?</td>
+        <td align="center" i18n:translate="">Source</td>
+        <td align="center" i18n:translate="">Heading</td>
+        <td i18n:translate="">Remove?</td>
       </tr>
 
       <tal:block repeat="activity view/outline_activities">
@@ -119,7 +119,7 @@
         </td>
         <td>
           <select id="new_activity_source" name="new_activity_source">
-            <option selected value="">Choose an activity to add</option>
+            <option selected value="" i18n:translate="">Choose an activity to add</option>
             <tal:block repeat="choice view/activity_choices">
               <option tal:attributes="value choice/value"
                       tal:content="choice/name" />
@@ -135,7 +135,10 @@
     </fieldset>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="Update" value="Update" />
+      <input type="submit" class="button-ok" name="Update" value="Save"
+             i18n:attributes="value" />
+      <input type="submit" class="button-ok" name="OK" value="OK"
+             i18n:attributes="value" />
     </div>
   </form>
 

@@ -22,3 +22,31 @@ def makeDecimalARock():
 
 makeDecimalARock()
 del makeDecimalARock
+
+def sliceString(source, start, end=None, startIndex=0, endIndex=0,
+                includeEnd=False):
+    index = -1 * len(start)
+    while startIndex >= 0:
+        index += len(start)
+        index = source[index:].find(start)
+        if index < 0:
+            index = 0
+            break
+        startIndex -= 1
+    if end is None:
+        last = len(source)
+    else:
+        last = index - len(end)
+        while endIndex >= 0:
+            last += len(end)
+            next = source[last:].find(end)
+            if next < 0:
+                last = len(source)
+                break
+            else:
+                last += next
+            endIndex -= 1
+        if last < len(source) and includeEnd:
+            last += len(end)
+    return source[index:last]
+

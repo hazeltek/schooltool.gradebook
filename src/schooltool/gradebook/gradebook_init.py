@@ -139,6 +139,8 @@ class GradebookInit(InitBase):
 
 
 def getGradebookRoot(app):
+    if GRADEBOOK_ROOT_KEY not in app:
+        return None
     return app[GRADEBOOK_ROOT_KEY]
 
 

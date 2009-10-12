@@ -95,11 +95,11 @@ To add a new score system, the user clicks 'Add Score System'.
 
 We'll send the form values necessary to add a score system called 'Good/Bad'.
 
-    >>> url = update_url + '&title=Good/Bad&displayed1=G&value1=1&percent1=60'
-    >>> url = url + '&displayed2=B&value2=0&percent2=0'
+    >>> url = update_url + '&title=Good/Bad&displayed1=G&abbr1=&value1=1&percent1=60'
+    >>> url = url + '&displayed2=B&abbr2=&value2=0&percent2=0'
     >>> manager.open(url)
 
-Now we see the two score systems in the list.
+Now we see the new score system in the list.
 
     >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
     <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
@@ -124,9 +124,11 @@ Let's click on 'Good/Bad' and test it's view.
     >>> manager.getLink('Good/Bad').click()
     >>> analyze.printQuery("id('content-body')/table//span", manager.contents)
     <span>G</span>
+    <span></span>
     <span>1</span>
     <span>60</span>
     <span>B</span>
+    <span></span>
     <span>0</span>
     <span>0</span>
 

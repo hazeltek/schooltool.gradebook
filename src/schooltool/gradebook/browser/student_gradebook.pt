@@ -1,11 +1,10 @@
-<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool.gradebook">
+<html metal:use-macro="view/@@standard_macros/page"
+      i18n:domain="schooltool.gradebook">
 <head>
-  <title metal:fill-slot="title" tal:content="string: ${view/worksheet} for ${view/student} in ${view/section}" />
+  <title metal:fill-slot="title" tal:content="view/title" />
 </head>
 <body>
-  <h1 metal:fill-slot="content-header" i18n:translate="">
-    <span tal:replace="string: ${view/worksheet} for ${view/student} in ${view/section}" />
-  </h1>
+  <h1 metal:fill-slot="content-header" tal:content="view/title" />
 
 <metal:block metal:fill-slot="body">
   <div>

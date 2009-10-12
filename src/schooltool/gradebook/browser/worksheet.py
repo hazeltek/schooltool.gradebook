@@ -29,6 +29,7 @@ from zope.app.form.browser.editview import EditView
 from zope.publisher.browser import BrowserView
 
 from schooltool.app.browser import app
+from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.browser.activity import BaseEditView
 from schooltool.person.interfaces import IPerson
@@ -53,13 +54,20 @@ class WorksheetManageView(object):
     
     def activities(self):
         pos = 0
+        results = []
         for activity in list(self.context.values()):
             pos += 1
+            url = absoluteURL(activity, self.request)
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                url += '/editLinkedColumn.html'
             yield {'name': getName(activity),
                    'title': activity.title,
-                   'url': absoluteURL(activity, self.request),
+                   'url': url,
                    'pos': pos,
                    'deployed': self.context.deployed}
+
+    def isTemplate(self):
+        return interfaces.IReportWorksheet.providedBy(self.context)
 
     def canModify(self):
         return canWrite(self.context, 'title')
@@ -88,6 +96,10 @@ class WorksheetManageView(object):
                 new_pos = int(self.request['pos.'+name])
                 if new_pos != old_pos:
                     self.context.changePosition(name, new_pos-1)
+
+    @property
+    def noActivitiesMessage(self):
+        return _('This worksheet has no activities.')
 
 
 class WorksheetAddView(app.BaseAddView):

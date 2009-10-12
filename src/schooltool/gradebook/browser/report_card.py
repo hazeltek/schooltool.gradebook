@@ -20,11 +20,12 @@
 Report Card Views
 """
 
+from zope.app.component.vocabulary import UtilityVocabulary, UtilityTerm
 from zope.app.container.interfaces import INameChooser
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts, queryUtility
 from zope.interface import Interface, implements
-from zope.schema import Choice
+from zope.schema import Choice, Int
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
@@ -46,7 +47,14 @@ from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
 from schooltool.gradebook.gradebook_init import OutlineActivity
 from schooltool.requirement.interfaces import ICommentScoreSystem
+from schooltool.requirement.interfaces import IScoreSystem
+from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
+ABSENT_HEADING = _('Absent')
+TARDY_HEADING = _('Tardy')
+ABSENT_KEY = 'absent'
+TARDY_KEY = 'tardy'
 
 def copyActivities(sourceWorksheet, destWorksheet):
     """Copy the activities from the source worksheet to the destination."""
@@ -102,30 +110,94 @@ class TemplatesView(object):
                     self.context.changePosition(name, new_pos-1)
 
 
-class IExistingScoreSystem(Interface):
+def ReportScoreSystemsVocabulary(context):
+    vocab = UtilityVocabulary(context, interface=IScoreSystem)
+    rangedTerm = UtilityTerm('ranged', _('-- Use range below --'))
+    vocab._terms[rangedTerm.token] = rangedTerm
+    return vocab
+
+
+class IReportScoreSystem(Interface):
     """A schema used to choose an existing score system."""
 
     scoresystem = Choice(
-        title=_('Existing Score System'),
-        vocabulary='schooltool.requirement.scoresystems',
+        title=_('Score System'),
+        description=_('Choose an existing score system or use range below'),
+        vocabulary='schooltool.gradebook.reportscoresystems',
         required=True)
 
+    min = Int(
+        title=_("Minimum"),
+        description=_("Lowest integer score value possible"),
+        min=0,
+        required=False)
 
-class ExistingScoresSystem(object):
-    implements(IExistingScoreSystem)
+    max = Int(
+        title=_("Maximum"),
+        description=_("Highest integer score value possible"),
+        min=0,
+        required=False)
+
+
+class ReportScoresSystem(object):
+    implements(IReportScoreSystem)
     adapts(IReportActivity)
 
     def __init__(self, context):
         self.__dict__['context'] = context
 
+    def isRanged(self, ss):
+        return (IRangedValuesScoreSystem.providedBy(ss) and
+                ss.title == 'generated')
+
+    def getValue(self, name, default):
+        if default is None:
+            default = 0
+        value = self.__dict__.get(name, default)
+        if value is None:
+            return default
+        return value
+
     def __setattr__(self, name, value):
+        self.__dict__[name] = value
+        ss = self.context.scoresystem
+
         if name == 'scoresystem':
-            self.context.scoresystem = value
-        else:
-            setattr(self.context, name, value)
+            if value == 'ranged':
+                if self.isRanged(ss):
+                    minimum = self.getValue('min', ss.min)
+                    maximum = self.getValue('max', ss.max)
+                else:
+                    minimum = self.getValue('min', 0)
+                    maximum = self.getValue('max', 100)
+                self.context.scoresystem = RangedValuesScoreSystem(u'generated', 
+                    min=minimum, max=maximum)
+            else:
+                self.context.scoresystem = value
+
+        else: # min, max
+            if self.isRanged(ss):
+                minimum = self.getValue('min', ss.min)
+                maximum = self.getValue('max', ss.max)
+                self.context.scoresystem = RangedValuesScoreSystem(u'generated', 
+                    min=minimum, max=maximum)
 
     def __getattr__(self, name):
-        return getattr(self.context, name)
+        ss = self.context.scoresystem
+        if ss is None:
+            return None
+        rv = None
+        if self.isRanged(ss):
+            if name == 'scoresystem':
+                rv = 'ranged'
+            elif name == 'min':
+                rv = ss.min
+            elif name == 'max':
+                rv = ss.max
+        else:
+            if name == 'scoresystem':
+                rv = ss
+        return rv
 
 
 class ReportActivityAddView(form.AddForm):
@@ -135,7 +207,7 @@ class ReportActivityAddView(form.AddForm):
 
     fields = field.Fields(IReportActivity)
     fields = fields.select('title', 'label', 'description')
-    fields += field.Fields(IExistingScoreSystem)
+    fields += field.Fields(IReportScoreSystem)
 
     def updateActions(self):
         super(ReportActivityAddView, self).updateActions()
@@ -160,8 +232,19 @@ class ReportActivityAddView(form.AddForm):
 
     def create(self, data):
         categories = getCategories(ISchoolToolApplication(None))
+        if data['scoresystem'] == 'ranged':
+            minimum = data['min']
+            if minimum is None:
+                minimum = 0
+            maximum = data['max']
+            if maximum is None:
+                maximum = 100
+            scoresystem = RangedValuesScoreSystem(u'generated', 
+                min=minimum, max=maximum)
+        else:
+            scoresystem = data['scoresystem']
         activity = ReportActivity(data['title'], categories.getDefaultKey(), 
-                                  data['scoresystem'], data['description'],
+                                  scoresystem, data['description'],
                                   data['label'])
         return activity
 
@@ -183,7 +266,7 @@ class ReportActivityEditView(form.EditForm):
 
     fields = field.Fields(IReportActivity)
     fields = fields.select('title', 'label', 'description')
-    fields += field.Fields(IExistingScoreSystem)
+    fields += field.Fields(IReportScoreSystem)
 
     @button.buttonAndHandler(_("Cancel"))
     def handle_cancel_action(self, action):
@@ -310,13 +393,13 @@ class LayoutReportCardView(object):
 
     @property
     def column_choices(self):
-        return self.choices()
+        return self.choices(no_journal=False)
 
     @property
     def activity_choices(self):
         return self.choices(no_comment=False)
 
-    def choices(self, no_comment=True):
+    def choices(self, no_comment=True, no_journal=True):
         """Get  a list of the possible choices for layout activities."""
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -338,10 +421,21 @@ class LayoutReportCardView(object):
                             'value': value,
                             }
                         results.append(result)
+        if not no_journal:
+            result = {
+                'name': ABSENT_HEADING,
+                'value': ABSENT_KEY,
+                }
+            results.append(result)
+            result = {
+                'name': TARDY_HEADING,
+                'value': TARDY_KEY,
+                }
+            results.append(result)
         return results
 
     def update(self):
-        if 'Update' in self.request:
+        if 'Update' in self.request or 'OK' in self.request:
             columns = self.updatedColumns()
             outline_activities = self.updatedOutlineActivities()
 
@@ -354,6 +448,9 @@ class LayoutReportCardView(object):
             layout = root.layouts[schoolyearKey]
             layout.columns = columns
             layout.outline_activities = outline_activities
+
+            if 'OK' in self.request:
+                self.request.response.redirect(self.nextURL())
 
     def updatedColumns(self):
         columns = []
@@ -396,6 +493,9 @@ class LayoutReportCardView(object):
                                      self.request['new_activity_heading'])
             activities.append(column)
         return activities
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
 
 
 def handleSectionAdded(event):
