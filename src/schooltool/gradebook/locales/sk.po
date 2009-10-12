@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Sep 23 15:28:49 2009\n"
-"PO-Revision-Date: 2008-07-29 17:14+0000\n"
-"Last-Translator: helix84 <Unknown>\n"
+"POT-Creation-Date: 2009-09-22 21:17+0000\n"
+"PO-Revision-Date: 2009-10-11 22:31+0000\n"
+"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Slovak <sk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-18 17:09+0000\n"
+"X-Launchpad-Export-Date: 2009-10-12 07:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:163
@@ -24,15 +24,13 @@ msgid "Activities"
 msgstr "Aktivity"
 
 #: /src/schooltool/gradebook/activity.py:52
-#, fuzzy
 msgid "Sheet1"
-msgstr "Ulica"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:133
 #: /src/schooltool/gradebook/browser/report_card.py:133
-#, fuzzy
 msgid "Add new activity"
-msgstr "Pridaj aktivitu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:146
 #: /src/schooltool/gradebook/browser/activity.py:201
@@ -54,9 +52,8 @@ msgid "Cancel"
 msgstr "Zrušiť"
 
 #: /src/schooltool/gradebook/browser/activity.py:188
-#, fuzzy
 msgid "Add an External Activity"
-msgstr "Pridaj aktivitu"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:259
@@ -65,9 +62,8 @@ msgid "Change information for ${fullname}"
 msgstr "Zmeniť informácie pre osobu ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:277
-#, fuzzy
 msgid "Edit External Activity"
-msgstr "Uprav aktivitu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:280
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
@@ -88,14 +84,12 @@ msgid "The external activity couldn't be found"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:68
-#, fuzzy
 msgid "External Activity"
-msgstr "Uprav aktivitu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:69
-#, fuzzy
 msgid "The external activity"
-msgstr "Nasledujúci deň"
+msgstr ""
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:26
@@ -109,9 +103,8 @@ msgstr "tlačidlo pridaj"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
-#, fuzzy
 msgid "Manage Activity Categories"
-msgstr "Kategórie aktivít"
+msgstr ""
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:44
@@ -147,9 +140,8 @@ msgid "Add a Worksheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:125
-#, fuzzy
 msgid "Add a Report Worksheet"
-msgstr "Pridaj zdroj"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:137
 msgid "Edit Worksheet"
@@ -167,9 +159,8 @@ msgid "Edit Report Worksheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:213
-#, fuzzy
 msgid "New Report Activity"
-msgstr "Nová aktivita"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:260
 msgid "New Report Worksheet"
@@ -195,18 +186,16 @@ msgid "New External Activity"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:320
-#, fuzzy
 msgid "Summary"
-msgstr "Nedeľa"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:341
 msgid "Manage Activities"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:355
-#, fuzzy
 msgid "Column Preferences"
-msgstr "Nastavenia kalendára"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:372
 msgid "Update Grades"
@@ -228,15 +217,13 @@ msgid "Print Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
-#, fuzzy
 msgid "Template"
-msgstr "Šablóny"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
-#, fuzzy
 msgid "Deploy Report Worksheet Template"
-msgstr "Pridaj zdroj"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:197
 msgid ""
@@ -258,19 +245,16 @@ msgid "Ave."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:67
-#, fuzzy
 msgid "Total"
-msgstr "Dnes"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:809
-#, fuzzy
 msgid "-- No score system --"
-msgstr "Vlastný bodový systém"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:860
-#, fuzzy
 msgid "Previous"
-msgstr "Predchádzajúci rok"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:869
 msgid "Next"
@@ -278,15 +262,13 @@ msgstr "Ďalej"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:947
-#, fuzzy
 msgid "Enter grades for ${fullname}"
-msgstr "Zmeniť demografické informácie pre osobu ${fullname}"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:8
-#, fuzzy
 msgid "Set Column Preferences"
-msgstr "Nastavenia kalendára"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
@@ -363,9 +345,8 @@ msgid "Layout Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
-#, fuzzy
 msgid "New Column"
-msgstr "Nový kurz"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:34
@@ -378,28 +359,24 @@ msgid "Section"
 msgstr "Sekcia"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:5
-#, fuzzy
 msgid "No Current Term"
-msgstr "Tento rok"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:87
-#, fuzzy
 msgid "Report Card"
-msgstr "Importuj kurzy"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:91
 msgid "Courses"
 msgstr "Kurzy"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:99
-#, fuzzy
 msgid "Student"
-msgstr "Žiaci"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:109
-#, fuzzy
 msgid "Existing Score System"
-msgstr "Existujúci bodový systém"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/student_gradebook.pt:7
 #: /src/schooltool/requirement/browser/requirement.pt:11
@@ -431,14 +408,12 @@ msgid "Weight Categories"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
-#, fuzzy
 msgid "Delete Worksheet"
-msgstr "zmaž udalosť"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
-#, fuzzy
 msgid "Worksheet"
-msgstr "Telefón do práce"
+msgstr ""
 
 #: /src/schooltool/gradebook/configure.zcml:283
 msgid "Gradebook API"
@@ -492,28 +467,24 @@ msgid "Deployed Report Sheets"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:55
-#, fuzzy
 msgid "Report Card Layouts"
-msgstr "Importuj kurzy"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:117
-#, fuzzy
 msgid "Due Date"
-msgstr "(Due) Date"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:118
-#, fuzzy
 msgid "The date the activity is due to be graded."
-msgstr "Dátum vytvorenia aktivity."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:123
 msgid "Label"
 msgstr "Označenie"
 
 #: /src/schooltool/gradebook/interfaces.py:124
-#, fuzzy
 msgid "The column label for the activity in the gradebook."
-msgstr "Dátum vytvorenia aktivity."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:128
 #: /src/schooltool/gradebook/interfaces.py:393
@@ -549,18 +520,16 @@ msgid "The date the activity was created."
 msgstr "Dátum vytvorenia aktivity."
 
 #: /src/schooltool/gradebook/interfaces.py:161
-#, fuzzy
 msgid "Columns"
-msgstr "Počet"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:162
 msgid "Columns to be printed in the report card."
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:165
-#, fuzzy
 msgid "Outline Activities"
-msgstr "Aktivity"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "Activities to be printed in the outline section."
@@ -576,9 +545,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:200
 #: /src/schooltool/gradebook/interfaces.py:305
-#, fuzzy
 msgid "Worksheets in this gradebook."
-msgstr "Žiaci v tejto klasifikačnej knihe."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:204
 msgid "Activities in this gradebook."
@@ -600,15 +568,13 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:325
 #: /src/schooltool/gradebook/interfaces.py:379
-#, fuzzy
 msgid "The registration name of the source"
-msgstr "Popis zdroja."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:329
 #: /src/schooltool/gradebook/interfaces.py:383
-#, fuzzy
 msgid "External Activity ID"
-msgstr "Uprav aktivitu"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:330
 #: /src/schooltool/gradebook/interfaces.py:384
@@ -616,9 +582,8 @@ msgid "A unique identifier for the external activity"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:334
-#, fuzzy
 msgid "Points"
-msgstr "Poliak"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:335
 msgid "Points value to calculate the activity grade"
@@ -639,14 +604,12 @@ msgid "A brief title of the external activities source"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:389
-#, fuzzy
 msgid "A brief title of the external activity."
-msgstr "Detailný popis aktivity."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:394
-#, fuzzy
 msgid "A detailed description of the external activity."
-msgstr "Detailný popis aktivity."
+msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
@@ -681,9 +644,8 @@ msgid "Required input is missing."
 msgstr "Požadovaný vstup chýba"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:39
-#, fuzzy
 msgid "The Title field must not be empty."
-msgstr "Titulok nemôže byť prázdny"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:40
 msgid "Value field must contain a valid number."
@@ -723,19 +685,16 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/configure.zcml:22
-#, fuzzy
 msgid "Add Score System"
-msgstr "Systém bodovania"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
-#, fuzzy
 msgid "View Score System"
-msgstr "Existujúci bodový systém"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 #: /src/schooltool/requirement/browser/configure.zcml:8
-#, fuzzy
 msgid "Score Systems"
-msgstr "Systém bodovania"
+msgstr ""

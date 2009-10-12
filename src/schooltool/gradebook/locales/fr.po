@@ -7,34 +7,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Sep 23 15:28:49 2009\n"
-"PO-Revision-Date: 2009-06-25 10:47+0000\n"
+"POT-Creation-Date: 2009-09-22 21:17+0000\n"
+"PO-Revision-Date: 2009-10-11 22:29+0000\n"
 "Last-Translator: Guillaume LORET <guillaume.loret@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-07 16:12+0000\n"
+"X-Launchpad-Export-Date: 2009-10-12 07:07+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:163
 #: /src/schooltool/gradebook/interfaces.py:203
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
-#, fuzzy
 msgid "Activities"
-msgstr "Administrer les activités"
+msgstr ""
 
 #: /src/schooltool/gradebook/activity.py:52
-#, fuzzy
 msgid "Sheet1"
-msgstr "Rue"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:133
 #: /src/schooltool/gradebook/browser/report_card.py:133
-#, fuzzy
 msgid "Add new activity"
-msgstr "Nouvelle activité"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:146
 #: /src/schooltool/gradebook/browser/activity.py:201
@@ -56,9 +53,8 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: /src/schooltool/gradebook/browser/activity.py:188
-#, fuzzy
 msgid "Add an External Activity"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:259
@@ -67,9 +63,8 @@ msgid "Change information for ${fullname}"
 msgstr "Changez l'information pour ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:277
-#, fuzzy
 msgid "Edit External Activity"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:280
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
@@ -78,34 +73,29 @@ msgstr "Appliquer"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:318
-#, fuzzy
 msgid "$value is not a valid weight."
-msgstr "\"${username}\" n'est pas un noms d'utilisateur valide."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:327
 msgid "Category weights must add up to 100."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:373
-#, fuzzy
 msgid "The external activity couldn't be found"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:68
-#, fuzzy
 msgid "External Activity"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:69
-#, fuzzy
 msgid "The external activity"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:26
-#, fuzzy
 msgid "remove-button"
-msgstr "Bouton OK"
+msgstr ""
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:35
@@ -114,9 +104,8 @@ msgstr "bouton \"ajouter\""
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
-#, fuzzy
 msgid "Manage Activity Categories"
-msgstr "Catégories d'activité"
+msgstr ""
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:44
@@ -124,34 +113,28 @@ msgid "change-button"
 msgstr "Modifier"
 
 #: /src/schooltool/gradebook/browser/category.py:43
-#, fuzzy
 msgid "Categories"
-msgstr "Catégories"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:49
-#, fuzzy
 msgid "New Category"
-msgstr "Nouveau cours"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:52
-#, fuzzy
 msgid "Default Category"
-msgstr "Catégories"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:75
-#, fuzzy
 msgid "Categories successfully deleted."
-msgstr "L'importation du texte CSV est réussie."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:81
-#, fuzzy
 msgid "Category successfully added."
-msgstr "Le mot de passe à été changé avec succés"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:87
-#, fuzzy
 msgid "Default category successfully changed."
-msgstr "Le mot de passe à été changé avec succés"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:113
 msgid "Add a Worksheet"
@@ -204,18 +187,16 @@ msgid "New External Activity"
 msgstr "Nouvelle activité externe"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:320
-#, fuzzy
 msgid "Summary"
-msgstr "Dimanche"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:341
 msgid "Manage Activities"
 msgstr "Administrer les activités"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:355
-#, fuzzy
 msgid "Column Preferences"
-msgstr "Préférences calendrier"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:372
 msgid "Update Grades"
@@ -237,15 +218,13 @@ msgid "Print Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
-#, fuzzy
 msgid "Template"
-msgstr "Modèles"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
-#, fuzzy
 msgid "Deploy Report Worksheet Template"
-msgstr "Nouvelle feuille de travail"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:197
 msgid ""
@@ -259,18 +238,16 @@ msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:626
-#, fuzzy
 msgid "The grade $value for $name is not valid."
-msgstr "Le remplacement de date est invalide"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:67
 msgid "Ave."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:67
-#, fuzzy
 msgid "Total"
-msgstr "Aujourd'hui"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:809
 msgid "-- No score system --"
@@ -286,42 +263,35 @@ msgstr "Suivant"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:947
-#, fuzzy
 msgid "Enter grades for ${fullname}"
-msgstr "Modifier la démographie pour ${fullname}"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:8
-#, fuzzy
 msgid "Set Column Preferences"
-msgstr "Préférences calendrier"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
 #: /src/schooltool/gradebook/browser/mygrades.pt:87
-#, fuzzy
 msgid "Grade"
-msgstr "Carnet de notes"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:28
-#, fuzzy
 msgid "Student Name"
-msgstr "ID étudiant"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:29
-#, fuzzy
 msgid "Activity Name"
-msgstr "Catégories d'activité"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:30
-#, fuzzy
 msgid "(Due) Date"
-msgstr "Date d'achat"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:31
-#, fuzzy
 msgid "Modification Date"
-msgstr "Type de lieu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:33
 msgid "Max. Score"
@@ -350,15 +320,13 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:13
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
-#, fuzzy
 msgid "Grade ${name}"
-msgstr "Période ${number}"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:31
 #: /src/schooltool/gradebook/browser/mygrades.pt:84
-#, fuzzy
 msgid "Activity"
-msgstr "Nouvelle activité"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:124
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:131
@@ -378,9 +346,8 @@ msgid "Layout Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
-#, fuzzy
 msgid "New Column"
-msgstr "Nouveau cours"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:34
@@ -393,28 +360,24 @@ msgid "Section"
 msgstr "Classe"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:5
-#, fuzzy
 msgid "No Current Term"
-msgstr "Année en cours"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:87
-#, fuzzy
 msgid "Report Card"
-msgstr "Importer des cours"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:91
 msgid "Courses"
 msgstr "Cours"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:99
-#, fuzzy
 msgid "Student"
-msgstr "Etudiants"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:109
-#, fuzzy
 msgid "Existing Score System"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/student_gradebook.pt:7
 #: /src/schooltool/requirement/browser/requirement.pt:11
@@ -446,14 +409,12 @@ msgid "Weight Categories"
 msgstr "Catégories"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
-#, fuzzy
 msgid "Delete Worksheet"
-msgstr "Nouvelle feuille de travail"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
-#, fuzzy
 msgid "Worksheet"
-msgstr "Feuilles de travail"
+msgstr ""
 
 #: /src/schooltool/gradebook/configure.zcml:283
 msgid "Gradebook API"
@@ -464,42 +425,36 @@ msgid "Administration can grade students"
 msgstr "L'administration peut noter les étudiants"
 
 #: /src/schooltool/gradebook/gradebook_init.py:114
-#, fuzzy
 msgid "Assignment"
-msgstr "Assigner"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:115
 msgid "Essay"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:116
-#, fuzzy
 msgid "Exam"
-msgstr "Exemple :"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:117
-#, fuzzy
 msgid "Homework"
-msgstr "Salle de classe"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:118
 msgid "Journal"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:119
-#, fuzzy
 msgid "Lab"
-msgstr "étiquette"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:120
-#, fuzzy
 msgid "Presentation"
-msgstr "Générations"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:121
-#, fuzzy
 msgid "Project"
-msgstr "parent"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:53
 #: /src/schooltool/gradebook/browser/templates_overview.pt:4
@@ -513,14 +468,12 @@ msgid "Deployed Report Sheets"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:55
-#, fuzzy
 msgid "Report Card Layouts"
-msgstr "Importer des cours"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:117
-#, fuzzy
 msgid "Due Date"
-msgstr "Date"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:118
 msgid "The date the activity is due to be graded."
@@ -540,52 +493,44 @@ msgid "Description"
 msgstr "Description"
 
 #: /src/schooltool/gradebook/interfaces.py:129
-#, fuzzy
 msgid "A detailed description of the activity."
-msgstr "Description de la section."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:133
-#, fuzzy
 msgid "Category"
-msgstr "Titre de la catégorie."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:134
-#, fuzzy
 msgid "The activity category"
-msgstr "Catégories d'activité"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:139
-#, fuzzy
 msgid "Scoresystem"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:140
-#, fuzzy
 msgid "The activity scoresystem."
-msgstr "Catégories d'activité"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:144
 msgid "Date"
 msgstr "Date"
 
 #: /src/schooltool/gradebook/interfaces.py:145
-#, fuzzy
 msgid "The date the activity was created."
-msgstr "Catégories d'activité"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:161
-#, fuzzy
 msgid "Columns"
-msgstr "comptes"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:162
 msgid "Columns to be printed in the report card."
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:165
-#, fuzzy
 msgid "Outline Activities"
-msgstr "Administrer les activités"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "Activities to be printed in the outline section."
@@ -601,53 +546,45 @@ msgstr "Feuilles de travail"
 
 #: /src/schooltool/gradebook/interfaces.py:200
 #: /src/schooltool/gradebook/interfaces.py:305
-#, fuzzy
 msgid "Worksheets in this gradebook."
-msgstr "Retourner au Carnet de note"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:204
-#, fuzzy
 msgid "Activities in this gradebook."
-msgstr "Retourner au Carnet de note"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:207
 msgid "Students"
 msgstr "Etudiants"
 
 #: /src/schooltool/gradebook/interfaces.py:208
-#, fuzzy
 msgid "Students in this gradebook."
-msgstr "Retourner au Carnet de note"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:324
 #: /src/schooltool/gradebook/interfaces.py:355
 #: /src/schooltool/gradebook/interfaces.py:378
-#, fuzzy
 msgid "External Activity Source"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:325
 #: /src/schooltool/gradebook/interfaces.py:379
-#, fuzzy
 msgid "The registration name of the source"
-msgstr "Description des ressources"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:329
 #: /src/schooltool/gradebook/interfaces.py:383
-#, fuzzy
 msgid "External Activity ID"
-msgstr "Nouvelle activité externe"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:330
 #: /src/schooltool/gradebook/interfaces.py:384
-#, fuzzy
 msgid "A unique identifier for the external activity"
-msgstr "Description de la section."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:334
-#, fuzzy
 msgid "Points"
-msgstr "Polonais"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:335
 msgid "Points value to calculate the activity grade"
@@ -664,19 +601,16 @@ msgid "Title"
 msgstr "Titre"
 
 #: /src/schooltool/gradebook/interfaces.py:361
-#, fuzzy
 msgid "A brief title of the external activities source"
-msgstr "Description de la section."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:389
-#, fuzzy
 msgid "A brief title of the external activity."
-msgstr "Description de la section."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:394
-#, fuzzy
 msgid "A detailed description of the external activity."
-msgstr "Description de la section."
+msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
@@ -695,33 +629,28 @@ msgid "Showing ${count} of ${total} items"
 msgstr "Affichage de ${count} éléments sur ${total}"
 
 #: /src/schooltool/requirement/browser/requirement.py:55
-#, fuzzy
 msgid "Requirement index"
-msgstr "Index des ressources"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:242
-#, fuzzy
 msgid "Exisiting Score System"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:247
-#, fuzzy
 msgid "Custom score system"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:359
 msgid "Required input is missing."
 msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:39
-#, fuzzy
 msgid "The Title field must not be empty."
-msgstr "Les titres peuvent ne pas être vides"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:40
-#, fuzzy
 msgid "Value field must contain a valid number."
-msgstr "\"${username}\" n'est pas un noms d'utilisateur valide."
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:41
 msgid "Percent field must contain a valid number."
@@ -757,19 +686,16 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/configure.zcml:22
-#, fuzzy
 msgid "Add Score System"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
-#, fuzzy
 msgid "View Score System"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 #: /src/schooltool/requirement/browser/configure.zcml:8
-#, fuzzy
 msgid "Score Systems"
-msgstr "Ajouter un nouveau Terme"
+msgstr ""

@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Sep 23 15:28:49 2009\n"
-"PO-Revision-Date: 2008-09-29 20:32+0000\n"
-"Last-Translator: Iwan Setiawan <Unknown>\n"
+"POT-Creation-Date: 2009-09-22 21:17+0000\n"
+"PO-Revision-Date: 2009-10-11 22:30+0000\n"
+"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-18 17:09+0000\n"
+"X-Launchpad-Export-Date: 2009-10-12 07:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -25,15 +25,13 @@ msgid "Activities"
 msgstr "Aktivitas"
 
 #: /src/schooltool/gradebook/activity.py:52
-#, fuzzy
 msgid "Sheet1"
-msgstr "Jalan"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:133
 #: /src/schooltool/gradebook/browser/report_card.py:133
-#, fuzzy
 msgid "Add new activity"
-msgstr "Tambahkan sebuah Aktivitas"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:146
 #: /src/schooltool/gradebook/browser/activity.py:201
@@ -55,9 +53,8 @@ msgid "Cancel"
 msgstr "Batal"
 
 #: /src/schooltool/gradebook/browser/activity.py:188
-#, fuzzy
 msgid "Add an External Activity"
-msgstr "Tambahkan sebuah Aktivitas"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:259
@@ -66,9 +63,8 @@ msgid "Change information for ${fullname}"
 msgstr "Rubah informasi untuk ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:277
-#, fuzzy
 msgid "Edit External Activity"
-msgstr "Ubah Aktvitas"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:280
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
@@ -89,14 +85,12 @@ msgid "The external activity couldn't be found"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:68
-#, fuzzy
 msgid "External Activity"
-msgstr "Ubah Aktvitas"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:69
-#, fuzzy
 msgid "The external activity"
-msgstr "Esok hari"
+msgstr ""
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:26
@@ -147,9 +141,8 @@ msgid "Add a Worksheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:125
-#, fuzzy
 msgid "Add a Report Worksheet"
-msgstr "Tambahkan sebuah Sumber daya"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:137
 msgid "Edit Worksheet"
@@ -167,9 +160,8 @@ msgid "Edit Report Worksheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:213
-#, fuzzy
 msgid "New Report Activity"
-msgstr "Aktivitas Baru"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:260
 msgid "New Report Worksheet"
@@ -195,18 +187,16 @@ msgid "New External Activity"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:320
-#, fuzzy
 msgid "Summary"
-msgstr "Minggu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:341
 msgid "Manage Activities"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:355
-#, fuzzy
 msgid "Column Preferences"
-msgstr "Preferensi Kalender"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:372
 msgid "Update Grades"
@@ -228,15 +218,13 @@ msgid "Print Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
-#, fuzzy
 msgid "Template"
-msgstr "acuan"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
-#, fuzzy
 msgid "Deploy Report Worksheet Template"
-msgstr "Tambahkan sebuah Sumber daya"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:197
 msgid ""
@@ -258,19 +246,16 @@ msgid "Ave."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:67
-#, fuzzy
 msgid "Total"
-msgstr "Hari ini"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:809
-#, fuzzy
 msgid "-- No score system --"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:860
-#, fuzzy
 msgid "Previous"
-msgstr "Tahun lalu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:869
 msgid "Next"
@@ -278,15 +263,13 @@ msgstr "Berikutnya"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:947
-#, fuzzy
 msgid "Enter grades for ${fullname}"
-msgstr "Ganti demografi untuk ${fullname}"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:8
-#, fuzzy
 msgid "Set Column Preferences"
-msgstr "Preferensi Kalender"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
@@ -363,9 +346,8 @@ msgid "Layout Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
-#, fuzzy
 msgid "New Column"
-msgstr "Mata Pelajaran Baru"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:34
@@ -378,28 +360,24 @@ msgid "Section"
 msgstr "Bagian"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:5
-#, fuzzy
 msgid "No Current Term"
-msgstr "Tahun ini"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:87
-#, fuzzy
 msgid "Report Card"
-msgstr "Impor Mata Pelajaran"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:91
 msgid "Courses"
 msgstr "Pelajaran"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:99
-#, fuzzy
 msgid "Student"
-msgstr "murid-murid"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:109
-#, fuzzy
 msgid "Existing Score System"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/student_gradebook.pt:7
 #: /src/schooltool/requirement/browser/requirement.pt:11
@@ -431,14 +409,12 @@ msgid "Weight Categories"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
-#, fuzzy
 msgid "Delete Worksheet"
-msgstr "Hapus Kegiatan"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
-#, fuzzy
 msgid "Worksheet"
-msgstr "Telepon kantor"
+msgstr ""
 
 #: /src/schooltool/gradebook/configure.zcml:283
 msgid "Gradebook API"
@@ -492,28 +468,24 @@ msgid "Deployed Report Sheets"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:55
-#, fuzzy
 msgid "Report Card Layouts"
-msgstr "Impor Mata Pelajaran"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:117
-#, fuzzy
 msgid "Due Date"
-msgstr "(Jatuh tempo) Tanggal"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:118
-#, fuzzy
 msgid "The date the activity is due to be graded."
-msgstr "Tanggal aktivitas dibuat."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:123
 msgid "Label"
 msgstr "Label"
 
 #: /src/schooltool/gradebook/interfaces.py:124
-#, fuzzy
 msgid "The column label for the activity in the gradebook."
-msgstr "Tanggal aktivitas dibuat."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:128
 #: /src/schooltool/gradebook/interfaces.py:393
@@ -533,14 +505,12 @@ msgid "The activity category"
 msgstr "Kategori aktivitas"
 
 #: /src/schooltool/gradebook/interfaces.py:139
-#, fuzzy
 msgid "Scoresystem"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:140
-#, fuzzy
 msgid "The activity scoresystem."
-msgstr "Kategori aktivitas"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:144
 msgid "Date"
@@ -551,18 +521,16 @@ msgid "The date the activity was created."
 msgstr "Tanggal aktivitas dibuat."
 
 #: /src/schooltool/gradebook/interfaces.py:161
-#, fuzzy
 msgid "Columns"
-msgstr "Hitung"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:162
 msgid "Columns to be printed in the report card."
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:165
-#, fuzzy
 msgid "Outline Activities"
-msgstr "Aktivitas"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "Activities to be printed in the outline section."
@@ -596,21 +564,18 @@ msgstr ""
 #: /src/schooltool/gradebook/interfaces.py:324
 #: /src/schooltool/gradebook/interfaces.py:355
 #: /src/schooltool/gradebook/interfaces.py:378
-#, fuzzy
 msgid "External Activity Source"
-msgstr "Mengatur Aktivitas Kategori-kategori"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:325
 #: /src/schooltool/gradebook/interfaces.py:379
-#, fuzzy
 msgid "The registration name of the source"
-msgstr "Penjelasan dari sumber daya"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:329
 #: /src/schooltool/gradebook/interfaces.py:383
-#, fuzzy
 msgid "External Activity ID"
-msgstr "Ubah Aktvitas"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:330
 #: /src/schooltool/gradebook/interfaces.py:384
@@ -618,9 +583,8 @@ msgid "A unique identifier for the external activity"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:334
-#, fuzzy
 msgid "Points"
-msgstr "Polandia"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:335
 msgid "Points value to calculate the activity grade"
@@ -641,14 +605,12 @@ msgid "A brief title of the external activities source"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:389
-#, fuzzy
 msgid "A brief title of the external activity."
-msgstr "Penjelasan detail dari aktivitas."
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:394
-#, fuzzy
 msgid "A detailed description of the external activity."
-msgstr "Penjelasan detail dari aktivitas."
+msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
@@ -671,9 +633,8 @@ msgid "Requirement index"
 msgstr "Indeks kebutuhan"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:242
-#, fuzzy
 msgid "Exisiting Score System"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:247
 msgid "Custom score system"
@@ -684,9 +645,8 @@ msgid "Required input is missing."
 msgstr "Input yang diperlukan tidak ada."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:39
-#, fuzzy
 msgid "The Title field must not be empty."
-msgstr "Judul tidak boleh kosong"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:40
 msgid "Value field must contain a valid number."
@@ -726,19 +686,16 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/configure.zcml:22
-#, fuzzy
 msgid "Add Score System"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
-#, fuzzy
 msgid "View Score System"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 #: /src/schooltool/requirement/browser/configure.zcml:8
-#, fuzzy
 msgid "Score Systems"
-msgstr "Kostumisasi sistem nilai"
+msgstr ""
