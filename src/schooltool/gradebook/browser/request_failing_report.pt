@@ -18,10 +18,10 @@
 
 	<h3 tal:content="view/title" />
 
-    <p>
+    <p i18n:translate="">
       This report is a list of students achieving below a minimum score on a selected activity from a report sheet.
     </p>
-    <p>
+    <p i18n:translate="">
       For example, say the term is "Fall 2011," and you have deployed a report sheet entitled "Semester Grades,"
       which includes an activity "First Quarter," using a grading scale where a "3" or higher is passing.
       To create a report of students failing the first quarter grade, you would select the report activity "Fall 2011 - Semester
@@ -72,7 +72,8 @@
     </table>
     <div class="controls">
       <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
-      <input type="submit" class="button-ok" name="DOWNLOAD" value="Download" />
+      <input type="submit" class="button-ok" name="DOWNLOAD" value="Download"
+             i18n:attributes="value" />
     </div>
   </form>
 

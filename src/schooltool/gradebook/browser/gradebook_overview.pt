@@ -13,7 +13,7 @@
 <body>
 <div metal:fill-slot="body">
 
-    <h1 style="color: red" id="javascript-warning">
+    <h1 style="color: red" id="javascript-warning" i18n:translate="">
     Your browser either has Javascript turned off, or it is not supported.
     Javascript is <b>required</b> for the gradebook.
     Please enable Javascript or use a browser with Javascript.
@@ -27,7 +27,7 @@
           tal:attributes="action string:${context/@@absolute_url}">
 
     <tal:if condition="python:not list(view.getSections())">
-      <b>Term:</b>
+      <b i18n:translate="">Term:</b>
       <span tal:content="view/getCurrentTerm" />
     </tal:if>
     <tal:if condition="python:list(view.getTerms())">
@@ -49,7 +49,7 @@
 
     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <tal:if condition="python:not list(view.getSections())">
-      <b>Section:</b>
+      <b i18n:translate="">Section:</b>
       <span tal:content="view/getCurrentSection" />
     </tal:if>
     <tal:if condition="python:list(view.getSections())">
@@ -74,7 +74,7 @@
            tal:condition="view/getDueDateFilter" />
     <input type="checkbox" name="due_date:list" 
            tal:condition="not: view/getDueDateFilter" />
-    <span>show only activities due in past</span>
+    <span i18n:translate="">show only activities due in past</span>
     <select name="num_weeks">
       <tal:block repeat="weeks view/weeksChoices">
         <option value="1"
@@ -87,7 +87,7 @@
             tal:content="weeks" />
       </tal:block>
     </select>
-    <span>weeks</span>
+    <span i18n:translate="">weeks</span>
     <br /><br />
 
   <div class="message" style="color:red"
@@ -253,7 +253,7 @@
 
   <div class="controls">
     <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
-           onclick="setNotEdited()"/>
+           onclick="setNotEdited()" i18n:attributes="value" />
   </div>
 
   </form>

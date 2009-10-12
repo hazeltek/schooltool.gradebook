@@ -31,7 +31,8 @@
     </table>
     <div class="controls">
       <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
-      <input type="submit" class="button-ok" name="DOWNLOAD" value="Download" />
+      <input type="submit" class="button-ok" name="DOWNLOAD" value="Download"
+             i18n:attributes="value" />
     </div>
   </form>
 

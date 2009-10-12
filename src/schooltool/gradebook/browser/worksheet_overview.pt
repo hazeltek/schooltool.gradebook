@@ -11,7 +11,7 @@
 <metal:block metal:fill-slot="body"
              tal:define="activities view/activities">
 
-  <p tal:condition="view/isTemplate">
+  <p tal:condition="view/isTemplate" i18n:translate="">
     A report sheet template defines the activities to be included in a report sheet deployed to each section in a term or year.
   </p>
 
