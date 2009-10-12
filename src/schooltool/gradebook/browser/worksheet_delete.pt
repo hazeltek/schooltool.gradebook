@@ -5,8 +5,7 @@
 </head>
 <body>
 
-<h1 metal:fill-slot="content-header"
-    tal:content="string:Delete Worksheet '${context/title}'">Delete Worksheet</h1>
+<h1 metal:fill-slot="content-header" tal:content="view/title" />
 
 <metal:block metal:fill-slot="body">
   <div style="padding-bottom: 1em">

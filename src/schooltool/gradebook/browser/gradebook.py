@@ -1058,11 +1058,14 @@ class StudentGradebookView(object):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context.gradebook)
 
-        self.student = '%s %s' % (self.context.student.first_name,
-            self.context.student.last_name)
-        self.worksheet = gradebook.context.title
-        self.section = '%s - %s' % (list(gradebook.section.courses)[0].title,
-            gradebook.section.title)
+        mapping = {
+            'worksheet': gradebook.context.title,
+            'student': '%s %s' % (self.context.student.first_name,
+                                  self.context.student.last_name),
+            'section': '%s - %s' % (list(gradebook.section.courses)[0].title,
+                                    gradebook.section.title),
+            }
+        self.title = _('$worksheet for $student in $section', mapping=mapping)
 
         self.blocks = []
         activities = [activity for activity in gradebook.context.values()
