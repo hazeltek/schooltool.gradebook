@@ -55,7 +55,11 @@ class BasePDFView(ReportPDFView):
         return False
 
 
-class BaseReportCardPDFView(BasePDFView):
+class BaseStudentPDFView(BasePDFView):
+    """A base class for all student PDF views"""
+
+
+class BaseReportCardPDFView(BaseStudentPDFView):
     """The report card (PDF) base class"""
 
     template=ViewPageTemplateFile('report_card_rml.pt')
@@ -270,7 +274,7 @@ class GroupReportCardPDFView(BaseReportCardPDFView):
         return list(self.context.members)
 
 
-class BaseStudentDetailPDFView(BasePDFView):
+class BaseStudentDetailPDFView(BaseStudentPDFView):
     """The report card (PDF) base class"""
 
     template=ViewPageTemplateFile('student_detail_rml.pt')
@@ -301,71 +305,78 @@ class BaseStudentDetailPDFView(BasePDFView):
     def date_heading(self):
         return _('Dates')
 
-    def grades(self):
-        return {
-            'widths': '4cm,1cm,1cm,1cm,1cm',
-            'headings': ['Q1', 'Q2', 'Q3', 'Q4'],
-            'rows': [
-                {
-                    'title': 'English I',
-                    'scores': ['A', '', 'C', ''],
-                },
-                {
-                    'title': 'Algebra II',
-                    'scores': ['', 'B', 'A', ''],
-                },
-            ]
-        }
+    @property
+    def name_heading(self):
+        return _('Student Name')
 
-    def attendance(self):
+    @property
+    def userid_heading(self):
+        return _('User Id')
+
+    def getGradesColumns(self):
+        return ['Q1', 'Q2', 'Q3', 'Q4']
+
+    def getAttendanceColumns(self):
+        return ['1', '2', '3', '4', '5', '6', '7', '8']
+
+    def grades(self, student):
+        columns = self.getGradesColumns()
+        widths = '4cm' + ',1cm' * len(columns)
+        rows = []
+        for sdf in range(2):
+            row = {
+                'title': 'English I',
+                'scores': ['A', '', 'C', ''],
+                }
+            rows.append(row)
         return {
-            'widths': '4cm,1cm,1cm,1cm,1cm,1cm,1cm,1cm,1cm',
-            'headings': ['1', '2', '3', '4', '5', '6', '7', '8'],
-            'rows': [
-                {
-                    'title': '9/27/09',
-                    'scores': ['', 'A', '', 'T', '', '', '', ''],
-                },
-                {
-                    'title': '10/1/09',
-                    'scores': ['T', '', '', '', 'A', '', '', ''],
-                },
-            ]
-        }
+            'widths': widths,
+            'headings': columns,
+            'rows': rows,
+            }
+
+    def attendance(self, student):
+        columns = self.getAttendanceColumns()
+        widths = '4cm' + ',1cm' * len(columns)
+        rows = []
+        for sdf in range(2):
+            row = {
+                'title': '9/27/09',
+                'scores': ['', 'A', '', 'T', '', '', '', ''],
+                }
+            rows.append(row)
+        return {
+            'widths': widths,
+            'headings': columns,
+            'rows': rows,
+            }
+
+    def students(self):
+        results = []
+        for student in self.collectStudents():
+            name = u'%s %s' % (student.first_name, student.last_name)
+            result = {
+                'name': name,
+                'userid': student.username,
+                'grades': self.grades(student),
+                'attendance': self.attendance(student),
+                }
+            results.append(result)
+        return results
 
 
 class StudentDetailPDFView(BaseStudentDetailPDFView):
     """A view for printing a report card for a student"""
 
-    def students(self):
-        #return [self.context]
-        return [
-            {
-                'name_heading': _('Student Name'),
-                'name': 'Alan Elkner',
-                'userid_heading': _('User Id'),
-                'userid': 'aelkner',
-                'grades': self.grades(),
-                'attendance': self.attendance(),
-            }
-        ]
+    def collectStudents(self):
+        return [self.context]
 
 
 class GroupDetailPDFView(BaseStudentDetailPDFView):
     """A view for printing a report card for each person in a group"""
 
-    def students(self):
-        #return list(self.context.members)
-        return [
-            {
-                'name_heading': _('Student Name'),
-                'name': 'Alan Elkner',
-                'userid_heading': _('User Id'),
-                'userid': 'aelkner',
-                'grades': self.grades(),
-                'attendance': self.attendance(),
-            }
-        ]
+    def collectStudents(self):
+        return list(self.context.members)
 
 
 class FailingReportPDFView(BasePDFView):

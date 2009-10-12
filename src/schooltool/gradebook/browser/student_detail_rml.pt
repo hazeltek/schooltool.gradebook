@@ -68,9 +68,9 @@
   <tal:block define="grades student/grades; attendance student/attendance">
     <blockTable style="headings_table" colWidths="4cm,4cm,4cm,4cm">
       <tr>
-        <td><para style="heading" tal:content="student/name_heading" /></td>
+        <td><para style="heading" tal:content="view/name_heading" /></td>
         <td><para style="normal" tal:content="student/name" /></td>
-        <td><para style="heading" tal:content="student/userid_heading" /></td>
+        <td><para style="heading" tal:content="view/userid_heading" /></td>
         <td><para style="normal" tal:content="student/userid" /></td>
       </tr>
     </blockTable>
