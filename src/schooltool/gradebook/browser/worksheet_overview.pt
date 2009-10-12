@@ -11,6 +11,10 @@
 <metal:block metal:fill-slot="body"
              tal:define="activities view/activities">
 
+  <p tal:condition="view/isTemplate">
+    A report sheet template defines the activities to be included in a report sheet deployed to each section in a term or year.
+  </p>
+
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />

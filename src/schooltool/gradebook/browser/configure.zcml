@@ -543,7 +543,7 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Report PDFs"
+      title="Reports"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       action="report_pdfs.html"
       permission="schooltool.edit"
@@ -600,7 +600,7 @@
   <!-- Menu items for IBasicPerson-->
   <menuItem
       menu="schooltool_actions"
-      title="Report PDFs"
+      title="Reports"
       for="schooltool.person.interfaces.IPerson"
       action="report_pdfs.html"
       permission="schooltool.edit"
@@ -629,7 +629,7 @@
   <!-- Menu items for IGroup -->
   <menuItem
       menu="schooltool_actions"
-      title="Report PDFs"
+      title="Reports"
       for="schooltool.group.interfaces.IGroup"
       action="report_pdfs.html"
       permission="schooltool.edit"
@@ -658,7 +658,7 @@
   <!-- Menu items for ISection -->
   <menuItem
       menu="schooltool_actions"
-      title="Report PDFs"
+      title="Reports"
       for="schooltool.course.interfaces.ISection"
       action="report_pdfs.html"
       permission="schooltool.edit"

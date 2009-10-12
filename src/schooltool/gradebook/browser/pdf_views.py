@@ -283,7 +283,7 @@ class BaseStudentDetailPDFView(BasePDFView):
 
     @property
     def title(self):
-        return _('Student Detail Report') + ': ' + self.schoolyear.title
+        return _('Detailed Student Report') + ': ' + self.schoolyear.title
 
     @property
     def grades_heading(self):
@@ -388,7 +388,7 @@ class FailingReportPDFView(BasePDFView):
 
     @property
     def title(self):
-        return _('Failing Report') + ': ' + self.schoolyear.title
+        return _('Failures by Term Report') + ': ' + self.schoolyear.title
 
     @property
     def worksheet_heading(self):
@@ -475,7 +475,7 @@ class AbsencesByDayPDFView(BasePDFView):
 
     @property
     def title(self):
-        return _('Student Absence Report')
+        return _('Absences By Day Report')
 
     def getDay(self):
         day = self.request.get('day', None)
@@ -536,7 +536,7 @@ class SectionAbsencesPDFView(BasePDFView):
 
     @property
     def title(self):
-        return _('Section Absences Report')
+        return _('Absences by Section Report')
 
     @property
     def course_heading(self):
@@ -560,8 +560,12 @@ class SectionAbsencesPDFView(BasePDFView):
         return _('Student')
 
     @property
-    def attendance_heading(self):
-        return _('Attendance types and number of occurrences')
+    def absences_heading(self):
+        return _('Absences')
+
+    @property
+    def tardies_heading(self):
+        return _('Tardies')
 
     @property
     def total_heading(self):
@@ -572,12 +576,14 @@ class SectionAbsencesPDFView(BasePDFView):
         return [
             {
                 'name': 'Alan Elkner',
-                'attendance': 'A 5  T 4',
+                'absences': '5',
+                'tardies': '4',
                 'total': '9',
             },
             {
                 'name': 'Tom Hoffman',
-                'attendance': 'T 3',
+                'absences': '',
+                'tardies': '3',
                 'total': '3',
             },
         ]

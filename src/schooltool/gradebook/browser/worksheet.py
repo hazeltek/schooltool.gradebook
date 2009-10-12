@@ -67,6 +67,9 @@ class WorksheetManageView(object):
                    'pos': pos,
                    'deployed': self.context.deployed}
 
+    def isTemplate(self):
+        return interfaces.IReportWorksheet.providedBy(self.context)
+
     def canModify(self):
         return canWrite(self.context, 'title')
 

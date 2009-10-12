@@ -77,7 +77,7 @@ class GroupReportsView(BaseView):
             },
             {
                 'url': url +  '/student_detail.pdf',
-                'content': _('Download Student Detail Report'),
+                'content': _('Download Detailed Student Report'),
             },
          ]
         return results
@@ -93,11 +93,11 @@ class SchoolYearReportsView(BaseView):
         results = [
             {
                 'url': url +  '/request_failing_report.html',
-                'content': _('Download Failing Report'),
+                'content': _('Failures by Term'),
             },
             {
                 'url': url +  '/request_absences_by_day.html',
-                'content': _('Download Absences By Day Report'),
+                'content': _('Absences By Day'),
             },
          ]
         return results
@@ -113,7 +113,7 @@ class SectionReportsView(BaseView):
         results = [
             {
                 'url': url +  '/section_absences.pdf',
-                'content': _('Download Section Absences Report'),
+                'content': _('Download Absences by Section Report'),
             },
          ]
         return results

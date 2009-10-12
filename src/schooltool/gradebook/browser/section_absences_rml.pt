@@ -71,19 +71,21 @@
   </blockTable>
   <spacer length=".5cm" />
 
-  <blockTable style="grid" colWidths="4cm,12cm,2cm">
+  <blockTable style="grid" colWidths="7.5cm,2.5cm,2.5cm,2.5cm">
     <tr>
       <td><para style="bold" tal:content="view/student_heading" /></td>
-      <td><para style="bold" tal:content="view/attendance_heading" /></td>
+      <td><para style="bold" tal:content="view/absences_heading" /></td>
+      <td><para style="bold" tal:content="view/tardies_heading" /></td>
       <td><para style="bold" tal:content="view/total_heading" /></td>
     </tr>
   </blockTable>
   <spacer length=".2cm" />
 
-  <blockTable style="headings_table" colWidths="4cm,12cm,2cm">
+  <blockTable style="headings_table" colWidths="7.5cm,2.5cm,2.5cm,2.5cm">
     <tr tal:repeat="student view/students">
       <td><para style="normal" tal:content="student/name" /></td>
-      <td><para style="normal" tal:content="student/attendance" /></td>
+      <td><para style="normal" tal:content="student/absences" /></td>
+      <td><para style="normal" tal:content="student/tardies" /></td>
       <td><para style="normal" tal:content="student/total" /></td>
     </tr>
   </blockTable>
