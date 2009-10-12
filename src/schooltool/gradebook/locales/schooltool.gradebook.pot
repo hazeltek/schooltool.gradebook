@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SchoolTool Version SVN\n"
-"POT-Creation-Date: Tue Sep 22 21:17:39 2009\n"
+"POT-Creation-Date: Mon Oct 12 18:53:20 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -386,7 +386,6 @@ msgid "Existing Score System"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/student_gradebook.pt:7
-#: /src/schooltool/requirement/browser/requirement.pt:11
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
@@ -622,16 +621,24 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: /src/schooltool/requirement/browser/requirement.pt:21
+#: /src/schooltool/requirement/browser/requirement.pt:11
+msgid "${requirement} Sub Requirements"
+msgstr ""
+
+#: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
 msgstr ""
 
-#: /src/schooltool/requirement/browser/requirement.pt:23
+#: /src/schooltool/requirement/browser/requirement.pt:22
 msgid "Clear"
 msgstr ""
 
-#: /src/schooltool/requirement/browser/requirement.pt:33
+#: /src/schooltool/requirement/browser/requirement.pt:32
 msgid "Showing ${count} of ${total} items"
+msgstr ""
+
+#: /src/schooltool/requirement/browser/requirement.pt:5
+msgid "${requirement} Contents"
 msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.py:55
