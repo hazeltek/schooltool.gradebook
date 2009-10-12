@@ -7,33 +7,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Sep 23 15:28:49 2009\n"
-"PO-Revision-Date: 2009-07-07 07:19+0000\n"
+"POT-Creation-Date: 2009-09-22 21:17+0000\n"
+"PO-Revision-Date: 2009-10-11 22:32+0000\n"
 "Last-Translator: missthom <thom43th.dhtl@gmail.com>\n"
 "Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-07 16:13+0000\n"
+"X-Launchpad-Export-Date: 2009-10-12 07:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:163
 #: /src/schooltool/gradebook/interfaces.py:203
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
-#, fuzzy
 msgid "Activities"
-msgstr "Quản lý các hoạt động"
+msgstr ""
 
 #: /src/schooltool/gradebook/activity.py:52
-#, fuzzy
 msgid "Sheet1"
-msgstr "Đường"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:133
 #: /src/schooltool/gradebook/browser/report_card.py:133
-#, fuzzy
 msgid "Add new activity"
-msgstr "Hoạt động mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:146
 #: /src/schooltool/gradebook/browser/activity.py:201
@@ -55,9 +52,8 @@ msgid "Cancel"
 msgstr "Hủy bỏ"
 
 #: /src/schooltool/gradebook/browser/activity.py:188
-#, fuzzy
 msgid "Add an External Activity"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:259
@@ -66,9 +62,8 @@ msgid "Change information for ${fullname}"
 msgstr "Thay đổi thông tin cho ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:277
-#, fuzzy
 msgid "Edit External Activity"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:280
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
@@ -85,37 +80,31 @@ msgid "Category weights must add up to 100."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:373
-#, fuzzy
 msgid "The external activity couldn't be found"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:68
-#, fuzzy
 msgid "External Activity"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:69
-#, fuzzy
 msgid "The external activity"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:26
-#, fuzzy
 msgid "remove-button"
-msgstr "nút ok"
+msgstr ""
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:35
-#, fuzzy
 msgid "add-button"
-msgstr "nút ok"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
-#, fuzzy
 msgid "Manage Activity Categories"
-msgstr "Phân mục công việc"
+msgstr ""
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:44
@@ -123,34 +112,28 @@ msgid "change-button"
 msgstr "Nút thay đổi"
 
 #: /src/schooltool/gradebook/browser/category.py:43
-#, fuzzy
 msgid "Categories"
-msgstr "Các phân mục trọng số"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:49
-#, fuzzy
 msgid "New Category"
-msgstr "Khóa học mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:52
-#, fuzzy
 msgid "Default Category"
-msgstr "Các phân mục trọng số"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:75
-#, fuzzy
 msgid "Categories successfully deleted."
-msgstr "Văn bản CSV đã nhập vào thành công."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:81
-#, fuzzy
 msgid "Category successfully added."
-msgstr "Mật khẩu được thay đổi thành công"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:87
-#, fuzzy
 msgid "Default category successfully changed."
-msgstr "Mật khẩu được thay đổi thành công"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:113
 msgid "Add a Worksheet"
@@ -203,18 +186,16 @@ msgid "New External Activity"
 msgstr "Hoạt động mở rộng mới"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:320
-#, fuzzy
 msgid "Summary"
-msgstr "Chủ Nhật"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:341
 msgid "Manage Activities"
 msgstr "Quản lý các hoạt động"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:355
-#, fuzzy
 msgid "Column Preferences"
-msgstr "Thông số lịch"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:372
 msgid "Update Grades"
@@ -236,15 +217,13 @@ msgid "Print Report Card"
 msgstr "In thẻ báo cáo"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
-#, fuzzy
 msgid "Template"
-msgstr "Biểu mẫu"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
-#, fuzzy
 msgid "Deploy Report Worksheet Template"
-msgstr "Triển khai một báo cáo dạng bảng tính"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:197
 msgid ""
@@ -258,18 +237,16 @@ msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:626
-#, fuzzy
 msgid "The grade $value for $name is not valid."
-msgstr "Ngày nhập vào để thay đổi không hợp lệ"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:67
 msgid "Ave."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:67
-#, fuzzy
 msgid "Total"
-msgstr "Hôm nay"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:809
 msgid "-- No score system --"
@@ -285,42 +262,35 @@ msgstr "Tiếp theo"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:947
-#, fuzzy
 msgid "Enter grades for ${fullname}"
-msgstr "Thay đổi thống kê cho ${fullname}"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:8
-#, fuzzy
 msgid "Set Column Preferences"
-msgstr "Thông số lịch"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
 #: /src/schooltool/gradebook/browser/mygrades.pt:87
-#, fuzzy
 msgid "Grade"
-msgstr "Bảng điểm"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:28
-#, fuzzy
 msgid "Student Name"
-msgstr "Mã sinh viên"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:29
-#, fuzzy
 msgid "Activity Name"
-msgstr "Phân mục công việc"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:30
-#, fuzzy
 msgid "(Due) Date"
-msgstr "Ngày hết thạn"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:31
-#, fuzzy
 msgid "Modification Date"
-msgstr "Định vị (Địa chỉ) của tài nguyên"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:33
 msgid "Max. Score"
@@ -349,15 +319,13 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:13
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
-#, fuzzy
 msgid "Grade ${name}"
-msgstr "Khoảng ${number}"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:31
 #: /src/schooltool/gradebook/browser/mygrades.pt:84
-#, fuzzy
 msgid "Activity"
-msgstr "Hoạt động mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:124
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:131
@@ -377,9 +345,8 @@ msgid "Layout Report Card"
 msgstr "Trình bày thẻ báo cáo"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
-#, fuzzy
 msgid "New Column"
-msgstr "Khóa học mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:34
@@ -392,28 +359,24 @@ msgid "Section"
 msgstr "Phần"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:5
-#, fuzzy
 msgid "No Current Term"
-msgstr "Năm hiện thời"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:87
-#, fuzzy
 msgid "Report Card"
-msgstr "In thẻ báo cáo"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:91
 msgid "Courses"
 msgstr "Khóa học"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:99
-#, fuzzy
 msgid "Student"
-msgstr "Học sinh"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:109
-#, fuzzy
 msgid "Existing Score System"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/student_gradebook.pt:7
 #: /src/schooltool/requirement/browser/requirement.pt:11
@@ -445,14 +408,12 @@ msgid "Weight Categories"
 msgstr "Các phân mục trọng số"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
-#, fuzzy
 msgid "Delete Worksheet"
-msgstr "Triển khai một báo cáo dạng bảng tính"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
-#, fuzzy
 msgid "Worksheet"
-msgstr "Các bảng tính"
+msgstr ""
 
 #: /src/schooltool/gradebook/configure.zcml:283
 msgid "Gradebook API"
@@ -471,33 +432,28 @@ msgid "Essay"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:116
-#, fuzzy
 msgid "Exam"
-msgstr "Thí dụ :"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:117
-#, fuzzy
 msgid "Homework"
-msgstr "Chủ"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:118
 msgid "Journal"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:119
-#, fuzzy
 msgid "Lab"
-msgstr "Nhãn"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:120
-#, fuzzy
 msgid "Presentation"
-msgstr "Thế hệ"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:121
-#, fuzzy
 msgid "Project"
-msgstr "Bố mẹ"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:53
 #: /src/schooltool/gradebook/browser/templates_overview.pt:4
@@ -507,19 +463,16 @@ msgid "Report Sheet Templates"
 msgstr "Báo cáo bảng khuôn mẫu"
 
 #: /src/schooltool/gradebook/gradebook_init.py:54
-#, fuzzy
 msgid "Deployed Report Sheets"
-msgstr "Triển khai một báo cáo dạng bảng tính"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:55
-#, fuzzy
 msgid "Report Card Layouts"
-msgstr "In thẻ báo cáo"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:117
-#, fuzzy
 msgid "Due Date"
-msgstr "Ngày tháng"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:118
 msgid "The date the activity is due to be graded."
@@ -539,52 +492,44 @@ msgid "Description"
 msgstr "Mô tả"
 
 #: /src/schooltool/gradebook/interfaces.py:129
-#, fuzzy
 msgid "A detailed description of the activity."
-msgstr "Mô tả học phần"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:133
-#, fuzzy
 msgid "Category"
-msgstr "Tên loại"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:134
-#, fuzzy
 msgid "The activity category"
-msgstr "Phân mục công việc"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:139
-#, fuzzy
 msgid "Scoresystem"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:140
-#, fuzzy
 msgid "The activity scoresystem."
-msgstr "Phân mục công việc"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:144
 msgid "Date"
 msgstr "Ngày tháng"
 
 #: /src/schooltool/gradebook/interfaces.py:145
-#, fuzzy
 msgid "The date the activity was created."
-msgstr "Phân mục công việc"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:161
-#, fuzzy
 msgid "Columns"
-msgstr "Đếm"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:162
 msgid "Columns to be printed in the report card."
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:165
-#, fuzzy
 msgid "Outline Activities"
-msgstr "Quản lý các hoạt động"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "Activities to be printed in the outline section."
@@ -600,53 +545,45 @@ msgstr "Các bảng tính"
 
 #: /src/schooltool/gradebook/interfaces.py:200
 #: /src/schooltool/gradebook/interfaces.py:305
-#, fuzzy
 msgid "Worksheets in this gradebook."
-msgstr "Trả về Bảng điểm"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:204
-#, fuzzy
 msgid "Activities in this gradebook."
-msgstr "Trả về Bảng điểm"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:207
 msgid "Students"
 msgstr "Học sinh"
 
 #: /src/schooltool/gradebook/interfaces.py:208
-#, fuzzy
 msgid "Students in this gradebook."
-msgstr "Trả về Bảng điểm"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:324
 #: /src/schooltool/gradebook/interfaces.py:355
 #: /src/schooltool/gradebook/interfaces.py:378
-#, fuzzy
 msgid "External Activity Source"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:325
 #: /src/schooltool/gradebook/interfaces.py:379
-#, fuzzy
 msgid "The registration name of the source"
-msgstr "Mô tả của tài nguyên"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:329
 #: /src/schooltool/gradebook/interfaces.py:383
-#, fuzzy
 msgid "External Activity ID"
-msgstr "Hoạt động mở rộng mới"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:330
 #: /src/schooltool/gradebook/interfaces.py:384
-#, fuzzy
 msgid "A unique identifier for the external activity"
-msgstr "Mô tả học phần"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:334
-#, fuzzy
 msgid "Points"
-msgstr "Tiếng Ba Lan"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:335
 msgid "Points value to calculate the activity grade"
@@ -663,19 +600,16 @@ msgid "Title"
 msgstr "Tiêu đề"
 
 #: /src/schooltool/gradebook/interfaces.py:361
-#, fuzzy
 msgid "A brief title of the external activities source"
-msgstr "Mô tả học phần"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:389
-#, fuzzy
 msgid "A brief title of the external activity."
-msgstr "Mô tả học phần"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:394
-#, fuzzy
 msgid "A detailed description of the external activity."
-msgstr "Mô tả học phần"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
@@ -694,28 +628,24 @@ msgid "Showing ${count} of ${total} items"
 msgstr "Hiển thị ${count} của ${total} hạng mục"
 
 #: /src/schooltool/requirement/browser/requirement.py:55
-#, fuzzy
 msgid "Requirement index"
-msgstr "Chỉ số tài nguyên"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:242
-#, fuzzy
 msgid "Exisiting Score System"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:247
-#, fuzzy
 msgid "Custom score system"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:359
 msgid "Required input is missing."
 msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:39
-#, fuzzy
 msgid "The Title field must not be empty."
-msgstr "Tiêu đề có thể rỗng"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:40
 msgid "Value field must contain a valid number."
@@ -755,19 +685,16 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/configure.zcml:22
-#, fuzzy
 msgid "Add Score System"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
-#, fuzzy
 msgid "View Score System"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 #: /src/schooltool/requirement/browser/configure.zcml:8
-#, fuzzy
 msgid "Score Systems"
-msgstr "Thêm vào học kỳ mới"
+msgstr ""

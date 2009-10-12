@@ -1,16 +1,15 @@
 <tal:define define="dummy view/update"/>
 <html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool.gradebook">
 <head>
-  <title metal:fill-slot="title"
-         tal:content="string:${context/title} Contents">
-    Contents
+  <title metal:fill-slot="title" i18n:translate="">
+   <span tal:replace="context/title" i18n:name="requirement" /> Contents
   </title>
 </head>
 <body>
 
-<h1 metal:fill-slot="content-header"
-    tal:content="string:${context/title} Sub Requirements"
-    i18n:translate="">Contents</h1>
+<h1 metal:fill-slot="content-header" i18n:translate="">
+  <span tal:replace="context/title" i18n:name="requirement" /> Sub Requirements
+</h1>
 
 <metal:block metal:fill-slot="body"
              tal:define="batch view/batch">

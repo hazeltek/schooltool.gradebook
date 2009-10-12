@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Sep 23 15:28:49 2009\n"
-"PO-Revision-Date: 2009-05-12 17:41+0000\n"
+"POT-Creation-Date: 2009-09-22 21:17+0000\n"
+"PO-Revision-Date: 2009-10-11 22:29+0000\n"
 "Last-Translator: Muszela Balázs <bazsi86@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-18 17:09+0000\n"
+"X-Launchpad-Export-Date: 2009-10-12 07:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:163
@@ -29,9 +29,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:133
 #: /src/schooltool/gradebook/browser/report_card.py:133
-#, fuzzy
 msgid "Add new activity"
-msgstr "Tevékenység Hozzáadása"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:146
 #: /src/schooltool/gradebook/browser/activity.py:201
@@ -81,9 +80,8 @@ msgid "Category weights must add up to 100."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:373
-#, fuzzy
 msgid "The external activity couldn't be found"
-msgstr "A külső tevékenység"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:68
 msgid "External Activity"
@@ -142,9 +140,8 @@ msgid "Add a Worksheet"
 msgstr "Munkalap Hozzáadása"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:125
-#, fuzzy
 msgid "Add a Report Worksheet"
-msgstr "Munkalap Hozzáadása"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:137
 msgid "Edit Worksheet"
@@ -158,19 +155,16 @@ msgid "Edit"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:149
-#, fuzzy
 msgid "Edit Report Worksheet"
-msgstr "Munkalap Szerkesztése"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:213
-#, fuzzy
 msgid "New Report Activity"
-msgstr "Új Tevékenység"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:260
-#, fuzzy
 msgid "New Report Worksheet"
-msgstr "Új Munkalap"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:267
 msgid "New Worksheet"
@@ -192,18 +186,16 @@ msgid "New External Activity"
 msgstr "Új Külső Tevékenység"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:320
-#, fuzzy
 msgid "Summary"
-msgstr "Vasárnap"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:341
 msgid "Manage Activities"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:355
-#, fuzzy
 msgid "Column Preferences"
-msgstr "Naptár beállítások"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:372
 msgid "Update Grades"
@@ -211,9 +203,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:470
 #: /src/schooltool/gradebook/browser/configure.zcml:488
-#, fuzzy
 msgid "Deploy Report Worksheet"
-msgstr "Munkalap Törlése"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:49
 #: /src/schooltool/gradebook/browser/configure.zcml:83
@@ -226,15 +217,13 @@ msgid "Print Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
-#, fuzzy
 msgid "Template"
-msgstr "Sablonok"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
-#, fuzzy
 msgid "Deploy Report Worksheet Template"
-msgstr "Munkalap Törlése"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:197
 msgid ""
@@ -260,14 +249,12 @@ msgid "Total"
 msgstr "Teljes"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:809
-#, fuzzy
 msgid "-- No score system --"
-msgstr "Pontrendszer"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:860
-#, fuzzy
 msgid "Previous"
-msgstr "Előző év"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:869
 msgid "Next"
@@ -280,9 +267,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:8
-#, fuzzy
 msgid "Set Column Preferences"
-msgstr "Naptár beállítások"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
@@ -299,9 +285,8 @@ msgid "Activity Name"
 msgstr "Tevékenység Neve"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:30
-#, fuzzy
 msgid "(Due) Date"
-msgstr "Dátum"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:31
 msgid "Modification Date"
@@ -360,9 +345,8 @@ msgid "Layout Report Card"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
-#, fuzzy
 msgid "New Column"
-msgstr "Új kurzusok"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:34
@@ -375,28 +359,24 @@ msgid "Section"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:5
-#, fuzzy
 msgid "No Current Term"
-msgstr "Jelenlegi év"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:87
-#, fuzzy
 msgid "Report Card"
-msgstr "Kurzusok importálása"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:91
 msgid "Courses"
 msgstr "Kurzusok"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:99
-#, fuzzy
 msgid "Student"
-msgstr "Tanulók"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:109
-#, fuzzy
 msgid "Existing Score System"
-msgstr "Pontrendszer"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/student_gradebook.pt:7
 #: /src/schooltool/requirement/browser/requirement.pt:11
@@ -468,9 +448,8 @@ msgid "Lab"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:120
-#, fuzzy
 msgid "Presentation"
-msgstr "Generációk"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:121
 msgid "Project"
@@ -484,19 +463,16 @@ msgid "Report Sheet Templates"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:54
-#, fuzzy
 msgid "Deployed Report Sheets"
-msgstr "Munkalap Törlése"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:55
-#, fuzzy
 msgid "Report Card Layouts"
-msgstr "Kurzusok importálása"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:117
-#, fuzzy
 msgid "Due Date"
-msgstr "Dátum"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:118
 msgid "The date the activity is due to be graded."
@@ -544,18 +520,16 @@ msgid "The date the activity was created."
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:161
-#, fuzzy
 msgid "Columns"
-msgstr "Darab"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:162
 msgid "Columns to be printed in the report card."
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:165
-#, fuzzy
 msgid "Outline Activities"
-msgstr "Tevékenységek"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "Activities to be printed in the outline section."
@@ -589,9 +563,8 @@ msgstr ""
 #: /src/schooltool/gradebook/interfaces.py:324
 #: /src/schooltool/gradebook/interfaces.py:355
 #: /src/schooltool/gradebook/interfaces.py:378
-#, fuzzy
 msgid "External Activity Source"
-msgstr "Külső Tevékenység"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:325
 #: /src/schooltool/gradebook/interfaces.py:379
@@ -600,15 +573,13 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:329
 #: /src/schooltool/gradebook/interfaces.py:383
-#, fuzzy
 msgid "External Activity ID"
-msgstr "Külső Tevékenység"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:330
 #: /src/schooltool/gradebook/interfaces.py:384
-#, fuzzy
 msgid "A unique identifier for the external activity"
-msgstr "A külső tevékenység"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:334
 msgid "Points"
@@ -633,9 +604,8 @@ msgid "A brief title of the external activities source"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:389
-#, fuzzy
 msgid "A brief title of the external activity."
-msgstr "A külső tevékenység"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:394
 msgid "A detailed description of the external activity."
@@ -658,19 +628,16 @@ msgid "Showing ${count} of ${total} items"
 msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.py:55
-#, fuzzy
 msgid "Requirement index"
-msgstr "Kurzus index"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:242
-#, fuzzy
 msgid "Exisiting Score System"
-msgstr "Pontrendszer"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:247
-#, fuzzy
 msgid "Custom score system"
-msgstr "Pontrendszer"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:359
 msgid "Required input is missing."
@@ -718,19 +685,16 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/configure.zcml:22
-#, fuzzy
 msgid "Add Score System"
-msgstr "Pontrendszer"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
-#, fuzzy
 msgid "View Score System"
-msgstr "Pontrendszer"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 #: /src/schooltool/requirement/browser/configure.zcml:8
-#, fuzzy
 msgid "Score Systems"
-msgstr "Pontrendszer"
+msgstr ""
