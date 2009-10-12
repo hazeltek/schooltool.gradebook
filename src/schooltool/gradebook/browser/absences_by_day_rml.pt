@@ -1,0 +1,100 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd" [
+  <!ENTITY pound   "&#xA3;">
+  <!ENTITY nbsp    "&#160;">
+]>
+
+<document
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/@@rml_macros/report"
+  i18n:domain="schooltool.gradebook">
+
+<metal:block fill-slot="page_templates">
+  <tal:block content="structure view/use_template/default" />
+</metal:block>
+
+<stylesheet>
+  <metal:block fill-slot="extra_initialize">
+  </metal:block>
+  <metal:block fill-slot="stylesheet">
+
+    <paraStyle
+      name="normal"
+      fontName="Arial_Normal"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="bold"
+      fontName="Arial_Bold"
+      fontSize="10"
+      alignment="left"
+      leading="12"/>
+
+    <paraStyle
+      name="heading"
+      fontName="Arial_Bold"
+      fontSize="10"
+      alignment="right"
+      leading="12"/>
+
+    <paraStyle
+      name="section_heading"
+      fontName="Arial_Bold"
+      fontSize="12"
+      alignment="center"
+      leading="12"/>
+
+    <blockTableStyle id="headings_table">
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+
+    <blockTableStyle id="grid">
+    	<lineStyle kind="OUTLINE"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+  </metal:block>
+</stylesheet>
+
+<story metal:fill-slot="story">
+  <para style="section_heading" tal:content="view/date_heading" />
+  <spacer length="1cm" />
+
+  <blockTable style="headings_table" colWidths="8cm,4cm">
+    <tr>
+      <td />
+      <td><para style="bold" tal:content="view/periods_heading" /></td>
+    </tr>
+  </blockTable>
+  <spacer length=".2cm" />
+
+  <blockTable style="grid"
+              tal:attributes="colWidths view/widths">
+    <tr>
+      <td><para style="bold" tal:content="view/name_heading" /></td>
+      <td tal:repeat="period view/periods">
+        <para style="bold" tal:content="period" />
+      </td>
+    </tr>
+  </blockTable>
+
+  <blockTable style="headings_table"
+              tal:attributes="colWidths view/widths">
+    <tr tal:repeat="student view/students">
+      <td><para style="bold" tal:content="student/name" /></td>
+      <td tal:repeat="period student/periods">
+        <para style="normal" tal:content="period" />
+      </td>
+    </tr>
+  </blockTable>
+
+  <condPageBreak height="88cm"/>
+
+</story>
+
+</document>
+

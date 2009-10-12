@@ -19,7 +19,8 @@ user gets redirected to the error page.
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('One').click()
-    >>> manager.getLink('Print Report Card').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Download Report Card').click()
     >>> manager.url
     'http://localhost/no_current_term.html'
 

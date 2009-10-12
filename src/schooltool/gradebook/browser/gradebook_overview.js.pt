@@ -6,7 +6,7 @@ var students = new Array(numstudents);
      students[<tal:block replace="repeat/row/index"/>] = '<tal:block replace="python: view.breakJSString(row['student']['id'])"/>';
      </tal:loop>
 
-var numactivities = <tal:block replace="python: len(view.activities())"/> 
+var numactivities = <tal:block replace="python: len(view.scorableActivities())"/> 
 var activities = new Array(numactivities);
 <tal:loop repeat="activity view/activities">
      activities[<tal:block replace="repeat/activity/index"/>] = '<tal:block replace="activity/hash"/>';

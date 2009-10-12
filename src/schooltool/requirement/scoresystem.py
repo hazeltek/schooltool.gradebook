@@ -204,14 +204,14 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
     def getFractionalValue(self, score):
         """See interfaces.IScoreSystem"""
         # get maximum and minimum score to determine the range
-        maximum = self.scores[0][1]
-        minimum = self.scores[-1][1]
+        maximum = self.scores[0][2]
+        minimum = self.scores[-1][2]
         # normalized numerical score
         value = self.getNumericalValue(score) - minimum
         return value / (maximum - minimum)
 
     def scoresDict(self):
-        scores = [(score, value) for score, value, percent in self.scores]
+        scores = [(score, value) for score, abbr, value, percent in self.scores]
         return dict(scores)
 
 class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
@@ -227,36 +227,36 @@ class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 PassFail = GlobalDiscreteValuesScoreSystem(
     'PassFail',
     u'Pass/Fail', u'Pass or Fail score system.',
-    [(u'Pass', Decimal(1), Decimal(60)), 
-     (u'Fail', Decimal(0), Decimal(0))], 
+    [(u'Pass', u'', Decimal(1), Decimal(60)), 
+     (u'Fail', u'', Decimal(0), Decimal(0))], 
      u'Pass', u'Pass')
 
 AmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'AmericanLetterScoreSystem',
     u'Letter Grade', u'American Letter Grade',
-    [('A', Decimal(4), Decimal(90)), 
-     ('B', Decimal(3), Decimal(80)), 
-     ('C', Decimal(2), Decimal(70)),
-     ('D', Decimal(1), Decimal(60)), 
-     ('F', Decimal(0), Decimal(0))], 
+    [('A', u'', Decimal(4), Decimal(90)), 
+     ('B', u'', Decimal(3), Decimal(80)), 
+     ('C', u'', Decimal(2), Decimal(70)),
+     ('D', u'', Decimal(1), Decimal(60)), 
+     ('F', u'', Decimal(0), Decimal(0))], 
      'A', 'D')
 
 ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'ExtendedAmericanLetterScoreSystem',
     u'Extended Letter Grade', u'American Extended Letter Grade',
-    [('A+', Decimal('4.0'), Decimal(98)), 
-     ('A', Decimal('4.0'), Decimal(93)), 
-     ('A-', Decimal('3.7'), Decimal(90)),
-     ('B+', Decimal('3.3'), Decimal(88)), 
-     ('B', Decimal('3.0'), Decimal(83)), 
-     ('B-', Decimal('2.7'), Decimal(80)),
-     ('C+', Decimal('2.3'), Decimal(78)), 
-     ('C', Decimal('2.0'), Decimal(73)), 
-     ('C-', Decimal('1.7'), Decimal(70)),
-     ('D+', Decimal('1.3'), Decimal(68)), 
-     ('D', Decimal('1.0'), Decimal(63)), 
-     ('D-', Decimal('0.7'), Decimal(60)),
-     ('F',  Decimal('0.0'), Decimal(0))], 
+    [('A+', u'', Decimal('4.0'), Decimal(98)), 
+     ('A', u'', Decimal('4.0'), Decimal(93)), 
+     ('A-', u'', Decimal('3.7'), Decimal(90)),
+     ('B+', u'', Decimal('3.3'), Decimal(88)), 
+     ('B', u'', Decimal('3.0'), Decimal(83)), 
+     ('B-', u'', Decimal('2.7'), Decimal(80)),
+     ('C+', u'', Decimal('2.3'), Decimal(78)), 
+     ('C', u'', Decimal('2.0'), Decimal(73)), 
+     ('C-', u'', Decimal('1.7'), Decimal(70)),
+     ('D+', u'', Decimal('1.3'), Decimal(68)), 
+     ('D', u'', Decimal('1.0'), Decimal(63)), 
+     ('D-', u'', Decimal('0.7'), Decimal(60)),
+     ('F',  u'', Decimal('0.0'), Decimal(0))], 
      'A+', 'D-')
 
 

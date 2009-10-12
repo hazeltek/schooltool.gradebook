@@ -13,7 +13,7 @@
 
   <configure
       package="schooltool.skin"
-      i18n_domain="schooltool">
+      i18n_domain="schooltool.gradebook">
 
     <browser:addform
         label="Add a Requirement"

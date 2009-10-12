@@ -22,7 +22,8 @@
     </select>
     <div class="controls">
       <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
-      <input type="submit" class="button-ok" name="DEPLOY" value="Deploy" />
+      <input type="submit" class="button-ok" name="DEPLOY" value="Deploy"
+             i18n:attributes="value" />
     </div>
   </form>
 

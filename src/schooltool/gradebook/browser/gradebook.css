@@ -204,3 +204,7 @@ FORM.addscoresystem DIV.label, div.addscoresystem DIV.label {
     padding-top: 0.5ex;
 }
 
+.scoresystem_add_input {
+    width: 9em;
+}
+

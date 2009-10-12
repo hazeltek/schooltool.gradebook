@@ -43,9 +43,11 @@ NO_NEGATIVE_VALUES = _('All values must be non-negative.')
 NO_NEGATIVE_PERCENTS = _('All percentages must be non-negative.')
 NO_PERCENTS_OVER_100 = _('Percentages cannot be greater than 100.')
 MUST_HAVE_AT_LEAST_2_SCORES = _('A score system must have at least two scores.')
-VALUES_MUST_DESCEND =  _('Score values must go in descending order.')
-PERCENTS_MUST_DESCEND =  _('Score percentages must go in descending order.')
-LAST_PERCENT_NOT_ZERO =   _('The last percentage must be zero.')
+VALUES_MUST_DESCEND = _('Score values must go in descending order.')
+PERCENTS_MUST_DESCEND = _('Score percentages must go in descending order.')
+LAST_PERCENT_NOT_ZERO = _('The last percentage must be zero.')
+DUPLICATE_DISPLAYED = _('Duplicate scores are not allowed.')
+DUPLICATE_ABBREVIATION = _('Duplicate abbreviations are not allowed.')
 
 
 def escName(name):
@@ -104,17 +106,19 @@ class ScoreSystemAddView(BrowserView):
     def scores(self):
         rownum = 1
         results = []
-        for displayed, value, percent in self.getRequestScores():
-            results.append(self.buildScoreRow(rownum, displayed, value, 
+        for displayed, abbr, value, percent in self.getRequestScores():
+            results.append(self.buildScoreRow(rownum, displayed, abbr, value, 
                 percent))
             rownum += 1
-        results.append(self.buildScoreRow(rownum, '', '', ''))
+        results.append(self.buildScoreRow(rownum, '', '', '', ''))
         return results
 
-    def buildScoreRow(self, rownum, displayed, value, percent):
+    def buildScoreRow(self, rownum, displayed, abbr, value, percent):
         return {
             'displayed_name': 'displayed' + unicode(rownum),
             'displayed_value': displayed,
+            'abbr_name': 'abbr' + unicode(rownum),
+            'abbr_value': abbr,
             'value_name': 'value' + unicode(rownum),
             'value_value': value,
             'percent_name': 'percent' + unicode(rownum),
@@ -127,6 +131,7 @@ class ScoreSystemAddView(BrowserView):
         while True:
             rownum += 1
             displayed_name = 'displayed' + unicode(rownum)
+            abbr_name = 'abbr' + unicode(rownum)
             value_name = 'value' + unicode(rownum)
             percent_name = 'percent' + unicode(rownum)
             if displayed_name not in self.request:
@@ -134,6 +139,7 @@ class ScoreSystemAddView(BrowserView):
             if not len(self.request[displayed_name]):
                 continue
             result = (self.request[displayed_name],
+                      self.request[abbr_name],
                       self.request[value_name],
                       self.request[percent_name])
             results.append(result)
@@ -145,7 +151,7 @@ class ScoreSystemAddView(BrowserView):
             return self.setMessage(MISSING_TITLE)
 
         scores = []
-        for displayed, value, percent in self.getRequestScores():
+        for displayed, abbr, value, percent in self.getRequestScores():
             try:
                 decimal_value = Decimal(value)
             except:
@@ -160,7 +166,7 @@ class ScoreSystemAddView(BrowserView):
                 return self.setMessage(NO_NEGATIVE_PERCENTS)
             if decimal_percent > 100:
                 return self.setMessage(NO_PERCENTS_OVER_100)
-            scores.append([displayed, decimal_value, decimal_percent])
+            scores.append([displayed, abbr, decimal_value, decimal_percent])
 
         self.validTitle = title
         self.validScores = scores
@@ -171,15 +177,25 @@ class ScoreSystemAddView(BrowserView):
             return self.setMessage(MUST_HAVE_AT_LEAST_2_SCORES)
 
         last_value, last_percent = None, None
-        for displayed, value, percent in self.validScores:
+        disp_list, abbr_list = [], []
+        for displayed, abbr, value, percent in self.validScores:
             if last_value is not None:
                 if value >= last_value:
                     return self.setMessage(VALUES_MUST_DESCEND)
             if last_percent is not None:
                 if percent >= last_percent:
                     return self.setMessage(PERCENTS_MUST_DESCEND)
+            for d in disp_list:
+                if d.lower() == displayed.lower():
+                    return self.setMessage(DUPLICATE_DISPLAYED)
+            if abbr:
+                for a in abbr_list:
+                    if a.lower() == abbr.lower():
+                        return self.setMessage(DUPLICATE_ABBREVIATION)
             last_value = value
             last_percent = percent
+            disp_list.append(displayed)
+            abbr_list.append(abbr)
 
         if last_percent <> 0:
             return self.setMessage(LAST_PERCENT_NOT_ZERO)
@@ -208,12 +224,13 @@ class ScoreSystemViewView(BrowserView):
 
     def scores(self):
         target = self.getScoreSystem()
-        return [self.buildScoreRow(displayed, value, percent)
-                for displayed, value, percent in target.scores]
+        return [self.buildScoreRow(displayed, abbr, value, percent)
+                for displayed, abbr, value, percent in target.scores]
 
-    def buildScoreRow(self, displayed, value, percent):
+    def buildScoreRow(self, displayed, abbr, value, percent):
         return {
             'displayed_value': displayed,
+            'abbr_value': abbr,
             'value_value': value,
             'percent_value': percent,
             }

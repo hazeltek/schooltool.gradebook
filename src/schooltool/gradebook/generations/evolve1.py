@@ -70,6 +70,8 @@ def updateAllActivities(app, ss, custom_ss):
             updateObjActivities(section, IActivities(section), ss, custom_ss)
 
     root = IGradebookRoot(app)
+    if root is None:
+        return
     updateObjActivities(root, root.templates, ss, custom_ss)
     updateObjActivities(root, root.deployed, ss, custom_ss)
 

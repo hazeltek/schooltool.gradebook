@@ -11,9 +11,15 @@
 <metal:block metal:fill-slot="body"
              tal:define="activities view/activities">
 
+  <p tal:condition="view/isTemplate" i18n:translate="">
+    A report sheet template defines the activities to be included in a report sheet deployed to each section in a term or year.
+  </p>
+
   <form method="post"
-        tal:attributes="action string:${context/@@absolute_url}/manage.html">
+        tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />
+    <div tal:condition="python: len(list(context.values())) == 0"
+         tal:content="view/noActivitiesMessage" />
     <div tal:repeat="activity activities">
       <select name=""
               onchange="this.form.submit()"
@@ -41,8 +47,10 @@
 
     </div>
     <div class="controls" tal:condition="view/canModify">
-      <tal:block tal:condition="view/canModify"
-                 metal:use-macro="view/@@standard_macros/delete-button" />
+      <tal:block tal:condition="python: len(list(context.values())) > 0">
+        <tal:block tal:condition="view/canModify"
+                   metal:use-macro="view/@@standard_macros/delete-button" />
+      </tal:block>
     </div>
   </form>
 </metal:block>

@@ -16,6 +16,13 @@
       Manage Activity Categories
     </h3>
 
+    <p i18n:translate="">
+      Categories are used in SchoolTool's gradebook to organize activities and to allow teachers to weight different types of activities differently to calculate grades. For example, the grade in a section might be comprised of 60% test scores, 20% homework and 20% class participation.
+    </p>
+    <p i18n:translate="">
+      Currently, the list of available categories for all teachers is managed through this form. That is, if one or more teachers would like to use a category not in the current list, the site manager can add it here. Likewise, if some of the default categories are not relevant to your school, remove them below.
+    </p>
+
     <div class="info" tal:condition="view/message" tal:content="view/message" />
 
     <div class="row" tal:define="widget nocall:view/categories_widget">

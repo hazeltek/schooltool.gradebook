@@ -29,7 +29,7 @@ We see that there are no report worksheets yet.
 
 We'll add one.
 
-    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Test'
     >>> manager.getControl('Add').click()
 
@@ -43,12 +43,11 @@ We'll click on it to view its activities.  We see that there are none.
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
 
-To add a report activity to it, we'll click on the supplied link.  We need only
-fill in the title as the other required fields default to the first value
-in the vocabulary.
+To add a report activity to it, we'll click on the supplied link.
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Activity 1'
+    >>> manager.getControl('Score System').value = ['100 Points']
     >>> manager.getControl('Add').click()
 
 Now we see that the new report activity appears in the list.
@@ -57,28 +56,68 @@ Now we see that the new report activity appears in the list.
     <a href="http://localhost/schooltool.gradebook/templates/ReportWorksheet/ReportActivity">Activity 1</a>
 
 Next, we'll click on the newly added activity link to edit its score system.
-We see that, when it was added, it was defaulted to the first existing score
-system in the list.
+We see that it is currently set to the 100 points score system we selected
+when we added it.
 
     >>> manager.getLink('Activity 1').click()
-    >>> manager.getControl('Existing Score System').value
+    >>> manager.getControl('Score System').value
     ['100 Points']
 
 We'll change it, apply the change, and revisit the activity to see that the
 change took.
 
-    >>> manager.getControl('Existing Score System').value = ['Letter Grade']
+    >>> manager.getControl('Score System').value = ['Letter Grade']
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
-    >>> manager.getControl('Existing Score System').value
+    >>> manager.getControl('Score System').value
     ['Letter Grade']
+
+Now we'll change it to use a dynamically generated ranged values score system.
+The min and max fields don't need to be filled in as they defualt to 0 and 100.
+
+    >>> manager.getControl('Score System').value = ['-- Use range below --']
+    >>> manager.getControl('Apply').click()
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Score System').value
+    ['-- Use range below --']
+    >>> manager.getControl('Minimum').value
+    '0'
+    >>> manager.getControl('Maximum').value
+    '100'
+
+Next we'll simply change the ranges and verify.
+
+    >>> manager.getControl('Minimum').value = '1'
+    >>> manager.getControl('Maximum').value = '5'
+    >>> manager.getControl('Apply').click()
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Score System').value
+    ['-- Use range below --']
+    >>> manager.getControl('Minimum').value
+    '1'
+    >>> manager.getControl('Maximum').value
+    '5'
+
+Finally, we'll make sure we can change it back to an existing score system.
+We'll note that, in doing so, the min and max fields are cleared out.  They
+are only relavent when '-- Use range below --' is chosen as the score system.
+
+    >>> manager.getControl('Score System').value = ['100 Points']
+    >>> manager.getControl('Apply').click()
+    >>> manager.getLink('Activity 1').click()
+    >>> manager.getControl('Score System').value
+    ['100 Points']
+    >>> manager.getControl('Minimum').value
+    ''
+    >>> manager.getControl('Maximum').value
+    ''
 
 Later we will want to test the handling of deployment of multiple templates
 to a term, so here we'll set up a second template.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()
-    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Test2'
     >>> manager.getControl('Add').click()
     >>> manager.getLink('Test2').click()
@@ -110,12 +149,12 @@ in order to do that.
     ...                  members=['Student1','Student2'])
 
 We'll navigate to the 'Spring' term where we just created the two sections,
-and we'll click on the 'Deploy Report Worksheet' link.
+and we'll click on the 'Deploy Report Sheet' link.
 
     >>> manager.getLink('2005-2006').click()
     >>> manager.getLink('Spring').click()
     >>> term_url = manager.url
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
 
 Hitting the 'Cancel' button brings us back to the term view.
 
@@ -127,12 +166,12 @@ Now we'll go back to the view and this time hit the 'Deploy' button.  This will
 also bring us back to the term view.  First we'll deploy the first template,
 then the second.
 
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.getControl('Template').value = ['ReportWorksheet']
     >>> manager.getControl('Deploy').click()
     >>> manager.url == term_url
     True
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.getControl('Template').value = ['ReportWorksheet-2']
     >>> manager.getControl('Deploy').click()
 
@@ -264,7 +303,7 @@ third template to it.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()
-    >>> manager.getLink('New Report Worksheet').click()
+    >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Test3'
     >>> manager.getControl('Add').click()
     >>> manager.getLink('Test3').click()
@@ -275,7 +314,7 @@ third template to it.
     >>> manager.getLink('2005-2006').click()
     >>> manager.getLink('Fall').click()
     >>> term_url = manager.url
-    >>> manager.getLink('Deploy Report Worksheet').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.getControl('Template').value = ['ReportWorksheet-3']
     >>> manager.getControl('Deploy').click()
 
@@ -284,7 +323,7 @@ activity).  Lets call up the column layout view and inspect the choices
 we have.
 
     >>> manager.getLink('2005-2006').click()
-    >>> manager.getLink('Layout Report Card').click()
+    >>> manager.getLink('Report Card Layout').click()
 
 The view starts off with no columns set up.  The 'New Column' select control is
 the only list box present.
@@ -294,11 +333,13 @@ the only list box present.
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 We'll add a first column to the layout.
 
     >>> manager.getControl('New Column').value = ['fall|2005-2006_fall|ReportActivity']
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
 Now the view has the first column and the select control below it to add
 another column.
@@ -307,41 +348,51 @@ another column.
     <option selected="selected" value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 We can change the first column to another activity.  We'll see that the change
 has taken effect.
 
     >>> manager.getControl('Column1').value = ['spring|2005-2006_spring|ReportActivity']
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option selected="selected" value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[3]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 If we want, we can delete the column.  We'll see that the view no longer has
 any columns.
 
     >>> manager.getControl(name='delete:list').value = ['Column1']
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
+    <option value="absent">Absent</option>
+    <option value="tardy">Tardy</option>
 
 Next, we'll repeat the same set of tests for the outline activities.  For
 starters, we see only choices for outline activities to add.
@@ -355,7 +406,7 @@ starters, we see only choices for outline activities to add.
 We'll add a first activity to the layout.
 
     >>> manager.getControl('New Activity').value = ['fall|2005-2006_fall|ReportActivity']
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
 Now the view has the first activity and the select control below it to add
 another activity.
@@ -375,7 +426,7 @@ We can change the first activity to another activity.  We'll see that the change
 has taken effect.
 
     >>> manager.getControl('Activity1').value = ['spring|2005-2006_spring|ReportActivity']
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
@@ -392,7 +443,7 @@ If we want, we can delete the activity.  We'll see that the view no longer has
 any activities.
 
     >>> manager.getControl(name='delete:list').value = ['Activity1']
-    >>> manager.getControl('Update').click()
+    >>> manager.getControl('Save').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose an activity to add</option>
