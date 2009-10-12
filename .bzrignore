@@ -8,3 +8,6 @@
 ./.installed.cfg
 **/LC_MESSAGES/*.mo
 ./src/schooltool/gradebook/locales/*
+./ID
+./TAGS
+./tags
