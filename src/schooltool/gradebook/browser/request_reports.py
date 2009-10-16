@@ -28,6 +28,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as _
+from schooltool.schoolyear.interfaces import ISchoolYear
 
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.requirement.interfaces import ICommentScoreSystem
@@ -83,10 +84,10 @@ class GroupReportsView(BaseView):
         return results
 
 
-class SchoolYearReportsView(BaseView):
+class TermReportsView(BaseView):
 
     def title(self):
-        return _('School Year Reports')
+        return _('Term Reports')
 
     def links(self):
         url = absoluteURL(self.context, self.request)
@@ -95,6 +96,18 @@ class SchoolYearReportsView(BaseView):
                 'url': url +  '/request_failing_report.html',
                 'content': _('Failures by Term'),
             },
+         ]
+        return results
+
+
+class SchoolYearReportsView(BaseView):
+
+    def title(self):
+        return _('School Year Reports')
+
+    def links(self):
+        url = absoluteURL(self.context, self.request)
+        results = [
             {
                 'url': url +  '/request_absences_by_day.html',
                 'content': _('Absences By Day'),
@@ -122,7 +135,7 @@ class SectionReportsView(BaseView):
 class RequestFailingReportView(BrowserView):
 
     def title(self):
-        return _('Request Failing Report')
+        return _('Request Failures by Term Report')
 
     def current_source(self):
         if 'source' in self.request:
@@ -142,23 +155,24 @@ class RequestFailingReportView(BrowserView):
             }
         results = [result]
         root = IGradebookRoot(ISchoolToolApplication(None))
-        for term in self.context.values():
-            deployedKey = '%s_%s' % (self.context.__name__, term.__name__)
-            for key in root.deployed:
-                if key.startswith(deployedKey):
-                    deployedWorksheet = root.deployed[key]
-                    for activity in deployedWorksheet.values():
-                        if ICommentScoreSystem.providedBy(activity.scoresystem):
-                            continue
-                        name = '%s - %s - %s' % (term.title,
-                            deployedWorksheet.title, activity.title)
-                        value = '%s|%s|%s' % (term.__name__,
-                            deployedWorksheet.__name__, activity.__name__)
-                        result = {
-                            'name': name,
-                            'value': value,
-                            }
-                        results.append(result)
+        term = self.context
+        schoolyear = ISchoolYear(term)
+        deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
+        for key in root.deployed:
+            if key.startswith(deployedKey):
+                deployedWorksheet = root.deployed[key]
+                for activity in deployedWorksheet.values():
+                    if ICommentScoreSystem.providedBy(activity.scoresystem):
+                        continue
+                    name = '%s - %s - %s' % (term.title,
+                        deployedWorksheet.title, activity.title)
+                    value = '%s|%s|%s' % (term.__name__,
+                        deployedWorksheet.__name__, activity.__name__)
+                    result = {
+                        'name': name,
+                        'value': value,
+                        }
+                    results.append(result)
         return results
 
     def scores(self):
@@ -197,7 +211,7 @@ class RequestFailingReportView(BrowserView):
                     self.request.response.redirect(url)
 
     def reportURL(self):
-        return absoluteURL(self.context, self.request) + '/failing_report.pdf'
+        return absoluteURL(self.context, self.request) + '/failures_by_term.pdf'
 
     def nextURL(self):
         return absoluteURL(self.context, self.request) + '/report_pdfs.html'

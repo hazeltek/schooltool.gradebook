@@ -21,6 +21,7 @@ PDF Views
 """
 
 from datetime import datetime
+from decimal import Decimal
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
@@ -29,16 +30,19 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
 from schooltool.common import SchoolToolMessage as _
-from schooltool.course.interfaces import ILearner
+from schooltool.course.interfaces import ILearner, ISectionContainer
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_KEY, TARDY_KEY)
-from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
-from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
-from schooltool.requirement.interfaces import IEvaluations
-from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
+
+from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
+from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
+from schooltool.gradebook.interfaces import IGradebook
+from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.requirement.interfaces import IEvaluations
+from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.scoresystem import UNSCORED
 
 
 class BasePDFView(ReportPDFView):
@@ -385,8 +389,9 @@ class FailingReportPDFView(BasePDFView):
     template=ViewPageTemplateFile('failing_report_rml.pt')
 
     def __call__(self):
-        self.schoolyear = self.context
+        self.term = self.context
         self.activity = self.getActivity()
+        self.score = self.request.get('min', None)
         return super(FailingReportPDFView, self).__call__()
 
     def getActivity(self):
@@ -399,7 +404,7 @@ class FailingReportPDFView(BasePDFView):
 
     @property
     def title(self):
-        return _('Failures by Term Report') + ': ' + self.schoolyear.title
+        return _('Failures by Term Report') + ': ' + self.term.title
 
     @property
     def worksheet_heading(self):
@@ -445,34 +450,61 @@ class FailingReportPDFView(BasePDFView):
     def grade_heading(self):
         return _('Grade')
 
+    def getSectionData(self, section):
+        data = []
+        for worksheet in IActivities(section).values():
+            if worksheet.__name__ == self.activity.__parent__.__name__:
+                gb = IGradebook(worksheet)
+                activity = worksheet[self.activity.__name__]
+                break
+        else:
+            return []
+        for student in gb.students:
+            value, ss = gb.getEvaluation(student, activity)
+            if value is not None:
+                if IDiscreteValuesScoreSystem.providedBy(ss):
+                    for score in ss.scores:
+                        if score[0] == self.score:
+                            passing_value = score[2]
+                        if score[0] == value:
+                            this_value = score[2]
+                else:
+                    passing_value = Decimal(self.score)
+                    this_value = value
+                if this_value < passing_value:
+                    data.append([student, value])
+        return data
+
     def students(self):
-        return [
-            {
-                'name': 'Alan Elkner',
-                'rows': [
-                    {
-                        'course': 'English I',
-                        'teacher': 'Tom Hoffman',
-                        'grade': 'D',
-                    },
-                    {
-                        'course': 'Algebra II',
-                        'teacher': 'Jeff Elkner',
-                        'grade': 'F',
-                    },
-                ],
-            },
-            {
-                'name': 'Jeff Elkner',
-                'rows': [
-                    {
-                        'course': 'English I',
-                        'teacher': 'Tom Hoffman',
-                        'grade': 'F',
-                    },
-                ],
-            },
-        ]
+        student_rows = {}
+        sections = ISectionContainer(self.term)
+        for section in ISectionContainer(self.term).values():
+            for student, value in self.getSectionData(section):
+                rows = student_rows.setdefault(student, [])
+                row = {
+                    'section': section,
+                    'grade': value,
+                    }
+                rows.append(row)
+
+        results = []
+        for student in sorted(student_rows,  key=lambda s: s.title):
+            rows = []
+            for student_row in student_rows[student]:
+                teacher = list(student_row['section'].instructors)[0]
+                name = '%s %s' % (teacher.first_name, teacher.last_name)
+                row = {
+                    'course': list(student_row['section'].courses)[0].title,
+                    'teacher': name,
+                    'grade': student_row['grade'],
+                    }
+                rows.append(row)
+            result = {
+                'name': '%s %s' % (student.first_name, student.last_name),
+                'rows': rows,
+                }
+            results.append(result)
+        return results
 
 
 class AbsencesByDayPDFView(BasePDFView):

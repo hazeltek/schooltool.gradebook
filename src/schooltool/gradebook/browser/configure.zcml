@@ -516,6 +516,13 @@
       action="deploy_report_worksheet.html"
       permission="schooltool.edit"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Reports"
+      for="schooltool.term.interfaces.ITerm"
+      action="report_pdfs.html"
+      permission="schooltool.edit"
+      />
 
   <!-- Views for ITerm -->
   <page
@@ -523,6 +530,25 @@
       for="schooltool.term.interfaces.ITerm"
       class=".report_card.DeployReportWorksheetTermView"
       template="deploy_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="report_pdfs.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".request_reports.TermReportsView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="request_failing_report.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".request_reports.RequestFailingReportView"
+      template="request_failing_report.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="failures_by_term.pdf"
+      for="schooltool.term.interfaces.ITerm"
+      class=".pdf_views.FailingReportPDFView"
       permission="schooltool.edit"
       />
 
@@ -568,19 +594,6 @@
       name="report_pdfs.html"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".request_reports.SchoolYearReportsView"
-      permission="schooltool.edit"
-      />
-  <page
-      name="request_failing_report.html"
-      for="schooltool.schoolyear.interfaces.ISchoolYear"
-      class=".request_reports.RequestFailingReportView"
-      template="request_failing_report.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="failing_report.pdf"
-      for="schooltool.schoolyear.interfaces.ISchoolYear"
-      class=".pdf_views.FailingReportPDFView"
       permission="schooltool.edit"
       />
   <page
@@ -661,12 +674,6 @@
       title="Reports"
       for="schooltool.course.interfaces.ISection"
       action="report_pdfs.html"
-      permission="schooltool.edit"
-      />
-  <page
-      name="absences_by_day.pdf"
-      for="schooltool.course.interfaces.ISection"
-      class=".pdf_views.AbsencesByDayPDFView"
       permission="schooltool.edit"
       />
 
