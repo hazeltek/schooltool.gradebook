@@ -673,18 +673,28 @@ class SectionAbsencesPDFView(BasePDFView):
 
     @property
     def students(self):
-        return [
-            {
-                'name': 'Alan Elkner',
-                'absences': '5',
-                'tardies': '4',
-                'total': '9',
-            },
-            {
-                'name': 'Tom Hoffman',
-                'absences': '',
-                'tardies': '3',
-                'total': '3',
-            },
-        ]
+        data = {}
+        jd = ISectionJournalData(self.section)
+        for student in self.section.members:
+            student_data = data.setdefault(student, {})
+            student_data['absences'] = 0
+            student_data['tardies'] = 0
+            for meeting in jd.recordedMeetings(student):
+                period = int(meeting.period_id.split()[-1])
+                grade = jd.getGrade(student, meeting)
+                if grade == 'n':
+                    student_data['absences'] += 1
+                if grade == 'p':
+                    student_data['tardies'] += 1
+
+        rows = []
+        for student in sorted(data, key=lambda s: s.title):
+            row = {
+                'name': '%s %s' % (student.first_name, student.last_name),
+                'absences': data[student]['absences'],
+                'tardies': data[student]['tardies'],
+                'total': data[student]['absences'] + data[student]['tardies'],
+                }
+            rows.append(row)
+        return rows
 
