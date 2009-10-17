@@ -32,7 +32,8 @@ from schooltool.app.browser.report import ReportPDFView
 from schooltool.common import SchoolToolMessage as _
 from schooltool.course.interfaces import ILearner, ISectionContainer
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
-    TARDY_HEADING, ABSENT_KEY, TARDY_KEY)
+    TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
+    TARDY_KEY)
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
 
@@ -61,18 +62,6 @@ class BasePDFView(ReportPDFView):
 
 class BaseStudentPDFView(BasePDFView):
     """A base class for all student PDF views"""
-
-
-class BaseReportCardPDFView(BaseStudentPDFView):
-    """The report card (PDF) base class"""
-
-    template=ViewPageTemplateFile('report_card_rml.pt')
-
-    def __call__(self):
-        """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
-        return super(BaseReportCardPDFView, self).__call__()
 
     def isJournalSource(self, layout):
         return layout.source in [ABSENT_KEY, TARDY_KEY]
@@ -121,34 +110,6 @@ class BaseReportCardPDFView(BaseStudentPDFView):
             for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
         return '%s (%s)' % (courseTitles, teacherNames)
-
-    @property
-    def title(self):
-        return _('Report Card') + ': ' + self.schoolyear.title
-
-    @property
-    def course_heading(self):
-        return _('Courses')
-
-    @property
-    def students(self):
-        results = []
-        for student in self.collectStudents():
-            student_name = u'%s %s' % (
-                student.first_name, student.last_name)
-            student_title = _('Student') + ': ' + student_name
-
-            sections = [section for section in ILearner(student).sections()
-                        if ISchoolYear(ITerm(section)) == self.schoolyear]
-
-            result = {
-                'title': student_title,
-                'grid': self.getGrid(student, sections),
-                'outline': self.getOutline(student, sections),
-                }
-
-            results.append(result)
-        return results
 
     def getGrid(self, student, sections):
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -210,6 +171,46 @@ class BaseReportCardPDFView(BaseStudentPDFView):
             'widths': '8.2cm' + ',1.6cm' * len(scoredLayouts),
             'rows': rows,
             }
+
+
+class BaseReportCardPDFView(BaseStudentPDFView):
+    """The report card (PDF) base class"""
+
+    template=ViewPageTemplateFile('report_card_rml.pt')
+
+    def __call__(self):
+        """Make sure there is a current term."""
+        if self.noCurrentTerm():
+            return
+        return super(BaseReportCardPDFView, self).__call__()
+
+    @property
+    def title(self):
+        return _('Report Card') + ': ' + self.schoolyear.title
+
+    @property
+    def course_heading(self):
+        return _('Courses')
+
+    @property
+    def students(self):
+        results = []
+        for student in self.collectStudents():
+            student_name = u'%s %s' % (
+                student.first_name, student.last_name)
+            student_title = _('Student') + ': ' + student_name
+
+            sections = [section for section in ILearner(student).sections()
+                        if ISchoolYear(ITerm(section)) == self.schoolyear]
+
+            result = {
+                'title': student_title,
+                'grid': self.getGrid(student, sections),
+                'outline': self.getOutline(student, sections),
+                }
+
+            results.append(result)
+        return results
 
     def getOutline(self, student, sections):
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -317,41 +318,51 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
     def userid_heading(self):
         return _('User Id')
 
-    def getGradesColumns(self):
-        return ['Q1', 'Q2', 'Q3', 'Q4']
-
-    def getAttendanceColumns(self):
-        return ['1', '2', '3', '4', '5', '6', '7', '8']
-
     def grades(self, student):
-        columns = self.getGradesColumns()
-        widths = '4cm' + ',1cm' * len(columns)
-        rows = []
-        for sdf in range(2):
-            row = {
-                'title': 'English I',
-                'scores': ['A', '', 'C', ''],
-                }
-            rows.append(row)
-        return {
-            'widths': widths,
-            'headings': columns,
-            'rows': rows,
-            }
+        sections = [section for section in ILearner(student).sections()
+                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        return self.getGrid(student, sections)
 
     def attendance(self, student):
-        columns = self.getAttendanceColumns()
-        widths = '4cm' + ',1cm' * len(columns)
+        data = {}
+        sections = [section for section in ILearner(student).sections()
+                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        for section in sections:
+            jd = ISectionJournalData(section)
+            for meeting in jd.recordedMeetings(student):
+                period = int(meeting.period_id.split()[-1])
+                day = meeting.dtstart
+                grade = jd.getGrade(student, meeting)
+                result = ''
+                if grade == 'n':
+                    result = ABSENT_ABBREVIATION
+                if grade == 'p':
+                    result = TARDY_ABBREVIATION
+                if result:
+                    data.setdefault(day, {})[period] = result
+
+        periods = {}
+        for day in data:
+            for period in data[day]:
+                periods[period] = 0
+        periods = sorted(periods)
+
+        widths = '4cm' + ',1cm' * len(periods)
         rows = []
-        for sdf in range(2):
+        for day in sorted(data):
+            scores = [''] * len(periods)
+            for period in data[day]:
+                index = periods.index(period)
+                scores[index] = data[day][period]
             row = {
-                'title': '9/27/09',
-                'scores': ['', 'A', '', 'T', '', '', '', ''],
+                'title': day.strftime('%x'),
+                'scores': scores,
                 }
             rows.append(row)
+
         return {
             'widths': widths,
-            'headings': columns,
+            'headings': periods,
             'rows': rows,
             }
 
