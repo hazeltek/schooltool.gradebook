@@ -184,15 +184,12 @@ class BaseReportCardPDFView(BaseStudentPDFView):
             return
         return super(BaseReportCardPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Report Card') + ': ' + self.schoolyear.title
 
-    @property
     def course_heading(self):
         return _('Courses')
 
-    @property
     def students(self):
         results = []
         for student in self.collectStudents():
@@ -290,31 +287,24 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
             return
         return super(BaseStudentDetailPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Detailed Student Report') + ': ' + self.schoolyear.title
 
-    @property
     def grades_heading(self):
         return _('Grade Detail')
 
-    @property
     def course_heading(self):
         return _('Courses')
 
-    @property
     def attendance_heading(self):
         return _('Attendance Detail')
 
-    @property
     def date_heading(self):
         return _('Dates')
 
-    @property
     def name_heading(self):
         return _('Student Name')
 
-    @property
     def userid_heading(self):
         return _('User Id')
 
@@ -413,51 +403,39 @@ class FailingReportPDFView(BasePDFView):
         root = IGradebookRoot(ISchoolToolApplication(None))
         return root.deployed[worksheetName][activityName]
 
-    @property
     def title(self):
         return _('Failures by Term Report') + ': ' + self.term.title
 
-    @property
     def worksheet_heading(self):
         return _('Report Sheet:')
 
-    @property
     def worksheet_value(self):
         return self.activity.__parent__.title
 
-    @property
     def activity_heading(self):
         return _('Activity:')
 
-    @property
     def activity_value(self):
         return self.activity.title
 
-    @property
     def score_heading(self):
         return _('Passing Score:')
 
-    @property
     def score_value(self):
         return self.request.get('min', '')
 
-    @property
     def heading_message(self):
         return _('The following students are at risk of failing the following courses:')
 
-    @property
     def name_heading(self):
         return _('Student')
 
-    @property
     def course_heading(self):
         return _('Course')
 
-    @property
     def teacher_heading(self):
         return _('Teacher(s)')
 
-    @property
     def grade_heading(self):
         return _('Grade')
 
@@ -526,7 +504,6 @@ class AbsencesByDayPDFView(BasePDFView):
         self.schoolyear = self.context
         return super(AbsencesByDayPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Absences By Day Report')
 
@@ -579,7 +556,6 @@ class AbsencesByDayPDFView(BasePDFView):
                 periods[period] = 0
         return sorted(periods)
 
-    @property
     def date_heading(self):
         day = self.getDay()
         if day is None:
@@ -587,26 +563,21 @@ class AbsencesByDayPDFView(BasePDFView):
         else:
             return day.strftime('%A %B %0d, %Y')
 
-    @property
     def periods_heading(self):
         return _('Period Number')
 
-    @property
     def name_heading(self):
         return _('Student')
 
-    @property
     def widths(self):
         data = self.getData()
         periods = self.getPeriods(data)
         return '8cm' + ',1cm' * len(periods)
 
-    @property
     def periods(self):
         data = self.getData()
         return self.getPeriods(data)
 
-    @property
     def students(self):
         data = self.getData()
         periods = self.getPeriods(data)
@@ -634,44 +605,34 @@ class SectionAbsencesPDFView(BasePDFView):
         self.section = self.context
         return super(SectionAbsencesPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Absences by Section Report')
 
-    @property
     def course_heading(self):
         return _('Course')
 
-    @property
     def course(self):
         return ', '.join([course.title for course in self.section.courses])
 
-    @property
     def teacher_heading(self):
         return _('Teacher')
 
-    @property
     def teacher(self):
         return ', '.join(['%s %s' % (teacher.first_name, teacher.last_name)
                           for teacher in self.section.instructors])
 
-    @property
     def student_heading(self):
         return _('Student')
 
-    @property
     def absences_heading(self):
         return _('Absences')
 
-    @property
     def tardies_heading(self):
         return _('Tardies')
 
-    @property
     def total_heading(self):
         return _('Total')
 
-    @property
     def students(self):
         data = {}
         jd = ISectionJournalData(self.section)
