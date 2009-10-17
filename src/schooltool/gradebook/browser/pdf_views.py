@@ -488,7 +488,6 @@ class FailingReportPDFView(BasePDFView):
 
     def students(self):
         student_rows = {}
-        sections = ISectionContainer(self.term)
         for section in ISectionContainer(self.term).values():
             for student, value in self.getSectionData(section):
                 rows = student_rows.setdefault(student, [])
@@ -541,6 +540,45 @@ class AbsencesByDayPDFView(BasePDFView):
         except:
             return None
 
+    def compareDates(self, first, second):
+        return (first.year == second.year and first.month == second.month and
+                first.day == second.day)
+
+    def getData(self):
+        day = self.getDay()
+        if day is None:
+            return []
+        for term in self.schoolyear.values():
+            if day in term:
+                break
+        else:
+            return []
+
+        data = {}
+        for section in ISectionContainer(term).values():
+            jd = ISectionJournalData(section)
+            for student in section.members:
+                for meeting in jd.recordedMeetings(student):
+                    if not self.compareDates(meeting.dtstart, day):
+                        continue
+                    period = int(meeting.period_id.split()[-1])
+                    grade = jd.getGrade(student, meeting)
+                    result = ''
+                    if grade == 'n':
+                        result = ABSENT_ABBREVIATION
+                    if grade == 'p':
+                        result = TARDY_ABBREVIATION
+                    if result:
+                        data.setdefault(student, {})[period] = result
+        return data
+
+    def getPeriods(self, data):
+        periods = {}
+        for student in data:
+            for period in data[student]:
+                periods[period] = 0
+        return sorted(periods)
+
     @property
     def date_heading(self):
         day = self.getDay()
@@ -559,24 +597,32 @@ class AbsencesByDayPDFView(BasePDFView):
 
     @property
     def widths(self):
-        return '8cm' + ',1cm' * 8
+        data = self.getData()
+        periods = self.getPeriods(data)
+        return '8cm' + ',1cm' * len(periods)
 
     @property
     def periods(self):
-        return ['1', '2', '3', '4', '5', '6', '7', '8']
+        data = self.getData()
+        return self.getPeriods(data)
 
     @property
     def students(self):
-        return [
-            {
-                'name': 'Alan Elkner',
-                'periods': ['A', 'T', '', 'T', '', '', '', ''],
-            },
-            {
-                'name': 'Tom Hoffman',
-                'periods': ['T', '', '', 'T', 'A', '', '', ''],
-            },
-        ]
+        data = self.getData()
+        periods = self.getPeriods(data)
+
+        rows = []
+        for student in sorted(data):
+            scores = [''] * len(periods)
+            for period in data[student]:
+                index = periods.index(period)
+                scores[index] = data[student][period]
+            row = {
+                'name': '%s %s' % (student.first_name, student.last_name),
+                'periods': scores,
+                }
+            rows.append(row)
+        return rows
 
 
 class SectionAbsencesPDFView(BasePDFView):
