@@ -81,7 +81,8 @@
   </blockTable>
   <spacer length=".2cm" />
 
-  <blockTable style="headings_table" colWidths="7.5cm,2.5cm,2.5cm,2.5cm">
+  <blockTable style="headings_table" colWidths="7.5cm,2.5cm,2.5cm,2.5cm"
+              tal:condition="python: len(view.students()) > 0">
     <tr tal:repeat="student view/students">
       <td><para style="normal" tal:content="student/name" /></td>
       <td><para style="normal" tal:content="student/absences" /></td>
