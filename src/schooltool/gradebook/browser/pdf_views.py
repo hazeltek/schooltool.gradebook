@@ -335,7 +335,7 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         for day in data:
             for period in data[day]:
                 periods[period] = 0
-        periods = sorted(periods)
+        periods = [i + 1 for i in range(max(sorted(periods)))]
 
         widths = '4cm' + ',1cm' * len(periods)
         rows = []
@@ -554,7 +554,7 @@ class AbsencesByDayPDFView(BasePDFView):
         for student in data:
             for period in data[student]:
                 periods[period] = 0
-        return sorted(periods)
+        return [i + 1 for i in range(max(sorted(periods)))]
 
     def date_heading(self):
         day = self.getDay()
