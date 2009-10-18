@@ -637,7 +637,7 @@ class SectionAbsencesPDFView(BasePDFView):
         data = {}
         jd = ISectionJournalData(self.section)
         for student in self.section.members:
-            student_data = data.setdefault(student, {})
+            student_data = {}
             student_data['absences'] = 0
             student_data['tardies'] = 0
             for meeting in jd.recordedMeetings(student):
@@ -647,6 +647,8 @@ class SectionAbsencesPDFView(BasePDFView):
                     student_data['absences'] += 1
                 if grade == 'p':
                     student_data['tardies'] += 1
+            if student_data['absences'] + student_data['tardies'] > 0:
+                data[student] = student_data
 
         rows = []
         for student in sorted(data, key=lambda s: s.title):
