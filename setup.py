@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # SchoolTool - common information systems platform for school administration
-# Copyright (c) 2008    Shuttleworth Foundation,
+# Copyright (c) 2008, 2009 Shuttleworth Foundation,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,9 +18,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 """
-SchoolTool US Gradebook setup script.
+SchoolTool Gradebook setup script.
 """
-
 
 # Check python version
 import sys
@@ -70,8 +69,10 @@ else:
 
 setup(
     name="schooltool.gradebook",
-    description="SchoolTool US Gradebook package.",
-    long_description="""TODO""",
+    description="SchoolTool Gradebook",
+    long_description="""The default grading system for SchoolTool.
+    Includes a point-based gradebook and a system for school-wide
+    aggregation of grades and other assessments from teachers.""",
     version=version,
     url='http://www.schooltool.org',
     license="GPL",
