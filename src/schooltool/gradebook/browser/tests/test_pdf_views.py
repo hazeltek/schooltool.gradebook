@@ -17,445 +17,435 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 """
-Tests for SchoolBell calendaring views.
+Tests for SchoolTool gradebook pdf views.
 
-$Id$
 """
 
 import unittest
-import calendar
 from pprint import pprint
 from datetime import datetime, date, timedelta
 
-from zope.testing import doctest
-from zope.interface import implements
-from zope.publisher.browser import TestRequest
-from zope.app.testing import setup, ztapi
-from zope.publisher.browser import BrowserView
 from zope.annotation.interfaces import IAttributeAnnotatable
+from zope.app.intid import IntIds
+from zope.app.intid.interfaces import IIntIds
+from zope.app.keyreference.interfaces import IKeyReference
+from zope.app.testing import setup, ztapi
+from zope.component import getUtility, provideAdapter, provideUtility
+from zope.interface import implements
+from zope.publisher.browser import BrowserView, TestRequest
+from zope.security.proxy import removeSecurityProxy
+from zope.testing import doctest
 
-from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.app.interfaces import IApplicationPreferences
-from schooltool.calendar.utils import parse_date
+from schooltool.app.interfaces import (ISchoolToolApplication,
+     ISchoolToolCalendar, ISchoolToolCalendarEvent)
+from schooltool.app.cal import getCalendar
+from schooltool.basicperson.interfaces import IBasicPerson
+from schooltool.basicperson.person import BasicPerson
 from schooltool.common import SchoolToolMessage as _
-from schooltool.app.cal import CalendarEvent
-from schooltool.app.interfaces import ISchoolToolCalendar
-from schooltool.person.person import Person
-from schooltool.resource.resource import Resource
-from schooltool.testing import setup as sbsetup
-from schooltool.app.app import getApplicationPreferences
-from schooltool.app.browser.pdfcal import (
-    DailyPDFCalendarView,
-    WeeklyPDFCalendarView,
-    MonthlyPDFCalendarView)
+from schooltool.course.course import (CourseContainerContainer, Course,
+    getCourseContainer)
+from schooltool.course.interfaces import (ILearner, ISectionContainer, ISection,
+    ICourseContainer)
+from schooltool.course.section import (Section, SectionContainerContainer,
+    getSectionContainer, PersonLearnerAdapter, getTermForSection,
+    getTermForSectionContainer)
+from schooltool.group.group import (GroupContainerContainer, Group,
+     getGroupContainer)
+from schooltool.group.interfaces import IGroupContainer
+from schooltool.person.person import PersonContainer
+from schooltool.relationship.tests import setUpRelationships
+from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
+from schooltool.schoolyear.schoolyear import (SchoolYear, SchoolYearContainer,
+    SCHOOLYEAR_CONTAINER_KEY, getSchoolYearContainer)
+from schooltool.term.interfaces import ITerm, IDateManager
+from schooltool.term.term import Term, getSchoolYearForTerm
+
+from schooltool.gradebook.activity import (Worksheet, Activity,
+    getSectionActivities)
+from schooltool.gradebook.gradebook import Gradebook 
+from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
+    getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
+from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
+    IActivities, IWorksheet)
+from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
+    getSectionJournalData, getSectionForSectionJournalData)
+from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
+    GroupReportCardPDFView, StudentDetailPDFView, GroupDetailPDFView,
+    FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView)
+from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.requirement.evaluation import Evaluation, getEvaluations
+from schooltool.requirement.interfaces import IEvaluations
+from schooltool.requirement.scoresystem import AmericanLetterScoreSystem
+
+
+BEGIN_2009 = datetime.date(datetime(2009, 1, 1))
+END_2009 = datetime.date(datetime(2009, 12, 31))
+
+
+aelkner = BasicPerson('aelkner', 'Alan', 'Elkner')
+thoffman = BasicPerson('thoffman', 'Tom', 'Hoffman')
+
+
+_d = {}
+
+class StupidKeyReference(object):
+    implements(IKeyReference)
+    key_type_id = 'StupidKeyReference'
+
+    def __init__(self, ob):
+        global _d
+        self.id = id(ob)
+        _d[self.id] = ob
+
+    def __call__(self):
+        return _d[self.id]
+
+    def __hash__(self):
+        return self.id
+
+    def __cmp__(self, other):
+        return cmp(hash(self), hash(other))
+
+
+class MeetingStub(object):
+    implements(ISchoolToolCalendarEvent)
+
+    __parent__ = None
+    resources = []
+
+
+_int_ids = {}
+
+class IntIdsStub(object):
+    implements(IIntIds)
+
+    def getObject(self, id):
+        return _int_ids[id]
+
+    def getId(self, obj):
+        key = IKeyReference(obj)
+        return key.__hash__()
+
+    def register(self, obj):
+        ob = removeSecurityProxy(obj)
+        key = IKeyReference(obj).__hash__()
+        if key not in _int_ids:
+            _int_ids[key] = obj
+        return key
 
 
 class ApplicationStub(object):
     implements(ISchoolToolApplication, IAttributeAnnotatable)
+
     def __init__(self):
-        pass
+        int_ids = getUtility(IIntIds)
 
+        self.dict = {}
+        self.syc = self.dict[SCHOOLYEAR_CONTAINER_KEY] = SchoolYearContainer()
+        self.dict['schooltool.course.course'] = CourseContainerContainer()
+        self.dict['schooltool.course.section'] = SectionContainerContainer()
+        self.dict['schooltool.lyceum.journal'] = LyceumJournalContainer()
+        self.dict['schooltool.group'] = GroupContainerContainer()
+        self.dict['persons'] = PersonContainer()
 
-def stub_cal_class(klass, extra_calendars=[]):
-    extra_calendars = extra_calendars[:]
-    class StubbedCalendarView(klass):
-        def getCalendars(self):
-            return [self.context] + extra_calendars
-        def dateTitle(self):
-            return parse_date(view.request['date'])
-    return StubbedCalendarView
+        self.dict['persons']['aelkner'] = aelkner
+        self.dict['persons']['thoffman'] = thoffman
 
+        self.schoolyear = self.syc['2009'] = SchoolYear('2009', BEGIN_2009,
+            END_2009)
+        self.term = self.schoolyear['term'] = Term('Term', BEGIN_2009,
+            END_2009)
+        int_ids.register(self.term)
 
-def doctest_DailyPDFCalendarView():
-    """Tests for DailyPDFCalendarView basic methods and properties.
+        setUpGradebookRoot(self)
+        root = IGradebookRoot(self)
 
-        >>> request = TestRequest(form={'date': '2005-07-08'})
-        >>> person = Person(title="Mr. Smith")
-        >>> calendar = ISchoolToolCalendar(person)
-        >>> view = stub_cal_class(DailyPDFCalendarView)(calendar, request)
+        worksheet = root.deployed['Worksheet'] = Worksheet('Worksheet')
+        worksheet['Activity'] = Activity('Activity', 'exam',
+            AmericanLetterScoreSystem)
 
-    Daily view has a title.
+        source = 'Term|Worksheet|Activity'
+        layout = root.layouts[self.schoolyear.__name__] = ReportLayout()
+        layout.columns = [ReportColumn(source, '')]
+        layout.outline_activities = [OutlineActivity(source, '')]
 
-        >>> print view.owner
-        Mr. Smith
+    def __getitem__(self, key):
+        return self.dict[key]
 
-        >>> print view.title
-        Daily calendar for Mr. Smith
+    def __setitem__(self, key, value):
+        self.dict[key] = value
 
-    But no subtitle.
+    def __contains__(self, key):
+        return key in self.dict
 
-        >>> print view.subtitle
-        <BLANKLINE>
 
-    We stubbed the date retrieval mechanism to parse the date from request.
-    In reality, if 'date' is absent in request, today is returned.
+class DateManagerStub(object):
+    implements(IDateManager)
 
-        >>> view.getDate()
-        datetime.date(2005, 7, 8)
+    def __init__(self):
+        app = ISchoolToolApplication(None)
+        self.current_term = app[SCHOOLYEAR_CONTAINER_KEY]['2009']['term']
 
-        >>> print view.dayTitle(view.getDate())
-        2005-07-08, Friday
 
-    """
+def setupSections(app):
+    int_ids = getUtility(IIntIds)
 
+    courses = ICourseContainer(app.schoolyear)
+    courses['1'] = course1 = Course('Course 1')
 
-def doctest_DailyPDFCalendarView_getCalendars(self):
-    """Test for DailyPDFCalendarView.getCalendars().
+    groups = IGroupContainer(app.schoolyear)
+    groups['students'] = students = Group('Students')
+    students.members.add(aelkner)
 
-    getCalendars() only delegates the task to the ICalendarProvider
-    subscriber.  We will provide a stub subscriber to test the method.
+    sections = ISectionContainer(app.term)
+    int_ids.register(sections)
 
-        >>> class CalendarListSubscriberStub(object):
-        ...     def __init__(self,context, request):
-        ...         pass
-        ...     def getCalendars(self):
-        ...         return [('some calendar', 'color1', 'color2'),
-        ...                 ('another calendar', 'color1', 'color2')]
+    section1 = Section('Section 1')
+    int_ids.register(section1)
+    section1.courses.add(course1)
+    section1.instructors.add(thoffman)
+    section1.members.add(aelkner)
+    sections['1'] = section1
 
-        >>> from zope.component import provideSubscriptionAdapter
-        >>> from zope.publisher.interfaces.http import IHTTPRequest
-        >>> from schooltool.app.interfaces import ISchoolToolCalendar
-        >>> from schooltool.app.browser.interfaces import ICalendarProvider
-        >>> provideSubscriptionAdapter(CalendarListSubscriberStub,
-        ...                            (ISchoolToolCalendar, IHTTPRequest),
-        ...                            ICalendarProvider)
+    ss = AmericanLetterScoreSystem
+    activities = IActivities(section1)
+    worksheet = activities['Worksheet'] = Worksheet('Worksheet')
+    activity = worksheet['Activity'] = Activity('Activity', 'exam', ss)
 
-        >>> from schooltool.app.cal import Calendar
-        >>> view = DailyPDFCalendarView(Calendar(None), TestRequest())
+    evaluations = IEvaluations(aelkner)
+    evaluation = Evaluation(activity, ss, 'F', thoffman)
+    evaluations.addEvaluation(evaluation)
 
-    Now, if we call the method, the output of our stub will be returned:
+    jd = ISectionJournalData(section1)
+    calendar = ISchoolToolCalendar(section1)
+    meeting = MeetingStub()
+    meeting.unique_id = "unique-id-2009-01-01"
+    meeting.dtstart = datetime(2009, 1, 1, 10, 15)
+    meeting.period_id = "Period 1"
+    calendar.addEvent(meeting)
+    jd.setGrade(aelkner, meeting, 'n')
+    jd.setAbsence(aelkner, meeting, 'n')
 
-        >>> view.getCalendars()
-        ['some calendar', 'another calendar']
 
-    """
+def doctest_StudentReportCardPDFView():
+    r"""Tests for StudentReportCardPDFView.
 
-
-def doctest_DailyPDFCalendarView_getTimezone():
-    """Tests for DailyPDFCalendarView.getTimezone.
-
-    We need some extra setup here:
-
-        >>> from schooltool.app.interfaces import ISchoolToolCalendar
-        >>> setup.setUpAnnotations()
-
-        >>> request = TestRequest(form={'date': '2005-07-08'})
-        >>> person = Person(title="Mr. Smith")
-        >>> calendar = ISchoolToolCalendar(person)
-        >>> view = stub_cal_class(DailyPDFCalendarView)(calendar, request)
-        >>> view.getTimezone()
-        <UTC>
-
-        >>> app = ISchoolToolApplication(None)
-        >>> IApplicationPreferences(app).timezone = "Europe/Vilnius"
-
-        >>> from pytz import timezone
-        >>> view.getTimezone() == timezone('Europe/Vilnius')
-        True
-
-    """
-
-
-def doctest_DailyPDFCalendarViewBase_tables():
-    r"""Tests for DailyPDFCalendarView.tables.
-
-
-        >>> calendar = ISchoolToolCalendar(Person(title="Mr. Smith"))
-        >>> request = TestRequest(form={'date': '2005-07-08'})
-        >>> view = stub_cal_class(DailyPDFCalendarView)(calendar, request)
-
-    There is only a single table for the current day.
-
-        >>> view.buildDayTable = lambda date: 'Table for %s' % date
-        >>> view.tables()
-        ['Table for 2005-07-08']
-
-    """
-
-
-def doctest_DailyPDFCalendarViewBase_dayEvents():
-    """Event listing tests.
-
-        >>> calendar = ISchoolToolCalendar(Person(title="Mr. Smith"))
-        >>> resource = Resource()
-        >>> calendar2 = ISchoolToolCalendar(resource)
-        >>> request = TestRequest(form={'date': '2005-07-08'})
-        >>> view = stub_cal_class(DailyPDFCalendarView)(calendar, request)
-        >>> view.getCalendars = lambda: [calendar, calendar2]
-
-    First check the simple case when the calendar is empty:
-
-        >>> view.dayEvents(date(2005, 7, 8))
-        []
-
-    Let's add one event.
-
-        >>> evt = CalendarEvent(datetime(2005, 7, 8, 9, 10),
-        ...                     timedelta(hours=5), "evt")
-        >>> calendar.addEvent(evt)
-
-    The event should appear in the result
-
-        >>> view.dayEvents(date(2005, 7, 8)) == [evt]
-        True
-
-        >>> view.dayEvents(date(2005, 7, 9))
-        []
-
-    We will add some events to the other calendar to test overlaying.
-    If several events occur, they should be returned sorted by start time:
-
-        >>> evt2 = CalendarEvent(datetime(2005, 7, 8, 9, 12),
-        ...                      timedelta(hours=5), "evt2")
-        >>> calendar2.addEvent(evt2)
-
-    Let's add a recurring event to check expansion:
-
-        >>> from schooltool.calendar.recurrent import DailyRecurrenceRule
-        >>> evt3 = CalendarEvent(datetime(2005, 7, 5, 9, 3),
-        ...                      timedelta(hours=2), "evt3",
-        ...                      recurrence=DailyRecurrenceRule())
-        >>> calendar2.addEvent(evt3)
-
-        >>> result = view.dayEvents(date(2005, 7, 8))
-        >>> [event.title for event in result]
-        ['evt3', 'evt', 'evt2']
-
-    All-day events always appear in front:
-
-        >>> ad_evt = CalendarEvent(datetime(2005, 7, 8, 20, 3),
-        ...                        timedelta(hours=2), "allday", allday=True)
-        >>> calendar.addEvent(ad_evt)
-
-        >>> result = view.dayEvents(date(2005, 7, 8))
-        >>> [event.title for event in result]
-        ['allday', 'evt3', 'evt', 'evt2']
-
-    Booked event dupes are eliminated:
-
-        >>> evt.bookResource(resource)
-        >>> result = view.dayEvents(date(2005, 7, 8))
-        >>> [event.title for event in result]
-        ['allday', 'evt3', 'evt', 'evt2']
-
-    """
-
-
-def doctest_DailyPDFCalendarView_dayEvents_timezone():
-    """Let's test that dayEvents handles timezones correctly.
-
-    First' let's someone setup the user a timezone:
-
-        >>> from schooltool.app.interfaces import ISchoolToolCalendar
-        >>> setup.setUpAnnotations()
-        >>> app = ISchoolToolApplication(None)
-        >>> IApplicationPreferences(app).timezone = "Europe/Vilnius"
-
-    Let's create a calendar and a view:
-
-        >>> calendar = ISchoolToolCalendar(Person(title="Mr. Smith"))
         >>> request = TestRequest()
-        >>> view = stub_cal_class(DailyPDFCalendarView)(calendar, request)
-
-    Let's add several edge-case events to the user's calendar:
-
-        >>> from pytz import utc
-        >>> calendar.addEvent(
-        ...     CalendarEvent(datetime(2005, 7, 7, 20, 0, tzinfo=utc),
-        ...                   timedelta(minutes=10), '20Z'))
-        >>> calendar.addEvent(
-        ...     CalendarEvent(datetime(2005, 7, 7, 21, 0, tzinfo=utc),
-        ...                   timedelta(minutes=10), '21Z'))
-        >>> calendar.addEvent(
-        ...     CalendarEvent(datetime(2005, 7, 7, 22, 0, tzinfo=utc),
-        ...                   timedelta(minutes=10), '22Z'))
-
-        >>> calendar.addEvent(
-        ...     CalendarEvent(datetime(2005, 7, 8, 19, 0, tzinfo=utc),
-        ...                   timedelta(minutes=10), '19Z+1d'))
-        >>> calendar.addEvent(
-        ...     CalendarEvent(datetime(2005, 7, 8, 20, 0, tzinfo=utc),
-        ...                   timedelta(minutes=10), '20Z+1d'))
-        >>> calendar.addEvent(
-        ...     CalendarEvent(datetime(2005, 7, 8, 21, 0, tzinfo=utc),
-        ...                   timedelta(minutes=10), '21Z+1d'))
-
-    We should get only the events that fall into July 8 in Vilnius
-    timezone:
-
-        >>> result = view.dayEvents(date(2005, 7, 8))
-        >>> [event.title for event in result]
-        ['21Z', '22Z', '19Z+1d', '20Z+1d']
-
-    """
-
-
-def doctest_DailyPDFCalendarView_buildDayTable():
-    r"""Tests for DailyPDFCalendarView.buildDayTable.
-
-        >>> calendar = ISchoolToolCalendar(Person(title="Mr. Smith"))
-        >>> calendar2 = ISchoolToolCalendar(Person(title='Mr. X'))
-        >>> request = TestRequest(form={'date': '2005-07-08'})
-        >>> ViewForTest = stub_cal_class(DailyPDFCalendarView,
-        ...                             extra_calendars=[calendar2])
-        >>> view = ViewForTest(calendar, request)
-
-    Let's add an ordinary event:
-
-        >>> from pytz import utc
-        >>> evt = CalendarEvent(datetime(2005, 7, 8, 9, 10, tzinfo=utc),
-        ...                     timedelta(hours=2), "Some event")
-        >>> calendar.addEvent(evt)
-
-        >>> rsrc = Resource(title='Some resource')
-        >>> evt.bookResource(rsrc)
-
-        >>> pprint(view.buildDayTable(date(2005, 7, 8)))
-        {'rows': [{'description': None,
-                   'location': None,
-                   'resources': 'Some resource',
-                   'tags': '',
-                   'time': '09:10-11:10',
-                   'title': 'Some event'}],
-         'title': u'2005-07-08, Friday'}
-
-        >>> calendar.clear()
-
-    And an all-day event:
-
-        >>> evt = CalendarEvent(datetime(2005, 7, 8, 9, 10),
-        ...                     timedelta(hours=2), "Long event", allday=True)
-        >>> calendar.addEvent(evt)
-
-        >>> pprint(view.buildDayTable(date(2005, 7, 8)))
-        {'rows': [{'description': None,
-                   'location': None,
-                   'resources': '',
-                   'tags': '',
-                   'time': u'all day',
-                   'title': 'Long event'}],
-         'title': u'2005-07-08, Friday'}
-
-        >>> calendar.clear()
-
-    Let's create more interesting events now. Add a recurring event with
-    description and location.
-
-        >>> from schooltool.calendar.recurrent import DailyRecurrenceRule
-        >>> evt = CalendarEvent(datetime(2005, 7, 8, 9, 10),
-        ...                     timedelta(hours=2), "Some recurrent event",
-        ...                     location=u"\u0105 location",
-        ...                     recurrence=DailyRecurrenceRule())
-        >>> evt.description = u"Fun every day!"
-        >>> calendar.addEvent(evt)
-
-        >>> pprint(view.buildDayTable(date(2005, 7, 8)))
-        {'rows': [{'description': u'Fun every day!',
-                   'location': u'\u0105 location',
-                   'resources': '',
-                   'tags': u'recurrent',
-                   'time': '09:10-11:10',
-                   'title': 'Some recurrent event'}],
-         'title': u'2005-07-08, Friday'}
-
-        >>> calendar.clear()
-
-    Overlaid events are also recognized.
-
-        >>> evt2 = CalendarEvent(datetime(2005, 7, 8, 9, 10),
-        ...                     timedelta(hours=2), "Recurrent event X",
-        ...                     recurrence=DailyRecurrenceRule())
-        >>> calendar2.addEvent(evt2)
-
-        >>> pprint(view.buildDayTable(date(2005, 7, 8)))
-        {'rows': [{'description': None,
-                   'location': None,
-                   'resources': '',
-                   'tags': u'recurrent, from the calendar of Mr. X',
-                   'time': '09:10-11:10',
-                   'title': 'Recurrent event X'}],
-         'title': u'2005-07-08, Friday'}
-
-    """
-
-
-def doctest_WeeklyPDFCalendarView():
-    r"""Tests for WeeklyPDFCalendarView.
-
-        >>> calendar = ISchoolToolCalendar(Person(title='John'))
-        >>> request = TestRequest(form={'date': '2005-07-15'})
-        >>> view = stub_cal_class(WeeklyPDFCalendarView)(calendar, request)
-
-    Weekly view has a title, subtitle:
-
-        >>> print view.title
-        Weekly calendar for John
-
-        >>> print view.subtitle
-        Week 28 (2005-07-11 - 2005-07-17), 2005
-
-    It builds tables for all 7 days of the week, otherwise its identical to
-    the daily view.
-
-        >>> view.buildDayTable = lambda date: 'Table for %s' % date
-        >>> pprint(view.tables())
-        ['Table for 2005-07-11',
-         'Table for 2005-07-12',
-         'Table for 2005-07-13',
-         'Table for 2005-07-14',
-         'Table for 2005-07-15',
-         'Table for 2005-07-16',
-         'Table for 2005-07-17']
-
-    """
-
-
-def doctest_MonthlyPDFCalendarView():
-    r"""Tests for MonthlyPDFCalendarView.
-
-        >>> calendar = ISchoolToolCalendar(Person(title='John'))
-        >>> request = TestRequest(form={'date': '2005-02-15'})
-        >>> view = stub_cal_class(MonthlyPDFCalendarView)(calendar, request)
+        >>> view = StudentReportCardPDFView(aelkner, request)
 
     Monthly view has a title, subtitle:
 
-        >>> print view.title
-        Monthly calendar for John
-
-        >>> print view.subtitle
-        February, 2005
+        >>> print view.title()
+        Report Card: 2009
 
     It builds tables for every day of the month, otherwise its identical to
     the daily view.
 
-        >>> view.buildDayTable = lambda date: 'Table for %s' % date
-        >>> pprint(view.tables())
-        ['Table for 2005-02-01',
-         'Table for 2005-02-02',
-         'Table for 2005-02-03',
-         'Table for 2005-02-04',
-         ...
-         'Table for 2005-02-12',
-         'Table for 2005-02-13',
-         'Table for 2005-02-14',
-         ...
-         'Table for 2005-02-25',
-         'Table for 2005-02-26',
-         'Table for 2005-02-27',
-         'Table for 2005-02-28']
+        >>> pprint(view.students())
+        [{'grid': {'headings': ['Activ'],
+                   'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
+                   'widths': '8.2cm,1.6cm'},
+          'outline': [{'heading': 'Section 1',
+                       'worksheets': [{'activities': [{'heading': 'Activity',
+                                                       'value': [u'F']}],
+                                       'heading': 'Worksheet',
+                                       'name': 'Worksheet'}]}],
+          'title': u'Student: Alan Elkner'}]
+    """
 
+
+def doctest_GroupReportCardPDFView():
+    r"""Tests for GroupReportCardPDFView.
+
+        >>> request = TestRequest()
+        >>> app = ISchoolToolApplication(None)
+        >>> groups = IGroupContainer(app.schoolyear)
+        >>> students = groups['students']
+        >>> view = GroupReportCardPDFView(students, request)
+
+    Monthly view has a title, subtitle:
+
+        >>> print view.title()
+        Report Card: 2009
+
+    It builds tables for every day of the month, otherwise its identical to
+    the daily view.
+
+        >>> pprint(view.students())
+        [{'grid': {'headings': ['Activ'],
+                   'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
+                   'widths': '8.2cm,1.6cm'},
+          'outline': [{'heading': 'Section 1',
+                       'worksheets': [{'activities': [{'heading': 'Activity',
+                                                       'value': [u'F']}],
+                                       'heading': 'Worksheet',
+                                       'name': 'Worksheet'}]}],
+          'title': u'Student: Alan Elkner'}]
+    """
+
+
+def doctest_StudentDetailPDFView():
+    r"""Tests for StudentDetailPDFView.
+
+        >>> request = TestRequest()
+        >>> view = StudentDetailPDFView(aelkner, request)
+
+    Monthly view has a title, subtitle:
+
+        >>> print view.title()
+        Detailed Student Report: 2009
+
+    It builds tables for every day of the month, otherwise its identical to
+    the daily view.
+
+        >>> pprint(view.students())
+        [{'attendance': {'headings': [1],
+                         'rows': [{'scores': [u'A'], 'title': '01/01/09'}],
+                         'widths': '4cm,1cm'},
+          'grades': {'headings': ['Activ'],
+                     'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
+                     'widths': '8.2cm,1.6cm'},
+          'name': u'Alan Elkner',
+          'userid': 'aelkner'}]
+    """
+
+
+def doctest_GroupDetailPDFView():
+    r"""Tests for GroupDetailPDFView.
+
+        >>> request = TestRequest()
+        >>> app = ISchoolToolApplication(None)
+        >>> groups = IGroupContainer(app.schoolyear)
+        >>> students = groups['students']
+        >>> view = GroupDetailPDFView(students, request)
+
+    Monthly view has a title, subtitle:
+
+        >>> print view.title()
+        Detailed Student Report: 2009
+
+    It builds tables for every day of the month, otherwise its identical to
+    the daily view.
+
+        >>> pprint(view.students())
+        [{'attendance': {'headings': [1],
+                         'rows': [{'scores': [u'A'], 'title': '01/01/09'}],
+                         'widths': '4cm,1cm'},
+          'grades': {'headings': ['Activ'],
+                     'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
+                     'widths': '8.2cm,1.6cm'},
+          'name': u'Alan Elkner',
+          'userid': 'aelkner'}]
+    """
+
+
+def doctest_FailingReportPDFView():
+    r"""Tests for FailingReportPDFView.
+
+        >>> request = TestRequest()
+        >>> app = ISchoolToolApplication(None)
+        >>> request.form['activity'] = 'Term|Worksheet|Activity'
+        >>> request.form['min'] = 'D'
+        >>> view = FailingReportPDFView(app.term, request)
+
+    Monthly view has a title, subtitle:
+
+        >>> print view.title()
+        Failures by Term Report: Term
+
+    It builds tables for every day of the month, otherwise its identical to
+    the daily view.
+
+        >>> pprint(view.students())
+        [{'name': 'Alan Elkner',
+          'rows': [{'course': 'Course 1', 'grade': 'F', 'teacher': 'Tom Hoffman'}]}]
+    """
+
+
+def doctest_AbsencesByDayPDFView():
+    r"""Tests for AbsencesByDayPDFView.
+
+        >>> request = TestRequest()
+        >>> app = ISchoolToolApplication(None)
+        >>> tod = datetime(2009, 1, 1, 10, 15)
+        >>> request.form['day'] = '%d-%02d-%02d' % (tod.year,
+        ...    tod.month, tod.day)
+        >>> view = AbsencesByDayPDFView(app.schoolyear, request)
+
+    Monthly view has a title, subtitle:
+
+        >>> print view.title()
+        Absences By Day Report
+
+    It builds tables for every day of the month, otherwise its identical to
+    the daily view.
+
+        >>> pprint(view.students())
+        [{'name': 'Alan Elkner', 'periods': [u'A']}]
+    """
+
+
+def doctest_SectionAbsencesPDFView():
+    r"""Tests for SectionAbsencesPDFView.
+
+        >>> request = TestRequest()
+        >>> app = ISchoolToolApplication(None)
+        >>> sections = ISectionContainer(app.term)
+        >>> view = SectionAbsencesPDFView(sections['1'], request)
+
+    Monthly view has a title, subtitle:
+
+        >>> print view.title()
+        Absences by Section Report
+
+    It builds tables for every day of the month, otherwise its identical to
+    the daily view.
+
+        >>> pprint(view.students())
+        [{'absences': 1, 'name': 'Alan Elkner', 'tardies': 0, 'total': 1}]
     """
 
 
 def pdfSetUp(test=None):
     setup.placefulSetUp()
-    sbsetup.setUpCalendaring()
+    setUpRelationships()
+
+    provideAdapter(getSchoolYearForTerm, [ITerm], provides=ISchoolYear)
+    provideAdapter(getSectionContainer, [ITerm], provides=ISectionContainer)
+
+    provideAdapter(getCourseContainer, [ISchoolYear], provides=ICourseContainer)
+    provideAdapter(getGroupContainer, [ISchoolYear], provides=IGroupContainer)
+
+    provideAdapter(PersonLearnerAdapter, [IBasicPerson], provides=ILearner)
+    provideAdapter(getEvaluations, [IBasicPerson], provides=IEvaluations)
+
+    provideAdapter(getTermForSectionContainer, [ISectionContainer],
+                   provides=ITerm)
+    provideAdapter(getSectionActivities, [ISection], provides=IActivities)
+    provideAdapter(getTermForSection, [ISection], provides=ITerm)
+    provideAdapter(getSectionJournalData, [ISection],
+                   provides=ISectionJournalData)
+    provideAdapter(getSectionForSectionJournalData, [ISectionJournalData],
+                   provides=ISection)
+
+    provideAdapter(getGradebookRoot, [ISchoolToolApplication],
+                   provides=IGradebookRoot)
+    provideAdapter(Gradebook, [IWorksheet], provides=IGradebook)
+    provideAdapter(getSchoolYearContainer, [ISchoolToolApplication], 
+                   provides=ISchoolYearContainer)
+
+    provideAdapter(StupidKeyReference, [object], IKeyReference)
+    provideUtility(IntIdsStub(), IIntIds, '')
+
+    provideAdapter(getCalendar, [object], provides=ISchoolToolCalendar)
+
     app = ApplicationStub()
-    ztapi.provideAdapter(None, ISchoolToolApplication,
-                         lambda x: app)
-    ztapi.provideAdapter(ISchoolToolApplication,
-                         IApplicationPreferences,
-                         getApplicationPreferences)
+    provideAdapter(lambda x: app, [None], provides=ISchoolToolApplication)
+
+    provideUtility(DateManagerStub(), IDateManager, '')
+
+    setupSections(app)
 
 
 def pdfTearDown(test=None):
@@ -469,7 +459,8 @@ def test_suite():
     success = tryToSetUpReportLab()
     if success:
         optionflags = (doctest.ELLIPSIS | doctest.REPORT_NDIFF
-                       | doctest.NORMALIZE_WHITESPACE)
+                       | doctest.NORMALIZE_WHITESPACE
+                       | doctest.REPORT_ONLY_FIRST_FAILURE)
         docsuite = doctest.DocTestSuite(setUp=pdfSetUp, tearDown=pdfTearDown,
                                         optionflags=optionflags)
         suite.addTest(docsuite)

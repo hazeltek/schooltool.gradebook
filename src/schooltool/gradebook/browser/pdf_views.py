@@ -49,14 +49,20 @@ from schooltool.requirement.scoresystem import UNSCORED
 class BasePDFView(ReportPDFView):
     """A base class for all PDF views"""
 
-    def noCurrentTerm(self):
+    def __init__(self, context, request):
+        super(BasePDFView, self).__init__(context, request)
         self.current_term = getUtility(IDateManager).current_term
+        if self.current_term is None:
+            self.schoolyear = None
+        else:
+            self.schoolyear = ISchoolYear(self.current_term)
+
+    def noCurrentTerm(self):
         if self.current_term is None:
             next_url = absoluteURL(ISchoolToolApplication(None), self.request)
             next_url += '/no_current_term.html'
             self.request.response.redirect(next_url)
             return True
-        self.schoolyear = ISchoolYear(self.current_term)
         return False
 
 
@@ -335,7 +341,10 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         for day in data:
             for period in data[day]:
                 periods[period] = 0
-        periods = [i + 1 for i in range(max(sorted(periods)))]
+        if not periods:
+            periods = []
+        else:
+            periods = [i + 1 for i in range(max(sorted(periods)))]
 
         widths = '4cm' + ',1cm' * len(periods)
         rows = []
@@ -389,11 +398,11 @@ class FailingReportPDFView(BasePDFView):
 
     template=ViewPageTemplateFile('failing_report_rml.pt')
 
-    def __call__(self):
+    def __init__(self, context, request):
+        super(FailingReportPDFView, self).__init__(context, request)
         self.term = self.context
         self.activity = self.getActivity()
         self.score = self.request.get('min', None)
-        return super(FailingReportPDFView, self).__call__()
 
     def getActivity(self):
         source = self.request.get('activity', None)
@@ -500,9 +509,9 @@ class AbsencesByDayPDFView(BasePDFView):
 
     template=ViewPageTemplateFile('absences_by_day_rml.pt')
 
-    def __call__(self):
+    def __init__(self, context, request):
+        super(AbsencesByDayPDFView, self).__init__(context, request)
         self.schoolyear = self.context
-        return super(AbsencesByDayPDFView, self).__call__()
 
     def title(self):
         return _('Absences By Day Report')
@@ -554,6 +563,8 @@ class AbsencesByDayPDFView(BasePDFView):
         for student in data:
             for period in data[student]:
                 periods[period] = 0
+        if not periods:
+            return []
         return [i + 1 for i in range(max(sorted(periods)))]
 
     def date_heading(self):
@@ -601,9 +612,9 @@ class SectionAbsencesPDFView(BasePDFView):
 
     template=ViewPageTemplateFile('section_absences_rml.pt')
 
-    def __call__(self):
+    def __init__(self, context, request):
+        super(SectionAbsencesPDFView, self).__init__(context, request)
         self.section = self.context
-        return super(SectionAbsencesPDFView, self).__call__()
 
     def title(self):
         return _('Absences by Section Report')
