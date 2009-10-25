@@ -234,13 +234,12 @@ def doctest_StudentReportCardPDFView():
         >>> request = TestRequest()
         >>> view = StudentReportCardPDFView(aelkner, request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Report Card: 2009
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'grid': {'headings': ['Activ'],
@@ -264,13 +263,12 @@ def doctest_GroupReportCardPDFView():
         >>> students = groups['students']
         >>> view = GroupReportCardPDFView(students, request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Report Card: 2009
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'grid': {'headings': ['Activ'],
@@ -291,13 +289,12 @@ def doctest_StudentDetailPDFView():
         >>> request = TestRequest()
         >>> view = StudentDetailPDFView(aelkner, request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Detailed Student Report: 2009
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'attendance': {'headings': [1],
@@ -320,13 +317,12 @@ def doctest_GroupDetailPDFView():
         >>> students = groups['students']
         >>> view = GroupDetailPDFView(students, request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Detailed Student Report: 2009
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'attendance': {'headings': [1],
@@ -349,13 +345,12 @@ def doctest_FailingReportPDFView():
         >>> request.form['min'] = 'D'
         >>> view = FailingReportPDFView(app.term, request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Failures by Term Report: Term
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'name': 'Alan Elkner',
@@ -373,13 +368,12 @@ def doctest_AbsencesByDayPDFView():
         ...    tod.month, tod.day)
         >>> view = AbsencesByDayPDFView(app.schoolyear, request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Absences By Day Report
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'name': 'Alan Elkner', 'periods': [u'A']}]
@@ -394,13 +388,12 @@ def doctest_SectionAbsencesPDFView():
         >>> sections = ISectionContainer(app.term)
         >>> view = SectionAbsencesPDFView(sections['1'], request)
 
-    Monthly view has a title, subtitle:
+    The view has a title:
 
         >>> print view.title()
         Absences by Section Report
 
-    It builds tables for every day of the month, otherwise its identical to
-    the daily view.
+    The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
         [{'absences': 1, 'name': 'Alan Elkner', 'tardies': 0, 'total': 1}]
