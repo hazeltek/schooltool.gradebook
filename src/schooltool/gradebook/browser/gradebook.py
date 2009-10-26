@@ -251,7 +251,7 @@ class SectionFinder(GradebookBase):
             else:
                 url += '/mygrades'
             result = {
-                'title': worksheet.title[:10],
+                'title': worksheet.title[:15],
                 'url': url,
                 'current': worksheet == self.getCurrentWorksheet(),
                 }
