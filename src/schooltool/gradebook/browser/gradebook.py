@@ -324,6 +324,9 @@ class SectionFinder(GradebookBase):
         self.average_scoresystem = getScoreSystemFromEscName(
             prefs.get('scoresystem', ''))
         self.apply_all_colspan = 1
+        if gradebook.context.deployed:
+            self.total_hide = True
+            self.average_hide = True
         if not self.total_hide:
             self.apply_all_colspan += 1
         if not self.average_hide:
