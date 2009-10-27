@@ -251,7 +251,7 @@ class SectionFinder(GradebookBase):
             else:
                 url += '/mygrades'
             result = {
-                'title': worksheet.title[:10],
+                'title': worksheet.title[:15],
                 'url': url,
                 'current': worksheet == self.getCurrentWorksheet(),
                 }
@@ -324,6 +324,9 @@ class SectionFinder(GradebookBase):
         self.average_scoresystem = getScoreSystemFromEscName(
             prefs.get('scoresystem', ''))
         self.apply_all_colspan = 1
+        if gradebook.context.deployed:
+            self.total_hide = True
+            self.average_hide = True
         if not self.total_hide:
             self.apply_all_colspan += 1
         if not self.average_hide:
@@ -585,41 +588,6 @@ class GradebookOverview(SectionFinder):
                 }
             results.append(result)
         return results
-
-
-class SummaryView(SectionFinder):
-    """Final Grades Table for all students in the section"""
-
-    isTeacher = True
-
-    def table(self):
-        """Generate the table of grades."""
-        gradebook = proxy.removeSecurityProxy(self.context)
-        rows = []
-        students = sorted(self.context.students, key=lambda x: x.title)
-        for student in students:
-            grades = []
-            for worksheet in self.worksheets:
-                total, average = gradebook.getWorksheetTotalAverage(worksheet,
-                    student)
-                grades.append({'value': str(average)})
-            calculated = gradebook.getFinalGrade(student)
-
-            row = {
-                'student': student,
-                'grades': grades,
-                'calculated': calculated,
-                }
-            rows.append(row)
-
-        return rows
-
-    @property
-    def worksheets(self):
-        gradebook = proxy.removeSecurityProxy(self.context)
-        return [worksheet
-                for worksheet in gradebook.worksheets
-                if not worksheet.deployed]
 
 
 class GradeActivity(object):
