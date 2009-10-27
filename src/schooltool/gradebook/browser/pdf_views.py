@@ -21,6 +21,7 @@ PDF Views
 """
 
 from datetime import datetime
+from decimal import Decimal
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
@@ -28,47 +29,45 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
-from schooltool.gradebook import GradebookMessage as _
-from schooltool.course.interfaces import ILearner
-from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
-    TARDY_HEADING, ABSENT_KEY, TARDY_KEY)
-from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
-from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
-from schooltool.requirement.interfaces import IEvaluations
-from schooltool.requirement.scoresystem import UNSCORED
+from schooltool.course.interfaces import ILearner, ISectionContainer
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
+
+from schooltool.gradebook import GradebookMessage as _
+from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
+    TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
+    TARDY_KEY)
+from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
+from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
+from schooltool.gradebook.interfaces import IGradebook
+from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.requirement.interfaces import IEvaluations
+from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.scoresystem import UNSCORED
 
 
 class BasePDFView(ReportPDFView):
     """A base class for all PDF views"""
 
-    def noCurrentTerm(self):
+    def __init__(self, context, request):
+        super(BasePDFView, self).__init__(context, request)
         self.current_term = getUtility(IDateManager).current_term
+        if self.current_term is None:
+            self.schoolyear = None
+        else:
+            self.schoolyear = ISchoolYear(self.current_term)
+
+    def noCurrentTerm(self):
         if self.current_term is None:
             next_url = absoluteURL(ISchoolToolApplication(None), self.request)
             next_url += '/no_current_term.html'
             self.request.response.redirect(next_url)
             return True
-        self.schoolyear = ISchoolYear(self.current_term)
         return False
 
 
 class BaseStudentPDFView(BasePDFView):
     """A base class for all student PDF views"""
-
-
-class BaseReportCardPDFView(BaseStudentPDFView):
-    """The report card (PDF) base class"""
-
-    template=ViewPageTemplateFile('report_card_rml.pt')
-
-    def __call__(self):
-        """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
-        return super(BaseReportCardPDFView, self).__call__()
 
     def isJournalSource(self, layout):
         return layout.source in [ABSENT_KEY, TARDY_KEY]
@@ -117,34 +116,6 @@ class BaseReportCardPDFView(BaseStudentPDFView):
             for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
         return '%s (%s)' % (courseTitles, teacherNames)
-
-    @property
-    def title(self):
-        return _('Report Card') + ': ' + self.schoolyear.title
-
-    @property
-    def course_heading(self):
-        return _('Courses')
-
-    @property
-    def students(self):
-        results = []
-        for student in self.collectStudents():
-            student_name = u'%s %s' % (
-                student.first_name, student.last_name)
-            student_title = _('Student') + ': ' + student_name
-
-            sections = [section for section in ILearner(student).sections()
-                        if ISchoolYear(ITerm(section)) == self.schoolyear]
-
-            result = {
-                'title': student_title,
-                'grid': self.getGrid(student, sections),
-                'outline': self.getOutline(student, sections),
-                }
-
-            results.append(result)
-        return results
 
     def getGrid(self, student, sections):
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -206,6 +177,43 @@ class BaseReportCardPDFView(BaseStudentPDFView):
             'widths': '8.2cm' + ',1.6cm' * len(scoredLayouts),
             'rows': rows,
             }
+
+
+class BaseReportCardPDFView(BaseStudentPDFView):
+    """The report card (PDF) base class"""
+
+    template=ViewPageTemplateFile('report_card_rml.pt')
+
+    def __call__(self):
+        """Make sure there is a current term."""
+        if self.noCurrentTerm():
+            return
+        return super(BaseReportCardPDFView, self).__call__()
+
+    def title(self):
+        return _('Report Card') + ': ' + self.schoolyear.title
+
+    def course_heading(self):
+        return _('Courses')
+
+    def students(self):
+        results = []
+        for student in self.collectStudents():
+            student_name = u'%s %s' % (
+                student.first_name, student.last_name)
+            student_title = _('Student') + ': ' + student_name
+
+            sections = [section for section in ILearner(student).sections()
+                        if ISchoolYear(ITerm(section)) == self.schoolyear]
+
+            result = {
+                'title': student_title,
+                'grid': self.getGrid(student, sections),
+                'outline': self.getOutline(student, sections),
+                }
+
+            results.append(result)
+        return results
 
     def getOutline(self, student, sections):
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -285,69 +293,75 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
             return
         return super(BaseStudentDetailPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Detailed Student Report') + ': ' + self.schoolyear.title
 
-    @property
     def grades_heading(self):
         return _('Grade Detail')
 
-    @property
     def course_heading(self):
         return _('Courses')
 
-    @property
     def attendance_heading(self):
         return _('Attendance Detail')
 
-    @property
     def date_heading(self):
         return _('Dates')
 
-    @property
     def name_heading(self):
         return _('Student Name')
 
-    @property
     def userid_heading(self):
         return _('User Id')
 
-    def getGradesColumns(self):
-        return ['Q1', 'Q2', 'Q3', 'Q4']
-
-    def getAttendanceColumns(self):
-        return ['1', '2', '3', '4', '5', '6', '7', '8']
-
     def grades(self, student):
-        columns = self.getGradesColumns()
-        widths = '4cm' + ',1cm' * len(columns)
-        rows = []
-        for sdf in range(2):
-            row = {
-                'title': 'English I',
-                'scores': ['A', '', 'C', ''],
-                }
-            rows.append(row)
-        return {
-            'widths': widths,
-            'headings': columns,
-            'rows': rows,
-            }
+        sections = [section for section in ILearner(student).sections()
+                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        return self.getGrid(student, sections)
 
     def attendance(self, student):
-        columns = self.getAttendanceColumns()
-        widths = '4cm' + ',1cm' * len(columns)
+        data = {}
+        sections = [section for section in ILearner(student).sections()
+                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        for section in sections:
+            jd = ISectionJournalData(section)
+            for meeting in jd.recordedMeetings(student):
+                period = int(meeting.period_id.split()[-1])
+                day = meeting.dtstart
+                grade = jd.getGrade(student, meeting)
+                result = ''
+                if grade == 'n':
+                    result = ABSENT_ABBREVIATION
+                if grade == 'p':
+                    result = TARDY_ABBREVIATION
+                if result:
+                    data.setdefault(day, {})[period] = result
+
+        periods = {}
+        for day in data:
+            for period in data[day]:
+                periods[period] = 0
+        if not periods:
+            periods = []
+        else:
+            periods = [i + 1 for i in range(max(sorted(periods)))]
+
+        widths = '4cm' + ',1cm' * len(periods)
         rows = []
-        for sdf in range(2):
+        for day in sorted(data):
+            scores = [''] * len(periods)
+            for period in data[day]:
+                index = periods.index(period)
+                scores[index] = data[day][period]
             row = {
-                'title': '9/27/09',
-                'scores': ['', 'A', '', 'T', '', '', '', ''],
+                'title': day.strftime('%x'),
+                'scores': scores,
                 }
             rows.append(row)
+
         return {
             'widths': widths,
-            'headings': columns,
+            'headings': periods,
             'rows': rows,
             }
 
@@ -384,10 +398,11 @@ class FailingReportPDFView(BasePDFView):
 
     template=ViewPageTemplateFile('failing_report_rml.pt')
 
-    def __call__(self):
-        self.schoolyear = self.context
+    def __init__(self, context, request):
+        super(FailingReportPDFView, self).__init__(context, request)
+        self.term = self.context
         self.activity = self.getActivity()
-        return super(FailingReportPDFView, self).__call__()
+        self.score = self.request.get('min', None)
 
     def getActivity(self):
         source = self.request.get('activity', None)
@@ -397,82 +412,96 @@ class FailingReportPDFView(BasePDFView):
         root = IGradebookRoot(ISchoolToolApplication(None))
         return root.deployed[worksheetName][activityName]
 
-    @property
     def title(self):
-        return _('Failures by Term Report') + ': ' + self.schoolyear.title
+        return _('Failures by Term Report') + ': ' + self.term.title
 
-    @property
     def worksheet_heading(self):
         return _('Report Sheet:')
 
-    @property
     def worksheet_value(self):
         return self.activity.__parent__.title
 
-    @property
     def activity_heading(self):
         return _('Activity:')
 
-    @property
     def activity_value(self):
         return self.activity.title
 
-    @property
     def score_heading(self):
         return _('Passing Score:')
 
-    @property
     def score_value(self):
         return self.request.get('min', '')
 
-    @property
     def heading_message(self):
         return _('The following students are at risk of failing the following courses:')
 
-    @property
     def name_heading(self):
         return _('Student')
 
-    @property
     def course_heading(self):
         return _('Course')
 
-    @property
     def teacher_heading(self):
         return _('Teacher(s)')
 
-    @property
     def grade_heading(self):
         return _('Grade')
 
+    def getSectionData(self, section):
+        data = []
+        for worksheet in IActivities(section).values():
+            if worksheet.__name__ == self.activity.__parent__.__name__:
+                gb = IGradebook(worksheet)
+                activity = worksheet[self.activity.__name__]
+                break
+        else:
+            return []
+        for student in gb.students:
+            value, ss = gb.getEvaluation(student, activity)
+            if value is not None:
+                if IDiscreteValuesScoreSystem.providedBy(ss):
+                    for score in ss.scores:
+                        if score[0] == self.score:
+                            passing_value = score[2]
+                        if score[0] == value:
+                            this_value = score[2]
+                else:
+                    passing_value = Decimal(self.score)
+                    this_value = value
+                if this_value < passing_value:
+                    data.append([student, value])
+        return data
+
     def students(self):
-        return [
-            {
-                'name': 'Alan Elkner',
-                'rows': [
-                    {
-                        'course': 'English I',
-                        'teacher': 'Tom Hoffman',
-                        'grade': 'D',
-                    },
-                    {
-                        'course': 'Algebra II',
-                        'teacher': 'Jeff Elkner',
-                        'grade': 'F',
-                    },
-                ],
-            },
-            {
-                'name': 'Jeff Elkner',
-                'rows': [
-                    {
-                        'course': 'English I',
-                        'teacher': 'Tom Hoffman',
-                        'grade': 'F',
-                    },
-                ],
-            },
-        ]
+        student_rows = {}
+        for section in ISectionContainer(self.term).values():
+            for student, value in self.getSectionData(section):
+                rows = student_rows.setdefault(student, [])
+                row = {
+                    'section': section,
+                    'grade': value,
+                    }
+                rows.append(row)
+
+        results = []
+        for student in sorted(student_rows,  key=lambda s: s.title):
+            rows = []
+            for student_row in student_rows[student]:
+                teacher = list(student_row['section'].instructors)[0]
+                name = '%s %s' % (teacher.first_name, teacher.last_name)
+                row = {
+                    'course': list(student_row['section'].courses)[0].title,
+                    'teacher': name,
+                    'grade': student_row['grade'],
+                    }
+                rows.append(row)
+            result = {
+                'name': '%s %s' % (student.first_name, student.last_name),
+                'rows': rows,
+                }
+            results.append(result)
+        return results
 
 
 class AbsencesByDayPDFView(BasePDFView):
@@ -480,11 +509,10 @@ class AbsencesByDayPDFView(BasePDFView):
 
     template=ViewPageTemplateFile('absences_by_day_rml.pt')
 
-    def __call__(self):
+    def __init__(self, context, request):
+        super(AbsencesByDayPDFView, self).__init__(context, request)
         self.schoolyear = self.context
-        return super(AbsencesByDayPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Absences By Day Report')
 
@@ -498,7 +526,47 @@ class AbsencesByDayPDFView(BasePDFView):
         except:
             return None
 
-    @property
+    def compareDates(self, first, second):
+        return (first.year == second.year and first.month == second.month and
+                first.day == second.day)
+
+    def getData(self):
+        day = self.getDay()
+        if day is None:
+            return []
+        for term in self.schoolyear.values():
+            if day in term:
+                break
+        else:
+            return []
+
+        data = {}
+        for section in ISectionContainer(term).values():
+            jd = ISectionJournalData(section)
+            for student in section.members:
+                for meeting in jd.recordedMeetings(student):
+                    if not self.compareDates(meeting.dtstart, day):
+                        continue
+                    period = int(meeting.period_id.split()[-1])
+                    grade = jd.getGrade(student, meeting)
+                    result = ''
+                    if grade == 'n':
+                        result = ABSENT_ABBREVIATION
+                    if grade == 'p':
+                        result = TARDY_ABBREVIATION
+                    if result:
+                        data.setdefault(student, {})[period] = result
+        return data
+
+    def getPeriods(self, data):
+        periods = {}
+        for student in data:
+            for period in data[student]:
+                periods[period] = 0
+        if not periods:
+            return []
+        return [i + 1 for i in range(max(sorted(periods)))]
+
     def date_heading(self):
         day = self.getDay()
         if day is None:
@@ -506,34 +574,37 @@ class AbsencesByDayPDFView(BasePDFView):
         else:
             return day.strftime('%A %B %0d, %Y')
 
-    @property
     def periods_heading(self):
         return _('Period Number')
 
-    @property
     def name_heading(self):
         return _('Student')
 
-    @property
     def widths(self):
-        return '8cm' + ',1cm' * 8
+        data = self.getData()
+        periods = self.getPeriods(data)
+        return '8cm' + ',1cm' * len(periods)
 
-    @property
     def periods(self):
-        return ['1', '2', '3', '4', '5', '6', '7', '8']
+        data = self.getData()
+        return self.getPeriods(data)
 
-    @property
     def students(self):
-        return [
-            {
-                'name': 'Alan Elkner',
-                'periods': ['A', 'T', '', 'T', '', '', '', ''],
-            },
-            {
-                'name': 'Tom Hoffman',
-                'periods': ['T', '', '', 'T', 'A', '', '', ''],
-            },
-        ]
+        data = self.getData()
+        periods = self.getPeriods(data)
+
+        rows = []
+        for student in sorted(data):
+            scores = [''] * len(periods)
+            for period in data[student]:
+                index = periods.index(period)
+                scores[index] = data[student][period]
+            row = {
+                'name': '%s %s' % (student.first_name, student.last_name),
+                'periods': scores,
+                }
+            rows.append(row)
+        return rows
 
 
 class SectionAbsencesPDFView(BasePDFView):
@@ -541,61 +612,63 @@ class SectionAbsencesPDFView(BasePDFView):
 
     template=ViewPageTemplateFile('section_absences_rml.pt')
 
-    def __call__(self):
+    def __init__(self, context, request):
+        super(SectionAbsencesPDFView, self).__init__(context, request)
         self.section = self.context
-        return super(SectionAbsencesPDFView, self).__call__()
 
-    @property
     def title(self):
         return _('Absences by Section Report')
 
-    @property
     def course_heading(self):
         return _('Course')
 
-    @property
     def course(self):
         return ', '.join([course.title for course in self.section.courses])
 
-    @property
     def teacher_heading(self):
         return _('Teacher')
 
-    @property
     def teacher(self):
         return ', '.join(['%s %s' % (teacher.first_name, teacher.last_name)
                           for teacher in self.section.instructors])
 
-    @property
     def student_heading(self):
         return _('Student')
 
-    @property
     def absences_heading(self):
         return _('Absences')
 
-    @property
     def tardies_heading(self):
         return _('Tardies')
 
-    @property
     def total_heading(self):
         return _('Total')
 
-    @property
     def students(self):
-        return [
-            {
-                'name': 'Alan Elkner',
-                'absences': '5',
-                'tardies': '4',
-                'total': '9',
-            },
-            {
-                'name': 'Tom Hoffman',
-                'absences': '',
-                'tardies': '3',
-                'total': '3',
-            },
-        ]
+        data = {}
+        jd = ISectionJournalData(self.section)
+        for student in self.section.members:
+            student_data = {}
+            student_data['absences'] = 0
+            student_data['tardies'] = 0
+            for meeting in jd.recordedMeetings(student):
+                period = int(meeting.period_id.split()[-1])
+                grade = jd.getGrade(student, meeting)
+                if grade == 'n':
+                    student_data['absences'] += 1
+                if grade == 'p':
+                    student_data['tardies'] += 1
+            if student_data['absences'] + student_data['tardies'] > 0:
+                data[student] = student_data
+
+        rows = []
+        for student in sorted(data, key=lambda s: s.title):
+            row = {
+                'name': '%s %s' % (student.first_name, student.last_name),
+                'absences': data[student]['absences'],
+                'tardies': data[student]['tardies'],
+                'total': data[student]['absences'] + data[student]['tardies'],
+                }
+            rows.append(row)
+        return rows
 

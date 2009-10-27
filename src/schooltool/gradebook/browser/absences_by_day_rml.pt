@@ -83,6 +83,7 @@
   </blockTable>
 
   <blockTable style="headings_table"
+              tal:condition="python: len(view.periods()) > 0"
               tal:attributes="colWidths view/widths">
     <tr tal:repeat="student view/students">
       <td><para style="bold" tal:content="student/name" /></td>

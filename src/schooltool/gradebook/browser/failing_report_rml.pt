@@ -97,7 +97,8 @@
     <para style="bold" tal:content="student/name" />
 
     <blockTable style="headings_table" colWidths="3cm,6cm,6cm,4cm"
-                alignment="left">
+                alignment="left"
+                tal:condition="python: len(student['rows']) > 0">
       <tr tal:repeat="row student/rows">
         <td />
         <td><para style="normal" tal:content="row/course" /></td>

@@ -51,10 +51,14 @@ from schooltool.requirement.interfaces import IScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
+
 ABSENT_HEADING = _('Absent')
 TARDY_HEADING = _('Tardy')
+ABSENT_ABBREVIATION = _('A')
+TARDY_ABBREVIATION = _('T')
 ABSENT_KEY = 'absent'
 TARDY_KEY = 'tardy'
+
 
 def copyActivities(sourceWorksheet, destWorksheet):
     """Copy the activities from the source worksheet to the destination."""
