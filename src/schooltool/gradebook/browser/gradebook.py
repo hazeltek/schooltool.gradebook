@@ -283,7 +283,11 @@ class SectionFinder(GradebookBase):
                             break
                         if newSection is None:
                             newSection = section
-                url = absoluteURL(newSection, self.request) + '/gradebook'
+                url = absoluteURL(newSection, self.request)
+                if self.isTeacher:
+                    url += '/gradebook'
+                else:
+                    url += '/mygrades'
                 self.request.response.redirect(url)
                 return True
         return False
@@ -307,9 +311,13 @@ class SectionFinder(GradebookBase):
             section = ISection(gradebook)
             instructors = list(section.instructors)
             if len(instructors) == 0:
-                return {}
-            person = instructors[0]
-        columnPreferences = gradebook.getColumnPreferences(person)
+                person = None
+            else:
+                person = instructors[0]
+        if person is None:
+            columnPreferences = {}
+        else:
+            columnPreferences = gradebook.getColumnPreferences(person)
         column_keys_dict = dict(column_keys)
         prefs = columnPreferences.get('total', {})
         self.total_hide = prefs.get('hide', False)
@@ -680,14 +688,6 @@ class MyGradesView(SectionFinder):
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
 
-        """Handle change of current term."""
-        if self.handleTermChange():
-            return
-
-        """Handle change of current section."""
-        if self.handleSectionChange():
-            return
-
         """Retrieve column preferences."""
         self.processColumnPreferences()
 
@@ -721,6 +721,13 @@ class MyGradesView(SectionFinder):
             self.average = convertAverage(average, self.average_scoresystem)
         else:
             self.average = None
+
+        """Handle change of current term."""
+        if self.handleTermChange():
+            return
+
+        """Handle change of current section."""
+        self.handleSectionChange()
 
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
