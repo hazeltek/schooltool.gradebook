@@ -21,16 +21,7 @@
 SchoolTool Gradebook setup script.
 """
 
-# Check python version
 import sys
-if sys.version_info < (2, 4):
-    print >> sys.stderr, '%s: need Python 2.4 or later.' % sys.argv[0]
-    print >> sys.stderr, 'Your python is %s' % sys.version
-    sys.exit(1)
-
-import pkg_resources
-pkg_resources.require("setuptools>=0.6a11")
-
 import os
 from setuptools import setup, find_packages
 from distutils import log
