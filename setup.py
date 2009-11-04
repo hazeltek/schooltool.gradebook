@@ -60,12 +60,18 @@ if os.path.exists("version.txt"):
 else:
     version = open("version.txt.in").read().strip()
 
+def read(*rnames):
+    text = open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    return text
+
 setup(
     name="schooltool.gradebook",
     description="SchoolTool Gradebook",
-    long_description="""The default grading system for SchoolTool.
-    Includes a point-based gradebook and a system for school-wide
-    aggregation of grades and other assessments from teachers.""",
+    long_description=(
+        read('README.txt')
+        + '\n\n' +
+        read('CHANGES.txt')
+        ),
     version=version,
     url='http://www.schooltool.org',
     license="GPL",
@@ -84,7 +90,7 @@ setup(
     package_dir={'': 'src'},
     namespace_packages=["schooltool"],
     packages=find_packages('src'),
-    install_requires=['schooltool>=1.1.1',
+    install_requires=['schooltool>=1.1.1,<2',
                       'schooltool.lyceum.journal',
                       'setuptools'],
     tests_require=['zope.testing'],

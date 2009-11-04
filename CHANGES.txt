@@ -1,0 +1,160 @@
+~~~~~~~
+CHANGES
+~~~~~~~
+
+0.5.0 (2009-11-04)
+==================
+
+This release is compatible with and requires SchoolTool 1.2.0.
+
+Worksheets
+----------
+
+* New summary worksheets. https://launchpad.net/bugs/427997
+* Default non-report worksheet. https://launchpad.net/bugs/417929
+* Ranged value score support in Report Sheet activity.
+  https://launchpad.net/bugs/417926
+* Improved multi-worksheet interaction. https://launchpad.net/bugs/417918
+* Way to create summary sheets automatically.
+  https://launchpad.net/bugs/427994
+
+Reporting
+---------
+
+* Failure report. https://launchpad.net/bugs/428077
+* Student detail report. https://launchpad.net/bugs/428075
+* Section attendance information in the report card layout.
+  https://launchpad.net/bugs/410005
+
+Translations
+------------
+
+* Gradebook translations are now separate from schooltool.
+* Many fixes to make it translatable.
+
+Tweaks and fixes
+----------------
+
+* Abbrevations in gradebook scoring system. https://launchpad.net/bugs/409038
+
+* Better category weighting documentation. https://launchpad.net/bugs/447468,
+  https://launchpad.net/bugs/417919
+
+* And a lot of small UI / navigation tweaks, fixes for several crashes and
+  glitches.  For a full list see
+  https://launchpad.net/schooltool.gradebook/+milestone/0.5.0
+
+
+0.4.9 (2009-07-07)
+==================
+
+New features 
+------------
+
+* There is a new gradebook view for grading a single student.  Please follow ">"
+  next to a student's name in the gradebook.
+
+* Report sheet activities can have comments as their scores now, to allow
+  comments on report cards.  See https://launchpad.net/bugs/381054
+
+* Administrators can define custom score systems (grading scales) used in the
+  gradebook and report sheets.
+
+Tweaks and fixes
+----------------
+
+* Graceful handling of incomplete set up in gradebook report card pdfs.  See
+  https://launchpad.net/bugs/379968
+
+* Gradebook: "Update" button renamed to "Save".  See
+  https://launchpad.net/bugs/395272
+
+* Fixed average gradebook score calculation when dealing with invalid scores.
+  See https://launchpad.net/bugs/391310
+
+* Cleaned up pre-release ui bugs in "Add a new score system" view.  See
+  https://launchpad.net/bugs/394792, https://launchpad.net/bugs/394805 and
+  https://launchpad.net/bugs/394778
+
+Fixes by Douglas Cerna:
+
+* Fixed keyboard navigation in gradebook.  See https://launchpad.net/bugs/391313
+
+* Improved gradebook XLS export - added First Name, Last Name, ID fields.  See
+  https://launchpad.net/bugs/391787
+
+* Tweaked text in gradebook column set up page.  See
+  https://launchpad.net/bugs/394774
+
+* Unicode fixes in gradebook activities. See https://launchpad.net/bugs/383416
+
+
+0.4.8 (2009-05-12)
+==================
+
+Alan Elkner:
+
+* Re-enabled final grades as "summary" view.  See
+  https://launchpad.net/bugs/372557
+
+* Fixed unicode encoding bug. Having unicode characters in activity
+  descriptions prevented access to the gradebook.  See
+  https://launchpad.net/bugs/371577
+
+
+0.4.7 (2009-04-29)
+==================
+
+Released together with SchoolTool 1.0.
+
+Author: Ignas Mikalajūnas <ignas@pov.lt>
+
+* Move gradebook tab to the left.
+* Add i18n domain to the zcml file.
+* Style remove button red.
+
+Author: Douglas Cerna
+
+* Added gradebook XLS export views.
+* Added capacity to import "external activities" into gradebook.
+
+Author: Chris Carey
+
+* moved gradebook cell color validity from javascript to css
+
+Author: Alan Elkner <aelkner@gmail.com>
+
+* got rid of confusing description of requirement title field
+* mygrades (student) view now looks like teacher gradebook
+* spaces now removed from activity column headings
+* report card now handles multi-course sections
+* added capability to deploy a report worksheet to a school year
+* added instructor names to course title in report card pdf
+* fixed javascript bug caused by activity description having newline char
+* added handling of arrow keys for navigating cells
+* added description field to gradebook and set on cell focus and activity
+  mouseover
+* got rid of obselete final grades view
+* added javascript to set focus to first gradebook cell
+* added javascript to allow user to save changes when trying to navigate away
+  from a gradebook with unsaved changes
+* added heading attribute to report card layouts
+* added term drop-down to gradebook overview
+* changed worksheet drop-down to be tabs instead
+* added due date to activities and filtering by due date to gradebook overview
+* moved label from external activity to linked activity where it belongs
+* added label to IActivity, to be used for gradebook column labels
+* got rid of unnecessary student and student/activity grade views
+* made activity grade view look like gradebook overview
+* made Weight Categories button an action button
+* worksheets can no longer be deleted
+* create sheet1 if the section has no worksheets
+* got gradebook to handle switching between sections in different terms
+* created report card pdf view
+* created Report Card Layout view
+* added subscriber to deploy worksheets to newly added sections
+* deployed worksheets and activities are now blocked from deletion
+* created view for deploying report worksheets
+* created simpler add/edit activity views
+* added javascipt for validating input
+
