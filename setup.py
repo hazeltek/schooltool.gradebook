@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # SchoolTool - common information systems platform for school administration
-# Copyright (c) 2008    Shuttleworth Foundation,
+# Copyright (c) 2008, 2009 Shuttleworth Foundation,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,20 +18,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 """
-SchoolTool US Gradebook setup script.
+SchoolTool Gradebook setup script.
 """
 
-
-# Check python version
 import sys
-if sys.version_info < (2, 4):
-    print >> sys.stderr, '%s: need Python 2.4 or later.' % sys.argv[0]
-    print >> sys.stderr, 'Your python is %s' % sys.version
-    sys.exit(1)
-
-import pkg_resources
-pkg_resources.require("setuptools>=0.6a11")
-
 import os
 from setuptools import setup, find_packages
 from distutils import log
@@ -48,7 +38,9 @@ def compile_translations(domain):
         mo = "%s/%s/LC_MESSAGES/%s.mo" % (locales_dir, lang, domain)
         if newer(po, mo):
             log.info('Compile: %s -> %s' % (po, mo))
-            os.makedirs(os.path.dirname(mo))
+            messages_dir = os.path.dirname(mo)
+            if not os.path.isdir(messages_dir):
+                os.makedirs(messages_dir)
             os.system('msgfmt -o %s %s' % (mo, po))
 
 if len(sys.argv) > 1 and sys.argv[1] in ('build', 'install'):
@@ -68,15 +60,23 @@ if os.path.exists("version.txt"):
 else:
     version = open("version.txt.in").read().strip()
 
+def read(*rnames):
+    text = open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    return text
+
 setup(
     name="schooltool.gradebook",
-    description="SchoolTool US Gradebook package.",
-    long_description="""TODO""",
+    description="SchoolTool Gradebook",
+    long_description=(
+        read('README.txt')
+        + '\n\n' +
+        read('CHANGES.txt')
+        ),
     version=version,
     url='http://www.schooltool.org',
     license="GPL",
-    maintainer="SchoolTool development team",
-    maintainer_email="schooltool-dev@schooltool.org",
+    maintainer="SchoolTool Developers",
+    maintainer_email="schooltool-developers@lists.launchpad.net",
     platforms=["any"],
     classifiers=["Development Status :: 4 - Beta",
     "Environment :: Web Environment",
@@ -90,10 +90,11 @@ setup(
     package_dir={'': 'src'},
     namespace_packages=["schooltool"],
     packages=find_packages('src'),
-    install_requires=['schooltool',
+    install_requires=['schooltool>=1.1.1,<2',
+                      'schooltool.lyceum.journal',
                       'setuptools'],
     tests_require=['zope.testing'],
-    dependency_links=['http://ftp.schooltool.org/schooltool/releases/nightly/'],
+    dependency_links=['http://ftp.schooltool.org/schooltool/1.2/'],
     include_package_data=True,
     zip_safe=False
     )

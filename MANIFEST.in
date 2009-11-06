@@ -7,3 +7,4 @@ recursive-include src *.mo
 recursive-include src *.txt
 include version.txt
 include version.txt.in
+include CHANGES.txt
