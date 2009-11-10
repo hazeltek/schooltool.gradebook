@@ -313,7 +313,7 @@ tests, we submit, the form manually:
 
 We'll switch to the Fall term and add some activities to the English I section:
 
-    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=Fall')
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=2007-.fall-')
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
@@ -1086,7 +1086,7 @@ links will use an assumed 100 point system.
  
 We'll switch to the Fall term and enter some scores to the English I section:
 
-    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=Fall')
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=2007-.fall-')
     >>> stephan.getLink('Lab1').click()
     >>> stephan.getControl('Cardune, Paul').value = u'89'
     >>> stephan.getControl('Hoffman, Tom').value = u'72'
