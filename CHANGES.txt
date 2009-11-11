@@ -9,6 +9,8 @@ Bugs
 ----
 
 * Fix term selection in gradebook overview and student's views.
+* Traceback on gradebook averages when a student has no scores.
+  https://bugs.launchpad.net/schooltool.gradebook/+bug/479305
 
 
 0.5.0 (2009-11-04)

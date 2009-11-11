@@ -174,7 +174,7 @@ class GradebookBase(object):
             elif interfaces.IWorksheet.providedBy(sourceObj):
                 gb = interfaces.IGradebook(sourceObj)
                 if student in gb.students:
-                    total, value = gb.getWorksheetTotalAverage(sourceObj, student) 
+                    total, value = gb.getWorksheetTotalAverage(sourceObj, student)
                     ss = RangedValuesScoreSystem()
         else:
             ev = evaluations.get(activity, None)
@@ -207,6 +207,10 @@ class GradebookBase(object):
 
     def getWorksheetTotalAverage(self, worksheet, student):
         if worksheet is None:
+            # XXX: justas: this is not right - 0 is a valid score in some
+            #      score systems, not valid in others.  UNSCORED should be
+            #      used here, and the rest of the gradebook should be made
+            #      to handle this returned value.
             return 0, 0
         weights = worksheet.getCategoryWeights()
 
@@ -243,14 +247,14 @@ class GradebookBase(object):
                     totals.setdefault(activity.category, Decimal(0))
                     totals[activity.category] += value - minimum
                     average_totals.setdefault(activity.category, Decimal(0))
-                    average_totals[activity.category] += (value - minimum) 
+                    average_totals[activity.category] += (value - minimum)
                     average_counts.setdefault(activity.category, Decimal(0))
                     average_counts[activity.category] += (maximum - minimum)
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights:
-                    average += ((value / average_counts[category]) * 
-                        adjusted_weights[category]) 
+                    average += ((value / average_counts[category]) *
+                        adjusted_weights[category])
             return sum(totals.values()), int(round(average*100))
 
         # when not weighting categories, the default is to weight the
@@ -275,6 +279,10 @@ class GradebookBase(object):
             if count:
                 return total, int(round(Decimal(100 * total) / Decimal(count)))
             else:
+                # XXX: justas: this is not right - 0 is a valid score in some
+                #      score systems, not valid in others.  UNSCORED should be
+                #      used here, and the rest of the gradebook should be made
+                #      to handle this returned value.
                 return 0, 0
 
     def getCurrentWorksheet(self, person):
@@ -445,12 +453,12 @@ class StudentGradebookFormAdapter(object):
 
     def __getattr__(self, name):
         activity = self.context.activities[name]
-        value, ss = self.context.gradebook.getEvaluation(self.context.student, 
+        value, ss = self.context.gradebook.getEvaluation(self.context.student,
             activity)
         if value is None:
             value = ''
         return value
-    
+
 
 def getWorksheetSection(worksheet):
     """Adapt IWorksheet to ISection."""

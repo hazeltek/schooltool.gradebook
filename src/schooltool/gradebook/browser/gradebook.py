@@ -97,7 +97,10 @@ def convertAverage(average, scoresystem):
     for score in scoresystem.scores:
         if average >= score[2]:
             return score[0]
-    raise ValueError
+    # XXX: justas: this is a quick hack to make things work
+    #      In my opinion, convertAverage should NEVER get 'average' that
+    #      is not in the score system.
+    return UNSCORED
 
 
 class GradebookStartup(object):
@@ -556,6 +559,15 @@ class GradebookOverview(SectionFinder):
 
             average = convertAverage(average, self.average_scoresystem)
 
+            # XXX: justas: a quick hack to make things work.
+            #      Should be replaced with the common way to display unscored.
+            #      'n/a', 'Not Scored' or something.
+            # XXX: TODO: Write a test demonstrating teachers gradebook output
+            #      when some student has no scores and this average value is
+            #      displayed.
+            if average is UNSCORED:
+                average = _('N/A')
+
             rows.append(
                 {'student': {'title': student.title,
                              'id': student.username,
@@ -728,6 +740,8 @@ class MyGradesView(SectionFinder):
         if count:
             average = int((float(100 * total) / float(count)) + 0.5)
             self.average = convertAverage(average, self.average_scoresystem)
+            if self.average is UNSCORED:
+                self.average = None
         else:
             self.average = None
 
