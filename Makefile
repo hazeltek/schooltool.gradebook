@@ -4,6 +4,7 @@
 #
 
 BOOTSTRAP_PYTHON=python2.5
+INSTANCE_TYPE=schooltool
 
 .PHONY: all
 all: build
@@ -12,6 +13,7 @@ all: build
 build:
 	test -d python || $(MAKE) BOOTSTRAP_PYTHON=$(BOOTSTRAP_PYTHON) bootstrap
 	test -f bin/test || $(MAKE) buildout
+	test -d instance || $(MAKE) build-schooltool-instance
 
 .PHONY: bootstrap
 bootstrap:
@@ -37,6 +39,14 @@ testall: build
 .PHONY: ftest
 ftest: build
 	bin/test -f
+
+.PHONY: build-schooltool-instance
+build-schooltool-instance:
+	bin/make-schooltool-instance instance instance_type=$(INSTANCE_TYPE)
+
+.PHONY: run
+run: build
+	bin/start-schooltool-instance instance
 
 .PHONY: release
 release: compile-translations
@@ -102,7 +112,7 @@ ubuntu-environment:
 	 echo "I am running as $(shell whoami)"; \
 	 exit 3; \
 	} else { \
-	 apt-get install subversion build-essential python-all python-all-dev libc6-dev libicu-dev; \
+	 apt-get install bzr build-essential python-all python-all-dev libc6-dev libicu-dev; \
 	 apt-get build-dep python-imaging; \
 	 apt-get build-dep python-libxml2 libxml2; \
 	 echo "Installation Complete: Next... Run 'make'."; \

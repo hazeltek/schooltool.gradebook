@@ -96,5 +96,9 @@ setup(
     tests_require=['zope.testing'],
     dependency_links=['http://ftp.schooltool.org/schooltool/1.2/'],
     include_package_data=True,
-    zip_safe=False
+    zip_safe=False,
+    entry_points="""
+        [z3c.autoinclude.plugin]
+        target = schooltool
+        """,
     )
