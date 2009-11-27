@@ -2,6 +2,16 @@
 CHANGES
 ~~~~~~~
 
+0.5.2dev
+==================
+
+Dev features
+------------
+
+* Automatic plugin inclusion
+* buildout.cfg, Makefile refactorings
+
+
 0.5.1 (2009-11-11)
 ==================
 
