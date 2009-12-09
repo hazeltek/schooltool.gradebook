@@ -49,7 +49,7 @@ run: build
 	bin/start-schooltool-instance instance
 
 .PHONY: release
-release: compile-translations
+release:
 	echo -n `sed -e 's/\n//' version.txt.in` > version.txt
 	echo -n "_r" >> version.txt
 	bzr revno >> version.txt
@@ -85,7 +85,10 @@ clean:
 
 .PHONY: extract-translations
 extract-translations: build
-	bin/i18nextract --egg schooltool.gradebook --domain schooltool.gradebook --zcml schooltool/gradebook/translations.zcml --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
+	bin/i18nextract --egg schooltool.gradebook \
+	                --domain schooltool.gradebook \
+	                --zcml schooltool/gradebook/translations.zcml \
+	                --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
 
 .PHONY: compile-translations
 compile-translations:
