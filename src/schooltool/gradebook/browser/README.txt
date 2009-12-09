@@ -299,17 +299,23 @@ Now we'll add some activities to it.
     >>> 'Final' in stephan.contents
     True
 
-Now that we have all our activities setup, we would like to rearrange their
-order more logically. The final in week 2 should really be at the end of the
-list. In the browser you should usually just select the new position and some
-Javascript would submit the form. Since Javascript is not working in the
-tests, we submit, the form manually:
+The 'Manage Activities' view allows for reordering the columns of the gradebook.
+We'll switch the order or our two activities.  Since Javascript is not working
+in the tests, we submit the form manually:
 
     >>> stephan.getLink('Manage Activities').click()
-    >>> stephan.open(stephan.url+'?form-submitted=&pos.Activity-3=3')
-    >>> stephan.contents.find('HW 2') \
-    ...     < stephan.contents.find('Final')
-    True
+    >>> url = stephan.url
+    >>> stephan.open(url+'?form-submitted=&pos.Activity=2')
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity-2">Final</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+
+We'll switch them back.
+
+    >>> stephan.open(url+'?form-submitted=&pos.Activity=1')
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity-2">Final</a>
 
 We'll switch to the Fall term and add some activities to the English I section:
 
