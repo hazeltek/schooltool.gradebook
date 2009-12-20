@@ -110,6 +110,10 @@ class Activities(requirement.Requirement):
     def worksheets(self):
         return self.values()
 
+    def values(self):
+        worksheets = super(Activities, self).values()
+        return [w for w in worksheets if not w.hidden]
+
     def resetCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
         default = self._getDefaultWorksheet()
@@ -146,6 +150,7 @@ class Worksheet(requirement.Requirement):
                               annotation.interfaces.IAttributeAnnotatable)
 
     deployed = False
+    hidden = False
 
     def getCategoryWeights(self):
         ann = annotation.interfaces.IAnnotations(self)
