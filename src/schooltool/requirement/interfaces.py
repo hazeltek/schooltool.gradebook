@@ -27,6 +27,7 @@ import zope.interface
 import zope.schema
 import zope.app.container.constraints
 import zope.app.container.interfaces
+from zope.location.interfaces import ILocation
 
 
 class IRequirement(zope.app.container.interfaces.IOrderedContainer,
@@ -246,7 +247,7 @@ class IEvaluationsQuery(zope.interface.Interface):
         """
 
 
-class IScoreSystemsProxy(zope.interface.Interface):
+class IScoreSystemsProxy(ILocation):
     """The Proxy class for adding/editing score systems"""
 
     def getScoreSystems():

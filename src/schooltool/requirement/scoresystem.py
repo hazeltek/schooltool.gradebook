@@ -227,36 +227,36 @@ class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 PassFail = GlobalDiscreteValuesScoreSystem(
     'PassFail',
     u'Pass/Fail', u'Pass or Fail score system.',
-    [(u'Pass', u'', Decimal(1), Decimal(60)), 
-     (u'Fail', u'', Decimal(0), Decimal(0))], 
+    [(u'Pass', u'', Decimal(1), Decimal(60)),
+     (u'Fail', u'', Decimal(0), Decimal(0))],
      u'Pass', u'Pass')
 
 AmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'AmericanLetterScoreSystem',
     u'Letter Grade', u'American Letter Grade',
-    [('A', u'', Decimal(4), Decimal(90)), 
-     ('B', u'', Decimal(3), Decimal(80)), 
+    [('A', u'', Decimal(4), Decimal(90)),
+     ('B', u'', Decimal(3), Decimal(80)),
      ('C', u'', Decimal(2), Decimal(70)),
-     ('D', u'', Decimal(1), Decimal(60)), 
-     ('F', u'', Decimal(0), Decimal(0))], 
+     ('D', u'', Decimal(1), Decimal(60)),
+     ('F', u'', Decimal(0), Decimal(0))],
      'A', 'D')
 
 ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'ExtendedAmericanLetterScoreSystem',
     u'Extended Letter Grade', u'American Extended Letter Grade',
-    [('A+', u'', Decimal('4.0'), Decimal(98)), 
-     ('A', u'', Decimal('4.0'), Decimal(93)), 
+    [('A+', u'', Decimal('4.0'), Decimal(98)),
+     ('A', u'', Decimal('4.0'), Decimal(93)),
      ('A-', u'', Decimal('3.7'), Decimal(90)),
-     ('B+', u'', Decimal('3.3'), Decimal(88)), 
-     ('B', u'', Decimal('3.0'), Decimal(83)), 
+     ('B+', u'', Decimal('3.3'), Decimal(88)),
+     ('B', u'', Decimal('3.0'), Decimal(83)),
      ('B-', u'', Decimal('2.7'), Decimal(80)),
-     ('C+', u'', Decimal('2.3'), Decimal(78)), 
-     ('C', u'', Decimal('2.0'), Decimal(73)), 
+     ('C+', u'', Decimal('2.3'), Decimal(78)),
+     ('C', u'', Decimal('2.0'), Decimal(73)),
      ('C-', u'', Decimal('1.7'), Decimal(70)),
-     ('D+', u'', Decimal('1.3'), Decimal(68)), 
-     ('D', u'', Decimal('1.0'), Decimal(63)), 
+     ('D+', u'', Decimal('1.3'), Decimal(68)),
+     ('D', u'', Decimal('1.0'), Decimal(63)),
      ('D-', u'', Decimal('0.7'), Decimal(60)),
-     ('F',  u'', Decimal('0.0'), Decimal(0))], 
+     ('F',  u'', Decimal('0.0'), Decimal(0))],
      'A+', 'D-')
 
 
@@ -393,7 +393,7 @@ class ScoreSystemsProxy(object):
         while n in names:
             n = name + u'-' + unicode(i)
             i += 1
-        self.siteManager.registerUtility(scoresystem, 
+        self.siteManager.registerUtility(scoresystem,
             interfaces.ICustomScoreSystem, name=n)
 
     def getScoreSystem(self, name):
