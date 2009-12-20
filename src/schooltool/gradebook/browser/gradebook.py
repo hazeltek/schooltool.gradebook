@@ -97,10 +97,6 @@ def convertAverage(average, scoresystem):
     for score in scoresystem.scores:
         if average >= score[2]:
             return score[0]
-    # XXX: justas: this is a quick hack to make things work
-    #      In my opinion, convertAverage should NEVER get 'average' that
-    #      is not in the score system.
-    return UNSCORED
 
 
 class GradebookStartup(object):
@@ -517,7 +513,7 @@ class GradebookOverview(SectionFinder):
     def getStudentActivityValue(self, student, activity):
         gradebook = proxy.removeSecurityProxy(self.context)
         value, ss = gradebook.getEvaluation(student, activity)
-        if value is None:
+        if value is None or value is UNSCORED:
             value = ''
 
         act_hash = hash(IKeyReference(activity))
@@ -557,16 +553,10 @@ class GradebookOverview(SectionFinder):
             total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
 
-            average = convertAverage(average, self.average_scoresystem)
-
-            # XXX: justas: a quick hack to make things work.
-            #      Should be replaced with the common way to display unscored.
-            #      'n/a', 'Not Scored' or something.
-            # XXX: TODO: Write a test demonstrating teachers gradebook output
-            #      when some student has no scores and this average value is
-            #      displayed.
             if average is UNSCORED:
                 average = _('N/A')
+            else:
+                average = convertAverage(average, self.average_scoresystem)
 
             rows.append(
                 {'student': {'title': student.title,
@@ -638,7 +628,7 @@ class GradeActivity(object):
         for student in self.context.students:
             reqValue = self.request.get(student.username)
             value, ss = gradebook.getEvaluation(student, self.activity['obj'])
-            if value is None:
+            if value is None or value is UNSCORED:
                 value = reqValue or ''
             else:
                 value = reqValue or value
@@ -719,7 +709,7 @@ class MyGradesView(SectionFinder):
             activity = proxy.removeSecurityProxy(activity)
             value, ss = self.context.getEvaluation(self.person, activity)
 
-            if value is not None:
+            if value is not None and value is not UNSCORED:
                 if IValuesScoreSystem.providedBy(ss):
                     grade = '%s / %s' % (value, ss.getBestScore())
                     s_min, s_max = getScoreSystemDiscreteValues(ss)
@@ -1070,7 +1060,7 @@ class StudentGradebookView(object):
                       if not self.isFiltered(activity)]
         for activity in activities:
             value, ss = gradebook.getEvaluation(self.context.student, activity)
-            if value is None:
+            if value is None or value is UNSCORED:
                 value = ''
             if ICommentScoreSystem.providedBy(activity.scoresystem):
                 block = {

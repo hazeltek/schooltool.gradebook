@@ -207,11 +207,7 @@ class GradebookBase(object):
 
     def getWorksheetTotalAverage(self, worksheet, student):
         if worksheet is None:
-            # XXX: justas: this is not right - 0 is a valid score in some
-            #      score systems, not valid in others.  UNSCORED should be
-            #      used here, and the rest of the gradebook should be made
-            #      to handle this returned value.
-            return 0, 0
+            return 0, UNSCORED
         weights = worksheet.getCategoryWeights()
 
         # weight by categories
@@ -220,7 +216,7 @@ class GradebookBase(object):
             for activity in self.getWorksheetActivities(worksheet):
                 value, ss = self.getEvaluation(student, activity)
                 category = activity.category
-                if value is not None:
+                if value is not None and value is not UNSCORED:
                     if category in weights:
                         adjusted_weights[category] = weights[category]
             total_percentage = 0
@@ -234,7 +230,7 @@ class GradebookBase(object):
             average_counts = {}
             for activity in self.getWorksheetActivities(worksheet):
                 value, ss = self.getEvaluation(student, activity)
-                if value is not None:
+                if value is not None and value is not UNSCORED:
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         minimum = ss.scores[-1][2]
                         maximum = ss.scores[0][2]
@@ -255,7 +251,10 @@ class GradebookBase(object):
                 if category in weights:
                     average += ((value / average_counts[category]) *
                         adjusted_weights[category])
-            return sum(totals.values()), int(round(average*100))
+            if not len(average_counts):
+                return 0, UNSCORED
+            else:
+                return sum(totals.values()), int(round(average*100))
 
         # when not weighting categories, the default is to weight the
         # evaulations by activities.
@@ -264,7 +263,7 @@ class GradebookBase(object):
             count = 0
             for activity in self.getWorksheetActivities(worksheet):
                 value, ss = self.getEvaluation(student, activity)
-                if value is not None:
+                if value is not None and value is not UNSCORED:
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         minimum = ss.scores[-1][2]
                         maximum = ss.scores[0][2]
@@ -279,11 +278,7 @@ class GradebookBase(object):
             if count:
                 return total, int(round(Decimal(100 * total) / Decimal(count)))
             else:
-                # XXX: justas: this is not right - 0 is a valid score in some
-                #      score systems, not valid in others.  UNSCORED should be
-                #      used here, and the rest of the gradebook should be made
-                #      to handle this returned value.
-                return 0, 0
+                return 0, UNSCORED
 
     def getCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
@@ -455,7 +450,7 @@ class StudentGradebookFormAdapter(object):
         activity = self.context.activities[name]
         value, ss = self.context.gradebook.getEvaluation(self.context.student,
             activity)
-        if value is None:
+        if value is None or value is UNSCORED:
             value = ''
         return value
 

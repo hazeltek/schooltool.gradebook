@@ -1113,7 +1113,7 @@ We'll test the totals and averages so that we can check the linked values below:
     <b>160</b>
     <b>80%</b>
     <b>0</b>
-    <b>0%</b>
+    <b>N/A</b>
 
 Now we'll return to the Winter Physics section and add our first linked column
 to the Week 1 worksheet:
@@ -1188,7 +1188,7 @@ Next we'll test the linked column data:
     >>> results = [result.strip() for result in results]
     >>> for result in results[7:]: print result
     <span>42</span>
-    <span>0</span>
+    <span></span>
     <span>72</span>
     <span>80</span>
     <span>90</span>
@@ -1200,7 +1200,7 @@ Finally we'll test the totals and averages:
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
     <b>138.00</b>
-    <b>62%</b>
+    <b>69%</b>
     <b>211.00</b>
     <b>77%</b>
     <b>224</b>
