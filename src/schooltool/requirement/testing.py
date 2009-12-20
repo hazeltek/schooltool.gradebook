@@ -24,7 +24,7 @@ __docformat__ = 'reStructuredText'
 
 import zope.component
 import zope.interface
-from zope.app import keyreference
+from zope import keyreference
 
 from schooltool.requirement import requirement, interfaces, evaluation
 

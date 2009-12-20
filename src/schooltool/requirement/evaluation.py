@@ -30,7 +30,7 @@ import zope.event
 from zope import annotation
 from zope.app import container
 from zope.location import location
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.traversing.api import getParent, getName
 
 from schooltool.requirement import interfaces
@@ -53,7 +53,7 @@ def getRequirementList(req, recurse=True):
 class Evaluations(persistent.Persistent, container.contained.Contained):
     """Evaluations mapping.
 
-    This particular implementation uses the ``zope.app.keyreference`` package
+    This particular implementation uses the ``zope.keyreference`` package
     to generate the keys of the requirements. Any key that is passed in could
     be the requirement or the ``IKeyReference`` of the requirement. This
     implementation will always convert the key to provide ``IKeyReference``

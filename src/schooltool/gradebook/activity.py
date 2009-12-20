@@ -30,7 +30,7 @@ from decimal import Decimal
 import zope.interface
 from zope import annotation
 from zope.app.container.interfaces import INameChooser
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
 from zope.schema.interfaces import IVocabularyFactory
