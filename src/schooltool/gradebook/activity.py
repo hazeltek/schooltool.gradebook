@@ -126,7 +126,10 @@ class Activities(requirement.Requirement):
             ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
         default = self._getDefaultWorksheet()
         section_id = hash(IKeyReference(self.__parent__))
-        return ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        worksheet = ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        if worksheet is not None and worksheet.hidden:
+            return default
+        return worksheet
 
     def setCurrentWorksheet(self, person, worksheet):
         person = proxy.removeSecurityProxy(person)
