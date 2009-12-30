@@ -1,67 +1,90 @@
 #!/usr/bin/make
-#
-# Makefile for schooltool.gradebook Buildout
-#
+
+PACKAGE=schooltool.gradebook
 
 BOOTSTRAP_PYTHON=python2.5
+INSTANCE_TYPE=schooltool
+BUILDOUT_FLAGS=
 
 .PHONY: all
 all: build
 
 .PHONY: build
-build:
-	test -d python || $(MAKE) BOOTSTRAP_PYTHON=$(BOOTSTRAP_PYTHON) bootstrap
-	test -f bin/test || $(MAKE) buildout
+build: bin/test
 
 .PHONY: bootstrap
-bootstrap:
+bootstrap bin/buildout:
 	$(BOOTSTRAP_PYTHON) bootstrap.py
 
 .PHONY: buildout
-buildout:
-	bin/buildout
+buildout bin/test: bin/buildout setup.py base.cfg buildout.cfg
+	bin/buildout $(BUILDOUT_FLAGS)
+	@touch --no-create bin/test
 
 .PHONY: update
-update: build
+update: bin/buildout
 	bzr up
-	bin/buildout -n
+	$(MAKE) buildout BUILDOUT_FLAGS=-n
 
 .PHONY: test
 test: build
 	bin/test -u
 
-.PHONY: testall
-testall: build
-	bin/test
-
 .PHONY: ftest
 ftest: build
 	bin/test -f
 
+.PHONY: testall
+testall: build
+	bin/test --at-level 2
+
+instance:
+	$(MAKE) buildout
+	bin/make-schooltool-instance instance instance_type=$(INSTANCE_TYPE)
+
+.PHONY: run
+run: build instance
+	bin/start-schooltool-instance instance
+
 .PHONY: release
-release: compile-translations
-	echo -n `sed -e 's/\n//' version.txt.in` > version.txt
-	echo -n "_r" >> version.txt
-	bzr revno >> version.txt
+release: bin/buildout
+	echo -n `cat version.txt.in`_r`bzr revno` > version.txt
 	bin/buildout setup setup.py sdist
+	rm version.txt
 
 .PHONY: move-release
 move-release:
-	 mv dist/schooltool.gradebook-*.tar.gz /home/ftp/pub/schooltool/releases/nightly
+	mv -v dist/$(PACKAGE)-*.tar.gz /home/ftp/pub/schooltool/1.2/dev
 
 .PHONY: coverage
 coverage: build
+	test -d parts/test/coverage && ! test -d coverage && mv parts/test/coverage . || true
 	rm -rf coverage
-	bin/test -u --coverage=coverage
+	bin/test --at-level 2 -u --coverage=coverage
 	mv parts/test/coverage .
-	@cd coverage && ls | grep -v tests | xargs grep -c '^>>>>>>' | grep -v ':0$$'
 
 .PHONY: coverage-reports-html
-coverage-reports-html:
+coverage-reports-html coverage/reports:
+	test -d parts/test/coverage && ! test -d coverage && mv parts/test/coverage . || true
 	rm -rf coverage/reports
 	mkdir coverage/reports
-	bin/coverage
-	ln -s schooltool.gradebook.html coverage/reports/index.html
+	bin/coverage coverage coverage/reports
+	ln -s $(PACKAGE).html coverage/reports/index.html
+
+.PHONY: ftest-coverage
+ftest-coverage: build
+	test -d parts/test/ftest-coverage && ! test -d ftest-coverage && mv parts/test/ftest-coverage . || true
+	rm -rf ftest-coverage
+	bin/test --at-level 2 -f --coverage=ftest-coverage
+	mv parts/test/ftest-coverage .
+
+.PHONY: ftest-coverage-reports-html
+ftest-coverage-reports-html ftest-coverage/reports:
+	test -d parts/test/ftest-coverage && ! test -d ftest-coverage && mv parts/test/ftest-coverage . || true
+	rm -rf ftest-coverage/reports
+	mkdir ftest-coverage/reports
+	bin/coverage ftest-coverage ftest-coverage/reports
+	ln -s $(PACKAGE).html ftest-coverage/reports/index.html
 
 .PHONY: clean
 clean:
@@ -73,9 +96,17 @@ clean:
 	find . -name '*.mo' -exec rm -f {} +
 	find . -name 'LC_MESSAGES' -exec rmdir -p --ignore-fail-on-non-empty {} +
 
+.PHONY: realclean
+realclean: clean
+	rm -rf eggs
+	rm -rf instance
+
 .PHONY: extract-translations
 extract-translations: build
-	bin/i18nextract --egg schooltool.gradebook --domain schooltool.gradebook --zcml schooltool/gradebook/translations.zcml --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
+	bin/i18nextract --egg $(PACKAGE) \
+	                --domain $(PACKAGE) \
+	                --zcml schooltool/gradebook/translations.zcml \
+	                --output-file src/schooltool/gradebook/locales/schooltool.gradebook.pot
 
 .PHONY: compile-translations
 compile-translations:
@@ -83,7 +114,7 @@ compile-translations:
 	locales=src/schooltool/gradebook/locales; \
 	for f in $${locales}/*.po; do \
 	    mkdir -p $${f%.po}/LC_MESSAGES; \
-	    msgfmt -o $${f%.po}/LC_MESSAGES/schooltool.gradebook.mo $$f;\
+	    msgfmt -o $${f%.po}/LC_MESSAGES/$(PACKAGE).mo $$f;\
 	done
 
 .PHONY: update-translations
@@ -91,9 +122,9 @@ update-translations: extract-translations
 	set -e; \
 	locales=src/schooltool/gradebook/locales; \
 	for f in $${locales}/*.po; do \
-	    msgmerge -qU $$f $${locales}/schooltool.gradebook.pot ;\
+	    msgmerge -qU $$f $${locales}/$(PACKAGE).pot ;\
 	done
-	$(MAKE) PYTHON=$(PYTHON) compile-translations
+	$(MAKE) compile-translations
 
 .PHONY: ubuntu-environment
 ubuntu-environment:
@@ -102,8 +133,7 @@ ubuntu-environment:
 	 echo "I am running as $(shell whoami)"; \
 	 exit 3; \
 	} else { \
-	 apt-get install subversion build-essential python-all python-all-dev libc6-dev libicu-dev; \
+	 apt-get install bzr build-essential python-all python-all-dev libc6-dev libicu-dev; \
 	 apt-get build-dep python-imaging; \
-	 apt-get build-dep python-libxml2 libxml2; \
 	 echo "Installation Complete: Next... Run 'make'."; \
 	} fi

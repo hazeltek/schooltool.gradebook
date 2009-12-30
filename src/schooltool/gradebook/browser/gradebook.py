@@ -56,6 +56,8 @@ from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook import GradebookMessage as _
@@ -79,7 +81,7 @@ def escName(name):
 
 def getScoreSystemFromEscName(name):
     """converts escaped scoresystem title to scoresystem"""
-    factory = queryUtility(IVocabularyFactory, 
+    factory = queryUtility(IVocabularyFactory,
                            'schooltool.requirement.discretescoresystems')
     vocab = factory(None)
     for term in vocab:
@@ -95,7 +97,6 @@ def convertAverage(average, scoresystem):
     for score in scoresystem.scores:
         if average >= score[2]:
             return score[0]
-    raise ValueError
 
 
 class GradebookStartup(object):
@@ -179,13 +180,13 @@ class GradebookBase(BrowserView):
                 continue
             ss = activity.scoresystem
             if IDiscreteValuesScoreSystem.providedBy(ss):
-                result = [DISCRETE_SCORE_SYSTEM] + [score[0] 
+                result = [DISCRETE_SCORE_SYSTEM] + [score[0]
                     for score in ss.scores]
             elif IRangedValuesScoreSystem.providedBy(ss):
                 result = [RANGED_SCORE_SYSTEM, ss.min, ss.max]
             else:
                 result = [COMMENT_SCORE_SYSTEM]
-            resultStr = ', '.join(["'%s'" % unicode(value) 
+            resultStr = ', '.join(["'%s'" % unicode(value)
                 for value in result])
             results[hash(IKeyReference(activity))] = resultStr
         return results
@@ -212,6 +213,10 @@ class SectionFinder(GradebookBase):
         else:
             return list(ILearner(self.person).sections())
 
+    def getTermId(self, term):
+        year = ISchoolYear(term)
+        return '%s.%s' % (simple_form_key(year), simple_form_key(term))
+
     def getTerms(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
@@ -220,7 +225,10 @@ class SectionFinder(GradebookBase):
             term = ITerm(section)
             if term not in terms:
                 terms.append(term)
-        return [{'title': term.title} for term in terms]
+        return [{'title': '%s / %s' % (ISchoolYear(term).title, term.title),
+                 'form_id': self.getTermId(term),
+                 'selected': term is currentTerm and 'selected' or None}
+                for term in terms]
 
     def getSections(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
@@ -265,19 +273,19 @@ class SectionFinder(GradebookBase):
     def getCurrentTerm(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
         term = ITerm(section)
-        return term.title
+        return '%s / %s' % (ISchoolYear(term).title, term.title)
 
     def handleTermChange(self):
         if 'currentTerm' in self.request:
             currentSection = ISection(proxy.removeSecurityProxy(self.context))
             currentCourse = list(currentSection.courses)[0]
             currentTerm = ITerm(currentSection)
-            requestTitle = self.request['currentTerm']
-            if requestTitle != currentTerm.title:
+            requestTermId = self.request['currentTerm']
+            if requestTermId != self.getTermId(currentTerm):
                 newSection = None
                 for section in self.getUserSections():
                     term = ITerm(section)
-                    if term.title == requestTitle:
+                    if self.getTermId(term) == requestTermId:
                         if currentCourse == list(section.courses)[0]:
                             newSection = section
                             break
@@ -505,7 +513,7 @@ class GradebookOverview(SectionFinder):
     def getStudentActivityValue(self, student, activity):
         gradebook = proxy.removeSecurityProxy(self.context)
         value, ss = gradebook.getEvaluation(student, activity)
-        if value is None:
+        if value is None or value is UNSCORED:
             value = ''
 
         act_hash = hash(IKeyReference(activity))
@@ -545,10 +553,13 @@ class GradebookOverview(SectionFinder):
             total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
 
-            average = convertAverage(average, self.average_scoresystem)
+            if average is UNSCORED:
+                average = _('N/A')
+            else:
+                average = convertAverage(average, self.average_scoresystem)
 
             rows.append(
-                {'student': {'title': student.title, 
+                {'student': {'title': student.title,
                              'id': student.username,
                              'url': absoluteURL(student, self.request),
                              'gradeurl': absoluteURL(self.context, self.request) +
@@ -617,7 +628,7 @@ class GradeActivity(object):
         for student in self.context.students:
             reqValue = self.request.get(student.username)
             value, ss = gradebook.getEvaluation(student, self.activity['obj'])
-            if value is None:
+            if value is None or value is UNSCORED:
                 value = reqValue or ''
             else:
                 value = reqValue or value
@@ -698,7 +709,7 @@ class MyGradesView(SectionFinder):
             activity = proxy.removeSecurityProxy(activity)
             value, ss = self.context.getEvaluation(self.person, activity)
 
-            if value is not None:
+            if value is not None and value is not UNSCORED:
                 if IValuesScoreSystem.providedBy(ss):
                     grade = '%s / %s' % (value, ss.getBestScore())
                     s_min, s_max = getScoreSystemDiscreteValues(ss)
@@ -719,6 +730,8 @@ class MyGradesView(SectionFinder):
         if count:
             average = int((float(100 * total) / float(count)) + 0.5)
             self.average = convertAverage(average, self.average_scoresystem)
+            if self.average is UNSCORED:
+                self.average = None
         else:
             self.average = None
 
@@ -802,7 +815,7 @@ class GradebookColumnPreferences(BrowserView):
         for worksheet in currentWorksheets:
             if worksheet.title.startswith(SUMMARY_TITLE):
                 continue
-            activity = LinkedColumnActivity(worksheet.title, u'assignment', 
+            activity = LinkedColumnActivity(worksheet.title, u'assignment',
                 '', createSourceString(worksheet))
             chooser = INameChooser(summary)
             name = chooser.chooseName('', activity)
@@ -875,7 +888,7 @@ class GradebookColumnPreferences(BrowserView):
 
     @property
     def scoresystems(self):
-        factory = queryUtility(IVocabularyFactory, 
+        factory = queryUtility(IVocabularyFactory,
                                'schooltool.requirement.discretescoresystems')
         vocab = factory(None)
         result = {
@@ -1047,7 +1060,7 @@ class StudentGradebookView(object):
                       if not self.isFiltered(activity)]
         for activity in activities:
             value, ss = gradebook.getEvaluation(self.context.student, activity)
-            if value is None:
+            if value is None or value is UNSCORED:
                 value = ''
             if ICommentScoreSystem.providedBy(activity.scoresystem):
                 block = {

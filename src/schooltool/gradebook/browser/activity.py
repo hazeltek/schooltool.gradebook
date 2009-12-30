@@ -22,7 +22,6 @@ $Id$
 """
 from decimal import Decimal, InvalidOperation
 
-import zope.security.proxy
 import xlwt
 from StringIO import StringIO
 
@@ -30,6 +29,7 @@ from zope.app.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
 from zope.app.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.interface import implements
 from zope.publisher.browser import BrowserView
 from zope.schema import TextLine
 from zope.security.checker import canWrite
@@ -40,6 +40,7 @@ from zope.app.form.browser.interfaces import ITerms, IWidgetInputErrorView
 from zope.schema.vocabulary import SimpleTerm
 from zope.app.form.interfaces import WidgetsError, WidgetInputError
 from zope.schema.interfaces import IVocabularyFactory
+from zope.security.proxy import removeSecurityProxy
 from zope.component import queryAdapter, getAdapter
 from zope.formlib import form
 from zope import interface, schema
@@ -121,7 +122,11 @@ class ActivitiesView(object):
             # is unauthenticated should add the relevant code
             raise Unauthorized("You don't have the permission to do this.")
 
-        if 'form-submitted' in self.request:
+        if 'HIDE' in self.request:
+            for name in self.request.get('hide', []):
+                worksheet = removeSecurityProxy(self.context[name])
+                worksheet.hidden = True
+        elif 'form-submitted' in self.request:
             old_pos = 0
             for worksheet in self.context.values():
                 old_pos += 1
@@ -359,7 +364,7 @@ class WeightCategoriesView(object):
 class ExternalActivitiesTerms(object):
     """Terms for external activities"""
 
-    zope.interface.implements(ITerms)
+    implements(ITerms)
 
     def __init__(self, context, request):
         self.context = context

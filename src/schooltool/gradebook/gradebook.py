@@ -19,14 +19,11 @@
 """
 Gradebook Implementation
 """
-
-from zope.component import adapts, queryMultiAdapter
-from schooltool.app.interfaces import ISchoolToolApplication
 __docformat__ = 'reStructuredText'
-from persistent.dict import PersistentDict
 
 from decimal import Decimal
 
+from persistent.dict import PersistentDict
 from zope.security import proxy
 from zope import annotation
 from zope.app.keyreference.interfaces import IKeyReference
@@ -37,8 +34,8 @@ from zope.publisher.interfaces import IPublishTraverse
 from zope.security.proxy import removeSecurityProxy
 
 from schooltool import course, requirement
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IBasicPerson
-from schooltool.traverser import traverser
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
 from schooltool.securitypolicy.crowds import AggregateCrowd
 from schooltool.securitypolicy.crowds import ManagersCrowd
@@ -46,7 +43,7 @@ from schooltool.securitypolicy.crowds import ClerksCrowd
 from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
-from schooltool.gradebook.activity import getSourceObj, Activities
+from schooltool.gradebook.activity import getSourceObj
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
@@ -174,7 +171,7 @@ class GradebookBase(object):
             elif interfaces.IWorksheet.providedBy(sourceObj):
                 gb = interfaces.IGradebook(sourceObj)
                 if student in gb.students:
-                    total, value = gb.getWorksheetTotalAverage(sourceObj, student) 
+                    total, value = gb.getWorksheetTotalAverage(sourceObj, student)
                     ss = RangedValuesScoreSystem()
         else:
             ev = evaluations.get(activity, None)
@@ -207,7 +204,7 @@ class GradebookBase(object):
 
     def getWorksheetTotalAverage(self, worksheet, student):
         if worksheet is None:
-            return 0, 0
+            return 0, UNSCORED
         weights = worksheet.getCategoryWeights()
 
         # weight by categories
@@ -216,7 +213,7 @@ class GradebookBase(object):
             for activity in self.getWorksheetActivities(worksheet):
                 value, ss = self.getEvaluation(student, activity)
                 category = activity.category
-                if value is not None:
+                if value is not None and value is not UNSCORED:
                     if category in weights:
                         adjusted_weights[category] = weights[category]
             total_percentage = 0
@@ -230,7 +227,7 @@ class GradebookBase(object):
             average_counts = {}
             for activity in self.getWorksheetActivities(worksheet):
                 value, ss = self.getEvaluation(student, activity)
-                if value is not None:
+                if value is not None and value is not UNSCORED:
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         minimum = ss.scores[-1][2]
                         maximum = ss.scores[0][2]
@@ -243,24 +240,27 @@ class GradebookBase(object):
                     totals.setdefault(activity.category, Decimal(0))
                     totals[activity.category] += value - minimum
                     average_totals.setdefault(activity.category, Decimal(0))
-                    average_totals[activity.category] += (value - minimum) 
+                    average_totals[activity.category] += (value - minimum)
                     average_counts.setdefault(activity.category, Decimal(0))
                     average_counts[activity.category] += (maximum - minimum)
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights:
-                    average += ((value / average_counts[category]) * 
-                        adjusted_weights[category]) 
-            return sum(totals.values()), int(round(average*100))
+                    average += ((value / average_counts[category]) *
+                        adjusted_weights[category])
+            if not len(average_counts):
+                return 0, UNSCORED
+            else:
+                return sum(totals.values()), int(round(average*100))
 
         # when not weighting categories, the default is to weight the
-        # evaulations by activities.
+        # evaluations by activities.
         else:
             total = 0
             count = 0
             for activity in self.getWorksheetActivities(worksheet):
                 value, ss = self.getEvaluation(student, activity)
-                if value is not None:
+                if value is not None and value is not UNSCORED:
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         minimum = ss.scores[-1][2]
                         maximum = ss.scores[0][2]
@@ -275,7 +275,7 @@ class GradebookBase(object):
             if count:
                 return total, int(round(Decimal(100 * total) / Decimal(count)))
             else:
-                return 0, 0
+                return 0, UNSCORED
 
     def getCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
@@ -287,7 +287,10 @@ class GradebookBase(object):
         else:
             default = None
         section_id = hash(IKeyReference(self.section))
-        return ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        worksheet = ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        if worksheet is not None and worksheet.hidden:
+            return default
+        return worksheet
 
     def setCurrentWorksheet(self, person, worksheet):
         person = proxy.removeSecurityProxy(person)
@@ -445,12 +448,12 @@ class StudentGradebookFormAdapter(object):
 
     def __getattr__(self, name):
         activity = self.context.activities[name]
-        value, ss = self.context.gradebook.getEvaluation(self.context.student, 
+        value, ss = self.context.gradebook.getEvaluation(self.context.student,
             activity)
-        if value is None:
+        if value is None or value is UNSCORED:
             value = ''
         return value
-    
+
 
 def getWorksheetSection(worksheet):
     """Adapt IWorksheet to ISection."""

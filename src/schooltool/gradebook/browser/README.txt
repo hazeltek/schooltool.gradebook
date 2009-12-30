@@ -299,21 +299,27 @@ Now we'll add some activities to it.
     >>> 'Final' in stephan.contents
     True
 
-Now that we have all our activities setup, we would like to rearrange their
-order more logically. The final in week 2 should really be at the end of the
-list. In the browser you should usually just select the new position and some
-Javascript would submit the form. Since Javascript is not working in the
-tests, we submit, the form manually:
+The 'Manage Activities' view allows for reordering the columns of the gradebook.
+We'll switch the order or our two activities.  Since Javascript is not working
+in the tests, we submit the form manually:
 
     >>> stephan.getLink('Manage Activities').click()
-    >>> stephan.open(stephan.url+'?form-submitted=&pos.Activity-3=3')
-    >>> stephan.contents.find('HW 2') \
-    ...     < stephan.contents.find('Final')
-    True
+    >>> url = stephan.url
+    >>> stephan.open(url+'?form-submitted=&pos.Activity=2')
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity-2">Final</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+
+We'll switch them back.
+
+    >>> stephan.open(url+'?form-submitted=&pos.Activity=1')
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/Activity-2">Final</a>
 
 We'll switch to the Fall term and add some activities to the English I section:
 
-    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=Fall')
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=2007-.fall-')
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
@@ -1086,7 +1092,7 @@ links will use an assumed 100 point system.
  
 We'll switch to the Fall term and enter some scores to the English I section:
 
-    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=Fall')
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=2007-.fall-')
     >>> stephan.getLink('Lab1').click()
     >>> stephan.getControl('Cardune, Paul').value = u'89'
     >>> stephan.getControl('Hoffman, Tom').value = u'72'
@@ -1107,7 +1113,7 @@ We'll test the totals and averages so that we can check the linked values below:
     <b>160</b>
     <b>80%</b>
     <b>0</b>
-    <b>0%</b>
+    <b>N/A</b>
 
 Now we'll return to the Winter Physics section and add our first linked column
 to the Week 1 worksheet:
@@ -1182,7 +1188,7 @@ Next we'll test the linked column data:
     >>> results = [result.strip() for result in results]
     >>> for result in results[7:]: print result
     <span>42</span>
-    <span>0</span>
+    <span></span>
     <span>72</span>
     <span>80</span>
     <span>90</span>
@@ -1194,9 +1200,37 @@ Finally we'll test the totals and averages:
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
     <b>138.00</b>
-    <b>62%</b>
+    <b>69%</b>
     <b>211.00</b>
     <b>77%</b>
     <b>224</b>
     <b>90%</b>
+
+
+Hiding Worksheets
+-----------------
+
+We want to allow the user to hide a worksheet so that it no longer figures in
+the gradebook.  The worksheet will not be deleted from the database, but it
+will be ignored in all areas of gradebook management.
+
+We'll add a new worksheet called 'Week 3' and note its presence in the
+list.
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('New Worksheet').click()
+    >>> stephan.getControl('Title').value = 'Week 3'
+    >>> stephan.getControl('Add').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/manage.html">Week 3</a>
+
+Now we'll hide our newly added worksheet, noting its absense from the list.
+
+    >>> stephan.getControl(name='hide:list').value = ['Worksheet-3']
+    >>> stephan.getControl('Hide').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
 

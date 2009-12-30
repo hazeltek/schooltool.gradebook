@@ -110,6 +110,10 @@ class Activities(requirement.Requirement):
     def worksheets(self):
         return self.values()
 
+    def values(self):
+        worksheets = super(Activities, self).values()
+        return [w for w in worksheets if not w.hidden]
+
     def resetCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
         default = self._getDefaultWorksheet()
@@ -122,7 +126,10 @@ class Activities(requirement.Requirement):
             ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
         default = self._getDefaultWorksheet()
         section_id = hash(IKeyReference(self.__parent__))
-        return ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        worksheet = ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        if worksheet is not None and worksheet.hidden:
+            return default
+        return worksheet
 
     def setCurrentWorksheet(self, person, worksheet):
         person = proxy.removeSecurityProxy(person)
@@ -146,6 +153,7 @@ class Worksheet(requirement.Requirement):
                               annotation.interfaces.IAttributeAnnotatable)
 
     deployed = False
+    hidden = False
 
     def getCategoryWeights(self):
         ann = annotation.interfaces.IAnnotations(self)
