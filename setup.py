@@ -90,7 +90,7 @@ setup(
     package_dir={'': 'src'},
     namespace_packages=["schooltool"],
     packages=find_packages('src'),
-    install_requires=['schooltool>1.2.0',
+    install_requires=['schooltool>=1.2.0',
                       'schooltool.lyceum.journal',
                       'setuptools',
                       'z3c.optionstorage'],

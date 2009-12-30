@@ -2,14 +2,16 @@
 CHANGES
 ~~~~~~~
 
-0.5.2dev
+0.5.2 (2009-12-30)
 ==================
 
-Dev features
-------------
-
-* Automatic plugin inclusion
-* buildout.cfg, Makefile refactorings
+* Added ability to hide worksheets https://launchpad.net/bugs/427494
+* Skip worksheets and activities that have no score for a student
+  https://launchpad.net/bugs/427489
+* Fix to allow changing activity order https://launchpad.net/bugs/494262
+* Support for automatic plugin inclusion (using schooltool-1.2.1 or later)
+* Many build improvements by Justas and Gediminas
+* Updated translations
 
 
 0.5.1 (2009-11-11)
