@@ -1206,3 +1206,31 @@ Finally we'll test the totals and averages:
     <b>224</b>
     <b>90%</b>
 
+
+Hiding Worksheets
+-----------------
+
+We want to allow the user to hide a worksheet so that it no longer figures in
+the gradebook.  The worksheet will not be deleted from the database, but it
+will be ignored in all areas of gradebook management.
+
+We'll add a new worksheet called 'Week 3' and note its presence in the
+list.
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('New Worksheet').click()
+    >>> stephan.getControl('Title').value = 'Week 3'
+    >>> stephan.getControl('Add').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/manage.html">Week 3</a>
+
+Now we'll hide our newly added worksheet, noting its absense from the list.
+
+    >>> stephan.getControl(name='hide:list').value = ['Worksheet-3']
+    >>> stephan.getControl('Hide').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+

@@ -90,6 +90,11 @@ class IWorksheet(interfaces.IRequirement):
         required=False
         )
 
+    hidden = zope.schema.Bool(
+        title=u"Hidden Worksheet",
+        required=False
+        )
+
     def getCategoryWeights():
         """Get the category weights for the worksheet.  This method will
            return a list of (category, weight) tuples, the weight being
