@@ -1,7 +1,7 @@
 # Khmer translation for schooltool.gradebook
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the schooltool.gradebook package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
 #
 msgid ""
 msgstr ""
@@ -9,8 +9,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-10-27 21:13+0000\n"
 "PO-Revision-Date: 2009-12-27 18:57+0000\n"
-"Last-Translator: chhorran <Unknown>\n"
-"Language-Team: Khmer <km@li.org>\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <support@khmeros.info>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,12 +25,12 @@ msgstr "សកម្មភាព"
 
 #: /src/schooltool/gradebook/activity.py:53
 msgid "Sheet1"
-msgstr "សន្លឹក ១"
+msgstr "សន្លឹក​ទី​មួយ"
 
 #: /src/schooltool/gradebook/browser/activity.py:138
 #: /src/schooltool/gradebook/browser/report_card.py:209
 msgid "Add new activity"
-msgstr "បន្ថែម សកម្មភាពថ្មី"
+msgstr "បន្ថែម​សកម្មភាព​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/activity.py:151
 #: /src/schooltool/gradebook/browser/activity.py:206
@@ -54,17 +54,17 @@ msgstr "បោះបង់"
 
 #: /src/schooltool/gradebook/browser/activity.py:193
 msgid "Add an External Activity"
-msgstr "បន្ថែម សកម្មភាព ពីខាងក្រៅ"
+msgstr "បន្ថែម​សកម្មភាព​ខាងក្រៅ"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:264
 #: /src/schooltool/gradebook/browser/report_card.py:290
 msgid "Change information for ${fullname}"
-msgstr "ផ្លាស់ប្តូរពត៌មាន សំរាប់ ${fullname}"
+msgstr "ផ្លាស់ប្ដូរ​ព័ត៌មាន​សម្រាប់ ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:282
 msgid "Edit External Activity"
-msgstr "កែប្រែ សកម្មភាព ពីខាងក្រៅ"
+msgstr "កែ​សម្រួល​សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/activity.py:285
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
@@ -74,15 +74,15 @@ msgstr "អនុវត្ត"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:323
 msgid "$value is not a valid weight."
-msgstr ""
+msgstr "$value មិនមែន​ជា​ទម្ងន់​ត្រឹមត្រូវ​ទេ ។"
 
 #: /src/schooltool/gradebook/browser/activity.py:332
 msgid "Category weights must add up to 100."
-msgstr ""
+msgstr "ទម្ងន់​ប្រភេទ​ត្រូវ​តែ​បន្ថែម​ដល់ ១០០ ។"
 
 #: /src/schooltool/gradebook/browser/activity.py:378
 msgid "The external activity couldn't be found"
-msgstr "គ្មានរកឃើញ សកម្មភាពពីខាងក្រៅ"
+msgstr "មិន​អាច​រក​ឃើញ​សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/activity.py:522
 #: /src/schooltool/gradebook/browser/activity.py:590
@@ -91,19 +91,19 @@ msgstr "មធ្យម"
 
 #: /src/schooltool/gradebook/browser/activity.py:560
 msgid "Add Linked Column"
-msgstr ""
+msgstr "បន្ថែម​ជួរ​ឈរ​ដែល​ភ្ជាប់"
 
 #: /src/schooltool/gradebook/browser/activity.py:599
 msgid "Edit Linked Column"
-msgstr ""
+msgstr "កែ​សម្រួល​ជួរ​ឈរ​ដែល​ភ្ជាប់"
 
 #: /src/schooltool/gradebook/browser/activity.py:73
 msgid "External Activity"
-msgstr "សកម្មភាព ពីខាងក្រៅ"
+msgstr "សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/activity.py:74
 msgid "The external activity"
-msgstr "សកម្មភាព ពីខាងក្រៅ"
+msgstr "សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/categories.pt:19
 msgid ""
@@ -111,7 +111,7 @@ msgid ""
 "allow teachers to weight different types of activities differently to "
 "calculate grades. For example, the grade in a section might be comprised of "
 "60% test scores, 20% homework and 20% class participation."
-msgstr ""
+msgstr "ប្រភេទ​ត្រូវ​បានប្រើ​នៅ​ក្នុង​សៀវភៅ​ពិន្ទុ​របស់ SchoolTool ដើម្បី​រៀបចំ​សកម្មភាព និង​អនុញ្ញាត​ឲ្យ​គ្រូ​រឹត​បន្តឹង​ប្រភេទ​ផ្សេងៗ​របស់​សកម្មភាព​ដែល​ខុសគ្នា​ក្នុងការ​គណនា​ពិន្ទុ ។ ឧទាហរណ៍ ពិន្ទុ​នៅ​ក្នុង​ភាគ​អាច​មាន​ពិន្ទុក​តេស្ដិ ៦០% កិច្ចការ​ផ្ទះ ២០% និង​​វត្តមាន ២០% ។"
 
 #: /src/schooltool/gradebook/browser/categories.pt:22
 msgid ""
@@ -120,123 +120,123 @@ msgid ""
 "category not in the current list, the site manager can add it here. "
 "Likewise, if some of the default categories are not relevant to your school, "
 "remove them below."
-msgstr ""
+msgstr "បច្ចុប្បន្ន បញ្ជី​ប្រភេទ​ដែល​អាច​ប្រើ​បាន​សម្រាប់​គ្រូ​ទាំងអស់​​ត្រូវ​បានគ្រប់គ្រង​តាមរយៈ​ទម្រង់​នេះ ។ នោះ​ហើយ ប្រសិនបើ​គ្រូ​ម្នាក់​ ឬ​ច្រើន​​ចង់​ប្រើ​ប្រភេទ​ដែល​មិន​នៅ​ក្នុង​បញ្ជី​បច្ចុប្បន្ន កម្មវិធី​គ្រប់គ្រង​តំបន់បណ្ដាញ​អាច​បន្ថែម​វា​នៅ​ទីនេះ ។ ប្រសិនបើ​ប្រភេទ​លំនាំដើម​មួយ​ចំនួន​មិនទាក់ទង​នឹង​សាលា​របស់​អ្នក​ទេ យក​ពួកវា​ចេញ​ខាងក្រោម ។"
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr "ប្រអប់ចុច ដកចេញ"
+msgstr "ប៊ូតុង​យក​ចេញ"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr "គ្រប់គ្រង ចំណាត់ក្រុមសកម្មភាព"
+msgstr "គ្រប់គ្រង​ប្រភេទ​សកម្មភាព"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "ប្រអប់ចុច បន្ថែម"
+msgstr "ប៊ូតុង​បន្ថែម"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr "ប្រអប់ចុច ផ្លាស់ប្តូរ"
+msgstr "ប៊ូតុង​ផ្លាស់ប្ដូរ"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
-msgstr "ចំណាត់ក្រុម"
+msgstr "ប្រភេទ"
 
 #: /src/schooltool/gradebook/browser/category.py:49
 msgid "New Category"
-msgstr "ចំណាត់ក្រុម ថ្មី"
+msgstr "ប្រភេទ​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/category.py:52
 msgid "Default Category"
-msgstr "ចំណាត់ក្រុម លំនាំដើម"
+msgstr "ប្រភេទ​លំនាំ​ដើម"
 
 #: /src/schooltool/gradebook/browser/category.py:75
 msgid "Categories successfully deleted."
-msgstr "បានលុបចេញជោគជ័យ ចំណាត់ក្រុម។"
+msgstr "បាន​លុប​ប្រភេទ​ដោយ​ជោគជ័យ ។"
 
 #: /src/schooltool/gradebook/browser/category.py:81
 msgid "Category successfully added."
-msgstr "បានបន្ថែមជោគជ័យ ចំណាត់ក្រុម។"
+msgstr "បាន​បន្ថែម​ប្រភេទ​ដោយ​ជោគជ័យ ។"
 
 #: /src/schooltool/gradebook/browser/category.py:87
 msgid "Default category successfully changed."
-msgstr "បានផ្លាស់ប្តូរជោគជ័យ ចំណាត់ក្រុមលំនាំដើម។"
+msgstr "បាន​ផ្លាស់ប្ដូរ​ប្រភេទ​លំនាំ​ដើម​ដោយ​ជោគជ័យ ។"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:120
 msgid "Add a Worksheet"
-msgstr "បន្ថែម មួយសន្លឹកការងារ"
+msgstr "បន្ថែម​សន្លឹក​កិច្ចកការ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:132
 msgid "Add a Report Sheet"
-msgstr ""
+msgstr "បន្ថែម​សន្លឹក​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:144
 msgid "Edit Worksheet"
-msgstr "កែប្រែ សន្លឹកការងារ"
+msgstr "កែ​សម្រួល​សន្លឹក​កិច្ចការ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:144
 #: /src/schooltool/gradebook/browser/configure.zcml:156
 #: /src/schooltool/gradebook/browser/configure.zcml:204
 #: /src/schooltool/gradebook/browser/configure.zcml:227
 msgid "Edit"
-msgstr "កែប្រែ"
+msgstr "កែ​សម្រួល"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:156
 msgid "Edit Report Sheet"
-msgstr "កែប្រែ សន្លឹករបាយការ"
+msgstr "កែ​សម្រួល​សន្លឹក​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:220
 msgid "New Report Activity"
-msgstr "សកម្មភាពរបាយការ ថ្មី"
+msgstr "សកម្មភាព​របាយការណ៍​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:281
 msgid "New Report Sheet"
-msgstr "សន្លឹករបាយការ ថ្មី"
+msgstr "សន្លឹក​របាយការណ៍​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:288
 msgid "New Worksheet"
-msgstr "សន្លឹកការងារ ថ្មី"
+msgstr "សន្លឹក​កិច្ចការ​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:295
 #: /src/schooltool/gradebook/browser/configure.zcml:398
 msgid "Export XLS"
-msgstr "នាំចេញ XLS"
+msgstr "នាំចេញ​ជា XLS"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:302
 #: /src/schooltool/gradebook/browser/configure.zcml:332
 msgid "Return to Gradebook"
-msgstr "ត្រលប់ ទៅ សៀវភៅពិន្ទុ"
+msgstr "ត្រឡប់​ទៅ​កាន់​សៀវភៅ​ពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:318
 #: /src/schooltool/gradebook/browser/configure.zcml:362
 msgid "New External Activity"
-msgstr "សកម្មភាពថ្មី ពីខាងក្រៅ"
+msgstr "សកម្មភាព​ខាងក្រៅ​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:325
 #: /src/schooltool/gradebook/browser/configure.zcml:369
 msgid "New Linked Column"
-msgstr ""
+msgstr "ជួរ​ឈរ​ដែល​ភ្ជាប់​ថ្មី"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:376
+#: /src/schooltool/gradebook/browser/configure.zcml:383
 msgid "Manage Activities"
-msgstr "គ្រប់គ្រង សកម្មភាព"
+msgstr "គ្រប់គ្រង​សកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Preferences"
-msgstr "ចំណូលចិត្ត"
+msgstr "ចំណូល​ចិត្ត"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:407
 msgid "Update Grades"
-msgstr "បន្ទាន់សម័យ ពិន្ទុ"
+msgstr "ធ្វើ​ឲ្យ​ពិន្ទុ​ទាន់​សម័យ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:498
 #: /src/schooltool/gradebook/browser/configure.zcml:542
 msgid "Deploy Report Sheet"
-msgstr ""
+msgstr "ពន្លា​សន្លឹក​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:505
 #: /src/schooltool/gradebook/browser/configure.zcml:556
@@ -244,50 +244,48 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:629
 #: /src/schooltool/gradebook/browser/configure.zcml:658
 msgid "Reports"
-msgstr "របាយការ"
+msgstr "របារការណ៍"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:56
 #: /src/schooltool/gradebook/browser/configure.zcml:90
 msgid "Activity Categories"
-msgstr "ចំណាត់ក្រុម សកម្មភាព"
+msgstr "ប្រភេទ​សកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
 msgid "Template"
-msgstr "គំរូខ្នាត"
+msgstr "ពុម្ព"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
-msgstr ""
+msgstr "ពន្លា"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
 msgid "Deploy Report Worksheet Template"
-msgstr ""
+msgstr "ពន្លា​ពុម្ព​សន្លឹក​របាយការណ៍"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1013
 msgid "Enter grades for ${fullname}"
-msgstr "បញ្ចូលពិន្ទុ សំរាប់ ${fullname}"
+msgstr "បញ្ចូល​ពិន្ទុ​សម្រាប់ ${fullname}"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1036
 msgid "$worksheet for $student in $section"
-msgstr ""
+msgstr "$worksheet សម្រាប់ $student ក្នុង $section"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:203
-msgid ""
-"You have some changes that have not been saved.  Click OK to save now or "
-"CANCEL to continue without saving."
-msgstr ""
+msgid "You have some changes that have not been saved.  Click OK to save now or CANCEL to continue without saving."
+msgstr "អ្នក​មាន​ការ​ផ្លាស់ប្ដូរ​មួយ​ចំនួន​ដែល​មិន​បាន​រក្សា​ទុក ។  ចុច យល់ព្រម ដើម្បី​រក្សា​ទុក​ឥឡូវ​នេះ ឬ បោះបង់ ដើម្បី​បន្ត​ដោយ​មិន​រក្សា​ទុក ។"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:396
 msgid "Invalid scores (highlighted in red) were not saved."
-msgstr ""
+msgstr "មិន​បាន​រក្សា​ទុក​ពិន្ទុ​មិន​ត្រឹមត្រូវ (បន្លិច​ពណ៌​ក្រហម) ។"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:640
 msgid "The grade $value for $name is not valid."
-msgstr ""
+msgstr "$value ពិន្ទុ​សម្រាប់ $name មិន​ត្រឹមត្រូវ ។"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:69
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:64
@@ -296,7 +294,7 @@ msgstr "សង្ខេប"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:71
 msgid "Ave."
-msgstr ""
+msgstr "មធ្យម"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:71
 #: /src/schooltool/gradebook/browser/pdf_views.py:645
@@ -305,7 +303,7 @@ msgstr "សរុប"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:875
 msgid "-- No score system --"
-msgstr ""
+msgstr "-- គ្មាន​ប្រព័ន្ធ​ពិន្ទុ --"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:926
 msgid "Previous"
@@ -317,22 +315,20 @@ msgstr "បន្ទាប់"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:18
 msgid "Column Type"
-msgstr ""
+msgstr "ប្រភេទ​ជួរ​ឈរ"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:19
 msgid "Hide?"
-msgstr "បិទបាំង"
+msgstr "លាក់?"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:13
 msgid "Set Column Preferences"
-msgstr ""
+msgstr "កំណត់​ចំណូល​ចិត្ត​ជួរ​ឈរ"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:65
-msgid ""
-"You can add a summary worksheet to each of your gradebooks that "
-"automatically includes a column for the average of all existing worksheets."
-msgstr ""
+msgid "You can add a summary worksheet to each of your gradebooks that automatically includes a column for the average of all existing worksheets."
+msgstr "បើ​អ្នក​អាច​បន្ថែម​សន្លឹក​កិច្ចការ​សង្ខេប​ទៅ​សៀវភោ​ពិន្ទុ​នីមួយៗ​របស់​អ្នក ដែល​រួម​បញ្ចូល​ជួរ​ឈរ​ស្វ័យ​ប្រវត្តិ​សម្រាប់​មធ្យម​នៃ​សន្លឹក​កិច្ចការ​ដែល​មាន​ទាំងអស់ ។"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:68
 msgid ""
@@ -340,31 +336,31 @@ msgid ""
 "\"C,\" and click \"Create Summary Worksheets,\" an additional sheet, "
 "entitled \"Summary\" will be created, which includes the average scores from "
 "\"A,\" \"B\" and \"C\" in the first three columns."
-msgstr ""
+msgstr "ឧទាហរណ៍ បើ​អ្នក​មាន​សន្លឹក​កិច្ចការ​បី​ក្នុង​ផ្នែក \"A,\" \"B,\" និង \"C,\" និង​ចុច \"បង្កើត​សន្លឹក​កិច្ចការ​សង្ខេប\" សន្លឹក​បន្ថែម ដែល​មាន​ចំណង​ជើង \"សង្ខេប\" នឹង​ត្រូវ​បង្កើត ដែល​រួម​បញ្ចូល​ពិន្ទុ​មធ្យម​ពី \"A,\" \"B\" និង \"C\" ក្នុង​ជួរ​ឈរ​បី​ដំបូង ។"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:73
 msgid "Overwrite existing worksheets titled \"Summary\"."
-msgstr ""
+msgstr "សរសេរ​ជាន់​លើ​សន្លឹក​កិច្ចការ​ដែល​មាន​ចំណង​ជើង \"សង្ខេប\" ។"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:78
 msgid "Create Summary Worksheets"
-msgstr ""
+msgstr "បង្កើត​សន្លឹក​កិច្ចការ​សង្ខេប"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:29
 msgid "Activity Name"
-msgstr "ឈ្មោះសកម្មភាព"
+msgstr "ឈ្មោះ​សកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:30
 msgid "(Due) Date"
-msgstr ""
+msgstr "កាល​បរិច្ឆេទ (ផុត​កំណត់)"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:31
 msgid "Modification Date"
-msgstr "ថ្ងៃខែឆ្នាំ កែប្រែ"
+msgstr "កាល​បរិច្ឆេទ​កំណែប្រែ"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:33
 msgid "Max. Score"
-msgstr ""
+msgstr "ពិន្ទុ​អតិបរមា"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:5
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:5
@@ -375,7 +371,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:5
 #: /src/schooltool/gradebook/browser/configure.zcml:272
 msgid "Gradebook"
-msgstr "សៀវភៅពិន្ទុ"
+msgstr "សៀវភៅ​ពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
@@ -385,18 +381,18 @@ msgstr "ឈ្មោះ"
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:47
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:158
 msgid "Apply a grade for all students:"
-msgstr ""
+msgstr "អនុវត្ត​ពិន្ទុ​សម្រាប់​សិស្ស​ទាំងអស់ ៖"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:98
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:138
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:255
 msgid "Save"
-msgstr "រក្សាទុក"
+msgstr "រក្សា​ទុក"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:13
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
-msgstr ""
+msgstr "ពិន្ទុ ${name}"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:31
 #: /src/schooltool/gradebook/browser/mygrades.pt:84
@@ -407,49 +403,49 @@ msgstr "សកម្មភាព"
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:131
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:147
 msgid "(sort)"
-msgstr ""
+msgstr "(តម្រៀប)"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:16
 msgid ""
 "Your browser either has Javascript turned off, or it is not supported. "
 "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
 "use a browser with Javascript."
-msgstr ""
+msgstr "កម្មវិធី​រុករក​របស់​អ្នក​បាន​បិទ Javascript ឬ វា​មិន​ត្រូវ​បាន​គាំទ្រ ។ Javascript ត្រូវ​បាន <b>ទាមទារ</b> សម្រាប់​សៀវភៅ​ពិន្ទុ ។ សូម​អនុញ្ញាត Javascript ឬ​ប្រើ​កម្មវិធី​រុករក​ដែល​មាន Javascript ។"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:77
 msgid "show only activities due in past"
-msgstr ""
+msgstr "បង្ហាញ​តែ​សកម្មភាព​ដែល​កន្លង​ផុត"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:90
 msgid "weeks"
-msgstr "សប្តាហ៍"
+msgstr "សប្ដាហ៍"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
-msgstr ""
+msgstr "អ្នក​មិន​បង្រៀន ឬ​ចូល​រួម​ក្នុង​ថ្នាក់​របស់​ខ្ញុំ​ទេ ។"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:16
 msgid "Classes you teach"
-msgstr ""
+msgstr "ថ្នាក់​ដែល​អ្នក​បង្រៀន"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:20
 msgid "Classes you attend"
-msgstr ""
+msgstr "ថ្នាក់​ដែល​អ្នក​ចូល​រួម"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:118
 #: /src/schooltool/gradebook/browser/configure.zcml:311
 #: /src/schooltool/gradebook/browser/configure.zcml:355
 msgid "New Activity"
-msgstr "សកម្មភាពថ្មី"
+msgstr "សកម្មភាព​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:122
 msgid "Choose an activity to add"
-msgstr "ជ្រើសរើស មួយសកម្មភាព សំរាប់បន្ថែម"
+msgstr "ជ្រើស​សកម្មភាព​ដើម្បី​បន្ថែម"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13
 #: /src/schooltool/gradebook/browser/configure.zcml:549
 msgid "Report Card Layout"
-msgstr ""
+msgstr "ប្លង់​កាត​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:140
 msgid "OK"
@@ -457,7 +453,7 @@ msgstr "យល់ព្រម"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:16
 msgid "Grid Columns"
-msgstr ""
+msgstr "ជួរ​ឈរ​ក្រឡា​ចត្រង្គ"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:81
@@ -467,39 +463,39 @@ msgstr "ប្រភព"
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:21
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:82
 msgid "Heading"
-msgstr ""
+msgstr "ក្បាល"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:22
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:83
 msgid "Remove?"
-msgstr "ដកចេញ?"
+msgstr "យកចេញ?"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:4
 msgid "Layout Report Card"
-msgstr ""
+msgstr "កាត​របាយការណ៍​ប្លង់"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
 msgid "New Column"
-msgstr "ជួរឈរថ្មី"
+msgstr "ជួរ​ឈរ​ថ្មី"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:61
 msgid "Choose a column to add"
-msgstr "ជ្រើសរើស មួយជួរឈរ សំរាប់បន្ថែម"
+msgstr "ជ្រើស​ជួរ​ឈរ​ដើម្បី​បន្ថែម"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:15
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:30
 msgid "Term:"
-msgstr ""
+msgstr "វគ្គ ៖"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:34
 msgid "Term"
-msgstr ""
+msgstr "វគ្គ"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:52
 msgid "Section:"
-msgstr "ផ្នែក៖"
+msgstr "ផ្នែក ៖"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:41
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:56
@@ -508,27 +504,27 @@ msgstr "ផ្នែក"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:79
 msgid "Nothing Graded"
-msgstr ""
+msgstr "មិន​ដាក់​ពិន្ទុ​អ្វី​ទាំងអស់"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:11
 msgid ""
 "The operation you attempted cannot be completed because there are curently "
 "no terms set up in your SchoolTool instance. Please have a user with "
 "administation access set up at least one term and try the operation again."
-msgstr ""
+msgstr "ប្រតិបត្តិការ​ដែល​អ្នក​ប៉ុនប៉ង​មិន​អាច​បញ្ចប់​បាន​ទេ ពីព្រោះ​គ្មាន​វគ្គ​ត្រូវ​បាន​រៀបចំ​នៅ​ក្នុង SchoolTool ។ សូម​មាន​អ្នក​ប្រើ​ដែល​មាន​សិទ្ធិ​ជា​អ្នក​គ្រប់គ្រង​ដើម្បី​រៀបចំ​យ៉ាងហោច​ណាស់ វគ្គ​មួយ និង​ព្យាយាម​ប្រតិបត្តិការ​ម្ដង​ទៀត ។"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:5
 msgid "No Current Term"
-msgstr ""
+msgstr "គ្មាន​វគ្គ​បច្ចុប្បន្ន"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:194
 msgid "Report Card"
-msgstr ""
+msgstr "កាត​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:197
 #: /src/schooltool/gradebook/browser/pdf_views.py:303
 msgid "Courses"
-msgstr "វគ្គសិក្សា"
+msgstr "វគ្គ​សិក្សា"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:204
 #: /src/schooltool/gradebook/browser/pdf_views.py:440
@@ -539,117 +535,117 @@ msgstr "សិស្ស"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:297
 msgid "Detailed Student Report"
-msgstr ""
+msgstr "របាយការណ៍​សិស្ស​លម្អិត"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:300
 msgid "Grade Detail"
-msgstr ""
+msgstr "លម្អិត​ពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:306
 msgid "Attendance Detail"
-msgstr ""
+msgstr "លម្អិត​វត្តមាន"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:309
 msgid "Dates"
-msgstr "ថ្ងៃខែឆ្នាំ"
+msgstr "កាល​បរិច្ឆេទ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:312
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:28
 msgid "Student Name"
-msgstr "ឈ្មោះសិស្ស"
+msgstr "ឈ្មោះ​សិស្ស"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:315
 msgid "User Id"
-msgstr "អត្តសញ្ញា អ្នកប្រើប្រាស់"
+msgstr "លេខ​សម្គាល់​អ្នក​ប្រើ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:416
 msgid "Failures by Term Report"
-msgstr ""
+msgstr "ធ្លាក់​តាម​របាយការណ៍​វគ្គ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:419
 msgid "Report Sheet:"
-msgstr ""
+msgstr "សន្លឹក​របាយការណ៍ ៖"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:425
 msgid "Activity:"
-msgstr "សកម្មភាព៖"
+msgstr "សកម្មភាព ៖"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:431
 msgid "Passing Score:"
-msgstr ""
+msgstr "ពិន្ទុ​ជាប់ ៖"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:437
 msgid "The following students are at risk of failing the following courses:"
-msgstr ""
+msgstr "សិស្ស​ខាងក្រោម​នេះ​ប្រឈម​មុខ​និង​ការ​ធ្លាក់​វគ្គ​សិក្សា​ដូច​ខាង​ក្រោម ៖"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:443
 #: /src/schooltool/gradebook/browser/pdf_views.py:623
 msgid "Course"
-msgstr "វគ្គសិក្សា"
+msgstr "វគ្គ​សិក្សា"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:446
 msgid "Teacher(s)"
-msgstr "គ្រូបង្រៀន"
+msgstr "គ្រូ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:449
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
 #: /src/schooltool/gradebook/browser/mygrades.pt:87
 msgid "Grade"
-msgstr ""
+msgstr "ពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:517
 msgid "Absences By Day Report"
-msgstr ""
+msgstr "អវត្តមាន​តាម​របាយការណ៍​ថ្ងៃ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:578
 msgid "Period Number"
-msgstr ""
+msgstr "លេខ​រយៈ​ពេល"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:620
 msgid "Absences by Section Report"
-msgstr ""
+msgstr "អវត្តមាន​តាម​របាយការណ៍​ផ្នែក"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:629
 msgid "Teacher"
-msgstr "គ្រូបង្រៀន"
+msgstr "គ្រូ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:639
 msgid "Absences"
-msgstr ""
+msgstr "អវត្តមាន"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:642
 msgid "Tardies"
-msgstr ""
+msgstr "យឺត"
 
 #: /src/schooltool/gradebook/browser/report_card.py:119
 msgid "-- Use range below --"
-msgstr ""
+msgstr "-- ប្រើ​ជួរ​ខាងក្រោម --"
 
 #: /src/schooltool/gradebook/browser/report_card.py:128
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:21
 msgid "Score System"
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/report_card.py:129
 msgid "Choose an existing score system or use range below"
-msgstr ""
+msgstr "ប្រើ​ប្រព័ន្ធ​ពិន្ទុ​ដែល​មាន​ស្រាប់ ឬ​ប្រើ​ជួរ​ខាងក្រោម"
 
 #: /src/schooltool/gradebook/browser/report_card.py:134
 msgid "Minimum"
-msgstr "អប្បបរិមា"
+msgstr "អប្បបរមា"
 
 #: /src/schooltool/gradebook/browser/report_card.py:135
 msgid "Lowest integer score value possible"
-msgstr ""
+msgstr "តម្លៃ​ពិន្ទុ​ចំនួន​គត់​ទាប​បំផុត​ដែល​អាច"
 
 #: /src/schooltool/gradebook/browser/report_card.py:140
 msgid "Maximum"
-msgstr "អតិបរិមា"
+msgstr "អតិបរមា"
 
 #: /src/schooltool/gradebook/browser/report_card.py:141
 msgid "Highest integer score value possible"
-msgstr ""
+msgstr "តម្លៃ​ពិន្ទុ​ចំនួន​គត់​ខ្ពស់​បំផុត​ដែល​អាច"
 
 #: /src/schooltool/gradebook/browser/report_card.py:55
 msgid "Absent"
@@ -657,7 +653,7 @@ msgstr "អវត្តមាន"
 
 #: /src/schooltool/gradebook/browser/report_card.py:56
 msgid "Tardy"
-msgstr ""
+msgstr "យឺត"
 
 #: /src/schooltool/gradebook/browser/report_card.py:57
 msgid "A"
@@ -676,7 +672,7 @@ msgstr "ទាញយក"
 msgid ""
 "This report is a list of students achieving below a minimum score on a "
 "selected activity from a report sheet."
-msgstr ""
+msgstr "របាយការណ៍​នេះ​គឺ​ជា​បញ្ជី​សិស្សដែល​ទទួល​បាន​ពិន្ទុ​ក្រោម​អប្បបរមា ចំពោះ​សកម្មភាព​ដែល​ជ្រើស​ពី​សន្លឹក​របាយការណ៍ ។"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:25
 msgid ""
@@ -686,76 +682,76 @@ msgid ""
 "create a report of students failing the first quarter grade, you would "
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
-msgstr ""
+msgstr "ឧទាហរណ៍ និយាយ​ថា​វគ្គសិក្សាគឺ \"Fall 2011,\" ហើយ​អ្នក​បាន​ចែក​របាយការណ៍​ដែលមាន​ចំណង​ជើង​ថា \"ពិន្ទុ​ឆមាស\" ដែល​រួមមាន​សកម្មភាព \"ត្រីមាស​ទីមួយ\" ដោយ​ប្រើ​មាត្រដ្ឋាន​ពិន្ទុ​ដែល \"3\" ឬ​ខ្ពស់​ជាង​នេះ ។ ដើម្បី​បង្កើត​របាយការណ៍​សិស្ស​​មាន​ពិន្ទុ​ត្រីមាស អ្នក​នឹង​ជ្រើស​របាយការណ៍​សកម្មភាព \"Fall 2011 - Semester Grades - First Quarter\" ហើយ​ជ្រើស \"3\" ជា​ពិន្ទុ​ទាប​បំផុត ។ ហើយ​ចុច \"ទាញយក ។\""
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:36
 msgid "Report Activity"
-msgstr "រាយការ សកម្មភាព"
+msgstr "សកម្មភាព​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:54
 msgid "Minimum Passing Score"
-msgstr ""
+msgstr "ពិន្ទុ​ជាប់​អប្បបរមា"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:106
 msgid "School Year Reports"
-msgstr ""
+msgstr "របាយការណ៍​ឆ្នាំ​សិក្សា"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:113
 msgid "Absences By Day"
-msgstr ""
+msgstr "អវត្តមាន​តាម​ថ្ងៃ"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:122
 msgid "Section Reports"
-msgstr ""
+msgstr "របាយការណ៍​ផ្នែក"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:129
 msgid "Download Absences by Section Report"
-msgstr ""
+msgstr "ទាញយក​អវត្តមាន​តាម​របាយការណ៍​ផ្នែក"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:138
-msgid "Request Failures by Term Report"
-msgstr ""
+#: /src/schooltool/gradebook/browser/request_reports.py:125
+msgid "Request Failing Report"
+msgstr "សំណើ​របាយការណ៍​ធ្លាក់"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:153
 msgid "Choose a report activity"
-msgstr "ជ្រើសរើស មួយសកម្មភាពរបាយការ"
+msgstr "ជ្រើស​សកម្មភាព​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:185
 msgid "Choose a minimum passing score"
-msgstr ""
+msgstr "ជ្រើស​ពិន្ទុ​ជាប់​អប្បបរមា"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:198
 msgid "You must specify both a report activity and a minimum passing score."
-msgstr ""
+msgstr "អ្នក​ត្រូវ​តែ​បញ្ជាក់​ទាំង​សកម្មភាព​របាយការណ៍ និង​ពិន្ទុ​ដែល​ជាប់​អប្បបរមា ។"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:223
 msgid "Request Absences By Day Report"
-msgstr ""
+msgstr "ស្នើ​អវត្តមាន​តាម​របាយការណ៍​ថ្ងៃ"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:243
 msgid "You must specify a valid date within the school year."
-msgstr ""
+msgstr "អ្នក​ត្រូវ​តែ​បញ្ជាក់​កាល​បរិច្ឆេទ​ត្រឹមត្រូវ​នៅ​ក្នុង​ឆ្នាំ​សិក្សា ។"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:50
 msgid "Student Reports"
-msgstr "របាយការ របស់សិស្ស"
+msgstr "របាយការណ៍​សិស្ស"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:57
 #: /src/schooltool/gradebook/browser/request_reports.py:77
 msgid "Download Report Card"
-msgstr ""
+msgstr "ទាញយក​កាត​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:61
 msgid "Download Student Detail Report"
-msgstr ""
+msgstr "ទាញយក​របាយការណ៍​លម្អិត​របស់​សិស្ស"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:70
 msgid "Group Reports"
-msgstr "របាយការ ក្រុម"
+msgstr "របាយការណ៍​ក្រុម"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:81
 msgid "Download Detailed Student Report"
-msgstr ""
+msgstr "ទាញយក​របាយការណ៍​សិស្ស​លម្អិត"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:90
 msgid "Term Reports"
@@ -763,203 +759,203 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_reports.py:97
 msgid "Failures by Term"
-msgstr ""
+msgstr "ធ្លាក់​តាម​វគ្គ"
 
 #: /src/schooltool/gradebook/browser/summary.pt:10
 msgid "Section Worksheet Summary"
-msgstr ""
+msgstr "សង្ខេប​សន្លឹក​កិច្ចការ​ផ្នែក"
 
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:28
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:28
 msgid "There are ${num_errors} input errors."
-msgstr ""
+msgstr "មាន​កំហុស​បញ្ចូល ${num_errors} ។"
 
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:5
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:5
 msgid "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-msgstr ""
+msgstr "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
 
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:5
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:5
 msgid "SchoolTool"
-msgstr ""
+msgstr "SchoolTool"
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:16
 msgid ""
 "This form allows you to change the weighting of categories when calculating "
 "average scores within a worksheet."
-msgstr ""
+msgstr "សំណុំ​បែបបទ​នៃ​អនុញ្ញាត​ឲ្យ​អ្នក​ផ្លាស់ប្ដូរ​ភាព​សំខាន់​នៃ​ប្រភេទ ពេល​គណនា​ពិន្ទុ​មធ្យម​ក្នុង​សន្លឹក​កិច្ចការ ។"
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:19
 msgid ""
 "Enter numeric values for each relevant category. The total of all values "
 "must be exactly 100."
-msgstr ""
+msgstr "បញ្ចូល​តម្លៃ​លេខ​សម្រាប់​ប្រភេទ​ដែល​ទាក់ទង​នីមួយៗ ។ ចំនួន​សរុប​នៃ​តម្លៃ​ទាំងអស់​ត្រូវ​តែ​ស្មើ ១០០ ។"
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:22
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
 "quizzes as 20%, enter \"60\" next to \"Exam,\" 20\" next to \"Homework\" and "
 "\"20\" next to \"quiz.\""
-msgstr ""
+msgstr "ឧទាហរណ៍ ដើម្បី រឹតបន្តឹង​ការ​ប្រឡង​​មាន​ពិន្ទុ ៦០% កិច្ចការ​ផ្ទះ​ ២០% និង​សំណួរ ២០% បញ្ចូល \"60\" នៅ​ជាប់នឹង \"ប្រឡង\" 20\" នៅជាប់នឹង \"កិច្ចការ​ផ្ទះ\" និង \"20\" នៅជាប់ \"សំណួរ ។\""
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:5
 #: /src/schooltool/gradebook/browser/configure.zcml:383
 msgid "Weight Categories"
-msgstr ""
+msgstr "ប្រភេទ​ទម្ងន់"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:102
 msgid "This worksheet has no activities."
-msgstr ""
+msgstr "សន្លឹក​កិច្ចការ​នេះ​គ្មាន​សកម្មភាព​ទេ ។"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:12
 msgid ""
 "Are you sure you want to delete this workskeet together with all its "
 "activities?"
-msgstr ""
+msgstr "តើ​អ្នក​ប្រាកដ​ជា​ចង់​លុប​សន្លឹក​កិច្ចការ​នេះ​ជាមួយ​សកម្មភាព​របស់​វា​ទាំងអស់​ឬ?"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:18
 msgid "Delete"
-msgstr ""
+msgstr "លុប"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
 msgid "Delete Worksheet"
-msgstr ""
+msgstr "លុប​សន្លឹក​កិច្ចការ"
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
 msgid ""
 "A report sheet template defines the activities to be included in a report "
 "sheet deployed to each section in a term or year."
-msgstr ""
+msgstr "ពុម្ព​សន្លឹក​របាយការណ៍​កំណត់​សកម្មភាព​ដែល​ត្រូវ​រួម​ប​ញ្ចូល​ក្នុង​សន្លឹក​របាយការណ៍​ដែល​បាន​ពន្លា​ផ្នែក​នីមួយៗ​នៅ​ក្នុង​វគ្គសិក្សា ឬ​ឆ្នាំ ។"
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
 msgid "Worksheet"
-msgstr ""
+msgstr "សន្លឹក​កិច្ចការ"
 
 #: /src/schooltool/gradebook/configure.zcml:297
 msgid "Gradebook API"
-msgstr ""
+msgstr "API សៀវភៅ​ពិន្ទុ"
 
 #: /src/schooltool/gradebook/configure.zcml:307
 msgid "Administration can grade students"
-msgstr ""
+msgstr "អ្នក​គ្រប់គ្រង​អាច​ដាក់​ពិន្ទុ​សិស្ស"
 
 #: /src/schooltool/gradebook/gradebook_init.py:114
 msgid "Assignment"
-msgstr ""
+msgstr "កិច្ចការ"
 
 #: /src/schooltool/gradebook/gradebook_init.py:115
 msgid "Essay"
-msgstr ""
+msgstr "តែង​សេចក្ដី"
 
 #: /src/schooltool/gradebook/gradebook_init.py:116
 msgid "Exam"
-msgstr ""
+msgstr "ប្រឡង"
 
 #: /src/schooltool/gradebook/gradebook_init.py:117
 msgid "Homework"
-msgstr ""
+msgstr "កិច្ចការ​ផ្ទះ"
 
 #: /src/schooltool/gradebook/gradebook_init.py:118
 msgid "Journal"
-msgstr ""
+msgstr "ទិន្នានុប្បវត្តិ"
 
 #: /src/schooltool/gradebook/gradebook_init.py:119
 msgid "Lab"
-msgstr ""
+msgstr "បន្ទប់​ពិសោធន៍"
 
 #: /src/schooltool/gradebook/gradebook_init.py:120
 msgid "Presentation"
-msgstr ""
+msgstr "ការ​បង្ហាញ"
 
 #: /src/schooltool/gradebook/gradebook_init.py:121
 msgid "Project"
-msgstr ""
+msgstr "គម្រោង"
 
 #: /src/schooltool/gradebook/gradebook_init.py:53
 #: /src/schooltool/gradebook/browser/templates_overview.pt:4
 #: /src/schooltool/gradebook/browser/templates_overview.pt:8
 #: /src/schooltool/gradebook/browser/configure.zcml:79
 msgid "Report Sheet Templates"
-msgstr ""
+msgstr "ពុម្ព​សន្លឹក​របាយការណ៍"
 
 #: /src/schooltool/gradebook/gradebook_init.py:54
 msgid "Deployed Report Sheets"
-msgstr ""
+msgstr "បាន​ពន្លា​សន្លឹក​របាយការណ៍"
 
 #: /src/schooltool/gradebook/gradebook_init.py:55
 msgid "Report Card Layouts"
-msgstr ""
+msgstr "ប្លង់​កាត​របាយការណ៍"
 
 #: /src/schooltool/gradebook/interfaces.py:117
 msgid "Due Date"
-msgstr ""
+msgstr "កាល​បរិច្ឆេទ​ផុត​កំណត់"
 
 #: /src/schooltool/gradebook/interfaces.py:118
 msgid "The date the activity is due to be graded."
-msgstr ""
+msgstr "កាល​បរិច្ឆេទ​ដែល​សកម្មភាព​ត្រូវ​ផុត​កំណត់​ដាក់​ពិន្ទុ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:123
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:20
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:18
 msgid "Label"
-msgstr ""
+msgstr "ស្លាក"
 
 #: /src/schooltool/gradebook/interfaces.py:124
 msgid "The column label for the activity in the gradebook."
-msgstr ""
+msgstr "ស្លាក​ជួរ​ឈរ​សម្រាប់​សកម្មភាព​ក្នុង​សៀវភៅ​ពិន្ទុ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:128
 #: /src/schooltool/gradebook/interfaces.py:393
 msgid "Description"
-msgstr ""
+msgstr "ការ​ពិពណ៌នា"
 
 #: /src/schooltool/gradebook/interfaces.py:129
 msgid "A detailed description of the activity."
-msgstr ""
+msgstr "ការ​ពិពណ៌នា​លម្អិត​របស់​សកម្មភាព ។"
 
 #: /src/schooltool/gradebook/interfaces.py:133
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
 msgid "Category"
-msgstr ""
+msgstr "ប្រភេទ"
 
 #: /src/schooltool/gradebook/interfaces.py:134
 msgid "The activity category"
-msgstr ""
+msgstr "ប្រភេទ​សកម្មភាព"
 
 #: /src/schooltool/gradebook/interfaces.py:139
 msgid "Scoresystem"
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុ"
 
 #: /src/schooltool/gradebook/interfaces.py:140
 msgid "The activity scoresystem."
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុ​សកម្មភាព ។"
 
 #: /src/schooltool/gradebook/interfaces.py:144
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:25
 msgid "Date"
-msgstr ""
+msgstr "កាល​បរិច្ឆេទ"
 
 #: /src/schooltool/gradebook/interfaces.py:145
 msgid "The date the activity was created."
-msgstr ""
+msgstr "កាល​បរិច្ឆេទ​ដែល​សកម្មភាព​ត្រូវ​បាន​បង្កើត ។"
 
 #: /src/schooltool/gradebook/interfaces.py:161
 msgid "Columns"
-msgstr ""
+msgstr "ជួរ​ឈរ"
 
 #: /src/schooltool/gradebook/interfaces.py:162
 msgid "Columns to be printed in the report card."
-msgstr ""
+msgstr "ជួរ​ឈរ​ត្រូវ​បោះពុម្ព​ក្នុង​កាត​របាយការណ៍ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:165
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:77
 msgid "Outline Activities"
-msgstr ""
+msgstr "សកម្មភាព​គ្រោង"
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "Activities to be printed in the outline section."
-msgstr ""
+msgstr "សកម្មភាព​ដែល​ត្រូវ​បោះពុម្ព​ក្នុង​ផ្នែក​គ្រោង ។"
 
 #: /src/schooltool/gradebook/interfaces.py:199
 #: /src/schooltool/gradebook/interfaces.py:304
@@ -968,185 +964,185 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:339
 #: /src/schooltool/gradebook/browser/configure.zcml:348
 msgid "Worksheets"
-msgstr ""
+msgstr "សន្លឹក​កិច្ចការ"
 
 #: /src/schooltool/gradebook/interfaces.py:200
 #: /src/schooltool/gradebook/interfaces.py:305
 msgid "Worksheets in this gradebook."
-msgstr ""
+msgstr "សន្លឹក​កិច្ចការ​ក្នុង​សៀវភៅ​ពិន្ទុ​នេះ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:204
 msgid "Activities in this gradebook."
-msgstr ""
+msgstr "សកម្មភាព​ក្នុង​សៀវភៅ​ពិន្ទុ​នេះ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:207
 msgid "Students"
-msgstr ""
+msgstr "សិស្ស"
 
 #: /src/schooltool/gradebook/interfaces.py:208
 msgid "Students in this gradebook."
-msgstr ""
+msgstr "សិស្ស​នៅ​ក្នុង​សៀវភៅ​ពិន្ទុ​នេះ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:324
 #: /src/schooltool/gradebook/interfaces.py:355
 #: /src/schooltool/gradebook/interfaces.py:378
 msgid "External Activity Source"
-msgstr ""
+msgstr "ប្រភព​សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/interfaces.py:325
 #: /src/schooltool/gradebook/interfaces.py:379
 msgid "The registration name of the source"
-msgstr ""
+msgstr "ឈ្មោះ​ចុះ​ឈ្មោះ​របស់​ប្រភព"
 
 #: /src/schooltool/gradebook/interfaces.py:329
 #: /src/schooltool/gradebook/interfaces.py:383
 msgid "External Activity ID"
-msgstr ""
+msgstr "លេខ​សម្គាល់​សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/interfaces.py:330
 #: /src/schooltool/gradebook/interfaces.py:384
 msgid "A unique identifier for the external activity"
-msgstr ""
+msgstr "គ្រឿង​សម្គាល់​តែ​មួយ​គត់​សម្រាប់​សកម្មភាព​​ខាង​ក្រៅ"
 
 #: /src/schooltool/gradebook/interfaces.py:334
 msgid "Points"
-msgstr ""
+msgstr "ពិន្ទុ"
 
 #: /src/schooltool/gradebook/interfaces.py:335
 msgid "Points value to calculate the activity grade"
-msgstr ""
+msgstr "តម្លៃ​ពិន្ទុ​​ដើម្បីគណនា​ចំណាត់​ថ្នាក់​សកម្មភាព"
 
 #: /src/schooltool/gradebook/interfaces.py:356
 msgid "Name of the external activities source"
-msgstr ""
+msgstr "ឈ្មោះ​របស់​ប្រភព​សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/interfaces.py:360
 #: /src/schooltool/gradebook/interfaces.py:388
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:15
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:43
 msgid "Title"
-msgstr ""
+msgstr "ចំណង​ជើង"
 
 #: /src/schooltool/gradebook/interfaces.py:361
 msgid "A brief title of the external activities source"
-msgstr ""
+msgstr "ចំណង​ជើង​សង្ខេប​របស់​ប្រភព​សកម្មភាព​ខាងក្រៅ"
 
 #: /src/schooltool/gradebook/interfaces.py:389
 msgid "A brief title of the external activity."
-msgstr ""
+msgstr "ចំណង​ជើង​សង្ខេប​របស់​សកម្មភាព​ខាងក្រៅ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:394
 msgid "A detailed description of the external activity."
-msgstr ""
+msgstr "ការ​ពិពណ៌នា​លម្អិត​របស់​សកម្មភាព​ខាងក្រៅ ។"
 
 #: /src/schooltool/gradebook/interfaces.py:412
 msgid "Linked Column Activity Source"
-msgstr ""
+msgstr "ប្រភព​សកម្មភាព​ជួរ​ឈរ​ដែល​ភ្ជាប់"
 
 #: /src/schooltool/gradebook/interfaces.py:413
 msgid "A text string that specifies the source of the column"
-msgstr ""
+msgstr "ស្ទ្រីង​អត្ថបទ​ដែល​បញ្ជាក់​ប្រភព​របស់​ជួរ​ឈរ"
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
-msgstr ""
+msgstr "មើល"
 
 #: /src/schooltool/requirement/browser/requirement.pt:11
 msgid "${requirement} Sub Requirements"
-msgstr ""
+msgstr "តម្រូវ​ការ​រង ${requirement}"
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
-msgstr ""
+msgstr "រក​ឥឡូវ​នេះ"
 
 #: /src/schooltool/requirement/browser/requirement.pt:22
 msgid "Clear"
-msgstr ""
+msgstr "ជម្រះ"
 
 #: /src/schooltool/requirement/browser/requirement.pt:32
 msgid "Showing ${count} of ${total} items"
-msgstr ""
+msgstr "បង្ហាញ​ធាតុ ${count} នៃ ${total}"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
-msgstr ""
+msgstr "មាតិកា ${requirement}"
 
 #: /src/schooltool/requirement/browser/requirement.py:55
 msgid "Requirement index"
-msgstr ""
+msgstr "លិបិក្រម​តម្រូវការ"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:259
 msgid "Exisiting Score System"
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុក​ដែល​មាន​ស្រាប់"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:264
 msgid "Custom score system"
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុ​ផ្ទាល់ខ្លួន"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:376
 msgid "Required input is missing."
-msgstr ""
+msgstr "កា​របញ្ចូល​ដែល​ត្រូវការ​បាន​បាត់បង់ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:39
 msgid "The Title field must not be empty."
-msgstr ""
+msgstr "វាល​ចំណង​ជើង​មិន​ត្រូវ​ទទេ​នោះ​ទេ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:40
 msgid "Value field must contain a valid number."
-msgstr ""
+msgstr "វាល​តម្លៃ​ត្រូវ​តែ​មាន​លេខ​ត្រឹមត្រូវ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:41
 msgid "Percent field must contain a valid number."
-msgstr ""
+msgstr "វាល​ភាគរយ​ត្រូវ​តែ​មាន​លេខ​ត្រឹមត្រូវ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:42
 msgid "All values must be non-negative."
-msgstr ""
+msgstr "តម្លៃ​ទាំងអស់​ត្រូវ​តែ​វិជ្ជមាន ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:43
 msgid "All percentages must be non-negative."
-msgstr ""
+msgstr "ភាគរយ​ទាំងអស់​ត្រូវ​តែ​អវិជ្ជមាន​ទេ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:44
 msgid "Percentages cannot be greater than 100."
-msgstr ""
+msgstr "ភាគរយ​មិន​អាច​ធំ​ជាង ១០០ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:45
 msgid "A score system must have at least two scores."
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុ​ត្រូវ​តែ​មាន​យ៉ាង​ហោច​ណាស់​ពិន្ទុ​ពីរ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:46
 msgid "Score values must go in descending order."
-msgstr ""
+msgstr "តម្លៃ​ពិន្ទុ​ត្រូវ​តែ​នៅ​តាម​លំដាប់​ចុះ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:47
 msgid "Score percentages must go in descending order."
-msgstr ""
+msgstr "ភាគរយ​ពិន្ទុ​ត្រូវ​នៅ​តាម​លំដាប់​ចុះ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:48
 msgid "The last percentage must be zero."
-msgstr ""
+msgstr "ភាគ​រយ​ចុងក្រោយ​ត្រូវ​តែ​ជា​លេខ សូន្យ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:49
 msgid "Duplicate scores are not allowed."
-msgstr ""
+msgstr "មិន​អនុញ្ញាត​ពិន្ទុ​ស្ទួន ។"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:50
 msgid "Duplicate abbreviations are not allowed."
-msgstr ""
+msgstr "មិនអនុញ្ញាត​ឲ្យ​មាន​ស្ទួន​​អក្សរ​កាត់​ទេ ។"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/configure.zcml:22
 msgid "Add Score System"
-msgstr ""
+msgstr "បន្ថែម​ប្រព័ន្ធ​ពិន្ទុ"
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
 msgid "View Score System"
-msgstr ""
+msgstr "មើល​ប្រព័ន្ធ​ពិន្ទុ"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 #: /src/schooltool/requirement/browser/configure.zcml:8
 msgid "Score Systems"
-msgstr ""
+msgstr "ប្រព័ន្ធ​ពិន្ទុ"
