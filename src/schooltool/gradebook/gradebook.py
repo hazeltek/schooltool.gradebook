@@ -26,7 +26,7 @@ from decimal import Decimal
 from persistent.dict import PersistentDict
 from zope.security import proxy
 from zope import annotation
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.component import adapts, queryMultiAdapter, getMultiAdapter
 from zope.interface import implements
 from zope.location.location import LocationProxy

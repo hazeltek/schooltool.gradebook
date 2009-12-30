@@ -27,7 +27,7 @@ from StringIO import StringIO
 
 from zope.app.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView

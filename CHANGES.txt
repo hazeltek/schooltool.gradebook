@@ -2,6 +2,12 @@
 CHANGES
 ~~~~~~~
 
+0.6.0dev
+==================
+
+* Port to zope versions available in karmic https://launchpad.net/bugs/498803
+
+
 0.5.2 (2009-12-30)
 ==================
 

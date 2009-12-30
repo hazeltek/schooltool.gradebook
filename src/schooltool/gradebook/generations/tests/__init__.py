@@ -4,7 +4,7 @@ Tests for generation scripts.
 
 from persistent.interfaces import IPersistent
 
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.app.publication.zopepublication import ZopePublication
 from zope.app.testing.setup import setUpAnnotations
 from zope.component import provideAdapter

@@ -28,7 +28,7 @@ from datetime import datetime, date, timedelta
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.app.intid import IntIds
 from zope.app.intid.interfaces import IIntIds
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup, ztapi
 from zope.component import getUtility, provideAdapter, provideUtility
 from zope.interface import implements

@@ -93,9 +93,11 @@ setup(
     install_requires=['schooltool>=1.2.0',
                       'schooltool.lyceum.journal',
                       'setuptools',
-                      'z3c.optionstorage'],
+                      'z3c.optionstorage',
+                      'zope.keyreference',
+                      'zope.location'],
     tests_require=['zope.testing'],
-    dependency_links=['http://ftp.schooltool.org/schooltool/1.2/'],
+    dependency_links=['http://ftp.schooltool.org/schooltool/1.4/'],
     include_package_data=True,
     zip_safe=False,
     entry_points="""

@@ -32,7 +32,7 @@ import zope.app.container.contained
 import zope.lifecycleevent
 from zope import component
 from zope import annotation
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.app.container.interfaces import IObjectRemovedEvent
 import zope.security.proxy
 

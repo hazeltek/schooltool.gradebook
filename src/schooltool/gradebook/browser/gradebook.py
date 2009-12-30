@@ -26,7 +26,7 @@ import datetime
 import decimal
 
 from zope.app.container.interfaces import INameChooser
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.html.field import HtmlFragment
