@@ -7,69 +7,69 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-10-12 20:16+0000\n"
-"PO-Revision-Date: 2009-10-22 01:07+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-10-27 21:13+0000\n"
+"PO-Revision-Date: 2009-12-27 18:57+0000\n"
+"Last-Translator: chhorran <Unknown>\n"
 "Language-Team: Khmer <km@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-10-22 07:27+0000\n"
+"X-Launchpad-Export-Date: 2009-12-28 04:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:203
 #: /src/schooltool/gradebook/interfaces.py:203
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
 msgid "Activities"
-msgstr ""
+msgstr "សកម្មភាព"
 
 #: /src/schooltool/gradebook/activity.py:53
 msgid "Sheet1"
-msgstr ""
+msgstr "សន្លឹក ១"
 
 #: /src/schooltool/gradebook/browser/activity.py:138
-#: /src/schooltool/gradebook/browser/report_card.py:205
+#: /src/schooltool/gradebook/browser/report_card.py:209
 msgid "Add new activity"
-msgstr ""
+msgstr "បន្ថែម សកម្មភាពថ្មី"
 
 #: /src/schooltool/gradebook/browser/activity.py:151
 #: /src/schooltool/gradebook/browser/activity.py:206
-#: /src/schooltool/gradebook/browser/report_card.py:217
+#: /src/schooltool/gradebook/browser/report_card.py:221
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:50
 msgid "Add"
-msgstr ""
+msgstr "បន្ថែម"
 
 #: /src/schooltool/gradebook/browser/activity.py:162
 #: /src/schooltool/gradebook/browser/activity.py:210
 #: /src/schooltool/gradebook/browser/activity.py:249
 #: /src/schooltool/gradebook/browser/activity.py:290
-#: /src/schooltool/gradebook/browser/gradebook.py:976
-#: /src/schooltool/gradebook/browser/report_card.py:228
-#: /src/schooltool/gradebook/browser/report_card.py:271
+#: /src/schooltool/gradebook/browser/gradebook.py:944
+#: /src/schooltool/gradebook/browser/report_card.py:232
+#: /src/schooltool/gradebook/browser/report_card.py:275
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:20
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:52
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:52
 msgid "Cancel"
-msgstr ""
+msgstr "បោះបង់"
 
 #: /src/schooltool/gradebook/browser/activity.py:193
 msgid "Add an External Activity"
-msgstr ""
+msgstr "បន្ថែម សកម្មភាព ពីខាងក្រៅ"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:264
-#: /src/schooltool/gradebook/browser/report_card.py:286
+#: /src/schooltool/gradebook/browser/report_card.py:290
 msgid "Change information for ${fullname}"
-msgstr ""
+msgstr "ផ្លាស់ប្តូរពត៌មាន សំរាប់ ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:282
 msgid "Edit External Activity"
-msgstr ""
+msgstr "កែប្រែ សកម្មភាព ពីខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/activity.py:285
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
 msgid "Apply"
-msgstr ""
+msgstr "អនុវត្ត"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:323
@@ -82,12 +82,12 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:378
 msgid "The external activity couldn't be found"
-msgstr ""
+msgstr "គ្មានរកឃើញ សកម្មភាពពីខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/activity.py:522
 #: /src/schooltool/gradebook/browser/activity.py:590
 msgid "Average"
-msgstr ""
+msgstr "មធ្យម"
 
 #: /src/schooltool/gradebook/browser/activity.py:560
 msgid "Add Linked Column"
@@ -99,11 +99,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:73
 msgid "External Activity"
-msgstr ""
+msgstr "សកម្មភាព ពីខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/activity.py:74
 msgid "The external activity"
-msgstr ""
+msgstr "សកម្មភាព ពីខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/categories.pt:19
 msgid ""
@@ -125,50 +125,50 @@ msgstr ""
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr ""
+msgstr "ប្រអប់ចុច ដកចេញ"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr ""
+msgstr "គ្រប់គ្រង ចំណាត់ក្រុមសកម្មភាព"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr ""
+msgstr "ប្រអប់ចុច បន្ថែម"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr ""
+msgstr "ប្រអប់ចុច ផ្លាស់ប្តូរ"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
-msgstr ""
+msgstr "ចំណាត់ក្រុម"
 
 #: /src/schooltool/gradebook/browser/category.py:49
 msgid "New Category"
-msgstr ""
+msgstr "ចំណាត់ក្រុម ថ្មី"
 
 #: /src/schooltool/gradebook/browser/category.py:52
 msgid "Default Category"
-msgstr ""
+msgstr "ចំណាត់ក្រុម លំនាំដើម"
 
 #: /src/schooltool/gradebook/browser/category.py:75
 msgid "Categories successfully deleted."
-msgstr ""
+msgstr "បានលុបចេញជោគជ័យ ចំណាត់ក្រុម។"
 
 #: /src/schooltool/gradebook/browser/category.py:81
 msgid "Category successfully added."
-msgstr ""
+msgstr "បានបន្ថែមជោគជ័យ ចំណាត់ក្រុម។"
 
 #: /src/schooltool/gradebook/browser/category.py:87
 msgid "Default category successfully changed."
-msgstr ""
+msgstr "បានផ្លាស់ប្តូរជោគជ័យ ចំណាត់ក្រុមលំនាំដើម។"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:120
 msgid "Add a Worksheet"
-msgstr ""
+msgstr "បន្ថែម មួយសន្លឹកការងារ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:132
 msgid "Add a Report Sheet"
@@ -176,83 +176,84 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:144
 msgid "Edit Worksheet"
-msgstr ""
+msgstr "កែប្រែ សន្លឹកការងារ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:144
 #: /src/schooltool/gradebook/browser/configure.zcml:156
 #: /src/schooltool/gradebook/browser/configure.zcml:204
 #: /src/schooltool/gradebook/browser/configure.zcml:227
 msgid "Edit"
-msgstr ""
+msgstr "កែប្រែ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:156
 msgid "Edit Report Sheet"
-msgstr ""
+msgstr "កែប្រែ សន្លឹករបាយការ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:220
 msgid "New Report Activity"
-msgstr ""
+msgstr "សកម្មភាពរបាយការ ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:281
 msgid "New Report Sheet"
-msgstr ""
+msgstr "សន្លឹករបាយការ ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:288
 msgid "New Worksheet"
-msgstr ""
+msgstr "សន្លឹកការងារ ថ្មី"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:295
-#: /src/schooltool/gradebook/browser/configure.zcml:405
+#: /src/schooltool/gradebook/browser/configure.zcml:398
 msgid "Export XLS"
-msgstr ""
+msgstr "នាំចេញ XLS"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:302
 #: /src/schooltool/gradebook/browser/configure.zcml:332
 msgid "Return to Gradebook"
-msgstr ""
+msgstr "ត្រលប់ ទៅ សៀវភៅពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:318
-#: /src/schooltool/gradebook/browser/configure.zcml:369
+#: /src/schooltool/gradebook/browser/configure.zcml:362
 msgid "New External Activity"
-msgstr ""
+msgstr "សកម្មភាពថ្មី ពីខាងក្រៅ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:325
-#: /src/schooltool/gradebook/browser/configure.zcml:376
+#: /src/schooltool/gradebook/browser/configure.zcml:369
 msgid "New Linked Column"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:383
+#: /src/schooltool/gradebook/browser/configure.zcml:376
 msgid "Manage Activities"
-msgstr ""
+msgstr "គ្រប់គ្រង សកម្មភាព"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:397
+#: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Preferences"
-msgstr ""
+msgstr "ចំណូលចិត្ត"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:414
+#: /src/schooltool/gradebook/browser/configure.zcml:407
 msgid "Update Grades"
-msgstr ""
+msgstr "បន្ទាន់សម័យ ពិន្ទុ"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:512
-#: /src/schooltool/gradebook/browser/configure.zcml:530
+#: /src/schooltool/gradebook/browser/configure.zcml:498
+#: /src/schooltool/gradebook/browser/configure.zcml:542
 msgid "Deploy Report Sheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:544
-#: /src/schooltool/gradebook/browser/configure.zcml:601
-#: /src/schooltool/gradebook/browser/configure.zcml:630
-#: /src/schooltool/gradebook/browser/configure.zcml:659
+#: /src/schooltool/gradebook/browser/configure.zcml:505
+#: /src/schooltool/gradebook/browser/configure.zcml:556
+#: /src/schooltool/gradebook/browser/configure.zcml:600
+#: /src/schooltool/gradebook/browser/configure.zcml:629
+#: /src/schooltool/gradebook/browser/configure.zcml:658
 msgid "Reports"
-msgstr ""
+msgstr "របាយការ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:56
 #: /src/schooltool/gradebook/browser/configure.zcml:90
 msgid "Activity Categories"
-msgstr ""
+msgstr "ចំណាត់ក្រុម សកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
 msgid "Template"
-msgstr ""
+msgstr "គំរូខ្នាត"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
@@ -264,12 +265,12 @@ msgid "Deploy Report Worksheet Template"
 msgstr ""
 
 #. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:1045
+#: /src/schooltool/gradebook/browser/gradebook.py:1013
 msgid "Enter grades for ${fullname}"
-msgstr ""
+msgstr "បញ្ចូលពិន្ទុ សំរាប់ ${fullname}"
 
 #. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:1068
+#: /src/schooltool/gradebook/browser/gradebook.py:1036
 msgid "$worksheet for $student in $section"
 msgstr ""
 
@@ -279,41 +280,40 @@ msgid ""
 "CANCEL to continue without saving."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:393
+#: /src/schooltool/gradebook/browser/gradebook.py:396
 msgid "Invalid scores (highlighted in red) were not saved."
 msgstr ""
 
 #. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:672
+#: /src/schooltool/gradebook/browser/gradebook.py:640
 msgid "The grade $value for $name is not valid."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:69
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:64
-#: /src/schooltool/gradebook/browser/configure.zcml:355
 msgid "Summary"
-msgstr ""
+msgstr "សង្ខេប"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:71
 msgid "Ave."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:71
-#: /src/schooltool/gradebook/browser/pdf_views.py:583
+#: /src/schooltool/gradebook/browser/pdf_views.py:645
 msgid "Total"
-msgstr ""
+msgstr "សរុប"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:907
+#: /src/schooltool/gradebook/browser/gradebook.py:875
 msgid "-- No score system --"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:958
+#: /src/schooltool/gradebook/browser/gradebook.py:926
 msgid "Previous"
-msgstr ""
+msgstr "មុន"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:967
+#: /src/schooltool/gradebook/browser/gradebook.py:935
 msgid "Next"
-msgstr ""
+msgstr "បន្ទាប់"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:18
 msgid "Column Type"
@@ -321,7 +321,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:19
 msgid "Hide?"
-msgstr ""
+msgstr "បិទបាំង"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:13
@@ -352,7 +352,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:29
 msgid "Activity Name"
-msgstr ""
+msgstr "ឈ្មោះសកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:30
 msgid "(Due) Date"
@@ -360,7 +360,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:31
 msgid "Modification Date"
-msgstr ""
+msgstr "ថ្ងៃខែឆ្នាំ កែប្រែ"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:33
 msgid "Max. Score"
@@ -375,12 +375,12 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:5
 #: /src/schooltool/gradebook/browser/configure.zcml:272
 msgid "Gradebook"
-msgstr ""
+msgstr "សៀវភៅពិន្ទុ"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 msgid "Name"
-msgstr ""
+msgstr "ឈ្មោះ"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:47
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:158
@@ -391,7 +391,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:138
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:255
 msgid "Save"
-msgstr ""
+msgstr "រក្សាទុក"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:13
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
@@ -401,7 +401,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:31
 #: /src/schooltool/gradebook/browser/mygrades.pt:84
 msgid "Activity"
-msgstr ""
+msgstr "សកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:124
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:131
@@ -422,7 +422,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:90
 msgid "weeks"
-msgstr ""
+msgstr "សប្តាហ៍"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
@@ -438,22 +438,22 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:118
 #: /src/schooltool/gradebook/browser/configure.zcml:311
-#: /src/schooltool/gradebook/browser/configure.zcml:362
+#: /src/schooltool/gradebook/browser/configure.zcml:355
 msgid "New Activity"
-msgstr ""
+msgstr "សកម្មភាពថ្មី"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:122
 msgid "Choose an activity to add"
-msgstr ""
+msgstr "ជ្រើសរើស មួយសកម្មភាព សំរាប់បន្ថែម"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13
-#: /src/schooltool/gradebook/browser/configure.zcml:537
+#: /src/schooltool/gradebook/browser/configure.zcml:549
 msgid "Report Card Layout"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:140
 msgid "OK"
-msgstr ""
+msgstr "យល់ព្រម"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:16
 msgid "Grid Columns"
@@ -462,7 +462,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:81
 msgid "Source"
-msgstr ""
+msgstr "ប្រភព"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:21
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:82
@@ -472,7 +472,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:22
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:83
 msgid "Remove?"
-msgstr ""
+msgstr "ដកចេញ?"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:4
 msgid "Layout Report Card"
@@ -480,11 +480,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
 msgid "New Column"
-msgstr ""
+msgstr "ជួរឈរថ្មី"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:61
 msgid "Choose a column to add"
-msgstr ""
+msgstr "ជ្រើសរើស មួយជួរឈរ សំរាប់បន្ថែម"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:15
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:30
@@ -499,12 +499,12 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/mygrades.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:52
 msgid "Section:"
-msgstr ""
+msgstr "ផ្នែក៖"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:41
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:56
 msgid "Section"
-msgstr ""
+msgstr "ផ្នែក"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:79
 msgid "Nothing Graded"
@@ -521,148 +521,156 @@ msgstr ""
 msgid "No Current Term"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:123
+#: /src/schooltool/gradebook/browser/pdf_views.py:194
 msgid "Report Card"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:127
-#: /src/schooltool/gradebook/browser/pdf_views.py:298
+#: /src/schooltool/gradebook/browser/pdf_views.py:197
+#: /src/schooltool/gradebook/browser/pdf_views.py:303
 msgid "Courses"
-msgstr ""
+msgstr "វគ្គសិក្សា"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:135
-#: /src/schooltool/gradebook/browser/pdf_views.py:434
-#: /src/schooltool/gradebook/browser/pdf_views.py:515
-#: /src/schooltool/gradebook/browser/pdf_views.py:571
+#: /src/schooltool/gradebook/browser/pdf_views.py:204
+#: /src/schooltool/gradebook/browser/pdf_views.py:440
+#: /src/schooltool/gradebook/browser/pdf_views.py:581
+#: /src/schooltool/gradebook/browser/pdf_views.py:636
 msgid "Student"
-msgstr ""
+msgstr "សិស្ស"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:290
+#: /src/schooltool/gradebook/browser/pdf_views.py:297
 msgid "Detailed Student Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:294
+#: /src/schooltool/gradebook/browser/pdf_views.py:300
 msgid "Grade Detail"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:302
+#: /src/schooltool/gradebook/browser/pdf_views.py:306
 msgid "Attendance Detail"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:306
+#: /src/schooltool/gradebook/browser/pdf_views.py:309
 msgid "Dates"
-msgstr ""
+msgstr "ថ្ងៃខែឆ្នាំ"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:310
+#: /src/schooltool/gradebook/browser/pdf_views.py:312
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:28
 msgid "Student Name"
-msgstr ""
+msgstr "ឈ្មោះសិស្ស"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:314
+#: /src/schooltool/gradebook/browser/pdf_views.py:315
 msgid "User Id"
-msgstr ""
+msgstr "អត្តសញ្ញា អ្នកប្រើប្រាស់"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:402
+#: /src/schooltool/gradebook/browser/pdf_views.py:416
 msgid "Failures by Term Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:406
+#: /src/schooltool/gradebook/browser/pdf_views.py:419
 msgid "Report Sheet:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:414
+#: /src/schooltool/gradebook/browser/pdf_views.py:425
 msgid "Activity:"
-msgstr ""
+msgstr "សកម្មភាព៖"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:422
+#: /src/schooltool/gradebook/browser/pdf_views.py:431
 msgid "Passing Score:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:430
+#: /src/schooltool/gradebook/browser/pdf_views.py:437
 msgid "The following students are at risk of failing the following courses:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:438
-#: /src/schooltool/gradebook/browser/pdf_views.py:554
+#: /src/schooltool/gradebook/browser/pdf_views.py:443
+#: /src/schooltool/gradebook/browser/pdf_views.py:623
 msgid "Course"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:442
-msgid "Teacher(s)"
-msgstr ""
+msgstr "វគ្គសិក្សា"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:446
+msgid "Teacher(s)"
+msgstr "គ្រូបង្រៀន"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:449
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
 #: /src/schooltool/gradebook/browser/mygrades.pt:87
 msgid "Grade"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:489
+#: /src/schooltool/gradebook/browser/pdf_views.py:517
 msgid "Absences By Day Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:511
+#: /src/schooltool/gradebook/browser/pdf_views.py:578
 msgid "Period Number"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:550
+#: /src/schooltool/gradebook/browser/pdf_views.py:620
 msgid "Absences by Section Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:562
+#: /src/schooltool/gradebook/browser/pdf_views.py:629
 msgid "Teacher"
-msgstr ""
+msgstr "គ្រូបង្រៀន"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:575
+#: /src/schooltool/gradebook/browser/pdf_views.py:639
 msgid "Absences"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:579
+#: /src/schooltool/gradebook/browser/pdf_views.py:642
 msgid "Tardies"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:115
+#: /src/schooltool/gradebook/browser/report_card.py:119
 msgid "-- Use range below --"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:124
+#: /src/schooltool/gradebook/browser/report_card.py:128
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:21
 msgid "Score System"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:125
+#: /src/schooltool/gradebook/browser/report_card.py:129
 msgid "Choose an existing score system or use range below"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:130
+#: /src/schooltool/gradebook/browser/report_card.py:134
 msgid "Minimum"
-msgstr ""
+msgstr "អប្បបរិមា"
 
-#: /src/schooltool/gradebook/browser/report_card.py:131
+#: /src/schooltool/gradebook/browser/report_card.py:135
 msgid "Lowest integer score value possible"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:136
+#: /src/schooltool/gradebook/browser/report_card.py:140
 msgid "Maximum"
-msgstr ""
+msgstr "អតិបរិមា"
 
-#: /src/schooltool/gradebook/browser/report_card.py:137
+#: /src/schooltool/gradebook/browser/report_card.py:141
 msgid "Highest integer score value possible"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:54
+#: /src/schooltool/gradebook/browser/report_card.py:55
 msgid "Absent"
+msgstr "អវត្តមាន"
+
+#: /src/schooltool/gradebook/browser/report_card.py:56
+msgid "Tardy"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:55
-msgid "Tardy"
+#: /src/schooltool/gradebook/browser/report_card.py:57
+msgid "A"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report_card.py:58
+msgid "T"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:35
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:76
 msgid "Download"
-msgstr ""
+msgstr "ទាញយក"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:22
 msgid ""
@@ -682,74 +690,78 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:36
 msgid "Report Activity"
-msgstr ""
+msgstr "រាយការ សកម្មភាព"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:54
 msgid "Minimum Passing Score"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:100
-msgid "Absences By Day"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:109
-msgid "Section Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:116
-msgid "Download Absences by Section Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:125
-msgid "Request Failing Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
-msgid "Choose a report activity"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:171
-msgid "Choose a minimum passing score"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:184
-msgid "You must specify both a report activity and a minimum passing score."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:209
-msgid "Request Absences By Day Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:229
-msgid "You must specify a valid date within the school year."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:49
-msgid "Student Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:56
-#: /src/schooltool/gradebook/browser/request_reports.py:76
-msgid "Download Report Card"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:60
-msgid "Download Student Detail Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:69
-msgid "Group Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:80
-msgid "Download Detailed Student Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:89
+#: /src/schooltool/gradebook/browser/request_reports.py:106
 msgid "School Year Reports"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:96
+#: /src/schooltool/gradebook/browser/request_reports.py:113
+msgid "Absences By Day"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:122
+msgid "Section Reports"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:129
+msgid "Download Absences by Section Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:138
+msgid "Request Failures by Term Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:153
+msgid "Choose a report activity"
+msgstr "ជ្រើសរើស មួយសកម្មភាពរបាយការ"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:185
+msgid "Choose a minimum passing score"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:198
+msgid "You must specify both a report activity and a minimum passing score."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:223
+msgid "Request Absences By Day Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:243
+msgid "You must specify a valid date within the school year."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:50
+msgid "Student Reports"
+msgstr "របាយការ របស់សិស្ស"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:57
+#: /src/schooltool/gradebook/browser/request_reports.py:77
+msgid "Download Report Card"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:61
+msgid "Download Student Detail Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:70
+msgid "Group Reports"
+msgstr "របាយការ ក្រុម"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:81
+msgid "Download Detailed Student Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:90
+msgid "Term Reports"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:97
 msgid "Failures by Term"
 msgstr ""
 
@@ -792,7 +804,7 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:5
-#: /src/schooltool/gradebook/browser/configure.zcml:390
+#: /src/schooltool/gradebook/browser/configure.zcml:383
 msgid "Weight Categories"
 msgstr ""
 

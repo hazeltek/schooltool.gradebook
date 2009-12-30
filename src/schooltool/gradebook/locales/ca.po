@@ -19,13 +19,13 @@ msgstr ""
 "Project-Id-Version: SchoolTool Version 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-27 21:13+0000\n"
-"PO-Revision-Date: 2009-11-10 02:50+0000\n"
-"Last-Translator: MephSnake <Unknown>\n"
+"PO-Revision-Date: 2009-11-12 00:38+0000\n"
+"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-10 11:42+0000\n"
+"X-Launchpad-Export-Date: 2009-11-13 11:35+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: setup.py\n"
 
@@ -142,7 +142,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr ""
+msgstr "Controlar les Categories d'Activitats"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
@@ -239,7 +239,7 @@ msgstr "Gestionar les Activitats"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Preferences"
-msgstr ""
+msgstr "Preferències"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:407
 msgid "Update Grades"
@@ -248,7 +248,7 @@ msgstr "Actualitzar Notes"
 #: /src/schooltool/gradebook/browser/configure.zcml:498
 #: /src/schooltool/gradebook/browser/configure.zcml:542
 msgid "Deploy Report Sheet"
-msgstr ""
+msgstr "Desplegar Full d'Informe"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:505
 #: /src/schooltool/gradebook/browser/configure.zcml:556
@@ -256,7 +256,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:629
 #: /src/schooltool/gradebook/browser/configure.zcml:658
 msgid "Reports"
-msgstr ""
+msgstr "Informes"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:56
 #: /src/schooltool/gradebook/browser/configure.zcml:90
@@ -291,6 +291,8 @@ msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
 msgstr ""
+"Vostè té alguns canvis que no han estat salvats. Feu clic a D'acord per "
+"desar ara o Cancel·lar per continuar sense desar."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:396
 msgid "Invalid scores (highlighted in red) were not saved."
@@ -304,7 +306,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook.py:69
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:64
 msgid "Summary"
-msgstr ""
+msgstr "Resum"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:71
 msgid "Ave."
@@ -313,7 +315,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook.py:71
 #: /src/schooltool/gradebook/browser/pdf_views.py:645
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:875
 msgid "-- No score system --"
@@ -321,7 +323,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:926
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:935
 msgid "Next"
@@ -372,7 +374,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:31
 msgid "Modification Date"
-msgstr ""
+msgstr "Data de modificació"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:33
 msgid "Max. Score"
@@ -392,7 +394,7 @@ msgstr "Llibreta de notes"
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:47
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:158
@@ -403,7 +405,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:138
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:255
 msgid "Save"
-msgstr ""
+msgstr "Desa"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:13
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
@@ -413,13 +415,13 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook_grade_student.pt:31
 #: /src/schooltool/gradebook/browser/mygrades.pt:84
 msgid "Activity"
-msgstr ""
+msgstr "Activitat"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:124
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:131
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:147
 msgid "(sort)"
-msgstr ""
+msgstr "(ordenar)"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:16
 msgid ""
@@ -434,7 +436,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:90
 msgid "weeks"
-msgstr ""
+msgstr "setmanes"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
@@ -465,7 +467,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:140
 msgid "OK"
-msgstr ""
+msgstr "D'acord"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:16
 msgid "Grid Columns"
@@ -474,17 +476,17 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:81
 msgid "Source"
-msgstr ""
+msgstr "Codi font"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:21
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:82
 msgid "Heading"
-msgstr ""
+msgstr "Capçalera"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:22
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:83
 msgid "Remove?"
-msgstr ""
+msgstr "Voleu suprimir-ho?"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:4
 msgid "Layout Report Card"
@@ -492,7 +494,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
 msgid "New Column"
-msgstr ""
+msgstr "Columna nova"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:61
 msgid "Choose a column to add"
