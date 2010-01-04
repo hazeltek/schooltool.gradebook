@@ -23,11 +23,10 @@ Unit tests for schooltool.gradebook.generations.evolve2
 
 import unittest
 
-from zope.app.zopeappgenerations import getRootFolder
+from zope.app.generations.utility import getRootFolder
 from zope.interface import implements
 from zope.testing import doctest
 
-from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook.generations.tests import ContextStub
 from schooltool.gradebook.generations.tests import provideAdapters
 from schooltool.gradebook.generations.evolve2 import evolve
