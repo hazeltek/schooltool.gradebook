@@ -28,10 +28,10 @@ from zope.app.form.browser.add import AddView
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from schooltool.gradebook import GradebookMessage as _
-import schooltool.app.browser.app
-import schooltool.requirement.interfaces
-import schooltool.skin.containers
+from schooltool.requirement.interfaces import IRequirement
+from schooltool.skin.containers import ContainerView
 from schooltool.table.batch import IterableBatch
+from schooltool.app.browser.app import BaseEditView
 
 
 class RequirementAddView(AddView):
@@ -47,16 +47,15 @@ class RequirementAddView(AddView):
             return AddView.update(self)
 
 
-class RequirementView(schooltool.skin.containers.ContainerView):
+class RequirementView(ContainerView):
     """A Requirement view."""
 
-    __used_for__ = schooltool.requirement.interfaces.IRequirement
+    __used_for__ = IRequirement
 
     index_title = _("Requirement index")
 
     def __init__(self, context, request, depth=None):
-        schooltool.skin.containers.ContainerView.__init__(self, context,
-                                                          request)
+        ContainerView.__init__(self, context, request)
         self.depth = depth
         if self.depth is None:
             self.depth = int(request.get('DEPTH', 3))
@@ -91,7 +90,7 @@ class RequirementView(schooltool.skin.containers.ContainerView):
         if self.depth < 1:
             return []
         for child in self.batch:
-            if schooltool.requirement.interfaces.IRequirement.providedBy(child):
+            if IRequirement.providedBy(child):
                 info = {}
                 info['child'] = child
                 thread = RequirementView(child, self.request, self.depth-1)
@@ -102,8 +101,8 @@ class RequirementView(schooltool.skin.containers.ContainerView):
     subthread = ViewPageTemplateFile('subthread.pt')
 
 
-class RequirementEditView(schooltool.app.browser.app.BaseEditView):
+class RequirementEditView(BaseEditView):
     """View for editing Requirements."""
 
-    __used_for__ = schooltool.requirement.interfaces.IRequirement
+    __used_for__ = IRequirement
 

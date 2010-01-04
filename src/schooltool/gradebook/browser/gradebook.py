@@ -31,7 +31,7 @@ from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.html.field import HtmlFragment
 from zope.publisher.browser import BrowserView
-from zope.schema import ValidationError, Text, TextLine
+from zope.schema import ValidationError, TextLine
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
 from zope.traversing.api import getName
@@ -41,7 +41,6 @@ from zope.viewlet import viewlet
 from z3c.form import form as z3cform
 from z3c.form import field, button
 
-from schooltool.app import app
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISection
 from schooltool.course.interfaces import ILearner, IInstructor

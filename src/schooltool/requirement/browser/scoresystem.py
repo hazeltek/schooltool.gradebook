@@ -24,13 +24,13 @@ __docformat__ = 'reStructuredText'
 
 from decimal import Decimal
 
-import zope.interface
 import zope.schema
 from zope.app import form
 from zope.app.pagetemplate import ViewPageTemplateFile
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
+from zope.interface import implements, directlyProvides
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import interfaces, scoresystem
@@ -276,7 +276,7 @@ class WidgetData(object):
 
 class ScoreSystemWidget(object):
     """Score System Widget"""
-    zope.interface.implements(form.browser.interfaces.IBrowserWidget,
+    implements(form.browser.interfaces.IBrowserWidget,
                               form.interfaces.IInputWidget)
 
     template = ViewPageTemplateFile('scoresystemwidget.pt')
@@ -338,8 +338,7 @@ class ScoreSystemWidget(object):
             max = self.max_widget.getInputValue()
             custom = scoresystem.RangedValuesScoreSystem(
                 u'generated', min=min, max=max)
-            zope.interface.directlyProvides(
-                custom, scoresystem.ICustomScoreSystem)
+            directlyProvides(custom, scoresystem.ICustomScoreSystem)
             return custom
         else:
             return self.existing_widget.getInputValue()

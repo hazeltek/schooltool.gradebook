@@ -26,10 +26,7 @@ import datetime
 
 from zope.interface import Interface, Attribute
 import zope.schema
-from zope.app.container.interfaces import IContainer, IContained
 from zope.app.container.constraints import containers, contains
-import zope.interface
-from zope.app import container
 from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.gradebook import GradebookMessage as _

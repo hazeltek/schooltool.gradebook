@@ -27,8 +27,8 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import z3c.optionstorage
 from z3c.optionstorage import vocabulary, interfaces
-from schooltool.app import app
-from schooltool.gradebook import GradebookMessage as _
+from schooltool.app.app import getSchoolToolApplication
+
 
 VOCABULARY_NAME = 'schooltool.gradebook.activities'
 
@@ -38,7 +38,7 @@ class CategoryVocabulary(z3c.optionstorage.vocabulary.OptionStorageVocabulary):
     classProvides(IVocabularyFactory)
 
     def __init__(self, context=None, name=None):
-        st = app.getSchoolToolApplication()
+        st = getSchoolToolApplication()
         if name is None:
             name = VOCABULARY_NAME
         self.dict = z3c.optionstorage.queryOptionStorage(st, name)

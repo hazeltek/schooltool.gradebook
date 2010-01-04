@@ -23,15 +23,14 @@ $Id$
 
 __docformat__ = 'restructuredtext'
 
-import zope.interface
 import zope.schema
-import zope.app.container.constraints
-import zope.app.container.interfaces
+from zope.app.container.interfaces import IOrderedContainer
+from zope.app.container.constraints import contains, containers
+from zope.location.interfaces import IContained
 from zope.location.interfaces import ILocation
 
 
-class IRequirement(zope.app.container.interfaces.IOrderedContainer,
-                   zope.app.container.interfaces.IContained):
+class IRequirement(IOrderedContainer, IContained):
     """Something a student can do.
 
     A requirement can contain further requirements that are needed to fulfill
@@ -40,8 +39,8 @@ class IRequirement(zope.app.container.interfaces.IOrderedContainer,
     dependencies or depoendency requirements.
     """
 
-    zope.app.container.constraints.contains('.IRequirement')
-    zope.app.container.constraints.containers('.IRequirement')
+    contains('.IRequirement')
+    containers('.IRequirement')
 
     title = zope.schema.TextLine(
         title=u'Title',
@@ -157,10 +156,10 @@ class IHaveEvaluations(zope.interface.Interface):
     """A marker interface for objects that can have evaluations"""
 
 
-class IEvaluation(zope.app.container.interfaces.IContained):
+class IEvaluation(IContained):
     """An Evaluation"""
 
-    zope.app.container.constraints.containers(".IEvaluations")
+    containers(".IEvaluations")
 
     scoreSystem = zope.schema.Object(
         title=u'Score System',
@@ -204,7 +203,7 @@ class IEvaluations(zope.interface.common.mapping.IMapping):
     Zope container, because the key will **not** be a name, but some sort of
     key reference to the requirement.
     """
-    zope.app.container.constraints.contains(IEvaluation)
+    contains(IEvaluation)
 
     def __init__(self, items=None):
         """Initialize object.
