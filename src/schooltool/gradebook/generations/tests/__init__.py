@@ -25,7 +25,7 @@ from schooltool.requirement.scoresystem import ScoreSystemsProxy
 class ContextStub(object):
     """Stub for the context argument passed to evolve scripts.
 
-        >>> from zope.app.zopeappgenerations import getRootFolder
+        >>> from zope.app.generations.utility import getRootFolder
         >>> context = ContextStub()
         >>> getRootFolder(context) is context.root_folder
         True

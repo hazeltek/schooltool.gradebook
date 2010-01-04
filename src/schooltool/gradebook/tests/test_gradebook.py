@@ -21,21 +21,17 @@ Gradebook-related Tests
 
 $Id$
 """
-import os
 import unittest
 
 import z3c.optionstorage
-import zope.component
 import zope.annotation.interfaces
 from zope.testing import doctest, doctestunit
 from zope.app.testing import setup
+from zope.component import provideAdapter
 
-# Has to be imported before
-import schooltool.app
-import schooltool.requirement.testing
-import schooltool.course.interfaces
-from schooltool import course, person, requirement
+from schooltool.course.interfaces import ISection
 from schooltool.relationship.tests import setUpRelationships
+from schooltool.requirement.testing import setUpEvaluation
 from schooltool.gradebook import activity, gradebook, interfaces
 from schooltool.gradebook.tests import stubs
 
@@ -43,27 +39,27 @@ from schooltool.gradebook.tests import stubs
 def setUp(test):
     setup.placefulSetUp()
     setUpRelationships()
-    schooltool.requirement.testing.setUpEvaluation()
+    setUpEvaluation()
 
-    zope.component.provideAdapter(
+    provideAdapter(
         z3c.optionstorage.OptionStorage,
         (zope.annotation.interfaces.IAnnotatable,),
         z3c.optionstorage.interfaces.IOptionStorage)
 
-    zope.component.provideAdapter(
+    provideAdapter(
         activity.getSectionActivities,
-        (course.interfaces.ISection,), interfaces.IActivities)
+        (ISection,), interfaces.IActivities)
 
-    zope.component.provideAdapter(gradebook.Gradebook)
+    provideAdapter(gradebook.Gradebook)
 
-    zope.component.provideAdapter(
+    provideAdapter(
         stubs.SomeProductStub,
-        (course.interfaces.ISection,), interfaces.IExternalActivities,
+        (ISection,), interfaces.IExternalActivities,
         name=u"someproduct")
 
-    zope.component.provideAdapter(
+    provideAdapter(
         stubs.ThirdPartyStub,
-        (course.interfaces.ISection,), interfaces.IExternalActivities,
+        (ISection,), interfaces.IExternalActivities,
         name=u"thirdparty")
 
 

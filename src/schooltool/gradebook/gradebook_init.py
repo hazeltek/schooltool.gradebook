@@ -21,16 +21,11 @@ Gradebook Initialization
 """
 
 from persistent import Persistent
-from zope.app.container import btree
 from zope.app.container.contained import contained, Contained
-from zope.component import adapts
 from zope.interface import implements
 from zope.security.proxy import removeSecurityProxy
 
 from schooltool.app.app import InitBase, StartUpBase
-from schooltool.app.interfaces import IApplicationStartUpEvent
-from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
 from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
 from schooltool.gradebook.interfaces import IGradebookDeployed

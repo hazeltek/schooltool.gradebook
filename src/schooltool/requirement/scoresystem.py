@@ -27,16 +27,14 @@ from decimal import Decimal
 from persistent import Persistent
 
 from zope.app.component.vocabulary import UtilityVocabulary
-from zope.component import adapts, queryMultiAdapter
-from zope.interface import implements
-import zope.interface
+from zope.component import adapts
+from zope.interface import implements, Interface
 import zope.schema
 import zope.security.checker
 from zope.security.proxy import removeSecurityProxy
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces
-from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemsProxy
 
 
@@ -78,7 +76,7 @@ UNSCORED = UNSCORED()
 
 
 class AbstractScoreSystem(object):
-    zope.interface.implements(interfaces.IScoreSystem)
+    implements(interfaces.IScoreSystem)
 
     def __init__(self, title, description=None):
         self.title = title
@@ -97,7 +95,7 @@ class AbstractScoreSystem(object):
 
 
 class GlobalCommentScoreSystem(AbstractScoreSystem):
-    zope.interface.implements(interfaces.ICommentScoreSystem)
+    implements(interfaces.ICommentScoreSystem)
 
     def __init__(self, title, description=None):
         super(GlobalCommentScoreSystem, self).__init__(title, description)
@@ -125,7 +123,7 @@ CommentScoreSystem = GlobalCommentScoreSystem(
 
 
 class AbstractValuesScoreSystem(AbstractScoreSystem):
-    zope.interface.implements(interfaces.IValuesScoreSystem)
+    implements(interfaces.IValuesScoreSystem)
 
     def __init__(self, title, description=None):
         self.title = title
@@ -151,7 +149,7 @@ class AbstractValuesScoreSystem(AbstractScoreSystem):
 class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
     """Abstract Discrete Values Score System"""
 
-    zope.interface.implements(interfaces.IDiscreteValuesScoreSystem)
+    implements(interfaces.IDiscreteValuesScoreSystem)
 
     # See interfaces.IDiscreteValuesScoreSystem
     scores = None
@@ -263,7 +261,7 @@ ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
 class RangedValuesScoreSystem(AbstractValuesScoreSystem):
     """Abstract Ranged Values Score System"""
 
-    zope.interface.implements(interfaces.IRangedValuesScoreSystem)
+    implements(interfaces.IRangedValuesScoreSystem)
 
     # See interfaces.IRangedValuesScoreSystem
     min = None
@@ -342,7 +340,7 @@ HundredPointsScoreSystem = GlobalRangedValuesScoreSystem(
     Decimal(0), Decimal(100), Decimal(60))
 
 
-class ICustomScoreSystem(zope.interface.Interface):
+class ICustomScoreSystem(Interface):
     """Marker interface for score systems created in the widget."""
 
 
@@ -352,7 +350,7 @@ class IScoreSystemField(zope.schema.interfaces.IField):
 
 class ScoreSystemField(zope.schema.Field):
     """Score System Field."""
-    zope.interface.implements(IScoreSystemField)
+    implements(IScoreSystemField)
 
 
 class CustomScoreSystem(DiscreteValuesScoreSystem, Persistent):

@@ -23,16 +23,15 @@ Tests for SchoolTool gradebook pdf views.
 
 import unittest
 from pprint import pprint
-from datetime import datetime, date, timedelta
+from datetime import datetime
 
 from zope.annotation.interfaces import IAttributeAnnotatable
-from zope.app.intid import IntIds
 from zope.app.intid.interfaces import IIntIds
 from zope.keyreference.interfaces import IKeyReference
-from zope.app.testing import setup, ztapi
+from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
 from zope.interface import implements
-from zope.publisher.browser import BrowserView, TestRequest
+from zope.publisher.browser import TestRequest
 from zope.security.proxy import removeSecurityProxy
 from zope.testing import doctest
 
@@ -41,7 +40,6 @@ from schooltool.app.interfaces import (ISchoolToolApplication,
 from schooltool.app.cal import getCalendar
 from schooltool.basicperson.interfaces import IBasicPerson
 from schooltool.basicperson.person import BasicPerson
-from schooltool.common import SchoolToolMessage as _
 from schooltool.course.course import (CourseContainerContainer, Course,
     getCourseContainer)
 from schooltool.course.interfaces import (ILearner, ISectionContainer, ISection,
@@ -73,7 +71,6 @@ from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
 from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     GroupReportCardPDFView, StudentDetailPDFView, GroupDetailPDFView,
     FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView)
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.requirement.evaluation import Evaluation, getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.scoresystem import AmericanLetterScoreSystem
@@ -458,6 +455,7 @@ def test_suite():
                                         optionflags=optionflags)
         suite.addTest(docsuite)
     else:
+        import sys
         print >> sys.stderr, ("reportlab or TrueType fonts not found;"
                               " PDF generator tests skipped")
 

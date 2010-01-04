@@ -22,16 +22,11 @@ Evolve database to generation 1.
 Moves hard-coded score system utilities to the app site manager.
 """
 
-from zope.app.zopeappgenerations import getRootFolder
+from zope.app.generations.utility import getRootFolder
 
-from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.course.interfaces import ISectionContainer
 from schooltool.gradebook.interfaces import IActivities, IGradebookRoot
 from schooltool.gradebook.gradebook_init import setUpGradebookRoot
-from schooltool.person.interfaces import IPersonContainer
-from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.requirement.interfaces import IScoreSystemsProxy
-from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.scoresystem import CustomScoreSystem, PassFail
 from schooltool.requirement.scoresystem import AmericanLetterScoreSystem

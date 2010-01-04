@@ -24,7 +24,6 @@ from decimal import Decimal
 import zope.interface
 
 from schooltool.gradebook import interfaces
-from schooltool.gradebook import activity
 
 
 class ExternalActivityStub(object):

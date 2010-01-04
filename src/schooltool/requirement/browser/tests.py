@@ -30,7 +30,6 @@ from zope.testing import doctest, doctestunit
 from zope.traversing.interfaces import IContainmentRoot
 
 from schooltool.app.browser.testing import setUp, tearDown
-from schooltool.testing import setup
 
 
 def doctest_RequirementView():

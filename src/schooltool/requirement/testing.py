@@ -22,9 +22,9 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-import zope.component
-import zope.interface
-from zope import keyreference
+from zope.interface import Interface
+from zope.component import provideAdapter
+from zope.keyreference.interfaces import IKeyReference
 
 from schooltool.requirement import requirement, interfaces, evaluation
 
@@ -47,14 +47,14 @@ class KeyReferenceStub(object):
                    (ref.key_type_id, ref.__hash__()))
 
 def setUpRequirement(test=None):
-    zope.component.provideAdapter(requirement.getRequirement,
-                                  (zope.interface.Interface,),
-                                  interfaces.IRequirement)
+    provideAdapter(requirement.getRequirement,
+                   (Interface,),
+                   interfaces.IRequirement)
 
 def setUpEvaluation(test=None):
-    zope.component.provideAdapter(evaluation.getEvaluations,
-                                  (zope.interface.Interface,),
-                                  interfaces.IEvaluations)
-    zope.component.provideAdapter(KeyReferenceStub,
-                                  (zope.interface.Interface,),
-                                  keyreference.interfaces.IKeyReference)
+    provideAdapter(evaluation.getEvaluations,
+                   (Interface,),
+                   interfaces.IEvaluations)
+    provideAdapter(KeyReferenceStub,
+                   (Interface,),
+                   IKeyReference)
