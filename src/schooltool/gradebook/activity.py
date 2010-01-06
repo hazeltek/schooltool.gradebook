@@ -30,7 +30,7 @@ from decimal import Decimal
 import zope.interface
 from zope import annotation
 from zope.app.container.interfaces import INameChooser
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
 from zope.schema.interfaces import IVocabularyFactory
@@ -39,7 +39,6 @@ from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
-from schooltool.gradebook.interfaces import IExternalActivities
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'

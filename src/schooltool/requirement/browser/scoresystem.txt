@@ -393,7 +393,9 @@ returned:
   >>> widget.getInputValue()
   Traceback (most recent call last):
   ...
-  ConversionError: ('Invalid value', token 'foo' not found in vocabulary)
+  ConversionError: ('Invalid value',
+                    InvalidValue("token 'foo' not found in vocabulary"))
+
   >>> print widget.error()
   <span class="error">Invalid value</span>
 

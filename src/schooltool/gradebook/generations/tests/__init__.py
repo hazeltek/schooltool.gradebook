@@ -4,7 +4,7 @@ Tests for generation scripts.
 
 from persistent.interfaces import IPersistent
 
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.app.publication.zopepublication import ZopePublication
 from zope.app.testing.setup import setUpAnnotations
 from zope.component import provideAdapter
@@ -25,7 +25,7 @@ from schooltool.requirement.scoresystem import ScoreSystemsProxy
 class ContextStub(object):
     """Stub for the context argument passed to evolve scripts.
 
-        >>> from zope.app.zopeappgenerations import getRootFolder
+        >>> from zope.app.generations.utility import getRootFolder
         >>> context = ContextStub()
         >>> getRootFolder(context) is context.root_folder
         True

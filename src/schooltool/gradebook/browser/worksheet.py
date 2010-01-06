@@ -21,11 +21,10 @@
 $Id$
 """
 
-import zope.security.proxy
 from zope.security.checker import canWrite
+from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
-from zope.app.form.browser.editview import EditView
 from zope.publisher.browser import BrowserView
 
 from schooltool.app.browser import app

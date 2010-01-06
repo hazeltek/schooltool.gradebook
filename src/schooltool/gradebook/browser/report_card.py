@@ -23,7 +23,7 @@ Report Card Views
 from zope.app.component.vocabulary import UtilityVocabulary, UtilityTerm
 from zope.app.container.interfaces import INameChooser
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.component import adapts, queryUtility
+from zope.component import adapts
 from zope.interface import Interface, implements
 from zope.schema import Choice, Int
 from zope.security.checker import canWrite
@@ -38,7 +38,7 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
-from schooltool.term.interfaces import ITerm, IDateManager
+from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IActivities, IReportActivity

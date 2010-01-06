@@ -25,12 +25,13 @@ import datetime
 import persistent
 from BTrees.OOBTree import OOBTree
 
-import zope.component
 import zope.event
-from zope import annotation
+from zope.interface import implements
+from zope.component import adapts
 from zope.app import container
+from zope.annotation.interfaces import IAnnotations
 from zope.location import location
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.traversing.api import getParent, getName
 
 from schooltool.requirement import interfaces
@@ -53,7 +54,7 @@ def getRequirementList(req, recurse=True):
 class Evaluations(persistent.Persistent, container.contained.Contained):
     """Evaluations mapping.
 
-    This particular implementation uses the ``zope.app.keyreference`` package
+    This particular implementation uses the ``zope.keyreference`` package
     to generate the keys of the requirements. Any key that is passed in could
     be the requirement or the ``IKeyReference`` of the requirement. This
     implementation will always convert the key to provide ``IKeyReference``
@@ -64,7 +65,7 @@ class Evaluations(persistent.Persistent, container.contained.Contained):
     is simply overridden. The ``IContainer`` interface would raise a duplicate
     name error.
     """
-    zope.interface.implements(interfaces.IEvaluations)
+    implements(interfaces.IEvaluations)
 
     def __init__(self, items=None):
         super(Evaluations, self).__init__()
@@ -155,7 +156,7 @@ class Evaluations(persistent.Persistent, container.contained.Contained):
 
 class Evaluation(container.contained.Contained):
 
-    zope.interface.implements(interfaces.IEvaluation)
+    implements(interfaces.IEvaluation)
 
     def __init__(self, requirement, scoreSystem, value, evaluator):
         self._value = None
@@ -195,8 +196,8 @@ class Evaluation(container.contained.Contained):
 
 class AbstractQueryAdapter(object):
 
-    zope.component.adapts(interfaces.IEvaluations)
-    zope.interface.implements(interfaces.IEvaluationsQuery)
+    adapts(interfaces.IEvaluations)
+    implements(interfaces.IEvaluationsQuery)
 
     def __init__(self, context):
         self.context = context
@@ -214,7 +215,7 @@ class AbstractQueryAdapter(object):
 
 def getEvaluations(context):
     """Adapt an ``IHaveEvaluations`` object to ``IEvaluations``."""
-    annotations = annotation.interfaces.IAnnotations(context)
+    annotations = IAnnotations(context)
     try:
         return annotations[EVALUATIONS_KEY]
     except KeyError:

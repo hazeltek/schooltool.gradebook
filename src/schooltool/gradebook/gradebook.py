@@ -26,7 +26,7 @@ from decimal import Decimal
 from persistent.dict import PersistentDict
 from zope.security import proxy
 from zope import annotation
-from zope.app.keyreference.interfaces import IKeyReference
+from zope.keyreference.interfaces import IKeyReference
 from zope.component import adapts, queryMultiAdapter, getMultiAdapter
 from zope.interface import implements
 from zope.location.location import LocationProxy
@@ -49,7 +49,6 @@ from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
-from schooltool.gradebook import GradebookMessage as _
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'

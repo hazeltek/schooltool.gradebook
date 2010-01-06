@@ -23,14 +23,12 @@ Unit tests for schooltool.gradebook.generations.evolve1
 
 import unittest
 
-from zope.app.zopeappgenerations import getRootFolder
+from zope.app.generations.utility import getRootFolder
 from zope.testing import doctest
 
-from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook.generations.tests import ContextStub
 from schooltool.gradebook.generations.tests import provideAdapters
 from schooltool.gradebook.generations.evolve1 import evolve
-from schooltool.requirement.interfaces import IHaveEvaluations
 
 
 def doctest_evolve1():

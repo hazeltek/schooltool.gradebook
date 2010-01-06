@@ -17,8 +17,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 """Requirement Implementation
-
-$Id$
 """
 
 __docformat__ = 'restructuredtext'
@@ -27,13 +25,12 @@ import BTrees.OOBTree
 import persistent
 import persistent.list
 import zope.event
-import zope.interface
 import zope.app.container.contained
 import zope.lifecycleevent
-from zope import component
-from zope import annotation
-from zope.app.keyreference.interfaces import IKeyReference
-from zope.app.container.interfaces import IObjectRemovedEvent
+from zope.keyreference.interfaces import IKeyReference
+from zope.interface import implements
+from zope.annotation.interfaces import IAnnotations
+from zope.app.container.contained import Contained
 import zope.security.proxy
 
 from schooltool.requirement import interfaces
@@ -47,10 +44,9 @@ def getRequirementKey(requirement):
     return IKeyReference(requirement)
 
 
-class Requirement(persistent.Persistent,
-                  zope.app.container.contained.Contained):
+class Requirement(persistent.Persistent, Contained):
     """A persistent requirement using a BTree for sub-requirements"""
-    zope.interface.implements(interfaces.IRequirement)
+    implements(interfaces.IRequirement)
 
     def __init__(self, title):
         super(Requirement, self).__init__()
@@ -137,7 +133,7 @@ class Requirement(persistent.Persistent,
 
 def getRequirement(context):
     """Adapt an ``IHaveRequirement`` object to ``IRequirement``."""
-    annotations = annotation.interfaces.IAnnotations(context)
+    annotations = IAnnotations(context)
     try:
         return annotations[REQUIREMENT_KEY]
     except KeyError:

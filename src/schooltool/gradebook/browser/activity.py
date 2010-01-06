@@ -27,44 +27,38 @@ from StringIO import StringIO
 
 from zope.app.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
-from zope.app.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
-from zope.schema import TextLine
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.api import getName
-from zope.app.form.browser.interfaces import ITerms, IWidgetInputErrorView
+from zope.app.form.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
-from zope.app.form.interfaces import WidgetsError, WidgetInputError
-from zope.schema.interfaces import IVocabularyFactory
 from zope.security.proxy import removeSecurityProxy
 from zope.component import queryAdapter, getAdapter
 from zope.formlib import form
 from zope import interface, schema
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.viewlet.viewlet import ViewletBase
 
 from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.app.browser import app
 from schooltool.basicperson.interfaces import IDemographics
-from schooltool.course.interfaces import ISection, ILearner, IInstructor
+from schooltool.course.interfaces import ISection, IInstructor
 from schooltool.export import export
 from schooltool.gradebook import GradebookMessage as _
-from schooltool.gradebook import interfaces, activity
+from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
+from schooltool.gradebook.activity import LinkedActivity
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
-from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.term.interfaces import ITerm
 
 
@@ -205,7 +199,7 @@ class LinkedActivityAddView(form.AddForm):
         points = data.get("points")
         label = data.get("label")
         due_date = data.get("due_date")
-        return activity.LinkedActivity(external_activity, category, points,
+        return LinkedActivity(external_activity, category, points,
                                        label, due_date)
 
     @form.action(_("Add"), condition=form.haveInputWidgets)

@@ -1226,11 +1226,26 @@ list.
     <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
     <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/manage.html">Week 3</a>
 
+We'll make it the user's current worksheet to make sure we can handle hiding
+a worksheet that happens to be the current one for the user.
+
+    >>> stephan.getLink('Week 3').click()
+    >>> stephan.getLink('Return to Gradebook').click()
+
 Now we'll hide our newly added worksheet, noting its absense from the list.
 
+    >>> stephan.getLink('Worksheets').click()
     >>> stephan.getControl(name='hide:list').value = ['Worksheet-3']
     >>> stephan.getControl('Hide').click()
     >>> analyze.printQuery("id('content-body')//a", stephan.contents)
     <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
     <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+
+Finally, we'll return to the gradebook, noting that it handles the current
+worksheet being hidden, changing the current worksheet to the first one that
+is not hidden.
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
 

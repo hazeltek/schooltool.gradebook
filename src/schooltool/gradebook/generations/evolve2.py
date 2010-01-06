@@ -22,12 +22,10 @@ Evolve database to generation 2.
 Moves hard-coded score system utilities to the app site manager.
 """
 
-from zope.app.zopeappgenerations import getRootFolder
+from zope.app.generations.utility import getRootFolder
 from zope.security.proxy import removeSecurityProxy
 
-from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement.interfaces import ICustomScoreSystem
-from schooltool.requirement.scoresystem import CustomScoreSystem
 
 
 def evolve(context):

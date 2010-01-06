@@ -27,16 +27,14 @@ from decimal import Decimal
 from persistent import Persistent
 
 from zope.app.component.vocabulary import UtilityVocabulary
-from zope.component import adapts, queryMultiAdapter
-from zope.interface import implements
-import zope.interface
+from zope.component import adapts
+from zope.interface import implements, Interface
 import zope.schema
 import zope.security.checker
 from zope.security.proxy import removeSecurityProxy
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces
-from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemsProxy
 
 
@@ -78,7 +76,7 @@ UNSCORED = UNSCORED()
 
 
 class AbstractScoreSystem(object):
-    zope.interface.implements(interfaces.IScoreSystem)
+    implements(interfaces.IScoreSystem)
 
     def __init__(self, title, description=None):
         self.title = title
@@ -97,7 +95,7 @@ class AbstractScoreSystem(object):
 
 
 class GlobalCommentScoreSystem(AbstractScoreSystem):
-    zope.interface.implements(interfaces.ICommentScoreSystem)
+    implements(interfaces.ICommentScoreSystem)
 
     def __init__(self, title, description=None):
         super(GlobalCommentScoreSystem, self).__init__(title, description)
@@ -125,7 +123,7 @@ CommentScoreSystem = GlobalCommentScoreSystem(
 
 
 class AbstractValuesScoreSystem(AbstractScoreSystem):
-    zope.interface.implements(interfaces.IValuesScoreSystem)
+    implements(interfaces.IValuesScoreSystem)
 
     def __init__(self, title, description=None):
         self.title = title
@@ -151,7 +149,7 @@ class AbstractValuesScoreSystem(AbstractScoreSystem):
 class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
     """Abstract Discrete Values Score System"""
 
-    zope.interface.implements(interfaces.IDiscreteValuesScoreSystem)
+    implements(interfaces.IDiscreteValuesScoreSystem)
 
     # See interfaces.IDiscreteValuesScoreSystem
     scores = None
@@ -227,43 +225,43 @@ class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 PassFail = GlobalDiscreteValuesScoreSystem(
     'PassFail',
     u'Pass/Fail', u'Pass or Fail score system.',
-    [(u'Pass', u'', Decimal(1), Decimal(60)), 
-     (u'Fail', u'', Decimal(0), Decimal(0))], 
+    [(u'Pass', u'', Decimal(1), Decimal(60)),
+     (u'Fail', u'', Decimal(0), Decimal(0))],
      u'Pass', u'Pass')
 
 AmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'AmericanLetterScoreSystem',
     u'Letter Grade', u'American Letter Grade',
-    [('A', u'', Decimal(4), Decimal(90)), 
-     ('B', u'', Decimal(3), Decimal(80)), 
+    [('A', u'', Decimal(4), Decimal(90)),
+     ('B', u'', Decimal(3), Decimal(80)),
      ('C', u'', Decimal(2), Decimal(70)),
-     ('D', u'', Decimal(1), Decimal(60)), 
-     ('F', u'', Decimal(0), Decimal(0))], 
+     ('D', u'', Decimal(1), Decimal(60)),
+     ('F', u'', Decimal(0), Decimal(0))],
      'A', 'D')
 
 ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'ExtendedAmericanLetterScoreSystem',
     u'Extended Letter Grade', u'American Extended Letter Grade',
-    [('A+', u'', Decimal('4.0'), Decimal(98)), 
-     ('A', u'', Decimal('4.0'), Decimal(93)), 
+    [('A+', u'', Decimal('4.0'), Decimal(98)),
+     ('A', u'', Decimal('4.0'), Decimal(93)),
      ('A-', u'', Decimal('3.7'), Decimal(90)),
-     ('B+', u'', Decimal('3.3'), Decimal(88)), 
-     ('B', u'', Decimal('3.0'), Decimal(83)), 
+     ('B+', u'', Decimal('3.3'), Decimal(88)),
+     ('B', u'', Decimal('3.0'), Decimal(83)),
      ('B-', u'', Decimal('2.7'), Decimal(80)),
-     ('C+', u'', Decimal('2.3'), Decimal(78)), 
-     ('C', u'', Decimal('2.0'), Decimal(73)), 
+     ('C+', u'', Decimal('2.3'), Decimal(78)),
+     ('C', u'', Decimal('2.0'), Decimal(73)),
      ('C-', u'', Decimal('1.7'), Decimal(70)),
-     ('D+', u'', Decimal('1.3'), Decimal(68)), 
-     ('D', u'', Decimal('1.0'), Decimal(63)), 
+     ('D+', u'', Decimal('1.3'), Decimal(68)),
+     ('D', u'', Decimal('1.0'), Decimal(63)),
      ('D-', u'', Decimal('0.7'), Decimal(60)),
-     ('F',  u'', Decimal('0.0'), Decimal(0))], 
+     ('F',  u'', Decimal('0.0'), Decimal(0))],
      'A+', 'D-')
 
 
 class RangedValuesScoreSystem(AbstractValuesScoreSystem):
     """Abstract Ranged Values Score System"""
 
-    zope.interface.implements(interfaces.IRangedValuesScoreSystem)
+    implements(interfaces.IRangedValuesScoreSystem)
 
     # See interfaces.IRangedValuesScoreSystem
     min = None
@@ -342,7 +340,7 @@ HundredPointsScoreSystem = GlobalRangedValuesScoreSystem(
     Decimal(0), Decimal(100), Decimal(60))
 
 
-class ICustomScoreSystem(zope.interface.Interface):
+class ICustomScoreSystem(Interface):
     """Marker interface for score systems created in the widget."""
 
 
@@ -352,7 +350,7 @@ class IScoreSystemField(zope.schema.interfaces.IField):
 
 class ScoreSystemField(zope.schema.Field):
     """Score System Field."""
-    zope.interface.implements(IScoreSystemField)
+    implements(IScoreSystemField)
 
 
 class CustomScoreSystem(DiscreteValuesScoreSystem, Persistent):
@@ -393,7 +391,7 @@ class ScoreSystemsProxy(object):
         while n in names:
             n = name + u'-' + unicode(i)
             i += 1
-        self.siteManager.registerUtility(scoresystem, 
+        self.siteManager.registerUtility(scoresystem,
             interfaces.ICustomScoreSystem, name=n)
 
     def getScoreSystem(self, name):

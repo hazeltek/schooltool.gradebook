@@ -2,14 +2,22 @@
 CHANGES
 ~~~~~~~
 
-0.5.2dev
+0.6.0 (2010-01-06)
 ==================
 
-Dev features
-------------
+* Port to zope versions available in karmic https://launchpad.net/bugs/498803
 
-* Automatic plugin inclusion
-* buildout.cfg, Makefile refactorings
+
+0.5.2 (2009-12-30)
+==================
+
+* Added ability to hide worksheets https://launchpad.net/bugs/427494
+* Skip worksheets and activities that have no score for a student
+  https://launchpad.net/bugs/427489
+* Fix to allow changing activity order https://launchpad.net/bugs/494262
+* Support for automatic plugin inclusion (using schooltool-1.2.1 or later)
+* Many build improvements by Justas and Gediminas
+* Updated translations
 
 
 0.5.1 (2009-11-11)
