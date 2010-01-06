@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-12-30 15:41+0000\n"
-"PO-Revision-Date: 2009-11-12 00:37+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-01-05 14:50+0000\n"
+"Last-Translator: Till Freier <till@thoran.eu>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-31 05:01+0000\n"
+"X-Launchpad-Export-Date: 2010-01-06 04:38+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 "X-Poedit-Bookmarks: 326,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
@@ -31,7 +31,7 @@ msgstr "Blatt1"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Ausblenden"
 
 #: /src/schooltool/gradebook/browser/activity.py:143
 #: /src/schooltool/gradebook/browser/report_card.py:209
@@ -273,7 +273,7 @@ msgstr ""
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1033
 msgid "Enter grades for ${fullname}"
-msgstr ""
+msgstr "Noten für ${fullname} eingeben"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1056
@@ -292,7 +292,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:557
 msgid "N/A"
-msgstr ""
+msgstr "k. A."
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:659
@@ -433,7 +433,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:87
 msgid "weeks"
-msgstr ""
+msgstr "Wochen"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
@@ -554,7 +554,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:300
 msgid "Grade Detail"
-msgstr ""
+msgstr "Benotungsdetail"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:306
 msgid "Attendance Detail"
@@ -562,16 +562,16 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:309
 msgid "Dates"
-msgstr ""
+msgstr "Daten"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:312
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:28
 msgid "Student Name"
-msgstr ""
+msgstr "Schülername"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:315
 msgid "User Id"
-msgstr ""
+msgstr "Benutzer-ID"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:416
 msgid "Failures by Term Report"
@@ -583,7 +583,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:425
 msgid "Activity:"
-msgstr ""
+msgstr "Übung:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:431
 msgid "Passing Score:"
@@ -596,18 +596,18 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:443
 #: /src/schooltool/gradebook/browser/pdf_views.py:623
 msgid "Course"
-msgstr ""
+msgstr "Kurs"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:446
 msgid "Teacher(s)"
-msgstr ""
+msgstr "Lehrer"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:449
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:12
 #: /src/schooltool/gradebook/browser/gradebook_grade.pt:32
 #: /src/schooltool/gradebook/browser/mygrades.pt:83
 msgid "Grade"
-msgstr ""
+msgstr "Note"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:517
 msgid "Absences By Day Report"
@@ -623,15 +623,15 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:629
 msgid "Teacher"
-msgstr ""
+msgstr "Lehrer"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:639
 msgid "Absences"
-msgstr ""
+msgstr "Abwesenheit"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:642
 msgid "Tardies"
-msgstr ""
+msgstr "Verspätungen"
 
 #: /src/schooltool/gradebook/browser/report_card.py:119
 msgid "-- Use range below --"
@@ -648,7 +648,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:134
 msgid "Minimum"
-msgstr ""
+msgstr "Minimum"
 
 #: /src/schooltool/gradebook/browser/report_card.py:135
 msgid "Lowest integer score value possible"
@@ -656,7 +656,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:140
 msgid "Maximum"
-msgstr ""
+msgstr "Maximum"
 
 #: /src/schooltool/gradebook/browser/report_card.py:141
 msgid "Highest integer score value possible"
@@ -664,11 +664,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:55
 msgid "Absent"
-msgstr ""
+msgstr "Abwesend"
 
 #: /src/schooltool/gradebook/browser/report_card.py:56
 msgid "Tardy"
-msgstr ""
+msgstr "Verspätet"
 
 #: /src/schooltool/gradebook/browser/report_card.py:57
 msgid "A"
