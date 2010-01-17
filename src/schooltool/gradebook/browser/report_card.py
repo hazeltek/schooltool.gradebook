@@ -439,7 +439,7 @@ class LayoutReportCardView(object):
         return results
 
     def update(self):
-        if 'Update' in self.request or 'OK' in self.request:
+        if 'form-submitted' in self.request:
             columns = self.updatedColumns()
             outline_activities = self.updatedOutlineActivities()
 
@@ -465,15 +465,14 @@ class LayoutReportCardView(object):
             index += 1
             if source_name not in self.request:
                 break
-            if 'delete' in self.request:
-                if source_name in self.request['delete']:
-                    continue
+            if 'delete_' + source_name in self.request:
+                continue
             column = ReportColumn(self.request[source_name], 
                                   self.request[heading_name])
             columns.append(column)
-        if len(self.request['new_source']):
-            column = ReportColumn(self.request['new_source'], 
-                                  self.request['new_heading'])
+        source_name = self.request['new_source']
+        if 'ADD_COLUMN' in self.request and len(source_name):
+            column = ReportColumn(source_name, '')
             columns.append(column)
         return columns
 
@@ -486,15 +485,14 @@ class LayoutReportCardView(object):
             index += 1
             if source_name not in self.request:
                 break
-            if 'delete' in self.request:
-                if source_name in self.request['delete']:
-                    continue
+            if 'delete_' + source_name in self.request:
+                continue
             column = OutlineActivity(self.request[source_name], 
                                      self.request[heading_name])
             activities.append(column)
-        if len(self.request['new_activity_source']):
-            column = OutlineActivity(self.request['new_activity_source'], 
-                                     self.request['new_activity_heading'])
+        source_name = self.request['new_activity_source']
+        if 'ADD_ACTIVITY' in self.request and len(source_name):
+            column = OutlineActivity(source_name, '')
             activities.append(column)
         return activities
 
