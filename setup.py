@@ -102,7 +102,7 @@ setup(
                       'zope.app.component',
                       'zope.app.container',
                       'zope.app.form',
-                      'zope.app.generations',
+                      'zope.app.generations>=3.5.0',
                       'zope.app.pagetemplate',
                       'zope.component',
                       'zope.event',
