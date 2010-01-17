@@ -416,8 +416,8 @@ class LayoutReportCardView(object):
                         if ICommentScoreSystem.providedBy(activity.scoresystem):
                             if no_comment: 
                                 continue
-                        name = '%s - %s - %s' % (term.title,
-                            deployedWorksheet.title, activity.title)
+                        name = '%s - %s - %s' % (term.title[:9],
+                            deployedWorksheet.title[:9], activity.title[:14])
                         value = '%s|%s|%s' % (term.__name__,
                             deployedWorksheet.__name__, activity.__name__)
                         result = {
