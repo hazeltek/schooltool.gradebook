@@ -560,9 +560,8 @@ alphabetically:
 
 Then we want to sort by grade in Homework 1, so we should have:
 
-    >>> import re
-    >>> url = re.compile('.*sort_by=-?[0-9]+')
-    >>> stephan.getLink(url=url).click()
+    >>> url = stephan.url
+    >>> stephan.open(url + '?sort_by=Activity')
     >>> stephan.contents.find('Paul') \
     ...     < stephan.contents.find('Tom') \
     ...     < stephan.contents.find('Claudia')
@@ -570,7 +569,7 @@ Then we want to sort by grade in Homework 1, so we should have:
 
 Clicking it again, reverses the order:
 
-    >>> stephan.getLink(url=url).click()
+    >>> stephan.open(url + '?sort_by=Activity')
     >>> stephan.contents.find('Claudia') \
     ...     < stephan.contents.find('Tom') \
     ...     < stephan.contents.find('Paul')
