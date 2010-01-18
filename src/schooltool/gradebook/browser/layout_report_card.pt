@@ -46,7 +46,7 @@
                    tal:attributes="name column/heading_name; value column/heading_value" />
           </td>
           <td align="center">
-            <input type="submit" value="X" 
+            <input type="submit" value="X" class="button-cancel"
                    tal:attributes="name string:delete_${column/source_name}" />
           </td>
         </tr>
@@ -108,7 +108,7 @@
                    tal:attributes="name activity/heading_name; value activity/heading_value" />
           </td>
           <td align="center">
-            <input type="submit" value="X" 
+            <input type="submit" value="X" class="button-cancel"
                    tal:attributes="name string:delete_${activity/source_name}" />
           </td>
         </tr>
