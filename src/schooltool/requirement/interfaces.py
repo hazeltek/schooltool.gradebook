@@ -24,8 +24,8 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 import zope.schema
-from zope.app.container.interfaces import IOrderedContainer
-from zope.app.container.constraints import contains, containers
+from zope.container.interfaces import IOrderedContainer
+from zope.container.constraints import contains, containers
 from zope.location.interfaces import IContained
 from zope.location.interfaces import ILocation
 

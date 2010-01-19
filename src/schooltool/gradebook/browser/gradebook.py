@@ -25,7 +25,7 @@ __docformat__ = 'reStructuredText'
 import datetime
 import decimal
 
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility

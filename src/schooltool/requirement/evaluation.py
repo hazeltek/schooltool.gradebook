@@ -28,8 +28,9 @@ from BTrees.OOBTree import OOBTree
 import zope.event
 from zope.interface import implements
 from zope.component import adapts
-from zope.app import container
 from zope.annotation.interfaces import IAnnotations
+from zope.container.contained import Contained, containedEvent
+from zope.lifecycleevent import ObjectRemovedEvent
 from zope.location import location
 from zope.keyreference.interfaces import IKeyReference
 from zope.traversing.api import getParent, getName
@@ -51,7 +52,7 @@ def getRequirementList(req, recurse=True):
     return result
 
 
-class Evaluations(persistent.Persistent, container.contained.Contained):
+class Evaluations(persistent.Persistent, Contained):
     """Evaluations mapping.
 
     This particular implementation uses the ``zope.keyreference`` package
@@ -81,13 +82,13 @@ class Evaluations(persistent.Persistent, container.contained.Contained):
         """See zope.interface.common.mapping.IWriteMapping"""
         value = self[key]
         del self._btree[IKeyReference(key)]
-        event = container.contained.ObjectRemovedEvent(value, self)
+        event = ObjectRemovedEvent(value, self)
         zope.event.notify(event)
 
     def __setitem__(self, key, value):
         """See zope.interface.common.mapping.IWriteMapping"""
         self._btree[IKeyReference(key)] = value
-        value, event = container.contained.containedEvent(value, self)
+        value, event = containedEvent(value, self)
         zope.event.notify(event)
 
     def get(self, key, default=None):
@@ -154,7 +155,7 @@ class Evaluations(persistent.Persistent, container.contained.Contained):
         return '<%s for %r>' % (self.__class__.__name__, parent)
 
 
-class Evaluation(container.contained.Contained):
+class Evaluation(Contained):
 
     implements(interfaces.IEvaluation)
 

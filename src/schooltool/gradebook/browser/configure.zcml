@@ -233,7 +233,7 @@
       title="Edit"
       />
   <page
-      for="zope.app.container.interfaces.IAdding"
+      for="zope.browser.interfaces.IAdding"
       name="addLinkedActivity.html"
       class="schooltool.gradebook.browser.activity.LinkedActivityAddView"
       permission="schooltool.edit"
@@ -691,7 +691,7 @@
 
   <!-- Handling sections that are added after deployment already made to a term -->
   <zope:subscriber
-      for="zope.app.container.interfaces.IObjectAddedEvent"
+      for="zope.lifecycleevent.interfaces.IObjectAddedEvent"
       handler=".report_card.handleSectionAdded"
       />
 
