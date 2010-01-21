@@ -50,7 +50,7 @@ def doctest_evolve2():
         >>> context = ContextStub()
         >>> app = getRootFolder(context)
 
-        >>> from zope.app.component.site import LocalSiteManager
+        >>> from zope.site import LocalSiteManager
         >>> app.setSiteManager(LocalSiteManager(app))
 
     We'll set up our test with data that will be effected by running the

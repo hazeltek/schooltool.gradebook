@@ -947,7 +947,7 @@ First the discrete values score systems vocabulary, used when only discrete
 values score systems are valid, like when converting an average into a discrete
 grade.  Note the presence of the custom score systems we just created.
 
-    >>> from zope.app.component.vocabulary import UtilityVocabulary
+    >>> from zope.componentvocabulary.vocabulary import UtilityVocabulary
     >>> vocab = UtilityVocabulary(None, interface=interfaces.IDiscreteValuesScoreSystem)
     >>> for v in vocab: print v
     <UtilityTerm Custom 1, instance of CustomScoreSystem>
