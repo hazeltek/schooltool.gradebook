@@ -26,7 +26,7 @@ from decimal import Decimal
 
 from persistent import Persistent
 
-from zope.app.component.vocabulary import UtilityVocabulary
+from zope.componentvocabulary.vocabulary import UtilityVocabulary
 from zope.component import adapts
 from zope.interface import implements, Interface
 import zope.schema

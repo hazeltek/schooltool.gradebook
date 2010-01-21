@@ -25,7 +25,7 @@ from decimal import Decimal, InvalidOperation
 import xlwt
 from StringIO import StringIO
 
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements

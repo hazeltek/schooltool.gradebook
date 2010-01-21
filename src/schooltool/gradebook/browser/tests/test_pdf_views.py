@@ -26,7 +26,7 @@ from pprint import pprint
 from datetime import datetime
 
 from zope.annotation.interfaces import IAttributeAnnotatable
-from zope.app.intid.interfaces import IIntIds
+from zope.intid.interfaces import IIntIds
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility

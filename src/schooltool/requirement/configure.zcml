@@ -31,7 +31,7 @@
 
   <!-- Requirement Content -->
   <class class=".requirement.Requirement">
-    <allow interface="zope.app.container.interfaces.ISimpleReadContainer" />
+    <allow interface="zope.container.interfaces.ISimpleReadContainer" />
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__ addBase removeBase title"
@@ -42,7 +42,7 @@
         />
     <require
         permission="schooltool.edit"
-        interface="zope.app.container.interfaces.IWriteContainer"
+        interface="zope.container.interfaces.IWriteContainer"
         />
   </class>
 

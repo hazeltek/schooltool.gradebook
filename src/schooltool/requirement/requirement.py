@@ -25,12 +25,12 @@ import BTrees.OOBTree
 import persistent
 import persistent.list
 import zope.event
-import zope.app.container.contained
+import zope.container.contained
 import zope.lifecycleevent
 from zope.keyreference.interfaces import IKeyReference
 from zope.interface import implements
 from zope.annotation.interfaces import IAnnotations
-from zope.app.container.contained import Contained
+from zope.container.contained import Contained
 import zope.security.proxy
 
 from schooltool.requirement import interfaces
@@ -62,7 +62,7 @@ class Requirement(persistent.Persistent, Contained):
         old_pos = self._order.index(name)
         self._order.remove(name)
         self._order.insert(pos, name)
-        zope.app.container.contained.notifyContainerModified(self)
+        zope.container.contained.notifyContainerModified(self)
 
     def keys(self):
         """See interface `IReadContainer`"""
@@ -104,7 +104,7 @@ class Requirement(persistent.Persistent, Contained):
 
     def __setitem__(self, key, newobject):
         """See interface `IWriteContainer`"""
-        newobject, event = zope.app.container.contained.containedEvent(
+        newobject, event = zope.container.contained.containedEvent(
             newobject, self, key)
         self._data[key] = newobject
         if key not in self._order:
@@ -115,17 +115,17 @@ class Requirement(persistent.Persistent, Contained):
 
     def __delitem__(self, key):
         """See interface `IWriteContainer`"""
-        zope.app.container.contained.uncontained(self._data[key], self, key)
+        zope.container.contained.uncontained(self._data[key], self, key)
         del self._data[key]
         self._order.remove(key)
 
     def updateOrder(self, order):
-        """See zope.app.container.interfaces.IOrderedContainer"""
+        """See zope.container.interfaces.IOrderedContainer"""
         if set(self._order) != set(order):
             raise ValueError("Incompatible key set.")
 
         self._order = persistent.list.PersistentList(order)
-        zope.app.container.contained.notifyContainerModified(self)
+        zope.container.contained.notifyContainerModified(self)
 
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, self.title)
@@ -140,7 +140,7 @@ def getRequirement(context):
         ## TODO: support generic objects without titles
         requirement = Requirement(getattr(context, "title", None))
         annotations[REQUIREMENT_KEY] = requirement
-        zope.app.container.contained.contained(
+        zope.container.contained.contained(
             requirement, context, u'++requirement++')
         return requirement
 # Convention to make adapter introspectable

@@ -21,7 +21,7 @@ Gradebook Initialization
 """
 
 from persistent import Persistent
-from zope.app.container.contained import contained, Contained
+from zope.container.contained import contained, Contained
 from zope.interface import implements
 from zope.security.proxy import removeSecurityProxy
 

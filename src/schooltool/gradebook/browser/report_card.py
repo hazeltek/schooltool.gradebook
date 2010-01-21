@@ -20,8 +20,8 @@
 Report Card Views
 """
 
-from zope.app.component.vocabulary import UtilityVocabulary, UtilityTerm
-from zope.app.container.interfaces import INameChooser
+from zope.componentvocabulary.vocabulary import UtilityVocabulary, UtilityTerm
+from zope.container.interfaces import INameChooser
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
 from zope.interface import Interface, implements

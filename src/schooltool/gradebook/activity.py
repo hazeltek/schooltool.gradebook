@@ -29,7 +29,7 @@ from decimal import Decimal
 
 import zope.interface
 from zope import annotation
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
@@ -211,7 +211,7 @@ def getSectionActivities(context):
         # Make sure that the sections activities include all the activities of
         # the courses as well
         annotations[ACTIVITIES_KEY] = activities
-        zope.app.container.contained.contained(
+        zope.container.contained.contained(
             activities, context, 'activities')
         return activities
 
