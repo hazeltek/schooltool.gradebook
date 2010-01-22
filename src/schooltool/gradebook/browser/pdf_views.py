@@ -326,7 +326,7 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         for section in sections:
             jd = ISectionJournalData(section)
             for meeting in jd.recordedMeetings(student):
-                period = int(meeting.period_id.split()[-1])
+                period = meeting.period_id[:5]
                 day = meeting.dtstart
                 grade = jd.getGrade(student, meeting)
                 result = ''
@@ -341,10 +341,7 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         for day in data:
             for period in data[day]:
                 periods[period] = 0
-        if not periods:
-            periods = []
-        else:
-            periods = [i + 1 for i in range(max(sorted(periods)))]
+        periods = list(periods.keys())
 
         widths = '4cm' + ',1cm' * len(periods)
         rows = []
@@ -547,7 +544,7 @@ class AbsencesByDayPDFView(BasePDFView):
                 for meeting in jd.recordedMeetings(student):
                     if not self.compareDates(meeting.dtstart, day):
                         continue
-                    period = int(meeting.period_id.split()[-1])
+                    period = meeting.period_id[:5]
                     grade = jd.getGrade(student, meeting)
                     result = ''
                     if grade == 'n':
@@ -563,9 +560,7 @@ class AbsencesByDayPDFView(BasePDFView):
         for student in data:
             for period in data[student]:
                 periods[period] = 0
-        if not periods:
-            return []
-        return [i + 1 for i in range(max(sorted(periods)))]
+        return list(periods.keys())
 
     def date_heading(self):
         day = self.getDay()
@@ -652,7 +647,7 @@ class SectionAbsencesPDFView(BasePDFView):
             student_data['absences'] = 0
             student_data['tardies'] = 0
             for meeting in jd.recordedMeetings(student):
-                period = int(meeting.period_id.split()[-1])
+                period = meeting.period_id[:5]
                 grade = jd.getGrade(student, meeting)
                 if grade == 'n':
                     student_data['absences'] += 1
