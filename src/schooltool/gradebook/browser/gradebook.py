@@ -232,7 +232,6 @@ class SectionFinder(GradebookBase):
     def getSections(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
-        gradebook = proxy.removeSecurityProxy(self.context)
         for section in self.getUserSections():
             term = ITerm(section)
             if term != currentTerm:
@@ -242,7 +241,9 @@ class SectionFinder(GradebookBase):
                 url += '/gradebook'
             else:
                 url += '/mygrades'
-            title = '%s - %s' % (list(section.courses)[0].title, section.title)
+            title = '%s - %s' % (", ".join([course.title
+                                            for course in section.courses]),
+                                 section.title)
             css = 'inactive-menu-item'
             if section == currentSection:
                 css = 'active-menu-item'
@@ -267,7 +268,9 @@ class SectionFinder(GradebookBase):
 
     def getCurrentSection(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
-        return '%s - %s' % (list(section.courses)[0].title, section.title)
+        return '%s - %s' % (", ".join([course.title
+                                       for course in section.courses]),
+                            section.title)
 
     def getCurrentTerm(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
@@ -278,6 +281,10 @@ class SectionFinder(GradebookBase):
         if 'currentTerm' in self.request:
             currentSection = ISection(proxy.removeSecurityProxy(self.context))
             currentCourse = list(currentSection.courses)[0]
+            try:
+                currentCourse = list(currentSection.courses)[0]
+            except (IndexError,):
+                currentCourse = None
             currentTerm = ITerm(currentSection)
             requestTermId = self.request['currentTerm']
             if requestTermId != self.getTermId(currentTerm):
@@ -285,7 +292,11 @@ class SectionFinder(GradebookBase):
                 for section in self.getUserSections():
                     term = ITerm(section)
                     if self.getTermId(term) == requestTermId:
-                        if currentCourse == list(section.courses)[0]:
+                        try:
+                            temp = list(section.courses)[0]
+                        except (IndexError,):
+                            temp = None
+                        if currentCourse == temp:
                             newSection = section
                             break
                         if newSection is None:
@@ -1049,7 +1060,9 @@ class StudentGradebookView(object):
             'worksheet': gradebook.context.title,
             'student': '%s %s' % (self.context.student.first_name,
                                   self.context.student.last_name),
-            'section': '%s - %s' % (list(gradebook.section.courses)[0].title,
+            'section': '%s - %s' % (", ".join([course.title
+                                               for course in
+                                               gradebook.section.courses]),
                                     gradebook.section.title),
             }
         self.title = _('$worksheet for $student in $section', mapping=mapping)
