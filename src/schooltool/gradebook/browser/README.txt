@@ -1248,3 +1248,25 @@ is not hidden.
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
 
+
+Unhiding Worksheets
+-------------------
+
+Now that we can hide worksheets, we need to allow the user to change their mind
+and unhide a worksheet they previously hid.  We need to navigate to the
+worksheets from which we can call up the view for unhiding worksheets.
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('Unhide Worksheets').click()
+
+We'll choose the worksheet we just hid and hit the Unhde button.  The view
+automatically returns to the worksheets view.  There we see that the worksheet
+has reappeared in the worksheets list.
+
+    >>> stephan.getControl(name='unhide:list').value = ['Worksheet-3']
+    >>> stephan.getControl('Unhide').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/manage.html">Week 3</a>
+
