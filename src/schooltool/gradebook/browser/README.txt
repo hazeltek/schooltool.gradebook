@@ -1249,3 +1249,63 @@ is not hidden.
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
 
+Sections without Courses
+------------------------
+
+A corner case to handle is the gradebook of sections that for some
+reason are not related with a course. This can happen if the course is
+created, then the section is created and related to the course and
+then the course is deleted. Of course that's not a very smart way to
+use SchoolTool, but some users have done it.
+
+Let's delete the English I course, which has one section with three
+students:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('School Years').click()
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getControl(name='delete.english-i').value = True
+    >>> manager.getControl('Delete').click()
+    >>> manager.getControl('Confirm').click()
+
+Now, let's go to our orphan section:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('School Years').click()
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('English I (1)').click()
+
+And we can access its gradebook:
+
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+Now, let's check that the teacher can access the orphan gradebook:
+
+    >>> stephan.getLink('Home').click()
+    >>> stephan.getLink('Richter, Stephan -- English I (1)').click()
+    >>> stephan.getLink('Gradebook', index=1).click()
+    >>> stephan.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+And the 'view.html' view on the Student gradebook:
+
+    >>> stephan.open('http://localhost/schoolyears/2007/fall/sections/1/activities/Worksheet/gradebook/paul/view.html')
+    >>> stephan.printQuery('id("content-header")/h1')
+    <h1>Sheet1 for Paul Cardune in - English I (1)</h1>
+
+Now, let's check that a student can access the orphan gradebook:
+
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades?currentTerm=2007-.fall-')
+    >>> claudia.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
