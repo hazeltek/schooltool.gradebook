@@ -1,0 +1,42 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page"
+      i18n:domain="schooltool.gradebook">
+<head>
+  <title metal:fill-slot="title" tal:content="view/title" />
+</head>
+<body>
+
+<metal:block metal:fill-slot="body">
+  <form method="post" class="addscoresystem"
+        tal:attributes="action string:${context/@@absolute_url}/${view/action}">
+    <input type="hidden" name="form-submitted" value="" />
+    <h3 tal:content="view/title" />
+    <br />
+
+    <tal:block condition="view/message">
+      <span class="message" style="color: red"
+            tal:content="view/message" />
+      <br /><br />
+    </tal:block>
+
+    <label for="selectedTerm" i18n:translate="">Term or Year</label>
+    <select name="selectedTerm">
+      <tal:block repeat="term view/availableTerms">
+        <option
+            tal:attributes="value term/value;
+                            selected term/selected"
+            tal:content="term/title" />
+      </tal:block>
+    </select>
+
+    <div class="controls">
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+      <input type="submit" class="button-ok" name="DOWNLOAD" value="Download"
+             i18n:attributes="value" />
+    </div>
+  </form>
+
+</metal:block>
+</body>
+</html>
+
