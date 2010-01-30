@@ -56,6 +56,10 @@ class BasePDFView(ReportPDFView):
             self.schoolyear = None
         else:
             self.schoolyear = ISchoolYear(self.current_term)
+        if 'term' in self.request:
+            self.term = self.schoolyear[self.request['term']]
+        else:
+            self.term = None
 
     def noCurrentTerm(self):
         if self.current_term is None:
@@ -203,8 +207,15 @@ class BaseReportCardPDFView(BaseStudentPDFView):
                 student.first_name, student.last_name)
             student_title = _('Student') + ': ' + student_name
 
-            sections = [section for section in ILearner(student).sections()
-                        if ISchoolYear(ITerm(section)) == self.schoolyear]
+            sections = []
+            for section in ILearner(student).sections():
+                term = ITerm(section)
+                schoolyear = ISchoolYear(term)
+                if schoolyear != self.schoolyear:
+                    continue
+                if self.term and term != self.term:
+                    continue
+                sections.append(section)
 
             result = {
                 'title': student_title,
