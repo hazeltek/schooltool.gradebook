@@ -8,7 +8,7 @@
 </head>
 <body>
 <div metal:fill-slot="body">
-  <form method="post" class="addscoresystem"
+  <form method="post" class="standalone"
         tal:attributes="action string:${context/@@absolute_url}/weights.html">
     <h3 tal:content="string: Category weights for worksheet ${context/title}" />
     <br />
