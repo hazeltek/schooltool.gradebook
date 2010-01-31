@@ -927,15 +927,22 @@ class GradeStudent(z3cform.EditForm):
     def update(self):
         self.person = IPerson(self.request.principal)
         for index, activity in enumerate(self.getFilteredActivities()):
-            if ICommentScoreSystem.providedBy(activity.scoresystem):
-                field_cls = HtmlFragment
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                obj = getSourceObj(activity.source)
+                newSchemaFld = TextLine(
+                    title=obj.title,
+                    readonly = True,
+                    required=False)
             else:
-                field_cls = TextLine
-            newSchemaFld = field_cls(
-                title=activity.title,
-                description=activity.description,
-                constraint=activity.scoresystem.fromUnicode,
-                required=False)
+                if ICommentScoreSystem.providedBy(activity.scoresystem):
+                    field_cls = HtmlFragment
+                else:
+                    field_cls = TextLine
+                newSchemaFld = field_cls(
+                    title=activity.title,
+                    description=activity.description,
+                    constraint=activity.scoresystem.fromUnicode,
+                    required=False)
             newSchemaFld.__name__ = str(activity.__name__)
             newSchemaFld.interface = interfaces.IStudentGradebookForm
             newFormFld = field.Field(newSchemaFld)
