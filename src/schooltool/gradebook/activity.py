@@ -94,6 +94,17 @@ def getSourceObj(source):
     return None
 
 
+def isHiddenSource(source):
+    obj = getSourceObj(source)
+    if obj is None:
+        return True
+    if interfaces.IWorksheet.providedBy(obj):
+        worksheet = obj
+    else:
+        worksheet = obj.__parent__
+    return worksheet.hidden
+
+
 class Activities(requirement.Requirement):
     zope.interface.implements(interfaces.IActivities)
 
@@ -153,6 +164,15 @@ class Worksheet(requirement.Requirement):
 
     deployed = False
     hidden = False
+
+    def values(self):
+        activities = []
+        for activity in super(Worksheet, self).values():
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                if isHiddenSource(activity.source):
+                    continue
+            activities.append(activity)
+        return activities
 
     def getCategoryWeights(self):
         ann = annotation.interfaces.IAnnotations(self)
