@@ -413,12 +413,18 @@ class StudentGradebookFormAdapter(object):
         self.__dict__['context'] = context
 
     def __setattr__(self, name, value):
+        gradebook = self.context.gradebook
+        student = self.context.student
         activity = self.context.activities[name]
         evaluator = None
         try:
-            score = activity.scoresystem.fromUnicode(value)
-            self.context.gradebook.evaluate(self.context.student, activity,
-                                            score, evaluator)
+            if value is None or value == '':
+                score, ss = gradebook.getEvaluation(student, activity)
+                if score is not None:
+                    gradebook.removeEvaluation(student, activity)
+            else:
+                score = activity.scoresystem.fromUnicode(value)
+                gradebook.evaluate(student, activity, score, evaluator)
         except ScoreValidationError:
             pass
 
