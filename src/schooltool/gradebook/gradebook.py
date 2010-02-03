@@ -51,9 +51,39 @@ from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
+CURRENT_SECTION_TAUGHT_KEY = 'schooltool.gradebook.currentsectiontaught'
+CURRENT_SECTION_ATTENDED_KEY = 'schooltool.gradebook.currentsectionattended'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
 COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
+
+
+def getCurrentSectionTaught(person):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    if CURRENT_SECTION_TAUGHT_KEY not in ann:
+        ann[CURRENT_SECTION_TAUGHT_KEY] = None
+    return ann[CURRENT_SECTION_TAUGHT_KEY]
+
+
+def setCurrentSectionTaught(person, section):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    ann[CURRENT_SECTION_TAUGHT_KEY] = section
+
+
+def getCurrentSectionAttended(person):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    if CURRENT_SECTION_ATTENDED_KEY not in ann:
+        ann[CURRENT_SECTION_ATTENDED_KEY] = None
+    return ann[CURRENT_SECTION_ATTENDED_KEY]
+
+
+def setCurrentSectionAttended(person, section):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    ann[CURRENT_SECTION_ATTENDED_KEY] = section
 
 
 class WorksheetGradebookTraverser(object):

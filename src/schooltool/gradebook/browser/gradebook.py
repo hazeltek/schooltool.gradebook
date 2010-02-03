@@ -49,6 +49,9 @@ from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Worksheet, LinkedColumnActivity
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
+from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
+    setCurrentSectionTaught, getCurrentSectionAttended,
+    setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import ICommentScoreSystem
@@ -116,12 +119,16 @@ class GradebookStartup(object):
         self.sectionsAttended = list(ILearner(self.person).sections())
 
         if self.sectionsTaught:
-            section = self.sectionsTaught[0]
+            section = getCurrentSectionTaught(self.person)
+            if section is None:
+                section = self.sectionsTaught[0]
             self.gradebookURL = absoluteURL(section, self.request)+ '/gradebook'
             if not self.sectionsAttended:
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
-            section = self.sectionsAttended[0]
+            section = getCurrentSectionAttended(self.person)
+            if section is None:
+                section = self.sectionsAttended[0]
             self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
@@ -361,6 +368,7 @@ class GradebookOverview(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
+        setCurrentSectionTaught(self.person, gradebook.section)
 
         """Retrieve column preferences."""
         self.processColumnPreferences()
@@ -697,6 +705,7 @@ class MyGradesView(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
+        setCurrentSectionAttended(self.person, gradebook.section)
 
         """Retrieve column preferences."""
         self.processColumnPreferences()
