@@ -392,7 +392,7 @@ returned:
   >>> widget.getInputValue()
   Traceback (most recent call last):
   ...
-  ConversionError: ('Invalid value',
+  ConversionError: (u'Invalid value',
                     InvalidValue("token 'foo' not found in vocabulary"))
 
   >>> print widget.error()
