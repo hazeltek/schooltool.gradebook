@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:security="http://schooltool.org/securitypolicy"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="schooltool.gradebook">
 
   <include package="schooltool.requirement" />
+
+  <include file="security.zcml" />
 
   <!-- Gradebook Root adapters -->
   <adapter
@@ -306,23 +307,6 @@
   </configure>
 
   <include package=".browser" />
-
-  <!-- security settings -->
-  <security:setting
-      key="administration_can_grade_students"
-      text="Administration can grade students"
-      default="False" />
-  <security:crowd
-      name="grade_editors"
-      factory=".gradebook.GradebookEditorsCrowd" />
-  <security:allow
-      interface="schooltool.gradebook.interfaces.IGradebook"
-      permission="schooltool.view"
-      crowds="administration section_instructors" />
-  <security:allow
-      interface="schooltool.gradebook.interfaces.IGradebook"
-      permission="schooltool.edit"
-      crowds="section_instructors grade_editors" />
 
   <adapter
       factory=".gradebook_init.GradebookAppStartup"
