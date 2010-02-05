@@ -280,7 +280,6 @@ class SectionFinder(GradebookBase):
     def handleTermChange(self):
         if 'currentTerm' in self.request:
             currentSection = ISection(proxy.removeSecurityProxy(self.context))
-            currentCourse = list(currentSection.courses)[0]
             try:
                 currentCourse = list(currentSection.courses)[0]
             except (IndexError,):

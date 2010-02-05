@@ -1309,3 +1309,12 @@ Now, let's check that a student can access the orphan gradebook:
     <td class="active_tab">
       <span style="font-weight: bold;">Sheet1</span>
     </td>
+    >>> claudia.getControl(name='currentTerm').value = ['2007-.winter-']
+    >>> claudia.getForm(index=0).submit()
+    >>> claudia.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
+    </td>
