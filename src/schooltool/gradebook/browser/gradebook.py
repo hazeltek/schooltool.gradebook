@@ -572,7 +572,8 @@ class GradebookOverview(SectionFinder):
                              'gradeurl': absoluteURL(self.context, self.request) +
                                     ('/%s' % student.username),
                             },
-                 'grades': grades, 'total': unicode(total),
+                 'grades': grades,
+                 'total': unicode(total),
                  'average': unicode(average)
                 })
 
