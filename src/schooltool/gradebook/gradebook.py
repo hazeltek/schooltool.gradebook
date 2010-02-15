@@ -37,10 +37,7 @@ from schooltool import course, requirement
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IBasicPerson
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
-from schooltool.securitypolicy.crowds import AggregateCrowd
-from schooltool.securitypolicy.crowds import ManagersCrowd
-from schooltool.securitypolicy.crowds import ClerksCrowd
-from schooltool.securitypolicy.crowds import AdministratorsCrowd
+from schooltool.securitypolicy.crowds import AdministrationCrowd
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import getSourceObj
@@ -482,14 +479,11 @@ def getMyGradesSection(gradebook):
     return course.interfaces.ISection(gradebook.context)
 
 
-class GradebookEditorsCrowd(AggregateCrowd, ConfigurableCrowd):
+class GradebookEditorsCrowd(ConfigurableCrowd):
     setting_key = 'administration_can_grade_students'
-
-    def crowdFactories(self):
-        return [ManagersCrowd, AdministratorsCrowd, ClerksCrowd]
 
     def contains(self, principal):
         """Return the value of the related setting (True or False)."""
-        return (ConfigurableCrowd.contains(self, principal) and
-                AggregateCrowd.contains(self, principal))
+        return (AdministrationCrowd(self.context).contains(principal) and
+                super(GradebookEditorsCrowd, self).contains(principal))
 
