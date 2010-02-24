@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-30 15:41+0000\n"
-"PO-Revision-Date: 2009-12-30 15:01+0000\n"
-"Last-Translator: Paco Molinero <paco@byasl.com>\n"
+"PO-Revision-Date: 2010-02-22 21:27+0000\n"
+"Last-Translator: Eddie Padilla <eddie.no@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-31 05:01+0000\n"
+"X-Launchpad-Export-Date: 2010-02-23 05:13+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:211
@@ -31,7 +31,7 @@ msgstr "Hoja1"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Ocultar"
 
 #: /src/schooltool/gradebook/browser/activity.py:143
 #: /src/schooltool/gradebook/browser/report_card.py:209
@@ -88,7 +88,7 @@ msgstr "Las ponderaciones de las categorías deben sumar 100."
 
 #: /src/schooltool/gradebook/browser/activity.py:383
 msgid "The external activity couldn't be found"
-msgstr "No pudo encontrarse la actividad externa"
+msgstr "No se puede encontrar la actividad externa"
 
 #: /src/schooltool/gradebook/browser/activity.py:527
 #: /src/schooltool/gradebook/browser/activity.py:595
@@ -294,7 +294,7 @@ msgstr "Puntuaciones inválidas (marcadas en rojo) no se guardaron."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:557
 msgid "N/A"
-msgstr ""
+msgstr "N/D"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:659
@@ -308,7 +308,7 @@ msgstr "Resumen"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:73
 msgid "Ave."
-msgstr ""
+msgstr "Prom."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:73
 #: /src/schooltool/gradebook/browser/pdf_views.py:645
@@ -734,7 +734,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_reports.py:185
 msgid "Choose a minimum passing score"
-msgstr ""
+msgstr "Elija un puntaje mínimo de aprobación"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:198
 msgid "You must specify both a report activity and a minimum passing score."
