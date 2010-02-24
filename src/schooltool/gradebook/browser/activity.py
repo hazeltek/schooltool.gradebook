@@ -25,7 +25,7 @@ from decimal import Decimal, InvalidOperation
 import xlwt
 from StringIO import StringIO
 
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 from zope.app.form.browser.editview import EditView
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
@@ -53,12 +53,13 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
-from schooltool.gradebook.activity import LinkedActivity
+from schooltool.gradebook.activity import LinkedActivity, Activities
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
+from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.term.interfaces import ITerm
 
 
@@ -130,6 +131,38 @@ class ActivitiesView(object):
                 new_pos = int(self.request['pos.'+name])
                 if new_pos != old_pos:
                     self.context.changePosition(name, new_pos-1)
+
+
+class UnhideWorksheetsView(object):
+    """A view for unhiding woksheets."""
+
+    __used_for__ = interfaces.IActivities
+
+    @property
+    def worksheets(self):
+        """Get  a list of all worksheets."""
+        activities = removeSecurityProxy(self.context)
+        for worksheet in super(Activities, activities).values():
+            if worksheet.hidden:
+                yield {'name': getName(worksheet),
+                       'title': worksheet.title}
+
+    def canModify(self):
+        return canWrite(self.context, 'title')
+
+    def update(self):
+        self.person = IPerson(self.request.principal, None)
+        if self.person is None:
+            raise Unauthorized("You don't have the permission to do this.")
+
+        if 'UNHIDE' in self.request:
+            for name in self.request.get('unhide', []):
+                worksheet = removeSecurityProxy(self.context[name])
+                worksheet.hidden = False
+            self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
 
 
 class ActivityAddView(z3cform.AddForm):
@@ -423,7 +456,7 @@ class WorksheetsExportView(export.ExcelExportView):
                      export.Text(student.last_name)]
             for activity in activities:
                 value, ss = gradebook.getEvaluation(student, activity)
-                if value is None:
+                if value is None or value is UNSCORED:
                     value = ''
                 cells.append(export.Text(value))
             for col, cell in enumerate(cells):

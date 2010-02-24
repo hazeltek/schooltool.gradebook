@@ -109,6 +109,13 @@
       permission="schooltool.view"
       />
   <page
+      name="unhide.html"
+      for="..interfaces.IActivities"
+      class=".activity.UnhideWorksheetsView"
+      template="unhide_worksheets.pt"
+      permission="schooltool.view"
+      />
+  <page
       name="export.xls"
       for="..interfaces.IActivities"
       class=".activity.WorksheetsExportView"
@@ -233,7 +240,7 @@
       title="Edit"
       />
   <page
-      for="zope.app.container.interfaces.IAdding"
+      for="zope.browser.interfaces.IAdding"
       name="addLinkedActivity.html"
       class="schooltool.gradebook.browser.activity.LinkedActivityAddView"
       permission="schooltool.edit"
@@ -304,6 +311,13 @@
       title="Return to Gradebook"
       for="..interfaces.IActivities"
       action="../gradebook"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Unhide Worksheets"
+      for="..interfaces.IActivities"
+      action="unhide.html"
       permission="schooltool.view"
       />
 
@@ -394,12 +408,18 @@
       action="column_preferences.html"
       permission="schooltool.view"
       />
-
   <menuItem
       menu="schooltool_actions"
       title="Export XLS"
       for="..interfaces.IGradebook"
       action="../../export.xls"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Download PDF"
+      for="..interfaces.IGradebook"
+      action="gradebook.pdf"
       permission="schooltool.view"
       />
 
@@ -469,6 +489,12 @@
       class=".gradebook.GradebookColumnPreferences"
       template="gradebook_column_preferences.pt"
       permission="schooltool.view"
+      />
+  <page
+      name="gradebook.pdf"
+      for="..interfaces.IGradebook"
+      class=".pdf_views.GradebookPDFView"
+      permission="schooltool.edit"
       />
 
   <!-- Student Gradebook -->
@@ -613,9 +639,23 @@
       permission="schooltool.edit"
       />
   <page
+      name="request_report_card.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
+      permission="schooltool.edit"
+      />
+  <page
       name="report_card.pdf"
       for="schooltool.person.interfaces.IPerson"
       class=".pdf_views.StudentReportCardPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="request_student_detail.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -642,9 +682,23 @@
       permission="schooltool.edit"
       />
   <page
+      name="request_report_card.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
+      permission="schooltool.edit"
+      />
+  <page
       name="report_card.pdf"
       for="schooltool.group.interfaces.IGroup"
       class=".pdf_views.GroupReportCardPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="request_student_detail.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -691,7 +745,7 @@
 
   <!-- Handling sections that are added after deployment already made to a term -->
   <zope:subscriber
-      for="zope.app.container.interfaces.IObjectAddedEvent"
+      for="zope.lifecycleevent.interfaces.IObjectAddedEvent"
       handler=".report_card.handleSectionAdded"
       />
 

@@ -1,0 +1,143 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd" [
+  <!ENTITY pound   "&#xA3;">
+  <!ENTITY nbsp    "&#160;">
+]>
+
+<document
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/@@rml_macros/report"
+  i18n:domain="schooltool.gradebook">
+
+<metal:block fill-slot="page_templates">
+  <tal:block content="structure view/use_template/default" />
+</metal:block>
+
+<stylesheet>
+  <metal:block fill-slot="extra_initialize">
+  </metal:block>
+  <metal:block fill-slot="stylesheet">
+
+    <paraStyle
+      name="normal"
+      fontName="Arial_Normal"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="bold"
+      fontName="Arial_Bold"
+      fontSize="10"
+      leading="12"/>
+
+    <paraStyle
+      name="h1"
+      fontName="Arial_Normal"
+      fontSize="14"
+      alignment="center"
+      leading="22"
+      spaceAfter="6"/>
+
+    <paraStyle
+      name="section"
+      fontName="Arial_Bold"
+      fontSize="10"
+      spaceBefore="24"
+      leading="12"/>
+
+    <paraStyle
+      name="worksheet"
+      fontName="Arial_Bold"
+      fontSize="10"
+      spaceBefore="8"
+      leftIndent="12"
+      leading="12"/>
+
+    <paraStyle
+      name="activity"
+      fontName="Arial_Bold"
+      fontSize="10"
+      spaceBefore="2"
+      leftIndent="24"
+      leading="12"/>
+
+    <paraStyle
+      name="heading"
+      fontName="Arial_Bold"
+      fontSize="10"
+      alignment="right"
+      leading="12"/>
+
+    <blockTableStyle id="headings_table">
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+
+    <blockTableStyle id="grid">
+    	<lineStyle kind="OUTLINE"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+    	<lineStyle kind="INNERGRID"
+          colorName="black" thickness="0.25"
+          start="0,0" stop="-1,-1" />
+        <blockValign value="top" start="0,0" stop="0,-1"/>
+    </blockTableStyle>
+  </metal:block>
+</stylesheet>
+
+<story metal:fill-slot="story">
+  <blockTable style="headings_table" colWidths="3cm,5cm,3cm,5cm"
+              alignment="center">
+    <tr>
+      <td><para style="heading" tal:content="view/term_heading" /></td>
+      <td><para style="bold" tal:content="view/term/title" /></td>
+      <td><para style="heading" tal:content="view/section_heading" /></td>
+      <td><para style="bold" tal:content="view/section/title" /></td>
+    </tr>
+    <tr>
+      <td><para style="heading" tal:content="view/worksheet_heading" /></td>
+      <td><para style="bold" tal:content="view/worksheet/title" /></td>
+      <td />
+      <td />
+    </tr>
+  </blockTable>
+
+  <spacer length=".5cm" />
+
+  <tal:block>
+    <blockTable style="grid"
+                tal:attributes="colWidths view/widths">
+      <tr>
+        <td><para style="bold" tal:content="view/student_heading" /></td>
+        <td tal:condition="not: view/total_hide">
+          <para style="bold" tal:content="view/total_label" />
+        </td>
+        <td tal:condition="not: view/average_hide">
+          <para style="bold" tal:content="view/average_label" />
+        </td>
+        <td tal:repeat="activity view/activities">
+          <para style="bold" tal:content="activity/shortTitle" />
+        </td>
+      </tr>
+
+      <tr tal:repeat="row view/table">
+        <td><para style="normal" tal:content="row/student/title" /></td>
+        <td tal:condition="not: view/total_hide">
+          <para style="bold" tal:content="row/total" />
+        </td>
+        <td tal:condition="not: view/average_hide">
+          <para style="bold" tal:content="row/average" />
+        </td>
+        <td tal:repeat="grade row/grades">
+          <para style="normal" tal:content="grade/value" />
+        </td>
+      </tr>
+    </blockTable>
+
+    <condPageBreak height="88cm"/>
+  </tal:block>
+
+</story>
+
+</document>

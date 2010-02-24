@@ -539,11 +539,43 @@ Here we will see no 'Next' button.
     <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
     <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
 
-Hitting the 'Cancel' button takes the user back to the gradebook.
+Hitting the 'Cancel' button takes the user back to the gradebook.  We'll
+verify this by testing the data cells.
 
     >>> stephan.getControl('Cancel').click()
-    >>> analyze.printQuery("id('content-body')/div/form/span[3]", stephan.contents)
-    <span>show only activities due in past</span>
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '', '42', '', '', '86']
+
+Now we'll go change a cell and come back.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '85'
+    >>> stephan.getControl('Apply').click()
+
+We see the new value where it wasn't before.
+
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '85', '42', '', '', '86']
+
+Let's change that new value to something else.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
+    >>> stephan.getControl('Apply').click()
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '35', '42', '', '', '86']
+
+Finally, we'll change it back to the way it was, demonstrating that we can
+remove scores in the student gradebook.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = ''
+    >>> stephan.getControl('Apply').click()
+
+The data cells are set as before.
+
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '', '42', '', '', '86']
 
 
 Sorting
@@ -560,9 +592,8 @@ alphabetically:
 
 Then we want to sort by grade in Homework 1, so we should have:
 
-    >>> import re
-    >>> url = re.compile('.*sort_by=-?[0-9]+')
-    >>> stephan.getLink(url=url).click()
+    >>> url = stephan.url
+    >>> stephan.open(url + '?sort_by=Activity')
     >>> stephan.contents.find('Paul') \
     ...     < stephan.contents.find('Tom') \
     ...     < stephan.contents.find('Claudia')
@@ -570,7 +601,7 @@ Then we want to sort by grade in Homework 1, so we should have:
 
 Clicking it again, reverses the order:
 
-    >>> stephan.getLink(url=url).click()
+    >>> stephan.open(url + '?sort_by=Activity')
     >>> stephan.contents.find('Claudia') \
     ...     < stephan.contents.find('Tom') \
     ...     < stephan.contents.find('Paul')
@@ -1248,4 +1279,100 @@ is not hidden.
     >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
+
+
+Unhiding Worksheets
+-------------------
+
+Now that we can hide worksheets, we need to allow the user to change their mind
+and unhide a worksheet they previously hid.  We need to navigate to the
+worksheets from which we can call up the view for unhiding worksheets.
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('Unhide Worksheets').click()
+
+We'll choose the worksheet we just hid and hit the Unhde button.  The view
+automatically returns to the worksheets view.  There we see that the worksheet
+has reappeared in the worksheets list.
+
+    >>> stephan.getControl(name='unhide:list').value = ['Worksheet-3']
+    >>> stephan.getControl('Unhide').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/manage.html">Week 3</a>
+
+
+Sections without Courses
+------------------------
+
+A corner case to handle is the gradebook of sections that for some
+reason are not related with a course. This can happen if the course is
+created, then the section is created and related to the course and
+then the course is deleted. Of course that's not a very smart way to
+use SchoolTool, but some users have done it.
+
+Let's delete the English I course, which has one section with three
+students:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('School Years').click()
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getControl(name='delete.english-i').value = True
+    >>> manager.getControl('Delete').click()
+    >>> manager.getControl('Confirm').click()
+
+Now, let's go to our orphan section:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('School Years').click()
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('English I (1)').click()
+
+And we can access its gradebook:
+
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+Now, let's check that the teacher can access the orphan gradebook:
+
+    >>> stephan.getLink('Home').click()
+    >>> stephan.getLink('Richter, Stephan -- English I (1)').click()
+    >>> stephan.getLink('Gradebook', index=1).click()
+    >>> stephan.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+And the 'view.html' view on the Student gradebook:
+
+    >>> stephan.open('http://localhost/schoolyears/2007/fall/sections/1/activities/Worksheet/gradebook/paul/view.html')
+    >>> stephan.printQuery('id("content-header")/h1')
+    <h1>Sheet1 for Paul Cardune in - English I (1)</h1>
+
+Now, let's check that a student can access the orphan gradebook:
+
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades?currentTerm=2007-.fall-')
+    >>> claudia.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> claudia.getControl(name='currentTerm').value = ['2007-.winter-']
+    >>> claudia.getForm(index=0).submit()
+    >>> claudia.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
+    </td>
 

@@ -37,10 +37,7 @@ from schooltool import course, requirement
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IBasicPerson
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
-from schooltool.securitypolicy.crowds import AggregateCrowd
-from schooltool.securitypolicy.crowds import ManagersCrowd
-from schooltool.securitypolicy.crowds import ClerksCrowd
-from schooltool.securitypolicy.crowds import AdministratorsCrowd
+from schooltool.securitypolicy.crowds import AdministrationCrowd
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import getSourceObj
@@ -51,9 +48,39 @@ from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
+CURRENT_SECTION_TAUGHT_KEY = 'schooltool.gradebook.currentsectiontaught'
+CURRENT_SECTION_ATTENDED_KEY = 'schooltool.gradebook.currentsectionattended'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
 COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
+
+
+def getCurrentSectionTaught(person):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    if CURRENT_SECTION_TAUGHT_KEY not in ann:
+        ann[CURRENT_SECTION_TAUGHT_KEY] = None
+    return ann[CURRENT_SECTION_TAUGHT_KEY]
+
+
+def setCurrentSectionTaught(person, section):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    ann[CURRENT_SECTION_TAUGHT_KEY] = section
+
+
+def getCurrentSectionAttended(person):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    if CURRENT_SECTION_ATTENDED_KEY not in ann:
+        ann[CURRENT_SECTION_ATTENDED_KEY] = None
+    return ann[CURRENT_SECTION_ATTENDED_KEY]
+
+
+def setCurrentSectionAttended(person, section):
+    person = proxy.removeSecurityProxy(person)
+    ann = annotation.interfaces.IAnnotations(person)
+    ann[CURRENT_SECTION_ATTENDED_KEY] = section
 
 
 class WorksheetGradebookTraverser(object):
@@ -125,9 +152,8 @@ class GradebookBase(object):
         ensureAtLeastOneWorksheet(activities)
         self.worksheets = list(activities.values())
         self.activities = []
-        for worksheet in self.worksheets:
-            for activity in worksheet.values():
-                self.activities.append(activity)
+        for activity in context.values():
+            self.activities.append(activity)
         self.students = list(self.section.members)
 
     def _checkStudent(self, student):
@@ -369,28 +395,6 @@ class GradebookBase(object):
         section_id = hash(IKeyReference(self.section))
         ann[GRADEBOOK_SORTING_KEY][section_id] = value
 
-    def getFinalGrade(self, student):
-        total = 0
-        for worksheet in self.worksheets:
-            if worksheet.deployed:
-                continue
-            tot, average = self.getWorksheetTotalAverage(worksheet, student)
-            if average >= 90:
-                grade = 4
-            elif average >= 80:
-                grade = 3
-            elif average >= 70:
-                grade = 2
-            elif average >= 60:
-                grade = 1
-            else:
-                grade = 0
-            total = total + grade
-        num_worksheets = len(self.worksheets)
-        final = int((float(total) / float(len(self.worksheets))) + 0.5)
-        letter_grade = {4: 'A', 3: 'B', 2: 'C', 1: 'D', 0: 'E'}
-        return letter_grade[final]
-
 
 class Gradebook(GradebookBase):
     implements(interfaces.IGradebook)
@@ -421,7 +425,7 @@ class StudentGradebook(object):
     def __init__(self, student, gradebook):
         self.student = student
         self.gradebook = gradebook
-        activities = [(unicode(hash(IKeyReference(activity))), activity)
+        activities = [(str(activity.__name__), activity)
             for activity in gradebook.activities]
         self.activities = dict(activities)
 
@@ -436,12 +440,18 @@ class StudentGradebookFormAdapter(object):
         self.__dict__['context'] = context
 
     def __setattr__(self, name, value):
+        gradebook = self.context.gradebook
+        student = self.context.student
         activity = self.context.activities[name]
         evaluator = None
         try:
-            score = activity.scoresystem.fromUnicode(value)
-            self.context.gradebook.evaluate(self.context.student, activity,
-                                            score, evaluator)
+            if value is None or value == '':
+                score, ss = gradebook.getEvaluation(student, activity)
+                if score is not None:
+                    gradebook.removeEvaluation(student, activity)
+            else:
+                score = activity.scoresystem.fromUnicode(value)
+                gradebook.evaluate(student, activity, score, evaluator)
         except ScoreValidationError:
             pass
 
@@ -469,14 +479,11 @@ def getMyGradesSection(gradebook):
     return course.interfaces.ISection(gradebook.context)
 
 
-class GradebookEditorsCrowd(AggregateCrowd, ConfigurableCrowd):
+class GradebookEditorsCrowd(ConfigurableCrowd):
     setting_key = 'administration_can_grade_students'
-
-    def crowdFactories(self):
-        return [ManagersCrowd, AdministratorsCrowd, ClerksCrowd]
 
     def contains(self, principal):
         """Return the value of the related setting (True or False)."""
-        return (ConfigurableCrowd.contains(self, principal) and
-                AggregateCrowd.contains(self, principal))
+        return (AdministrationCrowd(self.context).contains(principal) and
+                super(GradebookEditorsCrowd, self).contains(principal))
 

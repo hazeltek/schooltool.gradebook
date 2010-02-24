@@ -29,7 +29,7 @@ from decimal import Decimal
 
 import zope.interface
 from zope import annotation
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 from zope.component import queryAdapter, getAdapters
@@ -94,6 +94,17 @@ def getSourceObj(source):
     return None
 
 
+def isHiddenSource(source):
+    obj = getSourceObj(source)
+    if obj is None:
+        return True
+    if interfaces.IWorksheet.providedBy(obj):
+        worksheet = obj
+    else:
+        worksheet = obj.__parent__
+    return worksheet.hidden
+
+
 class Activities(requirement.Requirement):
     zope.interface.implements(interfaces.IActivities)
 
@@ -154,6 +165,15 @@ class Worksheet(requirement.Requirement):
     deployed = False
     hidden = False
 
+    def values(self):
+        activities = []
+        for activity in super(Worksheet, self).values():
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                if isHiddenSource(activity.source):
+                    continue
+            activities.append(activity)
+        return activities
+
     def getCategoryWeights(self):
         ann = annotation.interfaces.IAnnotations(self)
         if CATEGORY_WEIGHTS_KEY not in ann:
@@ -211,7 +231,7 @@ def getSectionActivities(context):
         # Make sure that the sections activities include all the activities of
         # the courses as well
         annotations[ACTIVITIES_KEY] = activities
-        zope.app.container.contained.contained(
+        zope.container.contained.contained(
             activities, context, 'activities')
         return activities
 
