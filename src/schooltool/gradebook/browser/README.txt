@@ -539,11 +539,43 @@ Here we will see no 'Next' button.
     <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
     <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
 
-Hitting the 'Cancel' button takes the user back to the gradebook.
+Hitting the 'Cancel' button takes the user back to the gradebook.  We'll
+verify this by testing the data cells.
 
     >>> stephan.getControl('Cancel').click()
-    >>> analyze.printQuery("id('content-body')/div/form/span[3]", stephan.contents)
-    <span>show only activities due in past</span>
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '', '42', '', '', '86']
+
+Now we'll go change a cell and come back.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '85'
+    >>> stephan.getControl('Apply').click()
+
+We see the new value where it wasn't before.
+
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '85', '42', '', '', '86']
+
+Let's change that new value to something else.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
+    >>> stephan.getControl('Apply').click()
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '35', '42', '', '', '86']
+
+Finally, we'll change it back to the way it was, demonstrating that we can
+remove scores in the student gradebook.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = ''
+    >>> stephan.getControl('Apply').click()
+
+The data cells are set as before.
+
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '', '42', '', '', '86']
 
 
 Sorting

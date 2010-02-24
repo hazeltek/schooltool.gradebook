@@ -25,21 +25,25 @@ from decimal import Decimal
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
+from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
 from schooltool.course.interfaces import ILearner, ISectionContainer
+from schooltool.course.interfaces import ISection
+from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
 
 from schooltool.gradebook import GradebookMessage as _
+from schooltool.gradebook.browser.gradebook import GradebookOverview
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
     TARDY_KEY)
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.gradebook.interfaces import IGradebook
+from schooltool.gradebook.interfaces import IGradebook, IWorksheet
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
@@ -56,6 +60,10 @@ class BasePDFView(ReportPDFView):
             self.schoolyear = None
         else:
             self.schoolyear = ISchoolYear(self.current_term)
+        if 'term' in self.request:
+            self.term = self.schoolyear[self.request['term']]
+        else:
+            self.term = None
 
     def noCurrentTerm(self):
         if self.current_term is None:
@@ -203,8 +211,15 @@ class BaseReportCardPDFView(BaseStudentPDFView):
                 student.first_name, student.last_name)
             student_title = _('Student') + ': ' + student_name
 
-            sections = [section for section in ILearner(student).sections()
-                        if ISchoolYear(ITerm(section)) == self.schoolyear]
+            sections = []
+            for section in ILearner(student).sections():
+                term = ITerm(section)
+                schoolyear = ISchoolYear(term)
+                if schoolyear != self.schoolyear:
+                    continue
+                if self.term and term != self.term:
+                    continue
+                sections.append(section)
 
             result = {
                 'title': student_title,
@@ -666,4 +681,45 @@ class SectionAbsencesPDFView(BasePDFView):
                 }
             rows.append(row)
         return rows
+
+
+class GradebookPDFView(BasePDFView, GradebookOverview):
+    """The gradebook pdf view class"""
+
+    template=ViewPageTemplateFile('gradebook_rml.pt')
+
+    def __init__(self, context, request):
+        super(GradebookPDFView, self).__init__(context, request)
+        self.person = IPerson(self.request.principal)
+        self.sortKey = self.context.getSortKey(self.person)
+        self.processColumnPreferences()
+        self.worksheet = removeSecurityProxy(context).context
+        self.section = ISection(self.worksheet)
+        self.term = ITerm(self.section)
+
+    def title(self):
+        return _('Gradebook Report')
+
+    def term_heading(self):
+        return _('Term')
+
+    def section_heading(self):
+        return _('Section')
+
+    def worksheet_heading(self):
+        return _('Workheet')
+
+    def student_heading(self):
+        return _('Student')
+
+    def widths(self):
+        result = '5cm'
+        if not self.total_hide:
+            width = 0.2 + (1.6/5) * len(self.total_label)
+            result += ',%1.1fcm' % width
+        if not self.average_hide:
+            width = 0.2 + (1.6/5) * len(self.average_label)
+            result += ',%1.1fcm' % width
+        result += ',1.6cm' * len(self.activities())
+        return result
 

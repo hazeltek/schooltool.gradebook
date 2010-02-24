@@ -408,12 +408,18 @@
       action="column_preferences.html"
       permission="schooltool.view"
       />
-
   <menuItem
       menu="schooltool_actions"
       title="Export XLS"
       for="..interfaces.IGradebook"
       action="../../export.xls"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Download PDF"
+      for="..interfaces.IGradebook"
+      action="gradebook.pdf"
       permission="schooltool.view"
       />
 
@@ -483,6 +489,12 @@
       class=".gradebook.GradebookColumnPreferences"
       template="gradebook_column_preferences.pt"
       permission="schooltool.view"
+      />
+  <page
+      name="gradebook.pdf"
+      for="..interfaces.IGradebook"
+      class=".pdf_views.GradebookPDFView"
+      permission="schooltool.edit"
       />
 
   <!-- Student Gradebook -->

@@ -30,10 +30,16 @@ from zope.intid.interfaces import IIntIds
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
-from zope.interface import implements
+from zope.app.container import btree
+from zope.interface import implements, alsoProvides
+from zope.location.interfaces import ILocation
+from zope.location.location import locate
 from zope.publisher.browser import TestRequest
+from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.schema.interfaces import IVocabularyFactory
 from zope.security.proxy import removeSecurityProxy
 from zope.testing import doctest
+from zope.traversing.browser.interfaces import IAbsoluteURL
 
 from schooltool.app.interfaces import (ISchoolToolApplication,
      ISchoolToolCalendar, ISchoolToolCalendarEvent)
@@ -60,7 +66,7 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
-from schooltool.gradebook.gradebook import Gradebook 
+from schooltool.gradebook.gradebook import Gradebook, getWorksheetSection 
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
 from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
@@ -70,10 +76,12 @@ from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
     getSectionJournalData, getSectionForSectionJournalData)
 from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     GroupReportCardPDFView, StudentDetailPDFView, GroupDetailPDFView,
-    FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView)
+    FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView,
+    GradebookPDFView)
 from schooltool.requirement.evaluation import Evaluation, getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
-from schooltool.requirement.scoresystem import AmericanLetterScoreSystem
+from schooltool.requirement.scoresystem import (AmericanLetterScoreSystem,
+    DiscreteScoreSystemsVocabulary)
 
 
 BEGIN_2009 = datetime.date(datetime(2009, 1, 1))
@@ -132,22 +140,31 @@ class IntIdsStub(object):
         return key
 
 
-class ApplicationStub(object):
+class FakeURL:
+    def __init__(self, context, request):
+        pass
+    def __call__(self):
+        return self.__str__()
+    def __str__(self):
+        return "http://localhost"
+
+
+class ApplicationStub(btree.BTreeContainer):
     implements(ISchoolToolApplication, IAttributeAnnotatable)
 
     def __init__(self):
+        super(ApplicationStub, self).__init__()
         int_ids = getUtility(IIntIds)
 
-        self.dict = {}
-        self.syc = self.dict[SCHOOLYEAR_CONTAINER_KEY] = SchoolYearContainer()
-        self.dict['schooltool.course.course'] = CourseContainerContainer()
-        self.dict['schooltool.course.section'] = SectionContainerContainer()
-        self.dict['schooltool.lyceum.journal'] = LyceumJournalContainer()
-        self.dict['schooltool.group'] = GroupContainerContainer()
-        self.dict['persons'] = PersonContainer()
+        self.syc = self[SCHOOLYEAR_CONTAINER_KEY] = SchoolYearContainer()
+        self['schooltool.course.course'] = CourseContainerContainer()
+        self['schooltool.course.section'] = SectionContainerContainer()
+        self['schooltool.lyceum.journal'] = LyceumJournalContainer()
+        self['schooltool.group'] = GroupContainerContainer()
+        self['persons'] = PersonContainer()
 
-        self.dict['persons']['aelkner'] = aelkner
-        self.dict['persons']['thoffman'] = thoffman
+        self['persons']['aelkner'] = aelkner
+        self['persons']['thoffman'] = thoffman
 
         self.schoolyear = self.syc['2009'] = SchoolYear('2009', BEGIN_2009,
             END_2009)
@@ -166,15 +183,6 @@ class ApplicationStub(object):
         layout = root.layouts[self.schoolyear.__name__] = ReportLayout()
         layout.columns = [ReportColumn(source, '')]
         layout.outline_activities = [OutlineActivity(source, '')]
-
-    def __getitem__(self, key):
-        return self.dict[key]
-
-    def __setitem__(self, key, value):
-        self.dict[key] = value
-
-    def __contains__(self, key):
-        return key in self.dict
 
 
 class DateManagerStub(object):
@@ -397,6 +405,45 @@ def doctest_SectionAbsencesPDFView():
     """
 
 
+def doctest_GradebookPDFView():
+    r"""Tests for GradebookPDFView.
+
+        >>> request = TestRequest()
+        >>> request.setPrincipal(thoffman)
+        >>> app = ISchoolToolApplication(None)
+        >>> section = ISectionContainer(app.term)['1']
+        >>> activities = IActivities(section)
+        >>> worksheet = activities['Worksheet']
+        >>> gradebook = IGradebook(worksheet)
+        >>> locate(gradebook, worksheet, 'gradebook')
+        >>> alsoProvides(gradebook, ILocation)
+        >>> view = GradebookPDFView(gradebook, request)
+
+    The view has a title:
+
+        >>> print view.title()
+        Gradebook Report
+
+    The data used by the template is returned by the table() method:
+
+        >>> pprint(view.activities())
+        [{'hash': 'Activity',
+          'longTitle': 'Activity',
+          'max': 'A',
+          'scorable': True,
+          'shortTitle': 'Activ'}]
+
+        >>> pprint(view.table())
+        [{'average': u'0%',
+          'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'}],
+          'student': {'gradeurl': '...',
+                      'id': 'aelkner',
+                      'title': 'Elkner, Alan',
+                      'url': 'http://localhost/persons/aelkner'},
+          'total': u'0'}]
+    """
+
+
 def pdfSetUp(test=None):
     setup.placefulSetUp()
     setUpRelationships()
@@ -422,10 +469,13 @@ def pdfSetUp(test=None):
     provideAdapter(getGradebookRoot, [ISchoolToolApplication],
                    provides=IGradebookRoot)
     provideAdapter(Gradebook, [IWorksheet], provides=IGradebook)
+    provideAdapter(getWorksheetSection, [IWorksheet], provides=ISection)
     provideAdapter(getSchoolYearContainer, [ISchoolToolApplication], 
                    provides=ISchoolYearContainer)
 
     provideAdapter(StupidKeyReference, [object], IKeyReference)
+    provideAdapter(FakeURL, [ISchoolToolApplication, IBrowserRequest],
+                   provides=IAbsoluteURL)
     provideUtility(IntIdsStub(), IIntIds, '')
 
     provideAdapter(getCalendar, [object], provides=ISchoolToolCalendar)
@@ -434,6 +484,9 @@ def pdfSetUp(test=None):
     provideAdapter(lambda x: app, [None], provides=ISchoolToolApplication)
 
     provideUtility(DateManagerStub(), IDateManager, '')
+
+    provideUtility(DiscreteScoreSystemsVocabulary, IVocabularyFactory,
+        'schooltool.requirement.discretescoresystems')
 
     setupSections(app)
 

@@ -6,7 +6,7 @@
 <body>
 
 <metal:block metal:fill-slot="body">
-  <form method="post" class="addscoresystem"
+  <form method="post" class="standalone" style="width: 48em"
         tal:attributes="action string:${context/@@absolute_url}/add.html">
     <input type="hidden" name="form-submitted" value="" />
 
