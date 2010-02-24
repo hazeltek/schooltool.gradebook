@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-12-30 15:41+0000\n"
-"PO-Revision-Date: 2009-12-30 15:02+0000\n"
+"PO-Revision-Date: 2010-02-14 20:12+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-31 05:01+0000\n"
+"X-Launchpad-Export-Date: 2010-02-15 04:54+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:211
@@ -29,7 +29,7 @@ msgstr "Blad1"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Verbergen"
 
 #: /src/schooltool/gradebook/browser/activity.py:143
 #: /src/schooltool/gradebook/browser/report_card.py:209
@@ -302,7 +302,7 @@ msgstr "Onjuiste scores (aangegeven in rood) werden niet opgeslagen."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:557
 msgid "N/A"
-msgstr ""
+msgstr "Niet beschikbaar"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:659
@@ -655,7 +655,7 @@ msgstr "Absenties"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:642
 msgid "Tardies"
-msgstr "Te laat gekomen"
+msgstr "Laatkomers"
 
 #: /src/schooltool/gradebook/browser/report_card.py:119
 msgid "-- Use range below --"
@@ -1096,7 +1096,7 @@ msgstr "Weergave"
 
 #: /src/schooltool/requirement/browser/requirement.pt:11
 msgid "${requirement} Sub Requirements"
-msgstr ""
+msgstr "${requirement} subvereisten"
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
