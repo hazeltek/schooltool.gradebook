@@ -125,9 +125,8 @@ class GradebookBase(object):
         ensureAtLeastOneWorksheet(activities)
         self.worksheets = list(activities.values())
         self.activities = []
-        for worksheet in self.worksheets:
-            for activity in worksheet.values():
-                self.activities.append(activity)
+        for activity in context.values():
+            self.activities.append(activity)
         self.students = list(self.section.members)
 
     def _checkStudent(self, student):
@@ -369,28 +368,6 @@ class GradebookBase(object):
         section_id = hash(IKeyReference(self.section))
         ann[GRADEBOOK_SORTING_KEY][section_id] = value
 
-    def getFinalGrade(self, student):
-        total = 0
-        for worksheet in self.worksheets:
-            if worksheet.deployed:
-                continue
-            tot, average = self.getWorksheetTotalAverage(worksheet, student)
-            if average >= 90:
-                grade = 4
-            elif average >= 80:
-                grade = 3
-            elif average >= 70:
-                grade = 2
-            elif average >= 60:
-                grade = 1
-            else:
-                grade = 0
-            total = total + grade
-        num_worksheets = len(self.worksheets)
-        final = int((float(total) / float(len(self.worksheets))) + 0.5)
-        letter_grade = {4: 'A', 3: 'B', 2: 'C', 1: 'D', 0: 'E'}
-        return letter_grade[final]
-
 
 class Gradebook(GradebookBase):
     implements(interfaces.IGradebook)
@@ -421,7 +398,7 @@ class StudentGradebook(object):
     def __init__(self, student, gradebook):
         self.student = student
         self.gradebook = gradebook
-        activities = [(unicode(hash(IKeyReference(activity))), activity)
+        activities = [(str(activity.__name__), activity)
             for activity in gradebook.activities]
         self.activities = dict(activities)
 
