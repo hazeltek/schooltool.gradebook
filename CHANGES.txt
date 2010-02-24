@@ -2,7 +2,7 @@
 CHANGES
 ~~~~~~~
 
-0.6.1 (unreleased)
+0.6.1 (2010-02-24)
 ==================
 
 * Main "Gradebook" link now remembers last section (LP: #513246)
