@@ -627,9 +627,23 @@
       permission="schooltool.edit"
       />
   <page
+      name="request_report_card.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
+      permission="schooltool.edit"
+      />
+  <page
       name="report_card.pdf"
       for="schooltool.person.interfaces.IPerson"
       class=".pdf_views.StudentReportCardPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="request_student_detail.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -656,9 +670,23 @@
       permission="schooltool.edit"
       />
   <page
+      name="request_report_card.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
+      permission="schooltool.edit"
+      />
+  <page
       name="report_card.pdf"
       for="schooltool.group.interfaces.IGroup"
       class=".pdf_views.GroupReportCardPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="request_student_detail.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".request_reports.RequestStudentReportView"
+      template="request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
