@@ -219,7 +219,7 @@ def setupSections(app):
     meeting = MeetingStub()
     meeting.unique_id = "unique-id-2009-01-01"
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
-    meeting.period_id = "Period 1"
+    meeting.period_id = "10:30-11:30"
     calendar.addEvent(meeting)
     jd.setGrade(aelkner, meeting, 'n')
     jd.setAbsence(aelkner, meeting, 'n')
@@ -294,7 +294,7 @@ def doctest_StudentDetailPDFView():
     The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
-        [{'attendance': {'headings': [1],
+        [{'attendance': {'headings': ['10:30'],
                          'rows': [{'scores': [u'A'], 'title': '01/01/09'}],
                          'widths': '4cm,1cm'},
           'grades': {'headings': ['Activ'],
@@ -322,7 +322,7 @@ def doctest_GroupDetailPDFView():
     The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
-        [{'attendance': {'headings': [1],
+        [{'attendance': {'headings': ['10:30'],
                          'rows': [{'scores': [u'A'], 'title': '01/01/09'}],
                          'widths': '4cm,1cm'},
           'grades': {'headings': ['Activ'],

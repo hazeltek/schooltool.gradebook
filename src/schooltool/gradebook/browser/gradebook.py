@@ -598,7 +598,7 @@ class GradebookOverview(SectionFinder):
         activities = self.getFilteredActivities()
         students = self.context.students
         if len(activities) and len(students):
-            act_hash = activity.__name__
+            act_hash = activities[0].__name__
             student_id = students[0].username
             return '%s_%s' % (act_hash, student_id)
         else:
