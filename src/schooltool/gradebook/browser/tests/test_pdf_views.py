@@ -30,7 +30,7 @@ from zope.intid.interfaces import IIntIds
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
-from zope.app.container import btree
+from zope.container import btree
 from zope.interface import implements, alsoProvides
 from zope.location.interfaces import ILocation
 from zope.location.location import locate

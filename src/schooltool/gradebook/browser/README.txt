@@ -1372,4 +1372,7 @@ Now, let's check that a student can access the orphan gradebook:
     <td class="active_tab">
       <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
     </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
+    </td>
 
