@@ -109,6 +109,13 @@
       permission="schooltool.view"
       />
   <page
+      name="unhide.html"
+      for="..interfaces.IActivities"
+      class=".activity.UnhideWorksheetsView"
+      template="unhide_worksheets.pt"
+      permission="schooltool.view"
+      />
+  <page
       name="export.xls"
       for="..interfaces.IActivities"
       class=".activity.WorksheetsExportView"
@@ -304,6 +311,13 @@
       title="Return to Gradebook"
       for="..interfaces.IActivities"
       action="../gradebook"
+      permission="schooltool.view"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Unhide Worksheets"
+      for="..interfaces.IActivities"
+      action="unhide.html"
       permission="schooltool.view"
       />
 

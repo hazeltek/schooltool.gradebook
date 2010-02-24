@@ -1,0 +1,36 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool.gradebook">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">Unhide Worksheets</title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">Unhide Worksheets</h1>
+
+<metal:block metal:fill-slot="body"
+             tal:define="worksheets view/worksheets">
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/unhide.html">
+    <table>
+      <tr tal:repeat="worksheet worksheets">
+        <td>
+          <input type="checkbox" name="unhide:list"
+                 tal:attributes="value worksheet/name" />
+        </td>
+        <td>
+          <span tal:content="worksheet/title">Worksheet</span>
+        </td>
+      </tr>
+    </table>
+    <div class="controls" tal:condition="view/canModify">
+      <tal:block tal:condition="python: len(list(context.values())) > 0">
+        <input type="submit" class="button-ok" name="UNHIDE" value="Unhide"
+               i18n:attributes="value" />
+      </tal:block>
+    </div>
+  </form>
+
+</metal:block>
+</body>
+</html>
