@@ -6,7 +6,7 @@
 <body>
 
 <metal:block metal:fill-slot="body">
-  <form method="post" class="addscoresystem"
+  <form method="post" class="standalone" style="width: 48em"
         tal:attributes="action string:${context/@@absolute_url}/layout_report_card.html">
     <input type="hidden" name="form-submitted" value="" />
 
@@ -19,7 +19,7 @@
         <td></td>
         <td align="center" i18n:translate="">Source</td>
         <td align="center" i18n:translate="">Heading</td>
-        <td i18n:translate="">Remove?</td>
+        <td></td>
       </tr>
 
       <tal:block repeat="column view/columns">
@@ -46,8 +46,8 @@
                    tal:attributes="name column/heading_name; value column/heading_value" />
           </td>
           <td align="center">
-            <input type="checkbox" name="delete:list"
-                   tal:attributes="value column/source_name" />
+            <input type="submit" value="X" class="button-cancel"
+                   tal:attributes="name string:delete_${column/source_name}" />
           </td>
         </tr>
       </tal:block>
@@ -65,8 +65,9 @@
             </tal:block>
           </select>
         </td>
-        <td>
-          <input type="text" name="new_heading" />
+        <td style="padding-left: 1em">
+          <input type="submit" class="button-ok" name="ADD_COLUMN" value="Add"
+                 i18n:attributes="value" />
         </td>
       </tr>
 
@@ -80,7 +81,7 @@
         <td></td>
         <td align="center" i18n:translate="">Source</td>
         <td align="center" i18n:translate="">Heading</td>
-        <td i18n:translate="">Remove?</td>
+        <td></td>
       </tr>
 
       <tal:block repeat="activity view/outline_activities">
@@ -107,8 +108,8 @@
                    tal:attributes="name activity/heading_name; value activity/heading_value" />
           </td>
           <td align="center">
-            <input type="checkbox" name="delete:list"
-                   tal:attributes="value activity/source_name" />
+            <input type="submit" value="X" class="button-cancel"
+                   tal:attributes="name string:delete_${activity/source_name}" />
           </td>
         </tr>
       </tal:block>
@@ -126,8 +127,9 @@
             </tal:block>
           </select>
         </td>
-        <td>
-          <input type="text" name="new_activity_heading" />
+        <td style="padding-left: 1em">
+          <input type="submit" class="button-ok" name="ADD_ACTIVITY" value="Add"
+                 i18n:attributes="value" />
         </td>
       </tr>
 
@@ -135,8 +137,6 @@
     </fieldset>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="Update" value="Save"
-             i18n:attributes="value" />
       <input type="submit" class="button-ok" name="OK" value="OK"
              i18n:attributes="value" />
     </div>

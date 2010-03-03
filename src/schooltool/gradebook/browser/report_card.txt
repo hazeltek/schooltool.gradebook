@@ -339,7 +339,7 @@ the only list box present.
 We'll add a first column to the layout.
 
     >>> manager.getControl('New Column').value = ['fall|2005-2006_fall|ReportActivity']
-    >>> manager.getControl('Save').click()
+    >>> manager.getControl(name='ADD_COLUMN').click()
 
 Now the view has the first column and the select control below it to add
 another column.
@@ -363,7 +363,8 @@ We can change the first column to another activity.  We'll see that the change
 has taken effect.
 
     >>> manager.getControl('Column1').value = ['spring|2005-2006_spring|ReportActivity']
-    >>> manager.getControl('Save').click()
+    >>> manager.getControl('OK').click()
+    >>> manager.getLink('Report Card Layout').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
@@ -383,8 +384,7 @@ has taken effect.
 If we want, we can delete the column.  We'll see that the view no longer has
 any columns.
 
-    >>> manager.getControl(name='delete:list').value = ['Column1']
-    >>> manager.getControl('Save').click()
+    >>> manager.getControl(name='delete_Column1').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[1]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose a column to add</option>
@@ -406,7 +406,7 @@ starters, we see only choices for outline activities to add.
 We'll add a first activity to the layout.
 
     >>> manager.getControl('New Activity').value = ['fall|2005-2006_fall|ReportActivity']
-    >>> manager.getControl('Save').click()
+    >>> manager.getControl(name='ADD_ACTIVITY').click()
 
 Now the view has the first activity and the select control below it to add
 another activity.
@@ -426,7 +426,8 @@ We can change the first activity to another activity.  We'll see that the change
 has taken effect.
 
     >>> manager.getControl('Activity1').value = ['spring|2005-2006_spring|ReportActivity']
-    >>> manager.getControl('Save').click()
+    >>> manager.getControl('OK').click()
+    >>> manager.getLink('Report Card Layout').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
     <option value="fall|2005-2006_fall|ReportActivity">Fall - Test3 - Activity 3</option>
@@ -442,8 +443,7 @@ has taken effect.
 If we want, we can delete the activity.  We'll see that the view no longer has
 any activities.
 
-    >>> manager.getControl(name='delete:list').value = ['Activity1']
-    >>> manager.getControl('Save').click()
+    >>> manager.getControl(name='delete_Activity1').click()
 
     >>> analyze.printQuery("id('content-body')/form/fieldset[2]//table//tr[2]/td[2]//option", manager.contents)
     <option selected="selected" value="">Choose an activity to add</option>

@@ -539,11 +539,43 @@ Here we will see no 'Next' button.
     <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
     <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
 
-Hitting the 'Cancel' button takes the user back to the gradebook.
+Hitting the 'Cancel' button takes the user back to the gradebook.  We'll
+verify this by testing the data cells.
 
     >>> stephan.getControl('Cancel').click()
-    >>> analyze.printQuery("id('content-body')/div/form/span[3]", stephan.contents)
-    <span>show only activities due in past</span>
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '', '42', '', '', '86']
+
+Now we'll go change a cell and come back.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '85'
+    >>> stephan.getControl('Apply').click()
+
+We see the new value where it wasn't before.
+
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '85', '42', '', '', '86']
+
+Let's change that new value to something else.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
+    >>> stephan.getControl('Apply').click()
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '35', '42', '', '', '86']
+
+Finally, we'll change it back to the way it was, demonstrating that we can
+remove scores in the student gradebook.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = ''
+    >>> stephan.getControl('Apply').click()
+
+The data cells are set as before.
+
+    >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
+    ['40', '', '42', '', '', '86']
 
 
 Sorting
@@ -560,9 +592,8 @@ alphabetically:
 
 Then we want to sort by grade in Homework 1, so we should have:
 
-    >>> import re
-    >>> url = re.compile('.*sort_by=-?[0-9]+')
-    >>> stephan.getLink(url=url).click()
+    >>> url = stephan.url
+    >>> stephan.open(url + '?sort_by=Activity')
     >>> stephan.contents.find('Paul') \
     ...     < stephan.contents.find('Tom') \
     ...     < stephan.contents.find('Claudia')
@@ -570,7 +601,7 @@ Then we want to sort by grade in Homework 1, so we should have:
 
 Clicking it again, reverses the order:
 
-    >>> stephan.getLink(url=url).click()
+    >>> stephan.open(url + '?sort_by=Activity')
     >>> stephan.contents.find('Claudia') \
     ...     < stephan.contents.find('Tom') \
     ...     < stephan.contents.find('Paul')
@@ -1249,6 +1280,29 @@ is not hidden.
     >>> stephan.url
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
 
+
+Unhiding Worksheets
+-------------------
+
+Now that we can hide worksheets, we need to allow the user to change their mind
+and unhide a worksheet they previously hid.  We need to navigate to the
+worksheets from which we can call up the view for unhiding worksheets.
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('Unhide Worksheets').click()
+
+We'll choose the worksheet we just hid and hit the Unhde button.  The view
+automatically returns to the worksheets view.  There we see that the worksheet
+has reappeared in the worksheets list.
+
+    >>> stephan.getControl(name='unhide:list').value = ['Worksheet-3']
+    >>> stephan.getControl('Unhide').click()
+    >>> analyze.printQuery("id('content-body')//a", stephan.contents)
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/manage.html">Week 1</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/manage.html">Week 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/manage.html">Week 3</a>
+
+
 Sections without Courses
 ------------------------
 
@@ -1318,3 +1372,7 @@ Now, let's check that a student can access the orphan gradebook:
     <td class="active_tab">
       <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
     </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
+    </td>
+

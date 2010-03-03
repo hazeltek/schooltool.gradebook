@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "POT-Creation-Date: 2009-12-30 15:41+0000\n"
-"PO-Revision-Date: 2009-12-30 15:01+0000\n"
-"Last-Translator: Davide Notaristefano <davide@notaristefano.com>\n"
+"PO-Revision-Date: 2010-01-20 13:06+0000\n"
+"Last-Translator: Milo Casagrande <milo@casagrande.name>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-31 05:01+0000\n"
+"X-Launchpad-Export-Date: 2010-01-21 04:39+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -55,7 +55,7 @@ msgstr "Conferma"
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:52
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:52
 msgid "Cancel"
-msgstr "Cancellare"
+msgstr "Annulla"
 
 #: /src/schooltool/gradebook/browser/activity.py:198
 msgid "Add an External Activity"

@@ -49,6 +49,9 @@ from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Worksheet, LinkedColumnActivity
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
+from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
+    setCurrentSectionTaught, getCurrentSectionAttended,
+    setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import ICommentScoreSystem
@@ -116,12 +119,16 @@ class GradebookStartup(object):
         self.sectionsAttended = list(ILearner(self.person).sections())
 
         if self.sectionsTaught:
-            section = self.sectionsTaught[0]
+            section = getCurrentSectionTaught(self.person)
+            if section is None:
+                section = self.sectionsTaught[0]
             self.gradebookURL = absoluteURL(section, self.request)+ '/gradebook'
             if not self.sectionsAttended:
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
-            section = self.sectionsAttended[0]
+            section = getCurrentSectionAttended(self.person)
+            if section is None:
+                section = self.sectionsAttended[0]
             self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
@@ -187,7 +194,7 @@ class GradebookBase(BrowserView):
                 result = [COMMENT_SCORE_SYSTEM]
             resultStr = ', '.join(["'%s'" % unicode(value)
                 for value in result])
-            results[hash(IKeyReference(activity))] = resultStr
+            results[activity.__name__] = resultStr
         return results
 
     def breakJSString(self, origstr):
@@ -371,6 +378,7 @@ class GradebookOverview(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
+        setCurrentSectionTaught(self.person, gradebook.section)
 
         """Retrieve column preferences."""
         self.processColumnPreferences()
@@ -409,7 +417,7 @@ class GradebookOverview(SectionFinder):
         for student in self.context.students:
             for activity in gradebook.activities:
                 # Create a hash and see whether it is in the request
-                act_hash = unicode(hash(IKeyReference(activity)))
+                act_hash = activity.__name__
                 cell_name = '%s_%s' % (act_hash, student.username)
                 if cell_name in self.request:
                     # If a value is present, create an evaluation, if the
@@ -496,7 +504,7 @@ class GradebookOverview(SectionFinder):
                 'shortTitle': shortTitle,
                 'longTitle': longTitle,
                 'max': bestScore,
-                'hash': hash(IKeyReference(activity)),
+                'hash': activity.__name__,
                 }
             results.append(result)
         return results
@@ -525,7 +533,7 @@ class GradebookOverview(SectionFinder):
         if value is None or value is UNSCORED:
             value = ''
 
-        act_hash = hash(IKeyReference(activity))
+        act_hash = activity.__name__
         cell_name = '%s_%s' % (act_hash, student.username)
         if cell_name in self.request:
             value = self.request[cell_name]
@@ -539,7 +547,7 @@ class GradebookOverview(SectionFinder):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
-        activities = [(hash(IKeyReference(activity)), activity)
+        activities = [(activity.__name__, activity)
             for activity in self.getFilteredActivities()]
         rows = []
         for student in self.context.students:
@@ -574,7 +582,8 @@ class GradebookOverview(SectionFinder):
                              'gradeurl': absoluteURL(self.context, self.request) +
                                     ('/%s' % student.username),
                             },
-                 'grades': grades, 'total': unicode(total),
+                 'grades': grades,
+                 'total': unicode(total),
                  'average': unicode(average)
                 })
 
@@ -598,7 +607,7 @@ class GradebookOverview(SectionFinder):
         activities = self.getFilteredActivities()
         students = self.context.students
         if len(activities) and len(students):
-            act_hash = hash(IKeyReference(activities[0]))
+            act_hash = activities[0].__name__
             student_id = students[0].username
             return '%s_%s' % (act_hash, student_id)
         else:
@@ -611,7 +620,7 @@ class GradebookOverview(SectionFinder):
         for activity in self.getFilteredActivities():
             description = activity.title
             result = {
-                'act_hash': hash(IKeyReference(activity)),
+                'act_hash': activity.__name__,
                 'description': self.breakJSString(description),
                 }
             results.append(result)
@@ -623,12 +632,12 @@ class GradeActivity(object):
 
     @property
     def activity(self):
-        act_hash = int(self.request['activity'])
+        act_hash = self.request['activity']
         for activity in self.context.activities:
-            if hash(IKeyReference(activity)) == act_hash:
+            if activity.__name__ == act_hash:
                 return {'title': activity.title,
                         'max': activity.scoresystem.getBestScore(),
-                        'hash': hash(IKeyReference(activity)),
+                        'hash': activity.__name__,
                          'obj': activity}
 
     @property
@@ -707,6 +716,7 @@ class MyGradesView(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
+        setCurrentSectionAttended(self.person, gradebook.section)
 
         """Retrieve column preferences."""
         self.processColumnPreferences()
@@ -937,16 +947,23 @@ class GradeStudent(z3cform.EditForm):
     def update(self):
         self.person = IPerson(self.request.principal)
         for index, activity in enumerate(self.getFilteredActivities()):
-            if ICommentScoreSystem.providedBy(activity.scoresystem):
-                field_cls = HtmlFragment
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                obj = getSourceObj(activity.source)
+                newSchemaFld = TextLine(
+                    title=obj.title,
+                    readonly = True,
+                    required=False)
             else:
-                field_cls = TextLine
-            newSchemaFld = field_cls(
-                title=activity.title,
-                description=activity.description,
-                constraint=activity.scoresystem.fromUnicode,
-                required=False)
-            newSchemaFld.__name__ = str(hash(IKeyReference(activity)))
+                if ICommentScoreSystem.providedBy(activity.scoresystem):
+                    field_cls = HtmlFragment
+                else:
+                    field_cls = TextLine
+                newSchemaFld = field_cls(
+                    title=activity.title,
+                    description=activity.description,
+                    constraint=activity.scoresystem.fromUnicode,
+                    required=False)
+            newSchemaFld.__name__ = str(activity.__name__)
             newSchemaFld.interface = interfaces.IStudentGradebookForm
             newFormFld = field.Field(newSchemaFld)
             self.fields += field.Fields(newFormFld)

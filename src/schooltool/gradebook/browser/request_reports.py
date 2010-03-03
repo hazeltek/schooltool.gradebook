@@ -23,11 +23,13 @@ Request PDF Views
 from datetime import datetime
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.publisher.browser import BrowserView
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.term.interfaces import ITerm, IDateManager
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot
@@ -53,12 +55,12 @@ class StudentReportsView(BaseView):
         url = absoluteURL(self.context, self.request)
         results = [
             {
-                'url': url +  '/report_card.pdf',
-                'content': _('Download Report Card'),
+                'url': url +  '/request_report_card.html',
+                'content': _('Request Report Card'),
             },
             {
-                'url': url +  '/student_detail.pdf',
-                'content': _('Download Student Detail Report'),
+                'url': url +  '/request_student_detail.html',
+                'content': _('Request Detailed Student Report'),
             },
         ]
         return results
@@ -73,12 +75,12 @@ class GroupReportsView(BaseView):
         url = absoluteURL(self.context, self.request)
         results = [
             {
-                'url': url +  '/report_card.pdf',
-                'content': _('Download Report Card'),
+                'url': url +  '/request_report_card.html',
+                'content': _('Request Report Card'),
             },
             {
-                'url': url +  '/student_detail.pdf',
-                'content': _('Download Detailed Student Report'),
+                'url': url +  '/request_student_detail.html',
+                'content': _('Request Detailed Student Report'),
             },
          ]
         return results
@@ -257,6 +259,71 @@ class RequestAbsencesByDayView(BrowserView):
 
     def reportURL(self):
         return absoluteURL(self.context, self.request) + '/absences_by_day.pdf'
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+
+
+class RequestStudentReportView(BrowserView):
+
+    def __call__(self):
+        """Make sure there is a current term."""
+        if self.noCurrentTerm():
+            return
+        return super(RequestStudentReportView, self).__call__()
+
+    def noCurrentTerm(self):
+        current_term = getUtility(IDateManager).current_term
+        if current_term is None:
+            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
+            next_url += '/no_current_term.html'
+            self.request.response.redirect(next_url)
+            return True
+        return False
+
+    def action(self):
+        index = self.request['PATH_INFO'].rfind('/') + 1
+        return self.request['PATH_INFO'][index:]
+
+    def title(self):
+        if self.action() == 'request_report_card.html':
+            return _('Request Report Card')
+        else:
+            return _('Request Detailed Student Report')
+
+    def availableTerms(self):
+        current_term = getUtility(IDateManager).current_term
+        current_year = ISchoolYear(current_term)
+        result = {
+            'title': current_year.__name__,
+            'value': '',
+            'selected': True,
+            }
+        results = [result]
+        for term in current_year.values():
+            result = {
+                'title': term.title,
+                'value': '?term=' + term.__name__,
+                'selected': False,
+                }
+            results.append(result)
+        return results
+
+    def update(self):
+        self.message = ''
+        if 'form-submitted' in self.request:
+            if 'CANCEL' in self.request:
+                self.request.response.redirect(self.nextURL())
+            elif 'DOWNLOAD' in self.request:
+                url = '%s%s' % (self.reportURL(), self.request['selectedTerm'])
+                self.request.response.redirect(url)
+
+    def reportURL(self):
+        if self.action() == 'request_report_card.html':
+            url = '/report_card.pdf'
+        else:
+            url = '/student_detail.pdf'
+        return absoluteURL(self.context, self.request) + url
 
     def nextURL(self):
         return absoluteURL(self.context, self.request) + '/report_pdfs.html'

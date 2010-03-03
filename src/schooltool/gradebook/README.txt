@@ -280,6 +280,7 @@ Let's enter some grades:
     >>> gradebook.evaluate(student=paul, activity=project1, score='C')
     >>> gradebook.evaluate(student=claudia, activity=project1, score='C')
 
+    >>> gradebook = interfaces.IGradebook(week2)
     >>> gradebook.evaluate(student=tom, activity=hw2, score=10)
     >>> gradebook.evaluate(student=paul, activity=hw2, score=12)
     >>> gradebook.evaluate(student=claudia, activity=hw2, score=14)
@@ -332,6 +333,7 @@ There are a couple more management functions that can be used to maintain the
 evaluations. For example, you can ask whether an evaluation for a particular
 student and activity has been made:
 
+    >>> gradebook = interfaces.IGradebook(week1)
     >>> gradebook.hasEvaluation(student=tom, activity=hw1)
     True
 
@@ -412,33 +414,6 @@ And that's it. The gradebook itself will not interpret the sorting key any
 further. It is up to the view code to implement the rest of the sorting
 feature. This is because the view code can often be much more efficient in
 implement ordering.
-
-
-Final Grade Calulation
-----------------------
-
-It is important for the teacher to be able to present the student with a final
-grade at the end of a section.  We will calulate this for the teacher using
-the following formula:
-
-final grade = (4 * num(A) + 3 * num(B) + 2*num(C) + num(D)) / num(worksheets)
-
-This will be rounded to the nearest integer and mapped to a letter grade.
-We will hard-code this as 4 -> A, 3 -> B, ... 0 -> E until we have a customer 
-that needs it done differently.  
-
-First let's see what Paul's grades are for the two worksheets:
-
-    >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("92"), 81)
-    >>> gradebook.getWorksheetTotalAverage(week2, paul)
-    (Decimal("115"), 97)
-    
-Paul got a B in the first week and an A in the second week.  Averaging them
-together and rounding should yield an A.
-    
-    >>> gradebook.getFinalGrade(paul)
-    'A'
 
 
 Weighting Categories

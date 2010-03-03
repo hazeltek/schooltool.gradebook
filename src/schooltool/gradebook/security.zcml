@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<configure xmlns="http://schooltool.org/securitypolicy"
+           xmlns:zope="http://namespaces.zope.org/zope"
+           i18n_domain="schooltool">
+
+  <!-- Security descriptions -->
+  <describe_group
+     name="schooltool.gradebook"
+     title="Gradebook" />
+  <describe_action
+     group="schooltool.gradebook" name="view_templates" title="Edit Templates"
+     description="Create, edit and deploy report sheet templates."
+     order="10"
+     interface=".interfaces.IGradebookRoot"
+     permission="schooltool.edit"
+  />
+  <describe_action
+     group="schooltool.gradebook" name="edit" title="Edit Gradebook"
+     description="Create and edit gradebook data for a section."
+     order="20"
+     interface=".interfaces.IGradebook"
+     permission="schooltool.edit"
+  />
+  <describe_action
+     group="schooltool.gradebook" name="view" title="View Gradebook"
+     description="View gradebook data for a section."
+     order="30"
+     interface=".interfaces.IGradebook"
+     permission="schooltool.view"
+  />
+
+  <!-- security settings -->
+  <setting
+      key="administration_can_grade_students"
+      text="Administration can grade students"
+      default="False" />
+  <crowd
+      name="grade_editors"
+      factory=".gradebook.GradebookEditorsCrowd" />
+  <allow
+      interface="schooltool.gradebook.interfaces.IGradebookRoot"
+      permission="schooltool.edit"
+      crowds="administration" />
+  <allow
+      interface="schooltool.gradebook.interfaces.IGradebook"
+      permission="schooltool.view"
+      crowds="administration section_instructors" />
+  <allow
+      interface="schooltool.gradebook.interfaces.IGradebook"
+      permission="schooltool.edit"
+      crowds="section_instructors grade_editors" />
+
+</configure>
