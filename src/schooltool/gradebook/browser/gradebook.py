@@ -488,6 +488,8 @@ class GradebookOverview(SectionFinder):
                         longTitle = source.title
                 elif interfaces.IWorksheet.providedBy(source):
                     shortTitle = source.title
+                    if activity.label is not None and len(activity.label):
+                        shortTitle = activity.label
                     if len(shortTitle) > 5:
                         shortTitle = shortTitle[:5].strip()
                     longTitle = source.title
