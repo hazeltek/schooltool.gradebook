@@ -123,7 +123,7 @@ update-translations: extract-translations
 	set -e; \
 	locales=src/schooltool/gradebook/locales; \
 	for f in $${locales}/*.po; do \
-	    msgmerge -qU $$f $${locales}/$(PACKAGE).pot ;\
+	    msgmerge -qUF $$f $${locales}/$(PACKAGE).pot ;\
 	done
 	$(MAKE) compile-translations
 
