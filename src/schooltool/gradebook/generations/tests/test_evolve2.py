@@ -71,6 +71,13 @@ def doctest_evolve2():
 
         >>> custom_ss.scores
         [['A', '', 0, 0], ['B', '', 0, 0]]
+
+    Will do nothing if evolved again:
+
+        >>> evolve(context)
+        >>> custom_ss.scores
+        [['A', '', 0, 0], ['B', '', 0, 0]]
+
     """
 
 

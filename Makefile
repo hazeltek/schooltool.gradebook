@@ -48,7 +48,7 @@ run: build instance
 	bin/start-schooltool-instance instance
 
 .PHONY: release
-release: bin/buildout
+release: bin/buildout compile-translations
 	echo -n `cat version.txt.in`_r`bzr revno` > version.txt
 	bin/buildout setup setup.py sdist
 	rm version.txt
@@ -123,7 +123,7 @@ update-translations: extract-translations
 	set -e; \
 	locales=src/schooltool/gradebook/locales; \
 	for f in $${locales}/*.po; do \
-	    msgmerge -qU $$f $${locales}/$(PACKAGE).pot ;\
+	    msgmerge -qUF $$f $${locales}/$(PACKAGE).pot ;\
 	done
 	$(MAKE) compile-translations
 
