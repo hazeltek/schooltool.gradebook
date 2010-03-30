@@ -55,9 +55,9 @@
     </table>
     <div style="height: 15px;"></div>
 
-    <span style="margin-left: 1em;" i18n:translate="">Hide Due Date Filter</span>
     <input type="checkbox" name='hide_due_date'
            tal:attributes="checked view/hide_due_date_value" />
+    <span style="margin-left: 1em;" i18n:translate="">Hide 'show only activities due in past _ weeks'</span>
     <div style="height: 11px;"></div>
 
     <div class="controls">
