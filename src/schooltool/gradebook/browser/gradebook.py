@@ -343,11 +343,13 @@ class SectionFinder(GradebookBase):
         else:
             columnPreferences = gradebook.getColumnPreferences(person)
         column_keys_dict = dict(column_keys)
+
         prefs = columnPreferences.get('total', {})
         self.total_hide = prefs.get('hide', False)
         self.total_label = prefs.get('label', '')
         if len(self.total_label) == 0:
             self.total_label = column_keys_dict['total']
+
         prefs = columnPreferences.get('average', {})
         self.average_hide = prefs.get('hide', False)
         self.average_label = prefs.get('label', '')
@@ -355,6 +357,10 @@ class SectionFinder(GradebookBase):
             self.average_label = column_keys_dict['average']
         self.average_scoresystem = getScoreSystemFromEscName(
             prefs.get('scoresystem', ''))
+
+        prefs = columnPreferences.get('due_date', {})
+        self.due_date_hide = prefs.get('hide', False)
+
         self.apply_all_colspan = 1
         if gradebook.context.deployed:
             self.total_hide = True
@@ -488,6 +494,8 @@ class GradebookOverview(SectionFinder):
                         longTitle = source.title
                 elif interfaces.IWorksheet.providedBy(source):
                     shortTitle = source.title
+                    if activity.label is not None and len(activity.label):
+                        shortTitle = activity.label
                     if len(shortTitle) > 5:
                         shortTitle = shortTitle[:5].strip()
                     longTitle = source.title
@@ -874,6 +882,11 @@ class GradebookColumnPreferences(BrowserView):
                     prefs['label'] = ''
                 if key != 'total':
                     prefs['scoresystem'] = self.request['scoresystem_' + key]
+            prefs = columnPreferences.setdefault('due_date', {})
+            if 'hide_due_date' in self.request:
+                prefs['hide'] = True
+            else:
+                prefs['hide'] = False
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
         if 'ADD_SUMMARY' in self.request:
@@ -881,6 +894,14 @@ class GradebookColumnPreferences(BrowserView):
 
         if 'form-submitted' in self.request:
             self.request.response.redirect('index.html')
+
+    @property
+    def hide_due_date_value(self):
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        columnPreferences = gradebook.getColumnPreferences(self.person)
+        prefs = columnPreferences.get('due_date', {})
+        return prefs.get('hide', False)
 
     @property
     def columns(self):

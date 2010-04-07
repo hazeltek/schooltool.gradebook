@@ -5,6 +5,7 @@ CHANGES
 0.6.2 (unreleased)
 ==================
 
+* Added user preference to hide the due date filter
 
 
 0.6.1 (2010-02-24)

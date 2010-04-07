@@ -713,6 +713,9 @@ are none set yet.
     <option value="letter-grade">Letter Grade</option>
     <option value="passfail">Pass/Fail</option>
 
+    >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
+    <input type="checkbox" name="hide_due_date" />
+
 Now we'll set all of the preferences to something and test that the changes
 were saved.
 
@@ -720,6 +723,7 @@ were saved.
     >>> url += '&hide_total=on&label_total=Summe'
     >>> url += '&hide_average=on&label_average=Durchschnitt'
     >>> url += '&scoresystem_average=goodbad'
+    >>> url += '&hide_due_date=on'
     >>> stephan.open(url)
 
     >>> stephan.getLink('Preferences').click()
@@ -735,6 +739,9 @@ were saved.
     <option selected="selected" value="goodbad">Good/Bad</option>
     <option value="letter-grade">Letter Grade</option>
     <option value="passfail">Pass/Fail</option>
+
+    >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
+    <input type="checkbox" name="hide_due_date" checked="checked" />
 
 Finally, we will reset the preferences to none so that the rest of the tests
 pass.
