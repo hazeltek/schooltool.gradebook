@@ -31,7 +31,7 @@ from zope.component import provideAdapter
 
 from schooltool.course.interfaces import ISection
 from schooltool.relationship.tests import setUpRelationships
-from schooltool.requirement.testing import setUpEvaluation
+from schooltool.requirement import testing
 from schooltool.gradebook import activity, gradebook, interfaces
 from schooltool.gradebook.tests import stubs
 
@@ -39,7 +39,8 @@ from schooltool.gradebook.tests import stubs
 def setUp(test):
     setup.placefulSetUp()
     setUpRelationships()
-    setUpEvaluation()
+    testing.setUpEvaluation()
+    testing.fixDecimal()
 
     provideAdapter(
         z3c.optionstorage.OptionStorage,
