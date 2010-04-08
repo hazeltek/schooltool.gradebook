@@ -19,7 +19,7 @@
       <br /><br />
     </tal:block>
 
-    <label for="selectedTerm" i18n:translate="">Term or Year</label>
+    <label for="selectedTerm" class="gradebook_margin_left1" i18n:translate="">Term or Year</label>
     <select name="selectedTerm">
       <tal:block repeat="term view/availableTerms">
         <option
@@ -28,6 +28,8 @@
             tal:content="term/title" />
       </tal:block>
     </select>
+
+    <div style="height: 5px;"></div>
 
     <div class="controls">
       <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />

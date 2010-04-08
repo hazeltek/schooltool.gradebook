@@ -126,6 +126,7 @@ input.data:focus {
     background-color: #CCC;
     height: 3em;
     width: 0px;
+    padding: .5em;
 }
 
 td.inactive_tab {
@@ -154,5 +155,13 @@ td.active_tab {
 
 .scoresystem_add_input {
     width: 9em;
+}
+
+.gradebook_margin_left {
+    margin-left: .5em;
+}
+
+.gradebook_margin_left1 {
+    margin-left: 1em;
 }
 

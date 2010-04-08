@@ -700,13 +700,13 @@ are none set yet.
 
     >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.getLink('Preferences').click()
-    >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
     <input type="checkbox" name="hide_total" />
     <input type="text" name="label_total" value="" />
     <input type="checkbox" name="hide_average" />
     <input type="text" name="label_average" value="" />
 
-    >>> analyze.printQuery("id('content-body')/form/table//option", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//option", stephan.contents)
     <option selected="selected" value="">-- No score system --</option>
     <option value="extended-letter-grade">Extended Letter Grade</option>
     <option value="goodbad">Good/Bad</option>
@@ -727,13 +727,13 @@ were saved.
     >>> stephan.open(url)
 
     >>> stephan.getLink('Preferences').click()
-    >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
     <input type="checkbox" checked="checked" name="hide_total" />
     <input type="text" name="label_total" value="Summe" />
     <input type="checkbox" checked="checked" name="hide_average" />
     <input type="text" name="label_average" value="Durchschnitt" />
 
-    >>> analyze.printQuery("id('content-body')/form/table//option", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//option", stephan.contents)
     <option value="">-- No score system --</option>
     <option value="extended-letter-grade">Extended Letter Grade</option>
     <option selected="selected" value="goodbad">Good/Bad</option>

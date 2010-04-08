@@ -11,74 +11,83 @@
     <input type="hidden" name="form-submitted" value="" />
 
 	<h3 i18n:translate="">Set Column Preferences</h3>
-    <br />
 
-    <table class="schooltool_gradebook" style="margin-left: 1em">
-      <tr>
-        <th class="cell header fully_padded" i18n:translate="">Column Type</th>
-        <th class="cell header fully_padded" i18n:translate="">Hide?</th>
-        <th class="cell header fully_padded" i18n:translate="">Label</th>
-        <th class="cell header fully_padded" i18n:translate="">Score System</th>
-      </tr>
-
-      <tal:block repeat="column view/columns">
-        <tr class="bordered">
-          <td class="cell fully_padded">
-            <div tal:content="column/name" />
-          </td>
-          <td class="cell fully_padded">
-            <input type="checkbox"
-                   tal:attributes="name column/hide_name; checked column/hide_value" />
-          </td>
-          <td class="cell fully_padded">
-            <input type="text"
-                   tal:attributes="name column/label_name; value column/label_value" />
-          </td>
-          <td class="cell fully_padded">
-            <tal:block condition="python: column['hide_name'] != 'hide_total'">
-              <select tal:attributes="id column/scoresystem_name; name column/scoresystem_name">
-                <tal:block repeat="scoresystem view/scoresystems">
-                  <option tal:condition="python: scoresystem['value'] == column['scoresystem_value']"
-                          selected
-                          tal:attributes="value scoresystem/value"
-                          tal:content="scoresystem/name" />
-                  <option tal:condition="python: scoresystem['value'] != column['scoresystem_value']"
-                          tal:attributes="value scoresystem/value"
-                          tal:content="scoresystem/name" />
-                </tal:block>
-              </select>
-            </tal:block>
-          </td>
+    <fieldset>
+      <legend><b i18n:translate="">Preferences</b><legend>
+      <table class="schooltool_gradebook gradebook_margin_left1">
+        <tr>
+          <th class="cell header fully_padded" i18n:translate="">Column Type</th>
+          <th class="cell header fully_padded" i18n:translate="">Hide?</th>
+          <th class="cell header fully_padded" i18n:translate="">Label</th>
+          <th class="cell header fully_padded" i18n:translate="">Score System</th>
         </tr>
-      </tal:block>
 
-    </table>
-    <div style="height: 15px;"></div>
+        <tal:block repeat="column view/columns">
+          <tr class="bordered">
+            <td class="cell fully_padded">
+              <div tal:content="column/name" />
+            </td>
+            <td class="cell fully_padded">
+              <input type="checkbox"
+                     tal:attributes="name column/hide_name; checked column/hide_value" />
+            </td>
+            <td class="cell fully_padded">
+              <input type="text"
+                     tal:attributes="name column/label_name; value column/label_value" />
+            </td>
+            <td class="cell fully_padded">
+              <tal:block condition="python: column['hide_name'] != 'hide_total'">
+                <select tal:attributes="id column/scoresystem_name; name column/scoresystem_name">
+                  <tal:block repeat="scoresystem view/scoresystems">
+                    <option tal:condition="python: scoresystem['value'] == column['scoresystem_value']"
+                            selected
+                            tal:attributes="value scoresystem/value"
+                            tal:content="scoresystem/name" />
+                    <option tal:condition="python: scoresystem['value'] != column['scoresystem_value']"
+                            tal:attributes="value scoresystem/value"
+                            tal:content="scoresystem/name" />
+                  </tal:block>
+                </select>
+              </tal:block>
+            </td>
+          </tr>
+        </tal:block>
 
-    <input type="checkbox" name='hide_due_date'
-           tal:attributes="checked view/hide_due_date_value" />
-    <span style="margin-left: 1em;" i18n:translate="">Hide 'show only activities due in past _ weeks'</span>
-    <div style="height: 11px;"></div>
+      </table>
+      <div style="height: 15px;"></div>
 
-    <div class="controls">
-      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
-      <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
-    </div>
+      <div class="gradebook_margin_left1">
+        <input type="checkbox" name='hide_due_date'
+               tal:attributes="checked view/hide_due_date_value" />
+        <span i18n:translate="">Hide 'show only activities due in past _ weeks'</span>
+      </div>
+
+      <div style="height: 11px;"></div>
+
+      <div class="controls">
+        <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+        <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+      </div>
+    </fieldset>
 
     <fieldset>
       <legend><b i18n:translate="">Summary</b><legend>
-      <p i18n:translate="">
-        You can add a summary worksheet to each of your gradebooks that automatically includes a column for the average of all existing worksheets.
-      </p>
-      <p i18n:translate="">
-        For example, if you have three worksheets in a section, "A," "B," and "C," and click "Create Summary Worksheets," an additional sheet, entitled "Summary" will be created, which includes the average scores from "A," "B" and "C" in the first three columns.
-      </p>
-      <tal:block tal:condition="view/summaryFound">
+      <div class="gradebook_margin_left">
+        <p i18n:translate="">
+          You can add a summary worksheet to each of your gradebooks that automatically includes a column for the average of all existing worksheets.
+        </p>
+        <p i18n:translate="">
+          For example, if you have three worksheets in a section, "A," "B," and "C," and click "Create Summary Worksheets," an additional sheet, entitled "Summary" will be created, which includes the average scores from "A," "B" and "C" in the first three columns.
+        </p>
+      </div>
+      <div class="gradebook_margin_left1" tal:condition="view/summaryFound">
+        <div style="height: 11px;"></div>
         <input type="checkbox" name="overwrite">
         <span i18n:translate="">Overwrite existing worksheets titled "Summary".</span>
-      </tal:block>
+      </div>
 
-      <br />
+      <div style="height: 11px;"></div>
+
       <div class="controls">
         <input type="submit" class="button-ok" name="ADD_SUMMARY" value="Create Summary Worksheets"
                i18n:attributes="value" />
