@@ -7,6 +7,7 @@ CHANGES
 
 * Added user preference to hide the due date filter
 * Add margin of 1em where appropriate and other css fixes (LP: #513473)
+* Typo in pdf_views.py (LP: #558472)
 
 
 0.6.1 (2010-02-24)
