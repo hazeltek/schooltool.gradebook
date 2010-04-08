@@ -32,9 +32,9 @@
     <div style="height: 5px;"></div>
 
     <div class="controls">
-      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
       <input type="submit" class="button-ok" name="DOWNLOAD" value="Download"
              i18n:attributes="value" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
     </div>
   </form>
 
