@@ -67,37 +67,47 @@
     <tr>
   </table>
 
-  <table class="schooltool_gradebook">
+  <table class="student_gradebook">
     <tr tal:condition="not: view/average_hide">
-      <td colspan="2" class="gradebook_description">
+      <td colspan="2" class="odd student_cell">
         <div tal:condition="view/average"
              tal:content="string: ${view/average_label}: ${view/average}">Average</div>
         <div tal:condition="not: view/average" i18n:translate="">Nothing Graded</div>
       </td>
     </tr>
     <tr>
-     <th class="cell header">
+     <th class="cell student_header">
        <div i18n:translate="">Activity</div>
      </th>
-     <th class="cell header">
+     <th class="cell student_header">
        <div i18n:translate="">Grade</div>
      </th>
     </tr>
     <tr tal:repeat="row view/table">
       <tal:if condition="repeat/row/odd">
-        <td class="even cell padded">
+        <td class="even student_cell">
           <div tal:content="row/activity">Activity</div>
         </td>
-        <td class="even cell padded">
-          <div tal:content="row/grade">Grade</div>
+        <td tal:condition="row/grade/comment" class="even student_cell">
+          <tal:block repeat="paragraph row/grade/paragraphs">
+            <p tal:content="structure paragraph"/>
+          </tal:block>
+        </td>
+        <td tal:condition="not: row/grade/comment" class="even student_cell">
+          <div tal:content="row/grade/value" />
         </td>
       </tal:if>
       <tal:if condition="repeat/row/even">
-        <td class="odd cell padded">
+        <td class="odd student_cell">
           <div tal:content="row/activity">Activity</div>
         </td>
-        <td class="odd cell padded">
-          <div tal:content="row/grade">Grade</div>
+        <td tal:condition="row/grade/comment" class="odd student_cell">
+          <tal:block repeat="paragraph row/grade/paragraphs">
+            <p tal:content="structure paragraph"/>
+          </tal:block>
+        </td>
+        <td tal:condition="not: row/grade/comment" class="odd student_cell">
+          <div tal:content="row/grade/value" />
         </td>
       </tal:if>
     </tr>

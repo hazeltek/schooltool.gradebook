@@ -737,8 +737,13 @@ class MyGradesView(SectionFinder):
             value, ss = self.context.getEvaluation(self.person, activity)
 
             if value is not None and value is not UNSCORED:
-                if IValuesScoreSystem.providedBy(ss):
-                    grade = '%s / %s' % (value, ss.getBestScore())
+                if ICommentScoreSystem.providedBy(ss):
+                    grade = {
+                        'comment': True,
+                        'paragraphs': buildHTMLParagraphs(value),
+                        }
+
+                elif IValuesScoreSystem.providedBy(ss):
                     s_min, s_max = getScoreSystemDiscreteValues(ss)
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         value = ss.getNumericalValue(value)
@@ -746,13 +751,32 @@ class MyGradesView(SectionFinder):
                             value = 0
                     total += value - s_min
                     count += s_max - s_min
-                else:
-                    grade = value
-            else:
-                grade = None
+                    grade = {
+                        'comment': False,
+                        'value': '%s / %s' % (value, ss.getBestScore()),
+                        }
 
-            self.table.append({'activity': activity.title,
-                               'grade': grade})
+                else:
+                    grade = {
+                        'comment': False,
+                        'value': value,
+                        }
+
+            else:
+                grade = {
+                    'comment': False,
+                    'value': '',
+                    }
+
+            title = activity.title
+            if activity.description:
+                title += ' - %s' % activity.description
+
+            row = {
+                'activity': title,
+                'grade': grade,
+                }
+            self.table.append(row)
 
         if count:
             average = int((float(100 * total) / float(count)) + 0.5)
