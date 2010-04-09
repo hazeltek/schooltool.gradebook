@@ -11,19 +11,19 @@ CHANGES
 0.6.1 (2010-02-24)
 ------------------
 
-- Main "Gradebook" link now remembers last section (LP: #513246)
-- Add gradebook pdf (LP: #509672)
-- Add request page for report cards (LP: #485595)
-- Overhauled report card layout view for easier use (LP: #485609)
-- Ability to unhide worksheets (LP: #511246)
+- Main "Gradebook" link now remembers last section (https://launchpad.net/bugs/513246)
+- Add gradebook pdf (https://launchpad.net/bugs/509672)
+- Add request page for report cards (https://launchpad.net/bugs/485595)
+- Overhauled report card layout view for easier use (https://launchpad.net/bugs/485609)
+- Ability to unhide worksheets (https://launchpad.net/bugs/511246)
 - Linked columns that link to hidden worksheets will now also be hidden
-- Fix gradebook crashes with linked activities (LP: 513351)
-- Fix viewing gradebook for sections without courses (LP: #484485)
+- Fix gradebook crashes with linked activities (https://launchpad.net/bugs/513351)
+- Fix viewing gradebook for sections without courses (https://launchpad.net/bugs/484485)
 - Accept the term filter for student reports
 - Fix removing scores from gradebook
-- Left-justify names in gradebook overview (LP: #513469)
-- Add security descriptions (LP: #513476)
-- Made cell ids predictable for selenium scripts (LP: #422641)
+- Left-justify names in gradebook overview (https://launchpad.net/bugs/513469)
+- Add security descriptions (https://launchpad.net/bugs/513476)
+- Made cell ids predictable for selenium scripts (https://launchpad.net/bugs/422641)
 - Reduce dependency on ``zope.app.*`` packages
 - Update translations (es, fi, nl, pl, pt)
 
