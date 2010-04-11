@@ -1,6 +1,6 @@
 <tal:tag condition="view/update" />
 <html metal:use-macro="context/@@standard_macros/page"
-      i18n:domain="schooltool.gradebook">
+      i18n_domain="schooltool.gradebook">
 <head>
   <title metal:fill-slot="title" i18n:translate="">
     No Current Term
