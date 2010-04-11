@@ -707,7 +707,7 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
         return _('Section')
 
     def worksheet_heading(self):
-        return _('Workheet')
+        return _('Worksheet')
 
     def student_heading(self):
         return _('Student')
