@@ -22,6 +22,7 @@ PDF Views
 
 from datetime import datetime
 from decimal import Decimal
+from copy import deepcopy
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
@@ -687,6 +688,8 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
     """The gradebook pdf view class"""
 
     template=ViewPageTemplateFile('gradebook_rml.pt')
+    topMargin = 30
+    leftMargin = 35
 
     def __init__(self, context, request):
         super(GradebookPDFView, self).__init__(context, request)
@@ -696,6 +699,54 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
         self.worksheet = removeSecurityProxy(context).context
         self.section = ISection(self.worksheet)
         self.term = ITerm(self.section)
+
+    def pages(self):
+        results = []
+        activities = list(self.activities())
+        table = self.table()
+
+        num_rows = len(table)
+        num_cols = len(self.activities())
+        start_row, start_col = 0, 0
+        max_rows, max_cols = 34, 8
+        if not self.total_hide:
+            max_cols -= 1
+        if not self.average_hide:
+            max_cols -= 1
+
+        while True:
+            end_row = start_row + max_rows
+            if end_row > num_rows:
+                end_row = num_rows
+            next_row = start_row
+
+            next_col = start_col + max_cols
+            if next_col >= num_cols:
+                end_col = num_cols
+                next_col = 0
+                next_row = end_row
+            else:
+                end_col = next_col
+            #db = start_row, end_row, next_row, start_col, end_col, next_col
+            #import pdb; pdb.set_trace()
+
+            rows = deepcopy(table)[start_row:end_row]
+            for row in rows:
+                row['grades'] = row['grades'][start_col:end_col]
+
+            page = {
+                'widths': self.widths(start_col, end_col),
+                'rows': rows,
+                'cols': deepcopy(activities)[start_col:end_col],
+                }
+            results.append(page)
+
+            if next_row < num_rows:
+                start_row, start_col = next_row, next_col
+            else:
+                break
+
+        return results
 
     def title(self):
         return _('Gradebook Report')
@@ -712,14 +763,12 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
     def student_heading(self):
         return _('Student')
 
-    def widths(self):
-        result = '5cm'
+    def widths(self, start_col, end_col):
+        result = '6cm' + ',1.6cm' * (8)
+        num_cols = end_col - start_col
         if not self.total_hide:
-            width = 0.2 + (1.6/5) * len(self.total_label)
-            result += ',%1.1fcm' % width
+            num_cols += 1
         if not self.average_hide:
-            width = 0.2 + (1.6/5) * len(self.average_label)
-            result += ',%1.1fcm' % width
-        result += ',1.6cm' * len(self.activities())
-        return result
+            num_cols += 1
+        return '6cm' +',1.6cm' * (num_cols)
 
