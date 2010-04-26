@@ -6,6 +6,10 @@ CHANGES
 ------------------
 
 - Fix tests to pass on python2.6.
+- Added user preference to hide the due date filter
+- Add margin of 1em where appropriate and other css fixes (https://launchpad.net/bugs/513473)
+- Typo in pdf_views.py (https://launchpad.net/bugs/558472)
+- Students should be able to view activity descriptions (https://launchpad.net/bugs/306553)
 
 
 0.6.1 (2010-02-24)
