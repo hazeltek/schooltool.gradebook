@@ -70,6 +70,20 @@
       alignment="right"
       leading="12"/>
 
+    <paraStyle
+      name="grid_heading"
+      fontName="Arial_Bold"
+      fontSize="8"
+      alignment="center"
+      leading="12"/>
+
+    <paraStyle
+      name="cell"
+      fontName="Arial_Normal"
+      fontSize="8"
+      alignment="left"
+      leading="12"/>
+
     <blockTableStyle id="headings_table">
         <blockValign value="top" start="0,0" stop="0,-1"/>
     </blockTableStyle>
@@ -87,7 +101,12 @@
 </stylesheet>
 
 <story metal:fill-slot="story">
-  <blockTable style="headings_table" colWidths="3cm,5cm,3cm,5cm"
+
+  <tal:block repeat="page view/pages">
+
+  <spacer length=".2cm" />
+
+  <blockTable style="headings_table" colWidths="1.5cm,6.5cm,1.5cm,6.5cm"
               alignment="center">
     <tr>
       <td><para style="heading" tal:content="view/term_heading" /></td>
@@ -103,39 +122,41 @@
     </tr>
   </blockTable>
 
-  <spacer length=".5cm" />
+  <spacer length="1cm" />
 
   <tal:block>
-    <blockTable style="grid"
-                tal:attributes="colWidths view/widths">
+    <blockTable style="grid" alignment="left"
+                tal:attributes="colWidths page/widths">
       <tr>
-        <td><para style="bold" tal:content="view/student_heading" /></td>
+        <td><para style="grid_heading" tal:content="view/student_heading" /></td>
         <td tal:condition="not: view/total_hide">
-          <para style="bold" tal:content="view/total_label" />
+          <para style="grid_heading" tal:content="view/total_label" />
         </td>
         <td tal:condition="not: view/average_hide">
-          <para style="bold" tal:content="view/average_label" />
+          <para style="grid_heading" tal:content="view/average_label" />
         </td>
-        <td tal:repeat="activity view/activities">
-          <para style="bold" tal:content="activity/shortTitle" />
+        <td tal:repeat="activity page/cols">
+          <para style="grid_heading" tal:content="activity/shortTitle" />
         </td>
       </tr>
 
-      <tr tal:repeat="row view/table">
-        <td><para style="normal" tal:content="row/student/title" /></td>
+      <tr tal:repeat="row page/rows">
+        <td><para style="cell" tal:content="row/student/title" /></td>
         <td tal:condition="not: view/total_hide">
-          <para style="bold" tal:content="row/total" />
+          <para style="cell" tal:content="row/total" />
         </td>
         <td tal:condition="not: view/average_hide">
-          <para style="bold" tal:content="row/average" />
+          <para style="cell" tal:content="row/average" />
         </td>
         <td tal:repeat="grade row/grades">
-          <para style="normal" tal:content="grade/value" />
+          <para style="cell" tal:content="grade/value" />
         </td>
       </tr>
     </blockTable>
 
     <condPageBreak height="88cm"/>
+  </tal:block>
+
   </tal:block>
 
 </story>
