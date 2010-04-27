@@ -5,12 +5,14 @@ CHANGES
 0.6.2 (unreleased)
 ------------------
 
-- Fix tests to pass on python2.6.
 - Added user preference to hide the due date filter
-- Add margin of 1em where appropriate and other css fixes (https://launchpad.net/bugs/513473)
-- Typo in pdf_views.py (https://launchpad.net/bugs/558472)
 - Students should be able to view activity descriptions (https://launchpad.net/bugs/306553)
+- Fixed gradebook pdf to break across pages better (https://launchpad.net/bugs/356544)
+- Added support for comment score system values in student grades view
+- Add margin of 1em where appropriate and other css fixes (https://launchpad.net/bugs/513473)
+- Fixed "Workheet" typo (https://launchpad.net/bugs/558472)
 - Make score systems texts translatable
+- Include compiled translations in the tarball
 
 
 0.6.1 (2010-02-24)
