@@ -1350,7 +1350,7 @@ And we can access its gradebook:
 Now, let's check that the teacher can access the orphan gradebook:
 
     >>> stephan.getLink('Home').click()
-    >>> stephan.getLink('Richter, Stephan -- English I (1)').click()
+    >>> stephan.getLink('English I').click()
     >>> stephan.getLink('Gradebook', index=1).click()
     >>> stephan.printQuery('//td[@class="active_tab"]')
     <td class="active_tab">
