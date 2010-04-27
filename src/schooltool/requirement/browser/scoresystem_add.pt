@@ -10,36 +10,36 @@
         tal:attributes="action string:${context/@@absolute_url}/add.html">
     <input type="hidden" name="form-submitted" value="" />
 
-	<h3>Add Score System</h3>
+	<h3 i18n:translate="">Add Score System</h3>
 
     <div class="message" style="color:red; padding:1em"
          tal:condition="view/message"
          tal:content="view/message">
       Message
     </div>
-	<p>
+	<p i18n:translate="">
 	  This form allows you to create a customized "score system" or grading scale.
 	</p>
-	<p>
+	<p i18n:translate="">
       Each score system needs a short title to identify it to users, for example, if your school's grades go from "A" to "E," the title could be "A-E."
 	</p>
-	<p>
+	<p i18n:translate="">
       A score system is made up of a sequence of possible scores with decreasing values.
 	</p>
-	<p>
+	<p i18n:translate="">
       Each score is associated with a numeric point value. For example, in the US, an "A" is usually worth 4 points, a "B," 3 points, etc. This value will be used in any calculations made with the scores, such as finding a grade point average.
 	</p>
-	<p>
+	<p i18n:translate="">
       Each score is also associated with a minimum percentage necessary to achieve the corresponding grade. For example, 95% and above is an "A," 87% and up is a "B," etc.
 	</p>
-	<p>
+	<p i18n:translate="">
       Enter an abbreviation for a score only if the score has more than four characters and you wish to create an alternative abbreviation for the gradebook.
 	</p>
-	<p>
+	<p i18n:translate="">
       Start with the highest score. Click "Add a lower score" to add scores until you have created a score with a minimum percentage of 0.
 	</p>
     <fieldset>
-    <legend><b>New Score System</b><legend>
+    <legend><b i18n:translate="">New Score System</b><legend>
     <label for="title" class="bold padded" i18n:translate="">Title</label>
     <input type="text" name="title" id="title"
            tal:attributes="value view/title_value" />
@@ -47,10 +47,10 @@
 
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell header fully_padded">Score</th>
-        <th class="cell header fully_padded">Abbreviation</th>
-        <th class="cell header fully_padded">Point Value</th>
-        <th class="cell header fully_padded">Low Percentage</th>
+        <th class="cell header fully_padded" i18n:translate="">Score</th>
+        <th class="cell header fully_padded" i18n:translate="">Abbreviation</th>
+        <th class="cell header fully_padded" i18n:translate="">Point Value</th>
+        <th class="cell header fully_padded" i18n:translate="">Low Percentage</th>
       </tr>
 
       <tal:block repeat="score view/scores">
@@ -76,13 +76,13 @@
 
     </table>
     <div class="controls">
-      <input type="submit" class="button-ok" name="SAVE" value="Add a lower score" />
+      <input type="submit" class="button-ok" name="SAVE" value="Add a lower score" i18n:attributes="value" />
     </div>
     </fieldset>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" />
-      <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" i18n:attributes="value" />
+      <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" i18n:attributes="value" />
     </div>
   </form>
 </metal:block>

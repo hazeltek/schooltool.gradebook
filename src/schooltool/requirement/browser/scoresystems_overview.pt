@@ -17,8 +17,8 @@
 
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell header fully_padded">Delete?</th>
-        <th class="cell header fully_padded">Score System</th>
+        <th class="cell header fully_padded" i18n:translate="">Delete?</th>
+        <th class="cell header fully_padded" i18n:translate="">Score System</th>
       </tr>
 
       <tr class="bordered"
@@ -35,7 +35,7 @@
     </table>
 
     <div class="controls">
-      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update"  i18n:attributes="value" />
     </div>
 
   </form>
