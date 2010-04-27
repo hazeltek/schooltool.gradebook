@@ -24,9 +24,9 @@ __docformat__ = 'reStructuredText'
 
 import datetime
 import decimal
+import urllib
 
 from zope.container.interfaces import INameChooser
-from zope.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.html.field import HtmlFragment
@@ -1020,7 +1020,8 @@ class GradeStudent(z3cform.EditForm):
             return
         prev, next = self.prevNextStudent()
         if prev is not None:
-            url = '%s/%s' % (self.gradebookURL(), prev.username)
+            url = '%s/%s' % (self.gradebookURL(),
+                             urllib.quote(prev.username.encode('utf-8')))
             self.request.response.redirect(url)
 
     @button.buttonAndHandler(_("Next"))
@@ -1029,7 +1030,8 @@ class GradeStudent(z3cform.EditForm):
             return
         prev, next = self.prevNextStudent()
         if next is not None:
-            url = '%s/%s' % (self.gradebookURL(), next.username)
+            url = '%s/%s' % (self.gradebookURL(),
+                             urllib.quote(next.username.encode('utf-8')))
             self.request.response.redirect(url)
 
     @button.buttonAndHandler(_("Cancel"))
