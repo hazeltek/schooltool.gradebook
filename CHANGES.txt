@@ -2,14 +2,14 @@
 CHANGES
 =======
 
-0.6.2 (unreleased)
+0.6.2 (2010-04-28)
 ------------------
 
 - Added user preference to hide the due date filter
 - Students should be able to view activity descriptions (https://launchpad.net/bugs/306553)
 - Fixed gradebook pdf to break across pages better (https://launchpad.net/bugs/356544)
 - Added support for comment score system values in student grades view
-- Add margin of 1em where appropriate and other css fixes (https://launchpad.net/bugs/513473)
+- Add margin of 1em where appropriate (https://launchpad.net/bugs/513473)
 - Fixed "Workheet" typo (https://launchpad.net/bugs/558472)
 - Make score systems texts translatable
 - Include compiled translations in the tarball
@@ -31,6 +31,8 @@ CHANGES
 - Fix removing scores from gradebook
 - Left-justify names in gradebook overview (https://launchpad.net/bugs/513469)
 - Add security descriptions (https://launchpad.net/bugs/513476)
+- Administration can grade students if that is enabled in access control
+  (https://launchpad.net/bugs/517201)
 - Made cell ids predictable for selenium scripts (https://launchpad.net/bugs/422641)
 - Reduce dependency on ``zope.app.*`` packages
 - Update translations (es, fi, nl, pl, pt)
