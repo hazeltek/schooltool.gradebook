@@ -19,13 +19,13 @@ msgstr ""
 "Project-Id-Version: SchoolTool Version 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-24 18:55+0000\n"
-"PO-Revision-Date: 2009-10-11 22:32+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-03-13 16:00+0000\n"
+"Last-Translator: nanker <Unknown>\n"
 "Language-Team: Swedish <schooltool-dev@schooltool.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-25 04:57+0000\n"
+"X-Launchpad-Export-Date: 2010-03-14 05:07+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: setup.py\n"
 
@@ -37,7 +37,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
 #: /src/schooltool/gradebook/interfaces.py:205
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviteter"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:4
 #: /src/schooltool/gradebook/browser/activities_overview.pt:8
@@ -122,7 +122,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/activity.py:554
 #: /src/schooltool/gradebook/browser/activity.py:622
 msgid "Average"
-msgstr ""
+msgstr "Genomsnitt"
 
 #: /src/schooltool/gradebook/browser/activity.py:592
 msgid "Add Linked Column"
@@ -148,12 +148,12 @@ msgstr "Etikett"
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
 #: /src/schooltool/gradebook/interfaces.py:135
 msgid "Category"
-msgstr ""
+msgstr "Kategori"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr ""
+msgstr "Hantera aktivitetskategorier"
 
 #: /src/schooltool/gradebook/browser/categories.pt:19
 msgid ""
@@ -189,11 +189,11 @@ msgstr "ändra knapp"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
-msgstr ""
+msgstr "Kategorier"
 
 #: /src/schooltool/gradebook/browser/category.py:49
 msgid "New Category"
-msgstr ""
+msgstr "Ny kategori"
 
 #: /src/schooltool/gradebook/browser/category.py:52
 msgid "Default Category"
@@ -270,12 +270,12 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:302
 #: /src/schooltool/gradebook/browser/configure.zcml:411
 msgid "Export XLS"
-msgstr ""
+msgstr "Exportera XLS"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:309
 #: /src/schooltool/gradebook/browser/configure.zcml:346
 msgid "Return to Gradebook"
-msgstr ""
+msgstr "Åter till betygen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:316
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:4
@@ -331,7 +331,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:669
 #: /src/schooltool/gradebook/browser/configure.zcml:712
 msgid "Reports"
-msgstr ""
+msgstr "Rapporter"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:575
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13
@@ -345,7 +345,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
 msgid "Template"
-msgstr ""
+msgstr "Mall"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
@@ -354,7 +354,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook.py:73
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:64
 msgid "Summary"
-msgstr ""
+msgstr "Sammandrag"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:75
 msgid "Ave."

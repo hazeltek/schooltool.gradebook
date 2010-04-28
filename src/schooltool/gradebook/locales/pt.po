@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-02-24 18:55+0000\n"
-"PO-Revision-Date: 2010-02-24 18:48+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"POT-Creation-Date: 2010-03-17 15:18+0200\n"
+"PO-Revision-Date: 2010-04-20 14:52+0000\n"
+"Last-Translator: Jose Almeida <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-25 04:56+0000\n"
+"X-Launchpad-Export-Date: 2010-04-21 04:11+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -137,12 +137,12 @@ msgstr "Etiqueta"
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
 #: /src/schooltool/gradebook/interfaces.py:135
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr ""
+msgstr "Gerir Categorias de Actividade"
 
 #: /src/schooltool/gradebook/browser/categories.pt:19
 msgid ""
@@ -320,7 +320,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:669
 #: /src/schooltool/gradebook/browser/configure.zcml:712
 msgid "Reports"
-msgstr ""
+msgstr "Relatórios"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:575
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13

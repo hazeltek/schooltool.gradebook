@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-02-24 18:55+0000\n"
-"PO-Revision-Date: 2009-10-11 22:32+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-03-12 22:32+0000\n"
+"Last-Translator: UbuntuTurk <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-25 04:57+0000\n"
+"X-Launchpad-Export-Date: 2010-03-13 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -320,7 +320,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:669
 #: /src/schooltool/gradebook/browser/configure.zcml:712
 msgid "Reports"
-msgstr ""
+msgstr "Raporlar"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:575
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13
@@ -485,7 +485,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:74
 msgid "show only activities due in past"
-msgstr ""
+msgstr "sadece geçmişe ait etkinlikleri göster"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:87
 msgid "weeks"
@@ -636,7 +636,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:455
 #: /src/schooltool/gradebook/browser/pdf_views.py:633
 msgid "Course"
-msgstr ""
+msgstr "Ders"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:458
 msgid "Teacher(s)"
@@ -1102,7 +1102,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:42
 msgid "All values must be non-negative."
-msgstr ""
+msgstr "Bütün Değerler Pozitif Olmalıdır"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:43
 msgid "All percentages must be non-negative."

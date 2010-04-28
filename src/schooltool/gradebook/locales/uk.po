@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-02-24 18:55+0000\n"
-"PO-Revision-Date: 2009-12-30 15:02+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"POT-Creation-Date: 2010-03-17 15:18+0200\n"
+"PO-Revision-Date: 2010-04-25 19:30+0000\n"
+"Last-Translator: andygol <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-25 04:57+0000\n"
+"X-Launchpad-Export-Date: 2010-04-26 03:46+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -39,7 +39,7 @@ msgstr "Сторінки"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Сховати"
 
 #: /src/schooltool/gradebook/browser/activity.py:69
 msgid "External Activity"
@@ -366,7 +366,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:574
 msgid "N/A"
-msgstr ""
+msgstr "Н/Д"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:677
@@ -538,7 +538,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:78
 #: /src/schooltool/gradebook/interfaces.py:167
 msgid "Outline Activities"
-msgstr ""
+msgstr "План занять"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:123
 msgid "Choose an activity to add"
@@ -587,7 +587,7 @@ msgstr "Предмети"
 #: /src/schooltool/gradebook/browser/pdf_views.py:646
 #: /src/schooltool/gradebook/browser/pdf_views.py:713
 msgid "Student"
-msgstr ""
+msgstr "Учень"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:312
 msgid "Detailed Student Report"
@@ -839,7 +839,7 @@ msgstr "Помилок вводу: ${num_errors}."
 
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:28
 msgid "Unhide"
-msgstr ""
+msgstr "Показати"
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:16
 msgid ""

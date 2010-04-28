@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-02-24 18:55+0000\n"
-"PO-Revision-Date: 2010-02-24 18:33+0000\n"
-"Last-Translator: rob <linuxned@gmail.com>\n"
+"PO-Revision-Date: 2010-03-08 08:47+0000\n"
+"Last-Translator: Fly-Man- <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-25 04:56+0000\n"
+"X-Launchpad-Export-Date: 2010-03-09 04:39+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -279,7 +279,7 @@ msgstr "Terug naar cijferlijst"
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:4
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:8
 msgid "Unhide Worksheets"
-msgstr ""
+msgstr "Toon werkbladen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:325
 #: /src/schooltool/gradebook/browser/configure.zcml:369
@@ -312,7 +312,7 @@ msgstr "Voorkeuren"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:418
 msgid "Download PDF"
-msgstr ""
+msgstr "Download PDF"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:427
 msgid "Update Grades"
@@ -698,7 +698,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:710
 msgid "Workheet"
-msgstr ""
+msgstr "Werkblad"
 
 #: /src/schooltool/gradebook/browser/report_card.py:55
 msgid "Absent"
@@ -785,7 +785,7 @@ msgstr "Studentenrapporten"
 #: /src/schooltool/gradebook/browser/request_reports.py:79
 #: /src/schooltool/gradebook/browser/request_reports.py:290
 msgid "Request Report Card"
-msgstr ""
+msgstr "Verzoek voor een Rapport"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:63
 #: /src/schooltool/gradebook/browser/request_reports.py:83
@@ -848,7 +848,7 @@ msgstr "U dient een geldige datum uit het schooljaar te kiezen."
 
 #: /src/schooltool/gradebook/browser/request_student_report.pt:22
 msgid "Term or Year"
-msgstr ""
+msgstr "Blok of Jaar"
 
 #: /src/schooltool/gradebook/browser/summary.pt:10
 msgid "Section Worksheet Summary"
@@ -866,7 +866,7 @@ msgstr "Er zijn ${num_errors} invoerfouten."
 
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:28
 msgid "Unhide"
-msgstr ""
+msgstr "Toon"
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:16
 msgid ""
