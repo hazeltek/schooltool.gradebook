@@ -13,6 +13,7 @@ CHANGES
 - Fixed "Workheet" typo (https://launchpad.net/bugs/558472)
 - Make score systems texts translatable
 - Include compiled translations in the tarball
+- Updated translations (da, de, es, pl, pt_BR, vi)
 
 
 0.6.1 (2010-02-24)

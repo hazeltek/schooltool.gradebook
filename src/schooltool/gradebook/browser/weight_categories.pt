@@ -22,7 +22,7 @@
         Enter numeric values for each relevant category. The total of all values must be exactly 100.
       </p>
       <p i18n:translate="">
-        For example, to weight exams as 60% of the grade, homework as 20% and quizzes as 20%, enter "60" next to "Exam," 20" next to "Homework" and "20" next to "quiz."
+        For example, to weight exams as 60% of the grade, homework as 20% and quizzes as 20%, enter "60" next to "Exam", "20" next to "Homework" and "20" next to "Quiz".
       </p>
     </div>
 
