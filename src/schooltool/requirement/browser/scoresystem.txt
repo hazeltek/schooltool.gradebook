@@ -172,10 +172,10 @@ returned:
   True
   >>> custom.title
   u'generated'
-  >>> custom.min
-  Decimal("10")
-  >>> custom.max
-  Decimal("20")
+  >>> print custom.min
+  10
+  >>> print custom.max
+  20
 
 On the other hand, if we selected an existing score system, it should be
 returned:

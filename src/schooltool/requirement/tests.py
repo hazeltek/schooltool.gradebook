@@ -35,6 +35,7 @@ def setUp(test):
     setup.placefulSetUp()
     testing.setUpRequirement()
     testing.setUpEvaluation()
+    testing.fixDecimal()
 
 
 def tearDown(test):

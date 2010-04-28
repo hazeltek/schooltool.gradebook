@@ -18,8 +18,6 @@
 #
 """
 Evolve database to generation 2.
-
-Moves hard-coded score system utilities to the app site manager.
 """
 
 from zope.app.generations.utility import getRootFolder
@@ -35,6 +33,8 @@ def evolve(context):
     sm = app.getSiteManager()
     for name, util in sorted(sm.getUtilitiesFor(ICustomScoreSystem)):
         util = removeSecurityProxy(util)
+        if not util.scores or len(util.scores[0]) != 3:
+            continue
         new_scores = []
         for score, value, percent in util.scores:
             new_scores.append([score, '', value, percent])

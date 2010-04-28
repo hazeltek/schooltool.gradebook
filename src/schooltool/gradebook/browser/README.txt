@@ -700,18 +700,21 @@ are none set yet.
 
     >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.getLink('Preferences').click()
-    >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
     <input type="checkbox" name="hide_total" />
     <input type="text" name="label_total" value="" />
     <input type="checkbox" name="hide_average" />
     <input type="text" name="label_average" value="" />
 
-    >>> analyze.printQuery("id('content-body')/form/table//option", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//option", stephan.contents)
     <option selected="selected" value="">-- No score system --</option>
     <option value="extended-letter-grade">Extended Letter Grade</option>
     <option value="goodbad">Good/Bad</option>
     <option value="letter-grade">Letter Grade</option>
     <option value="passfail">Pass/Fail</option>
+
+    >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
+    <input type="checkbox" name="hide_due_date" />
 
 Now we'll set all of the preferences to something and test that the changes
 were saved.
@@ -720,21 +723,25 @@ were saved.
     >>> url += '&hide_total=on&label_total=Summe'
     >>> url += '&hide_average=on&label_average=Durchschnitt'
     >>> url += '&scoresystem_average=goodbad'
+    >>> url += '&hide_due_date=on'
     >>> stephan.open(url)
 
     >>> stephan.getLink('Preferences').click()
-    >>> analyze.printQuery("id('content-body')/form/table//input", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
     <input type="checkbox" checked="checked" name="hide_total" />
     <input type="text" name="label_total" value="Summe" />
     <input type="checkbox" checked="checked" name="hide_average" />
     <input type="text" name="label_average" value="Durchschnitt" />
 
-    >>> analyze.printQuery("id('content-body')/form/table//option", stephan.contents)
+    >>> analyze.printQuery("id('content-body')/form//table//option", stephan.contents)
     <option value="">-- No score system --</option>
     <option value="extended-letter-grade">Extended Letter Grade</option>
     <option selected="selected" value="goodbad">Good/Bad</option>
     <option value="letter-grade">Letter Grade</option>
     <option value="passfail">Pass/Fail</option>
+
+    >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
+    <input type="checkbox" name="hide_due_date" checked="checked" />
 
 Finally, we will reset the preferences to none so that the rest of the tests
 pass.
@@ -1343,7 +1350,7 @@ And we can access its gradebook:
 Now, let's check that the teacher can access the orphan gradebook:
 
     >>> stephan.getLink('Home').click()
-    >>> stephan.getLink('Richter, Stephan -- English I (1)').click()
+    >>> stephan.getLink('English I').click()
     >>> stephan.getLink('Gradebook', index=1).click()
     >>> stephan.printQuery('//td[@class="active_tab"]')
     <td class="active_tab">

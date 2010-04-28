@@ -60,6 +60,13 @@ table.schooltool_gradebook {
     border-collapse: collapse;
 }
 
+table.student_gradebook {
+    border: solid 1px #808080;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 80%;
+}
+
 table.schooltool_gradebook .final_grade {
     color: blue;
 }
@@ -71,6 +78,15 @@ table.schooltool_gradebook .final_grade {
     border-right: thin solid gray;
     color: black;
     text-align: center;
+}
+
+.student_cell {
+    padding: .5em;
+    margin: .5em;
+    border:  thin solid gray;
+    color: black;
+    text-align: left;
+    width: 50%;
 }
 
 .padded {
@@ -85,6 +101,11 @@ table.schooltool_gradebook .final_grade {
 
 .header {
     background-color: #DDD;
+}
+
+.student_header {
+    background-color: #bbb;
+    padding: 5px;
 }
 
 .title {
@@ -126,6 +147,7 @@ input.data:focus {
     background-color: #CCC;
     height: 3em;
     width: 0px;
+    padding: .5em;
 }
 
 td.inactive_tab {
@@ -154,5 +176,13 @@ td.active_tab {
 
 .scoresystem_add_input {
     width: 9em;
+}
+
+.gradebook_margin_left {
+    margin-left: .5em;
+}
+
+.gradebook_margin_left1 {
+    margin-left: 1em;
 }
 

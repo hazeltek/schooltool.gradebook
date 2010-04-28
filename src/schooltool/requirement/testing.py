@@ -58,3 +58,10 @@ def setUpEvaluation(test=None):
     provideAdapter(KeyReferenceStub,
                    (Interface,),
                    IKeyReference)
+def fixDecimal():
+    """
+    Monkey patch the decimal module to get the same output on python2.6
+    See http://mail.python.org/pipermail/python-dev/2008-July/081420.html
+    """
+    import decimal
+    decimal.Decimal.__repr__ = lambda s: 'Decimal("%s")' % str(s)

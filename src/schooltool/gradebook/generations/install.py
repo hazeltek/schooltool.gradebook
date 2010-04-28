@@ -19,8 +19,8 @@
 """
 Initial deployment of generations to schooltool.gradebook.
 
-Manually evolves to generation 1.  Done to avoid double deployment when
-introducing generations.
+Manually evolves to generation 1. Needed to support upgrade from a
+database that did not have generations (schooltool.gradebook << 0.4.9)
 """
 
 import evolve1

@@ -24,9 +24,9 @@ __docformat__ = 'reStructuredText'
 
 import datetime
 import decimal
+import urllib
 
 from zope.container.interfaces import INameChooser
-from zope.keyreference.interfaces import IKeyReference
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.html.field import HtmlFragment
@@ -343,11 +343,13 @@ class SectionFinder(GradebookBase):
         else:
             columnPreferences = gradebook.getColumnPreferences(person)
         column_keys_dict = dict(column_keys)
+
         prefs = columnPreferences.get('total', {})
         self.total_hide = prefs.get('hide', False)
         self.total_label = prefs.get('label', '')
         if len(self.total_label) == 0:
             self.total_label = column_keys_dict['total']
+
         prefs = columnPreferences.get('average', {})
         self.average_hide = prefs.get('hide', False)
         self.average_label = prefs.get('label', '')
@@ -355,6 +357,10 @@ class SectionFinder(GradebookBase):
             self.average_label = column_keys_dict['average']
         self.average_scoresystem = getScoreSystemFromEscName(
             prefs.get('scoresystem', ''))
+
+        prefs = columnPreferences.get('due_date', {})
+        self.due_date_hide = prefs.get('hide', False)
+
         self.apply_all_colspan = 1
         if gradebook.context.deployed:
             self.total_hide = True
@@ -488,6 +494,8 @@ class GradebookOverview(SectionFinder):
                         longTitle = source.title
                 elif interfaces.IWorksheet.providedBy(source):
                     shortTitle = source.title
+                    if activity.label is not None and len(activity.label):
+                        shortTitle = activity.label
                     if len(shortTitle) > 5:
                         shortTitle = shortTitle[:5].strip()
                     longTitle = source.title
@@ -729,8 +737,13 @@ class MyGradesView(SectionFinder):
             value, ss = self.context.getEvaluation(self.person, activity)
 
             if value is not None and value is not UNSCORED:
-                if IValuesScoreSystem.providedBy(ss):
-                    grade = '%s / %s' % (value, ss.getBestScore())
+                if ICommentScoreSystem.providedBy(ss):
+                    grade = {
+                        'comment': True,
+                        'paragraphs': buildHTMLParagraphs(value),
+                        }
+
+                elif IValuesScoreSystem.providedBy(ss):
                     s_min, s_max = getScoreSystemDiscreteValues(ss)
                     if IDiscreteValuesScoreSystem.providedBy(ss):
                         value = ss.getNumericalValue(value)
@@ -738,13 +751,32 @@ class MyGradesView(SectionFinder):
                             value = 0
                     total += value - s_min
                     count += s_max - s_min
-                else:
-                    grade = value
-            else:
-                grade = None
+                    grade = {
+                        'comment': False,
+                        'value': '%s / %s' % (value, ss.getBestScore()),
+                        }
 
-            self.table.append({'activity': activity.title,
-                               'grade': grade})
+                else:
+                    grade = {
+                        'comment': False,
+                        'value': value,
+                        }
+
+            else:
+                grade = {
+                    'comment': False,
+                    'value': '',
+                    }
+
+            title = activity.title
+            if activity.description:
+                title += ' - %s' % activity.description
+
+            row = {
+                'activity': title,
+                'grade': grade,
+                }
+            self.table.append(row)
 
         if count:
             average = int((float(100 * total) / float(count)) + 0.5)
@@ -874,6 +906,11 @@ class GradebookColumnPreferences(BrowserView):
                     prefs['label'] = ''
                 if key != 'total':
                     prefs['scoresystem'] = self.request['scoresystem_' + key]
+            prefs = columnPreferences.setdefault('due_date', {})
+            if 'hide_due_date' in self.request:
+                prefs['hide'] = True
+            else:
+                prefs['hide'] = False
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
         if 'ADD_SUMMARY' in self.request:
@@ -881,6 +918,14 @@ class GradebookColumnPreferences(BrowserView):
 
         if 'form-submitted' in self.request:
             self.request.response.redirect('index.html')
+
+    @property
+    def hide_due_date_value(self):
+        self.person = IPerson(self.request.principal)
+        gradebook = proxy.removeSecurityProxy(self.context)
+        columnPreferences = gradebook.getColumnPreferences(self.person)
+        prefs = columnPreferences.get('due_date', {})
+        return prefs.get('hide', False)
 
     @property
     def columns(self):
@@ -975,7 +1020,8 @@ class GradeStudent(z3cform.EditForm):
             return
         prev, next = self.prevNextStudent()
         if prev is not None:
-            url = '%s/%s' % (self.gradebookURL(), prev.username)
+            url = '%s/%s' % (self.gradebookURL(),
+                             urllib.quote(prev.username.encode('utf-8')))
             self.request.response.redirect(url)
 
     @button.buttonAndHandler(_("Next"))
@@ -984,7 +1030,8 @@ class GradeStudent(z3cform.EditForm):
             return
         prev, next = self.prevNextStudent()
         if next is not None:
-            url = '%s/%s' % (self.gradebookURL(), next.username)
+            url = '%s/%s' % (self.gradebookURL(),
+                             urllib.quote(next.username.encode('utf-8')))
             self.request.response.redirect(url)
 
     @button.buttonAndHandler(_("Cancel"))
