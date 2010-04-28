@@ -154,9 +154,9 @@ msgid ""
 msgstr ""
 "Die Kategorien werden im Notenbuch von schooltool benutzt, um Aktivitäten zu "
 "organisieren und damit Lehrer für die verschiedenen Arten von Aktivitäten "
-"unterschiedliche Gewichtungen für Klassen  berechnen  können. Zum Beispiel "
-"könnte die Note aus folgenden Bereichen bestehen: ,  Test-Noten 60%  "
-"Hausaufgaben 20% und Unterrichtsanwesenheit 20 %"
+"unterschiedliche Gewichtungen für Klassen berechnen können. Zum Beispiel "
+"könnte die Note aus folgenden Bereichen bestehen: Test-Noten 60%, "
+"Hausaufgaben 20% und Unterrichtsanwesenheit 20%"
 
 #: /src/schooltool/gradebook/browser/categories.pt:22
 msgid ""
@@ -166,8 +166,8 @@ msgid ""
 "Likewise, if some of the default categories are not relevant to your school, "
 "remove them below."
 msgstr ""
-"Derzeit wird die Liste der verfügbaren  für alle  Lehrer in diesem Formular "
-"geführt.  Wenn zwei oder mehr Lehrer eine Kategorie nicht in der "
+"Derzeit wird die Liste der verfügbaren für alle Lehrer in diesem Formular "
+"geführt. Wenn zwei oder mehr Lehrer eine Kategorie nicht in der "
 "gegenwärtigen Liste nutzen möchten, kann sie der Seiten-Manager hier "
 "einfügen. Wenn einige der voreingestellten Kategorien für Ihre Schule "
 "bedeutungslos sein sollte, können sie weiter unten entfernt werden."
@@ -323,7 +323,7 @@ msgstr "Noten aktualisieren"
 #: /src/schooltool/gradebook/browser/configure.zcml:524
 #: /src/schooltool/gradebook/browser/configure.zcml:568
 msgid "Deploy Report Sheet"
-msgstr "in /src/schooltool/gradebook/browser/configure.zcml:418 enthalten"
+msgstr "Berichtsblatt anwenden"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:531
 #: /src/schooltool/gradebook/browser/configure.zcml:582
@@ -347,9 +347,9 @@ msgstr "Zeugnis-Vorlage anwenden"
 msgid "Template"
 msgstr "Vorlage"
 
-#: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
+#: src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
-msgstr "anwenden"
+msgstr "Anwenden"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:73
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:64
@@ -407,7 +407,7 @@ msgstr "Noten für ${fullname} eingeben"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1084
 msgid "$worksheet for $student in $section"
-msgstr "$Arbeitsblatt für  $Schüler in $Bereich"
+msgstr "$worksheet für $student in $section"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:13
@@ -443,8 +443,8 @@ msgid ""
 "entitled \"Summary\" will be created, which includes the average scores from "
 "\"A,\" \"B\" and \"C\" in the first three columns."
 msgstr ""
-"Wenn Sie zum Beispiel drei Arbeitsblätter in dem Bereich \"A\" \"B\" und "
-"\"C\" haben und Sie auf \"erstelle Übersicht der Arbeitsblätter\""
+"Wenn Sie zum Beispiel drei Arbeitsblätter in dem Bereich \"A\" \"B\" und \"C"
+"\" haben und Sie auf \"erstelle Übersicht der Arbeitsblätter\""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:73
 msgid "Overwrite existing worksheets titled \"Summary\"."
@@ -480,7 +480,7 @@ msgid ""
 "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
 "use a browser with Javascript."
 msgstr ""
-"Ihr Browser hat  Javascript entweder abgeschaltet oder es wird nicht "
+"Ihr Browser hat Javascript entweder abgeschaltet oder es wird nicht "
 "unterstützt. Javascript wird für das Notenbuch<b> benötigt<b>. Bitte "
 "schalten Sie Javascript ein oder verwenden Sie einen Browser der Javascript "
 "unterstützt."
@@ -596,7 +596,7 @@ msgid ""
 "administation access set up at least one term and try the operation again."
 msgstr ""
 "Ihre angefragte Operation konnte nicht ausgeführt werden, da derzeit keine "
-"Semester in ihrer SchoolTool Instanz angelegt wurden.  Ein Nutzer mit "
+"Semester in ihrer SchoolTool Instanz angelegt wurden. Ein Nutzer mit "
 "administrativen Rechten muss mindestens ein Semester anlegen. Versuchen Sie "
 "Ihre Operation danach erneut"
 
@@ -647,7 +647,7 @@ msgstr "Fehlzeiten im Semesterbericht"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:431
 msgid "Report Sheet:"
-msgstr "Berichtsblatt"
+msgstr "Berichtsblatt:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:437
 msgid "Activity:"
@@ -696,7 +696,7 @@ msgstr "Verspätungen"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:701
 msgid "Gradebook Report"
-msgstr "Bericht zum  Notenstand"
+msgstr "Bericht zum Notenstand"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:710
 msgid "Workheet"
@@ -725,7 +725,7 @@ msgstr "Auswahl darunter benutzen"
 #: /src/schooltool/gradebook/browser/report_card.py:129
 msgid "Choose an existing score system or use range below"
 msgstr ""
-"Wählen Sie bereits existierendes Punktesystem  oder Auswahl darunter benutzen"
+"Wählen Sie bereits existierendes Punktesystem oder Auswahl darunter benutzen"
 
 #: /src/schooltool/gradebook/browser/report_card.py:134
 msgid "Minimum"
@@ -759,7 +759,7 @@ msgid ""
 "This report is a list of students achieving below a minimum score on a "
 "selected activity from a report sheet."
 msgstr ""
-"Der folgende Bericht ist eine Liste der Schüler, die Minimum an Punkten  von "
+"Der folgende Bericht ist eine Liste der Schüler, die Minimum an Punkten von "
 "der ausgewählten Aktivität besitzen."
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:25
@@ -776,9 +776,9 @@ msgstr ""
 "Quartal ,\" umfasst Dabei wird eine Benotungsskala eingesetzt, wo eine \"3\" "
 "oder höher für das Bestehen des Kurses erreicht werden muss. Um einen "
 "Bericht der Studierenden zu erzeugen, die den Kurs nicht im ersten Quartal "
-"bestehen werden   , wählen  Sie den Berichtaktivitäten  \"Herbst 2011 - "
-"Semester Noten - erstes Quartal\" und wählen Sie \"3\", als die "
-"Minimalanforderung für den Kurs. klicken Sie auf \"Download\"."
+"bestehen werden, wählen Sie den Berichtaktivitäten \"Herbst 2011 - Semester "
+"Noten - erstes Quartal\" und wählen Sie \"3\", als die Minimalanforderung "
+"für den Kurs. klicken Sie auf \"Download\"."
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:36
 msgid "Report Activity"
@@ -802,7 +802,7 @@ msgstr "Zeugnisbericht nachfragen"
 #: /src/schooltool/gradebook/browser/request_reports.py:83
 #: /src/schooltool/gradebook/browser/request_reports.py:292
 msgid "Request Detailed Student Report"
-msgstr "detailierten Zeugnisbericht  nachfragen"
+msgstr "detailierten Zeugnisbericht nachfragen"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:72
 msgid "Group Reports"
@@ -878,7 +878,7 @@ msgstr "Es gab ${num_errors} Eingabefehler."
 
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:28
 msgid "Unhide"
-msgstr "hervorheben"
+msgstr "Hervorheben"
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:16
 msgid ""
@@ -899,12 +899,12 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/weight_categories.pt:22
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
-"quizzes as 20%, enter \"60\" next to \"Exam\", \"20\" next to \"Homework\" and "
-"\"20\" next to \"Quiz\"."
+"quizzes as 20%, enter \"60\" next to \"Exam\", \"20\" next to \"Homework\" "
+"and \"20\" next to \"Quiz\"."
 msgstr ""
-"Zum Beispiel bei der Gewichtung der Note: Prüfungen 60%,  Hausaufgaben  20%, "
+"Zum Beispiel bei der Gewichtung der Note: Prüfungen 60%, Hausaufgaben 20%, "
 "Quiz 20%. Geben Sie ein: \"60\" bei \"Prüfung\", \"20\" bei \"Hausaufgaben\" "
-"und \"20\" bei  \"Quiz\""
+"und \"20\" bei \"Quiz\""
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
 msgid "This worksheet has no activities."
@@ -935,8 +935,8 @@ msgid ""
 "A report sheet template defines the activities to be included in a report "
 "sheet deployed to each section in a term or year."
 msgstr ""
-"Ein Berichtsblatt-Vorlage definiert die Aktivitäten, die in einem  "
-"Berichtsblatt enthalten sind  Sie werden in jedem Bereich in einem Jahr oder "
+"Ein Berichtsblatt-Vorlage definiert die Aktivitäten, die in einem "
+"Berichtsblatt enthalten sind Sie werden in jedem Bereich in einem Jahr oder "
 "Semester eingesetzt"
 
 #: /src/schooltool/gradebook/configure.zcml:302
@@ -945,7 +945,7 @@ msgstr "Klassenbuch API"
 
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
-msgstr "eingesetzte Berichtsblätter"
+msgstr "Eingesetzte Berichtsblätter"
 
 #: /src/schooltool/gradebook/gradebook_init.py:50
 msgid "Report Card Layouts"
@@ -993,7 +993,7 @@ msgstr "Dieses Datum definiert die Abgabefrist"
 
 #: /src/schooltool/gradebook/interfaces.py:126
 msgid "The column label for the activity in the gradebook."
-msgstr "Die Spaltenüberschrift der Aktivität  in dem Notenbuch"
+msgstr "Die Spaltenüberschrift der Aktivität in dem Notenbuch"
 
 #: /src/schooltool/gradebook/interfaces.py:130
 #: /src/schooltool/gradebook/interfaces.py:395
@@ -1030,7 +1030,7 @@ msgstr "Spalten die in der Berichtskarte gedruckt werden sollen."
 
 #: /src/schooltool/gradebook/interfaces.py:168
 msgid "Activities to be printed in the outline section."
-msgstr "Aktivitäten, die  in der Berichtskarte gedruckt werden sollen."
+msgstr "Aktivitäten, die in der Berichtskarte gedruckt werden sollen."
 
 #: /src/schooltool/gradebook/interfaces.py:202
 #: /src/schooltool/gradebook/interfaces.py:307
@@ -1119,11 +1119,11 @@ msgstr "Ansicht"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
-msgstr "${Erforderlichkeit} Inhalt"
+msgstr "${requirement} Inhalt"
 
 #: /src/schooltool/requirement/browser/requirement.pt:11
 msgid "${requirement} Sub Requirements"
-msgstr "${erfordenisse} untererfordernisse"
+msgstr "${requirement} untererfordernisse"
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
@@ -1188,7 +1188,7 @@ msgstr "Doppelte Punkte sind nicht erlaubt."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:50
 msgid "Duplicate abbreviations are not allowed."
-msgstr "Doppelte Abkürzungen  sind nicht erlaubt."
+msgstr "Doppelte Abkürzungen sind nicht erlaubt."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:259
 msgid "Exisiting Score System"

@@ -170,7 +170,7 @@ msgstr ""
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "κουμπί-προσθήκης"
+msgstr "Προσθήκη"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
@@ -1153,6 +1153,3 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
 msgid "View Score System"
 msgstr ""
-
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"

@@ -185,7 +185,7 @@ msgstr ""
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr "ändra knapp"
+msgstr "Ändra"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"

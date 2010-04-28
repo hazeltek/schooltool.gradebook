@@ -97,7 +97,7 @@ msgstr "Anvend"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:355
 msgid "$value is not a valid weight."
-msgstr "$værdi er ikke en gyldig vægt."
+msgstr "$value er ikke en gyldig vægt."
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "Category weights must add up to 100."
@@ -163,17 +163,17 @@ msgstr ""
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr "fjern-knap"
+msgstr "Fjern"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "tilføj-knap"
+msgstr "Tilføj"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr "ændre-knap"
+msgstr "Ændre"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"

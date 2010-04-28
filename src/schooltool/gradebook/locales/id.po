@@ -164,17 +164,17 @@ msgstr ""
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr "remove-tombol"
+msgstr ""
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "add-tombol"
+msgstr "Tambahkan"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr "change-tombol"
+msgstr "Rubah"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"

@@ -169,7 +169,7 @@ msgstr ""
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "lisamis-nupp"
+msgstr ""
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51

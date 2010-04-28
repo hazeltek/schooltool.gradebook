@@ -179,12 +179,12 @@ msgstr "Usuń"
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "przycisk-dodaj"
+msgstr "Dodaj"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr "przycisk-zmień"
+msgstr "Zmień"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
@@ -296,7 +296,7 @@ msgstr "Nowa czynność zewnętrzna"
 #: /src/schooltool/gradebook/browser/configure.zcml:339
 #: /src/schooltool/gradebook/browser/configure.zcml:383
 msgid "New Linked Column"
-msgstr "Nowa ,pokrewna kolumna"
+msgstr "Nowa pokrewna kolumna"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Manage Activities"
@@ -443,13 +443,13 @@ msgid ""
 "\"A,\" \"B\" and \"C\" in the first three columns."
 msgstr ""
 "Na przykład jeśli posiadasz trzy karty pracy z rozdziałów A, B i C klikając "
-"na ''Stwórz streszczenie karty pracy'' uzyskasz dodatkowy arkusz "
-"zatytułowany ''Streszczenie'', które będzie zawierać przeciętną punktów z "
-"rozdziałów A,B i C w pierwszych trzech kolumnach."
+"na „Stwórz streszczenie karty pracy” uzyskasz dodatkowy arkusz zatytułowany "
+"„Streszczenie”, które będzie zawierać przeciętną punktów z rozdziałów A,B i "
+"C w pierwszych trzech kolumnach."
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:73
 msgid "Overwrite existing worksheets titled \"Summary\"."
-msgstr "Nadpisanie istniejących kart pracy zatytułowanych ''Streszczenie''."
+msgstr "Nadpisanie istniejących kart pracy zatytułowanych „Streszczenie”."
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:78
 msgid "Create Summary Worksheets"
@@ -768,10 +768,10 @@ msgid ""
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
 msgstr ""
 "Przykładowo załóżmy iż jest semestr jesienny 2011 i został przedstawiony "
-"raport pod tytułem '' Oceny na semestr'' w którym najniższa ocena aby "
-"zliczyć dany przedmiot to ''3''. Aby przygotować raport dla ucznia który nie "
-"zaliczył tego semestru musisz wybrać raport ''Jesień 2011-Oceny na semestr'' "
-"oraz ''3'' jako minimalna ocena zaliczeniowa. Następnie kliknij ''download''."
+"raport pod tytułem „Oceny na semestr” w którym najniższa ocena aby zliczyć "
+"dany przedmiot to „3”. Aby przygotować raport dla ucznia który nie zaliczył "
+"tego semestru musisz wybrać raport „Jesień 2011-Oceny na semestr” oraz „3” "
+"jako minimalna ocena zaliczeniowa. Następnie kliknij „Pobierz”."
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:36
 msgid "Report Activity"
@@ -889,11 +889,12 @@ msgstr "Wstępne wartości numeryczne dotyczące aktualnej kategorii"
 #: /src/schooltool/gradebook/browser/weight_categories.pt:22
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
-"quizzes as 20%, enter \"60\" next to \"Exam,\" 20\" next to \"Homework\" and "
-"\"20\" next to \"quiz.\""
+"quizzes as 20%, enter \"60\" next to \"Exam\", \"20\" next to \"Homework\" "
+"and \"20\" next to \"Quiz\"."
 msgstr ""
 "Na przykład oceniając egzaminy na 60%, zadania domowe na 20%, a kwizy na "
-"20%, wprowadż  ''60'', ''exam''' ''20'', 'homework'' oraz ''20'' i ''guiz''"
+"20%, wprowadż „60” obok „Egzamin”, „20” obok „Zadanie domowe” i „20” obok "
+"„Kwiz”."
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
 msgid "This worksheet has no activities."
@@ -1064,7 +1065,7 @@ msgstr "Punkty"
 
 #: /src/schooltool/gradebook/interfaces.py:337
 msgid "Points value to calculate the activity grade"
-msgstr "Elementy brane pod uwagę przy ocenie  cwiczenia"
+msgstr "Elementy brane pod uwagę przy ocenie cwiczenia"
 
 #: /src/schooltool/gradebook/interfaces.py:358
 msgid "Name of the external activities source"
@@ -1107,11 +1108,11 @@ msgstr "Widok"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
-msgstr "$ (wymaganie) treść"
+msgstr "${requirement} treść"
 
 #: /src/schooltool/requirement/browser/requirement.pt:11
 msgid "${requirement} Sub Requirements"
-msgstr "$ (wymaganie) wymagania podczas zastępstw"
+msgstr "${requirement} wymagania podczas zastępstw"
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
@@ -1123,7 +1124,7 @@ msgstr "Wyczyść"
 
 #: /src/schooltool/requirement/browser/requirement.pt:32
 msgid "Showing ${count} of ${total} items"
-msgstr "Przedstawienie ${wartości} ${wszystkich} pozycji"
+msgstr "Przedstawienie ${count} ${total} pozycji"
 
 #: /src/schooltool/requirement/browser/requirement.py:55
 msgid "Requirement index"

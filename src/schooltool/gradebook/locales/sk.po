@@ -163,17 +163,17 @@ msgstr ""
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr "tlačidlo Odstrániť"
+msgstr "Odstrániť"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "tlačidlo pridaj"
+msgstr "Pridaj"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr ""
+msgstr "Zmeniť"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"

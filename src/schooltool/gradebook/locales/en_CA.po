@@ -163,17 +163,17 @@ msgstr ""
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr "remove-button"
+msgstr "Remove"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "add-button"
+msgstr "Add"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr ""
+msgstr "Change"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
@@ -1151,6 +1151,3 @@ msgstr "Required input is missing."
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
 msgid "View Score System"
 msgstr ""
-
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"

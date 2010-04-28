@@ -1152,6 +1152,3 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
 msgid "View Score System"
 msgstr ""
-
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"
