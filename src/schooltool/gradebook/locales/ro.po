@@ -856,8 +856,8 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/weight_categories.pt:22
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
-"quizzes as 20%, enter \"60\" next to \"Exam,\" 20\" next to \"Homework\" and "
-"\"20\" next to \"quiz.\""
+"quizzes as 20%, enter \"60\" next to \"Exam\", \"20\" next to \"Homework\" "
+"and \"20\" next to \"Quiz\"."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
