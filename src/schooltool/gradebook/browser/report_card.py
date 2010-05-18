@@ -119,11 +119,13 @@ def ReportScoreSystemsVocabulary(context):
     terms = [SimpleVocabulary.createTerm('ranged', 'ranged',
                                          _('-- Use range below --'))]
     for name, utility in getUtilitiesFor(IScoreSystem, context):
-        value = utility
-        token = name.encode('punycode')
-        title = name
-        term = SimpleVocabulary.createTerm(value, token, title)
-        terms.append(term)
+        hidden = getattr(utility, 'hidden', False)
+        if not hidden:
+            value = utility
+            token = name.encode('punycode')
+            title = name
+            term = SimpleVocabulary.createTerm(value, token, title)
+            terms.append(term)
     return SimpleVocabulary(terms)
 
 
