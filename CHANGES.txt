@@ -7,6 +7,10 @@ CHANGES
 
 Stable release to go with SchoolTool 1.4.0.
 - Fixed failing ranged score system for report activities when using non-english views (https://launchpad.net/bugs/581825)
+- Made the gradebook to stop creating a default worksheet if there are report sheets deployed
+- Made 'Apply' button translatable in edit form of report activities
+- Improved due filter message id in the gradebook overview
+- Fixed typo (https://launchpad.net/bugs/582436)
 
 
 0.6.2 (2010-04-28)

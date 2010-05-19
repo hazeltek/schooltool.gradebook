@@ -72,8 +72,8 @@
              tal:condition="view/getDueDateFilter" />
       <input type="checkbox" name="due_date:list" 
              tal:condition="not: view/getDueDateFilter" />
-      <span i18n:translate="">show only activities due in past</span>
-      <select name="num_weeks">
+      <span i18n:translate="">show only activities due in past
+      <select name="num_weeks" i18n:name="num_weeks">
         <tal:block repeat="weeks view/weeksChoices">
           <option value="1"
               tal:condition="python:weeks != view.getCurrentWeeks()"
@@ -85,7 +85,7 @@
               tal:content="weeks" />
         </tal:block>
       </select>
-      <span i18n:translate="">weeks</span>
+      weeks</span>
     </tal:if>
     <div style="height: 5px;"></div>
 

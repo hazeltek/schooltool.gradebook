@@ -1222,9 +1222,9 @@ sources of the links.  First we'll test the editable fields:
 
 Next we'll test the linked column data:
 
-    >>> results = analyze.queryHTML("id('content-body')//span", stephan.contents)
+    >>> results = analyze.queryHTML("id('content-body')//table[@class='schooltool_gradebook'][2]//td/span", stephan.contents)
     >>> results = [result.strip() for result in results]
-    >>> for result in results[7:]: print result
+    >>> for result in results: print result
     <span>42</span>
     <span></span>
     <span>72</span>

@@ -302,6 +302,11 @@ class ReportActivityEditView(form.EditForm):
         return absoluteURL(self.context.__parent__, self.request)
 
 
+ApplyLabel = button.StaticButtonActionAttribute(
+    _('Apply'),
+    button=ReportActivityEditView.buttons['apply'])
+
+
 class DeployReportWorksheetBaseView(object):
     """The base class for deploying a report sheet template"""
 

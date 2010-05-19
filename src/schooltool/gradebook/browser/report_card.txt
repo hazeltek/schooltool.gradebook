@@ -190,7 +190,6 @@ the activities will be spans instead of links so that they can't be edited.
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring/manage.html">Test</a>
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring-2/manage.html">Test2</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Sheet1</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
@@ -225,7 +224,6 @@ The other section should also have the same worksheet deployed.
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring/manage.html">Test</a>
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring-2/manage.html">Test2</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Sheet1</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
@@ -267,7 +265,6 @@ other sections.  We'll add a third section to test this.
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring/manage.html">Test</a>
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring-2/manage.html">Test2</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet/manage.html">Sheet1</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
