@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-0.7.0 (unreleased)
+0.7.0 (2010-05-20)
 ------------------
 
 Stable release to go with SchoolTool 1.4.0.
