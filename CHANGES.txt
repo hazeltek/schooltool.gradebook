@@ -12,6 +12,7 @@ Stable release to go with SchoolTool 1.4.0.
 - Made 'Apply' button translatable in edit form of report activities
 - Improved due filter message id in the gradebook overview
 - Fixed typo (https://launchpad.net/bugs/582436)
+- Updated translations
 
 
 0.6.2 (2010-04-28)
