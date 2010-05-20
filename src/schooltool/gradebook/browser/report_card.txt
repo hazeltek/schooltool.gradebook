@@ -47,7 +47,7 @@ To add a report activity to it, we'll click on the supplied link.
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Activity 1'
-    >>> manager.getControl('Score System').value = ['100 Points']
+    >>> manager.getControl('Score System').value = ['100 Points-']
     >>> manager.getControl('Add').click()
 
 Now we see that the new report activity appears in the list.
@@ -61,25 +61,25 @@ when we added it.
 
     >>> manager.getLink('Activity 1').click()
     >>> manager.getControl('Score System').value
-    ['100 Points']
+    ['100 Points-']
 
 We'll change it, apply the change, and revisit the activity to see that the
 change took.
 
-    >>> manager.getControl('Score System').value = ['Letter Grade']
+    >>> manager.getControl('Score System').value = ['Letter Grade-']
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
     >>> manager.getControl('Score System').value
-    ['Letter Grade']
+    ['Letter Grade-']
 
 Now we'll change it to use a dynamically generated ranged values score system.
 The min and max fields don't need to be filled in as they defualt to 0 and 100.
 
-    >>> manager.getControl('Score System').value = ['-- Use range below --']
+    >>> manager.getControl('Score System').value = ['ranged']
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
     >>> manager.getControl('Score System').value
-    ['-- Use range below --']
+    ['ranged']
     >>> manager.getControl('Minimum').value
     '0'
     >>> manager.getControl('Maximum').value
@@ -92,7 +92,7 @@ Next we'll simply change the ranges and verify.
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
     >>> manager.getControl('Score System').value
-    ['-- Use range below --']
+    ['ranged']
     >>> manager.getControl('Minimum').value
     '1'
     >>> manager.getControl('Maximum').value
@@ -102,11 +102,11 @@ Finally, we'll make sure we can change it back to an existing score system.
 We'll note that, in doing so, the min and max fields are cleared out.  They
 are only relavent when '-- Use range below --' is chosen as the score system.
 
-    >>> manager.getControl('Score System').value = ['100 Points']
+    >>> manager.getControl('Score System').value = ['100 Points-']
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
     >>> manager.getControl('Score System').value
-    ['100 Points']
+    ['100 Points-']
     >>> manager.getControl('Minimum').value
     ''
     >>> manager.getControl('Maximum').value
@@ -190,7 +190,6 @@ the activities will be spans instead of links so that they can't be edited.
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring/manage.html">Test</a>
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/2005-2006_spring-2/manage.html">Test2</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/manage.html">Sheet1</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
@@ -225,7 +224,6 @@ The other section should also have the same worksheet deployed.
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring/manage.html">Test</a>
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/2005-2006_spring-2/manage.html">Test2</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/2/activities/Worksheet/manage.html">Sheet1</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)
@@ -267,7 +265,6 @@ other sections.  We'll add a third section to test this.
     >>> analyze.printQuery("id('content-body')//a", manager.contents)
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring/manage.html">Test</a>
     <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/2005-2006_spring-2/manage.html">Test2</a>
-    <a href="http://localhost/schoolyears/2005-2006/spring/sections/3/activities/Worksheet/manage.html">Sheet1</a>
 
     >>> manager.getLink('Test').click()
     >>> analyze.printQuery("id('content-body')//span", manager.contents)

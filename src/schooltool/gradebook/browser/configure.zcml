@@ -749,4 +749,8 @@
       handler=".report_card.handleSectionAdded"
       />
 
+  <zope:adapter
+      factory=".report_card.ApplyLabel"
+      name="title" />
+
 </configure>
