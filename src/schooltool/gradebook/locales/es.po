@@ -2,14 +2,12 @@
 # Copyright (c) (c) 2005 Canonical Ltd, and Rosetta Contributors 2005
 # This file is distributed under the same license as the schooltool package.
 # Mario Fuentes <mario@gnome.cl>, 2005.
-# , fuzzy
-#
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-27 22:54+0300\n"
+"POT-Creation-Date: 2010-05-20 21:46+0300\n"
 "PO-Revision-Date: 2010-05-18 18:41+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -19,11 +17,11 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-05-20 05:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: /src/schooltool/gradebook/activity.py:52
+#: /src/schooltool/gradebook/activity.py:51
 msgid "Sheet1"
 msgstr "Hoja1"
 
-#: /src/schooltool/gradebook/activity.py:230
+#: /src/schooltool/gradebook/activity.py:229
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
 #: /src/schooltool/gradebook/interfaces.py:205
 msgid "Activities"
@@ -51,7 +49,7 @@ msgid "The external activity"
 msgstr "La actividad externa"
 
 #: /src/schooltool/gradebook/browser/activity.py:170
-#: /src/schooltool/gradebook/browser/report_card.py:209
+#: /src/schooltool/gradebook/browser/report_card.py:217
 msgid "Add new activity"
 msgstr "Añadir nueva actividad"
 
@@ -59,7 +57,7 @@ msgstr "Añadir nueva actividad"
 #: /src/schooltool/gradebook/browser/activity.py:238
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:69
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:131
-#: /src/schooltool/gradebook/browser/report_card.py:221
+#: /src/schooltool/gradebook/browser/report_card.py:229
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:50
 msgid "Add"
 msgstr "Añadir"
@@ -68,9 +66,9 @@ msgstr "Añadir"
 #: /src/schooltool/gradebook/browser/activity.py:242
 #: /src/schooltool/gradebook/browser/activity.py:281
 #: /src/schooltool/gradebook/browser/activity.py:322
-#: /src/schooltool/gradebook/browser/gradebook.py:1035
-#: /src/schooltool/gradebook/browser/report_card.py:232
-#: /src/schooltool/gradebook/browser/report_card.py:275
+#: /src/schooltool/gradebook/browser/gradebook.py:1037
+#: /src/schooltool/gradebook/browser/report_card.py:240
+#: /src/schooltool/gradebook/browser/report_card.py:283
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:52
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:52
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:20
@@ -84,7 +82,7 @@ msgstr "Añadir una Actividad Externa"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:296
-#: /src/schooltool/gradebook/browser/report_card.py:290
+#: /src/schooltool/gradebook/browser/report_card.py:298
 msgid "Change information for ${fullname}"
 msgstr "Cambiar información para ${fullname}"
 
@@ -93,6 +91,7 @@ msgid "Edit External Activity"
 msgstr "Editar Actividad Externa"
 
 #: /src/schooltool/gradebook/browser/activity.py:317
+#: /src/schooltool/gradebook/browser/report_card.py:306
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
 msgid "Apply"
 msgstr "Aplicar"
@@ -233,15 +232,15 @@ msgid "Add a Report Sheet"
 msgstr "Añadir a una hoja de informe"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Editar Hoja de Trabajo"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Editar"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Editar Hoja de Trabajo"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -258,6 +257,7 @@ msgstr "Nuevo Reporte de Actividades"
 #: /src/schooltool/gradebook/browser/gradebook_tab.pt:4
 #: /src/schooltool/gradebook/browser/mygrades.pt:5
 #: /src/schooltool/gradebook/browser/summary.pt:4
+#: /src/schooltool/gradebook/security.zcml:7
 msgid "Gradebook"
 msgstr "Libreta de Notas"
 
@@ -397,17 +397,17 @@ msgstr "-- Ningún sistema de puntuación--"
 msgid "Previous"
 msgstr "Anterior"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:1026
+#: /src/schooltool/gradebook/browser/gradebook.py:1027
 msgid "Next"
 msgstr "Siguiente"
 
 #. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:1104
+#: /src/schooltool/gradebook/browser/gradebook.py:1106
 msgid "Enter grades for ${fullname}"
 msgstr "Introducir grados para  ${fullname}"
 
 #. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:1129
+#: /src/schooltool/gradebook/browser/gradebook.py:1131
 msgid "$worksheet for $student in $section"
 msgstr "$worksheet para $student en $section"
 
@@ -425,7 +425,7 @@ msgid "Hide?"
 msgstr "¿Ocultar?"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:22
-#: /src/schooltool/gradebook/browser/report_card.py:128
+#: /src/schooltool/gradebook/browser/report_card.py:136
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
 msgid "Score System"
 msgstr "Sistema de puntuación"
@@ -515,13 +515,10 @@ msgstr "Sección:"
 msgid "Section"
 msgstr "Sección"
 
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:75
-msgid "show only activities due in past"
-msgstr "mostrar sólo actividades con fechas de cierre pasadas"
-
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:88
-msgid "weeks"
-msgstr "semanas"
+#: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
+msgid "show only activities due in past ${num_weeks} weeks"
+msgstr ""
+"mostrar sólo actividades con fechas de cierre pasadas ${num_weeks} semanas"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
@@ -599,9 +596,9 @@ msgstr "Sin Período Actual"
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:11
 msgid ""
-"The operation you attempted cannot be completed because there are curently "
+"The operation you attempted cannot be completed because there are currently "
 "no terms set up in your SchoolTool instance. Please have a user with "
-"administation access set up at least one term and try the operation again."
+"administration access set up at least one term and try the operation again."
 msgstr ""
 "La operación que intentó no puede completarse ya que no hay períodos "
 "configurados en su instancia de SchoolTool. Por favor solicite a un "
@@ -712,43 +709,43 @@ msgstr "Informe de Libro de Notas"
 msgid "Worksheet"
 msgstr "Hoja de Trabajo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:55
+#: /src/schooltool/gradebook/browser/report_card.py:56
 msgid "Absent"
 msgstr "Ausente"
 
-#: /src/schooltool/gradebook/browser/report_card.py:56
+#: /src/schooltool/gradebook/browser/report_card.py:57
 msgid "Tardy"
 msgstr "Retraso"
 
-#: /src/schooltool/gradebook/browser/report_card.py:57
+#: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "A"
 msgstr "A"
 
-#: /src/schooltool/gradebook/browser/report_card.py:58
+#: /src/schooltool/gradebook/browser/report_card.py:59
 msgid "T"
 msgstr "T"
 
-#: /src/schooltool/gradebook/browser/report_card.py:119
+#: /src/schooltool/gradebook/browser/report_card.py:120
 msgid "-- Use range below --"
 msgstr "-- Use el rango de abajo --"
 
-#: /src/schooltool/gradebook/browser/report_card.py:129
+#: /src/schooltool/gradebook/browser/report_card.py:137
 msgid "Choose an existing score system or use range below"
 msgstr "Escoja un sistema de notas existente o use el rango de abajo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:134
+#: /src/schooltool/gradebook/browser/report_card.py:142
 msgid "Minimum"
 msgstr "Mínimo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:135
+#: /src/schooltool/gradebook/browser/report_card.py:143
 msgid "Lowest integer score value possible"
 msgstr "Valor entero de nota más bajo posible"
 
-#: /src/schooltool/gradebook/browser/report_card.py:140
+#: /src/schooltool/gradebook/browser/report_card.py:148
 msgid "Maximum"
 msgstr "Máximo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:141
+#: /src/schooltool/gradebook/browser/report_card.py:149
 msgid "Highest integer score value possible"
 msgstr "Valor entero de nota más alto posible"
 
@@ -1112,6 +1109,38 @@ msgstr "Fuente de Actividad Vinculada"
 msgid "A text string that specifies the source of the column"
 msgstr "Una cadena de texto que especifica la fuente de la columna"
 
+#: /src/schooltool/gradebook/security.zcml:10
+#, fuzzy
+msgid "Create, edit and deploy report sheet templates."
+msgstr "Implementar plantilla de informe a la hoja de trabajo"
+
+#: /src/schooltool/gradebook/security.zcml:10
+#, fuzzy
+msgid "Edit Templates"
+msgstr "Plantilla"
+
+#: /src/schooltool/gradebook/security.zcml:17
+msgid "Create and edit gradebook data for a section."
+msgstr ""
+
+#: /src/schooltool/gradebook/security.zcml:17
+#, fuzzy
+msgid "Edit Gradebook"
+msgstr "Libreta de Notas"
+
+#: /src/schooltool/gradebook/security.zcml:24
+#, fuzzy
+msgid "View Gradebook"
+msgstr "Libreta de Notas"
+
+#: /src/schooltool/gradebook/security.zcml:24
+msgid "View gradebook data for a section."
+msgstr ""
+
+#: /src/schooltool/gradebook/security.zcml:33
+msgid "Administration can grade students"
+msgstr "Los Administradores pueden calificar a los estudiantes"
+
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
@@ -1300,33 +1329,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#~ msgid "Add a Report Worksheet"
-#~ msgstr "Añadir un Reporte de Hoja de Trabajo"
-
-#~ msgid "Edit Report Worksheet"
-#~ msgstr "Editar Reporte de Hoja de Trabajo"
-
-#~ msgid "New Report Worksheet"
-#~ msgstr "Nuevo Reporte de Hoja de Trabajo"
-
-#~ msgid "Deploy Report Worksheet"
-#~ msgstr "Desplegar Boletín de Calificaciones"
-
-#~ msgid "Print Report Card"
-#~ msgstr "Imprimir Tarjeta de Reporte"
-
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"
-
-#~ msgid "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-#~ msgstr "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-
-#~ msgid "Administration can grade students"
-#~ msgstr "Los Administradores pueden calificar a los estudiantes"
-
-#~ msgid "Max. Score"
-#~ msgstr "Máx. puntuación"
-
 #~ msgid "Activity Name"
 #~ msgstr "Nombre de la actividad"
 
@@ -1336,5 +1338,3 @@ msgstr ""
 #~ msgid "Remove?"
 #~ msgstr "¿Eliminar?"
 
-#~ msgid "Workheet"
-#~ msgstr "Hoja de Trabajo"
