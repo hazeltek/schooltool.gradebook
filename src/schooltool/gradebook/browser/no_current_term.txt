@@ -23,4 +23,7 @@ user gets redirected to the error page.
     >>> manager.getLink('Request Report Card').click()
     >>> manager.url
     'http://localhost/no_current_term.html'
-
+    >>> 'currently' in manager.contents
+    True
+    >>> 'administration' in manager.contents
+    True

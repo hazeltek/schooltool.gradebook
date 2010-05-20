@@ -20,7 +20,8 @@
 Report Card Views
 """
 
-from zope.componentvocabulary.vocabulary import UtilityVocabulary, UtilityTerm
+from zope.component import getUtilitiesFor
+from zope.schema.vocabulary import SimpleVocabulary
 from zope.container.interfaces import INameChooser
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
@@ -115,10 +116,17 @@ class TemplatesView(object):
 
 
 def ReportScoreSystemsVocabulary(context):
-    vocab = UtilityVocabulary(context, interface=IScoreSystem)
-    rangedTerm = UtilityTerm('ranged', _('-- Use range below --'))
-    vocab._terms[rangedTerm.token] = rangedTerm
-    return vocab
+    terms = [SimpleVocabulary.createTerm('ranged', 'ranged',
+                                         _('-- Use range below --'))]
+    for name, utility in getUtilitiesFor(IScoreSystem, context):
+        hidden = getattr(utility, 'hidden', False)
+        if not hidden:
+            value = utility
+            token = name.encode('punycode')
+            title = name
+            term = SimpleVocabulary.createTerm(value, token, title)
+            terms.append(term)
+    return SimpleVocabulary(terms)
 
 
 class IReportScoreSystem(Interface):
@@ -292,6 +300,11 @@ class ReportActivityEditView(form.EditForm):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+
+ApplyLabel = button.StaticButtonActionAttribute(
+    _('Apply'),
+    button=ReportActivityEditView.buttons['apply'])
 
 
 class DeployReportWorksheetBaseView(object):
