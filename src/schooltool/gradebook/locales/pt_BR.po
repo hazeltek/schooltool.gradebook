@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-04-27 22:54+0300\n"
-"PO-Revision-Date: 2010-04-28 17:54+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-05-19 02:57+0000\n"
+"Last-Translator: Eugênio F <Unknown>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -380,7 +380,7 @@ msgstr "Notas inválidas (destacadas em vermelho) não foram salvas."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:582
 msgid "N/A"
-msgstr ""
+msgstr "N/D"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:685
@@ -708,7 +708,7 @@ msgstr "Relatório do Boletim"
 #: /src/schooltool/gradebook/browser/pdf_views.py:761
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
 msgid "Worksheet"
-msgstr ""
+msgstr "Planilha de Trabalho"
 
 #: /src/schooltool/gradebook/browser/report_card.py:55
 msgid "Absent"
@@ -910,7 +910,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
 msgid "Delete Worksheet"
-msgstr ""
+msgstr "Apagar Planilha de Trabalho"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:12
 msgid ""
@@ -920,7 +920,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:18
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
 msgid ""
@@ -942,23 +942,23 @@ msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:109
 msgid "Assignment"
-msgstr ""
+msgstr "Atribuição"
 
 #: /src/schooltool/gradebook/gradebook_init.py:110
 msgid "Essay"
-msgstr ""
+msgstr "Redação"
 
 #: /src/schooltool/gradebook/gradebook_init.py:111
 msgid "Exam"
-msgstr ""
+msgstr "Prova"
 
 #: /src/schooltool/gradebook/gradebook_init.py:112
 msgid "Homework"
-msgstr ""
+msgstr "Lição de Casa"
 
 #: /src/schooltool/gradebook/gradebook_init.py:113
 msgid "Journal"
-msgstr ""
+msgstr "Diário"
 
 #: /src/schooltool/gradebook/gradebook_init.py:114
 msgid "Lab"
@@ -1007,11 +1007,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:147
 msgid "The date the activity was created."
-msgstr ""
+msgstr "Dia que a atividade foi criada"
 
 #: /src/schooltool/gradebook/interfaces.py:163
 msgid "Columns"
-msgstr ""
+msgstr "Colunas"
 
 #: /src/schooltool/gradebook/interfaces.py:164
 msgid "Columns to be printed in the report card."
@@ -1028,7 +1028,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:206
 msgid "Activities in this gradebook."
-msgstr ""
+msgstr "Atividades neste diario de classe"
 
 #: /src/schooltool/gradebook/interfaces.py:209
 msgid "Students"
@@ -1036,32 +1036,32 @@ msgstr "Estudantes"
 
 #: /src/schooltool/gradebook/interfaces.py:210
 msgid "Students in this gradebook."
-msgstr ""
+msgstr "Alunos neste diario de classe"
 
 #: /src/schooltool/gradebook/interfaces.py:326
 #: /src/schooltool/gradebook/interfaces.py:357
 #: /src/schooltool/gradebook/interfaces.py:380
 msgid "External Activity Source"
-msgstr ""
+msgstr "Fonte de Atividade Externa"
 
 #: /src/schooltool/gradebook/interfaces.py:327
 #: /src/schooltool/gradebook/interfaces.py:381
 msgid "The registration name of the source"
-msgstr ""
+msgstr "O nome de registro da fonte"
 
 #: /src/schooltool/gradebook/interfaces.py:331
 #: /src/schooltool/gradebook/interfaces.py:385
 msgid "External Activity ID"
-msgstr ""
+msgstr "ID da Atividade Externa"
 
 #: /src/schooltool/gradebook/interfaces.py:332
 #: /src/schooltool/gradebook/interfaces.py:386
 msgid "A unique identifier for the external activity"
-msgstr ""
+msgstr "Um identificador único para a atividade externa"
 
 #: /src/schooltool/gradebook/interfaces.py:336
 msgid "Points"
-msgstr ""
+msgstr "Notas"
 
 #: /src/schooltool/gradebook/interfaces.py:337
 msgid "Points value to calculate the activity grade"
@@ -1073,15 +1073,15 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:363
 msgid "A brief title of the external activities source"
-msgstr ""
+msgstr "Um breve título para a fonte das atividades externas"
 
 #: /src/schooltool/gradebook/interfaces.py:391
 msgid "A brief title of the external activity."
-msgstr ""
+msgstr "Um breve título da atividade externa."
 
 #: /src/schooltool/gradebook/interfaces.py:396
 msgid "A detailed description of the external activity."
-msgstr ""
+msgstr "Uma descrição detalahda da atividade externa."
 
 #: /src/schooltool/gradebook/interfaces.py:414
 msgid "Linked Column Activity Source"
@@ -1095,7 +1095,7 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:8
 msgid "Score Systems"
-msgstr ""
+msgstr "Sistemas de Pontuação"
 
 #: /src/schooltool/requirement/browser/configure.zcml:22
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
@@ -1129,7 +1129,7 @@ msgstr "Mostrando o Item ${count} de ${total} items"
 
 #: /src/schooltool/requirement/browser/requirement.py:55
 msgid "Requirement index"
-msgstr ""
+msgstr "Índice de Requisitos"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:39
 msgid "The Title field must not be empty."
@@ -1239,15 +1239,15 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
 msgid "New Score System"
-msgstr ""
+msgstr "Novo Sistema de Notas"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 msgid "Score"
-msgstr ""
+msgstr "Notas"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:51
 msgid "Abbreviation"
-msgstr ""
+msgstr "Abreviatura"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 msgid "Point Value"
@@ -1268,11 +1268,11 @@ msgstr "Ver Sistema de Pontuação"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
-msgstr ""
+msgstr "Excluir?"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
-msgstr ""
+msgstr "Atualizar"
 
 #~ msgid "Add a Report Worksheet"
 #~ msgstr "Adicione um Relatório de Planilha de Trabalho"
