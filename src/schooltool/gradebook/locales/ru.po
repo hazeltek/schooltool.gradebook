@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-05-19 17:18+0000\n"
-"Last-Translator: WhiteRabbit <Unknown>\n"
+"PO-Revision-Date: 2010-05-20 20:31+0000\n"
+"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-05-20 05:36+0000\n"
+"X-Launchpad-Export-Date: 2010-05-21 03:42+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -223,15 +223,15 @@ msgid "Add a Report Sheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Редактировать рабочий лист"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Редактировать"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Редактировать рабочий лист"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -890,7 +890,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:18
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
 msgid ""
@@ -920,15 +920,15 @@ msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:111
 msgid "Exam"
-msgstr ""
+msgstr "Экзамен"
 
 #: /src/schooltool/gradebook/gradebook_init.py:112
 msgid "Homework"
-msgstr ""
+msgstr "Домашняя работа"
 
 #: /src/schooltool/gradebook/gradebook_init.py:113
 msgid "Journal"
-msgstr ""
+msgstr "Журнал"
 
 #: /src/schooltool/gradebook/gradebook_init.py:114
 msgid "Lab"
@@ -944,7 +944,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:119
 msgid "Due Date"
-msgstr ""
+msgstr "Срок сдачи"
 
 #: /src/schooltool/gradebook/interfaces.py:120
 msgid "The date the activity is due to be graded."
@@ -969,7 +969,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:141
 msgid "Scoresystem"
-msgstr ""
+msgstr "Система оценивания"
 
 #: /src/schooltool/gradebook/interfaces.py:142
 msgid "The activity scoresystem."
@@ -1066,23 +1066,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Шаблоны отчётов"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Карточка посещаемости"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Карточка посещаемости"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."

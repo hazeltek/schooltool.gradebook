@@ -5,7 +5,8 @@ CHANGES
 0.7.1 (unreleased)
 ------------------
 
-- fixed last visited section deleted bug #591872
+- Fixed accessing gradebook if last visited section was deleted (https://launchpad.net/bugs/591872)
+- Updated translations (es, ru, tr)
 
 
 0.7.0 (2010-05-20)
