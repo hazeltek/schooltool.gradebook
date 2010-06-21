@@ -2,6 +2,9 @@
 CHANGES
 =======
 
+- Updated translations (es, ru, tr)
+
+
 0.7.0 (unreleased)
 ------------------
 

@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 18:22+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-06-06 19:03+0000\n"
+"Last-Translator: Michael Fallows <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-06-07 03:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -38,15 +38,15 @@ msgstr "Worksheets"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Hide"
 
 #: /src/schooltool/gradebook/browser/activity.py:69
 msgid "External Activity"
-msgstr ""
+msgstr "External Activity"
 
 #: /src/schooltool/gradebook/browser/activity.py:70
 msgid "The external activity"
-msgstr ""
+msgstr "The external activity"
 
 #: /src/schooltool/gradebook/browser/activity.py:170
 #: /src/schooltool/gradebook/browser/report_card.py:217
@@ -78,7 +78,7 @@ msgstr "Cancel"
 
 #: /src/schooltool/gradebook/browser/activity.py:225
 msgid "Add an External Activity"
-msgstr ""
+msgstr "Add an External Activity"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:296
@@ -88,7 +88,7 @@ msgstr "Change information for ${fullname}"
 
 #: /src/schooltool/gradebook/browser/activity.py:314
 msgid "Edit External Activity"
-msgstr ""
+msgstr "Edit External Activity"
 
 #: /src/schooltool/gradebook/browser/activity.py:317
 #: /src/schooltool/gradebook/browser/report_card.py:306
@@ -99,15 +99,15 @@ msgstr "Apply"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:355
 msgid "$value is not a valid weight."
-msgstr ""
+msgstr "$value is not a valid weight."
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "Category weights must add up to 100."
-msgstr ""
+msgstr "Category weights must add up to 100."
 
 #: /src/schooltool/gradebook/browser/activity.py:410
 msgid "The external activity couldn't be found"
-msgstr ""
+msgstr "The external activity couldn't be found"
 
 #: /src/schooltool/gradebook/browser/activity.py:554
 #: /src/schooltool/gradebook/browser/activity.py:622
@@ -116,11 +116,11 @@ msgstr "Μέσος όρος"
 
 #: /src/schooltool/gradebook/browser/activity.py:592
 msgid "Add Linked Column"
-msgstr ""
+msgstr "Add Linked Column"
 
 #: /src/schooltool/gradebook/browser/activity.py:631
 msgid "Edit Linked Column"
-msgstr ""
+msgstr "Edit Linked Column"
 
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:15
 #: /src/schooltool/gradebook/interfaces.py:362
@@ -138,12 +138,12 @@ msgstr "Label"
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
 #: /src/schooltool/gradebook/interfaces.py:135
 msgid "Category"
-msgstr ""
+msgstr "Category"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr ""
+msgstr "Manage Activity Categories"
 
 #: /src/schooltool/gradebook/browser/categories.pt:19
 msgid ""
@@ -152,6 +152,10 @@ msgid ""
 "calculate grades. For example, the grade in a section might be comprised of "
 "60% test scores, 20% homework and 20% class participation."
 msgstr ""
+"Categories are used in SchoolTool's gradebook to organize activities and to "
+"allow teachers to weight different types of activities differently to "
+"calculate grades. For example, the grade in a section might be comprised of "
+"60% test scores, 20% homework and 20% class participation."
 
 #: /src/schooltool/gradebook/browser/categories.pt:22
 msgid ""
@@ -161,6 +165,10 @@ msgid ""
 "Likewise, if some of the default categories are not relevant to your school, "
 "remove them below."
 msgstr ""
+"The list of available categories for all teachers is managed through this "
+"form. If one or more teachers would like to use a category not in the "
+"current list, the site manager can add it here. Likewise, if some of the "
+"default categories are not relevant to your school, remove them below."
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
@@ -179,27 +187,27 @@ msgstr "Change"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
-msgstr ""
+msgstr "Categories"
 
 #: /src/schooltool/gradebook/browser/category.py:49
 msgid "New Category"
-msgstr ""
+msgstr "New Category"
 
 #: /src/schooltool/gradebook/browser/category.py:52
 msgid "Default Category"
-msgstr ""
+msgstr "Default Category"
 
 #: /src/schooltool/gradebook/browser/category.py:75
 msgid "Categories successfully deleted."
-msgstr ""
+msgstr "Categories successfully deleted."
 
 #: /src/schooltool/gradebook/browser/category.py:81
 msgid "Category successfully added."
-msgstr ""
+msgstr "Category successfully added."
 
 #: /src/schooltool/gradebook/browser/category.py:87
 msgid "Default category successfully changed."
-msgstr ""
+msgstr "Default category successfully changed."
 
 #: /src/schooltool/gradebook/browser/configure.zcml:56
 #: /src/schooltool/gradebook/browser/configure.zcml:90
@@ -219,7 +227,11 @@ msgstr "Add a Worksheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:139
 msgid "Add a Report Sheet"
-msgstr ""
+msgstr "Add a Report Sheet"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Edit Worksheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
@@ -228,13 +240,9 @@ msgstr ""
 msgid "Edit"
 msgstr "Edit"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Edit Worksheet"
-
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
-msgstr ""
+msgstr "Edit Report Sheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:227
 msgid "New Report Activity"
@@ -253,7 +261,7 @@ msgstr "Gradebook"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:288
 msgid "New Report Sheet"
-msgstr ""
+msgstr "New Report Sheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:295
 msgid "New Worksheet"
@@ -273,7 +281,7 @@ msgstr "Return to Gradebook"
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:4
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:8
 msgid "Unhide Worksheets"
-msgstr ""
+msgstr "Unhide Worksheets"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:325
 #: /src/schooltool/gradebook/browser/configure.zcml:369
@@ -289,7 +297,7 @@ msgstr "New External Activity"
 #: /src/schooltool/gradebook/browser/configure.zcml:339
 #: /src/schooltool/gradebook/browser/configure.zcml:383
 msgid "New Linked Column"
-msgstr ""
+msgstr "New Linked Column"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Manage Activities"
@@ -303,11 +311,11 @@ msgstr "Weight Categories"
 #: /src/schooltool/gradebook/browser/configure.zcml:404
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:16
 msgid "Preferences"
-msgstr ""
+msgstr "Preferences"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:418
 msgid "Download PDF"
-msgstr ""
+msgstr "Download PDF"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:427
 msgid "Update Grades"
@@ -316,7 +324,7 @@ msgstr "Update Grades"
 #: /src/schooltool/gradebook/browser/configure.zcml:524
 #: /src/schooltool/gradebook/browser/configure.zcml:568
 msgid "Deploy Report Sheet"
-msgstr ""
+msgstr "Deploy Report Sheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:531
 #: /src/schooltool/gradebook/browser/configure.zcml:582
@@ -324,30 +332,30 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:669
 #: /src/schooltool/gradebook/browser/configure.zcml:712
 msgid "Reports"
-msgstr ""
+msgstr "Reports"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:575
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13
 msgid "Report Card Layout"
-msgstr ""
+msgstr "Report Card Layout"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
 msgid "Deploy Report Worksheet Template"
-msgstr ""
+msgstr "Deploy Report Worksheet Template"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
 msgid "Template"
-msgstr ""
+msgstr "Template"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
-msgstr ""
+msgstr "Deploy"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:73
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:74
 msgid "Summary"
-msgstr ""
+msgstr "Summary"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:75
 msgid "Ave."
@@ -356,30 +364,32 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/gradebook.py:75
 #: /src/schooltool/gradebook/browser/pdf_views.py:656
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:210
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
 msgstr ""
+"You have some changes that have not been saved.  Click OK to save now or "
+"CANCEL to continue without saving."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:435
 msgid "Invalid scores (highlighted in red) were not saved."
-msgstr ""
+msgstr "Invalid scores (highlighted in red) were not saved."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:582
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:685
 msgid "The grade $value for $name is not valid."
-msgstr ""
+msgstr "The grade $value for $name is not valid."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:959
 msgid "-- No score system --"
-msgstr ""
+msgstr "-- No score system --"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1017
 msgid "Previous"
@@ -392,41 +402,43 @@ msgstr "Next"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1106
 msgid "Enter grades for ${fullname}"
-msgstr ""
+msgstr "Enter grades for ${fullname}"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1131
 msgid "$worksheet for $student in $section"
-msgstr ""
+msgstr "$worksheet for $student in $section"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:13
 msgid "Set Column Preferences"
-msgstr ""
+msgstr "Set Column Preferences"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:19
 msgid "Column Type"
-msgstr ""
+msgstr "Column Type"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:20
 msgid "Hide?"
-msgstr ""
+msgstr "Hide?"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:22
 #: /src/schooltool/gradebook/browser/report_card.py:136
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
 msgid "Score System"
-msgstr ""
+msgstr "Score System"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:62
 msgid "Hide 'show only activities due in past _ weeks'"
-msgstr ""
+msgstr "Hide 'show only activities due in past _ weeks'"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:76
 msgid ""
 "You can add a summary worksheet to each of your gradebooks that "
 "automatically includes a column for the average of all existing worksheets."
 msgstr ""
+"You can add a summary worksheet to each of your gradebooks that "
+"automatically includes a column for the average of all existing worksheets."
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:79
 msgid ""
@@ -435,18 +447,22 @@ msgid ""
 "entitled \"Summary\" will be created, which includes the average scores from "
 "\"A,\" \"B\" and \"C\" in the first three columns."
 msgstr ""
+"For example, if you have three worksheets in a section, \"A,\" \"B,\" and "
+"\"C,\" and click \"Create Summary Worksheets,\" an additional sheet, "
+"entitled \"Summary\" will be created, which includes the average scores from "
+"\"A,\" \"B\" and \"C\" in the first three columns."
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:86
 msgid "Overwrite existing worksheets titled \"Summary\"."
-msgstr ""
+msgstr "Overwrite existing worksheets titled \"Summary\"."
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:92
 msgid "Create Summary Worksheets"
-msgstr ""
+msgstr "Create Summary Worksheets"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
-msgstr ""
+msgstr "Grade ${name}"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:122
@@ -456,13 +472,13 @@ msgstr "Name"
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:47
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:157
 msgid "Apply a grade for all students:"
-msgstr ""
+msgstr "Apply a grade for all students:"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:98
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:254
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:84
 msgid "Save"
-msgstr ""
+msgstr "Save"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:16
 msgid ""
@@ -470,11 +486,14 @@ msgid ""
 "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
 "use a browser with Javascript."
 msgstr ""
+"Your browser either has Javascript turned off, or it is not supported. "
+"Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
+"use a browser with Javascript."
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:30
 #: /src/schooltool/gradebook/browser/mygrades.pt:15
 msgid "Term:"
-msgstr ""
+msgstr "Term:"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:35
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
@@ -485,7 +504,7 @@ msgstr "Term"
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:49
 #: /src/schooltool/gradebook/browser/mygrades.pt:33
 msgid "Section:"
-msgstr ""
+msgstr "Section:"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:53
 #: /src/schooltool/gradebook/browser/mygrades.pt:37
@@ -495,25 +514,25 @@ msgstr "Section"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
 msgid "show only activities due in past ${num_weeks} weeks"
-msgstr ""
+msgstr "Show only activities due in past ${num_weeks} weeks"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:146
 msgid "(sort)"
-msgstr ""
+msgstr "(sort)"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
-msgstr ""
+msgstr "You do not teach or attend any classes."
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:16
 msgid "Classes you teach"
-msgstr ""
+msgstr "Classes you teach"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:20
 msgid "Classes you attend"
-msgstr ""
+msgstr "Classes you attend"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:4
 msgid "Layout Report Card"
@@ -521,25 +540,25 @@ msgstr "Layout Report Card"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:16
 msgid "Grid Columns"
-msgstr ""
+msgstr "Grid Columns"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:82
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:21
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:83
 msgid "Heading"
-msgstr ""
+msgstr "Heading"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
 msgid "New Column"
-msgstr ""
+msgstr "New Column"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:61
 msgid "Choose a column to add"
-msgstr ""
+msgstr "Choose a column to add"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:78
 #: /src/schooltool/gradebook/interfaces.py:167
@@ -1065,23 +1084,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Report Sheet Templates"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Gradebook"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Gradebook"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."

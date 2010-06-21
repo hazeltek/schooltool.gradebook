@@ -8,25 +8,25 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 17:59+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-06-18 20:02+0000\n"
+"Last-Translator: utdemir <utdemir@gmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-06-19 03:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:51
 msgid "Sheet1"
-msgstr ""
+msgstr "Çizelge 1"
 
 #: /src/schooltool/gradebook/activity.py:229
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
 #: /src/schooltool/gradebook/interfaces.py:205
 msgid "Activities"
-msgstr ""
+msgstr "Etkinlikler"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:4
 #: /src/schooltool/gradebook/browser/activities_overview.pt:8
@@ -39,20 +39,20 @@ msgstr "Çalışma Sayfaları"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Gizle"
 
 #: /src/schooltool/gradebook/browser/activity.py:69
 msgid "External Activity"
-msgstr ""
+msgstr "Harici Etkinlik"
 
 #: /src/schooltool/gradebook/browser/activity.py:70
 msgid "The external activity"
-msgstr ""
+msgstr "Harici etkinlik"
 
 #: /src/schooltool/gradebook/browser/activity.py:170
 #: /src/schooltool/gradebook/browser/report_card.py:217
 msgid "Add new activity"
-msgstr ""
+msgstr "Yeni Etkinlik Ekle"
 
 #: /src/schooltool/gradebook/browser/activity.py:183
 #: /src/schooltool/gradebook/browser/activity.py:238
@@ -223,15 +223,15 @@ msgid "Add a Report Sheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Çalışma Sayfası düzenle"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Düzenle"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Çalışma Sayfası düzenle"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -495,9 +495,8 @@ msgid "Section"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
-#, fuzzy
 msgid "show only activities due in past ${num_weeks} weeks"
-msgstr "sadece geçmişe ait etkinlikleri göster"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
@@ -1067,23 +1066,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Rapor Sayfası Şablonları"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Not kitabı"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Not kitabı"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
