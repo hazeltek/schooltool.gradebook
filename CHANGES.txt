@@ -5,7 +5,7 @@ CHANGES
 0.7.1 (unreleased)
 ------------------
 
-None yet.
+- fixed last visited section deleted bug #591872
 
 
 0.7.0 (2010-05-20)

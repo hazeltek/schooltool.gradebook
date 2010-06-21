@@ -60,6 +60,12 @@ def getCurrentSectionTaught(person):
     ann = annotation.interfaces.IAnnotations(person)
     if CURRENT_SECTION_TAUGHT_KEY not in ann:
         ann[CURRENT_SECTION_TAUGHT_KEY] = None
+    else:
+        section = ann[CURRENT_SECTION_TAUGHT_KEY]
+        try:
+            IActivities(section)
+        except:
+            ann[CURRENT_SECTION_TAUGHT_KEY] = None
     return ann[CURRENT_SECTION_TAUGHT_KEY]
 
 
@@ -74,6 +80,12 @@ def getCurrentSectionAttended(person):
     ann = annotation.interfaces.IAnnotations(person)
     if CURRENT_SECTION_ATTENDED_KEY not in ann:
         ann[CURRENT_SECTION_ATTENDED_KEY] = None
+    else:
+        section = ann[CURRENT_SECTION_ATTENDED_KEY]
+        try:
+            IActivities(section)
+        except:
+            ann[CURRENT_SECTION_ATTENDED_KEY] = None
     return ann[CURRENT_SECTION_ATTENDED_KEY]
 
 

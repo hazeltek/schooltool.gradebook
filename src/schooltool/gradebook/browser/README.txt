@@ -1383,3 +1383,30 @@ Now, let's check that a student can access the orphan gradebook:
       <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
     </td>
 
+
+Last visited section deleted tests
+----------------------------------
+
+As the gradebook remembers where a teacher or student was last time they were
+in the gradebook, we need to make sure that we can handle the case where the
+last visited section was since deleted.
+
+    >>> stephan.open('http://localhost/schoolyears/2007/fall/sections/1/gradebook')
+    >>> claudia.open('http://localhost/schoolyears/2007/fall/sections/1/mygrades')
+    >>> manager.getLink('2007').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getControl(name='delete.1').value = True
+    >>> manager.getControl('Delete').click()
+    >>> manager.getControl('Confirm').click()
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.printQuery("id('content-body')//a")
+    <a class="navigation_header" href="http://localhost/schoolyears/2007/winter/sections/1/gradebook">Classes you teach</a>
+    <a class="navigation_header" href="http://localhost/schoolyears/2007/winter/sections/2/mygrades">Classes you attend</a>
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.printQuery("id('content-body')//a")
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
+    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
+
