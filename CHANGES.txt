@@ -2,10 +2,14 @@
 CHANGES
 =======
 
+0.7.1 (unreleased)
+------------------
+
+- Fixed accessing gradebook if last visited section was deleted (https://launchpad.net/bugs/591872)
 - Updated translations (es, ru, tr)
 
 
-0.7.0 (unreleased)
+0.7.0 (2010-05-20)
 ------------------
 
 Stable release to go with SchoolTool 1.4.0.
@@ -15,6 +19,7 @@ Stable release to go with SchoolTool 1.4.0.
 - Made 'Apply' button translatable in edit form of report activities
 - Improved due filter message id in the gradebook overview
 - Fixed typo (https://launchpad.net/bugs/582436)
+- Updated translations
 
 
 0.6.2 (2010-04-28)
