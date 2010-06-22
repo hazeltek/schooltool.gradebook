@@ -25,6 +25,7 @@ __docformat__ = 'reStructuredText'
 import zope.interface
 import zope.schema
 from zope.app.form import utility
+from zope.app.form.interfaces import IInputWidget
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.app import app
@@ -46,7 +47,8 @@ class ICategoriesForm(zope.interface.Interface):
         )
 
     newCategory = zope.schema.TextLine(
-        title=_("New Category"))
+        title=_("New Category"),
+        required=False)
 
     defaultCategory = zope.schema.Choice(
         title=_("Default Category"),
@@ -70,6 +72,8 @@ class CategoryOverview(object):
         if 'REMOVE' in self.request:
             keys = utility.getWidgetsData(
                 self, ICategoriesForm, names=['categories'])['categories']
+            if not keys:
+                return
             for key in keys:
                 self.categories.delValue(key, 'en')
             self.message = _('Categories successfully deleted.')
@@ -77,6 +81,8 @@ class CategoryOverview(object):
         elif 'ADD' in self.request:
             value = utility.getWidgetsData(
                 self, ICategoriesForm, names=['newCategory'])['newCategory']
+            if not value:
+                return
             self.categories.addValue(getKey(value), 'en', value)
             self.message = _('Category successfully added.')
 
@@ -85,3 +91,7 @@ class CategoryOverview(object):
                 names=['defaultCategory'])['defaultCategory']
             self.categories.setDefaultKey(key)
             self.message = _('Default category successfully changed.')
+
+        utility.setUpWidgets(
+            self, self.schema, IInputWidget, initial=self.getData(),
+            ignoreStickyValues=True, names=self.fieldNames)

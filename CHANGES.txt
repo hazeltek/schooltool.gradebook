@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - Fixed accessing gradebook if last visited section was deleted (https://launchpad.net/bugs/591872)
+- Fix a crash in manage Activity categories (https://launchpad.net/bugs/585805)
 - Updated translations (es, ru, tr)
 
 

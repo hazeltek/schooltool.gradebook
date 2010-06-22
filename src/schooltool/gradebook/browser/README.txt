@@ -15,54 +15,79 @@ Some imports:
     >>> from schooltool.gradebook import sliceString
 
 
-Initial School Setup
---------------------
+Activity Categories
+-------------------
 
-We will use the 'Manage' tab to find the 'Activity Categories' link to set up
-the categories:
+Administrator defines activity categories available for teachers.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Activity Categories').click()
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    essay
+    exam
+    assignment
+    journal
+    lab
+    project
+    presentation
+    homework
 
-As you can see, there are already several categories pre-defined. Oftentimes,
+As you can see, there are already several categories pre-defined. Often,
 those categories do not work for a school. Either you do not need some and/or
 others are missing. So let's start by deleting a couple of categories:
-
-    >>> 'essay' in manager.contents
-    True
-    >>> 'journal' in manager.contents
-    True
 
     >>> manager.getControl(name='field.categories:list').value = [
     ...     'essay', 'journal', 'homework', 'presentation']
     >>> manager.getControl('Remove').click()
 
-    >>> 'essay' in manager.contents
-    False
-    >>> 'journal' in manager.contents
-    False
+    >>> 'Categories successfully deleted.' in manager.contents
+    True
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    exam
+    assignment
+    lab
+    project
 
 Next, we add a new category:
-
-    >>> 'Lab Report' in manager.contents
-    False
 
     >>> manager.getControl('New Category').value = 'Lab Report'
     >>> manager.getControl('Add').click()
 
-    >>> 'Lab Report' in manager.contents
+    >>> 'Category successfully added.' in manager.contents
     True
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    exam
+    assignment
+    lab
+    project
+    labreport-
 
 We can also add categories with non ASCII characters:
-
-    >>> 'Calificación' in manager.contents
-    False
 
     >>> manager.getControl('New Category').value = 'Calificación'
     >>> manager.getControl('Add').click()
 
-    >>> 'Calificación' in manager.contents
-    True
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    exam
+    assignment
+    calificacin-1ra1s
+    lab
+    project
+    labreport-
+
+If we click on Add without entering a new category, nothing happens:
+
+    >>> analyze.printQuery("id('field.newCategory')/@value", manager.contents)
+
+    >>> manager.getControl('Add').click()
+    >>> 'Category successfully added.' in manager.contents
+    False
+
+Also click Remove without nothing selected:
+
+    >>> manager.getControl('Remove').click()
+    >>> 'Categories successfully deleted.' in manager.contents
+    False
 
 We can also change the default category:
 
@@ -75,7 +100,11 @@ We can also change the default category:
     >>> manager.getControl('Default Category').value
     ['exam']
 
-Se up the school year and a couple of terms:
+
+Initial School Setup
+--------------------
+
+Set up the school year and a couple of terms:
 
    >>> setup.addSchoolYear('2007', '2007-01-01', '2007-12-31')
    >>> setup.addTerm('Winter', '2007-01-01', '2007-06-01', schoolyear='2007')
@@ -97,8 +126,6 @@ Next the administrator defines the courses that are available in the school.
     >>> manager.getControl('Title').value = 'English I'
     >>> manager.getControl('Add').click()
     >>> manager.getLink('English I').click()
-
-This completes the initial school setup.
 
 
 Term Setup
