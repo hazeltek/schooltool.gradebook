@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-0.7.1 (unreleased)
+0.7.1 (2010-06-25)
 ------------------
 
 - Fixed accessing gradebook if last visited section was deleted (https://launchpad.net/bugs/591872)
