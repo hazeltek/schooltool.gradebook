@@ -23,7 +23,7 @@ Gradebook Views
 __docformat__ = 'reStructuredText'
 
 import datetime
-import decimal
+from decimal import Decimal
 import urllib
 
 from zope.container.interfaces import INameChooser
@@ -97,7 +97,7 @@ def convertAverage(average, scoresystem):
     if scoresystem is None:
         return '%s%%' % average
     for score in scoresystem.scores:
-        if average >= score[2]:
+        if average >= score[3]:
             return score[0]
 
 
@@ -706,7 +706,7 @@ class GradeActivity(object):
 
 def getScoreSystemDiscreteValues(ss):
     if IDiscreteValuesScoreSystem.providedBy(ss):
-        return (ss.scores[-1][1], ss.scores[0][1])
+        return (ss.scores[-1][2], ss.scores[0][2])
     elif IRangedValuesScoreSystem.providedBy(ss):
         return (ss.min, ss.max)
     return (0, 0)
@@ -779,10 +779,8 @@ class MyGradesView(SectionFinder):
             self.table.append(row)
 
         if count:
-            average = int((float(100 * total) / float(count)) + 0.5)
+            average = int(round(Decimal(100 * total) / Decimal(count)))
             self.average = convertAverage(average, self.average_scoresystem)
-            if self.average is UNSCORED:
-                self.average = None
         else:
             self.average = None
 
@@ -811,8 +809,8 @@ class LinkedActivityGradesUpdater(object):
         for student in gradebook.students:
             external_grade = external_activity.getGrade(student)
             if external_grade is not None:
-                score = decimal.Decimal("%.2f" % external_grade) * \
-                        decimal.Decimal(linked_activity.points)
+                score = Decimal("%.2f" % external_grade) * \
+                        Decimal(linked_activity.points)
                 gradebook.evaluate(student, linked_activity, score, evaluator)
 
 

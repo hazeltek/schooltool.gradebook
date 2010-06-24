@@ -456,13 +456,13 @@ Also note that all the other entered values should be retained:
     True
     >>> 'value="36"' in stephan.contents
     True
-    >>> stephan.getControl('Cardune, Paul').value = u'40'
+    >>> stephan.getControl('Cardune, Paul').value = u'32'
     >>> stephan.getControl('Save').click()
 
 The screen will return to the grade overview, where the grades are now
 visible:
 
-    >>> 'value="40"' in stephan.contents
+    >>> 'value="32"' in stephan.contents
     True
     >>> 'value="42"' in stephan.contents
     True
@@ -571,7 +571,7 @@ verify this by testing the data cells.
 
     >>> stephan.getControl('Cancel').click()
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '', '42', '', '', '86']
+    ['32', '', '42', '', '', '86']
 
 Now we'll go change a cell and come back.
 
@@ -582,7 +582,7 @@ Now we'll go change a cell and come back.
 We see the new value where it wasn't before.
 
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '85', '42', '', '', '86']
+    ['32', '85', '42', '', '', '86']
 
 Let's change that new value to something else.
 
@@ -590,7 +590,7 @@ Let's change that new value to something else.
     >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
     >>> stephan.getControl('Apply').click()
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '35', '42', '', '', '86']
+    ['32', '35', '42', '', '', '86']
 
 Finally, we'll change it back to the way it was, demonstrating that we can
 remove scores in the student gradebook.
@@ -602,7 +602,7 @@ remove scores in the student gradebook.
 The data cells are set as before.
 
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '', '42', '', '', '86']
+    ['32', '', '42', '', '', '86']
 
 
 Sorting
@@ -688,7 +688,7 @@ us to the gradebook.  There we will note the effect of the weighting.
     ...Tom...
     ...84%</b>...
     ...Paul...
-    ...80%</b>...
+    ...64%</b>...
 
 Finally, we'll test hitting the 'Cancel' button.  It should return to the
 gradebook without changing the weights.
@@ -718,8 +718,8 @@ preference.
     >>> manager.getLink('Score Systems').click()
     >>> manager.getLink('Add Score System').click()
     >>> url = manager.url + '?form-submitted&UPDATE_SUBMIT&title=Good/Bad'
-    >>> url = url + '&displayed1=G&abbr1=&value1=1&percent1=60'
-    >>> url = url + '&displayed2=B&abbr2=&value2=0&percent2=0'
+    >>> url = url + '&displayed1=Good&abbr1=G&value1=1&percent1=70'
+    >>> url = url + '&displayed2=Bad&abbr2=B&value2=0&percent2=0'
     >>> manager.open(url)
 
 We'll start by calling up the current column preferences and note that there
@@ -743,15 +743,39 @@ are none set yet.
     >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
     <input type="checkbox" name="hide_due_date" />
 
-Now we'll set all of the preferences to something and test that the changes
-were saved.
+Let's change all preferences
 
-    >>> url = stephan.url + '?form-submitted&UPDATE_SUBMIT'
-    >>> url += '&hide_total=on&label_total=Summe'
-    >>> url += '&hide_average=on&label_average=Durchschnitt'
-    >>> url += '&scoresystem_average=goodbad'
-    >>> url += '&hide_due_date=on'
-    >>> stephan.open(url)
+    >>> stephan.getControl(name='hide_total').value = ['on']
+    >>> stephan.getControl(name='label_total').value = 'Summe'
+    >>> stephan.getControl(name='hide_average').value = ['on']
+    >>> stephan.getControl(name='label_average').value = 'Durchschnitt'
+    >>> stephan.getControl(name='scoresystem_average').value = ['goodbad']
+    >>> stephan.getControl(name='hide_due_date').value = ['on']
+    >>> stephan.getControl('Update').click()
+
+Total and average columns were hidden
+
+    >>> results = analyze.queryHTML("//table[@class='schooltool_gradebook'][2]//th/div//text()", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    Name
+    <BLANKLINE>
+    HW1
+    <BLANKLINE>
+    50
+    <BLANKLINE>
+    Quiz
+    <BLANKLINE>
+    100
+
+Due date filter was also hidden
+
+    >>> 'show only activities due in past' in stephan.contents
+    False
+
+    >>> analyze.printQuery("//select[@name='num_weeks']", stephan.contents)
+
+Look that all the preferences were saved
 
     >>> stephan.getLink('Preferences').click()
     >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
@@ -770,9 +794,57 @@ were saved.
     >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
     <input type="checkbox" name="hide_due_date" checked="checked" />
 
+Show the total and average columns, and test that Average is converted to Good/Bad:
+
+    >>> stephan.getControl(name='hide_total').value = False
+    >>> stephan.getControl(name='hide_average').value = False
+    >>> stephan.getControl('Update').click()
+
+    >>> results = analyze.queryHTML("//table[@class='schooltool_gradebook'][2]//th/div//text()", stephan.contents)
+    >>> results = [result.strip() for result in results if result]
+    >>> for result in results: print result
+    Name
+    Summe
+    Durchschnitt
+    <BLANKLINE>
+    HW1
+    <BLANKLINE>
+    50
+    <BLANKLINE>
+    Quiz
+    <BLANKLINE>
+    100
+
+    >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    <b>86</b>
+    <b>Good</b>
+    <b>42</b>
+    <b>Good</b>
+    <b>32</b>
+    <b>Bad</b>
+
+Check with extended letter grade scoresystem
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade']
+    >>> stephan.getControl('Update').click()
+
+    >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    <b>86</b>
+    <b>B</b>
+    <b>42</b>
+    <b>B</b>
+    <b>32</b>
+    <b>D</b>
+
 Finally, we will reset the preferences to none so that the rest of the tests
 pass.
 
+    >>> stephan.getLink('Preferences').click()
     >>> url = stephan.url + '?form-submitted&UPDATE_SUBMIT'
     >>> url += '&scoresystem_average='
     >>> stephan.open(url)
@@ -1035,7 +1107,7 @@ And our grades are:
     ...Name...Total...Ave...HW 1...Quiz...
     ...Claudia...<b>86</b>...<b>86%</b>...86...
     ...Tom...<b>44</b>...<b>88%</b>...44...
-    ...Paul...<b>40</b>...<b>80%</b>...40...
+    ...Paul...<b>32</b>...<b>64%</b>...32...
 
 This state should change after we update the grades from external
 activities. Remember that the gradebook has weighting defined?:
@@ -1087,7 +1159,7 @@ loaded with the latest grades:
     ...Name...Total...Ave...HW 1...Quiz...Hardware...
     ...Claudia...92.00...69%...86...6.00...
     ...Tom...53.00...82%...44...9.00...
-    ...Paul...40...80%...40...
+    ...Paul...32...64%...32...
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
@@ -1139,7 +1211,7 @@ changed taking into account the weighting:
     ...Name...Total...Ave...HW 1...Quiz...Hardware As...
     ...Claudia...96.00...69%...86...10.00...
     ...Tom...59.00...79%...44...15.00...
-    ...Paul...40...80%...40...
+    ...Paul...32...64%...32...
 
 
 Column Linking
@@ -1243,7 +1315,7 @@ sources of the links.  First we'll test the editable fields:
     value="44"
     value=""
     value="15.00"
-    value="40"
+    value="32"
     value=""
     value=""
 
@@ -1268,8 +1340,8 @@ Finally we'll test the totals and averages:
     <b>69%</b>
     <b>211.00</b>
     <b>77%</b>
-    <b>224</b>
-    <b>90%</b>
+    <b>216</b>
+    <b>86%</b>
 
 
 Hiding Worksheets
