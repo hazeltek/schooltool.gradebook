@@ -27,7 +27,7 @@ from decimal import Decimal
 import urllib
 
 from zope.container.interfaces import INameChooser
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.html.field import HtmlFragment
 from zope.publisher.browser import BrowserView

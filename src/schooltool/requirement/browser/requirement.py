@@ -25,7 +25,7 @@ import urllib
 
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.form.browser.add import AddView
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement.interfaces import IRequirement

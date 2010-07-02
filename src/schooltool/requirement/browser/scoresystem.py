@@ -26,7 +26,7 @@ from decimal import Decimal
 
 import zope.schema
 from zope.app import form
-from zope.app.pagetemplate import ViewPageTemplateFile
+from zope.browserpage import ViewPageTemplateFile
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
