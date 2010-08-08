@@ -1509,3 +1509,25 @@ last visited section was since deleted.
     <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
     <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
 
+
+CSV test
+--------
+
+We supply a CSV view for getting all grades out of schooltool in CSV format.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Download Gradebook CSV').click()
+    >>> print manager.contents
+    "year","term","section","worksheet","activity","student","grade"
+    "2007","winter","1","Worksheet","Activity-2","claudia","86"
+    "2007","winter","1","Worksheet","LinkedActivity","claudia","10.00"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","claudia","42"
+    "2007","winter","1","Worksheet","Activity","paul","32"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","paul","90"
+    "2007","winter","1","Worksheet","Activity","tom","44"
+    "2007","winter","1","Worksheet","LinkedActivity","tom","15.00"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","tom","72"
+    "2007","winter","1","Worksheet-2","Activity","claudia","42"
+    "2007","winter","1","Worksheet-2","Activity","paul","90"
+    "2007","winter","1","Worksheet-2","Activity","tom","72"
+

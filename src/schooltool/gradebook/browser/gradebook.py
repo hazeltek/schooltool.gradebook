@@ -22,8 +22,10 @@ Gradebook Views
 
 __docformat__ = 'reStructuredText'
 
+import csv
 import datetime
 from decimal import Decimal
+from StringIO import StringIO
 import urllib
 
 from zope.container.interfaces import INameChooser
@@ -42,7 +44,7 @@ from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.course.interfaces import ISection
+from schooltool.course.interfaces import ISection, ISectionContainer
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
@@ -58,7 +60,7 @@ from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
-from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm
 
@@ -1154,4 +1156,37 @@ class StudentGradebookView(object):
             return False
         cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
+
+
+class GradebookCSVView(BrowserView):
+
+    def __call__(self):
+        csvfile = StringIO()
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        row = ['year', 'term', 'section', 'worksheet', 'activity', 'student',
+               'grade']
+        writer.writerow(row)
+        syc = ISchoolYearContainer(self.context)
+        for year in syc.values():
+            for term in year.values():
+                for section in ISectionContainer(term).values():
+                    self.writeGradebookRows(writer, year, term, section)
+        return csvfile.getvalue().decode('utf-8')
+
+    def writeGradebookRows(self, writer, year, term, section):
+        activities = interfaces.IActivities(section)
+        for worksheet in activities.values():
+            gb = interfaces.IGradebook(worksheet)
+            for student in gb.students:
+                for activity in gb.activities:
+                    value, ss = gb.getEvaluation(student, activity)
+                    if value is None:
+                        continue
+                    value = unicode(value).replace('\n', '\\n')
+                    value = value.replace('\r', '\\r')
+                    row = [year.__name__, term.__name__, section.__name__,
+                           worksheet.__name__, activity.__name__,
+                           student.username, value]
+                    row = [item.encode('utf-8') for item in row]
+                    writer.writerow(row)
 

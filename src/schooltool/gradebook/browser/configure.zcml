@@ -98,6 +98,17 @@
         title="Activity Categories"
         order="200"
         />
+    <navigationViewlet
+        name="download_gradebook_csv"
+        for="*"
+        manager="schooltool.app.browser.interfaces.IManageMenuViewletManager"
+        template="templates/navigationViewlet.pt"
+        class="schooltool.skin.skin.NavigationViewlet"
+        permission="schooltool.edit"
+        link="gradebook.csv"
+        title="Download Gradebook CSV"
+        order="220"
+        />
   </configure>
 
   <!-- Activities overview -->
@@ -738,6 +749,12 @@
       class=".gradebook.NoCurrentTerm"
       template="no_current_term.pt"
       permission="schooltool.view"
+      />
+  <page
+      name="gradebook.csv"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".gradebook.GradebookCSVView"
+      permission="schooltool.edit"
       />
 
   <zope:adapter
