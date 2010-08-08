@@ -21,11 +21,11 @@ Gradebook-related Tests
 
 $Id$
 """
-import unittest
+import unittest, doctest
+from pprint import pprint
 
 import z3c.optionstorage
 import zope.annotation.interfaces
-from zope.testing import doctest, doctestunit
 from zope.app.testing import setup
 from zope.component import provideAdapter
 
@@ -74,7 +74,7 @@ def test_suite():
     return unittest.TestSuite((
         doctest.DocFileSuite('../README.txt',
                              setUp=setUp, tearDown=tearDown,
-                             globs={'pprint': doctestunit.pprint},
+                             globs={'pprint': pprint},
                              optionflags=optionflags),
         ))
 

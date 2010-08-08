@@ -24,9 +24,9 @@ $Id$
 
 __docformat__ = 'restructuredtext'
 
-import unittest
+import unittest, doctest
+from pprint import pprint
 
-from zope.testing import doctest, doctestunit
 from zope.app.testing import setup
 
 from schooltool.requirement import testing
@@ -46,13 +46,13 @@ def test_suite():
     return unittest.TestSuite((
         doctest.DocFileSuite('README.txt',
                              setUp=setUp, tearDown=tearDown,
-                             globs={'pprint': doctestunit.pprint},
+                             globs={'pprint': pprint},
                              optionflags=doctest.NORMALIZE_WHITESPACE|
                                          doctest.ELLIPSIS|
                                          doctest.REPORT_ONLY_FIRST_FAILURE),
         doctest.DocFileSuite('grades.txt',
                              setUp=setUp, tearDown=tearDown,
-                             globs={'pprint': doctestunit.pprint},
+                             globs={'pprint': pprint},
                              optionflags=doctest.NORMALIZE_WHITESPACE|
                                          doctest.ELLIPSIS|
                                          doctest.REPORT_ONLY_FIRST_FAILURE),

@@ -21,7 +21,7 @@ Tests for SchoolTool gradebook pdf views.
 
 """
 
-import unittest
+import unittest, doctest
 from pprint import pprint
 from datetime import datetime
 
@@ -38,7 +38,6 @@ from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security.proxy import removeSecurityProxy
-from zope.testing import doctest
 from zope.traversing.browser.interfaces import IAbsoluteURL
 
 from schooltool.app.interfaces import (ISchoolToolApplication,
