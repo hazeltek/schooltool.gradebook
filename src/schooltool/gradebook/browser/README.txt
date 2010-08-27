@@ -534,14 +534,14 @@ spreadsheet as one would expect.
 We'll start by clicking on Paul and testing the contents of the form.
 Since Paul is the first student in the list of students, there will be
 no 'Previous' button.
- 
+
     >>> stephan.getLink('>', index=0).click()
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Cardune, Paul</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
-    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
-    <input type="submit" id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" />
-    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 When we click on the 'Next' button it takes us to the middle student, Tom.
 Here we will see both a 'Previous' and a 'Next' button.
@@ -550,10 +550,10 @@ Here we will see both a 'Previous' and a 'Next' button.
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Hoffman, Tom</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
-    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
-    <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
-    <input type="submit" id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" />
-    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 When we click on the 'Next' button it takes us to the last student, Claudia.
 Here we will see no 'Next' button.
@@ -562,9 +562,9 @@ Here we will see no 'Next' button.
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Richter, Claudia</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
-    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
-    <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
-    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 Hitting the 'Cancel' button takes the user back to the gradebook.  We'll
 verify this by testing the data cells.
@@ -1226,7 +1226,7 @@ There are two types of linked activities, a link to an other worksheet's
 activity, or a link to the average column of the worksheet.  Activity links
 will use the score system of the source activity whereas worksheet average
 links will use an assumed 100 point system.
- 
+
 We'll switch to the Fall term and enter some scores to the English I section:
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=2007-.fall-')

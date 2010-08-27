@@ -22,11 +22,11 @@ Tests for group views.
 $Id$
 """
 
-import unittest
+import unittest, doctest
+from pprint import pprint
 
 from zope.interface import directlyProvides
 from zope.publisher.browser import TestRequest
-from zope.testing import doctest, doctestunit
 from zope.traversing.interfaces import IContainmentRoot
 
 from schooltool.app.browser.testing import setUp, tearDown
@@ -246,7 +246,7 @@ def test_suite():
                                          doctest.REPORT_ONLY_FIRST_FAILURE),
         doctest.DocFileSuite('scoresystem.txt',
                              setUp=setUp, tearDown=tearDown,
-                             globs={'pprint': doctestunit.pprint},
+                             globs={'pprint': pprint},
                              optionflags=doctest.NORMALIZE_WHITESPACE|
                                          doctest.ELLIPSIS|
                                          doctest.REPORT_ONLY_FIRST_FAILURE),

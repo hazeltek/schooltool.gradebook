@@ -21,10 +21,9 @@
 Unit tests for schooltool.gradebook.generations.evolve1
 """
 
-import unittest
+import unittest, doctest
 
 from zope.app.generations.utility import getRootFolder
-from zope.testing import doctest
 
 from schooltool.gradebook.generations.tests import ContextStub
 from schooltool.gradebook.generations.tests import provideAdapters
