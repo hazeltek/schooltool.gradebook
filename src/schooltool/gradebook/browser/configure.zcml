@@ -190,7 +190,7 @@
       name="index.html"
       for="..interfaces.IReportWorksheet"
       class=".worksheet.WorksheetManageView"
-      template="worksheet_overview.pt"
+      template="report_worksheet_overview.pt"
       permission="schooltool.view"
       />
   <page

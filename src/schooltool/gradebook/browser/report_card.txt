@@ -448,3 +448,14 @@ any activities.
     <option value="spring|2005-2006_spring|ReportActivity">Spring - Test - Activity 1</option>
     <option value="spring|2005-2006_spring-2|ReportActivity">Spring - Test2 - Activity 2</option>
 
+Now, let's delete a report activity:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('Test', index=0).click()
+    >>> manager.queryHTML('//form/div[not(@class="controls")]/a/text()')
+    ['Activity 1']
+    >>> manager.getControl(name='delete:list').value = ['ReportActivity']
+    >>> manager.getControl('Delete').click()
+    >>> manager.queryHTML('//form/div[not(@class="controls")]/a/text()')
+    []
