@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-05-16 21:17+0000\n"
-"Last-Translator: Davide Notaristefano <davide@notaristefano.com>\n"
+"PO-Revision-Date: 2010-07-06 21:53+0000\n"
+"Last-Translator: Giuseppe Terrasi <giuseppeterrasi.liste@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-05-20 05:35+0000\n"
+"X-Launchpad-Export-Date: 2010-07-08 03:58+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -233,15 +233,15 @@ msgid "Add a Report Sheet"
 msgstr "Aggiungere un Foglio di Pagella"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Modificare Foglio di Lavoro"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Modificare"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Modificare Foglio di Lavoro"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -367,7 +367,7 @@ msgstr "Med."
 #: /src/schooltool/gradebook/browser/gradebook.py:75
 #: /src/schooltool/gradebook/browser/pdf_views.py:656
 msgid "Total"
-msgstr ""
+msgstr "Totale"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:210
 msgid ""
@@ -383,12 +383,12 @@ msgstr "I punteggi invalidi (evidenziati in rosso) non sono stati salvati"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:582
 msgid "N/A"
-msgstr ""
+msgstr "Non disponibile"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:685
 msgid "The grade $value for $name is not valid."
-msgstr ""
+msgstr "Il voto $value per $name non è valido."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:959
 msgid "-- No score system --"
@@ -396,7 +396,7 @@ msgstr "-- Nessun sistema di punteggio --"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1017
 msgid "Previous"
-msgstr ""
+msgstr "Precedente"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1027
 msgid "Next"
@@ -433,7 +433,7 @@ msgstr "Sistema di punteggio"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:62
 msgid "Hide 'show only activities due in past _ weeks'"
-msgstr ""
+msgstr "Nascondi 'mostra solo attività scadute nelle scorse_settimane'"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:76
 msgid ""
@@ -466,7 +466,7 @@ msgstr "Creare Fogli di Lavoro di Sommario."
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
-msgstr ""
+msgstr "Voto ${name}"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:122
@@ -482,7 +482,7 @@ msgstr "Dare un voto a tutti gli studenti"
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:254
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:84
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:16
 msgid ""
@@ -518,13 +518,13 @@ msgstr "Classe"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
 msgid "show only activities due in past ${num_weeks} weeks"
-msgstr ""
+msgstr "mostra solo attività scadute nelle scorse ${num_weeks} settimane"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:146
 msgid "(sort)"
-msgstr ""
+msgstr "(ordina)"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
@@ -554,11 +554,11 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:21
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:83
 msgid "Heading"
-msgstr ""
+msgstr "Titolo"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:57
 msgid "New Column"
-msgstr ""
+msgstr "Nuova colonna"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:61
 msgid "Choose a column to add"
@@ -583,7 +583,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:80
 msgid "Activity"
-msgstr ""
+msgstr "Attività"
 
 #: /src/schooltool/gradebook/browser/mygrades.pt:83
 #: /src/schooltool/gradebook/browser/pdf_views.py:462
@@ -636,7 +636,7 @@ msgstr "Dettaglio della frequenza"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:325
 msgid "Dates"
-msgstr ""
+msgstr "Date"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:328
 msgid "Student Name"
@@ -644,7 +644,7 @@ msgstr "Nome Studente"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:331
 msgid "User Id"
-msgstr ""
+msgstr "Id utente"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:429
 msgid "Failures by Term Report"
@@ -707,7 +707,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:761
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
 msgid "Worksheet"
-msgstr ""
+msgstr "Foglio di Lavoro"
 
 #: /src/schooltool/gradebook/browser/report_card.py:56
 msgid "Absent"
@@ -1102,14 +1102,12 @@ msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Registro dei voti"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Registro dei voti"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1301,6 +1299,3 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
 msgstr ""
-
-#~ msgid "Print Report Card"
-#~ msgstr "Stampa Pagella"
