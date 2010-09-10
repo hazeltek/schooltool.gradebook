@@ -97,6 +97,7 @@ We'll send the form values necessary to add a score system called 'Good/Bad'.
 
     >>> url = update_url + '&title=Good/Bad&displayed1=G&abbr1=&value1=1&percent1=60'
     >>> url = url + '&displayed2=B&abbr2=&value2=0&percent2=0'
+    >>> url = url + '&minScore=G'
     >>> manager.open(url)
 
 Now we see the new score system in the list.
@@ -127,14 +128,59 @@ Let's click on 'Good/Bad' and test it's view.
     <span></span>
     <span>1</span>
     <span>60</span>
+    <span>Yes</span>
     <span>B</span>
     <span></span>
     <span>0</span>
     <span>0</span>
+    <span>No</span>
 
 There's an 'OK' button that takes the user back to the score systems overview.
 
     >>> manager.getLink('OK').click()
     >>> manager.url
     'http://localhost/scoresystems'
+
+
+Max passing score
+-----------------
+
+Some schools might want to create score systems that have a maximum passing
+score rather than a minimum.
+
+    >>> manager.getLink('Add Score System').click()
+
+    >>> url = update_url + '&title=Max&displayed1=A&abbr1=&value1=4&percent1=75'
+    >>> url = url + '&displayed2=B&abbr2=&value2=3&percent2=50'
+    >>> url = url + '&displayed3=C&abbr3=&value3=2&percent3=25'
+    >>> url = url + '&displayed4=D&abbr4=&value4=1&percent4=0'
+    >>> url = url + '&minScore=C'
+    >>> url = url + '&minMax=max'
+    >>> manager.open(url)
+
+When we view the max score system, we note that the passing scores are at the
+bottom, 'C' being the largest passing score.
+
+    >>> manager.getLink('Max').click()
+    >>> analyze.printQuery("id('content-body')/table//span", manager.contents)
+    <span>A</span>
+    <span></span>
+    <span>4</span>
+    <span>75</span>
+    <span>No</span>
+    <span>B</span>
+    <span></span>
+    <span>3</span>
+    <span>50</span>
+    <span>No</span>
+    <span>C</span>
+    <span></span>
+    <span>2</span>
+    <span>25</span>
+    <span>Yes</span>
+    <span>D</span>
+    <span></span>
+    <span>1</span>
+    <span>0</span>
+    <span>Yes</span>
 

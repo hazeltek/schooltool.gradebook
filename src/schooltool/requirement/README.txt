@@ -570,6 +570,34 @@ store in the ZODB:
   49
 
 
+Max passing score
+-----------------
+
+Sometimes, a school might want a score system that works in reverse when
+determining if a score is passing, specifying a maximum passing score rather
+than the typically specified minimum.
+
+  >>> maxss = scoresystem.DiscreteValuesScoreSystem(
+  ...    u'Max', u'Max passing score system',
+  ...    [('A', '', Decimal(4), Decimal(80)),
+  ...     ('B', '', Decimal(3), Decimal(60)), 
+  ...     ('C', '', Decimal(2), Decimal(40)), 
+  ...     ('D', '', Decimal(1), Decimal(20)), 
+  ...     ('E', '', Decimal(0), Decimal(0))],
+  ...    bestScore='E', minPassingScore='C', isMaxPassingScore=True)
+
+  >>> maxss.isPassingScore('A')
+  False
+  >>> maxss.isPassingScore('B')
+  False
+  >>> maxss.isPassingScore('C')
+  True
+  >>> maxss.isPassingScore('D')
+  True
+  >>> maxss.isPassingScore('E')
+  True
+
+
 Evaluations
 -----------
 

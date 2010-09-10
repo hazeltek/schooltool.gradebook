@@ -75,8 +75,29 @@
       </tal:block>
 
     </table>
+
     <div class="controls">
       <input type="submit" class="button-ok" name="SAVE" value="Add a lower score" i18n:attributes="value" />
+    </div>
+
+    <div class="controls">
+      <select name="minMax">
+        <tal:block repeat="minMax view/getMinMax">
+          <option
+              tal:attributes="value minMax/form_id;
+                              selected minMax/selected"
+              tal:content="minMax/title" />
+        </tal:block>
+      </select>
+      <span i18n:translate="">passing score:</span>
+      <select name="minScore">
+        <tal:block repeat="minScore view/getMinScores">
+          <option
+              tal:attributes="value minScore/form_id;
+                              selected minScore/selected"
+              tal:content="minScore/title" />
+        </tal:block>
+      </select>
     </div>
     </fieldset>
 
