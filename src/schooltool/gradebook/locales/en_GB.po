@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-07-06 03:41+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -772,11 +772,11 @@ msgid ""
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
 msgstr ""
 "For example, say the term is \"Autumn 2011,\" and you have deployed a report "
-"sheet entitled \"Term Grades,\" which includes an activity \"First Quarter,"
-"\" using a grading scale where a \"3\" or higher is passing. To create a "
-"report of students failing the first quarter grade, you would select the "
-"report activity \"Autumn 2011 - Term Grades - First Quarter\" and choose \"3"
-"\" as the minimum passing grade. And click \"Download.\""
+"sheet entitled \"Term Grades,\" which includes an activity \"First "
+"Quarter,\" using a grading scale where a \"3\" or higher is passing. To "
+"create a report of students failing the first quarter grade, you would "
+"select the report activity \"Autumn 2011 - Term Grades - First Quarter\" and "
+"choose \"3\" as the minimum passing grade. And click \"Download.\""
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:38
 msgid "Request Report"
@@ -1329,3 +1329,18 @@ msgstr "Delete?"
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
 msgstr "Update"
+
+#~ msgid "Add a Report Worksheet"
+#~ msgstr "Add a Report Worksheet"
+
+#~ msgid "Edit Report Worksheet"
+#~ msgstr "Edit Report Worksheet"
+
+#~ msgid "New Report Worksheet"
+#~ msgstr "New Report Worksheet"
+
+#~ msgid "Deploy Report Worksheet"
+#~ msgstr "Deploy Report Worksheet"
+
+#~ msgid "Print Report Card"
+#~ msgstr "Print Report Card"

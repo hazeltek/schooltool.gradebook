@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 17:24+0000\n"
+"PO-Revision-Date: 2010-05-20 20:41+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -232,15 +232,15 @@ msgid "Add a Report Sheet"
 msgstr "Een rapportblad toevoegen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Werkblad bewerken"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Bewerken"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Werkblad bewerken"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -1105,23 +1105,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Sjabloon"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Cijferlijst"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Cijferlijst"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1314,9 +1311,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#~ msgid "weeks"
-#~ msgstr "Weken"
-
 #~ msgid "Edit Report Worksheet"
 #~ msgstr "Wijzig het werkblad voor een rapport."
 
@@ -1352,6 +1346,9 @@ msgstr ""
 
 #~ msgid "Remove?"
 #~ msgstr "Verwijderen?"
+
+#~ msgid "weeks"
+#~ msgstr "Weken"
 
 #~ msgid "Download Report Card"
 #~ msgstr "Rapportkaart downloaden"
