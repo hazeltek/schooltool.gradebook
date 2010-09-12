@@ -57,19 +57,15 @@
         </tr>
         <tr>
           <td>
-            <label for="score" i18n:translate="">Minimum Passing Score</label>
+            <label for="score" tal:content="view/minmax" />
           </td>
           <td>
               <select id="score" name="score"
                       tal:condition="python: len(view.scores()) > 0">
                 <tal:block repeat="score view/scores">
-                <option tal:condition="python: score['value'] == ''"
-                        selected
-                        tal:attributes="value score/value"
-                        tal:content="score/name" />
-                <option tal:condition="python: score['value'] != ''"
-                        tal:attributes="value score/value"
-                        tal:content="score/name" />
+                <option tal:content="score/name"
+                        tal:attributes="value score/value;
+                                        selected score/selected" />
                 </tal:block>
               </select>
               <input type="text" id="score" name="score"
