@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-05-20 20:41+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2010-09-12 09:18+0000\n"
+"Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
+"X-Launchpad-Export-Date: 2010-09-13 05:17+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -409,7 +409,7 @@ msgstr "Cijfers invoeren voor ${fullname}"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1131
 msgid "$worksheet for $student in $section"
-msgstr "$werkblad voor $student in $section"
+msgstr "$worksheet voor $student in $section"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:13
@@ -432,7 +432,7 @@ msgstr "Scoresysteem"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:62
 msgid "Hide 'show only activities due in past _ weeks'"
-msgstr ""
+msgstr "Verberg 'Toon alleen activiteiten uit de afgelopen _weken'"
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:76
 msgid ""
@@ -518,7 +518,7 @@ msgstr "Sectie"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
 msgid "show only activities due in past ${num_weeks} weeks"
-msgstr "Toon alleen activiteiten uit het verleden ${num_weeks} Weken"
+msgstr "Toon alleen activiteiten uit de afgelopen ${num_weeks} weken"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
@@ -623,7 +623,7 @@ msgstr "Leerling"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:313
 msgid "Detailed Student Report"
-msgstr "Gedetailleerd studentenrapport"
+msgstr "Gedetailleerd leerlingenrapport"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:316
 msgid "Grade Detail"
@@ -639,7 +639,7 @@ msgstr "Datums"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:328
 msgid "Student Name"
-msgstr "Naam student"
+msgstr "Naam leerling"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:331
 msgid "User Id"
@@ -791,7 +791,7 @@ msgstr "Minimum slagingsscore"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:52
 msgid "Student Reports"
-msgstr "Studentenrapporten"
+msgstr "Leerlingenrapporten"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:59
 #: /src/schooltool/gradebook/browser/request_reports.py:79
@@ -803,7 +803,7 @@ msgstr "Verzoek voor een Rapport"
 #: /src/schooltool/gradebook/browser/request_reports.py:83
 #: /src/schooltool/gradebook/browser/request_reports.py:292
 msgid "Request Detailed Student Report"
-msgstr ""
+msgstr "Gedetailleerd leerlingenrapport ophalen"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:72
 msgid "Group Reports"
@@ -908,7 +908,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:30
 msgid "Category Weights"
-msgstr ""
+msgstr "Wegingscategorieën"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
 msgid "This worksheet has no activities."
@@ -1041,7 +1041,7 @@ msgstr "Activiteiten in deze cijferlijst."
 
 #: /src/schooltool/gradebook/interfaces.py:209
 msgid "Students"
-msgstr "Studenten"
+msgstr "Leerlingen"
 
 #: /src/schooltool/gradebook/interfaces.py:210
 msgid "Students in this gradebook."
@@ -1106,23 +1106,23 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
-msgstr ""
+msgstr "Sjablonen bewerken"
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
-msgstr ""
+msgstr "Cijferlijstdata aanmaken en bewerken voor een sectie."
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Edit Gradebook"
-msgstr ""
+msgstr "Cijferlijst bewerken"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View Gradebook"
-msgstr ""
+msgstr "Cijferlijst bekijken"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
-msgstr ""
+msgstr "Cijferlijstdata bekijken voor een sectie."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Administration can grade students"
@@ -1233,18 +1233,25 @@ msgid ""
 "This form allows you to create a customized \"score system\" or grading "
 "scale."
 msgstr ""
+"Met dit formuliet kunt u een aangepast \"scoresysteem\" of "
+"beoordelingsschaal aanmaken."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:23
 msgid ""
 "Each score system needs a short title to identify it to users, for example, "
 "if your school's grades go from \"A\" to \"E,\" the title could be \"A-E.\""
 msgstr ""
+"Elk scoresysteem heeft een korte titel nodig ter identificatie voor andere "
+"gebruikers. Als de cijfers op uw school bijvoorbeeld gaan van \"1\" tot "
+"\"10\", dan zou de titel kunnen zijn \"1-10\"."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:26
 msgid ""
 "A score system is made up of a sequence of possible scores with decreasing "
 "values."
 msgstr ""
+"Een scoresysteem wordt bepaald door een reeks van mogelijke scores met "
+"verminderende waardes."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:29
 msgid ""
@@ -1253,6 +1260,10 @@ msgid ""
 "be used in any calculations made with the scores, such as finding a grade "
 "point average."
 msgstr ""
+"Elke score wordt geassocieerd met een numerieke puntwaarde. In de VS "
+"bijvoorbeeld is een \"A\" 4 punten, een \"B\" 3 punten, enz. Deze waarden "
+"worden gebruikt bij alle berekeningen met deze scores, zoals het bepalen van "
+"de gemiddelde score."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:32
 msgid ""
@@ -1260,6 +1271,9 @@ msgid ""
 "the corresponding grade. For example, 95% and above is an \"A,\" 87% and up "
 "is a \"B,\" etc."
 msgstr ""
+"Elke score wordt geassocieerd met een minimum percentage dat nodig is om de "
+"corresponderende score te bereiken. Bijvoorbeeld, 95% en daarboven is een "
+"\"A\", 87% en daarboven is een \"B\", enz."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:35
 msgid ""
@@ -1267,36 +1281,42 @@ msgid ""
 "characters and you wish to create an alternative abbreviation for the "
 "gradebook."
 msgstr ""
+"Voer alleen een afkorting voor een score in, wanneer de score meer dan vier "
+"tekens bevat en u een alternatieve afkorting wilt aanmaken voor de "
+"cijferlijst."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:38
 msgid ""
 "Start with the highest score. Click \"Add a lower score\" to add scores "
 "until you have created a score with a minimum percentage of 0."
 msgstr ""
+"Start met de hoogste score. Klik op \"Lagere score toevoegen\" om scores toe "
+"te voegen totdat u een score heeft aangemaakt met een minimum percentage van "
+"0."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
 msgid "New Score System"
-msgstr ""
+msgstr "Nieuw scoresysteem"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 msgid "Score"
-msgstr ""
+msgstr "Score"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:51
 msgid "Abbreviation"
-msgstr ""
+msgstr "Afkorting"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 msgid "Point Value"
-msgstr ""
+msgstr "Puntwaarde"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:53
 msgid "Low Percentage"
-msgstr ""
+msgstr "Lage percentage"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:79
 msgid "Add a lower score"
-msgstr ""
+msgstr "Lagere score toevoegen"
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
@@ -1305,11 +1325,11 @@ msgstr "Toon Scoresysteem"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
-msgstr ""
+msgstr "Verwijderen?"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
-msgstr ""
+msgstr "Bijwerken"
 
 #~ msgid "Edit Report Worksheet"
 #~ msgstr "Wijzig het werkblad voor een rapport."
