@@ -122,14 +122,14 @@ class GradebookStartup(object):
 
         if self.sectionsTaught:
             section = getCurrentSectionTaught(self.person)
-            if section is None:
+            if section is None or section.__parent__ is None:
                 section = self.sectionsTaught[0]
             self.gradebookURL = absoluteURL(section, self.request)+ '/gradebook'
             if not self.sectionsAttended:
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
             section = getCurrentSectionAttended(self.person)
-            if section is None:
+            if section is None or section.__parent__ is None:
                 section = self.sectionsAttended[0]
             self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
             if not self.sectionsTaught:
