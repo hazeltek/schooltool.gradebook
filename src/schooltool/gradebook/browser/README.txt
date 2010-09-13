@@ -1489,6 +1489,18 @@ Last visited section tests
 The gradebook remembers where a teacher or student was last time they were
 in the gradebook, so we will test this.
 
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
+
     >>> stephan.open('http://localhost/schoolyears/2007/fall/sections/1/gradebook')
     >>> claudia.open('http://localhost/schoolyears/2007/fall/sections/1/mygrades')
 
