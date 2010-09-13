@@ -1,0 +1,109 @@
+==================
+Requesting reports
+==================
+
+Here we will test some of the report request forms.  At present only the
+failing report request form is complex enough to warant testing.
+
+Let's start by setting up the application and logging in as manager.
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+    >>> manager = Browser('manager', 'schooltool')
+
+We will need a custom score system that has a maximum passing score rather
+than a minimum in order to test how the minimum passing score select field
+and label get rendered in the case of maximum passing score systems.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Score Systems').click()
+    >>> manager.getLink('Add Score System').click()
+    >>> base_url = manager.url + '?form-submitted&UPDATE_SUBMIT'
+    >>> url = base_url + '&title=Max&displayed1=A&abbr1=&value1=4&percent1=75'
+    >>> url = url + '&displayed2=B&abbr2=&value2=3&percent2=50'
+    >>> url = url + '&displayed3=C&abbr3=&value3=2&percent3=25'
+    >>> url = url + '&displayed4=D&abbr4=&value4=1&percent4=0'
+    >>> url = url + '&minScore=C'
+    >>> url = url + '&minMax=max'
+    >>> manager.open(url)
+
+We will set up a report sheet template with three activities, one standard
+discrete, one custom discrete maximum passing, and one ranged values.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Test'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('Test').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 1'
+    >>> manager.getControl('Score System').value = ['Letter Grade-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 2'
+    >>> manager.getControl('Score System').value = ['Max-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Activity 3'
+    >>> manager.getControl('Score System').value = ['ranged']
+    >>> manager.getControl('Add').click()
+
+Now we'll deploy it.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Spring').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Deploy').click()
+
+We need to build the url for requesting the failures report manually
+because the onchange="this.form.submit()" will not run in tests.  We need to
+specify the source in a query string in order to test the resultant contents
+of the scores field.
+
+    >>> manager.getLink('Reports').click()
+    >>> url = manager.getLink('Failures by Term').url + '?source='
+
+The first report activity is letter grade, minimum passing score of 'D'.
+
+    >>> manager.open(url + 'spring|2005-2006_spring|ReportActivity')
+
+    >>> analyze.printQuery("//label[@for='score']", manager.contents)
+    <label for="score">Minimum Passing Score</label>
+
+    >>> analyze.printQuery("id('score')//option", manager.contents)
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+    <option selected="selected" value="D">D</option>
+    <option value="F">F</option>
+
+The second report activity is a maximum passing score system with max of 'C'.
+
+    >>> manager.open(url + 'spring|2005-2006_spring|ReportActivity-2')
+
+    >>> analyze.printQuery("//label[@for='score']", manager.contents)
+    <label for="score">Maximum Passing Score</label>
+
+    >>> analyze.printQuery("id('score')//option", manager.contents)
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option selected="selected" value="C">C</option>
+    <option value="D">D</option>
+
+The third report activity is a ranged values score system so the min field is
+a text box.
+
+    >>> manager.open(url + 'spring|2005-2006_spring|ReportActivity-3')
+
+    >>> analyze.printQuery("//label[@for='score']", manager.contents)
+    <label for="score">Minimum Passing Score</label>
+
+    >>> analyze.printQuery("id('score')", manager.contents)
+    <input type="text" id="score" name="score" />
+

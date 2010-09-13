@@ -209,7 +209,9 @@ class ScoreSystemAddView(BrowserView):
     def updateScoreSystem(self, target):
         target.title = self.validTitle
         target.scores = self.validScores
-        target._bestScore = target.scores[0][1]
+        target._bestScore = target.scores[0][0]
+        target._minPassingScore = self.request.get('minScore')
+        target._isMaxPassingScore = self.request.get('minMax') == 'max'
 
     @property
     def title_value(self):
@@ -218,21 +220,53 @@ class ScoreSystemAddView(BrowserView):
         else:
             return ''
 
+    def getMinMax(self):
+        results = []
+        for form_id, title in[('min', _('Minimum')), ('max', _('Maximum'))]:
+            selected = (self.request.get('minMax') == form_id)
+            result = {
+                'title': title,
+                'form_id': form_id,
+                'selected': selected,
+                }
+            results.append(result)
+        return results
+
+    def getMinScores(self):
+        results = []
+        for displayed, abbr, value, percent in self.getRequestScores():
+            selected = (self.request.get('minScore') == displayed)
+            result = {
+                'title': displayed,
+                'form_id': displayed,
+                'selected': selected,
+                }
+            results.append(result)
+        return results
+
 
 class ScoreSystemViewView(BrowserView):
     """A view for viewing a user-created scoresystem utility"""
 
     def scores(self):
         target = self.getScoreSystem()
-        return [self.buildScoreRow(displayed, abbr, value, percent)
-                for displayed, abbr, value, percent in target.scores]
+        result = []
+        for displayed, abbr, value, percent in target.scores:
+            if target.isPassingScore(displayed):
+                passing = _('Yes')
+            else:
+                passing = _('No')
+            row = self.buildScoreRow(displayed, abbr, value, percent, passing)
+            result.append(row)
+        return result
 
-    def buildScoreRow(self, displayed, abbr, value, percent):
+    def buildScoreRow(self, displayed, abbr, value, percent, passing):
         return {
             'displayed_value': displayed,
             'abbr_value': abbr,
             'value_value': value,
             'percent_value': percent,
+            'passing_value': passing,
             }
 
     @property

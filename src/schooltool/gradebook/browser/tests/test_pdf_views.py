@@ -22,6 +22,7 @@ Tests for SchoolTool gradebook pdf views.
 """
 
 import unittest, doctest
+from decimal import Decimal
 from pprint import pprint
 from datetime import datetime
 
@@ -80,7 +81,7 @@ from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
 from schooltool.requirement.evaluation import Evaluation, getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.scoresystem import (AmericanLetterScoreSystem,
-    DiscreteScoreSystemsVocabulary)
+    DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem)
 
 
 BEGIN_2009 = datetime.date(datetime(2009, 1, 1))
@@ -178,6 +179,15 @@ class ApplicationStub(btree.BTreeContainer):
         worksheet['Activity'] = Activity('Activity', 'exam',
             AmericanLetterScoreSystem)
 
+        scores = [
+            ('A', u'', Decimal(4), Decimal(75)),
+            ('B', u'', Decimal(3), Decimal(50)),
+            ('C', u'', Decimal(2), Decimal(25)),
+            ('D', u'', Decimal(1), Decimal(0)),
+            ]
+        maxss = DiscreteValuesScoreSystem('Max', '', scores, 'A', 'C', True)
+        worksheet['Activity-2'] = Activity('Activity 2', 'max', maxss)
+
         source = 'Term|Worksheet|Activity'
         layout = root.layouts[self.schoolyear.__name__] = ReportLayout()
         layout.columns = [ReportColumn(source, '')]
@@ -217,8 +227,19 @@ def setupSections(app):
     worksheet = activities['Worksheet'] = Worksheet('Worksheet')
     activity = worksheet['Activity'] = Activity('Activity', 'exam', ss)
 
+    scores = [
+        ('A', u'', Decimal(4), Decimal(75)),
+        ('B', u'', Decimal(3), Decimal(50)),
+        ('C', u'', Decimal(2), Decimal(25)),
+        ('D', u'', Decimal(1), Decimal(0)),
+        ]
+    maxss = DiscreteValuesScoreSystem('Max', '', scores, 'A', 'C', True)
+    activity2 = worksheet['Activity-2'] = Activity('Activity 2', 'max', maxss)
+
     evaluations = IEvaluations(aelkner)
     evaluation = Evaluation(activity, ss, 'F', thoffman)
+    evaluations.addEvaluation(evaluation)
+    evaluation = Evaluation(activity2, maxss, 'C', thoffman)
     evaluations.addEvaluation(evaluation)
 
     jd = ISectionJournalData(section1)
@@ -359,6 +380,34 @@ def doctest_FailingReportPDFView():
         >>> pprint(view.students())
         [{'name': 'Alan Elkner',
           'rows': [{'course': 'Course 1', 'grade': 'F', 'teacher': 'Tom Hoffman'}]}]
+
+    If we specify a minumum passing score of 'F', nothing will fail.
+    
+        >>> request.form['min'] = 'F'
+        >>> view = FailingReportPDFView(app.term, request)
+        >>> pprint(view.students())
+        []
+
+    For the max passing score system activity, specifying a higher max passing
+    score will result in more failures.
+
+        >>> request.form['activity'] = 'Term|Worksheet|Activity-2'
+
+        >>> request.form['min'] = 'B'
+        >>> view = FailingReportPDFView(app.term, request)
+        >>> pprint(view.students())
+        []
+
+        >>> request.form['min'] = 'C'
+        >>> view = FailingReportPDFView(app.term, request)
+        >>> pprint(view.students())
+        []
+
+        >>> request.form['min'] = 'D'
+        >>> view = FailingReportPDFView(app.term, request)
+        >>> pprint(view.students())
+        [{'name': 'Alan Elkner',
+          'rows': [{'course': 'Course 1', 'grade': 'C', 'teacher': 'Tom Hoffman'}]}]
     """
 
 
@@ -430,16 +479,22 @@ def doctest_GradebookPDFView():
           'longTitle': 'Activity',
           'max': 'A',
           'scorable': True,
+          'shortTitle': 'Activ'},
+         {'hash': 'Activity-2',
+          'longTitle': 'Activity 2',
+          'max': 'A',
+          'scorable': True,
           'shortTitle': 'Activ'}]
 
         >>> pprint(view.table())
-        [{'average': u'0%',
-          'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'}],
+        [{'average': u'14%',
+          'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
+                     {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
           'student': {'gradeurl': '...',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
-          'total': u'0'}]
+          'total': u'1'}]
     """
 
 

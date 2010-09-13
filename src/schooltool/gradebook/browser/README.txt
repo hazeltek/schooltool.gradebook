@@ -1483,15 +1483,39 @@ Now, let's check that a student can access the orphan gradebook:
     </td>
 
 
-Last visited section deleted tests
-----------------------------------
+Last visited section tests
+--------------------------
 
-As the gradebook remembers where a teacher or student was last time they were
-in the gradebook, we need to make sure that we can handle the case where the
-last visited section was since deleted.
+The gradebook remembers where a teacher or student was last time they were
+in the gradebook, so we will test this.
+
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
 
     >>> stephan.open('http://localhost/schoolyears/2007/fall/sections/1/gradebook')
     >>> claudia.open('http://localhost/schoolyears/2007/fall/sections/1/mygrades')
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/fall/sections/1/activities/Worksheet/gradebook'
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/fall/sections/1/activities/Worksheet/mygrades'
+
+We need to make sure that we can handle the case where the last visited section
+was since deleted.  First we'll delete the fall section of Physics.
+
     >>> manager.getLink('2007').click()
     >>> manager.getLink('Fall').click()
     >>> manager.getLink('Sections').click()
@@ -1499,13 +1523,37 @@ last visited section was since deleted.
     >>> manager.getControl('Delete').click()
     >>> manager.getControl('Confirm').click()
 
+Now when Stephan or Claudia hit the Gradebook tab, they get redirected to the
+winter term for the Physics section since the fall section is gone.
+
     >>> stephan.getLink('Gradebook').click()
-    >>> stephan.printQuery("id('content-body')//a")
-    <a class="navigation_header" href="http://localhost/schoolyears/2007/winter/sections/1/gradebook">Classes you teach</a>
-    <a class="navigation_header" href="http://localhost/schoolyears/2007/winter/sections/2/mygrades">Classes you attend</a>
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
 
     >>> claudia.getLink('Gradebook').click()
-    >>> claudia.printQuery("id('content-body')//a")
-    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
-    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
+
+
+CSV test
+--------
+
+We supply a CSV view for getting all grades out of schooltool in CSV format.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Download Gradebook CSV').click()
+    >>> print manager.contents
+    "year","term","section","worksheet","activity","student","grade"
+    "2007","winter","1","Worksheet","Activity-2","claudia","86"
+    "2007","winter","1","Worksheet","LinkedActivity","claudia","10.00"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","claudia","42"
+    "2007","winter","1","Worksheet","Activity","paul","32"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","paul","90"
+    "2007","winter","1","Worksheet","Activity","tom","44"
+    "2007","winter","1","Worksheet","LinkedActivity","tom","15.00"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","tom","72"
+    "2007","winter","1","Worksheet-2","Activity","claudia","42"
+    "2007","winter","1","Worksheet-2","Activity","paul","90"
+    "2007","winter","1","Worksheet-2","Activity","tom","72"
 

@@ -63,7 +63,7 @@ def getCurrentSectionTaught(person):
     else:
         section = ann[CURRENT_SECTION_TAUGHT_KEY]
         try:
-            IActivities(section)
+            interfaces.IActivities(section)
         except:
             ann[CURRENT_SECTION_TAUGHT_KEY] = None
     return ann[CURRENT_SECTION_TAUGHT_KEY]
@@ -83,7 +83,7 @@ def getCurrentSectionAttended(person):
     else:
         section = ann[CURRENT_SECTION_ATTENDED_KEY]
         try:
-            IActivities(section)
+            interfaces.IActivities(section)
         except:
             ann[CURRENT_SECTION_ATTENDED_KEY] = None
     return ann[CURRENT_SECTION_ATTENDED_KEY]
