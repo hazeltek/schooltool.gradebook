@@ -10,6 +10,7 @@ CHANGES
 - Custom Score Systems need min/max passing scores (https://launchpad.net/bugs/616451)
 - Fixed deletion of report activities (https://launchpad.net/bugs/627490)
 - Updated translations (el, en, es, fr, it)
+- Fixed exception deploying a report sheet when no templates exist (https://launchpad.net/bugs/592144)
 
 
 0.7.1 (2010-06-25)

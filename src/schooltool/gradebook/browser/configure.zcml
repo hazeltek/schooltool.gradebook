@@ -751,6 +751,12 @@
       permission="schooltool.view"
       />
   <page
+      name="no_report_sheets.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      template="no_report_sheets.pt"
+      permission="schooltool.view"
+      />
+  <page
       name="gradebook.csv"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".gradebook.GradebookCSVView"
