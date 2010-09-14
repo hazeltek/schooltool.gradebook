@@ -252,7 +252,9 @@
 
   <div class="controls">
     <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
-           onclick="setNotEdited()" i18n:attributes="value" />
+           onclick="setNotEdited()"
+           title="Shortcut: Alt-S" accesskey="S"
+           i18n:attributes="value; title; accesskey" />
   </div>
 
   </form>
