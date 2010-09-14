@@ -290,7 +290,7 @@ class IWidgetData(interfaces.IRangedValuesScoreSystem):
     """A schema used to generate the score system widget."""
 
     existing = zope.schema.Choice(
-        title=_('Exisiting Score System'),
+        title=_('Existing Score System'),
         vocabulary='schooltool.requirement.scoresystems',
         required=False)
 
