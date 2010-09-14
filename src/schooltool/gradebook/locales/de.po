@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 18:09+0000\n"
+"PO-Revision-Date: 2010-05-20 20:29+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 "X-Poedit-Bookmarks: 326,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
@@ -234,15 +234,15 @@ msgid "Add a Report Sheet"
 msgstr "Berichtblatt hinzufügen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Arbeitsblatt bearbeiten"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Bearbeiten"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Arbeitsblatt bearbeiten"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -519,9 +519,8 @@ msgid "Section"
 msgstr "Sektion"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
-#, fuzzy
 msgid "show only activities due in past ${num_weeks} weeks"
-msgstr "zeigt nur in den vergangenen ${num_weeks} Wochen ausgeführte Aktivitäten"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:123
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
@@ -1116,28 +1115,24 @@ msgid "A text string that specifies the source of the column"
 msgstr "Ein Textfolge, die eine genaue Quelle für die Spalte definieren."
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Create, edit and deploy report sheet templates."
-msgstr "Zeugnis-Vorlage anwenden"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Vorlage"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Notenheft"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Notenheft"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1331,9 +1326,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#~ msgid "weeks"
-#~ msgstr "Wochen"
-
 #~ msgid "${DYNAMIC_CONTENT}"
 #~ msgstr "${DYNAMIC_CONTENT}"
 
@@ -1354,6 +1346,9 @@ msgstr ""
 
 #~ msgid "Remove?"
 #~ msgstr "Entfernen?"
+
+#~ msgid "weeks"
+#~ msgstr "Wochen"
 
 #~ msgid "Workheet"
 #~ msgstr "Arbeitsblatt"

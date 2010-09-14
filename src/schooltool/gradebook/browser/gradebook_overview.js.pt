@@ -25,7 +25,6 @@ var descriptions = new Array(numdescriptions);
      </tal:loop>
 
 var edited = false;
-var firstCellId = '<tal:block replace="view/firstCellId" />';
 var currentCell;
 var currentDesc = '';
 
@@ -62,10 +61,6 @@ function onLoadHandler()
             setBackgroundColor(name, activity, value, true);
         }
     }
-
-    // set focus to first cell
-    if (firstCellId != '')
-        document.getElementById(firstCellId).focus();
 }
 
 window.onload = onLoadHandler;

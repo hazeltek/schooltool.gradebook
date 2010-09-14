@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-05-19 02:57+0000\n"
-"Last-Translator: Eugênio F <Unknown>\n"
+"PO-Revision-Date: 2010-05-27 02:16+0000\n"
+"Last-Translator: Wolff Rodrigues <Unknown>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-05-20 05:36+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -232,15 +232,15 @@ msgid "Add a Report Sheet"
 msgstr "Adiciona uma Folha de Relatório"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Editar Planilha de Trabalho"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Editar"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Editar Planilha de Trabalho"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -1094,23 +1094,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Modelo"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Diário de Classe"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Diário de Classe"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1303,9 +1300,6 @@ msgstr "Excluir?"
 msgid "Update"
 msgstr "Atualizar"
 
-#~ msgid "weeks"
-#~ msgstr "semanas"
-
 #~ msgid "Add a Report Worksheet"
 #~ msgstr "Adicione um Relatório de Planilha de Trabalho"
 
@@ -1329,6 +1323,9 @@ msgstr "Atualizar"
 
 #~ msgid "Max. Score"
 #~ msgstr "Nota Máxima"
+
+#~ msgid "weeks"
+#~ msgstr "semanas"
 
 #~ msgid "Workheet"
 #~ msgstr "Planilha de Trabalho"

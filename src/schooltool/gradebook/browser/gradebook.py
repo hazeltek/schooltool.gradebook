@@ -612,18 +612,6 @@ class GradebookOverview(SectionFinder):
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property
-    def firstCellId(self):
-        self.person = IPerson(self.request.principal)
-        activities = self.getFilteredActivities()
-        students = self.context.students
-        if len(activities) and len(students):
-            act_hash = activities[0].__name__
-            student_id = students[0].username
-            return '%s_%s' % (act_hash, student_id)
-        else:
-            return ''
-
-    @property
     def descriptions(self):
         self.person = IPerson(self.request.principal)
         results = []

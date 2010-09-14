@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2009-10-12 18:50+0000\n"
+"PO-Revision-Date: 2010-05-20 20:32+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-25 04:56+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
@@ -224,15 +224,15 @@ msgid "Add a Report Sheet"
 msgstr "Pridėti ataskaitos lentelę"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Keisti lentelę"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Keisti"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Keisti lentelę"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -753,9 +753,8 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:38
-#, fuzzy
 msgid "Request Report"
-msgstr "Mokinių ataskaitos"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:42
 msgid "Report Activity"
@@ -875,9 +874,8 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:30
-#, fuzzy
 msgid "Category Weights"
-msgstr "Kategorijos"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
 msgid "This worksheet has no activities."
@@ -1071,23 +1069,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Šablonas"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Pažymių knygelė"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Pažymių knygelė"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1244,9 +1239,8 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
-#, fuzzy
 msgid "New Score System"
-msgstr "Rodyti vertinimo sistemą"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 msgid "Score"
@@ -1265,9 +1259,8 @@ msgid "Low Percentage"
 msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:79
-#, fuzzy
 msgid "Add a lower score"
-msgstr "Pridėti lentelę"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
@@ -1275,11 +1268,9 @@ msgid "View Score System"
 msgstr "Rodyti vertinimo sistemą"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
-#, fuzzy
 msgid "Delete?"
-msgstr "Šalinti"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
-#, fuzzy
 msgid "Update"
-msgstr "Atnaujinti pažymius"
+msgstr ""
