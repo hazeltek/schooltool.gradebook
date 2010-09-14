@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 17:27+0000\n"
+"PO-Revision-Date: 2010-05-20 20:39+0000\n"
 "Last-Translator: Agnieszka Piskorska <mirekaga@poczta.onet.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -233,15 +233,15 @@ msgid "Add a Report Sheet"
 msgstr "Dodaj sprawozdanie"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Edytuj zeszyt"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Edycja"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Edytuj zeszyt"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -1104,28 +1104,24 @@ msgid "A text string that specifies the source of the column"
 msgstr "Łańcuch tekstu który określa pochodzenie kolumny"
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Create, edit and deploy report sheet templates."
-msgstr "Szablon rozmieszczenia raportu karty pracy"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Szablon"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Dzienniczek"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Dzienniczek"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1318,9 +1314,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#~ msgid "weeks"
-#~ msgstr "tygodni"
-
 #~ msgid "${DYNAMIC_CONTENT}"
 #~ msgstr "${DYNAMIC_CONTENT}"
 
@@ -1332,6 +1325,9 @@ msgstr ""
 
 #~ msgid "Max. Score"
 #~ msgstr "Maks. ocena"
+
+#~ msgid "weeks"
+#~ msgstr "tygodni"
 
 #~ msgid "Remove?"
 #~ msgstr "Usunąć?"

@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -222,15 +222,15 @@ msgid "Add a Report Sheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "Rediger regneark"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "Redigér"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Rediger regneark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -1065,23 +1065,20 @@ msgid "Create, edit and deploy report sheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "Skabelon"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "Karakterbog"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "Karakterbog"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -1274,9 +1271,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#~ msgid "weeks"
-#~ msgstr "uger"
-
 #~ msgid "Activity Name"
 #~ msgstr "Aktivitets navn"
 
@@ -1294,3 +1288,6 @@ msgstr ""
 
 #~ msgid "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
 #~ msgstr "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
+
+#~ msgid "weeks"
+#~ msgstr "uger"

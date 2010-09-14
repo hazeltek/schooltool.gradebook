@@ -1,32 +1,31 @@
-# Chinese (China) translation for schooltool
-# Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
-# This file is distributed under the same license as the schooltool package.
-# Aron Xu <Unknown>, 2006.
-#
+# Faroese translation for schooltool.gradebook
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# This file is distributed under the same license as the schooltool.gradebook package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: schooltool\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: schooltool.gradebook\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2009-12-30 15:03+0000\n"
-"Last-Translator: tenzu <huangxin.cliff@gmail.com>\n"
-"Language-Team: Chinese (China) <zh_CN@li.org>\n"
+"PO-Revision-Date: 2010-07-29 19:54+0000\n"
+"Last-Translator: Gunleif Joensen <Unknown>\n"
+"Language-Team: Faroese <fo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-10 04:56+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
 msgid "Sheet1"
-msgstr "表单1"
+msgstr "Ark1"
 
 #: /src/schooltool/gradebook/activity.py:229
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
 #: /src/schooltool/gradebook/interfaces.py:205
 msgid "Activities"
-msgstr "活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:4
 #: /src/schooltool/gradebook/browser/activities_overview.pt:8
@@ -35,24 +34,24 @@ msgstr "活动"
 #: /src/schooltool/gradebook/interfaces.py:201
 #: /src/schooltool/gradebook/interfaces.py:306
 msgid "Worksheets"
-msgstr "电子表格"
+msgstr "Rokniark"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Fjal"
 
 #: /src/schooltool/gradebook/browser/activity.py:69
 msgid "External Activity"
-msgstr "外部活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:70
 msgid "The external activity"
-msgstr "该外部活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:170
 #: /src/schooltool/gradebook/browser/report_card.py:217
 msgid "Add new activity"
-msgstr "添加新活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:183
 #: /src/schooltool/gradebook/browser/activity.py:238
@@ -61,7 +60,7 @@ msgstr "添加新活动"
 #: /src/schooltool/gradebook/browser/report_card.py:229
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:50
 msgid "Add"
-msgstr "添加"
+msgstr "Legg til"
 
 #: /src/schooltool/gradebook/browser/activity.py:194
 #: /src/schooltool/gradebook/browser/activity.py:242
@@ -75,76 +74,76 @@ msgstr "添加"
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:20
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:85
 msgid "Cancel"
-msgstr "取消"
+msgstr "Ógilda"
 
 #: /src/schooltool/gradebook/browser/activity.py:225
 msgid "Add an External Activity"
-msgstr "添加外部活动"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:296
 #: /src/schooltool/gradebook/browser/report_card.py:298
 msgid "Change information for ${fullname}"
-msgstr "修改 ${fullname} 的信息"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:314
 msgid "Edit External Activity"
-msgstr "编辑外部活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:317
 #: /src/schooltool/gradebook/browser/report_card.py:306
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
 msgid "Apply"
-msgstr "应用"
+msgstr "Set í verk"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:355
 msgid "$value is not a valid weight."
-msgstr "$value不是一个有效的重量"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "Category weights must add up to 100."
-msgstr "各类重量的总和必须为100"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:410
 msgid "The external activity couldn't be found"
-msgstr "找不到外部活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:554
 #: /src/schooltool/gradebook/browser/activity.py:622
 msgid "Average"
-msgstr "平均值"
+msgstr "Meðal"
 
 #: /src/schooltool/gradebook/browser/activity.py:592
 msgid "Add Linked Column"
-msgstr "添加关联的列"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:631
 msgid "Edit Linked Column"
-msgstr "编辑关联的列"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:15
 #: /src/schooltool/gradebook/interfaces.py:362
 #: /src/schooltool/gradebook/interfaces.py:390
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:43
 msgid "Title"
-msgstr "标题"
+msgstr "Yvirskrift"
 
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:18
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:21
 #: /src/schooltool/gradebook/interfaces.py:125
 msgid "Label"
-msgstr "标签"
+msgstr "Spjaldur"
 
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
 #: /src/schooltool/gradebook/interfaces.py:135
 msgid "Category"
-msgstr ""
+msgstr "Bólkur"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr "管理活动分类"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/categories.pt:19
 msgid ""
@@ -166,80 +165,80 @@ msgstr ""
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
 msgid "remove-button"
-msgstr "删除键"
+msgstr "Tak burtur"
 
 #. Default: "Add"
 #: /src/schooltool/gradebook/browser/categories.pt:42
 msgid "add-button"
-msgstr "添加"
+msgstr "Legg til"
 
 #. Default: "Change"
 #: /src/schooltool/gradebook/browser/categories.pt:51
 msgid "change-button"
-msgstr "更改键"
+msgstr "Broyt"
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
-msgstr "类别"
+msgstr "Bólkar"
 
 #: /src/schooltool/gradebook/browser/category.py:49
 msgid "New Category"
-msgstr "新类别"
+msgstr "Nýggjan bólk"
 
 #: /src/schooltool/gradebook/browser/category.py:52
 msgid "Default Category"
-msgstr "默认类别"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:75
 msgid "Categories successfully deleted."
-msgstr "删除类别成功"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:81
 msgid "Category successfully added."
-msgstr "添加类别成功"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:87
 msgid "Default category successfully changed."
-msgstr "更改默认类别成功"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:56
 #: /src/schooltool/gradebook/browser/configure.zcml:90
 msgid "Activity Categories"
-msgstr "活动类别"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:79
 #: /src/schooltool/gradebook/browser/templates_overview.pt:4
 #: /src/schooltool/gradebook/browser/templates_overview.pt:8
 #: /src/schooltool/gradebook/gradebook_init.py:48
 msgid "Report Sheet Templates"
-msgstr "报告文件的模板"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:127
 msgid "Add a Worksheet"
-msgstr "添加一个电子表格"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:139
 msgid "Add a Report Sheet"
-msgstr "添加汇报表单"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
 msgid "Edit Worksheet"
-msgstr "编辑电子表格"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
-msgstr "编辑"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
-msgstr "编辑汇报表单"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:227
 msgid "New Report Activity"
-msgstr "新建报告"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:279
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:5
@@ -250,25 +249,25 @@ msgstr "新建报告"
 #: /src/schooltool/gradebook/browser/summary.pt:4
 #: /src/schooltool/gradebook/security.zcml:7
 msgid "Gradebook"
-msgstr "评分表"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:288
 msgid "New Report Sheet"
-msgstr "新建汇报表单"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:295
 msgid "New Worksheet"
-msgstr "新建电子表格"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:302
 #: /src/schooltool/gradebook/browser/configure.zcml:411
 msgid "Export XLS"
-msgstr "导出为Excel格式 (.xls)"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:309
 #: /src/schooltool/gradebook/browser/configure.zcml:346
 msgid "Return to Gradebook"
-msgstr "返回评分表"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:316
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:4
@@ -280,31 +279,31 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:369
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:119
 msgid "New Activity"
-msgstr "新建活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:332
 #: /src/schooltool/gradebook/browser/configure.zcml:376
 msgid "New External Activity"
-msgstr "新建额外活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:339
 #: /src/schooltool/gradebook/browser/configure.zcml:383
 msgid "New Linked Column"
-msgstr "新建关联的列"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Manage Activities"
-msgstr "管理活动"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:397
 #: /src/schooltool/gradebook/browser/weight_categories.pt:5
 msgid "Weight Categories"
-msgstr "目录高度"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:404
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:16
 msgid "Preferences"
-msgstr "首选项"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:418
 msgid "Download PDF"
@@ -312,7 +311,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:427
 msgid "Update Grades"
-msgstr "升级等级"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:524
 #: /src/schooltool/gradebook/browser/configure.zcml:568
@@ -325,7 +324,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:669
 #: /src/schooltool/gradebook/browser/configure.zcml:712
 msgid "Reports"
-msgstr "汇报"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:575
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:13
@@ -339,7 +338,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
 msgid "Template"
-msgstr "模版"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
@@ -363,7 +362,7 @@ msgstr ""
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
-msgstr "您的更改还未保存。点击确定键保存或点击取消键来继续工作而不保存。"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:435
 msgid "Invalid scores (highlighted in red) were not saved."
@@ -388,12 +387,12 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1027
 msgid "Next"
-msgstr "下一步"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1106
 msgid "Enter grades for ${fullname}"
-msgstr "输入${fullname}班级"
+msgstr ""
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1131
@@ -481,7 +480,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/pdf_views.py:755
 msgid "Term"
-msgstr "项"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:49
 #: /src/schooltool/gradebook/browser/mygrades.pt:33
@@ -492,7 +491,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/mygrades.pt:37
 #: /src/schooltool/gradebook/browser/pdf_views.py:758
 msgid "Section"
-msgstr "节"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
 msgid "show only activities due in past ${num_weeks} weeks"
@@ -518,7 +517,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:4
 msgid "Layout Report Card"
-msgstr "布置报告卡片"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:16
 msgid "Grid Columns"
@@ -586,7 +585,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:206
 #: /src/schooltool/gradebook/browser/pdf_views.py:319
 msgid "Courses"
-msgstr "课程"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:213
 #: /src/schooltool/gradebook/browser/pdf_views.py:453
@@ -725,7 +724,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/interfaces.py:146
 msgid "Date"
-msgstr "日期"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:38
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:84
@@ -840,12 +839,12 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:5
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:5
 msgid "SchoolTool"
-msgstr "SchoolTool"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:28
 #: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:28
 msgid "There are ${num_errors} input errors."
-msgstr "有${num_errors} 个输入错误"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:28
 msgid "Unhide"
@@ -900,7 +899,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/configure.zcml:302
 msgid "Gradebook API"
-msgstr "评分表 API"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
@@ -957,7 +956,7 @@ msgstr ""
 #: /src/schooltool/gradebook/interfaces.py:130
 #: /src/schooltool/gradebook/interfaces.py:395
 msgid "Description"
-msgstr "描述"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:131
 msgid "A detailed description of the activity."
@@ -1002,7 +1001,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:209
 msgid "Students"
-msgstr "学生"
+msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:210
 msgid "Students in this gradebook."
@@ -1087,7 +1086,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Administration can grade students"
-msgstr "管理员可以为学生分级"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
@@ -1103,7 +1102,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
-msgstr "视图"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
@@ -1115,11 +1114,11 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
-msgstr "立即查找"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.pt:22
 msgid "Clear"
-msgstr "清除"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.pt:32
 msgid "Showing ${count} of ${total} items"
@@ -1187,7 +1186,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:375
 msgid "Required input is missing."
-msgstr "缺少必需的输入"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:20
 msgid ""
@@ -1271,6 +1270,3 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
 msgstr ""
-
-#~ msgid "Print Report Card"
-#~ msgstr "打印报告卡片"

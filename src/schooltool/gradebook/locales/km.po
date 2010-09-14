@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 17:08+0000\n"
+"PO-Revision-Date: 2010-05-20 20:34+0000\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -234,15 +234,15 @@ msgid "Add a Report Sheet"
 msgstr "បន្ថែម​សន្លឹក​របាយការណ៍"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr "កែ​សម្រួល​សន្លឹក​កិច្ចការ"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
 msgstr "កែ​សម្រួល"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "កែ​សម្រួល​សន្លឹក​កិច្ចការ"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 msgid "Edit Report Sheet"
@@ -1111,28 +1111,24 @@ msgid "A text string that specifies the source of the column"
 msgstr "ស្ទ្រីង​អត្ថបទ​ដែល​បញ្ជាក់​ប្រភព​របស់​ជួរ​ឈរ"
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Create, edit and deploy report sheet templates."
-msgstr "ពន្លា​ពុម្ព​សន្លឹក​របាយការណ៍"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
-#, fuzzy
 msgid "Edit Templates"
-msgstr "ពុម្ព"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
-#, fuzzy
 msgid "Edit Gradebook"
-msgstr "សៀវភៅ​ពិន្ទុ"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
-#, fuzzy
 msgid "View Gradebook"
-msgstr "សៀវភៅ​ពិន្ទុ"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
