@@ -159,7 +159,7 @@
       <td class="cell padded fd_cell" tal:repeat="activity view/activities"
           tal:attributes="id string:fd_${activity/hash}_cell">
         <input type="text" size="4" class="data fd"
-               onkeydown="spreadsheetBehaviour(event)"
+               onkeydown="return spreadsheetBehaviour(event)"
                tal:condition="activity/scorable"
                tal:attributes="id string:fd_${activity/hash};
                                onkeyup string:checkFillDown('${activity/hash}');
@@ -203,7 +203,7 @@
              tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
                  tal:condition="grade/editable"
-                 onkeydown="spreadsheetBehaviour(event)"
+                 onkeydown="return spreadsheetBehaviour(event)"
                  tal:attributes="name string:${grade/activity}_${row/student/id};
                                  id string:${grade/activity}_${row/student/id};
                                  value grade/value;
@@ -239,7 +239,7 @@
              tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
                  tal:condition="grade/editable"
-                 onkeydown="spreadsheetBehaviour(event)"
+                 onkeydown="return spreadsheetBehaviour(event)"
                  tal:attributes="name string:${grade/activity}_${row/student/id};
                                  id string:${grade/activity}_${row/student/id};
                                  value grade/value;
