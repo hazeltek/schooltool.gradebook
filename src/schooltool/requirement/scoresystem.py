@@ -156,14 +156,17 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
     _minPassingScore = None
     _bestScore = None
     hidden = False
+    _isMaxPassingScore = False
 
     def __init__(self, title=None, description=None,
-                 scores=None, bestScore=None, minPassingScore=None):
+                 scores=None, bestScore=None, minPassingScore=None,
+                 isMaxPassingScore=False):
         self.title = title
         self.description = description
         self.scores = scores or []
         self._bestScore = bestScore
         self._minPassingScore = minPassingScore
+        self._isMaxPassingScore = isMaxPassingScore
 
     def isPassingScore(self, score):
         """See interfaces.IScoreSystem"""
@@ -172,7 +175,10 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         if self._minPassingScore is None:
             return None
         scores = self.scoresDict()
-        return scores[score] >= scores[self._minPassingScore]
+        if self._isMaxPassingScore:
+            return scores[score] <= scores[self._minPassingScore]
+        else:
+            return scores[score] >= scores[self._minPassingScore]
 
     def isValidScore(self, score):
         """See interfaces.IScoreSystem"""

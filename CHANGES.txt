@@ -5,7 +5,11 @@ CHANGES
 0.7.2 (unreleased)
 ------------------
 
+- Fixed Gradebook doesn't remember last section visitied (https://launchpad.net/bugs/623507)
+- Created Manage tab CSV view that returns all sections' grades (requested by SLA)
+- Custom Score Systems need min/max passing scores (https://launchpad.net/bugs/616451)
 - Fixed deletion of report activities (https://launchpad.net/bugs/627490)
+- Updated translations (el, en, es, fr, it)
 
 
 0.7.1 (2010-06-25)

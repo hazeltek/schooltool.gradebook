@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: el-1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-04-28 18:09+0000\n"
-"Last-Translator: Yannis Kaskamanidis <ttnfy17@yahoo.gr>\n"
+"PO-Revision-Date: 2010-09-06 19:42+0000\n"
+"Last-Translator: Christos Mantas <Unknown>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-09-07 04:59+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -27,7 +27,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:8
 #: /src/schooltool/gradebook/interfaces.py:205
 msgid "Activities"
-msgstr ""
+msgstr "Δραστηριότητες"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:4
 #: /src/schooltool/gradebook/browser/activities_overview.pt:8
@@ -36,11 +36,11 @@ msgstr ""
 #: /src/schooltool/gradebook/interfaces.py:201
 #: /src/schooltool/gradebook/interfaces.py:306
 msgid "Worksheets"
-msgstr ""
+msgstr "Φύλλα Εργασίας"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Απόκρυψη"
 
 #: /src/schooltool/gradebook/browser/activity.py:69
 msgid "External Activity"
@@ -101,7 +101,7 @@ msgstr "Εφαρμογή"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:355
 msgid "$value is not a valid weight."
-msgstr ""
+msgstr "$value δεν είναι έγκυρο βάρος"
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "Category weights must add up to 100."
@@ -140,7 +140,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
 #: /src/schooltool/gradebook/interfaces.py:135
 msgid "Category"
-msgstr ""
+msgstr "Κατηγορία"
 
 #: /src/schooltool/gradebook/browser/categories.pt:4
 #: /src/schooltool/gradebook/browser/categories.pt:15
@@ -154,6 +154,12 @@ msgid ""
 "calculate grades. For example, the grade in a section might be comprised of "
 "60% test scores, 20% homework and 20% class participation."
 msgstr ""
+"Οι Κατηγορίες χρησιμοποιούνται στο βιβλίο βαθμολογιών του SchoolTool για να "
+"οργανώσουν τις δραστηριότητες και να επιτρέψουν στους δασκάλους να δώσουν "
+"διαφορετικά βάρη στις δραστηριότητες διαφόρων μορφών για τον υπολογισμό των "
+"βαθμών. Για παράδειγμα, ο βαθμός σε μια ενότητα θα μπορούσε να αποτελείται "
+"κατά  60% από αποτελέσματα διαγωνισμάτων, 20% από τη δουλειά στο σπίτι και "
+"20% από την συμμετοχή στην τάξη."
 
 #: /src/schooltool/gradebook/browser/categories.pt:22
 msgid ""
@@ -181,15 +187,15 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:43
 msgid "Categories"
-msgstr ""
+msgstr "Κατηγορίες"
 
 #: /src/schooltool/gradebook/browser/category.py:49
 msgid "New Category"
-msgstr ""
+msgstr "Νέα Κατηγορία"
 
 #: /src/schooltool/gradebook/browser/category.py:52
 msgid "Default Category"
-msgstr ""
+msgstr "Προεπιλεγμένη κατηγορία"
 
 #: /src/schooltool/gradebook/browser/category.py:75
 msgid "Categories successfully deleted."
@@ -201,12 +207,12 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/category.py:87
 msgid "Default category successfully changed."
-msgstr ""
+msgstr "Η προεπιλεγμένη κατηγορία άλλαξε επιτυχώς"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:56
 #: /src/schooltool/gradebook/browser/configure.zcml:90
 msgid "Activity Categories"
-msgstr ""
+msgstr "Κατηγορίες Δραστηριοτήτων"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:79
 #: /src/schooltool/gradebook/browser/templates_overview.pt:4
@@ -224,14 +230,14 @@ msgid "Add a Report Sheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:151
+msgid "Edit Worksheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/configure.zcml:151
 #: /src/schooltool/gradebook/browser/configure.zcml:163
 #: /src/schooltool/gradebook/browser/configure.zcml:211
 #: /src/schooltool/gradebook/browser/configure.zcml:234
 msgid "Edit"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:163
@@ -264,7 +270,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:302
 #: /src/schooltool/gradebook/browser/configure.zcml:411
 msgid "Export XLS"
-msgstr ""
+msgstr "Έξαγωγη XLS"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:309
 #: /src/schooltool/gradebook/browser/configure.zcml:346
@@ -281,7 +287,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:369
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:119
 msgid "New Activity"
-msgstr ""
+msgstr "Νέα δραστηριότητα"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:332
 #: /src/schooltool/gradebook/browser/configure.zcml:376
@@ -295,7 +301,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Manage Activities"
-msgstr ""
+msgstr "Διαχείριση Δραστηριοτήτων"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:397
 #: /src/schooltool/gradebook/browser/weight_categories.pt:5
@@ -305,7 +311,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/configure.zcml:404
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:16
 msgid "Preferences"
-msgstr ""
+msgstr "Προτιμήσεις..."
 
 #: /src/schooltool/gradebook/browser/configure.zcml:418
 msgid "Download PDF"

@@ -19,6 +19,7 @@
       <th class="cell header fully_padded">Abbreviation</th>
       <th class="cell header fully_padded">Score Value</th>
       <th class="cell header fully_padded">Low Percentage</th>
+      <th class="cell header fully_padded">Passing Score</th>
     </tr>
 
     <tal:block repeat="score view/scores">
@@ -34,6 +35,9 @@
         </td>
         <td class="cell fully_padded">
           <span tal:content="score/percent_value" />
+        </td>
+        <td class="cell fully_padded">
+          <span tal:content="score/passing_value" />
         </td>
       </tr>
     </tal:block>
