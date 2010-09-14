@@ -22,12 +22,14 @@ Gradebook Views
 
 __docformat__ = 'reStructuredText'
 
+import csv
 import datetime
-import decimal
+from decimal import Decimal
+from StringIO import StringIO
 import urllib
 
 from zope.container.interfaces import INameChooser
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.html.field import HtmlFragment
 from zope.publisher.browser import BrowserView
@@ -42,7 +44,7 @@ from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.course.interfaces import ISection
+from schooltool.course.interfaces import ISection, ISectionContainer
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
@@ -58,7 +60,7 @@ from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IValuesScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
-from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm
 
@@ -97,7 +99,7 @@ def convertAverage(average, scoresystem):
     if scoresystem is None:
         return '%s%%' % average
     for score in scoresystem.scores:
-        if average >= score[2]:
+        if average >= score[3]:
             return score[0]
 
 
@@ -120,14 +122,14 @@ class GradebookStartup(object):
 
         if self.sectionsTaught:
             section = getCurrentSectionTaught(self.person)
-            if section is None:
+            if section is None or section.__parent__ is None:
                 section = self.sectionsTaught[0]
             self.gradebookURL = absoluteURL(section, self.request)+ '/gradebook'
             if not self.sectionsAttended:
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
             section = getCurrentSectionAttended(self.person)
-            if section is None:
+            if section is None or section.__parent__ is None:
                 section = self.sectionsAttended[0]
             self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
             if not self.sectionsTaught:
@@ -610,18 +612,6 @@ class GradebookOverview(SectionFinder):
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property
-    def firstCellId(self):
-        self.person = IPerson(self.request.principal)
-        activities = self.getFilteredActivities()
-        students = self.context.students
-        if len(activities) and len(students):
-            act_hash = activities[0].__name__
-            student_id = students[0].username
-            return '%s_%s' % (act_hash, student_id)
-        else:
-            return ''
-
-    @property
     def descriptions(self):
         self.person = IPerson(self.request.principal)
         results = []
@@ -706,7 +696,7 @@ class GradeActivity(object):
 
 def getScoreSystemDiscreteValues(ss):
     if IDiscreteValuesScoreSystem.providedBy(ss):
-        return (ss.scores[-1][1], ss.scores[0][1])
+        return (ss.scores[-1][2], ss.scores[0][2])
     elif IRangedValuesScoreSystem.providedBy(ss):
         return (ss.min, ss.max)
     return (0, 0)
@@ -779,10 +769,8 @@ class MyGradesView(SectionFinder):
             self.table.append(row)
 
         if count:
-            average = int((float(100 * total) / float(count)) + 0.5)
+            average = int(round(Decimal(100 * total) / Decimal(count)))
             self.average = convertAverage(average, self.average_scoresystem)
-            if self.average is UNSCORED:
-                self.average = None
         else:
             self.average = None
 
@@ -811,8 +799,8 @@ class LinkedActivityGradesUpdater(object):
         for student in gradebook.students:
             external_grade = external_activity.getGrade(student)
             if external_grade is not None:
-                score = decimal.Decimal("%.2f" % external_grade) * \
-                        decimal.Decimal(linked_activity.points)
+                score = Decimal("%.2f" % external_grade) * \
+                        Decimal(linked_activity.points)
                 gradebook.evaluate(student, linked_activity, score, evaluator)
 
 
@@ -1156,4 +1144,37 @@ class StudentGradebookView(object):
             return False
         cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
+
+
+class GradebookCSVView(BrowserView):
+
+    def __call__(self):
+        csvfile = StringIO()
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        row = ['year', 'term', 'section', 'worksheet', 'activity', 'student',
+               'grade']
+        writer.writerow(row)
+        syc = ISchoolYearContainer(self.context)
+        for year in syc.values():
+            for term in year.values():
+                for section in ISectionContainer(term).values():
+                    self.writeGradebookRows(writer, year, term, section)
+        return csvfile.getvalue().decode('utf-8')
+
+    def writeGradebookRows(self, writer, year, term, section):
+        activities = interfaces.IActivities(section)
+        for worksheet in activities.values():
+            gb = interfaces.IGradebook(worksheet)
+            for student in gb.students:
+                for activity in gb.activities:
+                    value, ss = gb.getEvaluation(student, activity)
+                    if value is None:
+                        continue
+                    value = unicode(value).replace('\n', '\\n')
+                    value = value.replace('\r', '\\r')
+                    row = [year.__name__, term.__name__, section.__name__,
+                           worksheet.__name__, activity.__name__,
+                           student.username, value]
+                    row = [item.encode('utf-8') for item in row]
+                    writer.writerow(row)
 

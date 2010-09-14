@@ -15,54 +15,79 @@ Some imports:
     >>> from schooltool.gradebook import sliceString
 
 
-Initial School Setup
---------------------
+Activity Categories
+-------------------
 
-We will use the 'Manage' tab to find the 'Activity Categories' link to set up
-the categories:
+Administrator defines activity categories available for teachers.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Activity Categories').click()
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    essay
+    exam
+    assignment
+    journal
+    lab
+    project
+    presentation
+    homework
 
-As you can see, there are already several categories pre-defined. Oftentimes,
+As you can see, there are already several categories pre-defined. Often,
 those categories do not work for a school. Either you do not need some and/or
 others are missing. So let's start by deleting a couple of categories:
-
-    >>> 'essay' in manager.contents
-    True
-    >>> 'journal' in manager.contents
-    True
 
     >>> manager.getControl(name='field.categories:list').value = [
     ...     'essay', 'journal', 'homework', 'presentation']
     >>> manager.getControl('Remove').click()
 
-    >>> 'essay' in manager.contents
-    False
-    >>> 'journal' in manager.contents
-    False
+    >>> 'Categories successfully deleted.' in manager.contents
+    True
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    exam
+    assignment
+    lab
+    project
 
 Next, we add a new category:
-
-    >>> 'Lab Report' in manager.contents
-    False
 
     >>> manager.getControl('New Category').value = 'Lab Report'
     >>> manager.getControl('Add').click()
 
-    >>> 'Lab Report' in manager.contents
+    >>> 'Category successfully added.' in manager.contents
     True
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    exam
+    assignment
+    lab
+    project
+    labreport-
 
 We can also add categories with non ASCII characters:
-
-    >>> 'Calificación' in manager.contents
-    False
 
     >>> manager.getControl('New Category').value = 'Calificación'
     >>> manager.getControl('Add').click()
 
-    >>> 'Calificación' in manager.contents
-    True
+    >>> analyze.printQuery("id('field.categories')/option/@value", manager.contents)
+    exam
+    assignment
+    calificacin-1ra1s
+    lab
+    project
+    labreport-
+
+If we click on Add without entering a new category, nothing happens:
+
+    >>> analyze.printQuery("id('field.newCategory')/@value", manager.contents)
+
+    >>> manager.getControl('Add').click()
+    >>> 'Category successfully added.' in manager.contents
+    False
+
+Also click Remove without nothing selected:
+
+    >>> manager.getControl('Remove').click()
+    >>> 'Categories successfully deleted.' in manager.contents
+    False
 
 We can also change the default category:
 
@@ -75,7 +100,11 @@ We can also change the default category:
     >>> manager.getControl('Default Category').value
     ['exam']
 
-Se up the school year and a couple of terms:
+
+Initial School Setup
+--------------------
+
+Set up the school year and a couple of terms:
 
    >>> setup.addSchoolYear('2007', '2007-01-01', '2007-12-31')
    >>> setup.addTerm('Winter', '2007-01-01', '2007-06-01', schoolyear='2007')
@@ -97,8 +126,6 @@ Next the administrator defines the courses that are available in the school.
     >>> manager.getControl('Title').value = 'English I'
     >>> manager.getControl('Add').click()
     >>> manager.getLink('English I').click()
-
-This completes the initial school setup.
 
 
 Term Setup
@@ -429,13 +456,13 @@ Also note that all the other entered values should be retained:
     True
     >>> 'value="36"' in stephan.contents
     True
-    >>> stephan.getControl('Cardune, Paul').value = u'40'
+    >>> stephan.getControl('Cardune, Paul').value = u'32'
     >>> stephan.getControl('Save').click()
 
 The screen will return to the grade overview, where the grades are now
 visible:
 
-    >>> 'value="40"' in stephan.contents
+    >>> 'value="32"' in stephan.contents
     True
     >>> 'value="42"' in stephan.contents
     True
@@ -507,14 +534,14 @@ spreadsheet as one would expect.
 We'll start by clicking on Paul and testing the contents of the form.
 Since Paul is the first student in the list of students, there will be
 no 'Previous' button.
- 
+
     >>> stephan.getLink('>', index=0).click()
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Cardune, Paul</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
-    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
-    <input type="submit" id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" />
-    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 When we click on the 'Next' button it takes us to the middle student, Tom.
 Here we will see both a 'Previous' and a 'Next' button.
@@ -523,10 +550,10 @@ Here we will see both a 'Previous' and a 'Next' button.
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Hoffman, Tom</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
-    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
-    <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
-    <input type="submit" id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" />
-    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 When we click on the 'Next' button it takes us to the last student, Claudia.
 Here we will see no 'Next' button.
@@ -535,16 +562,16 @@ Here we will see no 'Next' button.
     >>> analyze.printQuery("id('form')/div[1]/h3", stephan.contents)
     <h3>Enter grades for Richter, Claudia</h3>
     >>> analyze.printQuery("id('form')/div[2]//input", stephan.contents)
-    <input type="submit" id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" />
-    <input type="submit" id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" />
-    <input type="submit" id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" />
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 Hitting the 'Cancel' button takes the user back to the gradebook.  We'll
 verify this by testing the data cells.
 
     >>> stephan.getControl('Cancel').click()
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '', '42', '', '', '86']
+    ['32', '', '42', '', '', '86']
 
 Now we'll go change a cell and come back.
 
@@ -555,7 +582,7 @@ Now we'll go change a cell and come back.
 We see the new value where it wasn't before.
 
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '85', '42', '', '', '86']
+    ['32', '85', '42', '', '', '86']
 
 Let's change that new value to something else.
 
@@ -563,7 +590,7 @@ Let's change that new value to something else.
     >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
     >>> stephan.getControl('Apply').click()
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '35', '42', '', '', '86']
+    ['32', '35', '42', '', '', '86']
 
 Finally, we'll change it back to the way it was, demonstrating that we can
 remove scores in the student gradebook.
@@ -575,7 +602,7 @@ remove scores in the student gradebook.
 The data cells are set as before.
 
     >>> analyze.queryHTML("//input[@class='data']/@value", stephan.contents)
-    ['40', '', '42', '', '', '86']
+    ['32', '', '42', '', '', '86']
 
 
 Sorting
@@ -661,7 +688,7 @@ us to the gradebook.  There we will note the effect of the weighting.
     ...Tom...
     ...84%</b>...
     ...Paul...
-    ...80%</b>...
+    ...64%</b>...
 
 Finally, we'll test hitting the 'Cancel' button.  It should return to the
 gradebook without changing the weights.
@@ -691,8 +718,8 @@ preference.
     >>> manager.getLink('Score Systems').click()
     >>> manager.getLink('Add Score System').click()
     >>> url = manager.url + '?form-submitted&UPDATE_SUBMIT&title=Good/Bad'
-    >>> url = url + '&displayed1=G&abbr1=&value1=1&percent1=60'
-    >>> url = url + '&displayed2=B&abbr2=&value2=0&percent2=0'
+    >>> url = url + '&displayed1=Good&abbr1=G&value1=1&percent1=70'
+    >>> url = url + '&displayed2=Bad&abbr2=B&value2=0&percent2=0'
     >>> manager.open(url)
 
 We'll start by calling up the current column preferences and note that there
@@ -716,15 +743,39 @@ are none set yet.
     >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
     <input type="checkbox" name="hide_due_date" />
 
-Now we'll set all of the preferences to something and test that the changes
-were saved.
+Let's change all preferences
 
-    >>> url = stephan.url + '?form-submitted&UPDATE_SUBMIT'
-    >>> url += '&hide_total=on&label_total=Summe'
-    >>> url += '&hide_average=on&label_average=Durchschnitt'
-    >>> url += '&scoresystem_average=goodbad'
-    >>> url += '&hide_due_date=on'
-    >>> stephan.open(url)
+    >>> stephan.getControl(name='hide_total').value = ['on']
+    >>> stephan.getControl(name='label_total').value = 'Summe'
+    >>> stephan.getControl(name='hide_average').value = ['on']
+    >>> stephan.getControl(name='label_average').value = 'Durchschnitt'
+    >>> stephan.getControl(name='scoresystem_average').value = ['goodbad']
+    >>> stephan.getControl(name='hide_due_date').value = ['on']
+    >>> stephan.getControl('Update').click()
+
+Total and average columns were hidden
+
+    >>> results = analyze.queryHTML("//table[@class='schooltool_gradebook'][2]//th/div//text()", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    Name
+    <BLANKLINE>
+    HW1
+    <BLANKLINE>
+    50
+    <BLANKLINE>
+    Quiz
+    <BLANKLINE>
+    100
+
+Due date filter was also hidden
+
+    >>> 'show only activities due in past' in stephan.contents
+    False
+
+    >>> analyze.printQuery("//select[@name='num_weeks']", stephan.contents)
+
+Look that all the preferences were saved
 
     >>> stephan.getLink('Preferences').click()
     >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
@@ -743,9 +794,57 @@ were saved.
     >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
     <input type="checkbox" name="hide_due_date" checked="checked" />
 
+Show the total and average columns, and test that Average is converted to Good/Bad:
+
+    >>> stephan.getControl(name='hide_total').value = False
+    >>> stephan.getControl(name='hide_average').value = False
+    >>> stephan.getControl('Update').click()
+
+    >>> results = analyze.queryHTML("//table[@class='schooltool_gradebook'][2]//th/div//text()", stephan.contents)
+    >>> results = [result.strip() for result in results if result]
+    >>> for result in results: print result
+    Name
+    Summe
+    Durchschnitt
+    <BLANKLINE>
+    HW1
+    <BLANKLINE>
+    50
+    <BLANKLINE>
+    Quiz
+    <BLANKLINE>
+    100
+
+    >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    <b>86</b>
+    <b>Good</b>
+    <b>42</b>
+    <b>Good</b>
+    <b>32</b>
+    <b>Bad</b>
+
+Check with extended letter grade scoresystem
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade']
+    >>> stephan.getControl('Update').click()
+
+    >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
+    >>> results = [result.strip() for result in results]
+    >>> for result in results: print result
+    <b>86</b>
+    <b>B</b>
+    <b>42</b>
+    <b>B</b>
+    <b>32</b>
+    <b>D</b>
+
 Finally, we will reset the preferences to none so that the rest of the tests
 pass.
 
+    >>> stephan.getLink('Preferences').click()
     >>> url = stephan.url + '?form-submitted&UPDATE_SUBMIT'
     >>> url += '&scoresystem_average='
     >>> stephan.open(url)
@@ -1008,7 +1107,7 @@ And our grades are:
     ...Name...Total...Ave...HW 1...Quiz...
     ...Claudia...<b>86</b>...<b>86%</b>...86...
     ...Tom...<b>44</b>...<b>88%</b>...44...
-    ...Paul...<b>40</b>...<b>80%</b>...40...
+    ...Paul...<b>32</b>...<b>64%</b>...32...
 
 This state should change after we update the grades from external
 activities. Remember that the gradebook has weighting defined?:
@@ -1060,7 +1159,7 @@ loaded with the latest grades:
     ...Name...Total...Ave...HW 1...Quiz...Hardware...
     ...Claudia...92.00...69%...86...6.00...
     ...Tom...53.00...82%...44...9.00...
-    ...Paul...40...80%...40...
+    ...Paul...32...64%...32...
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
@@ -1112,7 +1211,7 @@ changed taking into account the weighting:
     ...Name...Total...Ave...HW 1...Quiz...Hardware As...
     ...Claudia...96.00...69%...86...10.00...
     ...Tom...59.00...79%...44...15.00...
-    ...Paul...40...80%...40...
+    ...Paul...32...64%...32...
 
 
 Column Linking
@@ -1127,7 +1226,7 @@ There are two types of linked activities, a link to an other worksheet's
 activity, or a link to the average column of the worksheet.  Activity links
 will use the score system of the source activity whereas worksheet average
 links will use an assumed 100 point system.
- 
+
 We'll switch to the Fall term and enter some scores to the English I section:
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/gradebook?currentTerm=2007-.fall-')
@@ -1216,7 +1315,7 @@ sources of the links.  First we'll test the editable fields:
     value="44"
     value=""
     value="15.00"
-    value="40"
+    value="32"
     value=""
     value=""
 
@@ -1241,8 +1340,8 @@ Finally we'll test the totals and averages:
     <b>69%</b>
     <b>211.00</b>
     <b>77%</b>
-    <b>224</b>
-    <b>90%</b>
+    <b>216</b>
+    <b>86%</b>
 
 
 Hiding Worksheets
@@ -1384,15 +1483,39 @@ Now, let's check that a student can access the orphan gradebook:
     </td>
 
 
-Last visited section deleted tests
-----------------------------------
+Last visited section tests
+--------------------------
 
-As the gradebook remembers where a teacher or student was last time they were
-in the gradebook, we need to make sure that we can handle the case where the
-last visited section was since deleted.
+The gradebook remembers where a teacher or student was last time they were
+in the gradebook, so we will test this.
+
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
 
     >>> stephan.open('http://localhost/schoolyears/2007/fall/sections/1/gradebook')
     >>> claudia.open('http://localhost/schoolyears/2007/fall/sections/1/mygrades')
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/fall/sections/1/activities/Worksheet/gradebook'
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/fall/sections/1/activities/Worksheet/mygrades'
+
+We need to make sure that we can handle the case where the last visited section
+was since deleted.  First we'll delete the fall section of Physics.
+
     >>> manager.getLink('2007').click()
     >>> manager.getLink('Fall').click()
     >>> manager.getLink('Sections').click()
@@ -1400,13 +1523,37 @@ last visited section was since deleted.
     >>> manager.getControl('Delete').click()
     >>> manager.getControl('Confirm').click()
 
+Now when Stephan or Claudia hit the Gradebook tab, they get redirected to the
+winter term for the Physics section since the fall section is gone.
+
     >>> stephan.getLink('Gradebook').click()
-    >>> stephan.printQuery("id('content-body')//a")
-    <a class="navigation_header" href="http://localhost/schoolyears/2007/winter/sections/1/gradebook">Classes you teach</a>
-    <a class="navigation_header" href="http://localhost/schoolyears/2007/winter/sections/2/mygrades">Classes you attend</a>
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/gradebook'
 
     >>> claudia.getLink('Gradebook').click()
-    >>> claudia.printQuery("id('content-body')//a")
-    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-2/mygrades">Week 2</a>
-    <a href="http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet-3/mygrades">Week 3</a>
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
+
+
+CSV test
+--------
+
+We supply a CSV view for getting all grades out of schooltool in CSV format.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Download Gradebook CSV').click()
+    >>> print manager.contents
+    "year","term","section","worksheet","activity","student","grade"
+    "2007","winter","1","Worksheet","Activity-2","claudia","86"
+    "2007","winter","1","Worksheet","LinkedActivity","claudia","10.00"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","claudia","42"
+    "2007","winter","1","Worksheet","Activity","paul","32"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","paul","90"
+    "2007","winter","1","Worksheet","Activity","tom","44"
+    "2007","winter","1","Worksheet","LinkedActivity","tom","15.00"
+    "2007","winter","1","Worksheet","LinkedColumnActivity","tom","72"
+    "2007","winter","1","Worksheet-2","Activity","claudia","42"
+    "2007","winter","1","Worksheet-2","Activity","paul","90"
+    "2007","winter","1","Worksheet-2","Activity","tom","72"
 

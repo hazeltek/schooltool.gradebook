@@ -22,7 +22,7 @@ Request PDF Views
 
 from datetime import datetime
 
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.publisher.browser import BrowserView
 from zope.traversing.browser.absoluteurl import absoluteURL
@@ -177,21 +177,30 @@ class RequestFailingReportView(BrowserView):
                     results.append(result)
         return results
 
+    def minmax(self):
+        ismax = False
+        current = self.current_source()
+        if current:
+            ss = self.getScoreSystem(current)
+            if IDiscreteValuesScoreSystem.providedBy(ss):
+                if ss._isMaxPassingScore:
+                    ismax = True
+        if ismax:
+            return _('Maximum Passing Score')
+        else:
+            return _('Minimum Passing Score')
+
     def scores(self):
         results = []
         current = self.current_source()
         if current:
             ss = self.getScoreSystem(current)
             if IDiscreteValuesScoreSystem.providedBy(ss):
-                result = {
-                    'name': _('Choose a minimum passing score'),
-                    'value': '',
-                    }
-                results.append(result)
                 for score in ss.scores:
                     result = {
                         'name': score[0],
                         'value': score[0],
+                        'selected': score[0] == ss._minPassingScore,
                         }
                     results.append(result)
         return results

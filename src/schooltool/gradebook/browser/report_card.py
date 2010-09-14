@@ -23,7 +23,7 @@ Report Card Views
 from zope.component import getUtilitiesFor
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.container.interfaces import INameChooser
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
 from zope.interface import Interface, implements
 from zope.schema import Choice, Int

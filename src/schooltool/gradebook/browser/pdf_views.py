@@ -24,7 +24,7 @@ from datetime import datetime
 from decimal import Decimal
 from copy import deepcopy
 
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
@@ -472,6 +472,7 @@ class FailingReportPDFView(BasePDFView):
             return []
         for student in gb.students:
             value, ss = gb.getEvaluation(student, activity)
+            failure = False
             if value is not None:
                 if IDiscreteValuesScoreSystem.providedBy(ss):
                     for score in ss.scores:
@@ -479,11 +480,18 @@ class FailingReportPDFView(BasePDFView):
                             passing_value = score[2]
                         if score[0] == value:
                             this_value = score[2]
+                    if ss._isMaxPassingScore:
+                        if this_value > passing_value:
+                            failure = True
+                    elif this_value < passing_value:
+                        failure = True
                 else:
                     passing_value = Decimal(self.score)
                     this_value = value
-                if this_value < passing_value:
-                    data.append([student, value])
+                    if this_value < passing_value:
+                        failure = True
+            if failure:
+                data.append([student, value])
         return data
 
     def students(self):

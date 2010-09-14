@@ -71,13 +71,13 @@ Let's make sure that all fields have the correct value:
 The constructor should have also created 4 widgets:
 
   >>> widget.existing_widget
-  <zope.app.form.browser.itemswidgets.DropdownWidget object at ...>
+  <zope.formlib.itemswidgets.DropdownWidget object at ...>
   >>> widget.custom_widget
-  <zope.app.form.browser.boolwidgets.CheckBoxWidget object at ...>
+  <zope.formlib.boolwidgets.CheckBoxWidget object at ...>
   >>> widget.min_widget
-  <zope.app.form.browser.textwidgets.IntWidget object at ...>
+  <zope.formlib.textwidgets.IntWidget object at ...>
   >>> widget.max_widget
-  <zope.app.form.browser.textwidgets.IntWidget object at ...>
+  <zope.formlib.textwidgets.IntWidget object at ...>
 
 
 ``setRenderedValue(value)`` Method
@@ -425,7 +425,7 @@ going through every combination here, since we know the sub-widgets work:
   <div>
   <div class="value">
   <select id="field.field.existing" name="field.field.existing" size="1" >
-  <option selected="selected" value="">(no value)</option>
+  <option selected="selected" value="">(nothing selected)</option>
   <option value="Letter Grade">Letter Grade</option>
   <option value="Pass/Fail">Pass/Fail</option>
   <option value="Percent">Percent</option>
@@ -438,18 +438,18 @@ going through every combination here, since we know the sub-widgets work:
     <input class="hiddenType" id="field.field.custom.used"
            name="field.field.custom.used" type="hidden" value="" />
     <input class="checkboxType" checked="checked" id="field.field.custom"
-           name="field.field.custom" type="checkbox" value="on"  />
+           name="field.field.custom" type="checkbox" value="on" />
     <label for="field.field.custom">Custom score system</label>
   </p>
   <p>
     <label for="field.field.min">Minimum</label>
     <input class="textType" id="field.field.min" name="field.field.min"
-           size="10" type="text" value="0"  />
+           size="10" type="text" value="0" />
   </p>
   <p>
     <label for="field.field.max">Maximum</label>
     <input class="textType" id="field.field.max" name="field.field.max"
-           size="10" type="text" value="10"  />
+           size="10" type="text" value="10" />
   </p>
   </fieldset>
   <BLANKLINE>
