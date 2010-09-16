@@ -17,8 +17,32 @@ Let's start by setting up the application and logging in as manager.
     >>> setup.setUpBasicSchool()
     >>> manager = Browser('manager', 'schooltool')
 
-The first step is to set up the report sheet templates.  This is done from
-the Manage tab.
+If at this point, when we have no report sheets yet, we go to a term
+and try to deploy one, we should get an error:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.printQuery('//h1/text()')
+    The operation you attempted cannot be completed because there are
+    currently no report sheets set up in your SchoolTool
+    instance. Please have a user with administration access set up at
+    least one report sheet and try the operation again.
+
+The same should happen if we try to deploy from a school year:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.printQuery('//h1/text()')
+    The operation you attempted cannot be completed because there are
+    currently no report sheets set up in your SchoolTool
+    instance. Please have a user with administration access set up at
+    least one report sheet and try the operation again.
+
+So, let's set up the report sheet templates.  This is done from the
+Manage tab.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Report Sheet Templates').click()

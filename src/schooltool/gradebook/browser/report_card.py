@@ -319,6 +319,12 @@ class DeployReportWorksheetBaseView(object):
                    'title': worksheet.title}
 
     def update(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if not root.templates:
+            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
+            next_url += '/no_report_sheets.html'
+            self.request.response.redirect(next_url)
+            return
         if 'form-submitted' in self.request:
             if 'DEPLOY' in self.request:
                 self.deploy()
