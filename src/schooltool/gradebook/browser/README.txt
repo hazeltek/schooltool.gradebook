@@ -1536,6 +1536,22 @@ winter term for the Physics section since the fall section is gone.
     'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
 
 
+Average tests
+-------------
+
+When we weren't using the same method to calculate the average in the gradebook
+and the mygrades views, that led to the averages sometimes coming out differently.
+Here we will test the the average is the same for Claudia in both views.
+
+    >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
+    >>> stephan.printQuery("id('content-body')//table[2]/tr[4]/td[3]/b")
+    <b>69%</b>
+
+    >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/mygrades')
+    >>> claudia.printQuery("id('content-body')//table[2]/tr[1]/td[1]/div")
+    <div> Ave.: 69%</div>
+
+
 CSV test
 --------
 

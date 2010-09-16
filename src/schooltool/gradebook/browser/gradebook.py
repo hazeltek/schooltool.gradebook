@@ -722,6 +722,7 @@ class MyGradesView(SectionFinder):
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
+        worksheet = proxy.removeSecurityProxy(gradebook.context)
 
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
@@ -732,7 +733,6 @@ class MyGradesView(SectionFinder):
         self.processColumnPreferences()
 
         self.table = []
-        total = 0
         count = 0
         for activity in self.context.getCurrentActivities(self.person):
             activity = proxy.removeSecurityProxy(activity)
@@ -751,7 +751,6 @@ class MyGradesView(SectionFinder):
                         value = ss.getNumericalValue(value)
                         if value is None:
                             value = 0
-                    total += value - s_min
                     count += s_max - s_min
                     grade = {
                         'comment': False,
@@ -781,7 +780,8 @@ class MyGradesView(SectionFinder):
             self.table.append(row)
 
         if count:
-            average = int(round(Decimal(100 * total) / Decimal(count)))
+            total, average = gradebook.getWorksheetTotalAverage(worksheet,
+                self.person)
             self.average = convertAverage(average, self.average_scoresystem)
         else:
             self.average = None
