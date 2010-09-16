@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2010-09-15 00:08+0300\n"
+"POT-Creation-Date: 2010-09-16 17:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -575,6 +575,14 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/no_current_term.pt:11
 msgid "The operation you attempted cannot be completed because there are currently no terms set up in your SchoolTool instance. Please have a user with administration access set up at least one term and try the operation again."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:4
+msgid "No Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:10
+msgid "The operation you attempted cannot be completed because there are currently no report sheets set up in your SchoolTool instance. Please have a user with administration access set up at least one report sheet and try the operation again."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:203
