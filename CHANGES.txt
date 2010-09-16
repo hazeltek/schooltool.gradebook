@@ -2,7 +2,13 @@
 CHANGES
 =======
 
-0.7.2 (unreleased)
+0.8.0 (2010-09-16)
+------------------
+
+- Update tests for use with SchoolTool 1.5.1
+
+
+0.7.2 (2010-09-16)
 ------------------
 
 New features
