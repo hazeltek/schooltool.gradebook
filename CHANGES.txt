@@ -22,6 +22,7 @@ New features
 
 - CSV export of all sections' grades (requested by SLA)
 - Custom Score Systems need min/max passing scores (https://launchpad.net/bugs/616451)
+- Grades rounding mismatch (https://launchpad.net/bugs/585796)
 
 Bug fixes
 +++++++++
