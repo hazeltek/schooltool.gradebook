@@ -994,7 +994,7 @@ the permission to do it:
     >>> manager.open('http://localhost')
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Access Control').click()
-    >>> manager.getControl('Administration can grade students').click()
+    >>> manager.getControl("The instructor of a section and school administration can edit a section's gradebook").click()
     >>> manager.getControl('Apply').click()
 
 And try again:
@@ -1008,7 +1008,7 @@ Let's set the setting back to cover our tracks:
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Access Control').click()
-    >>> manager.getControl('Administration can grade students').click()
+    >>> manager.getControl('Only the instructor of a section can edit its gradebook').click()
     >>> manager.getControl('Apply').click()
 
 A teacher should be able to view and edit his own gradebook.
