@@ -97,7 +97,7 @@ def getScoreSystemFromEscName(name):
 def convertAverage(average, scoresystem):
     """converts average to display value of the given scoresystem"""
     if scoresystem is None:
-        return '%s%%' % average
+        return '%.1f%%' % average
     for score in scoresystem.scores:
         if average >= score[3]:
             return score[0]
