@@ -379,11 +379,13 @@ a cell in the worksheet.
     >>> gradebook.getEvaluation(paul, hw1)
     (10, <RangedValuesScoreSystem None>)
 
-We can get a student average for the worksheet, an integer percentage that
-can later be used to formulate a letter grade.
+We can get the total of points and the average in a worksheet for a
+student. If both values can be determined, they are returned as
+Decimal numbers. It's responsability of the caller code to format them
+as needed.
 
-    >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("92"), 81)
+    >>> '%.1f, %.3f' % gradebook.getWorksheetTotalAverage(week1, paul)
+    '92.0, 80.702'
 
 
 Sorting by Column
@@ -433,7 +435,7 @@ Let's look again at our current worksheet for our gradebook.  We see that
 there's a homework assignment with 10 possible points, a project with 4 possible
 points, and an exam with 100.  Paul got a 10 out of 10 on the homework, a 2 out
 of 4 for the project, and an 80 out of 100 on the quiz.  The default calculation
-of the average would be (10 + 2 + 80) / (10 + 4 + 100) = 81%.
+of the average would be (10 + 2 + 80) / (10 + 4 + 100) = 80.7%.
 
     >>> sorted(gradebook.getCurrentEvaluationsForStudent(stephan, paul),
     ...        key=lambda x: x[0].title)
@@ -441,8 +443,8 @@ of the average would be (10 + 2 + 80) / (10 + 4 + 100) = 81%.
      (<Activity u'Project 1'>, <Evaluation for <Activity u'Project 1'>,
       value='C'>),
      (<Activity u'Quiz'>, <Evaluation for <Activity u'Quiz'>, value=80>)]
-    >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("92"), 81)
+    >>> '%.1f, %.3f' % gradebook.getWorksheetTotalAverage(week1, paul)
+    '92.0, 80.702'
 
 Let's create some category weights for the current worksheet.
 
@@ -464,8 +466,8 @@ calculation of ((10/10) * 0.38) + ((80/100) * 0.62) = 87.6% which rounds up
 to 88%.  Once again, the total is 92 even though only 90 points will factor
 into the average.
 
-    >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("92"), 88)
+    >>> '%.1f, %.1f' % gradebook.getWorksheetTotalAverage(week1, paul)
+    '92.0, 87.6'
 
 We need to be able to ignore activities that are not scored when making our
 calculation because it is not fair to punish a student for an activity that
@@ -478,8 +480,8 @@ Now, the calculation will be (80/100) * 100% = 80% because the other
 category, assignment, is no longer represented with a score.  As above, the
 project score of 2 is included in the total, but not the average.
 
-    >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("82"), 80)
+    >>> '%.1f, %.1f' % gradebook.getWorksheetTotalAverage(week1, paul)
+    '82.0, 80.0'
 
 Let's add that evaluation back to test another edge case.
 
@@ -498,12 +500,12 @@ so let's add another homework assignment and an evaluation for it.
     >>> gradebook.evaluate(student=paul, activity=hw3, score=9)
 
 Now we will see that the average for paul will change to reflect the new
-calculation of (((10 + 9)/(10 + 10)) * 0.38) + ((80/100) * 0.62) = 86%.
+calculation of (((10 + 9)/(10 + 10)) * 0.38) + ((80/100) * 0.62) = 85.7%.
 Once again, the total is 101 even though only 99 points will factor
 into the average.
 
-    >>> gradebook.getWorksheetTotalAverage(week1, paul)
-    (Decimal("101"), 86)
+    >>> '%.1f, %.1f' % gradebook.getWorksheetTotalAverage(week1, paul)
+    '101.0, 85.7'
 
 
 External Activities
