@@ -5,6 +5,7 @@ CHANGES
 0.8.1 (unreleased)
 ------------------
 
+- Use fixed precision for total and linked columns (https://launchpad.net/bugs/650838)
 - Calculate average grade with more precision (https://launchpad.net/bugs/333971)
 
 

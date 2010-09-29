@@ -351,6 +351,7 @@ We'll switch to the Fall term and add some activities to the English I section:
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
     >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Maximum').value = '99'
     >>> stephan.getControl('Add').click()
     >>> 'Lab 1' in stephan.contents
     True
@@ -818,11 +819,11 @@ Show the total and average columns, and test that Average is converted to Good/B
     >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
-    <b>86</b>
+    <b>86.0</b>
     <b>Good</b>
-    <b>42</b>
+    <b>42.0</b>
     <b>Good</b>
-    <b>32</b>
+    <b>32.0</b>
     <b>Bad</b>
 
 Check with extended letter grade scoresystem
@@ -834,11 +835,11 @@ Check with extended letter grade scoresystem
     >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
-    <b>86</b>
+    <b>86.0</b>
     <b>B</b>
-    <b>42</b>
+    <b>42.0</b>
     <b>B</b>
-    <b>32</b>
+    <b>32.0</b>
     <b>D</b>
 
 Finally, we will reset the preferences to none so that the rest of the tests
@@ -1105,9 +1106,9 @@ And our grades are:
     >>> stephan.contents
     <BLANKLINE>
     ...Name...Total...Ave...HW 1...Quiz...
-    ...Claudia...<b>86</b>...<b>86.0%</b>...86...
-    ...Tom...<b>44</b>...<b>88.0%</b>...44...
-    ...Paul...<b>32</b>...<b>64.0%</b>...32...
+    ...Claudia...<b>86.0</b>...<b>86.0%</b>...86...
+    ...Tom...<b>44.0</b>...<b>88.0%</b>...44...
+    ...Paul...<b>32.0</b>...<b>64.0%</b>...32...
 
 This state should change after we update the grades from external
 activities. Remember that the gradebook has weighting defined?:
@@ -1157,9 +1158,9 @@ loaded with the latest grades:
     >>> stephan.contents
     <BLANKLINE>
     ...Name...Total...Ave...HW 1...Quiz...Hardware...
-    ...Claudia...92.00...68.5%...86...6.00...
-    ...Tom...53.00...81.5%...44...9.00...
-    ...Paul...32...64.0%...32...
+    ...Claudia...92.0...68.5%...86...6.00...
+    ...Tom...53.0...81.5%...44...9.00...
+    ...Paul...32.0...64.0%...32...
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
@@ -1209,9 +1210,9 @@ changed taking into account the weighting:
     >>> stephan.contents
     <BLANKLINE>
     ...Name...Total...Ave...HW 1...Quiz...Hardware As...
-    ...Claudia...96.00...68.5%...86...10.00...
-    ...Tom...59.00...78.7%...44...15.00...
-    ...Paul...32...64.0%...32...
+    ...Claudia...96.0...68.5%...86...10.00...
+    ...Tom...59.0...78.7%...44...15.00...
+    ...Paul...32.0...64.0%...32...
 
 
 Column Linking
@@ -1245,11 +1246,11 @@ We'll test the totals and averages so that we can check the linked values below:
     >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
-    <b>188</b>
-    <b>94.0%</b>
-    <b>160</b>
-    <b>80.0%</b>
-    <b>0</b>
+    <b>188.0</b>
+    <b>94.5%</b>
+    <b>160.0</b>
+    <b>80.4%</b>
+    <b>0.0</b>
     <b>N/A</b>
 
 Now we'll return to the Winter Physics section and add our first linked column
@@ -1324,24 +1325,24 @@ Next we'll test the linked column data:
     >>> results = analyze.queryHTML("id('content-body')//table[@class='schooltool_gradebook'][2]//td/span", stephan.contents)
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
-    <span>42</span>
+    <span>42.0</span>
     <span></span>
-    <span>72</span>
-    <span>80</span>
-    <span>90</span>
-    <span>94</span>
+    <span>72.0</span>
+    <span>80.4</span>
+    <span>90.0</span>
+    <span>94.5</span>
 
 Finally we'll test the totals and averages:
 
     >>> results = analyze.queryHTML("id('content-body')//table//b", stephan.contents)
     >>> results = [result.strip() for result in results]
     >>> for result in results: print result
-    <b>138.00</b>
+    <b>138.0</b>
     <b>69.1%</b>
-    <b>211.00</b>
-    <b>76.7%</b>
-    <b>216</b>
-    <b>86.4%</b>
+    <b>211.4</b>
+    <b>76.9%</b>
+    <b>216.5</b>
+    <b>86.6%</b>
 
 
 Hiding Worksheets

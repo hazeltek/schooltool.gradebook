@@ -494,7 +494,7 @@ def doctest_GradebookPDFView():
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
-          'total': u'1'}]
+          'total': u'1.0'}]
     """
 
 
