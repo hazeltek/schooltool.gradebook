@@ -566,6 +566,8 @@ class GradebookOverview(SectionFinder):
                 value = self.getStudentActivityValue(student, activity)
                 if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
+                    if value is not UNSCORED and value != '':
+                        value = '%.1f' % value
                 else:
                     editable = not ICommentScoreSystem.providedBy(
                         activity.scoresystem)
@@ -579,6 +581,8 @@ class GradebookOverview(SectionFinder):
 
             total, average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
+
+            total = "%.1f" % total
 
             if average is UNSCORED:
                 average = _('N/A')
