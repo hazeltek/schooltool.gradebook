@@ -151,7 +151,7 @@ class SectionGradebookRedirectView(BrowserView):
         url = absoluteURL(activities, self.request)
         if current_worksheet is not None:
             url = absoluteURL(current_worksheet, self.request)
-            if 'mygrades' in self.request['PATH_INFO']:
+            if person in self.context.members:
                 url += '/mygrades'
             else:
                 url += '/gradebook'
