@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-0.8.1 (unreleased)
+0.8.1 (2010-10-04)
 ------------------
 
 - Grades rounding mismatch (https://launchpad.net/bugs/585796)
@@ -10,6 +10,7 @@ CHANGES
 - Use fixed precision for total and linked columns (https://launchpad.net/bugs/650838)
 - Fix to let students view section's gradebook.
 - Cosmetic fixes in various pages.
+- Updated translations (es, nl)
 
 
 0.8.0 (2010-09-16)
