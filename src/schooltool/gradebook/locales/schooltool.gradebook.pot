@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2010-09-15 00:08+0300\n"
+"POT-Creation-Date: 2010-09-30 20:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -577,6 +577,14 @@ msgstr ""
 msgid "The operation you attempted cannot be completed because there are currently no terms set up in your SchoolTool instance. Please have a user with administration access set up at least one term and try the operation again."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:4
+msgid "No Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:10
+msgid "The operation you attempted cannot be completed because there are currently no report sheets set up in your SchoolTool instance. Please have a user with administration access set up at least one report sheet and try the operation again."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card"
 msgstr ""
@@ -1068,7 +1076,11 @@ msgid "View gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:33
-msgid "Administration can grade students"
+msgid "Only the instructor of a section can edit its gradebook."
+msgstr ""
+
+#: /src/schooltool/gradebook/security.zcml:33
+msgid "The instructor of a section and school administration can edit a section's gradebook."
 msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:8

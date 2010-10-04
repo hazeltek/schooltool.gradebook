@@ -1,0 +1,18 @@
+<html metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="schooltool.gradebook">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">
+    No Report Sheets
+  </title>
+</head>
+<body>
+<div metal:fill-slot="body">
+  <h1 i18n:translate="">
+    The operation you attempted cannot be completed because there are
+    currently no report sheets set up in your SchoolTool
+    instance. Please have a user with administration access set up at
+    least one report sheet and try the operation again.
+  </h1>
+</div>
+</body>
+</html>

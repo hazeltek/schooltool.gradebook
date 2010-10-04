@@ -13,7 +13,7 @@
 	<h3 i18n:translate="">Report Card Layout</h3>
 
     <fieldset>
-    <legend><b i18n:translate="">Grid Columns</b><legend>
+    <legend><b i18n:translate="">Grid Columns</b></legend>
     <table>
       <tr>
         <td></td>
@@ -75,7 +75,7 @@
     </fieldset>
 
     <fieldset>
-    <legend><b i18n:translate="">Outline Activities</b><legend>
+    <legend><b i18n:translate="">Outline Activities</b></legend>
     <table>
       <tr>
         <td></td>

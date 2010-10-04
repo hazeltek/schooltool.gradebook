@@ -68,6 +68,9 @@ def createSourceString(sourceObj):
 
 
 def getSourceObj(source):
+    if source is None:
+        return None
+
     scid, sid, ws_hash, act_hash = source.split('_')
 
     app = ISchoolToolApplication(None)
@@ -194,9 +197,6 @@ class ReportWorksheet(requirement.Requirement):
 
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)
-
-    label = None
-    due_date = datetime.date.today()
 
     def __init__(self, title, category, scoresystem,
                  description=None, label=None, due_date=None, date=None):

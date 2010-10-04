@@ -35,7 +35,7 @@ def read(*rnames):
 
 setup(
     name="schooltool.gradebook",
-    description="SchoolTool Gradebook",
+    description="A gradebook component for SchoolTool",
     long_description=(
         read('README.txt')
         + '\n\n' +
@@ -59,7 +59,7 @@ setup(
     package_dir={'': 'src'},
     namespace_packages=["schooltool"],
     packages=find_packages('src'),
-    install_requires=['schooltool>=1.2.0',
+    install_requires=['schooltool>=1.5.2',
                       'schooltool.lyceum.journal',
                       'rwproperty',
                       'setuptools',
@@ -69,7 +69,7 @@ setup(
                       'ZODB3',
                       'zope.annotation',
                       'zope.app.form',
-                      'zope.app.generations>=3.5.0',
+                      'zope.app.generations>=3.5',
                       'zope.browser',
                       'zope.browserpage>=3.10.1',
                       'zope.component',

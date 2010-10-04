@@ -107,7 +107,7 @@
         permission="schooltool.edit"
         link="gradebook.csv"
         title="Download Gradebook CSV"
-        order="220"
+        order="250"
         />
   </configure>
 
@@ -748,6 +748,12 @@
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".gradebook.NoCurrentTerm"
       template="no_current_term.pt"
+      permission="schooltool.view"
+      />
+  <page
+      name="no_report_sheets.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      template="no_report_sheets.pt"
       permission="schooltool.view"
       />
   <page

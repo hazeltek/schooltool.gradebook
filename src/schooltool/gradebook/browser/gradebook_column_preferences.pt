@@ -10,10 +10,10 @@
         tal:attributes="action string:${context/@@absolute_url}/column_preferences.html">
     <input type="hidden" name="form-submitted" value="" />
 
-	<h3 i18n:translate="">Set Column Preferences</h3>
+    <h3 i18n:translate="">Set Column Preferences</h3>
 
     <fieldset>
-      <legend><b i18n:translate="">Preferences</b><legend>
+      <legend><b i18n:translate="">Preferences</b></legend>
       <table class="schooltool_gradebook gradebook_margin_left1">
         <tr>
           <th class="cell header fully_padded" i18n:translate="">Column Type</th>
@@ -65,13 +65,13 @@
       <div style="height: 11px;"></div>
 
       <div class="controls">
-        <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" />
-        <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+        <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Update" i18n:attributes="value" />
+        <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" i18n:attributes="value" />
       </div>
     </fieldset>
 
     <fieldset>
-      <legend><b i18n:translate="">Summary</b><legend>
+      <legend><b i18n:translate="">Summary</b></legend>
       <div class="gradebook_margin_left">
         <p i18n:translate="">
           You can add a summary worksheet to each of your gradebooks that automatically includes a column for the average of all existing worksheets.

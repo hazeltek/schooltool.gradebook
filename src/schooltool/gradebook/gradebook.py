@@ -288,7 +288,7 @@ class GradebookBase(object):
             if not len(average_counts):
                 return 0, UNSCORED
             else:
-                return sum(totals.values()), int(round(average*100))
+                return sum(totals.values()), average * 100
 
         # when not weighting categories, the default is to weight the
         # evaluations by activities.
@@ -310,7 +310,7 @@ class GradebookBase(object):
                     total += value - minimum
                     count += maximum - minimum
             if count:
-                return total, int(round(Decimal(100 * total) / Decimal(count)))
+                return total, Decimal(100 * total) / Decimal(count)
             else:
                 return 0, UNSCORED
 

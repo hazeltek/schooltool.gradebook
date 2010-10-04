@@ -5,20 +5,16 @@
 <body>
 
 <h1 metal:fill-slot="content-header"
-    i18n:translate="">View Score System</h1>
+    tal:content="view/title_value">View Score System</h1>
 
 <metal:block metal:fill-slot="body">
 
-  <b>Title:</b>
-  <span tal:content="view/title_value" />
-  <div style="height: 31px;"></div>
-
   <table class="schooltool_gradebook">
     <tr>
-      <th class="cell header fully_padded">Score Displayed</th>
-      <th class="cell header fully_padded">Abbreviation</th>
-      <th class="cell header fully_padded">Score Value</th>
-      <th class="cell header fully_padded">Low Percentage</th>
+      <th class="cell header fully_padded" i18n:translate="">Score</th>
+      <th class="cell header fully_padded" i18n:translate="">Abbreviation</th>
+      <th class="cell header fully_padded" i18n:translate="">Point Value</th>
+      <th class="cell header fully_padded" i18n:translate="">Low Percentage</th>
       <th class="cell header fully_padded">Passing Score</th>
     </tr>
 
@@ -44,7 +40,7 @@
 
   </table>
 
-  <div class="controls" style="padding: 1em 0">
+  <div class="controls">
     <a class="button-ok"
        tal:attributes="href view/nextURL">OK</a>
   </div>

@@ -487,14 +487,14 @@ def doctest_GradebookPDFView():
           'shortTitle': 'Activ'}]
 
         >>> pprint(view.table())
-        [{'average': u'14%',
+        [{'average': u'14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
           'student': {'gradeurl': '...',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
-          'total': u'1'}]
+          'total': u'1.0'}]
     """
 
 
