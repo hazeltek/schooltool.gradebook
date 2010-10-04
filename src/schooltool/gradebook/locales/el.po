@@ -891,7 +891,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:12
 msgid ""
-"Are you sure you want to delete this workskeet together with all its "
+"Are you sure you want to delete this worksheet together with all its "
 "activities?"
 msgstr ""
 

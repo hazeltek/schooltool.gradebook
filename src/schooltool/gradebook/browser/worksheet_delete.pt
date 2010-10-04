@@ -9,7 +9,7 @@
 
 <metal:block metal:fill-slot="body">
   <div style="padding-bottom: 1em">
-    <p i18n:translate="">Are you sure you want to delete this workskeet together with all its activities?</p>
+    <p i18n:translate="">Are you sure you want to delete this worksheet together with all its activities?</p>
   </div>
 
   <form method="post"
