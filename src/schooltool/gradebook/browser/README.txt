@@ -364,7 +364,7 @@ We'll switch to the Fall term and add some activities to the English I section:
     True
 
 Finally, we'll change the section back to the Winter Physics section and the
-current workskeet back to 'Week 1'.
+current worksheet back to 'Week 1'.
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
     >>> stephan.getLink('Week 1').click()

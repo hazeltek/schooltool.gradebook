@@ -929,7 +929,7 @@ msgstr "លុប​សន្លឹក​កិច្ចការ"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:12
 msgid ""
-"Are you sure you want to delete this workskeet together with all its "
+"Are you sure you want to delete this worksheet together with all its "
 "activities?"
 msgstr ""
 "តើ​អ្នក​ប្រាកដ​ជា​ចង់​លុប​សន្លឹក​កិច្ចការ​នេះ​ជាមួយ​សកម្មភាព​របស់​វា​ទាំងអស់​"
