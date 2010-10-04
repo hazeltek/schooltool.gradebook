@@ -29,6 +29,8 @@ from zope.container.constraints import contains, containers
 from zope.location.interfaces import IContained
 from zope.location.interfaces import ILocation
 
+from schooltool.gradebook import GradebookMessage as _
+
 
 class IRequirement(IOrderedContainer, IContained):
     """Something a student can do.
@@ -43,7 +45,7 @@ class IRequirement(IOrderedContainer, IContained):
     containers('.IRequirement')
 
     title = zope.schema.TextLine(
-        title=u'Title',
+        title=_(u"Title"),
         description=u'',
         required=True)
 
@@ -59,12 +61,12 @@ class IScoreSystem(zope.interface.Interface):
     """A Score System"""
 
     title = zope.schema.TextLine(
-        title=u'Title',
+        title=_(u"Title"),
         description=u'A brief title of the score system.',
         required=False)
 
     description = zope.schema.TextLine(
-        title=u'Description',
+        title=_(u"Description"),
         description=u'A brief description of the score system.',
         required=False)
 
@@ -127,7 +129,7 @@ class IDiscreteValuesScoreSystem(IValuesScoreSystem):
 
     scores = zope.schema.List(
         title=u'Scores',
-        description=u'A list of 3-tuples of the form (score, value, percent).',
+        description=u'A list of tuples of the form (score, abbr, value, percent).',
         value_type=zope.schema.Tuple(),
         required=True)
 
@@ -140,13 +142,13 @@ class IRangedValuesScoreSystem(IValuesScoreSystem):
     """A score system that allows for a randge of values."""
 
     min = zope.schema.Int(
-        title=u'Minimum',
+        title=_(u'Minimum'),
         description=u'Minimum value in the score system',
         required=True,
         default=0)
 
     max = zope.schema.Int(
-        title=u'Maximum',
+        title=_(u'Maximum'),
         description=u'Maximum value in the score system',
         required=True,
         default=100)
@@ -162,7 +164,7 @@ class IEvaluation(IContained):
     containers(".IEvaluations")
 
     scoreSystem = zope.schema.Object(
-        title=u'Score System',
+        title=_(u'Score System'),
         description=u'The score system used for grading.',
         schema=IScoreSystem)
 

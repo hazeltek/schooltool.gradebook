@@ -27,7 +27,7 @@
     </div>
 
     <fieldset>
-      <legend><b i18n:translate="">Category Weights</b><legend>
+      <legend><b i18n:translate="">Category Weights</b></legend>
       <div class="message" style="color:red; padding:1em"
            tal:condition="view/message"
            tal:content="view/message">

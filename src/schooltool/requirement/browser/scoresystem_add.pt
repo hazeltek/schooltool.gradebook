@@ -39,7 +39,7 @@
       Start with the highest score. Click "Add a lower score" to add scores until you have created a score with a minimum percentage of 0.
 	</p>
     <fieldset>
-    <legend><b i18n:translate="">New Score System</b><legend>
+    <legend><b i18n:translate="">New Score System</b></legend>
     <label for="title" class="bold padded" i18n:translate="">Title</label>
     <input type="text" name="title" id="title"
            tal:attributes="value view/title_value" />
