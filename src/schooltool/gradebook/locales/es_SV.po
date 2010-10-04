@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-05-31 22:00+0000\n"
+"POT-Creation-Date: 2010-09-16 17:48+0300\n"
+"PO-Revision-Date: 2010-09-23 17:37+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-10 04:56+0000\n"
+"X-Launchpad-Export-Date: 2010-09-24 05:24+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -225,7 +225,11 @@ msgstr "Categorías de Actividades"
 msgid "Report Sheet Templates"
 msgstr "Plantillas de Hojas de Reporte"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:127
+#: /src/schooltool/gradebook/browser/configure.zcml:101
+msgid "Download Gradebook CSV"
+msgstr "Descargar CSV del Cuadro de Notas"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:138
 msgid "Add a Worksheet"
 msgstr "Añadir una Hoja de Trabajo"
 
@@ -506,7 +510,7 @@ msgstr "Período:"
 #: /src/schooltool/gradebook/browser/mygrades.pt:19
 #: /src/schooltool/gradebook/browser/pdf_views.py:755
 msgid "Term"
-msgstr "Término"
+msgstr "Período"
 
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:49
 #: /src/schooltool/gradebook/browser/mygrades.pt:33
@@ -531,6 +535,14 @@ msgstr ""
 msgid "(sort)"
 msgstr "(ordenar)"
 
+#: /src/schooltool/gradebook/browser/gradebook_overview.pt:254
+msgid "S"
+msgstr "S"
+
+#: /src/schooltool/gradebook/browser/gradebook_overview.pt:254
+msgid "Shortcut: Alt-S"
+msgstr "Atajo: Alt-S"
+
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
 msgstr "Usted no enseña ni asiste a ninguna clase."
@@ -549,7 +561,7 @@ msgstr "Esquematizar Libreta de Notas"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:16
 msgid "Grid Columns"
-msgstr ""
+msgstr "Columnas de Rejilla"
 
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/layout_report_card.pt:82
@@ -605,6 +617,24 @@ msgid ""
 "no terms set up in your SchoolTool instance. Please have a user with "
 "administration access set up at least one term and try the operation again."
 msgstr ""
+"La operación que intentó no puede completarse ya que no hay períodos "
+"configurados en su instancia de SchoolTool. Por favor solicite a un "
+"administrador que cree un período e intente la operación nuevamente."
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:4
+msgid "No Report Sheets"
+msgstr "No hay hojas de reporte"
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:10
+msgid ""
+"The operation you attempted cannot be completed because there are currently "
+"no report sheets set up in your SchoolTool instance. Please have a user with "
+"administration access set up at least one report sheet and try the operation "
+"again."
+msgstr ""
+"La operación que intentó no puede completarse ya que no hay hojas de reporte "
+"configuradas en su instancia de SchoolTool. Por favor solicite a un "
+"administrador que cree una hoja de reporte e intente la operación nuevamente."
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card"
@@ -751,6 +781,15 @@ msgstr "Máximo"
 msgid "Highest integer score value possible"
 msgstr "Valor entero de nota más alto posible"
 
+#: /src/schooltool/gradebook/browser/report_worksheet_overview.pt:14
+#: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
+msgid ""
+"A report sheet template defines the activities to be included in a report "
+"sheet deployed to each section in a term or year."
+msgstr ""
+"Una plantilla de hoja de reporte define las actividades a incluir en una "
+"hoja de reporte implementada en cada sección en un período o año."
+
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/interfaces.py:146
 msgid "Date"
@@ -794,10 +833,6 @@ msgstr "Solicitar Reporte"
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:42
 msgid "Report Activity"
 msgstr "Actividad de Reporte"
-
-#: /src/schooltool/gradebook/browser/request_failing_report.pt:60
-msgid "Minimum Passing Score"
-msgstr "Nota Mínima para Pasar"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:52
 msgid "Student Reports"
@@ -851,11 +886,15 @@ msgstr "Solicitar Reporte de Reprobaciones por Período"
 msgid "Choose a report activity"
 msgstr "Elija una actividad de reporte"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:187
-msgid "Choose a minimum passing score"
-msgstr "Elija un puntaje mínimo de aprobación"
+#: /src/schooltool/gradebook/browser/request_reports.py:189
+msgid "Maximum Passing Score"
+msgstr "Nota Máxima de Aprobación"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:200
+#: /src/schooltool/gradebook/browser/request_reports.py:191
+msgid "Minimum Passing Score"
+msgstr "Nota Mínima para Pasar"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:209
 msgid "You must specify both a report activity and a minimum passing score."
 msgstr ""
 "Debe especificar una actividad de reporte y una nota mínima para pasar."
@@ -918,7 +957,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:30
 msgid "Category Weights"
-msgstr ""
+msgstr "Ponderaciones de Categoría"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
 msgid "This worksheet has no activities."
@@ -939,14 +978,6 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:18
 msgid "Delete"
 msgstr "Borrar"
-
-#: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
-msgid ""
-"A report sheet template defines the activities to be included in a report "
-"sheet deployed to each section in a term or year."
-msgstr ""
-"Una plantilla de hoja de reporte define las actividades a incluir en una "
-"hoja de reporte implementada en cada sección en un período o año."
 
 #: /src/schooltool/gradebook/configure.zcml:302
 msgid "Gradebook API"
@@ -1039,7 +1070,7 @@ msgstr "Columnas a imprimirse en la libreta de notas."
 
 #: /src/schooltool/gradebook/interfaces.py:168
 msgid "Activities to be printed in the outline section."
-msgstr ""
+msgstr "Actividades a imprimirse en la sección de detalle."
 
 #: /src/schooltool/gradebook/interfaces.py:202
 #: /src/schooltool/gradebook/interfaces.py:307
@@ -1113,27 +1144,27 @@ msgstr "Una cadena de texto que especifica la fuente de la columna"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
-msgstr ""
+msgstr "Crear, editar y rellenar plantillas de hoja de reporte."
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
-msgstr ""
+msgstr "Editar Plantillas"
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
-msgstr ""
+msgstr "Crear y editar datos de cuadro de notas para una sección."
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Edit Gradebook"
-msgstr ""
+msgstr "Editar el Cuadro de Notas"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View Gradebook"
-msgstr ""
+msgstr "Ver el Cuadro de Notas"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
-msgstr ""
+msgstr "Ver datos del cuadro de notas de una sección."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Administration can grade students"
@@ -1227,11 +1258,19 @@ msgstr "Las puntuaciones repetidas no son permitidas."
 msgid "Duplicate abbreviations are not allowed."
 msgstr "Abreviaciones duplicadas no son permitidas."
 
-#: /src/schooltool/requirement/browser/scoresystem.py:259
-msgid "Exisiting Score System"
-msgstr "Sistema de puntuación existente"
+#: /src/schooltool/requirement/browser/scoresystem.py:256
+msgid "Yes"
+msgstr "Sí"
 
-#: /src/schooltool/requirement/browser/scoresystem.py:264
+#: /src/schooltool/requirement/browser/scoresystem.py:258
+msgid "No"
+msgstr "No"
+
+#: /src/schooltool/requirement/browser/scoresystem.py:293
+msgid "Existing Score System"
+msgstr "Sistema de Puntuación Existente"
+
+#: /src/schooltool/requirement/browser/scoresystem.py:298
 msgid "Custom score system"
 msgstr "Sistema de puntuación personalizado"
 
@@ -1244,18 +1283,25 @@ msgid ""
 "This form allows you to create a customized \"score system\" or grading "
 "scale."
 msgstr ""
+"Este formulario le permite crear un «sistema de puntuación» personalizado o "
+"una escala de calificación."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:23
 msgid ""
 "Each score system needs a short title to identify it to users, for example, "
 "if your school's grades go from \"A\" to \"E,\" the title could be \"A-E.\""
 msgstr ""
+"Cada sistema de puntuación necesita un título corto para que los usuarios lo "
+"identifiquen, por ejemplo, si su escuela califica de \"A\" a \"E\", el "
+"título podría ser \"A-E\"."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:26
 msgid ""
 "A score system is made up of a sequence of possible scores with decreasing "
 "values."
 msgstr ""
+"Un sistema de puntuación está compuesto por una secuencia de posibles "
+"puntajes con valores descendentes."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:29
 msgid ""
@@ -1264,6 +1310,10 @@ msgid ""
 "be used in any calculations made with the scores, such as finding a grade "
 "point average."
 msgstr ""
+"Cada puntaje está asociado con un valor numérico de puntos. Por ejemplo, en "
+"los Estados Unidos, una \"A\" usualmente representa 4 puntos, una \"B\", 3 "
+"puntos, etc. Este valor será usado en cualquier cálculo hecho con puntajes, "
+"como encontrar el promedio en puntos."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:32
 msgid ""
@@ -1271,6 +1321,9 @@ msgid ""
 "the corresponding grade. For example, 95% and above is an \"A,\" 87% and up "
 "is a \"B,\" etc."
 msgstr ""
+"Cada puntaje también está asociado con un porcentaje mínimo necesario para "
+"alcanzar la nota correspondiente. Por ejemplo, 95% y más representan una "
+"\"A\", 87% y más una \"B\", etc."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:35
 msgid ""
@@ -1278,36 +1331,46 @@ msgid ""
 "characters and you wish to create an alternative abbreviation for the "
 "gradebook."
 msgstr ""
+"Introduzca una abreviación para un puntaje sólo si el puntaje tiene más de "
+"cuatro caracteres y desea crear una abreviación alternativa para el cuadro "
+"de notas."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:38
 msgid ""
 "Start with the highest score. Click \"Add a lower score\" to add scores "
 "until you have created a score with a minimum percentage of 0."
 msgstr ""
+"Inicie con el puntaje más alto. Haga click en \"Añadir un puntaje "
+"menor\"para añadir puntajes hasta que haya creado un puntaje con un "
+"porcentaje mínimo de 0."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
 msgid "New Score System"
-msgstr ""
+msgstr "Nuevo Sistema de Puntuación"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 msgid "Score"
-msgstr ""
+msgstr "Puntaje"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:51
 msgid "Abbreviation"
-msgstr ""
+msgstr "Abreviación"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 msgid "Point Value"
-msgstr ""
+msgstr "Valor en Puntos"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:53
 msgid "Low Percentage"
-msgstr ""
+msgstr "Porcentaje Inferior"
 
-#: /src/schooltool/requirement/browser/scoresystem_add.pt:79
+#: /src/schooltool/requirement/browser/scoresystem_add.pt:80
 msgid "Add a lower score"
-msgstr ""
+msgstr "Añadir un puntaje menor"
+
+#: /src/schooltool/requirement/browser/scoresystem_add.pt:92
+msgid "passing score:"
+msgstr "puntaje de aprobación:"
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
@@ -1316,59 +1379,8 @@ msgstr "Ver sistema de puntuación"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
-msgstr ""
+msgstr "¿Eliminar?"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
 msgstr "Actualizar"
-
-#~ msgid "show only activities due in past"
-#~ msgstr "mostrar sólo actividades con fechas de cierre pasadas"
-
-#~ msgid "weeks"
-#~ msgstr "semanas"
-
-#~ msgid ""
-#~ "The operation you attempted cannot be completed because there are curently "
-#~ "no terms set up in your SchoolTool instance. Please have a user with "
-#~ "administation access set up at least one term and try the operation again."
-#~ msgstr ""
-#~ "La operación que intentó no puede completarse ya que no hay períodos "
-#~ "configurados en su instancia de SchoolTool. Por favor solicite a un "
-#~ "administrador que cree un período e intente la operación nuevamente."
-
-#~ msgid "Workheet"
-#~ msgstr "Hoja de Trabajo"
-
-#~ msgid "Add a Report Worksheet"
-#~ msgstr "Añadir un Reporte de Hoja de Trabajo"
-
-#~ msgid "Edit Report Worksheet"
-#~ msgstr "Editar Reporte de Hoja de Trabajo"
-
-#~ msgid "New Report Worksheet"
-#~ msgstr "Nuevo Reporte de Hoja de Trabajo"
-
-#~ msgid "Deploy Report Worksheet"
-#~ msgstr "Desplegar Boletín de Calificaciones"
-
-#~ msgid "Print Report Card"
-#~ msgstr "Imprimir Tarjeta de Reporte"
-
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"
-
-#~ msgid "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-#~ msgstr "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-
-#~ msgid "Max. Score"
-#~ msgstr "Máx. puntuación"
-
-#~ msgid "Activity Name"
-#~ msgstr "Nombre de la actividad"
-
-#~ msgid "Modification Date"
-#~ msgstr "Fecha de modificación"
-
-#~ msgid "Remove?"
-#~ msgstr "¿Eliminar?"

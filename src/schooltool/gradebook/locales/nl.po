@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-09-12 09:18+0000\n"
+"POT-Creation-Date: 2010-09-30 20:05+0300\n"
+"PO-Revision-Date: 2010-10-03 16:03+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-13 05:17+0000\n"
+"X-Launchpad-Export-Date: 2010-10-04 05:02+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /src/schooltool/gradebook/activity.py:51
@@ -221,9 +221,13 @@ msgstr "Activiteitcategorieën"
 #: /src/schooltool/gradebook/browser/templates_overview.pt:8
 #: /src/schooltool/gradebook/gradebook_init.py:48
 msgid "Report Sheet Templates"
-msgstr "Rapportbladsjabloon"
+msgstr "Rapportbladsjablonen"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:127
+#: /src/schooltool/gradebook/browser/configure.zcml:101
+msgid "Download Gradebook CSV"
+msgstr "Cijferlijst-CSV downloaden"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:138
 msgid "Add a Worksheet"
 msgstr "Werkblad toevoegen"
 
@@ -267,12 +271,12 @@ msgstr "Nieuw rapportblad"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:295
 msgid "New Worksheet"
-msgstr "Nieuw Werkblad"
+msgstr "Nieuw werkblad"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:302
 #: /src/schooltool/gradebook/browser/configure.zcml:411
 msgid "Export XLS"
-msgstr "Exporteer XLS"
+msgstr "XLS exporteren"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:309
 #: /src/schooltool/gradebook/browser/configure.zcml:346
@@ -303,7 +307,7 @@ msgstr "Nieuwe gekoppelde kolom"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Manage Activities"
-msgstr "Beheer activiteiten"
+msgstr "Activiteiten beheren"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:397
 #: /src/schooltool/gradebook/browser/weight_categories.pt:5
@@ -317,7 +321,7 @@ msgstr "Voorkeuren"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:418
 msgid "Download PDF"
-msgstr "Download PDF"
+msgstr "PDF downloaden"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:427
 msgid "Update Grades"
@@ -326,7 +330,7 @@ msgstr "Cijfers bijwerken"
 #: /src/schooltool/gradebook/browser/configure.zcml:524
 #: /src/schooltool/gradebook/browser/configure.zcml:568
 msgid "Deploy Report Sheet"
-msgstr ""
+msgstr "Rapportblad gebruiken"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:531
 #: /src/schooltool/gradebook/browser/configure.zcml:582
@@ -344,7 +348,7 @@ msgstr "Rapportkaartindeling"
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
 msgid "Deploy Report Worksheet Template"
-msgstr ""
+msgstr "Rapportblad gebruiken-sjabloon"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
 msgid "Template"
@@ -352,7 +356,7 @@ msgstr "Sjabloon"
 
 #: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
 msgid "Deploy"
-msgstr ""
+msgstr "Gebruiken"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:73
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:74
@@ -524,7 +528,15 @@ msgstr "Toon alleen activiteiten uit de afgelopen ${num_weeks} weken"
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:130
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:146
 msgid "(sort)"
-msgstr "(sorteer)"
+msgstr "(sorteren)"
+
+#: /src/schooltool/gradebook/browser/gradebook_overview.pt:254
+msgid "S"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook_overview.pt:254
+msgid "Shortcut: Alt-S"
+msgstr "Sneltoets: Alt-S"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
@@ -532,7 +544,7 @@ msgstr "U geeft geen les en bezoekt ook geen enkele klas."
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:16
 msgid "Classes you teach"
-msgstr "Klassen die u lesgeeft"
+msgstr "Klassen waar u les geeft"
 
 #: /src/schooltool/gradebook/browser/gradebook_startup.pt:20
 msgid "Classes you attend"
@@ -600,9 +612,24 @@ msgid ""
 "no terms set up in your SchoolTool instance. Please have a user with "
 "administration access set up at least one term and try the operation again."
 msgstr ""
-"Deze actie kan niet uitgevoerd worden omdat er geen periode ingesteld is in "
-"SchoolTool. Vraag een gebruiker met beheerdersrechten om tenminste één "
-"periode in te stellen en probeer het dan opnieuw."
+"Deze actie kan niet uitgevoerd worden omdat er momenteel geen periode "
+"ingesteld is in SchoolTool. Vraag een gebruiker met beheerdersrechten om "
+"tenminste één periode in te stellen en probeer het dan opnieuw."
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:4
+msgid "No Report Sheets"
+msgstr "Geen rapportbladen"
+
+#: /src/schooltool/gradebook/browser/no_report_sheets.pt:10
+msgid ""
+"The operation you attempted cannot be completed because there are currently "
+"no report sheets set up in your SchoolTool instance. Please have a user with "
+"administration access set up at least one report sheet and try the operation "
+"again."
+msgstr ""
+"Deze actie kan niet uitgevoerd worden omdat er momenteel geen rapportblad "
+"ingesteld is in SchoolTool. Vraag een gebruiker met beheerdersrechten om "
+"tenminste één rapportblad in te stellen en probeer het dan opnieuw."
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card"
@@ -701,7 +728,7 @@ msgstr "Laatkomers"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:752
 msgid "Gradebook Report"
-msgstr ""
+msgstr "Cijferlijstrapport"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:761
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
@@ -748,6 +775,15 @@ msgstr "Maximum"
 msgid "Highest integer score value possible"
 msgstr "Hoogste scoregetal mogelijk"
 
+#: /src/schooltool/gradebook/browser/report_worksheet_overview.pt:14
+#: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
+msgid ""
+"A report sheet template defines the activities to be included in a report "
+"sheet deployed to each section in a term or year."
+msgstr ""
+"Een rapportbladsjabloon geeft de activiteiten aan in een rapportblad, dat "
+"gebruikt wordt voor elke sectie in een periode van het jaar."
+
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/interfaces.py:146
 msgid "Date"
@@ -776,18 +812,21 @@ msgid ""
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
 msgstr ""
+"Stel dat de periode bijvoorbeeld \"Herfst 2011\" is en u een rapportblad "
+"gebruikt met de naam \"Semester-cijfers\", dat een activiteit \"Eerste "
+"kwartaal\" bevat waar een \"3\" of hoger geslaagd betekent. Om dan een "
+"rapport aan te maken van leerlingen die een onvoldoende hebben voor het "
+"eerste kwartaal, dan zou u het activiteitenrapport selecteren \"Herfst 2011 -"
+" Semester-cijfers - Eerste kwartaal\" en \"3\" als het minimum "
+"slagingscijfer en daarna op \"Downloaden\" klikken."
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:38
 msgid "Request Report"
-msgstr ""
+msgstr "Rapport opvragen"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:42
 msgid "Report Activity"
 msgstr "Rapportactiviteit"
-
-#: /src/schooltool/gradebook/browser/request_failing_report.pt:60
-msgid "Minimum Passing Score"
-msgstr "Minimum slagingsscore"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:52
 msgid "Student Reports"
@@ -797,7 +836,7 @@ msgstr "Leerlingenrapporten"
 #: /src/schooltool/gradebook/browser/request_reports.py:79
 #: /src/schooltool/gradebook/browser/request_reports.py:290
 msgid "Request Report Card"
-msgstr "Verzoek voor een Rapport"
+msgstr "Rapportkaart opvragen"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:63
 #: /src/schooltool/gradebook/browser/request_reports.py:83
@@ -841,11 +880,15 @@ msgstr "Gezakten per perioderapport opvragen"
 msgid "Choose a report activity"
 msgstr "Selecteer een rapportactiviteit"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:187
-msgid "Choose a minimum passing score"
-msgstr "Selecteer een minimum slagingsscore"
+#: /src/schooltool/gradebook/browser/request_reports.py:189
+msgid "Maximum Passing Score"
+msgstr "Maximum slagingsscore"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:200
+#: /src/schooltool/gradebook/browser/request_reports.py:191
+msgid "Minimum Passing Score"
+msgstr "Minimum slagingsscore"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:209
 msgid "You must specify both a report activity and a minimum passing score."
 msgstr ""
 "U moet zowel een rapportactiviteit als een minimum slagingsscore aangeven."
@@ -860,7 +903,7 @@ msgstr "U dient een geldige datum uit het schooljaar te kiezen."
 
 #: /src/schooltool/gradebook/browser/request_student_report.pt:22
 msgid "Term or Year"
-msgstr "Blok of Jaar"
+msgstr "Periode of jaar"
 
 #: /src/schooltool/gradebook/browser/summary.pt:10
 msgid "Section Worksheet Summary"
@@ -916,7 +959,7 @@ msgstr "Dit werkblad bevat geen activiteiten."
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
 msgid "Delete Worksheet"
-msgstr "Verwijder werkblad"
+msgstr "Werkblad verwijderen"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:12
 msgid ""
@@ -929,21 +972,13 @@ msgstr ""
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
-msgid ""
-"A report sheet template defines the activities to be included in a report "
-"sheet deployed to each section in a term or year."
-msgstr ""
-"Een rapportbladsjabloon geeft de activiteiten aan in een rapportblad, dat "
-"gebruikt wordt voor elke sectie in een periode van het jaar."
-
 #: /src/schooltool/gradebook/configure.zcml:302
 msgid "Gradebook API"
-msgstr "Cijferlijst API"
+msgstr "Cijferlijst-API"
 
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
-msgstr ""
+msgstr "Gebruikte rapportbladen"
 
 #: /src/schooltool/gradebook/gradebook_init.py:50
 msgid "Report Card Layouts"
@@ -1012,11 +1047,11 @@ msgstr "Scoresysteem"
 
 #: /src/schooltool/gradebook/interfaces.py:142
 msgid "The activity scoresystem."
-msgstr "Het activiteiten-scoresysteem"
+msgstr "Het activiteitenscoresysteem"
 
 #: /src/schooltool/gradebook/interfaces.py:147
 msgid "The date the activity was created."
-msgstr "De datum dat de activiteit werd aangemaakt."
+msgstr "De datum waarop de activiteit werd aangemaakt."
 
 #: /src/schooltool/gradebook/interfaces.py:163
 msgid "Columns"
@@ -1102,7 +1137,7 @@ msgstr "Tekst die de bron van de kolom aangeeft"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
-msgstr ""
+msgstr "Rapportbladsjablonen aanmaken. bewerken en gebruiken"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
@@ -1125,8 +1160,16 @@ msgid "View gradebook data for a section."
 msgstr "Cijferlijstdata bekijken voor een sectie."
 
 #: /src/schooltool/gradebook/security.zcml:33
-msgid "Administration can grade students"
-msgstr "Administratie kan leerlingen cijfers geven"
+msgid "Only the instructor of a section can edit its gradebook."
+msgstr "Alleen de leraar van een sectie kan zijn cijferlijst bewerken"
+
+#: /src/schooltool/gradebook/security.zcml:33
+msgid ""
+"The instructor of a section and school administration can edit a section's "
+"gradebook."
+msgstr ""
+"Alleen de leraar van een sectie en de schooladministratie kunnen de "
+"cijferlijst van een sectie bewerken."
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
@@ -1216,11 +1259,19 @@ msgstr "Dubbele scores zijn niet toegestaan."
 msgid "Duplicate abbreviations are not allowed."
 msgstr "Dubbele afkortingen zijn niet toegestaan."
 
-#: /src/schooltool/requirement/browser/scoresystem.py:259
-msgid "Exisiting Score System"
+#: /src/schooltool/requirement/browser/scoresystem.py:256
+msgid "Yes"
+msgstr "Ja"
+
+#: /src/schooltool/requirement/browser/scoresystem.py:258
+msgid "No"
+msgstr "Nee"
+
+#: /src/schooltool/requirement/browser/scoresystem.py:293
+msgid "Existing Score System"
 msgstr "Bestaand scoresysteem"
 
-#: /src/schooltool/requirement/browser/scoresystem.py:264
+#: /src/schooltool/requirement/browser/scoresystem.py:298
 msgid "Custom score system"
 msgstr "Speciaal scoresysteem"
 
@@ -1318,10 +1369,14 @@ msgstr "Lage percentage"
 msgid "Add a lower score"
 msgstr "Lagere score toevoegen"
 
+#: /src/schooltool/requirement/browser/scoresystem_add.pt:92
+msgid "passing score:"
+msgstr "slagingsscore:"
+
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:7
 msgid "View Score System"
-msgstr "Toon Scoresysteem"
+msgstr "Scoresysteem tonen"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
@@ -1330,54 +1385,3 @@ msgstr "Verwijderen?"
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
 msgstr "Bijwerken"
-
-#~ msgid "Edit Report Worksheet"
-#~ msgstr "Wijzig het werkblad voor een rapport."
-
-#~ msgid "Add a Report Worksheet"
-#~ msgstr "Voeg een werkblad voor een rapport toe."
-
-#~ msgid "New Report Worksheet"
-#~ msgstr "Nieuw rapport werkblad."
-
-#~ msgid "Deploy Report Worksheet"
-#~ msgstr "Gebruik Rapporteer-werkblad"
-
-#~ msgid "Print Report Card"
-#~ msgstr "Print rapport"
-
-#~ msgid "Activity Name"
-#~ msgstr "Naam activiteit"
-
-#~ msgid "Modification Date"
-#~ msgstr "Wijzigingsdatum"
-
-#~ msgid "(Due) Date"
-#~ msgstr "Uiterste datum"
-
-#~ msgid "Max. Score"
-#~ msgstr "Max. score"
-
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"
-
-#~ msgid "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-#~ msgstr "<img src=\"${DYNAMIC_CONTENT}\" alt=\"x\" />"
-
-#~ msgid "Remove?"
-#~ msgstr "Verwijderen?"
-
-#~ msgid "weeks"
-#~ msgstr "Weken"
-
-#~ msgid "Download Report Card"
-#~ msgstr "Rapportkaart downloaden"
-
-#~ msgid "Download Detailed Student Report"
-#~ msgstr "Gedetailleerd leerlingenrapport downloaden"
-
-#~ msgid "Download Student Detail Report"
-#~ msgstr "Detailrapport leerling downloaden"
-
-#~ msgid "Workheet"
-#~ msgstr "Werkblad"
