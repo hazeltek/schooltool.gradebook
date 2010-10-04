@@ -1,3 +1,3 @@
-The default grading system for SchoolTool. Includes a point-based gradebook and
-a system for school-wide aggregation of grades and other assessments from
-teachers.
+SchoolTool Gradebook includes a point-based gradebook for all teachers in the
+school, and a facility to aggregate grades and other assessments from each
+teacher to generate reports.

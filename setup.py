@@ -35,7 +35,7 @@ def read(*rnames):
 
 setup(
     name="schooltool.gradebook",
-    description="SchoolTool Gradebook",
+    description="A gradebook component for SchoolTool",
     long_description=(
         read('README.txt')
         + '\n\n' +

@@ -9,6 +9,7 @@ CHANGES
 - Calculate average grade with more precision (https://launchpad.net/bugs/333971)
 - Use fixed precision for total and linked columns (https://launchpad.net/bugs/650838)
 - Fix to let students view section's gradebook.
+- Cosmetic fixes in various pages.
 
 
 0.8.0 (2010-09-16)
