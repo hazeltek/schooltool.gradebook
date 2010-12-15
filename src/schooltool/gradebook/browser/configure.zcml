@@ -400,7 +400,7 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Manage Activities"
+      title="Manage Worksheet"
       for="..interfaces.IGradebook"
       action="../manage.html"
       permission="schooltool.view"

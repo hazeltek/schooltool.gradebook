@@ -248,7 +248,7 @@ to the first one.
     <BLANKLINE>
     ...Worksheet...
     ...New Activity...
-    ...Manage Activities...
+    ...Manage Worksheet...
     ...Physics I (1)...
     ...Cardune, Paul...
     ...Hoffman, Tom...
@@ -269,7 +269,7 @@ note that the new activity appears in the gradebook.
     <BLANKLINE>
     ...Worksheet...
     ...New Activity...
-    ...Manage Activities...
+    ...Manage Worksheet...
     ...HW 1...
 
 We'll add a second activity.
@@ -283,10 +283,10 @@ We'll add a second activity.
     True
 
 We'll test editing an activity's description.  To do this, we need to go to use
-the 'Manage Activities' link.  This presents us with a view of the current
+the 'Manage Worksheet' link.  This presents us with a view of the current
 worksheet's activities with links to edit them.
 
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
     >>> print stephan.contents
     <BLANKLINE>
     ...Edit...
@@ -326,11 +326,11 @@ Now we'll add some activities to it.
     >>> 'Final' in stephan.contents
     True
 
-The 'Manage Activities' view allows for reordering the columns of the gradebook.
+The 'Manage Worksheet' view allows for reordering the columns of the gradebook.
 We'll switch the order or our two activities.  Since Javascript is not working
 in the tests, we submit the form manually:
 
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
     >>> url = stephan.url
     >>> stephan.open(url+'?form-submitted=&pos.Activity=2')
     >>> analyze.printQuery("id('content-body')//a", stephan.contents)
@@ -1075,7 +1075,7 @@ state of the gradebook:
     >>> stephan.getLink('Classes you teach').click()
     >>> '<span style="font-weight: bold;">Week 1</span>' in stephan.contents
     True
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
 
 We have two regular activities. One assignment:
 
@@ -1088,7 +1088,7 @@ We have two regular activities. One assignment:
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you teach').click()
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
 
 And one exam:
 
@@ -1101,7 +1101,7 @@ And one exam:
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you teach').click()
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
 
 And our grades are:
 
@@ -1129,7 +1129,7 @@ let's go back to the 'Activities' view of Stephan's teaching
 gradebook:
 
     >>> stephan.getControl('Cancel').click()
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
 
 We should have a 'New External Activity' button to add external
 activities:
@@ -1169,7 +1169,7 @@ Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
 recalculate the activity grades from the external activity:
 
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
     >>> stephan.getLink('Hardware').click()
     >>> 'score system' not in stephan.contents
     True
@@ -1193,7 +1193,7 @@ recalculate the activity grades from the external activity:
 Let's go back to the edit form to update the activity's grades using
 the 'Update Grades' button:
 
-    >>> stephan.getLink('Manage Activities').click()
+    >>> stephan.getLink('Manage Worksheet').click()
     >>> stephan.getLink('Hardware Assignment').click()
     >>> stephan.contents
     <BLANKLINE>
