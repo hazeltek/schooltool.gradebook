@@ -107,7 +107,7 @@
         permission="schooltool.edit"
         link="gradebook.csv"
         title="Download Gradebook CSV"
-        order="220"
+        order="250"
         />
   </configure>
 

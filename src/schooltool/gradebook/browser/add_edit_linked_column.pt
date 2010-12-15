@@ -28,10 +28,10 @@
     <br /><br />
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Term</th>
-        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Section</th>
-        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Worksheet</th>
-        <th class="cell even" style="border-bottom: solid thin; padding: .4em">Activity</th>
+        <th class="cell header fully_padded">Term</th>
+        <th class="cell header fully_padded">Section</th>
+        <th class="cell header fully_padded">Worksheet</th>
+        <th class="cell header fully_padded">Activity</th>
       </tr>
       <tr tal:repeat="row view/getRows">
         <tal:if condition="repeat/row/odd">

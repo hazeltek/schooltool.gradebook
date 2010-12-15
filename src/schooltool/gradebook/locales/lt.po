@@ -40,7 +40,7 @@ msgstr "Lentelės"
 
 #: /src/schooltool/gradebook/browser/activities_overview.pt:47
 msgid "Hide"
-msgstr ""
+msgstr "Paslėpti"
 
 #: /src/schooltool/gradebook/browser/activity.py:69
 msgid "External Activity"
@@ -154,6 +154,10 @@ msgid ""
 "calculate grades. For example, the grade in a section might be comprised of "
 "60% test scores, 20% homework and 20% class participation."
 msgstr ""
+"Kategorijos SchoolTool pažymių knygelėje naudojamos veikloms skirstyti ir "
+"leidžia mokytojams atskiriems veiklos tipams nurodyti skirtingus svorius "
+"galutinio pažymio skaičiavimui. Pavyzdžiui, kurso pažymys gali būti "
+"sudėtas iš 60% testų pažymių, 20% namų darbų ir 20% atsakinėjimo klasėje."
 
 #: /src/schooltool/gradebook/browser/categories.pt:22
 msgid ""
@@ -163,6 +167,11 @@ msgid ""
 "Likewise, if some of the default categories are not relevant to your school, "
 "remove them below."
 msgstr ""
+"Galimų kategorijų sąrašas yra bendras visiems mokytojams ir tvarkomas čia. "
+"Tai reiškia, kad jei bent vienam mokytojui reikalinga kategorija, kurios "
+"nėra šiame sąraše, administratorius gali ją čia pridėti. Panašiai, jei "
+"kurios nors iš standartinių kategorijų nereikalingos jūsų mokykloje, "
+"gali jas pašalinti."
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/categories.pt:33
@@ -275,7 +284,7 @@ msgstr "Grįžti į pažymių knygelę"
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:4
 #: /src/schooltool/gradebook/browser/unhide_worksheets.pt:8
 msgid "Unhide Worksheets"
-msgstr ""
+msgstr "Grąžinti paslėptas lenteles"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:325
 #: /src/schooltool/gradebook/browser/configure.zcml:369
@@ -309,7 +318,7 @@ msgstr "Nustatymai"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:418
 msgid "Download PDF"
-msgstr ""
+msgstr "Atsisiųsti PDF"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:427
 msgid "Update Grades"
@@ -374,7 +383,7 @@ msgstr "Netinkami pažymiai (paryškinti raudonai) nebuvo išsaugoti."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:582
 msgid "N/A"
-msgstr ""
+msgstr "-"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:685
@@ -446,11 +455,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:92
 msgid "Create Summary Worksheets"
-msgstr ""
+msgstr "Sukurti apžvalgos lenteles"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
-msgstr "Pažymys ${name}"
+msgstr "Įvertinti ${name}"
 
 #: /src/schooltool/gradebook/browser/gradebook_grade_activity.pt:37
 #: /src/schooltool/gradebook/browser/gradebook_overview.pt:122
@@ -625,7 +634,7 @@ msgstr "Naudotojo Id"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:429
 msgid "Failures by Term Report"
-msgstr ""
+msgstr "Nepažangumo pagal semestrą ataskaita"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:432
 msgid "Report Sheet:"
@@ -637,7 +646,7 @@ msgstr "Veikla:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:444
 msgid "Passing Score:"
-msgstr ""
+msgstr "Patenkinamas pažymys:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:450
 msgid "The following students are at risk of failing the following courses:"
@@ -670,15 +679,15 @@ msgstr "Mokytojas"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:650
 msgid "Absences"
-msgstr ""
+msgstr "Praleista"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:653
 msgid "Tardies"
-msgstr ""
+msgstr "Pavėluota"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:752
 msgid "Gradebook Report"
-msgstr ""
+msgstr "Pažymių knygelės ataskaita"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:761
 #: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
@@ -687,43 +696,43 @@ msgstr "Lentelė"
 
 #: /src/schooltool/gradebook/browser/report_card.py:56
 msgid "Absent"
-msgstr ""
+msgstr "Praleido"
 
 #: /src/schooltool/gradebook/browser/report_card.py:57
 msgid "Tardy"
-msgstr ""
+msgstr "Pavėlavo"
 
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "A"
-msgstr ""
+msgstr "n"
 
 #: /src/schooltool/gradebook/browser/report_card.py:59
 msgid "T"
-msgstr ""
+msgstr "p"
 
 #: /src/schooltool/gradebook/browser/report_card.py:120
 msgid "-- Use range below --"
-msgstr ""
+msgstr "-- Naudoti pasirinktą rėžį --"
 
 #: /src/schooltool/gradebook/browser/report_card.py:137
 msgid "Choose an existing score system or use range below"
-msgstr ""
+msgstr "Naudoti esamą vertinimo sistemą arba nurodytą rėžį"
 
 #: /src/schooltool/gradebook/browser/report_card.py:142
 msgid "Minimum"
-msgstr ""
+msgstr "Mažiausias"
 
 #: /src/schooltool/gradebook/browser/report_card.py:143
 msgid "Lowest integer score value possible"
-msgstr ""
+msgstr "Mažiausias galimas įvertis"
 
 #: /src/schooltool/gradebook/browser/report_card.py:148
 msgid "Maximum"
-msgstr ""
+msgstr "Didžiausias"
 
 #: /src/schooltool/gradebook/browser/report_card.py:149
 msgid "Highest integer score value possible"
-msgstr ""
+msgstr "Didžiausias galimas įvertis"
 
 #: /src/schooltool/gradebook/browser/request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/interfaces.py:146
@@ -734,7 +743,7 @@ msgstr "Data"
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:84
 #: /src/schooltool/gradebook/browser/request_student_report.pt:35
 msgid "Download"
-msgstr ""
+msgstr "Atsisiųsti"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:25
 msgid ""
@@ -754,39 +763,39 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:38
 msgid "Request Report"
-msgstr ""
+msgstr "Prašyti ataskaitos"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:42
 msgid "Report Activity"
-msgstr ""
+msgstr "Ataskaitos veikla"
 
 #: /src/schooltool/gradebook/browser/request_failing_report.pt:60
 msgid "Minimum Passing Score"
-msgstr ""
+msgstr "Mažiausias patenkinamas įvertis"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:52
 msgid "Student Reports"
-msgstr "Mokinių ataskaitos"
+msgstr "Mokinio ataskaitos"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:59
 #: /src/schooltool/gradebook/browser/request_reports.py:79
 #: /src/schooltool/gradebook/browser/request_reports.py:290
 msgid "Request Report Card"
-msgstr ""
+msgstr "Prašyti ataskaitos kortelės"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:63
 #: /src/schooltool/gradebook/browser/request_reports.py:83
 #: /src/schooltool/gradebook/browser/request_reports.py:292
 msgid "Request Detailed Student Report"
-msgstr ""
+msgstr "Prašyti detalios mokinio ataskaitos"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:72
 msgid "Group Reports"
-msgstr ""
+msgstr "Grupės ataskaitos"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:92
 msgid "Term Reports"
-msgstr ""
+msgstr "Semestro ataskaitos"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:99
 msgid "Failures by Term"
@@ -802,7 +811,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_reports.py:124
 msgid "Section Reports"
-msgstr ""
+msgstr "Kurso ataskaitos"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:131
 msgid "Download Absences by Section Report"
@@ -834,7 +843,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_student_report.pt:22
 msgid "Term or Year"
-msgstr ""
+msgstr "Semestras arba metai"
 
 #: /src/schooltool/gradebook/browser/summary.pt:10
 msgid "Section Worksheet Summary"
@@ -875,11 +884,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/weight_categories.pt:30
 msgid "Category Weights"
-msgstr ""
+msgstr "Kategorijų svoriai"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:101
 msgid "This worksheet has no activities."
-msgstr ""
+msgstr "Šioje lentelėje nėra nei vienos veiklos."
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
 msgid "Delete Worksheet"
@@ -887,7 +896,7 @@ msgstr "šalinti lentelę"
 
 #: /src/schooltool/gradebook/browser/worksheet_delete.pt:12
 msgid ""
-"Are you sure you want to delete this workskeet together with all its "
+"Are you sure you want to delete this worksheet together with all its "
 "activities?"
 msgstr ""
 
@@ -1058,7 +1067,7 @@ msgstr "Smulkus išorinės veiklos aprašymas."
 
 #: /src/schooltool/gradebook/interfaces.py:414
 msgid "Linked Column Activity Source"
-msgstr ""
+msgstr "Susieto stulpelio veiklos šaltinis"
 
 #: /src/schooltool/gradebook/interfaces.py:415
 msgid "A text string that specifies the source of the column"
@@ -1070,23 +1079,23 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
-msgstr ""
+msgstr "Keisti šablonus"
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
-msgstr ""
+msgstr "Kurti ir keisti kurso pažymių knygelės duomenis."
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Edit Gradebook"
-msgstr ""
+msgstr "Keisti pažymių knygelę"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View Gradebook"
-msgstr ""
+msgstr "Matyti pažymių knygelę"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
-msgstr ""
+msgstr "Matyti kurso pažymių knygelės duomenis."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Administration can grade students"
@@ -1102,7 +1111,7 @@ msgstr "Vertinimo sistemos"
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:4
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:13
 msgid "Add Score System"
-msgstr "Pridėti vertinimo sistemą."
+msgstr "Pridėti vertinimo sistemą"
 
 #: /src/schooltool/requirement/browser/configure.zcml:61
 msgid "View"
@@ -1174,15 +1183,15 @@ msgstr "Paskutinis įvertinimas turi būti nulis."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:49
 msgid "Duplicate scores are not allowed."
-msgstr ""
+msgstr "Pasikartojantys įverčiai negalimi."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:50
 msgid "Duplicate abbreviations are not allowed."
-msgstr ""
+msgstr "Pasikartojančios santrumpos negalimos."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:259
 msgid "Exisiting Score System"
-msgstr "Esanti vertinimo sistema"
+msgstr "Esama vertinimo sistema"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:264
 msgid "Custom score system"
@@ -1248,7 +1257,7 @@ msgstr "Įvertinimas"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:51
 msgid "Abbreviation"
-msgstr ""
+msgstr "Santrumpa"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 msgid "Point Value"
@@ -1269,8 +1278,8 @@ msgstr "Rodyti vertinimo sistemą"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
-msgstr ""
+msgstr "Pašalinti?"
 
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
-msgstr ""
+msgstr "Atnaujinti"

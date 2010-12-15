@@ -364,7 +364,7 @@ We'll switch to the Fall term and add some activities to the English I section:
     True
 
 Finally, we'll change the section back to the Winter Physics section and the
-current workskeet back to 'Week 1'.
+current worksheet back to 'Week 1'.
 
     >>> stephan.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook/')
     >>> stephan.getLink('Week 1').click()
@@ -995,7 +995,7 @@ the permission to do it:
     >>> manager.open('http://localhost')
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Access Control').click()
-    >>> manager.getControl('Administration can grade students').click()
+    >>> manager.getControl("The instructor of a section and school administration can edit a section's gradebook").click()
     >>> manager.getControl('Apply').click()
 
 And try again:
@@ -1009,7 +1009,7 @@ Let's set the setting back to cover our tracks:
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Access Control').click()
-    >>> manager.getControl('Administration can grade students').click()
+    >>> manager.getControl('Only the instructor of a section can edit its gradebook').click()
     >>> manager.getControl('Apply').click()
 
 A teacher should be able to view and edit his own gradebook.
@@ -1035,12 +1035,15 @@ uses the request's principal to determine which grades to display.
     <BLANKLINE>
     ...Ave.: 88.0%...
 
-Students should not be able to view a teacher's gradebook.
+Students are not be able to view a teacher's gradebook. They are redirected to
+mygrades view instead.
 
     >>> claudia.open('http://localhost/schoolyears/2007/winter/sections/1/gradebook')
-    Traceback (most recent call last):
-    ...
-    Unauthorized: ...
+    >>> claudia.url
+    'http://localhost/schoolyears/2007/winter/sections/1/activities/Worksheet/mygrades'
+    >>> print claudia.contents
+    <BLANKLINE>
+    ... Ave.: 86.0%...
 
 
 Export Worksheets as XLS

@@ -275,7 +275,7 @@ class ScoreSystemViewView(BrowserView):
         return target.title
 
     def getScoreSystem(self):
-        name = self.request['QUERY_STRING'].split('=')[1]
+        name = self.request['name']
         for n, ss in self.context.getScoreSystems():
             if escName(n) == name:
                 return removeSecurityProxy(ss)
