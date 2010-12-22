@@ -1,0 +1,156 @@
+Activity Categories
+-------------------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Administrator defines activity categories available for teachers:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Activity Categories').click()
+    >>> manager.printQuery('id("field.categories")/option/@value')
+    essay
+    exam
+    assignment
+    journal
+    lab
+    project
+    presentation
+    homework
+
+As you can see, there are already several categories pre-defined. Often,
+those categories do not work for a school. Either you do not need some and/or
+others are missing. So let's start by deleting a couple of categories:
+
+    >>> manager.getControl(name='field.categories:list').value = [
+    ...     'essay', 'journal', 'homework', 'presentation']
+    >>> manager.getControl('Remove').click()
+    >>> manager.printQuery('//div[@class="info"]/text()')
+    Categories successfully deleted.
+    >>> manager.printQuery('id("field.categories")/option/@value')
+    exam
+    assignment
+    lab
+    project
+
+Next, we add a new category:
+
+    >>> manager.getControl('New Category').value = 'Lab Report'
+    >>> manager.getControl('Add').click()
+    >>> manager.printQuery('//div[@class="info"]/text()')
+    Category successfully added.
+    >>> manager.printQuery('id("field.categories")/option/@value')
+    exam
+    assignment
+    lab
+    project
+    labreport-
+
+We can also add categories with non ASCII characters:
+
+    >>> manager.getControl('New Category').value = 'Calificación'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.printQuery('//div[@class="info"]/text()')
+    Category successfully added.
+    >>> manager.printQuery('id("field.categories")/option/@value')
+    exam
+    assignment
+    calificacin-1ra1s
+    lab
+    project
+    labreport-
+
+If we click on Add without entering a new category, nothing happens:
+
+    >>> manager.queryHTML('id("field.newCategory")/@value')
+    ['']
+    >>> manager.getControl('Add').click()
+    >>> manager.queryHTML('//div[@class="info"]')
+    []
+
+Also click Remove without nothing selected:
+
+    >>> manager.queryHTML('id("field.categories")/@value')
+    []
+    >>> manager.getControl('Remove').click()
+    >>> manager.queryHTML('//div[@class="info"]')
+    []
+
+We can also change the default category:
+
+    >>> manager.getControl('Default Category').value
+    ['assignment']
+    >>> manager.getControl('Default Category').value = ['project']
+    >>> manager.getControl('Change').click()
+    >>> manager.getControl('Default Category').value
+    ['project']
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up a course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Let's add an activity to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('New Activity').click()
+
+Check the categories available:
+
+    >>> stephan.printQuery('id("form-widgets-category")/option/text()')
+    Exam
+    Assignment
+    Calificaci...n
+    Lab
+    Project
+    Lab Report
+
+Check the default category is selected:
+
+    >>> stephan.printQuery('id("form-widgets-category")/option[@selected="selected"]/text()')
+    Project
+    >>> stephan.getControl('Cancel').click()
+
+Now, let's add an external activity:
+
+    >>> stephan.getLink('New External Activity').click()
+
+And check the categories available:
+
+    >>> stephan.printQuery('id("form.category")/option/text()')
+    Exam
+    Assignment
+    Calificaci...n
+    Lab
+    Project
+    Lab Report
+
+And check the default category is selected:
+
+    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    Project
