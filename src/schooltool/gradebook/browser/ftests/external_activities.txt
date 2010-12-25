@@ -1,0 +1,388 @@
+External Activities
+-------------------
+
+External activities allow to get grades for a worksheet activity from
+another schooltool module.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+We have two regular activities. One assignment:
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getControl('Category').displayValue
+    ['Assignment']
+    >>> stephan.getControl('Cancel').click()
+
+And one exam:
+
+    >>> stephan.getLink('Quiz').click()
+    >>> stephan.getControl('Category').displayValue
+    ['Exam']
+    >>> stephan.getControl('Cancel').click()
+
+And our grades are:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    49.3%
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+
+We should have a 'New External Activity' button to add external
+activities:
+
+    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
+    Worksheets
+    New Activity
+    New External Activity
+    New Linked Column
+    Manage Worksheet
+    Weight Categories
+    Preferences
+    Export XLS
+    Download PDF
+
+Let's add a new external activity as an assignment. For this test we
+have registered two external utilities stubs titled "Hardware" and
+"HTML" (see schooltool.gradebook.tests.stubs):
+
+    >>> stephan.getLink('New External Activity').click()
+    >>> stephan.printQuery('//h3/text()')
+    Add an External Activity
+    >>> stephan.printQuery('id("form.external_activity")/option[@value!=""]/text()')
+    Sample Source - HTML
+    Sample Source - Hardware
+    >>> stephan.getControl('External Activity').value = ['samplesource-hardware']
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Points').value = '15'
+    >>> stephan.getControl('Add').click()
+
+Adding an external activity gets us back to the gradebook index view
+where we can see the external activity which by default has been
+loaded with the latest grades:
+
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <a ...>Hardw</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    145.0
+    80.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    87.9%
+    48.5%
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
+    <input ... value="" ... />
+    <input ... value="9.00" ... />
+    <input ... value="6.00" ... />
+
+Let's edit the external activity. The form doesn't allow to edit the
+score system. The edit view also shows an 'Update Grades' button to
+recalculate the activity grades from the external activity:
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Hardware').click()
+    >>> stephan.printQuery('//h3/text()')
+    Edit External Activity
+    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
+    Edit
+    Update Grades
+    >>> stephan.printQuery('//label/text()')
+    External Activity
+    Title
+    Label
+    Due Date
+    Description
+    Category
+    Points
+    >>> stephan.printQuery('//div[@class="row"][1]/div[@class="field"]/text()')
+    Sample Source - Hardware
+    >>> stephan.printQuery('id("form.title")/@value')
+    Hardware
+    >>> stephan.printQuery('id("form.description")/text()')
+    Hardware description
+    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    Assignment
+    >>> stephan.printQuery('id("form.points")/@value')
+    15
+    >>> stephan.getControl('Title').value = u"Hardware Assignment"
+    >>> stephan.getControl('Description').value = "The Hardware assignment"
+    >>> stephan.getControl('Points').value = '25'
+    >>> stephan.getControl('Apply').click()
+
+Since we changed the points of the external activity, we see a change
+in the average column. But the grades for the external activity have
+not been updated:
+
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <a ...>Hardw</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    145.0
+    80.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    82.9%
+    45.7%
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
+    <input ... value="" ... />
+    <input ... value="9.00" ... />
+    <input ... value="6.00" ... />
+
+Let's go back to the edit form of the external activity to update the
+grades using the 'Update Grades' button:
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Hardware Assignment').click()
+    >>> stephan.printQuery('//h3/text()')
+    Edit External Activity
+    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
+    Edit
+    Update Grades
+    >>> stephan.printQuery('//label/text()')
+    External Activity
+    Title
+    Label
+    Due Date
+    Description
+    Category
+    Points
+    >>> stephan.printQuery('//div[@class="row"][1]/div[@class="field"]/text()')
+    Sample Source - Hardware
+    >>> stephan.printQuery('id("form.title")/@value')
+    Hardware Assignment
+    >>> stephan.printQuery('id("form.description")/text()')
+    The Hardware assignment
+    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    Assignment
+    >>> stephan.printQuery('id("form.points")/@value')
+    25
+    >>> stephan.getLink('Update Grades').click()
+
+This takes us to the gradebook where the grades of the external
+activity, the total of points and the averages should have changed:
+
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <a ...>Hardw</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    151.0
+    84.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    86.3%
+    48.0%
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
+    <input ... value="" ... />
+    <input ... value="15.00" ... />
+    <input ... value="10.00" ... />
+
+External activities should also be weightable. Let's add some
+weighting to the worksheet:
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Assignment').value = '31'
+    >>> stephan.getControl('Exam').value = '69'
+    >>> stephan.getControl('Update').click()
+
+The averages have changed to reflect the weighting:
+
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <a ...>Hardw</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    151.0
+    84.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.9%
+    86.8%
+    42.7%
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
+    <input ... value="" ... />
+    <input ... value="15.00" ... />
+    <input ... value="10.00" ... />
