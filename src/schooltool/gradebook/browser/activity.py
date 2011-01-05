@@ -213,6 +213,14 @@ class ActivityAddView(z3cform.AddForm):
     def nextURL(self):
         return absoluteURL(self.context, self.request)
 
+    def updateWidgets(self):
+        super(ActivityAddView, self).updateWidgets()
+        # XXX replaceafill: is there a better way of setting the
+        #                   default category?
+        categories = getCategories(ISchoolToolApplication(None))
+        if not self.widgets['category'].value:
+            self.widgets['category'].value = [categories.getDefaultKey()]
+
 
 class LinkedActivityAddView(form.AddForm):
     """A view for adding a linked activity."""

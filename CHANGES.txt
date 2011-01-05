@@ -5,7 +5,7 @@ CHANGES
 0.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed default category selection for new activity form (https://launchpad.net/bugs/562875)
 
 
 0.8.1 (2010-10-04)
