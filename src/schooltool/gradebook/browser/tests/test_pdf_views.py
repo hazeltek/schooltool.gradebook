@@ -40,6 +40,8 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.interfaces import IAbsoluteURL
+from zope.ucol.localeadapter import LocaleCollator
+from zope.i18n.interfaces.locales import ICollator
 
 from schooltool.app.interfaces import (ISchoolToolApplication,
      ISchoolToolCalendar, ISchoolToolCalendarEvent)
@@ -533,6 +535,8 @@ def pdfSetUp(test=None):
     provideUtility(IntIdsStub(), IIntIds, '')
 
     provideAdapter(getCalendar, [object], provides=ISchoolToolCalendar)
+
+    provideAdapter(LocaleCollator, adapts=[None], provides=ICollator)
 
     app = ApplicationStub()
     provideAdapter(lambda x: app, [None], provides=ISchoolToolApplication)

@@ -39,6 +39,7 @@ from zope.security import proxy
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.viewlet import viewlet
+from zope.i18n.interfaces.locales import ICollator
 
 from z3c.form import form as z3cform
 from z3c.form import field, button
@@ -603,16 +604,16 @@ class GradebookOverview(SectionFinder):
 
         # Do the sorting
         key, reverse = self.sortKey
+        self.collator = ICollator(self.request.locale)
         def generateKey(row):
             if key != 'student':
                 grades = dict([(unicode(grade['activity']), grade['value'])
                                for grade in row['grades']])
                 if not grades.get(key, ''):
-                    return (1, row['student']['title'])
+                    return (1, self.collator.key(row['student']['title']))
                 else:
                     return (0, grades.get(key))
-            return row['student']['title']
-
+            return self.collator.key(row['student']['title'])
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property

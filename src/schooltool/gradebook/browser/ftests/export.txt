@@ -1,0 +1,245 @@
+Export
+------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up two school years and a couple of terms in them:
+
+    >>> from schooltool.app.browser.ftests import setup
+
+    >>> setup.addSchoolYear('2005', '2005-01-01', '2005-12-31')
+    >>> setup.addTerm('Semester1', '2005-01-01', '2005-06-30', '2005')
+    >>> setup.addTerm('Semester2', '2005-07-01', '2005-12-31', '2005')
+
+    >>> setup.addSchoolYear('2006', '2006-01-01', '2006-12-31')
+    >>> setup.addTerm('Semester1', '2006-01-01', '2006-06-30', '2006')
+    >>> setup.addTerm('Semester2', '2006-07-01', '2006-12-31', '2006')
+
+Set up some courses:
+
+    >>> setup.addCourse('Physics I', '2005')
+    >>> setup.addCourse('Math I', '2005')
+    >>> setup.addCourse('Physics II', '2006')
+    >>> setup.addCourse('Math II', '2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+    >>> addPerson('Alan', 'Elkner', 'alan', 'pwd', browser=manager)
+
+Set up a section for each term:
+
+    >>> setup.addSection('Physics I', '2005', 'Semester1',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Math I', '2005', 'Semester2',
+    ...                  instructors=['Alan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics I', '2006', 'Semester1',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Math I', '2006', 'Semester2',
+    ...                  instructors=['Alan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as stephan, teacher of the Physics sections:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> url = stephan.url
+
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005 / Semester1
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+Let's go to his other section in the 2006 year:
+
+    >>> stephan.open(url+'?currentTerm=2006-.semester1-')
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2006 / Semester1
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics II - Physics II (1)
+
+Add a couple of activities:
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '90'
+    >>> stephan.getControl(name='Activity_tom').value = '80'
+    >>> stephan.getControl(name='Activity_claudia').value = '95'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '100'
+    >>> stephan.getControl(name='Activity-2_tom').value = '95'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '87'
+
+    >>> stephan.getControl('Save').click()
+
+Now let's log in as Alan:
+
+    >>> alan = Browser('alan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> alan.getLink('Gradebook').click()
+    >>> url = alan.url
+
+    >>> alan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005 / Semester2
+    >>> alan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (1)
+
+    >>> alan.getLink('New Activity').click()
+    >>> alan.getControl('Title').value = 'HW 1'
+    >>> alan.getControl('Description').value = 'Homework 1'
+    >>> alan.getControl('Category').value = ['assignment']
+    >>> alan.getControl('Maximum').value = '50'
+    >>> alan.getControl('Add').click()
+
+    >>> alan.getLink('New Activity').click()
+    >>> alan.getControl('Title').value = 'Quiz'
+    >>> alan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> alan.getControl('Category').value = ['exam']
+    >>> alan.getControl('Add').click()
+
+Add some grades:
+
+    >>> alan.getControl(name='Activity_paul').value = '50'
+    >>> alan.getControl(name='Activity_tom').value = '37'
+    >>> alan.getControl(name='Activity_claudia').value = '31'
+
+    >>> alan.getControl(name='Activity-2_paul').value = '80'
+    >>> alan.getControl(name='Activity-2_tom').value = '70'
+    >>> alan.getControl(name='Activity-2_claudia').value = '60'
+
+    >>> alan.getControl('Save').click()
+
+Let's go to his other section in the 2006 year:
+
+    >>> alan.open(url+'?currentTerm=2006-.semester2-')
+    >>> alan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2006 / Semester2
+    >>> alan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math II - Math II (1)
+
+Add a couple of activities:
+
+    >>> alan.getLink('New Activity').click()
+    >>> alan.getControl('Title').value = 'HW 1'
+    >>> alan.getControl('Description').value = 'Homework 1'
+    >>> alan.getControl('Category').value = ['assignment']
+    >>> alan.getControl('Add').click()
+
+    >>> alan.getLink('New Activity').click()
+    >>> alan.getControl('Title').value = 'Quiz'
+    >>> alan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> alan.getControl('Category').value = ['exam']
+    >>> alan.getControl('Add').click()
+
+Add some grades:
+
+    >>> alan.getControl(name='Activity_paul').value = '70'
+    >>> alan.getControl(name='Activity_tom').value = '85'
+    >>> alan.getControl(name='Activity_claudia').value = '100'
+
+    >>> alan.getControl(name='Activity-2_paul').value = '70'
+    >>> alan.getControl(name='Activity-2_tom').value = '80'
+    >>> alan.getControl(name='Activity-2_claudia').value = '100'
+
+    >>> alan.getControl('Save').click()
+
+
+Export Worksheets as XLS
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Gradebook's worksheets can be exported to a XLS file:
+
+    >>> stephan.getLink('Export XLS').click()
+    >>> stephan.headers.get('Content-Type')
+    'application/excel'
+    >>> stephan.open('http://localhost/gradebook.html')
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('Export XLS').click()
+    >>> stephan.headers.get('Content-Type')
+    'application/excel'
+
+
+CSV test
+~~~~~~~~
+
+We supply a CSV view for getting all grades out of schooltool in CSV format.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Download Gradebook CSV').click()
+    >>> print manager.contents
+    "year","term","section","worksheet","activity","student","grade"
+    "2005","semester1","1","Worksheet","Activity","claudia","45"
+    "2005","semester1","1","Worksheet","Activity-2","claudia","29"
+    "2005","semester1","1","Worksheet","Activity","paul","40"
+    "2005","semester1","1","Worksheet","Activity-2","paul","90"
+    "2005","semester1","1","Worksheet","Activity","tom","48"
+    "2005","semester1","1","Worksheet","Activity-2","tom","88"
+    "2005","semester2","1","Worksheet","Activity","claudia","31"
+    "2005","semester2","1","Worksheet","Activity-2","claudia","60"
+    "2005","semester2","1","Worksheet","Activity","paul","50"
+    "2005","semester2","1","Worksheet","Activity-2","paul","80"
+    "2005","semester2","1","Worksheet","Activity","tom","37"
+    "2005","semester2","1","Worksheet","Activity-2","tom","70"
+    "2006","semester1","1","Worksheet","Activity","claudia","95"
+    "2006","semester1","1","Worksheet","Activity-2","claudia","87"
+    "2006","semester1","1","Worksheet","Activity","paul","90"
+    "2006","semester1","1","Worksheet","Activity-2","paul","100"
+    "2006","semester1","1","Worksheet","Activity","tom","80"
+    "2006","semester1","1","Worksheet","Activity-2","tom","95"
+    "2006","semester2","1","Worksheet","Activity","claudia","100"
+    "2006","semester2","1","Worksheet","Activity-2","claudia","100"
+    "2006","semester2","1","Worksheet","Activity","paul","70"
+    "2006","semester2","1","Worksheet","Activity-2","paul","70"
+    "2006","semester2","1","Worksheet","Activity","tom","85"
+    "2006","semester2","1","Worksheet","Activity-2","tom","80"

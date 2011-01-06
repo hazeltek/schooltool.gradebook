@@ -1,0 +1,166 @@
+Gradebook Startup View
+----------------------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Use the 'Gradebook' tab:
+
+    >>> stephan.getLink('Gradebook').click()
+
+He's taken to the teacher gradebook:
+
+    >>> stephan.printQuery('//form/span[3]')
+    <span>show only activities due in past
+    <select name="num_weeks">...</select>
+    weeks</span>
+    >>> stephan.printQuery('//select[@name="num_weeks"]')
+    <select name="num_weeks">
+    ...
+    </select>
+    weeks
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[1]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+
+Let's log in as Claudia, a student:
+
+    >>> claudia = Browser('claudia', 'pwd')
+
+She uses the 'Gradebook' tab:
+
+    >>> claudia.getLink('Gradebook').click()
+
+She's taken to the mygrades view:
+
+    >>> claudia.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/mygrades'
+    >>> claudia.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div>Nothing Graded</div>
+    </td>
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[1]/div/text()')
+    Activity
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[2]/div/text()')
+    Grade
+
+Now that we've tested both the teacher's gradebook and the student's mygrades
+views, we'll want to more thoroughly test the view that get's launched when
+the user clicks on the 'Gradebook' tab.  Up until now, the startup view has
+automatically redirected both the teacher and the student to the gradebook and
+mygrades views respectively.  But what if the user neither attends or teachers
+any classes, like a site manager, or if the user both teachers AND attends
+classes?  We will test both of these scenarios.
+
+First, the manager doesn't participate in any classes, so we'll give him a
+simple message when he clicks on the 'Gradebook' tab.
+
+    >>> manager.getLink('Gradebook').click()
+    >>> manager.printQuery('//h1/text()')
+    You do not teach or attend any classes.
+
+In order to test the second scenario, we will have to create a second section
+that has Stephan, teacher of the first Physics I section (1), attending a
+second section rather than teaching.
+
+    >>> addPerson('Jeffrey', 'Elkner', 'jeffrey', 'pwd', browser=manager)
+    >>> setup.addSection('Physics I', '2005-2006', 'Spring')
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getLink('Physics I').click()
+    >>> manager.getLink('(Spring)').click()
+
+    >>> manager.getLink('edit instructors').click()
+    >>> manager.getControl(name='add_item.jeffrey').value = 'checked'
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
+    >>> manager.getLink('edit individuals').click()
+    >>> manager.getControl(name='add_item.stephan').value = 'checked'
+    >>> manager.getControl(name='add_item.paul').value = 'checked'
+    >>> manager.getControl(name='add_item.claudia').value = 'checked'
+    >>> manager.getControl(name='add_item.tom').value = 'checked'
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
+Now, when Stephan clicks on the 'Gradebook' tab, he will get a startup view
+that allows him to go to either his gradebook or his mygrades views.
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.printQuery('id("content-body")//a[@class="navigation_header"]/text()')
+    Classes you teach
+    Classes you attend
+
+    >>> stephan.getLink('Classes you teach').click()
+    >>> stephan.printQuery('//form/span[3]')
+    <span>show only activities due in past
+    <select name="num_weeks">...</select>
+    weeks</span>
+    >>> stephan.printQuery('//select[@name="num_weeks"]')
+    <select name="num_weeks">
+    ...
+    </select>
+    weeks
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[1]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Classes you attend').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/mygrades'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> stephan.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div>Nothing Graded</div>
+    </td>
+    >>> stephan.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[1]/div/text()')
+    Activity
+    >>> stephan.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[2]/div/text()')
+    Grade

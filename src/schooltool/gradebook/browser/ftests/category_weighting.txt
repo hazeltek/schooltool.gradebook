@@ -1,0 +1,208 @@
+Category Weighting
+------------------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Administrator checks activity categories available for teachers:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Activity Categories').click()
+    >>> manager.printQuery('id("field.categories")/option/@value')
+    essay
+    exam
+    assignment
+    journal
+    lab
+    project
+    presentation
+    homework
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up a course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add some activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'First homework'
+    >>> stephan.getControl('Category').value = ['homework']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz 1'
+    >>> stephan.getControl('Description').value = 'First quiz'
+    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Maximum').value = '100'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 2'
+    >>> stephan.getControl('Description').value = 'Second homework'
+    >>> stephan.getControl('Category').value = ['homework']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz 2'
+    >>> stephan.getControl('Description').value = 'Second quiz'
+    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Maximum').value = '100'
+    >>> stephan.getControl('Add').click()
+
+Add grades for the first three activities for Paul:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-3_paul').value = '45'
+
+Add grades for the first three activities for Tom:
+
+    >>> stephan.getControl(name='Activity_tom').value = '45'
+    >>> stephan.getControl(name='Activity-2_tom').value = '80'
+    >>> stephan.getControl(name='Activity-3_tom').value = '50'
+
+Add grades for the first three activities for Claudia:
+
+    >>> stephan.getControl(name='Activity_claudia').value = '50'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '95'
+    >>> stephan.getControl(name='Activity-3_claudia').value = '50'
+    >>> stephan.getControl('Save').click()
+
+By default the Average column is calculated normally:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    87.5%
+    87.5%
+    97.5%
+
+Let's create some category weights for the current worksheet. Note
+that the categories are ordered alphabetically.
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.printQuery('//h3/text()')
+    Category weights for worksheet Sheet1
+    >>> stephan.printQuery('//label/text()')
+    Assignment
+    Essay
+    Exam
+    Homework
+    Journal
+    Lab
+    Presentation
+    Project
+
+First we'll show what happens when a value is invalid.  The only valid weights
+will be numbers between 0 and 100.
+
+    >>> stephan.getControl('Assignment').value = u'bad value'
+    >>> stephan.getControl('Update').click()
+    >>> stephan.printQuery('//div[@class="message"]/text()')
+    bad value is not a valid weight.
+    >>> stephan.getControl('Assignment').value = u'-1'
+    >>> stephan.getControl('Update').click()
+    >>> stephan.printQuery('//div[@class="message"]/text()')
+    -1 is not a valid weight.
+    >>> stephan.getControl('Assignment').value = u'101'
+    >>> stephan.getControl('Update').click()
+    >>> stephan.printQuery('//div[@class="message"]/text()')
+    101 is not a valid weight.
+
+We'll fill in valid values for Assignment, Homework and Exam, but they
+will not add up to 100.  We should get an error message to that
+effect.
+
+    >>> stephan.getControl('Assignment').value = u'99'
+    >>> stephan.getControl('Exam').value = u'99'
+    >>> stephan.getControl('Homework').value = u'99'
+    >>> stephan.getControl('Update').click()
+    >>> stephan.printQuery('//div[@class="message"]/text()')
+    Category weights must add up to 100.
+
+If we get the weights to add up to 100, hitting 'Update' will succeed
+and return us to the gradebook.  There we will note the effect of the
+weighting in the Average column.
+
+    >>> stephan.getControl('Assignment').value = u'20'
+    >>> stephan.getControl('Exam').value = u'50'
+    >>> stephan.getControl('Homework').value = u'30'
+    >>> stephan.getControl('Update').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    88.1%
+    85.6%
+    96.9%
+
+Finally, we'll test hitting the 'Cancel' button.  It should return to the
+gradebook without changing the weights.
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Exam').value
+    '50'
+    >>> stephan.getControl('Exam').value = u'85'
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Exam').value
+    '50'
+
+Let's add a new Assignment activity:
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Experiment'
+    >>> stephan.getControl('Description').value = 'First assignment'
+    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Maximum').value = '10'
+    >>> stephan.getControl('Add').click()
+
+Let's grade the new assignment for Paul and Tom:
+
+    >>> stephan.getControl(name='Activity-5_paul').value = '9'
+    >>> stephan.getControl(name='Activity-5_tom').value = '7'
+    >>> stephan.getControl('Save').click()
+
+Note how the Average changed for Paul and Tom, but not for Claudia:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    88.5%
+    82.5%
+    96.9%
