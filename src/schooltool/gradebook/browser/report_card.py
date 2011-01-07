@@ -215,7 +215,7 @@ class ReportScoresSystem(object):
 class ReportActivityAddView(form.AddForm):
     """A view for adding an activity."""
     label = _("Add new activity")
-    template = ViewPageTemplateFile('add_edit_report_activity.pt')
+    template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
     fields = fields.select('title', 'label', 'description')
@@ -274,7 +274,7 @@ class ReportActivityAddView(form.AddForm):
 class ReportActivityEditView(form.EditForm):
     """Edit form for basic person."""
     form.extends(form.EditForm)
-    template = ViewPageTemplateFile('add_edit_report_activity.pt')
+    template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
     fields = fields.select('title', 'label', 'description')

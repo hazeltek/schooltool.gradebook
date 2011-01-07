@@ -191,7 +191,7 @@ class BaseStudentPDFView(BasePDFView):
 class BaseReportCardPDFView(BaseStudentPDFView):
     """The report card (PDF) base class"""
 
-    template=ViewPageTemplateFile('report_card_rml.pt')
+    template=ViewPageTemplateFile('rml/report_card_rml.pt')
 
     def __call__(self):
         """Make sure there is a current term."""
@@ -301,7 +301,7 @@ class GroupReportCardPDFView(BaseReportCardPDFView):
 class BaseStudentDetailPDFView(BaseStudentPDFView):
     """The report card (PDF) base class"""
 
-    template=ViewPageTemplateFile('student_detail_rml.pt')
+    template=ViewPageTemplateFile('rml/student_detail_rml.pt')
 
     def __call__(self):
         """Make sure there is a current term."""
@@ -409,7 +409,7 @@ class GroupDetailPDFView(BaseStudentDetailPDFView):
 class FailingReportPDFView(BasePDFView):
     """A view for printing a report of all the students failing an activity"""
 
-    template=ViewPageTemplateFile('failing_report_rml.pt')
+    template=ViewPageTemplateFile('rml/failing_report_rml.pt')
 
     def __init__(self, context, request):
         super(FailingReportPDFView, self).__init__(context, request)
@@ -528,7 +528,7 @@ class FailingReportPDFView(BasePDFView):
 class AbsencesByDayPDFView(BasePDFView):
     """A view for printing a report with those students absent on a given day"""
 
-    template=ViewPageTemplateFile('absences_by_day_rml.pt')
+    template=ViewPageTemplateFile('rml/absences_by_day_rml.pt')
 
     def __init__(self, context, request):
         super(AbsencesByDayPDFView, self).__init__(context, request)
@@ -629,7 +629,7 @@ class AbsencesByDayPDFView(BasePDFView):
 class SectionAbsencesPDFView(BasePDFView):
     """A view for printing a report with absences for a given section"""
 
-    template=ViewPageTemplateFile('section_absences_rml.pt')
+    template=ViewPageTemplateFile('rml/section_absences_rml.pt')
 
     def __init__(self, context, request):
         super(SectionAbsencesPDFView, self).__init__(context, request)
@@ -695,7 +695,7 @@ class SectionAbsencesPDFView(BasePDFView):
 class GradebookPDFView(BasePDFView, GradebookOverview):
     """The gradebook pdf view class"""
 
-    template=ViewPageTemplateFile('gradebook_rml.pt')
+    template=ViewPageTemplateFile('rml/gradebook_rml.pt')
     topMargin = 30
     leftMargin = 35
 

@@ -168,7 +168,7 @@ class UnhideWorksheetsView(object):
 class ActivityAddView(z3cform.AddForm):
     """A view for adding an activity."""
     label = _("Add new activity")
-    template = ViewPageTemplateFile('add_edit_activity.pt')
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
     fields = fields.select('title', 'label', 'due_date', 'description', 
@@ -280,7 +280,7 @@ class BaseEditView(EditView):
 class ActivityEditView(z3cform.EditForm):
     """Edit form for basic person."""
     z3cform.extends(z3cform.EditForm)
-    template = ViewPageTemplateFile('add_edit_activity.pt')
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
     fields = fields.select('title', 'label', 'due_date', 'description',

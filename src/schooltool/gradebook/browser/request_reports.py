@@ -40,7 +40,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 class BaseView(BrowserView):
     """Base class for all request report views"""
 
-    template=ViewPageTemplateFile('request_reports.pt')
+    template=ViewPageTemplateFile('templates/request_reports.pt')
 
     def __call__(self):
         return self.template()
