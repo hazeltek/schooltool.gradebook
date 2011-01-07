@@ -27,14 +27,10 @@
       layer="schooltool.skin.ISchoolToolLayer" />
 
   <!-- Javascript -->
-  <page
-     name="gradebook_overview.js"
-     for="..gradebook.Gradebook"
-     template="templates/gradebook_overview.js.pt"
-     permission="schooltool.edit"
-     class=".gradebook.GradebookOverview"
-     layer="schooltool.skin.ISchoolToolLayer"
-     />
+  <resource
+      name="gradebook_overview.js"
+      file="resources/gradebook_overview.js"
+      layer="schooltool.skin.ISchoolToolLayer" />
 
   <!-- Report Sheet Templates view -->
   <page

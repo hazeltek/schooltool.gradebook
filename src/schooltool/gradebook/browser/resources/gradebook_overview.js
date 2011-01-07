@@ -1,33 +1,4 @@
-<tal:tag condition="view/update" />
 /* This is the Javascript to be included when rendering the gradebook overview. */
-var numstudents = <tal:block replace="python: len(view.students)"/> 
-var students = new Array(numstudents);
-<tal:loop repeat="row view/table">
-     students[<tal:block replace="repeat/row/index"/>] = '<tal:block replace="python: view.breakJSString(row['student']['id'])"/>';
-     </tal:loop>
-
-var numactivities = <tal:block replace="python: len(view.scorableActivities())"/> 
-var activities = new Array(numactivities);
-<tal:loop repeat="activity view/activities">
-     activities[<tal:block replace="repeat/activity/index"/>] = '<tal:block replace="activity/hash"/>';
-     </tal:loop>
-
-var numscores = <tal:block replace="python: len(view.scores)"/>;
-var scores = new Object();
-<tal:loop repeat="activity view/scores">
-    scores['<tal:block replace="activity" />'] = new Array(<tal:block replace="python: view.scores[activity]" />);
-</tal:loop>
-
-var numdescriptions = <tal:block replace="python: len(view.descriptions)"/> 
-var descriptions = new Array(numdescriptions);
-<tal:loop repeat="activity view/descriptions">
-     descriptions['<tal:block replace="activity/act_hash"/>'] = '<tal:block replace="activity/description"/>';
-     </tal:loop>
-
-var edited = false;
-var currentCell;
-var currentDesc = '';
-
 function setNotEdited()
 {
     edited = false;
@@ -37,7 +8,6 @@ function checkChanges()
 {
     if (!edited)
         return;
-    warningText = '<tal:block replace="view/warningText" />';
     saveFlag = window.confirm(warningText);
     if (saveFlag == true)
         {
@@ -62,10 +32,6 @@ function onLoadHandler()
         }
     }
 }
-
-window.onload = onLoadHandler;
-window.onunload = checkChanges;
-
 
 function handleCellFocus(cell, activity)
 {
