@@ -81,15 +81,11 @@
       <label for="currentSection" i18n:translate="">Section</label>
       <select name="currentSection"
               onchange="this.form.submit()">
-        <tal:block repeat="section python:view.getSections()">
-          <option value="1"
-              tal:condition="python:section['title'] != view.getCurrentSection()"
-              tal:attributes="value section/title"
-              tal:content="section/title" />
-          <option value="1" selected="selected"
-              tal:condition="python:section['title'] == view.getCurrentSection()"
-              tal:attributes="value section/title"
-              tal:content="section/title" />
+        <tal:block repeat="section view/getSections">
+	  <option
+	      tal:attributes="value section/title;
+			      selected python:section['title']==view.getCurrentSection();"
+	      tal:content="section/title" />
         </tal:block>
       </select>
     </tal:if>
