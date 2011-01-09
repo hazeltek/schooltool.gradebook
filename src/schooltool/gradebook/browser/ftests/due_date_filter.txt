@@ -184,10 +184,38 @@ Let's list our activity headers:
     GAME
     GOAL
 
+And go grade a single student:
+
+    >>> teacher.getLink('>', index=0).click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Cerna, Camila
+
+To see all the activities available to be graded:
+
+    >>> teacher.printQuery('//fieldset//label/span/text()')
+    Get a ball
+    Get a team
+    Play a game
+    Score a goal
+
+Let's check the 'view.html' view for the student (XXX: which btw has no way
+to be accessed, no links, no button, nothing!):
+
+    >>> url = teacher.url
+    >>> teacher.open(url + '/view.html')
+    >>> teacher.printQuery('//h1/text()')
+    Sheet1 for Camila Cerna in Soccer - Soccer (1)
+    >>> teacher.printQuery('//div[@class="info-block"]/h3/text()')
+    Get a ball
+    Get a team
+    Play a game
+    Score a goal
+
 Now, let's test the due date widget. The widget has a checkbox and a
 dropdown with numbers from 1-9 representing past weeks to filter the
 activities. By default the weeks dropdown is set to 9:
 
+    >>> teacher.getLink('Gradebook').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option/text()')
@@ -215,10 +243,37 @@ activities, showing only those with due date in the past 9 weeks:
     GAME
     GOAL
 
-Notice how the 'Get a ball (BALL)' activity is filtered out. Let's
-change the dropdown to show only activities with due date in the past
-two weeks:
+Notice how the 'Get a ball (BALL)' activity is filtered out.
 
+If we get back to grade a single student:
+
+    >>> teacher.getLink('>', index=0).click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Cerna, Camila
+
+We see the filter works there too:
+
+    >>> teacher.printQuery('//fieldset//label/span/text()')
+    Get a team
+    Play a game
+    Score a goal
+
+Let's check again the 'view.html' view for the student and see the
+filter works there too:
+
+    >>> url = teacher.url
+    >>> teacher.open(url + '/view.html')
+    >>> teacher.printQuery('//h1/text()')
+    Sheet1 for Camila Cerna in Soccer - Soccer (1)
+    >>> teacher.printQuery('//div[@class="info-block"]/h3/text()')
+    Get a team
+    Play a game
+    Score a goal
+
+Let's change the dropdown to show only activities with due date in the
+past two weeks:
+
+    >>> teacher.getLink('Gradebook').click()
     >>> teacher.getControl(name='num_weeks').value = ['2']
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
