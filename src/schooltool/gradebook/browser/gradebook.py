@@ -63,7 +63,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
-from schooltool.term.interfaces import ITerm
+from schooltool.term.interfaces import ITerm, IDateManager
 
 from schooltool.gradebook import GradebookMessage as _
 
@@ -530,7 +530,8 @@ class GradebookOverview(SectionFinder):
         flag, weeks = self.context.getDueDateFilter(self.person)
         if not flag:
             return False
-        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
     def getFilteredActivities(self):
@@ -1086,7 +1087,8 @@ class GradeStudent(z3cform.EditForm):
         flag, weeks = self.context.gradebook.getDueDateFilter(self.person)
         if not flag:
             return False
-        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
     def getFilteredActivities(self):
@@ -1147,7 +1149,8 @@ class StudentGradebookView(object):
         flag, weeks = self.context.gradebook.getDueDateFilter(self.person)
         if not flag:
             return False
-        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
 
