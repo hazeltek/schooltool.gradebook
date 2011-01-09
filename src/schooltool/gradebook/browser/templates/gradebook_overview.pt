@@ -193,8 +193,8 @@
     </tr>
 
     <tr tal:repeat="row view/table">
-      <tal:if condition="repeat/row/even">
-        <td class="cell padded even" style="text-align: left">
+      <metal:block tal:define="css_class python:repeat['row'].even() and 'even' or 'odd'">
+        <td tal:attributes="class string:cell padded ${css_class}" style="text-align: left">
           <a href=""
              tal:attributes="href row/student/url"
              tal:content="row/student/title">
@@ -205,18 +205,21 @@
             &gt;
           </a>
         </td>
-        <td tal:condition="not: view/total_hide" class="cell padded even">
+        <td tal:condition="not: view/total_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
 	      <tal:if condition="row/total|nothing">
 	        <b><span tal:replace="row/total" /></b>
 	      </tal:if>
         </td>
-        <td tal:condition="not: view/average_hide" class="cell padded even">
+        <td tal:condition="not: view/average_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
 	      <tal:if condition="row/average|nothing">
 	        <b><span tal:replace="row/average" /></b>
 	      </tal:if>
         </td>
-        <td class="cell even" tal:repeat="grade row/grades"
-            tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+        <td tal:repeat="grade row/grades"
+            tal:attributes="id string:${grade/activity}_${row/student/id}_cell;
+			    class string:cell ${css_class}">
           <span tal:condition="not: grade/editable"
              tal:content="grade/value" />
           <input class="data" type="text" name="" value="" size="4"
@@ -228,43 +231,7 @@
                                  onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
                                  onfocus string:handleCellFocus(this, '${grade/activity}')"/>
         </td>
-      </tal:if>
-      <tal:if condition="repeat/row/odd">
-        <td class="cell padded odd" style="text-align: left">
-          <a href=""
-             tal:attributes="href row/student/url"
-             tal:content="row/student/title">
-            Tom Hoffman
-          </a>
-          <a href=""
-             tal:attributes="href row/student/gradeurl">
-            &gt;
-          </a>
-        </td>
-        <td tal:condition="not: view/total_hide" class="cell padded odd">
-	      <tal:if condition="row/total|nothing">
-	        <b><span tal:replace="row/total" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/average_hide" class="cell padded odd">
-	      <tal:if condition="row/average|nothing">
-	        <b><span tal:replace="row/average" /></b>
-	      </tal:if>
-        </td>
-        <td class="cell odd" tal:repeat="grade row/grades"
-            tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-          <span tal:condition="not: grade/editable"
-             tal:content="grade/value" />
-          <input class="data" type="text" name="" value="" size="4"
-                 tal:condition="grade/editable"
-                 onkeydown="return spreadsheetBehaviour(event)"
-                 tal:attributes="name string:${grade/activity}_${row/student/id};
-                                 id string:${grade/activity}_${row/student/id};
-                                 value grade/value;
-                                 onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                 onfocus string:handleCellFocus(this, '${grade/activity}')"/>
-        </td>
-      </tal:if>
+      </metal:block>
     </tr>
   </table>
 
