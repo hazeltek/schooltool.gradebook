@@ -772,4 +772,8 @@
       factory=".report_card.ApplyLabel"
       name="title" />
 
+  <zope:adapter
+      factory=".activity.ActivityAddViewDefaultCategory"
+      name="default" />
+
 </configure>

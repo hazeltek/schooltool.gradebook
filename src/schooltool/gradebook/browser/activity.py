@@ -43,7 +43,7 @@ from zope import interface, schema
 from zope.viewlet.viewlet import ViewletBase
 
 from z3c.form import form as z3cform
-from z3c.form import field, button
+from z3c.form import field, button, widget
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IDemographics
@@ -213,14 +213,6 @@ class ActivityAddView(z3cform.AddForm):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
-
-    def updateWidgets(self):
-        super(ActivityAddView, self).updateWidgets()
-        # XXX replaceafill: is there a better way of setting the
-        #                   default category?
-        categories = getCategories(ISchoolToolApplication(None))
-        if not self.widgets['category'].value:
-            self.widgets['category'].value = [categories.getDefaultKey()]
 
 
 class LinkedActivityAddView(form.AddForm):
@@ -654,3 +646,14 @@ class EditLinkedColumnView(LinkedColumnBase):
             self.buildUpdateTarget(self.context)
             self.request.response.redirect(self.nextURL())
 
+
+def defaultCategory(adapter):
+    categories = getCategories(ISchoolToolApplication(None))
+    return categories.getDefaultKey()
+
+
+ActivityAddViewDefaultCategory = widget.ComputedWidgetAttribute(
+    defaultCategory,
+    view=ActivityAddView,
+    field=interfaces.IActivity['category']
+    )
