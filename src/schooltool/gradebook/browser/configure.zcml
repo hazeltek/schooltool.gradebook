@@ -776,4 +776,8 @@
       factory=".activity.ActivityAddViewDefaultCategory"
       name="default" />
 
+  <zope:adapter
+      factory=".activity.ActivityDefaultDueDate"
+      name="default" />
+
 </configure>

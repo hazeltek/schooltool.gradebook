@@ -37,7 +37,7 @@ from zope.traversing.api import getName
 from zope.app.form.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
 from zope.security.proxy import removeSecurityProxy
-from zope.component import queryAdapter, getAdapter
+from zope.component import queryAdapter, getAdapter, queryUtility
 from zope.formlib import form
 from zope import interface, schema
 from zope.viewlet.viewlet import ViewletBase
@@ -60,7 +60,7 @@ from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.term.interfaces import ITerm
+from schooltool.term.interfaces import ITerm, IDateManager
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -220,7 +220,7 @@ class LinkedActivityAddView(form.AddForm):
 
     form_fields = form.Fields(ILinkedActivityFields,
                               interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "due_date", "label",
+    form_fields = form_fields.select("external_activity", "label", "due_date",
                                      "category", "points")
 
     label = _(u"Add an External Activity")
@@ -234,7 +234,7 @@ class LinkedActivityAddView(form.AddForm):
         label = data.get("label")
         due_date = data.get("due_date")
         return LinkedActivity(external_activity, category, points,
-                                       label, due_date)
+                              label, due_date)
 
     @form.action(_("Add"), condition=form.haveInputWidgets)
     def handle_add(self, action, data):
@@ -255,6 +255,11 @@ class LinkedActivityAddView(form.AddForm):
         self.updateGrades(object)
         self._finished_add = True
         return ob
+
+    def setUpWidgets(self, *args, **kw):
+        super(LinkedActivityAddView, self).setUpWidgets(*args, **kw)
+        if not self.request.get(self.prefix + '.due_date'):
+            self.widgets['due_date'].setRenderedValue(defaultDueDate(None))
 
 
 class BaseEditView(EditView):
@@ -656,4 +661,15 @@ ActivityAddViewDefaultCategory = widget.ComputedWidgetAttribute(
     defaultCategory,
     view=ActivityAddView,
     field=interfaces.IActivity['category']
+    )
+
+
+def defaultDueDate(adapter):
+    today = queryUtility(IDateManager).today
+    return today
+
+
+ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
+    defaultDueDate,
+    field=interfaces.IActivity['due_date']
     )
