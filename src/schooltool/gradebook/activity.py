@@ -22,7 +22,6 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-import datetime
 import persistent.dict
 import rwproperty
 from decimal import Decimal
@@ -32,13 +31,14 @@ from zope import annotation
 from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
-from zope.component import queryAdapter, getAdapters
+from zope.component import queryAdapter, getAdapters, getUtility
 from zope.schema.interfaces import IVocabularyFactory
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
+from schooltool.term.interfaces import IDateManager
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
@@ -105,6 +105,11 @@ def isHiddenSource(source):
     else:
         worksheet = obj.__parent__
     return worksheet.hidden
+
+
+def today():
+    today = getUtility(IDateManager).today
+    return today
 
 
 class Activities(requirement.Requirement):
@@ -206,10 +211,10 @@ class Activity(requirement.Requirement):
         self.category = category
         self.scoresystem = scoresystem
         if not due_date:
-            due_date = datetime.date.today()
+            due_date = today()
         self.due_date = due_date
         if not date:
-            date = datetime.date.today()
+            date = today()
         self.date = date
 
     def __repr__(self):

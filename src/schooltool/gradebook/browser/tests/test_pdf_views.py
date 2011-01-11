@@ -175,25 +175,6 @@ class ApplicationStub(btree.BTreeContainer):
         int_ids.register(self.term)
 
         setUpGradebookRoot(self)
-        root = IGradebookRoot(self)
-
-        worksheet = root.deployed['Worksheet'] = Worksheet('Worksheet')
-        worksheet['Activity'] = Activity('Activity', 'exam',
-            AmericanLetterScoreSystem)
-
-        scores = [
-            ('A', u'', Decimal(4), Decimal(75)),
-            ('B', u'', Decimal(3), Decimal(50)),
-            ('C', u'', Decimal(2), Decimal(25)),
-            ('D', u'', Decimal(1), Decimal(0)),
-            ]
-        maxss = DiscreteValuesScoreSystem('Max', '', scores, 'A', 'C', True)
-        worksheet['Activity-2'] = Activity('Activity 2', 'max', maxss)
-
-        source = 'Term|Worksheet|Activity'
-        layout = root.layouts[self.schoolyear.__name__] = ReportLayout()
-        layout.columns = [ReportColumn(source, '')]
-        layout.outline_activities = [OutlineActivity(source, '')]
 
 
 class DateManagerStub(object):
@@ -202,6 +183,7 @@ class DateManagerStub(object):
     def __init__(self):
         app = ISchoolToolApplication(None)
         self.current_term = app[SCHOOLYEAR_CONTAINER_KEY]['2009']['term']
+        self.today = BEGIN_2009
 
 
 def setupSections(app):
@@ -253,6 +235,28 @@ def setupSections(app):
     calendar.addEvent(meeting)
     jd.setGrade(aelkner, meeting, 'n')
     jd.setAbsence(aelkner, meeting, 'n')
+
+
+def setupGradebook(app):
+    root = IGradebookRoot(app)
+
+    worksheet = root.deployed['Worksheet'] = Worksheet('Worksheet')
+    worksheet['Activity'] = Activity('Activity', 'exam',
+                                     AmericanLetterScoreSystem)
+
+    scores = [
+        ('A', u'', Decimal(4), Decimal(75)),
+        ('B', u'', Decimal(3), Decimal(50)),
+        ('C', u'', Decimal(2), Decimal(25)),
+        ('D', u'', Decimal(1), Decimal(0)),
+        ]
+    maxss = DiscreteValuesScoreSystem('Max', '', scores, 'A', 'C', True)
+    worksheet['Activity-2'] = Activity('Activity 2', 'max', maxss)
+
+    source = 'Term|Worksheet|Activity'
+    layout = root.layouts[app.schoolyear.__name__] = ReportLayout()
+    layout.columns = [ReportColumn(source, '')]
+    layout.outline_activities = [OutlineActivity(source, '')]
 
 
 def doctest_StudentReportCardPDFView():
@@ -547,6 +551,8 @@ def pdfSetUp(test=None):
         'schooltool.requirement.discretescoresystems')
 
     setupSections(app)
+
+    setupGradebook(app)
 
 
 def pdfTearDown(test=None):
