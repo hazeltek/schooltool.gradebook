@@ -134,7 +134,7 @@ have registered two external utilities stubs titled "Hardware" and
     >>> stephan.getLink('New External Activity').click()
     >>> stephan.printQuery('//h3/text()')
     Add an External Activity
-    >>> stephan.printQuery('id("form.external_activity")/option[@value!=""]/text()')
+    >>> stephan.printQuery('id("form-widgets-external_activity")/option[@value!=""]/text()')
     Sample Source - HTML
     Sample Source - Hardware
     >>> stephan.getControl('External Activity').value = ['samplesource-hardware']

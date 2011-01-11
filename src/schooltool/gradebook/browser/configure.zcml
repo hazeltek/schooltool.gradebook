@@ -247,8 +247,8 @@
       title="Edit"
       />
   <page
-      for="zope.browser.interfaces.IAdding"
       name="addLinkedActivity.html"
+      for="schooltool.gradebook.interfaces.IWorksheet"
       class="schooltool.gradebook.browser.activity.LinkedActivityAddView"
       permission="schooltool.edit"
       />
@@ -340,7 +340,7 @@
       menu="schooltool_actions"
       title="New External Activity"
       for="..interfaces.IWorksheet"
-      action="+/addLinkedActivity.html"
+      action="addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -384,7 +384,7 @@
       menu="schooltool_actions"
       title="New External Activity"
       for="..interfaces.IGradebook"
-      action="../+/addLinkedActivity.html"
+      action="../addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -773,7 +773,7 @@
       name="title" />
 
   <zope:adapter
-      factory=".activity.ActivityAddViewDefaultCategory"
+      factory=".activity.ActivityDefaultCategory"
       name="default" />
 
   <zope:adapter

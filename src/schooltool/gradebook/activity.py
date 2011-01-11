@@ -307,7 +307,11 @@ class ExternalActivitiesVocabulary(object):
     zope.interface.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        section = context.context.__parent__.__parent__
+        section = None
+        if interfaces.IWorksheet.providedBy(context):
+            section = context.__parent__.__parent__
+        elif interfaces.ILinkedActivity.providedBy(context):
+            section = context.__parent__
         return ExternalActivitiesSource(section)
 
 

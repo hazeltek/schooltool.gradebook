@@ -142,7 +142,7 @@ Now, let's add an external activity:
 
 And check the categories available:
 
-    >>> stephan.printQuery('id("form.category")/option/text()')
+    >>> stephan.printQuery('id("form-widgets-category")/option/text()')
     Exam
     Assignment
     Calificaci...n
@@ -152,7 +152,7 @@ And check the categories available:
 
 And check the default category is selected:
 
-    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    >>> stephan.printQuery('id("form-widgets-category")/option[@selected="selected"]/text()')
     Project
 
 Let's change the default category:
@@ -183,5 +183,5 @@ Now, let's add an external activity:
 
 And check the default category has also changed:
 
-    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    >>> stephan.printQuery('id("form-widgets-category")/option[@selected="selected"]/text()')
     Lab Report

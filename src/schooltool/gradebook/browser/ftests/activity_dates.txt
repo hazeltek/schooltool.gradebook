@@ -73,7 +73,7 @@ external activity forms:
 
     >>> teacher.getControl('Cancel').click()
     >>> teacher.getLink('New External Activity').click()
-    >>> teacher.printQuery('id("form.due_date")/@value')
+    >>> teacher.printQuery('id("form-widgets-due_date")/@value')
     2011-05-25
     >>> teacher.getControl('External Activity').value = ['samplesource-html']
     >>> teacher.getControl('Due Date').value = '2011-07-01'
