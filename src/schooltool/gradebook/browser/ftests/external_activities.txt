@@ -197,7 +197,7 @@ recalculate the activity grades from the external activity:
     >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
     Edit
     Update Grades
-    >>> stephan.printQuery('//label/text()')
+    >>> stephan.printQuery('//label/span[1]/text()')
     External Activity
     Title
     Label
@@ -205,15 +205,15 @@ recalculate the activity grades from the external activity:
     Description
     Category
     Points
-    >>> stephan.printQuery('//div[@class="row"][1]/div[@class="field"]/text()')
+    >>> stephan.printQuery('id("form-widgets-external_activity")/span/text()')
     Sample Source - Hardware
-    >>> stephan.printQuery('id("form.title")/@value')
+    >>> stephan.printQuery('id("form-widgets-title")/@value')
     Hardware
-    >>> stephan.printQuery('id("form.description")/text()')
+    >>> stephan.printQuery('id("form-widgets-description")/text()')
     Hardware description
-    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    >>> stephan.printQuery('id("form-widgets-category")/option[@selected="selected"]/text()')
     Assignment
-    >>> stephan.printQuery('id("form.points")/@value')
+    >>> stephan.printQuery('id("form-widgets-points")/@value')
     15
     >>> stephan.getControl('Title').value = u"Hardware Assignment"
     >>> stephan.getControl('Description').value = "The Hardware assignment"
@@ -274,7 +274,7 @@ grades using the 'Update Grades' button:
     >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
     Edit
     Update Grades
-    >>> stephan.printQuery('//label/text()')
+    >>> stephan.printQuery('//label/span[1]/text()')
     External Activity
     Title
     Label
@@ -282,15 +282,15 @@ grades using the 'Update Grades' button:
     Description
     Category
     Points
-    >>> stephan.printQuery('//div[@class="row"][1]/div[@class="field"]/text()')
+    >>> stephan.printQuery('id("form-widgets-external_activity")/span/text()')
     Sample Source - Hardware
-    >>> stephan.printQuery('id("form.title")/@value')
+    >>> stephan.printQuery('id("form-widgets-title")/@value')
     Hardware Assignment
-    >>> stephan.printQuery('id("form.description")/text()')
+    >>> stephan.printQuery('id("form-widgets-description")/text()')
     The Hardware assignment
-    >>> stephan.printQuery('id("form.category")/option[@selected="selected"]/text()')
+    >>> stephan.printQuery('id("form-widgets-category")/option[@selected="selected"]/text()')
     Assignment
-    >>> stephan.printQuery('id("form.points")/@value')
+    >>> stephan.printQuery('id("form-widgets-points")/@value')
     25
     >>> stephan.getLink('Update Grades').click()
 

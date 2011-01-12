@@ -82,7 +82,7 @@ external activity forms:
 
     >>> teacher.getLink('Manage Worksheet').click()
     >>> teacher.getLink('HTML').click()
-    >>> teacher.printQuery('id("form.due_date")/@value')
+    >>> teacher.printQuery('id("form-widgets-due_date")/@value')
     2011-07-01
 
 # XXX: add ftests for Activity.date

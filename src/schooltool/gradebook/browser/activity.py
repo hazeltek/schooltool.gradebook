@@ -44,6 +44,7 @@ from zope.viewlet.viewlet import ViewletBase
 
 from z3c.form import form as z3cform
 from z3c.form import field, button, widget
+from z3c.form.interfaces import DISPLAY_MODE
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IDemographics
@@ -317,30 +318,35 @@ class ActivityEditView(z3cform.EditForm):
         return absoluteURL(worksheet, self.request) + '/manage.html'
 
 
-class LinkedActivityEditView(form.EditForm):
-    """A view for editing a linked activity."""
+class LinkedActivityEditView(z3cform.EditForm):
+    """Edit form for linked activity."""
 
-    form_fields = form.Fields(
-        form.Fields(ILinkedActivityFields, for_display=True),
-        interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "title", 'label',
-                                     'due_date', "description", "category",
-                                     "points")
+    z3cform.extends(z3cform.EditForm)
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
+    label = _(u'Edit External Activity')
 
-    label = _(u"Edit External Activity")
-    template = ViewPageTemplateFile("templates/linkedactivity_edit.pt")
+    fields = field.Fields(ILinkedActivityFields, mode=DISPLAY_MODE)
+    fields += field.Fields(interfaces.ILinkedActivity)
+    fields = fields.select("external_activity", "title", 'label',
+                           'due_date', "description", "category",
+                           "points")
 
-    @form.action(_("Apply"), condition=form.haveInputWidgets)
-    def handle_edit(self, action, data):
-        form.applyChanges(self.context, self.form_fields, data)
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
         self.request.response.redirect(self.nextURL())
 
-    @form.action(_("Cancel"), validator=lambda *x:())
-    def handle_cancel_action(self, action, data):
+    def updateActions(self):
+        super(LinkedActivityEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    def applyChanges(self, data):
+        super(LinkedActivityEditView, self).applyChanges(data)
         self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        worksheet = self.context.__parent__
+        return absoluteURL(worksheet, self.request)
 
 
 class WeightCategoriesView(object):

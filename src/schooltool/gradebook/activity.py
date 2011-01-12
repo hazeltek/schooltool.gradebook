@@ -39,6 +39,7 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
 from schooltool.term.interfaces import IDateManager
+from schooltool.course.interfaces import ISection
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
@@ -312,11 +313,11 @@ class ExternalActivitiesVocabulary(object):
     zope.interface.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        section = None
-        if interfaces.IWorksheet.providedBy(context):
-            section = context.__parent__.__parent__
-        elif interfaces.ILinkedActivity.providedBy(context):
-            section = context.__parent__
+        try:
+            section = ISection(context)
+        except (TypeError,):
+            linked_activity = proxy.removeSecurityProxy(context)
+            section = ISection(linked_activity.__parent__)
         return ExternalActivitiesSource(section)
 
 
