@@ -112,11 +112,26 @@ And we can access its gradebook:
       <span style="font-weight: bold;">Sheet1</span>
     </td>
 
-Now, let's check that the teacher can access the orphan gradebook:
+Now, let's check that the teacher can access the orphan
+gradebook. We'll do it by first going to the Spring section and then
+using the Term dropdown:
 
     >>> stephan.getLink('Home').click()
-    >>> stephan.getLink('Math I').click()
+    >>> stephan.getLink('Physics I').click()
     >>> stephan.getLink('Gradebook', index=1).click()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    []
+
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
@@ -125,6 +140,8 @@ Now, let's check that the teacher can access the orphan gradebook:
     <td class="active_tab">
       <span style="font-weight: bold;">Sheet1</span>
     </td>
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    ['HW1', 'Quiz']
 
 And the 'view.html' view on the Student gradebook:
 
@@ -135,7 +152,9 @@ And the 'view.html' view on the Student gradebook:
 Now, let's check that a student can access the orphan gradebook:
 
     >>> claudia = Browser('claudia', 'pwd')
-    >>> claudia.open('http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/mygrades?currentTerm=2005-2006-.fall-')
+    >>> claudia.getLink('Home').click()
+    >>> claudia.getLink('Math I (1)').click()
+    >>> claudia.getLink('Gradebook').click()
     >>> claudia.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Fall
     >>> claudia.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')

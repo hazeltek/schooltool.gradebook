@@ -42,7 +42,6 @@ Log in as teacher:
 Add a couple of activities to the default worksheet:
 
     >>> stephan.getLink('Gradebook').click()
-    >>> url = stephan.url
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
@@ -78,7 +77,8 @@ Add some grades:
 
 Change to the other section and add some activities and grades:
 
-    >>> stephan.open(url+'?currentTerm=2005-2006-.spring-')
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Spring
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
@@ -116,7 +116,6 @@ Log in as a student and change to the spring section:
 
     >>> claudia = Browser('claudia', 'pwd')
     >>> claudia.getLink('Gradebook').click()
-    >>> url = claudia.url
     >>> claudia.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/mygrades'
     >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
@@ -124,7 +123,8 @@ Log in as a student and change to the spring section:
       <div> Ave.: 49.3%</div>
     </td>
 
-    >>> claudia.open(url+'?currentTerm=2005-2006-.spring-')
+    >>> claudia.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> claudia.getForm().submit()
     >>> claudia.url
     'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/mygrades'
     >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')

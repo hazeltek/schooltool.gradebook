@@ -266,22 +266,37 @@ We'll switch the order or our two activities.  Since Javascript is not working
 in the tests, we submit the form manually:
 
     >>> stephan.getLink('Manage Worksheet').click()
-    >>> url = stephan.url
-    >>> stephan.open(url+'?form-submitted=&pos.Activity=2')
+    >>> stephan.printQuery("id('content-body')//a")
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
+    >>> stephan.getControl(name='pos.Activity-2').value = ['1']
+    >>> stephan.getForm().submit()
     >>> stephan.printQuery("id('content-body')//a")
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
 
+The gradebook shows the new positions:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    Final
+    HW2
+
 We'll switch them back.
 
-    >>> stephan.open(url+'?form-submitted=&pos.Activity=1')
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getControl(name='pos.Activity').value = ['1']
+    >>> stephan.getForm().submit()
     >>> stephan.printQuery("id('content-body')//a")
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
 
 We'll switch to the Spring term and add some activities to the English I section:
 
-    >>> stephan.open('http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/gradebook?currentTerm=2005-2006-.spring-')
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getForm().submit()
+
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
@@ -299,10 +314,11 @@ We'll switch to the Spring term and add some activities to the English I section
     Lab1
     Final
 
-Finally, we'll change the section back to the Winter Physics section and the
-current worksheet back to 'Week 1'.
+Finally, we'll change the section back to the Physics section of the
+Fall and the current worksheet back to 'Week 1'.
 
-    >>> stephan.open('http://localhost/schoolyears/2005-2006/fall/sections/1/gradebook/')
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getForm().submit()
     >>> stephan.getLink('Week 1').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
     <td class="active_tab">
