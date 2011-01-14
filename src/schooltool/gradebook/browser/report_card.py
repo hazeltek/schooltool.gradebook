@@ -214,7 +214,7 @@ class ReportScoresSystem(object):
 
 class ReportActivityAddView(form.AddForm):
     """A view for adding an activity."""
-    label = _("Add new activity")
+    label = _("Add new report activity")
     template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
