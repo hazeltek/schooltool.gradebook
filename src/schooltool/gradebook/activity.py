@@ -301,7 +301,6 @@ class ExternalActivitiesSource(object):
 
     def __contains__(self, other_tuple):
         try:
-            adapter = other_tuple[0]
             external_activity = other_tuple[1]
             return bool([value for value in self.activities()
                          if value[1] == external_activity])

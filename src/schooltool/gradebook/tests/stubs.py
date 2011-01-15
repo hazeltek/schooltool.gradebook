@@ -25,8 +25,6 @@ import datetime
 import zope.interface
 
 from schooltool.term.interfaces import IDateManager
-from schooltool.schoolyear.schoolyear import SCHOOLYEAR_CONTAINER_KEY
-from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import interfaces
 
 

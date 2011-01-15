@@ -13,13 +13,13 @@
         tal:attributes="action view/actionURL">
     <input type="hidden" name="form-submitted" value="" />
     <label for="title" i18n:translate="">Title</label>
-    <input type="text" name="title" 
+    <input type="text" name="title" id="title"
            tal:attributes="value view/title" />
     <label for="label" i18n:translate="">Label</label>
-    <input type="text" name="label"
+    <input type="text" name="label" id="label"
            tal:attributes="value view/label" />
     <label for="category" i18n:translate="">Category</label>
-    <select id="category" name="category">
+    <select id="category" name="category" id="category">
       <tal:block repeat="category view/getCategories">
         <option tal:attributes="value category/name"
                 tal:content="category/value" />

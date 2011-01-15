@@ -63,12 +63,29 @@ worksheet called, 'Sheet1', will automatically be created.
     >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
     Sheet1
 
-First, we will change the title of our default worksheet to 'Week 1'.
+First, we will change the title of our default worksheet to 'Week
+1'. We'll also change the Cancel button in the Edit form for
+worksheets:
+
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('//h1/text()')
+    Activities
+
+    >>> stephan.getLink('Edit').click()
+    >>> stephan.getControl('Cancel').click()
+
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Sheet1
 
     >>> stephan.getLink('Sheet1').click()
     >>> stephan.getLink('Edit').click()
     >>> stephan.getControl('Title').value = 'Week 1'
     >>> stephan.getControl('Apply').click()
+
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
     >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
     Week 1
 
@@ -86,6 +103,24 @@ Then, we can use the 'New Worksheet' action link to create our second worksheet.
     >>> stephan.getLink('New Worksheet').click()
     >>> stephan.getControl('Title').value = 'Week 2'
     >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Week 1
+    Week 2
+
+Worksheets can be reordered:
+
+    >>> stephan.getControl(name='pos.Worksheet-2').value = ['1']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Week 2
+    Week 1
+
+    >>> stephan.getControl(name='pos.Worksheet').value = ['1']
+    >>> stephan.getForm().submit()
     >>> stephan.printQuery('//h1')
     <h1>Worksheets</h1>
     >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')

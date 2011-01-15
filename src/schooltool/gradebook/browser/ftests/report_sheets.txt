@@ -64,7 +64,14 @@ Go to the management view for report sheet templates:
     >>> manager.printQuery('//h1/text()')
     Report Sheet Templates
 
-Add three report sheet templates:
+Test the Cancel button of the New Report Sheet view:
+
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    Report Sheet Templates
+
+Add four report sheet templates:
 
     >>> manager.getLink('New Report Sheet').click()
     >>> manager.getControl('Title').value = 'Report Sheet 1'
@@ -78,6 +85,10 @@ Add three report sheet templates:
     >>> manager.getControl('Title').value = 'Report Sheet 3'
     >>> manager.getControl('Add').click()
 
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Report Sheet 4'
+    >>> manager.getControl('Add').click()
+
 After adding a report sheet template, we get back to the management
 view for report sheet templates:
 
@@ -87,12 +98,26 @@ view for report sheet templates:
     Report Sheet 1
     Report Sheet 2
     Report Sheet 3
+    Report Sheet 4
 
 We can change the order of the report sheets. Let's put the 'Report
 Sheet 3' at the beginning of the list:
 
     >>> manager.getControl(name='pos.ReportWorksheet-3').value = ['1']
     >>> manager.getForm().submit()
+
+    >>> manager.printQuery('//h1/text()')
+    Report Sheet Templates
+    >>> manager.printQuery('//form//div/a/text()')
+    Report Sheet 3
+    Report Sheet 1
+    Report Sheet 2
+    Report Sheet 4
+
+and we can delete them:
+
+    >>> manager.getControl(name='delete:list').value = ['ReportWorksheet-4']
+    >>> manager.getControl('Delete').click()
 
     >>> manager.printQuery('//h1/text()')
     Report Sheet Templates
@@ -111,7 +136,7 @@ Now, let's add four report activities to the Report Sheet 1 template:
     >>> manager.getLink('New Report Activity').click()
     >>> manager.printQuery('//h3/text()')
     Add new report activity
-    >>> manager.getControl('Title').value = 'Report Activity 1.1'
+    >>> manager.getControl('Title').value = 'Report Activity 1.1.3'
     >>> manager.getControl('Label').value = 'RA1.1'
     >>> manager.getControl('Score System').value = ['Comment-']
     >>> manager.getControl('Add').click()
@@ -134,7 +159,7 @@ Now, let's add four report activities to the Report Sheet 1 template:
     >>> manager.printQuery('//h1/text()')
     Activities of Report Sheet 1
     >>> manager.printQuery('//form/div/a/text()')
-    Report Activity 1.1
+    Report Activity 1.1.3
     Report Activity 1.2
     Report Activity 1.3
     Report Activity 1.4
@@ -148,8 +173,17 @@ Report activities can be reordered in a report sheet template:
     >>> manager.printQuery('//form/div/a/text()')
     Report Activity 1.2
     Report Activity 1.3
-    Report Activity 1.1
+    Report Activity 1.1.3
     Report Activity 1.4
+
+They can also be edited. We'll test the Cancel button in that form
+too:
+
+    >>> manager.getLink('Report Activity 1.1.3').click()
+    >>> manager.getControl('Cancel').click()
+    >>> manager.getLink('Report Activity 1.1.3').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.1'
+    >>> manager.getControl('Apply').click()
 
 And deleted:
 
@@ -281,8 +315,8 @@ for Term1:
       <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/gradebook">Report Sheet 2</a>
     </td>
 
-The 2011 report sheet, Report Sheet 1, should have three activities
-and no totals or average columns:
+The 2011 report sheet, Report Sheet 1, should have three activities,
+and like all deployed sheets it has no totals or average columns:
 
     >>> teacher.getLink('Report Sheet 1').click()
     >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
@@ -319,13 +353,13 @@ gradebook. Let's grade Nestor's activities:
     Report Activity 1.2
     Report Activity 1.1
     REPORT ACTIVITY 1.3
-    >>> teacher.getControl('Report Activity 1.2').value = 'C-'
-    >>> teacher.getControl('Report Activity 1.1').value = 'This is the report for Nestor for:\n\nReport Activity 1.1\n\nHis teacher.'
+    >>> teacher.getControl('Report Activity 1.1').value = '<p>This is the report for Nestor for:</p><p>&nbsp;</p><p><strong>Report Activity 1.1</strong></p><p>&nbsp;</p><p>His teacher.</p>'
     >>> teacher.getControl('REPORT ACTIVITY 1.3').value = '87'
 
 and now for Camila:
 
     >>> teacher.getControl('Previous').click()
+    >>> url = teacher.url
     >>> teacher.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Cerna, Camila</h3>
     >>> teacher.printQuery('id("form")//fieldset//label/span/text()')
@@ -333,7 +367,7 @@ and now for Camila:
     Report Activity 1.1
     REPORT ACTIVITY 1.3
     >>> teacher.getControl('Report Activity 1.2').value = 'A-'
-    >>> teacher.getControl('Report Activity 1.1').value = 'This is the report for Camila for:\n\nReport Activity 1.1\n\nHer teacher.'
+    >>> teacher.getControl('Report Activity 1.1').value = '<p>This is the report for Camila for:</p><p>&nbsp;</p><p><strong>Report Activity 1.1</strong></p><p>&nbsp;</p><p>Her teacher.</p>'
     >>> teacher.getControl('REPORT ACTIVITY 1.3').value = '78'
     >>> teacher.getControl('Apply').click()
 
@@ -357,7 +391,7 @@ Let's check the stored grades:
     Guzman, Nestor
     Tejada, Mario
     >>> teacher.queryHTML('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[2]/input/@value')
-    ['A-', 'C-', '']
+    ['A-', '', '']
     >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[3]/span')
     <span>...</span>
     <span>...</span>
@@ -496,4 +530,163 @@ any common report sheet deployed, just the default worksheet:
     >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
     <td class="active_tab">
       <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+Now, let's visit the unreachable 'view.html' view for Camila's Report Sheet 1 grades:
+
+    >>> teacher.open(url + '/view.html')
+    >>> teacher.printQuery('//h1/text()')
+    Report Sheet 1 for Camila Cerna in Soccer - Soccer (1)
+    >>> teacher.printQuery('//div[@class="info-block"]')
+    <div class="info-block">
+      <h3>Report Activity 1.2</h3>
+      <p>A-</p>
+    </div>
+    <div class="info-block">
+      <h3>Report Activity 1.1</h3>
+      <p>This is the report for Camila for:</p>
+      <p> </p>
+      <p><strong>Report Activity 1.1</strong></p>
+      <p> </p>
+      <p>Her teacher.</p>
+    </div>
+    <div class="info-block">
+      <h3>REPORT ACTIVITY 1.3</h3>
+      <p>78</p>
+    </div>
+
+Now, let's log in as a student and check the mygrades view:
+
+    >>> student = Browser('camila', 'pwd')
+    >>> student.getLink('Gradebook').click()
+
+We get to the first section of the 2011 / Term1 term:
+
+    >>> student.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2011 / Term1
+    >>> student.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Soccer - Soccer (1)
+
+and we see the three worksheets, the first one with no grades:
+
+    >>> student.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1/mygrades">Report Sheet 1</a>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/mygrades">Report Sheet 2</a>
+    </td>
+
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div>Nothing Graded</div>
+    </td>
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[1]/div/text()')
+    Activity
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[2]/div/text()')
+    Grade
+
+the second with three graded report activities:
+
+    >>> student.getLink('Report Sheet 1').click()
+
+    >>> student.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/Worksheet/mygrades">Sheet1</a>
+    </td>
+    <td class="active_tab">
+      <span style="font-weight: bold;">Report Sheet 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/mygrades">Report Sheet 2</a>
+    </td>
+    
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr/*[1]/div/text()')
+    Activity
+    Report Activity 1.2
+    Report Activity 1.1
+    REPORT ACTIVITY 1.3
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr/*[2]')
+    <th class="cell student_header">
+      <div>Grade</div>
+    </th>
+    <td class="odd student_cell">
+      <div>3.7 / A+</div>
+    </td>
+    <td class="even student_cell">
+      <p>This is the report for Camila for:</p>
+      <p> </p>
+      <p><strong>Report Activity 1.1</strong></p>
+      <p> </p>
+      <p>Her teacher.</p>
+    </td>
+    <td class="odd student_cell">
+      <div>78 / 100</div>
+    </td>
+
+and the third with two report activities with no grades:
+
+    >>> student.getLink('Report Sheet 2').click()
+
+    >>> student.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/Worksheet/mygrades">Sheet1</a>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1/mygrades">Report Sheet 1</a>
+    </td>
+    <td class="active_tab">
+      <span style="font-weight: bold;">Report Sheet 2</span>
+    </td>
+
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr/*[1]/div/text()')
+    Activity
+    Report Activity 2-1
+    Report Activity 2-2
+    >>> student.printQuery('//table[@class="student_gradebook"]/tr/*[2]/div/text()')
+    Grade
+
+Note that the last two worksheets have no average.
+
+Let's check the report sheets for the other graded student:
+
+    >>> other_student = Browser('nestor', 'pwd')
+    >>> other_student.getLink('Gradebook').click()
+    >>> other_student.getLink('Report Sheet 1').click()
+
+    >>> other_student.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/Worksheet/mygrades">Sheet1</a>
+    </td>
+    <td class="active_tab">
+      <span style="font-weight: bold;">Report Sheet 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/mygrades">Report Sheet 2</a>
+    </td>
+    
+    >>> other_student.printQuery('//table[@class="student_gradebook"]/tr/*[1]/div/text()')
+    Activity
+    Report Activity 1.2
+    Report Activity 1.1
+    REPORT ACTIVITY 1.3
+    >>> other_student.printQuery('//table[@class="student_gradebook"]/tr/*[2]')
+    <th class="cell student_header">
+      <div>Grade</div>
+    </th>
+    <td class="odd student_cell">
+      <div></div>
+    </td>
+    <td class="even student_cell">
+      <p>This is the report for Nestor for:</p>
+      <p> </p>
+      <p><strong>Report Activity 1.1</strong></p>
+      <p> </p>
+      <p>His teacher.</p>
+    </td>
+    <td class="odd student_cell">
+      <div>87 / 100</div>
     </td>

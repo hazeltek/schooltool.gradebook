@@ -187,6 +187,7 @@ Let's list our activity headers:
 And go grade a single student:
 
     >>> teacher.getLink('>', index=0).click()
+    >>> url = teacher.url
     >>> teacher.printQuery('//h3/text()')
     Enter grades for Cerna, Camila
 
@@ -198,10 +199,14 @@ To see all the activities available to be graded:
     Play a game
     Score a goal
 
+and change one:
+
+    >>> teacher.getControl('Get a ball').value = ''
+    >>> teacher.getControl('Apply').click()
+
 Let's check the 'view.html' view for the student (XXX: which btw has no way
 to be accessed, no links, no button, nothing!):
 
-    >>> url = teacher.url
     >>> teacher.open(url + '/view.html')
     >>> teacher.printQuery('//h1/text()')
     Sheet1 for Camila Cerna in Soccer - Soccer (1)

@@ -29,7 +29,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYear
-from schooltool.term.interfaces import ITerm, IDateManager
+from schooltool.term.interfaces import IDateManager
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot

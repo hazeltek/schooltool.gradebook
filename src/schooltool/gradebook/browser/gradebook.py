@@ -156,8 +156,6 @@ class SectionGradebookRedirectView(BrowserView):
                 url += '/mygrades'
             else:
                 url += '/gradebook'
-            if 'final' in self.request:
-                url += '/final.html'
         self.request.response.redirect(url)
         return "Redirecting..."
 
@@ -167,12 +165,6 @@ class GradebookBase(BrowserView):
     def __init__(self, context, request):
         super(GradebookBase, self).__init__(context, request)
         self.changed = False
-
-    @property
-    def time(self):
-        t = datetime.datetime.now()
-        return "%s-%s-%s %s:%s:%s" % (t.year, t.month, t.day,
-                                      t.hour, t.minute, t.second)
 
     @property
     def students(self):

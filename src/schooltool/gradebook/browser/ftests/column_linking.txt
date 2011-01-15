@@ -261,7 +261,8 @@ values later:
     90.5%
 
 Now we'll return to the Fall Math I section and add our first linked
-column to the Sheet1 worksheet:
+column to the Sheet1 worksheet. We'll also test the Cancel button in
+the New Linked Column form:
 
     >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
     >>> stephan.getForm().submit()
@@ -273,13 +274,33 @@ column to the Sheet1 worksheet:
     <td class="active_tab">
       <a href="...">Second Sheet</a>
     </td>
+
     >>> stephan.getLink('New Linked Column').click()
-
-First we'll test the contents of the table of available activities and
-worksheet averages that can be chosen as the link:
-
     >>> stephan.printQuery('//h1/text()')
     Add Linked Column
+    >>> stephan.getControl('Cancel').click()
+
+First we'll test the contents of the form and the table of available
+activities and worksheet averages that can be chosen as the link:
+
+    >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.printQuery('//h1/text()')
+    Add Linked Column
+
+    >>> stephan.printQuery('//input[@name="title"]')
+    <input type="text" name="title" id="title" value="" />
+    >>> stephan.printQuery('//input[@name="label"]')
+    <input type="text" name="label" id="label" value="" />
+    >>> stephan.printQuery('id("category")/option/text()')
+    Assignment
+    Essay
+    Exam
+    Homework
+    Journal
+    Lab
+    Presentation
+    Project
+
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[1]/text()')
     Term
     Fall
@@ -311,6 +332,15 @@ then the average of the worksheet from the Spring Physics I section,
 Sheet1:
 
     >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.getControl('Label').value = 'PHSICS'
+    >>> stephan.getControl('Average', index=1).click()
+
+We made a mistake in the label of the linked column, let's go change
+it from the Manage Worksheet view:
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.getControl('Label').value = 'PHYSICS'
     >>> stephan.getControl('Average', index=1).click()
 
 The worksheet now has two new columns whose values are pulled in from
@@ -331,7 +361,7 @@ the sources of the links.
       <span>2nd Presentation</span>
     </div>
     <div class="padded">
-      <span>Sheet</span>
+      <span>PHYSI</span>
     </div>
 
 The total and average columns have been recalculated:
@@ -419,7 +449,7 @@ The linked columns should also change:
       <span>2nd Presentation</span>
     </div>
     <div class="padded">
-      <span>Sheet</span>
+      <span>PHYSI</span>
     </div>
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
     99.0
