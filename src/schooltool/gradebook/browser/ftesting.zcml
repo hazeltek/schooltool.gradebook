@@ -55,4 +55,12 @@
       attribute="template"
       />
 
+  <browser:page
+      name="report_card.rml"
+      for="schooltool.person.interfaces.IPerson"
+      class="schooltool.gradebook.browser.pdf_views.StudentReportCardPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
 </configure>

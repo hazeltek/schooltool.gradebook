@@ -200,7 +200,8 @@ class BaseReportCardPDFView(BaseStudentPDFView):
         return super(BaseReportCardPDFView, self).__call__()
 
     def title(self):
-        return _('Report Card') + ': ' + self.schoolyear.title
+        return _('Report Card: ${schoolyear}',
+                 mapping={'schoolyear': self.schoolyear.title})
 
     def course_heading(self):
         return _('Courses')
@@ -210,7 +211,8 @@ class BaseReportCardPDFView(BaseStudentPDFView):
         for student in self.collectStudents():
             student_name = u'%s %s' % (
                 student.first_name, student.last_name)
-            student_title = _('Student') + ': ' + student_name
+            student_title = _('Student: ${student}',
+                              mapping={'student': student_name})
 
             sections = []
             for section in ILearner(student).sections():
@@ -242,6 +244,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
         section_list = []
         for section in sections:
             worksheets = []
+            term = ITerm(section)
             for layout in layouts:
                 termName, worksheetName, activityName = layout.source.split('|')
                 activities = IActivities(section)
@@ -276,7 +279,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
 
             if len(worksheets):
                 section_result = {
-                    'heading': section.title,
+                    'heading': "%s - %s" % (term.title, section.title),
                     'worksheets': worksheets,
                     }
                 section_list.append(section_result)
@@ -310,7 +313,8 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         return super(BaseStudentDetailPDFView, self).__call__()
 
     def title(self):
-        return _('Detailed Student Report') + ': ' + self.schoolyear.title
+        return _('Detailed Student Report: ${schoolyear}',
+                 mapping={'schoolyear': self.schoolyear.title})
 
     def grades_heading(self):
         return _('Grade Detail')
@@ -426,7 +430,8 @@ class FailingReportPDFView(BasePDFView):
         return root.deployed[worksheetName][activityName]
 
     def title(self):
-        return _('Failures by Term Report') + ': ' + self.term.title
+        return _('Failures by Term Report: ${term}',
+                 mapping={'term': self.term.title})
 
     def worksheet_heading(self):
         return _('Report Sheet:')
@@ -591,7 +596,9 @@ class AbsencesByDayPDFView(BasePDFView):
         if day is None:
             return ''
         else:
-            return day.strftime('%A %B %0d, %Y')
+            locale = self.request.locale
+            formatter = locale.dates.getFormatter('date', 'full')
+            return formatter.format(day)
 
     def periods_heading(self):
         return _('Period Number')

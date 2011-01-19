@@ -1,0 +1,639 @@
+RML test for the student report pdfs
+------------------------------------
+
+Here we're going to test the rml generated for the student_detail.pdf
+and the report_card.pdf views of students. Since we're going to test
+XML, let's extend the Browser class:
+
+    >>> from schooltool.testing.analyze import etree, to_string
+    >>> class XMLBrowser(Browser):
+    ...     def queryXML(self, xpath):
+    ...         doc = etree.XML(self.contents)
+    ...         result = [to_string(node) for node in doc.xpath(xpath)]
+    ...         return result
+    ...     def printXMLQuery(self, xpath):
+    ...         for result in self.queryXML(xpath):
+    ...             print result
+
+
+Log in as manager:
+
+    >>> manager = XMLBrowser('manager', 'schooltool')
+
+Add a schoolyears:
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.addSchoolYear('2010', '2010-01-01', '2010-12-31')
+
+Add two terms to the schoolyear:
+
+    >>> setup.addTerm('First Term', '2010-01-01', '2010-06-30', '2010')
+    >>> setup.addTerm('Second Term', '2010-07-01', '2010-12-31', '2010')
+
+Set up three courses:
+
+    >>> setup.addCourse('Math', '2010')
+    >>> setup.addCourse('Chemistry', '2010')
+    >>> setup.addCourse('Physics', '2010')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', ['students'], manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', ['students'], manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', ['students'], manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', ['teachers'], manager)
+
+Set up a section in each term for each course:
+
+    >>> setup.addSection('Math', '2010', 'First Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Chemistry', '2010', 'First Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics', '2010', 'First Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+    >>> setup.addSection('Math', '2010', 'Second Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Chemistry', '2010', 'Second Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics', '2010', 'Second Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Add two report sheets with four activities:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Report Sheet One'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Report Sheet Two'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('Report Sheet One').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.1'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.2'
+    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.3'
+    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.4'
+    >>> manager.getControl('Score System').value = ['Pass/Fail-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('Report Sheet Two').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.1'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.2'
+    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.3'
+    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.4'
+    >>> manager.getControl('Score System').value = ['Pass/Fail-']
+    >>> manager.getControl('Add').click()
+
+Deploy one report sheet in each term:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Deploy').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet-2']
+    >>> manager.getControl('Deploy').click()
+
+Layout a report card:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Report Card Layout').click()
+    >>> manager.getControl('New Column').value = ['first-term|2010_first-term|ReportActivity']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading1').value = 'FT-1'
+    >>> manager.getControl('New Column').value = ['first-term|2010_first-term|ReportActivity-3']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading2').value = 'FT-3'
+    >>> manager.getControl('New Column').value = ['first-term|2010_first-term|ReportActivity-4']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading3').value = 'FT-4'
+    >>> manager.getControl('New Column').value = ['second-term|2010_second-term|ReportActivity']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading4').value = 'ST-1'
+    >>> manager.getControl('New Column').value = ['second-term|2010_second-term|ReportActivity-3']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading5').value = 'ST-3'
+    >>> manager.getControl('New Column').value = ['second-term|2010_second-term|ReportActivity-4']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading6').value = 'ST-4'
+    >>> manager.getControl('New Column').value = ['tardy']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading7').value = 'T'
+    >>> manager.getControl('New Column').value = ['absent']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading8').value = 'A'
+    >>> manager.getControl('New Activity').value = ['first-term|2010_first-term|ReportActivity-2']
+    >>> manager.getControl('Add', index=1).click()
+    >>> manager.getControl(name='ActivityHeading1').value = 'FT-2'
+    >>> manager.getControl('New Activity').value = ['second-term|2010_second-term|ReportActivity-2']
+    >>> manager.getControl('Add', index=1).click()
+    >>> manager.getControl(name='ActivityHeading2').value = 'ST-2'
+    >>> manager.getControl('OK').click()
+
+Set up a timetable:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('School Timetables').click()
+    >>> manager.getLink('New Timetable').click()
+    >>> manager.getLink('simple weekly timetable schema').click()
+    >>> manager.getControl(name='field.period_name_1').value = 'First period'
+    >>> manager.getControl(name='field.period_name_2').value = 'Second period'
+    >>> manager.getControl(name='field.period_name_3').value = 'Third period'
+    >>> manager.getControl(name='field.period_start_1').value = '8:00'
+    >>> manager.getControl(name='field.period_start_2').value = '9:00'
+    >>> manager.getControl(name='field.period_start_3').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_1').value = '9:00'
+    >>> manager.getControl(name='field.period_finish_2').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_3').value = '11:00'
+    >>> manager.getControl('Create').click()
+
+Define a schedule for each section:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Chemistry (2)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('First period', index=0).click()
+    >>> manager.getControl('First period', index=1).click()
+    >>> manager.getControl('First period', index=2).click()
+    >>> manager.getControl('First period', index=3).click()
+    >>> manager.getControl('First period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Math (1)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Second period', index=0).click()
+    >>> manager.getControl('Second period', index=1).click()
+    >>> manager.getControl('Second period', index=2).click()
+    >>> manager.getControl('Second period', index=3).click()
+    >>> manager.getControl('Second period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Physics (3)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Third period', index=0).click()
+    >>> manager.getControl('Third period', index=1).click()
+    >>> manager.getControl('Third period', index=2).click()
+    >>> manager.getControl('Third period', index=3).click()
+    >>> manager.getControl('Third period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Chemistry (2)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('First period', index=0).click()
+    >>> manager.getControl('First period', index=1).click()
+    >>> manager.getControl('First period', index=2).click()
+    >>> manager.getControl('First period', index=3).click()
+    >>> manager.getControl('First period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Math (1)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Second period', index=0).click()
+    >>> manager.getControl('Second period', index=1).click()
+    >>> manager.getControl('Second period', index=2).click()
+    >>> manager.getControl('Second period', index=3).click()
+    >>> manager.getControl('Second period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Physics (3)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Third period', index=0).click()
+    >>> manager.getControl('Third period', index=1).click()
+    >>> manager.getControl('Third period', index=2).click()
+    >>> manager.getControl('Third period', index=3).click()
+    >>> manager.getControl('Third period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+Log in as teacher and go to the gradebook:
+
+    >>> teacher = XMLBrowser('stephan', 'pwd')
+    >>> teacher.getLink('Gradebook').click()
+
+Now, let's add some grades to the First Term sections:
+
+    >>> teacher.getControl(name='currentTerm').value = ['2010-.first-term-']
+    >>> teacher.getForm().submit()
+
+    >>> teacher.getControl(name='currentSection').value = ['Chemistry - Chemistry (2)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '85'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>A <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Paul</strong></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'B-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '90'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>A <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Tom</strong></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'A+'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '95'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>A <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Claudia</strong></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'F'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').value = ['Math - Math (1)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '70'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>Another <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'C-'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '80'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>Another <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'B-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '60'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>Another <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Claudia</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'D'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').value = ['Physics - Physics (3)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '60'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>More <strong>comments</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'A-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '75'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>More <strong>comments</strong> for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'C-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '65'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>More <strong>comments</strong> for:</p><p>&nbsp;</p><p><em>Claudia</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'C+'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Apply').click()
+
+Now, let's add some grades to the Second Term sections:
+
+    >>> teacher.getControl(name='currentTerm').value = ['2010-.second-term-']
+    >>> teacher.getForm().submit()
+
+    >>> teacher.getControl(name='currentSection').value = ['Chemistry - Chemistry (2)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '63'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>A different <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Paul</strong></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A+'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '73'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>A different <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Tom</strong></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A+'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '83'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>A different <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Claudia</strong></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'F'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').value = ['Math - Math (1)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'C-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '67'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A+'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '57'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Claudia</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').value = ['Physics - Physics (3)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '81'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>No comments for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'B-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '61'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>No comments for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '91'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>No comments for:</p><p>&nbsp;</p><p><em>Claudia</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'C+'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+Let's add some attendance data. First let's define some helper
+functions:
+
+    >>> def baseHelper(student, month, day, browser, value):
+    ...     browser.getLink('Term Grading').click()
+    ...     browser.getLink(month).click()
+    ...     browser.getLink(student).click()
+    ...     dates = browser.queryHTML('//table[@class="data"]/thead/tr[1]//a/text()[1]')
+    ...     assert day in dates, (student, month, day, dates)
+    ...     input_names = browser.queryHTML('//input[@type="text"]/@name')
+    ...     name = input_names[dates.index(day)]
+    ...     browser.getControl(name=name).value = value
+    ...     browser.getControl('Update').click()
+    >>> def setAbsence(student, month, day, browser):
+    ...     baseHelper(student, month, day, browser, 'a')
+    >>> def setTardy(student, month, day, browser):
+    ...     baseHelper(student, month, day, browser, 't')
+
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=0).click()
+    >>> teacher.getLink('Journal', index=1).click()
+
+    >>> setAbsence('Paul', 'January', '05', teacher)
+    >>> setAbsence('Paul', 'February', '11', teacher)
+    >>> setAbsence('Paul', 'February', '26', teacher)
+    >>> setTardy('Paul', 'January', '27', teacher)
+    >>> setTardy('Paul', 'April', '19', teacher)
+
+    >>> setAbsence('Tom', 'February', '11', teacher)
+    >>> setAbsence('Tom', 'May', '07', teacher)
+    >>> setAbsence('Tom', 'June', '09', teacher)
+    >>> setTardy('Tom', 'March', '25', teacher)
+
+    >>> setAbsence('Claudia', 'January', '28', teacher)
+    >>> setTardy('Claudia', 'May', '19', teacher)
+
+Now, let's look at the person reports for Paul:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Persons').click()
+    >>> manager.getLink('Paul').click()
+    >>> url = manager.url
+
+His report card for 2010:
+
+    >>> manager.open(url + '/report_card.rml')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Report Card: 2010
+    >>> manager.printXMLQuery('//para[@style="h1"]/text()')
+    Student: Paul Cardune
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">First Term - Math (1)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">Another <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">Second Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">No comments for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+
+His report card for Second Term of 2010:
+
+    >>> manager.open(url + '/report_card.rml?term=second-term')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Report Card: 2010
+    >>> manager.printXMLQuery('//para[@style="h1"]/text()')
+    Student: Paul Cardune
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">Second Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">No comments for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+

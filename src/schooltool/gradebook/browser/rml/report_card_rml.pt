@@ -112,7 +112,7 @@
         <tal:block repeat="activity worksheet/activities">
           <para style="activity" tal:content="activity/heading" />
           <tal:block repeat="para activity/value">
-            <para style="score" tal:content="para" />
+            <para style="score" tal:content="structure para" />
           </tal:block>
         </tal:block>
       </tal:block>

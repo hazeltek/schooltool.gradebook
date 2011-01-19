@@ -1,8 +1,9 @@
-PDF views
----------
+RML test for gradebook.pdf
+--------------------------
 
-Here we're going to test the rml generated for the pdf views. Since
-we're going to test XML, let's extend the Browser class:
+Here we're going to test the rml generated for the gradebook.pdf view
+of worksheets. Since we're going to test XML, let's extend the Browser
+class:
 
     >>> from schooltool.testing.analyze import etree, to_string
     >>> class XMLBrowser(Browser):
