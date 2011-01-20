@@ -451,6 +451,31 @@ functions:
     >>> setAbsence('Claudia', 'January', '28', teacher)
     >>> setTardy('Claudia', 'May', '19', teacher)
 
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=1).click()
+    >>> teacher.getLink('Journal', index=1).click()
+
+    >>> setAbsence('Paul', 'August', '05', teacher)
+    >>> setAbsence('Paul', 'October', '21', teacher)
+    >>> setAbsence('Paul', 'November', '16', teacher)
+    >>> setAbsence('Paul', 'November', '25', teacher)
+    >>> setAbsence('Paul', 'December', '10', teacher)
+    >>> setTardy('Paul', 'September', '23', teacher)
+    >>> setTardy('Paul', 'September', '24', teacher)
+
+    >>> setAbsence('Tom', 'July', '19', teacher)
+    >>> setAbsence('Tom', 'July', '30', teacher)
+    >>> setAbsence('Tom', 'October', '01', teacher)
+    >>> setTardy('Tom', 'November', '08', teacher)
+    >>> setTardy('Tom', 'November', '09', teacher)
+
+    >>> setAbsence('Claudia', 'September', '14', teacher)
+    >>> setAbsence('Claudia', 'October', '01', teacher)
+    >>> setAbsence('Claudia', 'December', '02', teacher)
+    >>> setTardy('Claudia', 'July', '13', teacher)
+    >>> setTardy('Claudia', 'July', '30', teacher)
+    >>> setTardy('Claudia', 'November', '22', teacher)
+
 Now, let's look at the person reports for Paul:
 
     >>> manager.getLink('Manage').click()
@@ -512,12 +537,12 @@ Grade columns:
     >>> manager.printXMLQuery('//story/blockTable/tr/td[8]/para')
     <para style="bold">Tardy</para>
     <para style="normal"/>
-    <para style="normal">2</para>
+    <para style="normal">4</para>
     <para style="normal"/>
     >>> manager.printXMLQuery('//story/blockTable/tr/td[9]/para')
     <para style="bold">Absent</para>
     <para style="normal"/>
-    <para style="normal">3</para>
+    <para style="normal">8</para>
     <para style="normal"/>
 
 Outlined activities:
@@ -608,6 +633,16 @@ Grade columns:
     <para style="normal">Pass</para>
     <para style="normal"/>
     <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">5</para>
+    <para style="normal"/>
 
 Outlined activities:
 
@@ -637,3 +672,182 @@ Outlined activities:
       <em>Paul</em>
     </para>
 
+Now let's look at the 2010 detailed student report for Paul:
+
+    >>> manager.open(url + '/student_detail.rml')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Detailed Student Report: 2010
+    >>> manager.printXMLQuery('//story/blockTable[1]//td/para/text()')
+    Student Name
+    Paul Cardune
+    User Id
+    paul
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">8</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[1]/para/text()')
+    Dates
+    01/05/10
+    01/27/10
+    02/11/10
+    02/26/10
+    04/19/10
+    08/05/10
+    09/23/10
+    09/24/10
+    10/21/10
+    11/16/10
+    11/25/10
+    12/10/10
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    A
+    A
+    T
+    A
+    T
+    T
+    A
+    A
+    A
+    A
+
+Now let's look at Paul's detail student report for Second Term of
+2010:
+
+    >>> manager.open(url + '/student_detail.rml?term=second-term')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Detailed Student Report: 2010
+    >>> manager.printXMLQuery('//story/blockTable[1]//td/para/text()')
+    Student Name
+    Paul Cardune
+    User Id
+    paul
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">5</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[1]/para/text()')
+    Dates
+    08/05/10
+    09/23/10
+    09/24/10
+    10/21/10
+    11/16/10
+    11/25/10
+    12/10/10
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    T
+    A
+    A
+    A
+    A

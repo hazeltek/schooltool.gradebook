@@ -63,4 +63,12 @@
       attribute="template"
       />
 
+  <browser:page
+      name="student_detail.rml"
+      for="schooltool.person.interfaces.IPerson"
+      class="schooltool.gradebook.browser.pdf_views.StudentDetailPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
 </configure>

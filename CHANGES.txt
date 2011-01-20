@@ -5,6 +5,7 @@ CHANGES
 0.8.2 (unreleased)
 ------------------
 
+- Fixed the Detailed Student Report to show data only from the selected term and not the whole school year
 - Save due_date attribute in New Activity form (https://bugs.launchpad.net/bugs/700520)
 - Fixed default category selection for new activity form (https://launchpad.net/bugs/562875)
 

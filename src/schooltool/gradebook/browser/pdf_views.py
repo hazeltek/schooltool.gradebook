@@ -220,7 +220,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
                 schoolyear = ISchoolYear(term)
                 if schoolyear != self.schoolyear:
                     continue
-                if self.term and term != self.term:
+                if self.term is not None and term != self.term:
                     continue
                 sections.append(section)
 
@@ -335,14 +335,28 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         return _('User Id')
 
     def grades(self, student):
-        sections = [section for section in ILearner(student).sections()
-                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        sections = []
+        for section in ILearner(student).sections():
+            term = ITerm(section)
+            schoolyear = ISchoolYear(term)
+            if schoolyear != self.schoolyear:
+                continue
+            if self.term is not None and term != self.term:
+                continue
+            sections.append(section)
         return self.getGrid(student, sections)
 
     def attendance(self, student):
         data = {}
-        sections = [section for section in ILearner(student).sections()
-                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        sections = []
+        for section in ILearner(student).sections():
+            term = ITerm(section)
+            schoolyear = ISchoolYear(term)
+            if schoolyear != self.schoolyear:
+                continue
+            if self.term is not None and term != self.term:
+                continue
+            sections.append(section)
         for section in sections:
             jd = ISectionJournalData(section)
             for meeting in jd.recordedMeetings(student):
