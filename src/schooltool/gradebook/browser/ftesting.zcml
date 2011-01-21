@@ -87,4 +87,12 @@
       attribute="template"
       />
 
+  <browser:page
+      name="section_absences.rml"
+      for="schooltool.course.interfaces.ISection"
+      class="schooltool.gradebook.browser.pdf_views.SectionAbsencesPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
 </configure>

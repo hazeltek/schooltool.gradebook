@@ -1868,3 +1868,92 @@ Attendance detail:
     A
     T
     A
+
+Now, let's test the Absences by Section report:
+
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=0).click()
+    >>> section_url = teacher.url
+
+    >>> teacher.open(section_url + '/section_absences.rml')
+
+Header:
+
+    >>> teacher.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences by Section Report
+    >>> teacher.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')
+    Course
+    Chemistry
+    Teacher
+    Stephan Richter
+
+Students:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Paul Cardune
+    Tom Hoffman
+    Claudia Richter
+
+Attendance detail:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    Absences
+    3
+    3
+    1
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[3]/para/text()')
+    Tardies
+    2
+    1
+    1
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[4]/para/text()')
+    Total
+    5
+    4
+    2
+
+Test the Absences by Section report for another section:
+
+    >>> teacher.open('http://localhost')
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=1).click()
+    >>> section_url = teacher.url
+
+    >>> teacher.open(section_url + '/section_absences.rml')
+
+Header:
+
+    >>> teacher.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences by Section Report
+    >>> teacher.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')
+    Course
+    Chemistry
+    Teacher
+    Stephan Richter
+
+Students:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Paul Cardune
+    Tom Hoffman
+    Claudia Richter
+
+Attendance detail:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    Absences
+    5
+    3
+    3
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[3]/para/text()')
+    Tardies
+    2
+    2
+    3
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[4]/para/text()')
+    Total
+    7
+    5
+    6
