@@ -610,9 +610,7 @@ class AbsencesByDayPDFView(BasePDFView):
         if day is None:
             return ''
         else:
-            locale = self.request.locale
-            formatter = locale.dates.getFormatter('date', 'full')
-            return formatter.format(day)
+            return day.strftime('%A %B %0d, %Y')
 
     def periods_heading(self):
         return _('Period Number')

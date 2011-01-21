@@ -95,4 +95,12 @@
       attribute="template"
       />
 
+  <browser:page
+      name="absences_by_day.rml"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class="schooltool.gradebook.browser.pdf_views.AbsencesByDayPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
 </configure>

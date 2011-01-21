@@ -1957,3 +1957,57 @@ Attendance detail:
     7
     5
     6
+
+Now, let's test the Absences by Day report in the 2010 year:
+
+    >>> manager.open('http://localhost')
+    >>> manager.getLink('2010').click()
+    >>> year_url = manager.url
+
+    >>> manager.open(year_url + '/absences_by_day.rml?day=2010-02-11')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences By Day Report
+    >>> manager.printXMLQuery('//para[@style="section_heading"]/text()')
+    Thursday February 11, 2010
+
+Students:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Paul Cardune
+    Tom Hoffman
+
+Attendance details:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    First
+    A
+    A
+
+Let's test the Absences by Day report in another day of the 2010 year:
+
+    >>> manager.open(year_url + '/absences_by_day.rml?day=2010-10-01')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences By Day Report
+    >>> manager.printXMLQuery('//para[@style="section_heading"]/text()')
+    Friday October 01, 2010
+
+Students:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Tom Hoffman
+    Claudia Richter
+
+Attendance details:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    First
+    A
+    A
