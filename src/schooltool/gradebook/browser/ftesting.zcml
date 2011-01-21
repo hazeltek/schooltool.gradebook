@@ -79,4 +79,12 @@
       attribute="template"
       />
 
+  <browser:page
+      name="student_detail.rml"
+      for="schooltool.group.interfaces.IGroup"
+      class="schooltool.gradebook.browser.pdf_views.GroupDetailPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
 </configure>
