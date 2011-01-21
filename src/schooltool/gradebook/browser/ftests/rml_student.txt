@@ -2011,3 +2011,97 @@ Attendance details:
     First
     A
     A
+
+Now, let's test the Failures by Term report, which lists students with
+grades below a minimum in a selected report activity. Since the report
+is designed to work on terms, we'll test it first in the First Term of
+2010:
+
+    >>> manager.open('http://localhost')
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> term_url = manager.url
+
+We'll check how many students have grades lower than 70 for the Report
+Activity 1.1:
+
+    >>> manager.open(term_url + '/failures_by_term.rml?activity=activity=first-term|2010_first-term|ReportActivity&min=70')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Failures by Term Report: First Term
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td/para/text()')
+    Report Sheet:
+    Report Sheet One
+    Activity:
+    Report Activity 1.1
+    Passing Score:
+    70
+
+Warning text and students:
+
+    >>> manager.printXMLQuery('//story/para[@style="bold"]/text()')
+    The following students are at risk of failing the following courses:
+    Paul Cardune
+    Claudia Richter
+
+Paul's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td/para/text()')
+    Physics
+    Stephan Richter
+    60
+
+Claudia's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[4]/tr/td/para/text()')
+    Math
+    Stephan Richter
+    60
+    Physics
+    Stephan Richter
+    65
+
+Let's test the Failures by Term report in the other term using another
+activity:
+
+    >>> manager.open('http://localhost')
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> term_url = manager.url
+
+    >>> manager.open(term_url + '/failures_by_term.rml?activity=activity=second-term|2010_second-term|ReportActivity-3&min=C')
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Failures by Term Report: Second Term
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td/para/text()')
+    Report Sheet:
+    Report Sheet Two
+    Activity:
+    Report Activity 2.3
+    Passing Score:
+    C
+
+Warning text and students:
+
+    >>> manager.printXMLQuery('//story/para[@style="bold"]/text()')
+    The following students are at risk of failing the following courses:
+    Paul Cardune
+    Claudia Richter
+
+Paul's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td/para/text()')
+    Math
+    Stephan Richter
+    C-
+
+Claudia's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[4]/tr/td/para/text()')
+    Chemistry
+    Stephan Richter
+    F

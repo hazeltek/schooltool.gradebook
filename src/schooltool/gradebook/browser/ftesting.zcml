@@ -103,4 +103,12 @@
       attribute="template"
       />
 
+  <browser:page
+      name="failures_by_term.rml"
+      for="schooltool.term.interfaces.ITerm"
+      class="schooltool.gradebook.browser.pdf_views.FailingReportPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
 </configure>

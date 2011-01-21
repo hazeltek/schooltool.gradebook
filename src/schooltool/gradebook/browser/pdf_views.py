@@ -632,7 +632,7 @@ class AbsencesByDayPDFView(BasePDFView):
         periods = self.getPeriods(data)
 
         rows = []
-        for student in sorted(data):
+        for student in sorted(data, key=lambda s: s.title):
             scores = [''] * len(periods)
             for period in data[student]:
                 index = periods.index(period)
