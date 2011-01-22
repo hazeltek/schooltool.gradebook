@@ -753,8 +753,6 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
                 next_row = end_row
             else:
                 end_col = next_col
-            #db = start_row, end_row, next_row, start_col, end_col, next_col
-            #import pdb; pdb.set_trace()
 
             rows = deepcopy(table)[start_row:end_row]
             for row in rows:

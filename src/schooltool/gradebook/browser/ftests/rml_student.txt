@@ -15,7 +15,6 @@ XML, let's extend the Browser class:
     ...         for result in self.queryXML(xpath):
     ...             print result
 
-
 Log in as manager:
 
     >>> manager = XMLBrowser('manager', 'schooltool')
@@ -24,6 +23,35 @@ Add a schoolyears:
 
     >>> from schooltool.app.browser.ftests import setup
     >>> setup.addSchoolYear('2010', '2010-01-01', '2010-12-31')
+
+If at this point, when we have no terms yet, we try to generate a
+report card report for the Students group, we should get an error:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.printQuery('//h1/text()')
+    The operation you attempted cannot be completed because there are
+    currently no terms set up in your SchoolTool instance. Please have
+    a user with administration access set up at least one term and try
+    the operation again.
+
+Same if we try to generate a detailed student report fo the Students
+group:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.printQuery('//h1/text()')
+    The operation you attempted cannot be completed because there are
+    currently no terms set up in your SchoolTool instance. Please have
+    a user with administration access set up at least one term and try
+    the operation again.
 
 Add two terms to the schoolyear:
 
@@ -480,10 +508,19 @@ Now, let's look at the person reports for Paul:
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('Paul').click()
     >>> manager.getLink('Reports').click()
+    >>> manager.printQuery('//h1/text()')
+    Student Reports
+    >>> manager.getLink('Request Report Card').click()
+
+Let's make the form to use its Cancel button:
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    Student Reports
+    >>> manager.getLink('Request Report Card').click()
 
 Let's get his report card for 2010:
 
-    >>> manager.getLink('Request Report Card').click()
     >>> manager.getControl('Term or Year').displayValue = ['2010']
     >>> manager.getControl('Download').click()
 
@@ -1993,7 +2030,20 @@ Now, let's test the Absences by Day report:
     >>> manager.goBack()
     >>> manager.getLink('2010').click()
     >>> manager.getLink('Reports').click()
+    >>> manager.printQuery('//h1/text()')
+    School Year Reports
     >>> manager.getLink('Absences By Day').click()
+
+Let's make the form to use its Cancel button and field validation:
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    School Year Reports
+    >>> manager.getLink('Absences By Day').click()
+    >>> manager.getControl('Date').value = '2020-02-11'
+    >>> manager.getControl('Download').click()
+    >>> manager.printQuery('//span[@class="message"]/text()')
+    You must specify a valid date within the school year.
     >>> manager.getControl('Date').value = '2010-02-11'
     >>> manager.getControl('Download').click()
 
@@ -2054,7 +2104,19 @@ is designed to work on terms, we'll test it first in the First Term of
     >>> manager.getLink('2010').click()
     >>> manager.getLink('First Term').click()
     >>> manager.getLink('Reports').click()
+    >>> manager.printQuery('//h1/text()')
+    Term Reports
     >>> manager.getLink('Failures by Term').click()
+
+Let's make the form to use its Cancel button and field validation:
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    Term Reports
+    >>> manager.getLink('Failures by Term').click()
+    >>> manager.getControl('Download').click()
+    >>> manager.printQuery('//span[@class="message"]/text()')
+    You must specify both a report activity and a minimum passing score.
 
 We'll check how many students have grades lower than 70 for the Report
 Activity 1.1:
