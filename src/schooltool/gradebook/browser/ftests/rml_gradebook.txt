@@ -189,8 +189,7 @@ Now, let's get the rml generated for the gradebook.pdf view of
 the Common Worksheet:
 
     >>> teacher.getLink('Common Workshee').click()
-    >>> url = teacher.url
-    >>> teacher.open(url + '/gradebook.rml')
+    >>> teacher.getLink('Download PDF').click()
 
 Term, section and worksheet information:
 
@@ -239,8 +238,7 @@ Let's go back and get the gradebook.pdf rml for the Third Worksheet:
 
     >>> teacher.goBack()
     >>> teacher.getLink('Third Worksheet').click()
-    >>> url = teacher.url
-    >>> teacher.open(url + '/gradebook.rml')
+    >>> teacher.getLink('Download PDF').click()
 
 Term, section and worksheet information:
 

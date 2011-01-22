@@ -48,7 +48,7 @@
   <browser:defaultSkin name="BasicPerson" />
 
   <browser:page
-      name="gradebook.rml"
+      name="gradebook.pdf"
       for="schooltool.gradebook.interfaces.IGradebook"
       class="schooltool.gradebook.browser.pdf_views.GradebookPDFView"
       permission="schooltool.edit"
@@ -56,7 +56,7 @@
       />
 
   <browser:page
-      name="report_card.rml"
+      name="report_card.pdf"
       for="schooltool.person.interfaces.IPerson"
       class="schooltool.gradebook.browser.pdf_views.StudentReportCardPDFView"
       permission="schooltool.edit"
@@ -64,7 +64,7 @@
       />
 
   <browser:page
-      name="student_detail.rml"
+      name="student_detail.pdf"
       for="schooltool.person.interfaces.IPerson"
       class="schooltool.gradebook.browser.pdf_views.StudentDetailPDFView"
       permission="schooltool.edit"
@@ -72,7 +72,7 @@
       />
 
   <browser:page
-      name="report_card.rml"
+      name="report_card.pdf"
       for="schooltool.group.interfaces.IGroup"
       class="schooltool.gradebook.browser.pdf_views.GroupReportCardPDFView"
       permission="schooltool.edit"
@@ -80,7 +80,7 @@
       />
 
   <browser:page
-      name="student_detail.rml"
+      name="student_detail.pdf"
       for="schooltool.group.interfaces.IGroup"
       class="schooltool.gradebook.browser.pdf_views.GroupDetailPDFView"
       permission="schooltool.edit"
@@ -88,7 +88,7 @@
       />
 
   <browser:page
-      name="section_absences.rml"
+      name="section_absences.pdf"
       for="schooltool.course.interfaces.ISection"
       class="schooltool.gradebook.browser.pdf_views.SectionAbsencesPDFView"
       permission="schooltool.edit"
@@ -96,7 +96,7 @@
       />
 
   <browser:page
-      name="absences_by_day.rml"
+      name="absences_by_day.pdf"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class="schooltool.gradebook.browser.pdf_views.AbsencesByDayPDFView"
       permission="schooltool.edit"
@@ -104,7 +104,7 @@
       />
 
   <browser:page
-      name="failures_by_term.rml"
+      name="failures_by_term.pdf"
       for="schooltool.term.interfaces.ITerm"
       class="schooltool.gradebook.browser.pdf_views.FailingReportPDFView"
       permission="schooltool.edit"

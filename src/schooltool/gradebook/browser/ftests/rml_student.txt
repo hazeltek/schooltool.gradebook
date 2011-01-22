@@ -479,11 +479,13 @@ Now, let's look at the person reports for Paul:
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('Paul').click()
-    >>> student_url = manager.url
+    >>> manager.getLink('Reports').click()
 
-His report card for 2010:
+Let's get his report card for 2010:
 
-    >>> manager.open(student_url + '/report_card.rml')
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -595,9 +597,12 @@ Outlined activities:
       <em>Paul</em>
     </para>
 
-His report card for Second Term of 2010:
+Now, let's go back and get his report card for the Second Term of
+2010:
 
-    >>> manager.open(student_url + '/report_card.rml?term=second-term')
+    >>> manager.goBack()
+    >>> manager.getControl('Term or Year').displayValue = ['Second Term']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -671,17 +676,17 @@ Outlined activities:
     </para>
 
 Now, let's test the report card functionality for groups, using of
-course the Students group:
+course the Students group. Let's get the report card report for the
+Students group for 2010:
 
-    >>> manager.open('http://localhost')
+    >>> manager.goBack()
     >>> manager.getLink('2010').click()
     >>> manager.getLink('Groups').click()
     >>> manager.getLink('Students').click()
-    >>> group_url = manager.url
-
-This is the report card report for the Students group for 2010:
-
-    >>> manager.open(group_url + '/report_card.rml')
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -988,10 +993,17 @@ Outlined activities:
       <strong>Claudia</strong>
     </para>
 
-Now, we'll get the report card for the Students group for First Term
-of 2010:
+Now, we'll get the report card for the Students group for the First
+Term of 2010:
 
-    >>> manager.open(group_url + '/report_card.rml?term=first-term')
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getControl('Term or Year').displayValue = ['First Term']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -1189,9 +1201,17 @@ Outlined activities:
       <em>Claudia</em>
     </para>
 
-Now let's look at the 2010 detailed student report for Paul:
+Now let's look at the detail student report. We'll look at Paul's
+detailed student report for 2010:
 
-    >>> manager.open(student_url + '/student_detail.rml')
+    >>> manager.goBack()
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Persons').click()
+    >>> manager.getLink('Paul').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -1291,10 +1311,12 @@ Attendance detail:
     A
     A
 
-Now let's look at Paul's detail student report for Second Term of
+Now let's look at Paul's detail student report for the Second Term of
 2010:
 
-    >>> manager.open(student_url + '/student_detail.rml?term=second-term')
+    >>> manager.goBack()
+    >>> manager.getControl('Term or Year').displayValue = ['Second Term']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -1369,9 +1391,16 @@ Attendance detail:
     A
     A
 
-Now let's look at the 2010 detailed student report for the Students group:
+Now let's look at Students group detailed student report for 2010:
 
-    >>> manager.open(group_url + '/student_detail.rml')
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -1652,10 +1681,12 @@ Attendance detail:
     T
     A
 
-Now let's look at the detailed student report for the Students group
-for Second Term 2010:
+Now let's look at the Students group detailed student report for the
+Second Term of 2010:
 
-    >>> manager.open(group_url + '/student_detail.rml?term=second-term')
+    >>> manager.goBack()
+    >>> manager.getControl('Term or Year').displayValue = ['Second Term']
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -1869,13 +1900,13 @@ Attendance detail:
     T
     A
 
-Now, let's test the Absences by Section report:
+Now, let's test the Absences by Section report using the Chemistry
+section of the First Term of 2010:
 
     >>> teacher.getLink('Home').click()
     >>> teacher.getLink('Chemistry (2)', index=0).click()
-    >>> section_url = teacher.url
-
-    >>> teacher.open(section_url + '/section_absences.rml')
+    >>> teacher.getLink('Reports').click()
+    >>> teacher.getLink('Download Absences by Section Report').click()
 
 Header:
 
@@ -1915,12 +1946,11 @@ Attendance detail:
 
 Test the Absences by Section report for another section:
 
-    >>> teacher.open('http://localhost')
+    >>> teacher.goBack()
     >>> teacher.getLink('Home').click()
     >>> teacher.getLink('Chemistry (2)', index=1).click()
-    >>> section_url = teacher.url
-
-    >>> teacher.open(section_url + '/section_absences.rml')
+    >>> teacher.getLink('Reports').click()
+    >>> teacher.getLink('Download Absences by Section Report').click()
 
 Header:
 
@@ -1958,13 +1988,14 @@ Attendance detail:
     5
     6
 
-Now, let's test the Absences by Day report in the 2010 year:
+Now, let's test the Absences by Day report:
 
-    >>> manager.open('http://localhost')
+    >>> manager.goBack()
     >>> manager.getLink('2010').click()
-    >>> year_url = manager.url
-
-    >>> manager.open(year_url + '/absences_by_day.rml?day=2010-02-11')
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Absences By Day').click()
+    >>> manager.getControl('Date').value = '2010-02-11'
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -1987,9 +2018,11 @@ Attendance details:
     A
     A
 
-Let's test the Absences by Day report in another day of the 2010 year:
+Let's test the Absences by Day report in another day:
 
-    >>> manager.open(year_url + '/absences_by_day.rml?day=2010-10-01')
+    >>> manager.goBack()
+    >>> manager.getControl('Date').value = '2010-10-01'
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -2017,15 +2050,19 @@ grades below a minimum in a selected report activity. Since the report
 is designed to work on terms, we'll test it first in the First Term of
 2010:
 
-    >>> manager.open('http://localhost')
+    >>> manager.goBack()
     >>> manager.getLink('2010').click()
     >>> manager.getLink('First Term').click()
-    >>> term_url = manager.url
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Failures by Term').click()
 
 We'll check how many students have grades lower than 70 for the Report
 Activity 1.1:
 
-    >>> manager.open(term_url + '/failures_by_term.rml?activity=activity=first-term|2010_first-term|ReportActivity&min=70')
+    >>> manager.getControl(name='source').displayValue = ['First Term - Report Sheet One - Report Activity 1.1']
+    >>> manager.getForm().submit()
+    >>> manager.getControl('Minimum Passing Score').value = '70'
+    >>> manager.getControl('Download').click()
 
 Header:
 
@@ -2066,12 +2103,16 @@ Claudia's data:
 Let's test the Failures by Term report in the other term using another
 activity:
 
-    >>> manager.open('http://localhost')
+    >>> manager.goBack()
     >>> manager.getLink('2010').click()
     >>> manager.getLink('Second Term').click()
-    >>> term_url = manager.url
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Failures by Term').click()
 
-    >>> manager.open(term_url + '/failures_by_term.rml?activity=activity=second-term|2010_second-term|ReportActivity-3&min=C')
+    >>> manager.getControl(name='source').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.3']
+    >>> manager.getForm().submit()
+    >>> manager.getControl('Minimum Passing Score').value = ['C']
+    >>> manager.getControl('Download').click()
 
 Header:
 
