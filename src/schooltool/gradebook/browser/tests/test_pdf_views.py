@@ -42,6 +42,7 @@ from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.interfaces import IAbsoluteURL
 from zope.ucol.localeadapter import LocaleCollator
 from zope.i18n.interfaces.locales import ICollator
+from zope.i18n import translate
 
 from schooltool.app.interfaces import (ISchoolToolApplication,
      ISchoolToolCalendar, ISchoolToolCalendarEvent)
@@ -267,16 +268,19 @@ def doctest_StudentReportCardPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Report Card: 2009
 
     The data used by the template is returned by the students() method:
 
-        >>> pprint(view.students())
+        >>> students = view.students()
+        >>> for student in students:
+        ...     student['title'] = translate(student['title'], context=request)
+        >>> pprint(students)
         [{'grid': {'headings': ['Activ'],
                    'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
                    'widths': '8.2cm,1.6cm'},
-          'outline': [{'heading': 'Section 1',
+          'outline': [{'heading': 'Term - Section 1',
                        'worksheets': [{'activities': [{'heading': 'Activity',
                                                        'value': [u'F']}],
                                        'heading': 'Worksheet',
@@ -296,16 +300,19 @@ def doctest_GroupReportCardPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Report Card: 2009
 
     The data used by the template is returned by the students() method:
 
-        >>> pprint(view.students())
+        >>> students = view.students()
+        >>> for student in students:
+        ...     student['title'] = translate(student['title'], context=request)
+        >>> pprint(students)
         [{'grid': {'headings': ['Activ'],
                    'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
                    'widths': '8.2cm,1.6cm'},
-          'outline': [{'heading': 'Section 1',
+          'outline': [{'heading': 'Term - Section 1',
                        'worksheets': [{'activities': [{'heading': 'Activity',
                                                        'value': [u'F']}],
                                        'heading': 'Worksheet',
@@ -322,7 +329,7 @@ def doctest_StudentDetailPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Detailed Student Report: 2009
 
     The data used by the template is returned by the students() method:
@@ -350,7 +357,7 @@ def doctest_GroupDetailPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Detailed Student Report: 2009
 
     The data used by the template is returned by the students() method:
@@ -378,7 +385,7 @@ def doctest_FailingReportPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Failures by Term Report: Term
 
     The data used by the template is returned by the students() method:
@@ -429,7 +436,7 @@ def doctest_AbsencesByDayPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Absences By Day Report
 
     The data used by the template is returned by the students() method:
@@ -449,7 +456,7 @@ def doctest_SectionAbsencesPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Absences by Section Report
 
     The data used by the template is returned by the students() method:
@@ -475,7 +482,7 @@ def doctest_GradebookPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Gradebook Report
 
     The data used by the template is returned by the table() method:
