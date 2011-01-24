@@ -126,10 +126,17 @@ and we can delete them:
     Report Sheet 1
     Report Sheet 2
 
-Now, let's add four report activities to the Report Sheet 1 template:
+Now, let's add four report activities to the Report Sheet 1
+template. We'll also test the Cancel button of the New Report Activity
+form:
 
     >>> manager.getLink('Report Sheet 1').click()
 
+    >>> manager.printQuery('//h1/text()')
+    Activities of Report Sheet 1
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Cancel').click()
     >>> manager.printQuery('//h1/text()')
     Activities of Report Sheet 1
 

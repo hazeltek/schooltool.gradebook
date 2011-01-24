@@ -2040,6 +2040,10 @@ Let's make the form to use its Cancel button and field validation:
     >>> manager.printQuery('//h1/text()')
     School Year Reports
     >>> manager.getLink('Absences By Day').click()
+    >>> manager.getControl('Date').value = 'hello world'
+    >>> manager.getControl('Download').click()
+    >>> manager.printQuery('//span[@class="message"]/text()')
+    You must specify a valid date within the school year.
     >>> manager.getControl('Date').value = '2020-02-11'
     >>> manager.getControl('Download').click()
     >>> manager.printQuery('//span[@class="message"]/text()')
