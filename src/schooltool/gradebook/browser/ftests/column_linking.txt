@@ -43,6 +43,13 @@ Set up one section with instructor and students for each term:
     ...                  instructors=['Stephan'],
     ...                  members=['Tom', 'Claudia', 'Paul'])
 
+Set up the default category for activities:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Activity Categories').click()
+    >>> manager.getControl('Default Category').displayValue = ['Journal']
+    >>> manager.getControl('Change').click()
+
 Log in as teacher:
 
     >>> stephan = Browser('stephan', 'pwd')
@@ -300,6 +307,8 @@ activities and worksheet averages that can be chosen as the link:
     Lab
     Presentation
     Project
+    >>> stephan.printQuery('id("category")/option[@selected="selected"]/text()')
+    Journal
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[1]/text()')
     Term
@@ -324,14 +333,23 @@ activities and worksheet averages that can be chosen as the link:
     Final
     Average
 
-We'll add a link to the Second Presentation from the Second Sheet:
+We'll add a link to the Second Presentation from the Second Sheet and
+then we'll test that the category for our new linked column has been
+saved correctly:
 
+    >>> stephan.getControl('Category').displayValue = ['Essay']
     >>> stephan.getControl('Second Presentation').click()
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Second Presentation').click()
+    >>> stephan.printQuery('id("category")/option[@selected="selected"]/text()')
+    Essay
+    >>> stephan.getControl('Cancel').click()
     
 then the average of the worksheet from the Spring Physics I section,
 Sheet1:
 
     >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Label').value = 'PHSICS'
     >>> stephan.getControl('Average', index=1).click()
 
@@ -340,6 +358,8 @@ it from the Manage Worksheet view:
 
     >>> stephan.getLink('Manage Worksheet').click()
     >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('id("category")/option[@selected="selected"]/text()')
+    Assignment
     >>> stephan.getControl('Label').value = 'PHYSICS'
     >>> stephan.getControl('Average', index=1).click()
 

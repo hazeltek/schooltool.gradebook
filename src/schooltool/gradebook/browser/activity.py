@@ -488,10 +488,12 @@ class LinkedColumnBase(BrowserView):
     """Base class for add/edit linked column views"""
     def __init__(self, context, request):
         super(LinkedColumnBase, self).__init__(context, request)
+        self.addForm = True
         if interfaces.IWorksheet.providedBy(self.context):
             self.currentWorksheet = self.context
         else:
             self.currentWorksheet = self.context.__parent__
+            self.addForm = False
         self.person = IPerson(self.request.principal)
 
     def title(self):
@@ -511,10 +513,15 @@ class LinkedColumnBase(BrowserView):
         categories = getCategories(ISchoolToolApplication(None))
 
         results = []
+        if self.addForm:
+            default_category = defaultCategory(None)
+        else:
+            default_category = self.context.category
         for category in sorted(categories.getKeys()):
             result = {
                 'name': category,
                 'value': categories.getValue(category, language),
+                'selected': category == default_category and 'selected' or None,
                 }
             results.append(result)
         return results

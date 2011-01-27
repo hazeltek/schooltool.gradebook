@@ -21,7 +21,8 @@
     <label for="category" i18n:translate="">Category</label>
     <select id="category" name="category" id="category">
       <tal:block repeat="category view/getCategories">
-        <option tal:attributes="value category/name"
+        <option tal:attributes="value category/name;
+				selected category/selected"
                 tal:content="category/value" />
       </tal:block>
     </select>
