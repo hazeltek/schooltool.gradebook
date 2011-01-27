@@ -41,7 +41,7 @@ and label get rendered in the case of maximum passing score systems.
     >>> manager.getControl(name='percent4').value = '0'
     >>> manager.getControl('Add a lower score').click()
 
-    >>> manager.getControl(name='minMax').value = ['max']
+    >>> manager.getControl(name='minMax').displayValue = ['Maximum']
     >>> manager.getControl(name='minScore').value = ['C']
 
     >>> manager.getControl('Save').click()
@@ -64,12 +64,12 @@ discrete, one custom discrete maximum passing, and one ranged values.
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Activity 2'
-    >>> manager.getControl('Score System').value = ['Max-']
+    >>> manager.getControl('Score System').displayValue = ['Max']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Activity 3'
-    >>> manager.getControl('Score System').value = ['ranged']
+    >>> manager.getControl('Score System').displayValue = ['-- Use range below --']
     >>> manager.getControl('Add').click()
 
 Now we'll deploy it.
@@ -77,7 +77,7 @@ Now we'll deploy it.
     >>> manager.getLink('2005-2006').click()
     >>> manager.getLink('Spring').click()
     >>> manager.getLink('Deploy Report Sheet').click()
-    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Template').displayValue = ['Test']
     >>> manager.getControl('Deploy').click()
 
 We need to build the url for requesting the failures report manually
@@ -98,7 +98,7 @@ The first report activity is letter grade, minimum passing score of 'D'.
     Spring - Test - Activity 2
     Spring - Test - Activity 3
     
-    >>> manager.getControl('Report Activity').value = ['spring|2005-2006_spring|ReportActivity']
+    >>> manager.getControl('Report Activity').displayValue = ['Spring - Test - Activity 1']
     >>> manager.getForm().submit()
 
     >>> manager.printQuery('//label[@for="score"]')
@@ -112,7 +112,7 @@ The first report activity is letter grade, minimum passing score of 'D'.
 
 The second report activity is a maximum passing score system with max of 'C'.
 
-    >>> manager.getControl('Report Activity').value = ['spring|2005-2006_spring|ReportActivity-2']
+    >>> manager.getControl('Report Activity').displayValue = ['Spring - Test - Activity 2']
     >>> manager.getForm().submit()
 
     >>> manager.printQuery('//label[@for="score"]')
@@ -126,7 +126,7 @@ The second report activity is a maximum passing score system with max of 'C'.
 The third report activity is a ranged values score system so the min field is
 a text box.
 
-    >>> manager.getControl('Report Activity').value = ['spring|2005-2006_spring|ReportActivity-3']
+    >>> manager.getControl('Report Activity').displayValue = ['Spring - Test - Activity 3']
     >>> manager.getForm().submit()
 
     >>> manager.printQuery('//label[@for="score"]')

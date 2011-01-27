@@ -6,7 +6,7 @@
 <body>
 
 <metal:block metal:fill-slot="body">
-  <form method="post" class="standalone" style="width: 48em"
+  <form method="post" class="standalone" style="width: 60em"
         tal:attributes="action string:${context/@@absolute_url}/layout_report_card.html">
     <input type="hidden" name="form-submitted" value="" />
 

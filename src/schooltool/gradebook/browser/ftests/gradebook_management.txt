@@ -111,7 +111,7 @@ Then, we can use the 'New Worksheet' action link to create our second worksheet.
 
 Worksheets can be reordered:
 
-    >>> stephan.getControl(name='pos.Worksheet-2').value = ['1']
+    >>> stephan.getControl(name='pos.Worksheet-2').displayValue = ['1']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//h1')
     <h1>Worksheets</h1>
@@ -119,7 +119,7 @@ Worksheets can be reordered:
     Week 2
     Week 1
 
-    >>> stephan.getControl(name='pos.Worksheet').value = ['1']
+    >>> stephan.getControl(name='pos.Worksheet').displayValue = ['1']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//h1')
     <h1>Worksheets</h1>
@@ -169,7 +169,7 @@ Now, we'll test the Term and Section dropdowns which allow the
 teachers to navigate through their sections. Lets change to Stephan's
 Math section of the Fall:
 
-    >>> stephan.getControl(name='currentSection').value = ['Math I - Math I (2)']
+    >>> stephan.getControl(name='currentSection').displayValue = ['Math I - Math I (2)']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
     2005-2006 / Fall
@@ -184,7 +184,7 @@ Math section of the Fall:
 
 Now, to the Spring term:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
     2005-2006 / Fall
@@ -199,7 +199,7 @@ Now, to the Spring term:
 If we change back to the Fall term, we get to the first section of the
 Section dropdown, in this case the Physics I section:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Fall
@@ -213,7 +213,7 @@ the gradebook.
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
     >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
@@ -234,7 +234,7 @@ We'll add a second activity.
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
     HW1
@@ -283,14 +283,14 @@ Now we'll add some activities to it.
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 2'
     >>> stephan.getControl('Description').value = 'Homework 2'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Add').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
     HW2
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
     HW2
@@ -304,7 +304,7 @@ in the tests, we submit the form manually:
     >>> stephan.printQuery("id('content-body')//a")
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
-    >>> stephan.getControl(name='pos.Activity-2').value = ['1']
+    >>> stephan.getControl(name='pos.Activity-2').displayValue = ['1']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery("id('content-body')//a")
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
@@ -320,7 +320,7 @@ The gradebook shows the new positions:
 We'll switch them back.
 
     >>> stephan.getLink('Manage Worksheet').click()
-    >>> stephan.getControl(name='pos.Activity').value = ['1']
+    >>> stephan.getControl(name='pos.Activity').displayValue = ['1']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery("id('content-body')//a")
     <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
@@ -329,13 +329,13 @@ We'll switch them back.
 We'll switch to the Spring term and add some activities to the English I section:
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '99'
     >>> stephan.getControl('Add').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
@@ -343,7 +343,7 @@ We'll switch to the Spring term and add some activities to the English I section
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
     Lab1
@@ -352,7 +352,7 @@ We'll switch to the Spring term and add some activities to the English I section
 Finally, we'll change the section back to the Physics section of the
 Fall and the current worksheet back to 'Week 1'.
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Week 1').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')

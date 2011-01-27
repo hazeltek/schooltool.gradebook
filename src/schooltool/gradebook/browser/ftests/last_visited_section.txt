@@ -50,14 +50,14 @@ Add a couple of activities to the default worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
 Add some grades:
@@ -77,7 +77,7 @@ Add some grades:
 
 Change to the other section and add some activities and grades:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Spring
@@ -87,13 +87,13 @@ Change to the other section and add some activities and grades:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 2'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Spring Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getControl(name='Activity_paul').value = '80'
@@ -123,7 +123,7 @@ Log in as a student and change to the spring section:
       <div> Ave.: 49.3%</div>
     </td>
 
-    >>> claudia.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> claudia.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> claudia.getForm().submit()
     >>> claudia.url
     'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/mygrades'

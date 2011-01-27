@@ -103,7 +103,7 @@ view for report sheet templates:
 We can change the order of the report sheets. Let's put the 'Report
 Sheet 3' at the beginning of the list:
 
-    >>> manager.getControl(name='pos.ReportWorksheet-3').value = ['1']
+    >>> manager.getControl(name='pos.ReportWorksheet-3').displayValue = ['1']
     >>> manager.getForm().submit()
 
     >>> manager.printQuery('//h1/text()')
@@ -145,12 +145,12 @@ form:
     Add new report activity
     >>> manager.getControl('Title').value = 'Report Activity 1.1.3'
     >>> manager.getControl('Label').value = 'RA1.1'
-    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Score System').displayValue = ['Comment']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.2'
-    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
@@ -159,7 +159,7 @@ form:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.4'
-    >>> manager.getControl('Score System').value = ['100 Points-']
+    >>> manager.getControl('Score System').displayValue = ['100 Points']
     >>> manager.getControl('Label').value = 'RA1.4'
     >>> manager.getControl('Add').click()
 
@@ -173,7 +173,7 @@ form:
 
 Report activities can be reordered in a report sheet template:
 
-    >>> manager.getControl(name='pos.ReportActivity').value = ['3']
+    >>> manager.getControl(name='pos.ReportActivity').displayValue = ['3']
     >>> manager.getForm().submit()
     >>> manager.printQuery('//h1/text()')
     Activities of Report Sheet 1
@@ -274,7 +274,7 @@ term of 2011:
     >>> manager.getLink('Deploy Report Sheet').click()
     >>> manager.printQuery('//h1/text()')
     Deploy Report Worksheet Template
-    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Template').displayValue = ['Report Sheet 1']
     >>> manager.getControl('Deploy').click()
 
     >>> manager.getLink('Term1').click()
@@ -283,7 +283,7 @@ term of 2011:
     Deploy Report Worksheet Template
     >>> manager.getControl('Cancel').click()
     >>> manager.getLink('Deploy Report Sheet').click()
-    >>> manager.getControl('Template').value = ['ReportWorksheet-2']
+    >>> manager.getControl('Template').displayValue = ['Report Sheet 2']
     >>> manager.getControl('Deploy').click()
 
     >>> manager.getLink('2011').click()
@@ -292,7 +292,7 @@ term of 2011:
     >>> manager.printQuery('//h1/text()')
     Deploy Report Worksheet Template
     >>> manager.getLink('Deploy Report Sheet').click()
-    >>> manager.getControl('Template').value = ['ReportWorksheet-3']
+    >>> manager.getControl('Template').displayValue = ['Report Sheet 3']
     >>> manager.getControl('Deploy').click()
 
 Now that the report sheet templates have been deployed, they should be
@@ -434,7 +434,7 @@ it should have two activities:
 Now, if we go to the other section in this term, we should see these
 same report sheets and activities deployed:
 
-    >>> teacher.getControl(name='currentSection').value = ['Baseball - Baseball (2)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Baseball - Baseball (2)']
     >>> teacher.getForm().submit()
 
     >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
@@ -482,7 +482,7 @@ And if we go to the other term, Term2, in this schoolyear, we'll see
 that the 'Report Sheet 1' sheet is common for both terms and we'll see
 the other 'Report Sheet 3' deployed only for that term:
 
-    >>> teacher.getControl(name='currentTerm').value = ['2011-.term2-']
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2011 / Term2']
     >>> teacher.getForm().submit()
 
     >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
@@ -526,7 +526,7 @@ the other 'Report Sheet 3' deployed only for that term:
 And now, if we go to the section in the 2012 schoolyear, we won't see
 any common report sheet deployed, just the default worksheet:
 
-    >>> teacher.getControl(name='currentTerm').value = ['2012-.single-term-']
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2012 / Single Term']
     >>> teacher.getForm().submit()
 
     >>> teacher.getLink('Gradebook').click()

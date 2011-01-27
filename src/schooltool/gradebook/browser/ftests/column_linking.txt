@@ -57,14 +57,14 @@ Add a couple of activities to the default worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
 Add some grades:
@@ -138,19 +138,19 @@ Let's add some activities, weighting and grades to the new worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'First Homework'
     >>> stephan.getControl('Label').value = '1st HW'
-    >>> stephan.getControl('Category').value = ['homework']
+    >>> stephan.getControl('Category').displayValue = ['Homework']
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'First Presentation'
     >>> stephan.getControl('Label').value = '1st Presentation'
-    >>> stephan.getControl('Category').value = ['presentation']
+    >>> stephan.getControl('Category').displayValue = ['Presentation']
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Second Presentation'
     >>> stephan.getControl('Label').value = '2nd Presentation'
-    >>> stephan.getControl('Category').value = ['presentation']
+    >>> stephan.getControl('Category').displayValue = ['Presentation']
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('Weight Categories').click()
@@ -207,19 +207,19 @@ Check the total and averages for this worksheet:
 We'll switch to the Spring term and add some activities and scores to
 the Physics I section:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '99'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('Lab1').click()
@@ -264,7 +264,7 @@ Now we'll return to the Fall Math I section and add our first linked
 column to the Sheet1 worksheet. We'll also test the Cancel button in
 the New Linked Column form:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Sheet1').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
@@ -412,7 +412,7 @@ grade for Paul's Second Presentation of the Second Sheet:
 And let's change a grade for Tom in the Spring Physics I section so
 his average also changes:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Final').click()
     >>> stephan.getControl('Hoffman, Tom').value = u'60'
@@ -432,7 +432,7 @@ his average also changes:
 
 The linked columns should also change:
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Sheet1').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')

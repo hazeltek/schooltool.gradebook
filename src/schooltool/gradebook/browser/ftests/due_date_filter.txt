@@ -80,7 +80,7 @@ Add a homework activity with due date on February 11th:
     >>> teacher.getControl('Title').value = 'Get a ball'
     >>> teacher.getControl('Label').value = 'BALL'
     >>> teacher.getControl('Due Date').value = '2011-02-11'
-    >>> teacher.getControl('Category').value = ['homework']
+    >>> teacher.getControl('Category').displayValue = ['Homework']
     >>> teacher.getControl('Maximum').value = '10'
     >>> teacher.getControl('Add').click()
 
@@ -107,7 +107,7 @@ Add a second homework with due date on April 4th and grade it:
     >>> teacher.getControl('Title').value = 'Get a team'
     >>> teacher.getControl('Label').value = 'TEAM'
     >>> teacher.getControl('Due Date').value = '2011-04-04'
-    >>> teacher.getControl('Category').value = ['homework']
+    >>> teacher.getControl('Category').displayValue = ['Homework']
     >>> teacher.getControl('Maximum').value = '10'
     >>> teacher.getControl('Add').click()
 
@@ -132,7 +132,7 @@ And a third one with due date on April 29th:
     >>> teacher.getControl('Title').value = 'Play a game'
     >>> teacher.getControl('Label').value = 'GAME'
     >>> teacher.getControl('Due Date').value = '2011-04-29'
-    >>> teacher.getControl('Category').value = ['homework']
+    >>> teacher.getControl('Category').displayValue = ['Homework']
     >>> teacher.getControl('Maximum').value = '10'
     >>> teacher.getControl('Add').click()
 
@@ -157,7 +157,7 @@ Now, let's add an exam with due date on May 20th:
     >>> teacher.getControl('Title').value = 'Score a goal'
     >>> teacher.getControl('Label').value = 'GOAL'
     >>> teacher.getControl('Due Date').value = '2011-05-20'
-    >>> teacher.getControl('Category').value = ['exam']
+    >>> teacher.getControl('Category').displayValue = ['Exam']
     >>> teacher.getControl('Maximum').value = '10'
     >>> teacher.getControl('Add').click()
 
@@ -279,7 +279,7 @@ Let's change the dropdown to show only activities with due date in the
 past two weeks:
 
     >>> teacher.getLink('Gradebook').click()
-    >>> teacher.getControl(name='num_weeks').value = ['2']
+    >>> teacher.getControl(name='num_weeks').displayValue = ['2']
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" checked="checked" />
@@ -291,7 +291,7 @@ past two weeks:
 And if we change the dropdown to one week, all the activities are
 filtered out:
 
-    >>> teacher.getControl(name='num_weeks').value = ['1']
+    >>> teacher.getControl(name='num_weeks').displayValue = ['1']
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" checked="checked" />
@@ -313,7 +313,7 @@ the past week:
 
     >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
     GOAL
-    >>> teacher.getControl(name='num_weeks').value = ['2']
+    >>> teacher.getControl(name='num_weeks').displayValue = ['2']
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" checked="checked" />
@@ -347,7 +347,7 @@ applied to any term, section and worksheet that the user visits.
 Let's unmark the checkbox and change the dropdown value to 9 weeks:
 
     >>> teacher.getControl(name='due_date:list').value = False
-    >>> teacher.getControl(name='num_weeks').value = ['9']
+    >>> teacher.getControl(name='num_weeks').displayValue = ['9']
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" />
@@ -405,7 +405,7 @@ All the activites are shown in the second worksheet:
 Let's apply the due filter in the second worksheet:
 
     >>> teacher.getControl(name='due_date:list').value = True
-    >>> teacher.getControl(name='num_weeks').value = ['1']
+    >>> teacher.getControl(name='num_weeks').displayValue = ['1']
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" checked="checked" />
@@ -435,7 +435,7 @@ this worksheet:
 
 If we change to another section, the old filter keeps its values:
 
-    >>> teacher.getControl(name='currentSection').value = ['Golf - Golf (2)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Golf - Golf (2)']
     >>> teacher.getForm().submit()
 
     >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
@@ -450,7 +450,7 @@ If we change to another section, the old filter keeps its values:
 
 Or to another term:
 
-    >>> teacher.getControl(name='currentTerm').value = ['2011-.second-semester-']
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2011 / Second Semester']
     >>> teacher.getForm().submit()
 
     >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')

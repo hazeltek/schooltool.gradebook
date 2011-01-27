@@ -54,28 +54,28 @@ Add some activities to the default worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'First homework'
-    >>> stephan.getControl('Category').value = ['homework']
+    >>> stephan.getControl('Category').displayValue = ['Homework']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz 1'
     >>> stephan.getControl('Description').value = 'First quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Maximum').value = '100'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 2'
     >>> stephan.getControl('Description').value = 'Second homework'
-    >>> stephan.getControl('Category').value = ['homework']
+    >>> stephan.getControl('Category').displayValue = ['Homework']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz 2'
     >>> stephan.getControl('Description').value = 'Second quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Maximum').value = '100'
     >>> stephan.getControl('Add').click()
 
@@ -186,7 +186,7 @@ Let's add a new Assignment activity:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Experiment'
     >>> stephan.getControl('Description').value = 'First assignment'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '10'
     >>> stephan.getControl('Add').click()
 

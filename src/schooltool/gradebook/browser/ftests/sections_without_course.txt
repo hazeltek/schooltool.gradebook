@@ -57,14 +57,14 @@ Add a couple of activities to the default worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
 Add some grades:
@@ -130,7 +130,7 @@ using the Term dropdown:
     >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
     []
 
-    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Fall
@@ -178,7 +178,7 @@ Now, let's check that a student can access the orphan gradebook:
 
 And her other gradebooks:
 
-    >>> claudia.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> claudia.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> claudia.getForm(index=0).submit()
     >>> claudia.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Spring
