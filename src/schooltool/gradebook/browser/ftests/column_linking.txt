@@ -476,3 +476,33 @@ only there too:
     <input id="form-widgets-Activity-2"... value="90" type="text" />
     <span id="form-widgets-LinkedColumnActivity" ...>99</span>
     <span id="form-widgets-LinkedColumnActivity-2" ...>94.5</span>
+
+Now, let's go back to the Physics I section of the Spring and delete
+all grades for Paul, so he will have no average for that worksheet:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl('Lab 1').value = ''
+    >>> stephan.getControl('Final').value = ''
+    >>> stephan.getControl('Apply').click()
+
+Let's go back to the Math I section of the Fall and check the grades for Paul:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> stephan.printQuery('//label/span/text()')
+    HW 1
+    Quiz
+    Second Presentation
+    Sheet1
+    >>> stephan.printQuery('//div[@class="widget"]/*')
+    <input id="form-widgets-Activity"... value="40" type="text" />
+    <input id="form-widgets-Activity-2"... value="90" type="text" />
+    <span id="form-widgets-LinkedColumnActivity" ...>99</span>
+    <span id="form-widgets-LinkedColumnActivity-2" ...></span>
