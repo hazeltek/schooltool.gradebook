@@ -568,7 +568,9 @@ class GradebookOverview(SectionFinder):
                 value = self.getStudentActivityValue(student, activity)
                 if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
-                    if value is not UNSCORED and value != '':
+                    sourceObj = getSourceObj(activity.source)
+                    if value is not UNSCORED and value != '' and \
+                       interfaces.IWorksheet.providedBy(sourceObj):
                         value = '%.1f' % value
                 else:
                     editable = not ICommentScoreSystem.providedBy(

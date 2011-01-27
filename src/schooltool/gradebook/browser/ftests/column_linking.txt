@@ -393,9 +393,9 @@ The editable grades:
 And the non-editable linked columns:
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
-    72.0
-    81.0
-    89.0
+    72
+    81
+    89
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/span/text()')
     94.5
     80.4
@@ -452,10 +452,27 @@ The linked columns should also change:
       <span>PHYSI</span>
     </div>
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
-    99.0
-    81.0
-    89.0
+    99
+    81
+    89
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/span/text()')
     94.5
     66.3
     90.5
+
+If we grade student by student, we'll see that linked columns are read
+only there too:
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> stephan.printQuery('//label/span/text()')
+    HW 1
+    Quiz
+    Second Presentation
+    Sheet1
+    >>> stephan.printQuery('//div[@class="widget"]/*')
+    <input id="form-widgets-Activity"... value="40" type="text" />
+    <input id="form-widgets-Activity-2"... value="90" type="text" />
+    <span id="form-widgets-LinkedColumnActivity" ...>99</span>
+    <span id="form-widgets-LinkedColumnActivity-2" ...>94.5</span>

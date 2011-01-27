@@ -473,6 +473,10 @@ class StudentGradebookFormAdapter(object):
             activity)
         if value is None or value is UNSCORED:
             value = ''
+        if interfaces.ILinkedColumnActivity.providedBy(activity):
+            sourceObj = getSourceObj(activity.source)
+            if interfaces.IWorksheet.providedBy(sourceObj):
+                return '%.1f' % value
         return value
 
 

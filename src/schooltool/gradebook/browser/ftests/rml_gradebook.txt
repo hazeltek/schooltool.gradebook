@@ -285,6 +285,6 @@ Table columns representing student names, total, average and grades:
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[6]/para')
     <para style="grid_heading">Logic</para>
-    <para style="cell">90.0</para>
+    <para style="cell">90</para>
     <para style="cell"/>
-    <para style="cell">85.0</para>
+    <para style="cell">85</para>
