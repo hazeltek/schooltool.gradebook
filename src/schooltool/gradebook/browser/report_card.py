@@ -31,6 +31,7 @@ from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
 from z3c.form import form, field, button
 
@@ -40,6 +41,7 @@ from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm
+from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.interfaces import IActivities, IReportActivity
@@ -519,22 +521,22 @@ class LayoutReportCardView(object):
         return absoluteURL(self.context, self.request)
 
 
-def handleSectionAdded(event):
-    """Make sure the same worksheets are deployed to newly added sections."""
+class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
+    """Make sure the same worksheets are deployed to newly added
+    sections."""
 
-    obj = event.object
-    if not ISection.providedBy(obj):
-        return
-    root = IGradebookRoot(ISchoolToolApplication(None))
-    term = ITerm(obj)
-    schoolyear = ISchoolYear(term)
-    deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
-    for key in root.deployed:
-        if key.startswith(deployedKey):
-            deployedWorksheet = root.deployed[key]
-            activities = IActivities(obj)
-            worksheetCopy = Worksheet(deployedWorksheet.title)
-            worksheetCopy.deployed = True
-            activities[key] = worksheetCopy
-            copyActivities(deployedWorksheet, worksheetCopy)
+    adapts(IObjectAddedEvent, ISection)
 
+    def __call__(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        activities = IActivities(self.object)
+        term = ITerm(self.object)
+        schoolyear = ISchoolYear(term)
+        deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
+        for key in root.deployed:
+            if key.startswith(deployedKey):
+                deployedWorksheet = root.deployed[key]
+                worksheetCopy = Worksheet(deployedWorksheet.title)
+                worksheetCopy.deployed = True
+                activities[key] = worksheetCopy
+                copyActivities(deployedWorksheet, worksheetCopy)
