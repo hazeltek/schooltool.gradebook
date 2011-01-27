@@ -487,10 +487,10 @@ only there too:
     >>> stephan.printQuery('//h3/text()')
     Enter grades for Cardune, Paul
     >>> stephan.printQuery('//label/span/text()')
-    HW 1
-    Quiz
-    Second Presentation
-    Sheet1
+    HW 1 (50)
+    Quiz (100)
+    Second Presentation (100)
+    Sheet1 (100)
     >>> stephan.printQuery('//div[@class="widget"]/*')
     <input id="form-widgets-Activity"... value="40" type="text" />
     <input id="form-widgets-Activity-2"... value="90" type="text" />
@@ -517,10 +517,10 @@ Let's go back to the Math I section of the Fall and check the grades for Paul:
     >>> stephan.printQuery('//h3/text()')
     Enter grades for Cardune, Paul
     >>> stephan.printQuery('//label/span/text()')
-    HW 1
-    Quiz
-    Second Presentation
-    Sheet1
+    HW 1 (50)
+    Quiz (100)
+    Second Presentation (100)
+    Sheet1 (100)
     >>> stephan.printQuery('//div[@class="widget"]/*')
     <input id="form-widgets-Activity"... value="40" type="text" />
     <input id="form-widgets-Activity-2"... value="90" type="text" />

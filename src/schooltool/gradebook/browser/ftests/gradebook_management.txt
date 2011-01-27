@@ -560,8 +560,8 @@ no 'Previous' button.
     >>> stephan.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Cardune, Paul</h3>
     >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
-    HW 1
-    Quiz
+    HW 1 (50)
+    Quiz (100)
     >>> stephan.printQuery("id('form')/div[2]//input")
     <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
     <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
@@ -574,8 +574,8 @@ Here we will see both a 'Previous' and a 'Next' button.
     >>> stephan.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Hoffman, Tom</h3>
     >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
-    HW 1
-    Quiz
+    HW 1 (50)
+    Quiz (100)
     >>> stephan.printQuery("id('form')/div[2]//input")
     <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
     <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
@@ -589,8 +589,8 @@ Here we will see no 'Next' button.
     >>> stephan.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Richter, Claudia</h3>
     >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
-    HW 1
-    Quiz
+    HW 1 (50)
+    Quiz (100)
     >>> stephan.printQuery("id('form')/div[2]//input")
     <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
     <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />

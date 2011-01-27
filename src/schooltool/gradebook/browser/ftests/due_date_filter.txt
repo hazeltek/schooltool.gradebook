@@ -194,10 +194,10 @@ And go grade a single student:
 To see all the activities available to be graded:
 
     >>> teacher.printQuery('//fieldset//label/span/text()')
-    Get a ball
-    Get a team
-    Play a game
-    Score a goal
+    Get a ball (10)
+    Get a team (10)
+    Play a game (10)
+    Score a goal (10)
 
 and change one:
 
@@ -259,9 +259,9 @@ If we get back to grade a single student:
 We see the filter works there too:
 
     >>> teacher.printQuery('//fieldset//label/span/text()')
-    Get a team
-    Play a game
-    Score a goal
+    Get a team (10)
+    Play a game (10)
+    Score a goal (10)
 
 Let's check again the 'view.html' view for the student and see the
 filter works there too:
