@@ -112,18 +112,22 @@ By default the Average column is calculated normally:
 Let's create some category weights for the current worksheet. Note
 that the categories are ordered alphabetically.
 
+    >>> def printCategoryWeights(browser):
+    ...     for label in browser.queryHTML('//label/text()'):
+    ...         value = browser.getControl(label).value
+    ...         print "%s: %s" % (label, repr(value))
     >>> stephan.getLink('Weight Categories').click()
     >>> stephan.printQuery('//h3/text()')
     Category weights for worksheet Sheet1
-    >>> stephan.printQuery('//label/text()')
-    Assignment
-    Essay
-    Exam
-    Homework
-    Journal
-    Lab
-    Presentation
-    Project
+    >>> printCategoryWeights(stephan)
+    Assignment: ''
+    Essay: ''
+    Exam: ''
+    Homework: ''
+    Journal: ''
+    Lab: ''
+    Presentation: ''
+    Project: ''
 
 First we'll show what happens when a value is invalid.  The only valid weights
 will be numbers between 0 and 100.
@@ -173,13 +177,27 @@ Finally, we'll test hitting the 'Cancel' button.  It should return to the
 gradebook without changing the weights.
 
     >>> stephan.getLink('Weight Categories').click()
-    >>> stephan.getControl('Exam').value
-    '50'
+    >>> printCategoryWeights(stephan)
+    Assignment: '20'
+    Essay: ''
+    Exam: '50'
+    Homework: '30'
+    Journal: ''
+    Lab: ''
+    Presentation: ''
+    Project: ''
     >>> stephan.getControl('Exam').value = u'85'
     >>> stephan.getControl('Cancel').click()
     >>> stephan.getLink('Weight Categories').click()
-    >>> stephan.getControl('Exam').value
-    '50'
+    >>> printCategoryWeights(stephan)
+    Assignment: '20'
+    Essay: ''
+    Exam: '50'
+    Homework: '30'
+    Journal: ''
+    Lab: ''
+    Presentation: ''
+    Project: ''
 
 Let's add a new Assignment activity:
 
@@ -206,3 +224,70 @@ Note how the Average changed for Paul and Tom, but not for Claudia:
     88.5%
     82.5%
     96.9%
+
+Now, let's give Homeworks the 100% of weight:
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Assignment').value = ''
+    >>> stephan.getControl('Exam').value = ''
+    >>> stephan.getControl('Homework').value = '100'
+    >>> stephan.getControl('Update').click()
+
+Let's go back to check that the values of the weights were stored
+correctly:
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> printCategoryWeights(stephan)
+    Assignment: ''
+    Essay: ''
+    Exam: ''
+    Homework: '100'
+    Journal: ''
+    Lab: ''
+    Presentation: ''
+    Project: ''
+
+The Averages have changed:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    85.0%
+    95.0%
+    100.0%
+
+Let's test that explicit zeros are saved:
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Assignment').value = '0.0'
+    >>> stephan.getControl('Essay').value = '0'
+    >>> stephan.getControl('Exam').value = '   '
+    >>> stephan.getControl('Lab').value = '0'
+    >>> stephan.getControl('Project').value = '0'
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> printCategoryWeights(stephan)
+    Assignment: '0'
+    Essay: '0'
+    Exam: ''
+    Homework: '100'
+    Journal: ''
+    Lab: '0'
+    Presentation: ''
+    Project: '0'
+
+Since all these weights are zero, they shouldn't affect the averages:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    85.0%
+    95.0%
+    100.0%
