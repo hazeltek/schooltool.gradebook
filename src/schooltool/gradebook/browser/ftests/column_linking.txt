@@ -526,3 +526,134 @@ Let's go back to the Math I section of the Fall and check the grades for Paul:
     <input id="form-widgets-Activity-2"... value="90" type="text" />
     <span id="form-widgets-LinkedColumnActivity" ...>99</span>
     <span id="form-widgets-LinkedColumnActivity-2" ...></span>
+
+Now, we're going to delete the source of a linked column. Let's delete
+the 2nd Presentation activity of the Second Sheet worksheet, leaving
+the 2nd Presentation linked column of Sheet1 with no source:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getLink('Second Sheet').click()
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getControl(name='delete:list').value = ['Activity-3']
+    >>> stephan.getControl('Delete').click()
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>1stHW</a>
+    </div>
+    <div class="padded">
+      <a ...>1stPr</a>
+    </div>
+
+Now, when we get back to Sheet1, the linked column should have
+disappeared:
+
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <span>PHYSI</span>
+    </div>
+
+Same if we grade a student:
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> stephan.printQuery('//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    Sheet1 (100)
+    >>> stephan.printQuery('//div[@class="widget"]/*')
+    <input id="form-widgets-Activity"... value="40" type="text" />
+    <input id="form-widgets-Activity-2"... value="90" type="text" />
+    <span id="form-widgets-LinkedColumnActivity-2" ...></span>
+
+Deletion should also work with columns linked to the average of a
+worksheet. It's not possible to delete worksheets, but we can hide
+them. Let's hide the Sheet1 worksheet of the Physics Spring section:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getControl(name='hide:list').value = ['Worksheet']
+    >>> stephan.getControl('Hide').click()
+
+    >>> # XXX: Hack to get back to the other term,
+    >>> #      hiding all the worksheets in a gradebook
+    >>> #      makes this impossible, because the Term and Section
+    >>> #      dropdowns are not shown
+    >>> stephan.getLink('Home').click()
+    >>> stephan.getLink('Math I -- Math I (1)').click()
+    >>> stephan.getLink('Gradebook', index=1).click()
+
+We're back to the Sheet1 worksheet of the Math Fall section:
+
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Second Sheet</a>
+    </td>
+
+and we don't see the PHYSICS linked column anymore:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+
+If we unhide the worksheet:
+
+    >>> # XXX: Hack to unhide the only worksheet in the gradebook
+    >>> #      the Unhide button is not shown when all the worksheets
+    >>> #      have been hidden in a gradebook
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Unhide Worksheets').click()
+    >>> url = stephan.url
+    >>> stephan.open(url + '?UNHIDE=True&unhide:list=Worksheet')
+    >>> stephan.getLink('Return to Gradebook').click()
+
+the linked column is shown again:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <span>PHYSI</span>
+    </div>
