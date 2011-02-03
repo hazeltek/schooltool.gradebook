@@ -27,7 +27,7 @@ from schooltool.gradebook import GradebookMessage as _
 ##################     Student reports   ####################
 class StudentReportCardReference(report.StudentReportReference):
     title = _('Student Report Card')
-    description = _('Report Card for a single student')
+    description = _('Contains scores from report sheets and attendance.  Customizable layout.  Formatted to be sent to parents.')
 
 
 class StudentReportCardRequest(report.StudentReportRequest):
@@ -37,7 +37,7 @@ class StudentReportCardRequest(report.StudentReportRequest):
 
 class StudentDetailReportReference(report.StudentReportReference):
     title = _('Student Detail Report')
-    description = _('Detailed report for a single student')
+    description = _('Contains scores from report sheets, detailed attendance and demographic data.  For use by school staff.')
 
 
 class StudentDetailReportRequest(report.StudentReportRequest):
@@ -48,7 +48,7 @@ class StudentDetailReportRequest(report.StudentReportRequest):
 ##################     Group reports   ####################
 class GroupReportCardReference(report.GroupReportReference):
     title = _('Student Report Card by Group')
-    description = _('Report Card for every student in the group')
+    description = _('A single pdf containing report cards for all students in the selected group.')
 
 
 class GroupReportCardRequest(report.GroupReportRequest):
@@ -58,7 +58,7 @@ class GroupReportCardRequest(report.GroupReportRequest):
 
 class GroupDetailReportReference(report.GroupReportReference):
     title = _('Student Detail Report by Group')
-    description = _('Detailed report for every student in the group')
+    description = _('A single pdf containing detail reports for all students in the selected group.')
 
 
 class GroupDetailReportRequest(report.GroupReportRequest):
@@ -69,7 +69,7 @@ class GroupDetailReportRequest(report.GroupReportRequest):
 ##################     SchoolYear reports   ####################
 class AbsencesByDayReference(report.SchoolYearReportReference):
     title = _('Absences By Day')
-    description = _('Reports all students absent on a given day')
+    description = _('Lists students absent on a given day.')
 
 
 class AbsencesByDayRequest(report.SchoolYearReportRequest):
@@ -80,7 +80,7 @@ class AbsencesByDayRequest(report.SchoolYearReportRequest):
 ##################     Term reports   ####################
 class FailingReportReference(report.TermReportReference):
     title = _('Failures by Term')
-    description = _('Reports all students failing a particular activity')
+    description = _('Shows all students receiving failing scores in the selected report activity and term.')
 
 
 class FailingReportRequest(report.TermReportRequest):
@@ -91,7 +91,7 @@ class FailingReportRequest(report.TermReportRequest):
 ##################     Section reports   ####################
 class SectionAbsencesReference(report.SectionReportReference):
     title = _('Absences by Section')
-    description = _('Reports students who were absent or tardy in a section')
+    description = _('Summary of absences and tardies from a single section and term.')
 
 
 class SectionAbsencesRequest(report.SectionReportRequest):
