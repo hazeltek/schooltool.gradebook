@@ -1,0 +1,76 @@
+Report Request Views
+--------------------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+We'll set up a default school with a single section:
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+    >>> setup.addCourse('Math I', '2005-2006')
+    >>> setup.addSection('Math I', '2005-2006', 'Fall',
+    ...                  instructors=[],
+    ...                  members=[])
+
+We'll go to the report reference view to make sure our registered report
+adapters are reflected there.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Reports').click()
+    >>> 'Student Detail Report' in manager.contents
+    True
+    >>> 'Student Report Card' in manager.contents
+    True
+    >>> 'Student Detail Report by Group' in manager.contents
+    True
+    >>> 'Student Report Card by Group' in manager.contents
+    True
+    >>> 'Absences by Section' in manager.contents
+    True
+    >>> 'Absences By Day' in manager.contents
+    True
+    >>> 'Failures by Term' in manager.contents
+    True
+
+Now we'll visit the various context types and see that the registered report
+request adapters are reflected in the report request views.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Persons').click()
+    >>> manager.getLink('Administrator').click()
+    >>> manager.getLink('Reports').click()
+    >>> 'http://localhost/persons/manager/request_report_card.html' in manager.contents
+    True
+    >>> 'http://localhost/persons/manager/request_student_detail.html' in manager.contents
+    True
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> 'http://localhost/schoolyears/2005-2006/groups/students/request_report_card.html' in manager.contents
+    True
+    >>> 'http://localhost/schoolyears/2005-2006/groups/students/request_student_detail.html' in manager.contents
+    True
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Reports').click()
+    >>> 'http://localhost/schoolyears/2005-2006/request_absences_by_day.html' in manager.contents
+    True
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Reports').click()
+    >>> 'http://localhost/schoolyears/2005-2006/fall/request_failing_report.html' in manager.contents
+    True
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Math I (1)').click()
+    >>> manager.getLink('Reports').click()
+    >>> 'http://localhost/schoolyears/2005-2006/fall/sections/1/section_absences.pdf' in manager.contents
+    True
+
