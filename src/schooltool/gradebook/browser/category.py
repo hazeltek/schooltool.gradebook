@@ -25,7 +25,7 @@ __docformat__ = 'reStructuredText'
 import zope.interface
 import zope.schema
 from zope.app.form import utility
-from zope.app.form.interfaces import IInputWidget
+from zope.formlib.interfaces import IInputWidget
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.app import app

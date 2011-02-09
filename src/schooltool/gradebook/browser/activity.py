@@ -34,7 +34,7 @@ from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.api import getName
-from zope.app.form.browser.interfaces import ITerms
+from zope.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
 from zope.security.proxy import removeSecurityProxy
 from zope.component import queryAdapter, getAdapter

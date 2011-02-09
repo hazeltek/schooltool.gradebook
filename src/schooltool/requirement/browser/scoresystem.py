@@ -24,8 +24,9 @@ __docformat__ = 'reStructuredText'
 
 from decimal import Decimal
 
+import zope.formlib
 import zope.schema
-from zope.app import form
+from zope.app.form import utility
 from zope.browserpage import ViewPageTemplateFile
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
@@ -310,19 +311,19 @@ class WidgetData(object):
 
 class ScoreSystemWidget(object):
     """Score System Widget"""
-    implements(form.browser.interfaces.IBrowserWidget,
-                              form.interfaces.IInputWidget)
+    implements(zope.formlib.interfaces.IBrowserWidget,
+               zope.formlib.interfaces.IInputWidget)
 
     template = ViewPageTemplateFile('scoresystemwidget.pt')
     _prefix = 'field.'
     _error = ''
 
-    # See zope.app.form.interfaces.IWidget
+    # See zope.formlib.interfaces.IWidget
     name = None
     label = property(lambda self: self.context.title)
     hint = property(lambda self: self.context.description)
     visible = True
-    # See zope.app.form.interfaces.IInputWidget
+    # See zope.formlib.interfaces.IInputWidget
     required = property(lambda self: self.context.required)
 
     def __init__(self, field, request):
@@ -338,12 +339,12 @@ class ScoreSystemWidget(object):
             else:
                 data.existing = ss
         self.name = self._prefix + field.__name__
-        form.utility.setUpEditWidgets(self, IWidgetData, source=data,
-                                      prefix=self.name+'.')
+        utility.setUpEditWidgets(self, IWidgetData, source=data,
+                                 prefix=self.name+'.')
 
 
     def setRenderedValue(self, value):
-        """See zope.app.form.interfaces.IWidget"""
+        """See zope.formlib.interfaces.IWidget"""
         if scoresystem.ICustomScoreSystem.providedBy(value):
             self.custom_widget.setRenderedValue(True)
             self.min_widget.setRenderedValue(value.min)
@@ -353,7 +354,7 @@ class ScoreSystemWidget(object):
 
 
     def setPrefix(self, prefix):
-        """See zope.app.form.interfaces.IWidget"""
+        """See zope.formlib.interfaces.IWidget"""
         # Set the prefix locally
         if not prefix.endswith("."):
             prefix += '.'
@@ -366,7 +367,7 @@ class ScoreSystemWidget(object):
 
 
     def getInputValue(self):
-        """See zope.app.form.interfaces.IInputWidget"""
+        """See zope.formlib.interfaces.IInputWidget"""
         if self.custom_widget.getInputValue():
             min = self.min_widget.getInputValue()
             max = self.max_widget.getInputValue()
@@ -379,7 +380,7 @@ class ScoreSystemWidget(object):
 
 
     def applyChanges(self, content):
-        """See zope.app.form.interfaces.IInputWidget"""
+        """See zope.formlib.interfaces.IInputWidget"""
         field = self.context
         new_value = self.getInputValue()
         old_value = field.query(content, self)
@@ -400,7 +401,7 @@ class ScoreSystemWidget(object):
 
 
     def hasInput(self):
-        """See zope.app.form.interfaces.IInputWidget"""
+        """See zope.formlib.interfaces.IInputWidget"""
         flag = ((self.existing_widget.hasInput() and
                  self.existing_widget.getInputValue()) or
                 (self.custom_widget.hasValidInput() and
@@ -411,7 +412,7 @@ class ScoreSystemWidget(object):
 
 
     def hasValidInput(self):
-        """See zope.app.form.interfaces.IInputWidget"""
+        """See zope.formlib.interfaces.IInputWidget"""
         if (self.custom_widget.hasValidInput() and
             self.custom_widget.getInputValue()):
             return (self.min_widget.hasValidInput() and
@@ -421,7 +422,7 @@ class ScoreSystemWidget(object):
 
 
     def hidden(self):
-        """See zope.app.form.browser.interfaces.IBrowserWidget"""
+        """See zope.formlib.browser.interfaces.IBrowserWidget"""
         if (self.custom_widget.hasValidInput() and
             self.custom_widget.getInputValue()):
             output = []
@@ -434,7 +435,7 @@ class ScoreSystemWidget(object):
 
 
     def error(self):
-        """See zope.app.form.browser.interfaces.IBrowserWidget"""
+        """See zope.formlib.browser.interfaces.IBrowserWidget"""
         if self._error:
             return self._error
 
@@ -454,5 +455,5 @@ class ScoreSystemWidget(object):
 
 
     def __call__(self):
-        """See zope.app.form.browser.interfaces.IBrowserWidget"""
+        """See zope.formlib.browser.interfaces.IBrowserWidget"""
         return self.template()
