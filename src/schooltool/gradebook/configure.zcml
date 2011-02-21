@@ -294,58 +294,6 @@
       provides="zope.publisher.interfaces.IPublishTraverse"
       factory=".gradebook.StudentGradebookTraverser" />
 
-  <!-- Student report adapters -->
-  <adapter
-      factory=".report_adapters.StudentReportCardReference"
-      name="schooltool.gradebook.student_report_card_reference" />
-  <adapter
-      factory=".report_adapters.StudentReportCardRequest"
-      name="schooltool.gradebook.student_report_card_request" />
-  <adapter
-      factory=".report_adapters.StudentDetailReportReference"
-      name="schooltool.gradebook.student_detail_reference" />
-  <adapter
-      factory=".report_adapters.StudentDetailReportRequest"
-      name="schooltool.gradebook.student_detail_request" />
-
-  <!-- Group report adapters -->
-  <adapter
-      factory=".report_adapters.GroupReportCardReference"
-      name="schooltool.gradebook.group_report_card_reference" />
-  <adapter
-      factory=".report_adapters.GroupReportCardRequest"
-      name="schooltool.gradebook.group_report_card_request" />
-  <adapter
-      factory=".report_adapters.GroupDetailReportReference"
-      name="schooltool.gradebook.group_detail_reference" />
-  <adapter
-      factory=".report_adapters.GroupDetailReportRequest"
-      name="schooltool.gradebook.group_detail_request" />
-
-  <!-- SchoolYear report adapters -->
-  <adapter
-      factory=".report_adapters.AbsencesByDayReference"
-      name="schooltool.gradebook.absences_by_day_reference" />
-  <adapter
-      factory=".report_adapters.AbsencesByDayRequest"
-      name="schooltool.gradebook.absences_by_day_request" />
-
-  <!-- Term report adapters -->
-  <adapter
-      factory=".report_adapters.FailingReportReference"
-      name="schooltool.gradebook.failing_report_reference" />
-  <adapter
-      factory=".report_adapters.FailingReportRequest"
-      name="schooltool.gradebook.failing_report_request" />
-
-  <!-- Section report adapters -->
-  <adapter
-      factory=".report_adapters.SectionAbsencesReference"
-      name="schooltool.gradebook.section_absences_reference" />
-  <adapter
-      factory=".report_adapters.SectionAbsencesRequest"
-      name="schooltool.gradebook.section_absences_request" />
-
   <!-- apidoc help setup -->
   <configure
       xmlns:zcml="http://namespaces.zope.org/zcml"

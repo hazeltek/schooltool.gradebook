@@ -128,7 +128,7 @@ class RequestFailingReportView(BrowserView):
         return absoluteURL(self.context, self.request) + '/failures_by_term.pdf'
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+        return absoluteURL(self.context, self.request) + '/reports'
 
 
 class RequestAbsencesByDayView(BrowserView):
@@ -173,7 +173,7 @@ class RequestAbsencesByDayView(BrowserView):
         return absoluteURL(self.context, self.request) + '/absences_by_day.pdf'
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+        return absoluteURL(self.context, self.request) + '/reports'
 
 
 class RequestStudentReportView(BrowserView):
@@ -238,5 +238,5 @@ class RequestStudentReportView(BrowserView):
         return absoluteURL(self.context, self.request) + url
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+        return absoluteURL(self.context, self.request) + '/reports'
 
