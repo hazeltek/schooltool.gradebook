@@ -2,8 +2,8 @@
 CHANGES
 =======
 
-0.9.0 (unreleased)
-------------------
+0.9.0a1 (2011-02-23)
+--------------------
 
 - Fixed default category selection for new activity form (https://launchpad.net/bugs/562875)
 
@@ -16,7 +16,7 @@ CHANGES
 - Use fixed precision for total and linked columns (https://launchpad.net/bugs/650838)
 - Fix to let students view section's gradebook.
 - Cosmetic fixes in various pages.
-- Updated translations (es, nl)
+- Updated translations (es, lt, nl)
 
 
 0.8.0 (2010-09-16)
