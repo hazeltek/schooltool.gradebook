@@ -55,7 +55,6 @@ Log in as stephan, teacher of the Physics sections:
 Add a couple of activities to the default worksheet:
 
     >>> stephan.getLink('Gradebook').click()
-    >>> url = stephan.url
 
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005 / Semester1
@@ -89,7 +88,8 @@ Add some grades:
 
 Let's go to his other section in the 2006 year:
 
-    >>> stephan.open(url+'?currentTerm=2006-.semester1-')
+    >>> stephan.getControl(name='currentTerm').value = ['2006-.semester1-']
+    >>> stephan.getForm().submit()
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2006 / Semester1
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
@@ -128,7 +128,6 @@ Now let's log in as Alan:
 Add a couple of activities to the default worksheet:
 
     >>> alan.getLink('Gradebook').click()
-    >>> url = alan.url
 
     >>> alan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005 / Semester2
@@ -162,7 +161,8 @@ Add some grades:
 
 Let's go to his other section in the 2006 year:
 
-    >>> alan.open(url+'?currentTerm=2006-.semester2-')
+    >>> alan.getControl(name='currentTerm').value = ['2006-.semester2-']
+    >>> alan.getForm().submit()
     >>> alan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2006 / Semester2
     >>> alan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
@@ -190,7 +190,6 @@ Add some grades:
 
     >>> alan.getControl(name='Activity-2_paul').value = '70'
     >>> alan.getControl(name='Activity-2_tom').value = '80'
-    >>> alan.getControl(name='Activity-2_claudia').value = '100'
 
     >>> alan.getControl('Save').click()
 
@@ -238,7 +237,6 @@ We supply a CSV view for getting all grades out of schooltool in CSV format.
     "2006","semester1","1","Worksheet","Activity","tom","80"
     "2006","semester1","1","Worksheet","Activity-2","tom","95"
     "2006","semester2","1","Worksheet","Activity","claudia","100"
-    "2006","semester2","1","Worksheet","Activity-2","claudia","100"
     "2006","semester2","1","Worksheet","Activity","paul","70"
     "2006","semester2","1","Worksheet","Activity-2","paul","70"
     "2006","semester2","1","Worksheet","Activity","tom","85"

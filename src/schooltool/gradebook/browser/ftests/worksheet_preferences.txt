@@ -16,10 +16,18 @@ preference.
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Score Systems').click()
     >>> manager.getLink('Add Score System').click()
-    >>> url = manager.url + '?form-submitted&UPDATE_SUBMIT&title=Good/Bad'
-    >>> url = url + '&displayed1=Good&abbr1=G&value1=1&percent1=70'
-    >>> url = url + '&displayed2=Bad&abbr2=B&value2=0&percent2=0'
-    >>> manager.open(url)
+
+    >>> manager.getControl('Title').value = 'Good/Bad'
+    >>> manager.getControl(name='displayed1').value = 'Good'
+    >>> manager.getControl(name='abbr1').value = 'G'
+    >>> manager.getControl(name='value1').value = '1'
+    >>> manager.getControl(name='percent1').value = '70'
+    >>> manager.getControl('Add a lower score').click()
+    >>> manager.getControl(name='displayed2').value = 'Bad'
+    >>> manager.getControl(name='abbr2').value = 'B'
+    >>> manager.getControl(name='value2').value = '0'
+    >>> manager.getControl(name='percent2').value = '0'
+    >>> manager.getControl('Save').click()
 
 Now, set up a school year (2005-2006) with two terms (Fall and
 Spring):
@@ -170,20 +178,20 @@ Due date filter was also hidden:
 Look that all the preferences were saved
 
     >>> stephan.getLink('Preferences').click()
-    >>> analyze.printQuery("id('content-body')/form//table//input", stephan.contents)
+    >>> stephan.printQuery("id('content-body')/form//table//input")
     <input type="checkbox" checked="checked" name="hide_total" />
     <input type="text" name="label_total" value="Summe" />
     <input type="checkbox" checked="checked" name="hide_average" />
     <input type="text" name="label_average" value="Durchschnitt" />
 
-    >>> analyze.printQuery("id('content-body')/form//table//option", stephan.contents)
+    >>> stephan.printQuery("id('content-body')/form//table//option")
     <option value="">-- No score system --</option>
     <option value="extended-letter-grade">Extended Letter Grade</option>
     <option selected="selected" value="goodbad">Good/Bad</option>
     <option value="letter-grade">Letter Grade</option>
     <option value="passfail">Pass/Fail</option>
 
-    >>> analyze.printQuery("id('content-body')/form//input[@name='hide_due_date']", stephan.contents)
+    >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
     <input type="checkbox" name="hide_due_date" checked="checked" />
 
 Show the total and average columns, and test that Average is converted to Good/Bad:

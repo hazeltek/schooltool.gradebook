@@ -18,14 +18,33 @@ and label get rendered in the case of maximum passing score systems.
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Score Systems').click()
     >>> manager.getLink('Add Score System').click()
-    >>> base_url = manager.url + '?form-submitted&UPDATE_SUBMIT'
-    >>> url = base_url + '&title=Max&displayed1=A&abbr1=&value1=4&percent1=75'
-    >>> url = url + '&displayed2=B&abbr2=&value2=3&percent2=50'
-    >>> url = url + '&displayed3=C&abbr3=&value3=2&percent3=25'
-    >>> url = url + '&displayed4=D&abbr4=&value4=1&percent4=0'
-    >>> url = url + '&minScore=C'
-    >>> url = url + '&minMax=max'
-    >>> manager.open(url)
+
+    >>> manager.getControl('Title').value = 'Max'
+
+    >>> manager.getControl(name='displayed1').value = 'A'
+    >>> manager.getControl(name='value1').value = '4'
+    >>> manager.getControl(name='percent1').value = '75'
+    >>> manager.getControl('Add a lower score').click()
+
+    >>> manager.getControl(name='displayed2').value = 'B'
+    >>> manager.getControl(name='value2').value = '3'
+    >>> manager.getControl(name='percent2').value = '50'
+    >>> manager.getControl('Add a lower score').click()
+
+    >>> manager.getControl(name='displayed3').value = 'C'
+    >>> manager.getControl(name='value3').value = '2'
+    >>> manager.getControl(name='percent3').value = '25'
+    >>> manager.getControl('Add a lower score').click()
+
+    >>> manager.getControl(name='displayed4').value = 'D'
+    >>> manager.getControl(name='value4').value = '1'
+    >>> manager.getControl(name='percent4').value = '0'
+    >>> manager.getControl('Add a lower score').click()
+
+    >>> manager.getControl(name='minMax').value = ['max']
+    >>> manager.getControl(name='minScore').value = ['C']
+
+    >>> manager.getControl('Save').click()
 
 We will set up a report sheet template with three activities, one standard
 discrete, one custom discrete maximum passing, and one ranged values.
@@ -67,16 +86,24 @@ specify the source in a query string in order to test the resultant contents
 of the scores field.
 
     >>> manager.getLink('Reports').click()
-    >>> url = manager.getLink('Failures by Term').url + '?source='
+    >>> manager.getLink('Failures by Term').click()
+    >>> manager.printQuery('//h3/text()')
+    Request Failures by Term Report
 
 The first report activity is letter grade, minimum passing score of 'D'.
 
-    >>> manager.open(url + 'spring|2005-2006_spring|ReportActivity')
+    >>> manager.printQuery('id("source")/option/text()')
+    Choose a report activity
+    Spring - Test - Activity 1
+    Spring - Test - Activity 2
+    Spring - Test - Activity 3
+    
+    >>> manager.getControl('Report Activity').value = ['spring|2005-2006_spring|ReportActivity']
+    >>> manager.getForm().submit()
 
-    >>> analyze.printQuery("//label[@for='score']", manager.contents)
+    >>> manager.printQuery('//label[@for="score"]')
     <label for="score">Minimum Passing Score</label>
-
-    >>> analyze.printQuery("id('score')//option", manager.contents)
+    >>> manager.printQuery('id("score")/option')
     <option value="A">A</option>
     <option value="B">B</option>
     <option value="C">C</option>
@@ -85,12 +112,12 @@ The first report activity is letter grade, minimum passing score of 'D'.
 
 The second report activity is a maximum passing score system with max of 'C'.
 
-    >>> manager.open(url + 'spring|2005-2006_spring|ReportActivity-2')
+    >>> manager.getControl('Report Activity').value = ['spring|2005-2006_spring|ReportActivity-2']
+    >>> manager.getForm().submit()
 
-    >>> analyze.printQuery("//label[@for='score']", manager.contents)
+    >>> manager.printQuery('//label[@for="score"]')
     <label for="score">Maximum Passing Score</label>
-
-    >>> analyze.printQuery("id('score')//option", manager.contents)
+    >>> manager.printQuery('id("score")//option')
     <option value="A">A</option>
     <option value="B">B</option>
     <option selected="selected" value="C">C</option>
@@ -99,11 +126,10 @@ The second report activity is a maximum passing score system with max of 'C'.
 The third report activity is a ranged values score system so the min field is
 a text box.
 
-    >>> manager.open(url + 'spring|2005-2006_spring|ReportActivity-3')
+    >>> manager.getControl('Report Activity').value = ['spring|2005-2006_spring|ReportActivity-3']
+    >>> manager.getForm().submit()
 
-    >>> analyze.printQuery("//label[@for='score']", manager.contents)
+    >>> manager.printQuery('//label[@for="score"]')
     <label for="score">Minimum Passing Score</label>
-
-    >>> analyze.printQuery("id('score')", manager.contents)
+    >>> manager.printQuery('id("score")')
     <input type="text" id="score" name="score" />
-

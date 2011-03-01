@@ -50,7 +50,6 @@ Log in as teacher:
 Add a couple of activities to the default worksheet:
 
     >>> stephan.getLink('Gradebook').click()
-    >>> url = stephan.url
     >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
@@ -208,8 +207,8 @@ Check the total and averages for this worksheet:
 We'll switch to the Spring term and add some activities and scores to
 the Physics I section:
 
-    >>> stephan.open(url+'?currentTerm=2005-2006-.spring-')
-
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getForm().submit()
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Lab 1'
     >>> stephan.getControl('Description').value = 'Laboratory 1'
@@ -264,7 +263,9 @@ values later:
 Now we'll return to the Fall Math I section and add our first linked
 column to the Sheet1 worksheet:
 
-    >>> stephan.open(url+'?currentTerm=2005-2006-.fall-')
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Sheet1').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
     <td class="active_tab">
       <span style="font-weight: bold;">Sheet1</span>
@@ -381,7 +382,8 @@ grade for Paul's Second Presentation of the Second Sheet:
 And let's change a grade for Tom in the Spring Physics I section so
 his average also changes:
 
-    >>> stephan.open(url+'?currentTerm=2005-2006-.spring-')
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getForm().submit()
     >>> stephan.getLink('Final').click()
     >>> stephan.getControl('Hoffman, Tom').value = u'60'
     >>> stephan.getControl('Save').click()
@@ -400,7 +402,9 @@ his average also changes:
 
 The linked columns should also change:
 
-    >>> stephan.open(url+'?currentTerm=2005-2006-.fall-')
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Sheet1').click()
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
     <div>Name</div>
     <div>Total</div>
