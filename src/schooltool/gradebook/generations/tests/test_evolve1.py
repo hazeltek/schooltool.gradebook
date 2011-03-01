@@ -27,6 +27,7 @@ from zope.app.generations.utility import getRootFolder
 
 from schooltool.gradebook.generations.tests import ContextStub
 from schooltool.gradebook.generations.tests import provideAdapters
+from schooltool.gradebook.generations.tests import provideUtilities
 from schooltool.gradebook.generations.evolve1 import evolve
 
 
@@ -36,6 +37,7 @@ def doctest_evolve1():
     First, we'll set up the app object:
 
         >>> provideAdapters()
+        >>> provideUtilities()
         >>> context = ContextStub()
         >>> app = getRootFolder(context)
 

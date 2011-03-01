@@ -28,6 +28,7 @@ from zope.interface import implements
 
 from schooltool.gradebook.generations.tests import ContextStub
 from schooltool.gradebook.generations.tests import provideAdapters
+from schooltool.gradebook.generations.tests import provideUtilities
 from schooltool.gradebook.generations.evolve2 import evolve
 from schooltool.requirement.interfaces import ICustomScoreSystem
 
@@ -46,6 +47,7 @@ def doctest_evolve2():
     First, we'll set up the app object:
 
         >>> provideAdapters()
+        >>> provideUtilities()
         >>> context = ContextStub()
         >>> app = getRootFolder(context)
 

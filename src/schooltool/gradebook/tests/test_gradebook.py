@@ -27,11 +27,12 @@ from pprint import pprint
 import z3c.optionstorage
 import zope.annotation.interfaces
 from zope.app.testing import setup
-from zope.component import provideAdapter
+from zope.component import provideAdapter, provideUtility
 
 from schooltool.course.interfaces import ISection
 from schooltool.relationship.tests import setUpRelationships
 from schooltool.requirement import testing
+from schooltool.term.interfaces import IDateManager
 from schooltool.gradebook import activity, gradebook, interfaces
 from schooltool.gradebook.tests import stubs
 
@@ -62,6 +63,8 @@ def setUp(test):
         stubs.ThirdPartyStub,
         (ISection,), interfaces.IExternalActivities,
         name=u"thirdparty")
+
+    provideUtility(stubs.DateManagerStub(), IDateManager, '')
 
 
 def tearDown(test):

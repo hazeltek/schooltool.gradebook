@@ -37,13 +37,14 @@ from zope.traversing.api import getName
 from zope.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
 from zope.security.proxy import removeSecurityProxy
-from zope.component import queryAdapter, getAdapter
+from zope.component import queryAdapter, getAdapter, queryUtility
 from zope.formlib import form
 from zope import interface, schema
 from zope.viewlet.viewlet import ViewletBase
 
 from z3c.form import form as z3cform
-from z3c.form import field, button
+from z3c.form import field, button, widget
+from z3c.form.interfaces import DISPLAY_MODE
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IDemographics
@@ -60,7 +61,7 @@ from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.term.interfaces import ITerm
+from schooltool.term.interfaces import ITerm, IDateManager
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -214,25 +215,38 @@ class ActivityAddView(z3cform.AddForm):
     def nextURL(self):
         return absoluteURL(self.context, self.request)
 
-    def updateWidgets(self):
-        super(ActivityAddView, self).updateWidgets()
-        # XXX replaceafill: is there a better way of setting the
-        #                   default category?
-        categories = getCategories(ISchoolToolApplication(None))
-        if not self.widgets['category'].value:
-            self.widgets['category'].value = [categories.getDefaultKey()]
 
-
-class LinkedActivityAddView(form.AddForm):
+class LinkedActivityAddView(z3cform.AddForm):
     """A view for adding a linked activity."""
 
-    form_fields = form.Fields(ILinkedActivityFields,
-                              interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "due_date", "label",
-                                     "category", "points")
-
     label = _(u"Add an External Activity")
-    template = ViewPageTemplateFile("templates/linkedactivity_add.pt")
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
+
+    fields = field.Fields(ILinkedActivityFields,
+                          interfaces.ILinkedActivity)
+    fields = fields.select("external_activity", "label", "due_date",
+                           "category", "points")
+
+    def updateActions(self):
+        super(LinkedActivityAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    @button.buttonAndHandler(_('Add'), name='add')
+    def handleAdd(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        obj = self.createAndAdd(data)
+        if obj is not None:
+            # mark only as finished if we get the new object
+            self._finishedAdd = True
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
 
     def create(self, data):
         adapter = data.get("external_activity")[0]
@@ -242,27 +256,21 @@ class LinkedActivityAddView(form.AddForm):
         label = data.get("label")
         due_date = data.get("due_date")
         return LinkedActivity(external_activity, category, points,
-                                       label, due_date)
+                              label, due_date)
 
-    @form.action(_("Add"), condition=form.haveInputWidgets)
-    def handle_add(self, action, data):
-        self.createAndAdd(data)
-
-    @form.action(_("Cancel"), validator=lambda *x:())
-    def handle_cancel_action(self, action, data):
-        self.request.response.redirect(self.nextURL())
+    def add(self, activity):
+        """Add activity to the worksheet."""
+        chooser = INameChooser(self.context)
+        name = chooser.chooseName('', activity)
+        self.context[name] = activity
+        self.updateGrades(activity)
+        return activity
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        return absoluteURL(self.context, self.request)
 
     def updateGrades(self, linked_activity):
         LinkedActivityGradesUpdater().update(linked_activity, self.request)
-
-    def add(self, object):
-        ob = self.context.add(object)
-        self.updateGrades(object)
-        self._finished_add = True
-        return ob
 
 
 class BaseEditView(EditView):
@@ -310,30 +318,35 @@ class ActivityEditView(z3cform.EditForm):
         return absoluteURL(worksheet, self.request) + '/manage.html'
 
 
-class LinkedActivityEditView(form.EditForm):
-    """A view for editing a linked activity."""
+class LinkedActivityEditView(z3cform.EditForm):
+    """Edit form for linked activity."""
 
-    form_fields = form.Fields(
-        form.Fields(ILinkedActivityFields, for_display=True),
-        interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "title", 'label',
-                                     'due_date', "description", "category",
-                                     "points")
+    z3cform.extends(z3cform.EditForm)
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
+    label = _(u'Edit External Activity')
 
-    label = _(u"Edit External Activity")
-    template = ViewPageTemplateFile("templates/linkedactivity_edit.pt")
+    fields = field.Fields(ILinkedActivityFields, mode=DISPLAY_MODE)
+    fields += field.Fields(interfaces.ILinkedActivity)
+    fields = fields.select("external_activity", "title", 'label',
+                           'due_date', "description", "category",
+                           "points")
 
-    @form.action(_("Apply"), condition=form.haveInputWidgets)
-    def handle_edit(self, action, data):
-        form.applyChanges(self.context, self.form_fields, data)
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
         self.request.response.redirect(self.nextURL())
 
-    @form.action(_("Cancel"), validator=lambda *x:())
-    def handle_cancel_action(self, action, data):
+    def updateActions(self):
+        super(LinkedActivityEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    def applyChanges(self, data):
+        super(LinkedActivityEditView, self).applyChanges(data)
         self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        worksheet = self.context.__parent__
+        return absoluteURL(worksheet, self.request)
 
 
 class WeightCategoriesView(object):
@@ -654,3 +667,24 @@ class EditLinkedColumnView(LinkedColumnBase):
             self.buildUpdateTarget(self.context)
             self.request.response.redirect(self.nextURL())
 
+
+def defaultCategory(adapter):
+    categories = getCategories(ISchoolToolApplication(None))
+    return categories.getDefaultKey()
+
+
+ActivityDefaultCategory = widget.ComputedWidgetAttribute(
+    defaultCategory,
+    field=interfaces.IActivity['category']
+    )
+
+
+def defaultDueDate(adapter):
+    today = queryUtility(IDateManager).today
+    return today
+
+
+ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
+    defaultDueDate,
+    field=interfaces.IActivity['due_date']
+    )
