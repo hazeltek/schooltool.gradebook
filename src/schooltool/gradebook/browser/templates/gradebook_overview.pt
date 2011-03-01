@@ -6,8 +6,36 @@
     Gradebook
   </title>
   <metal:block fill-slot="extrahead">
-    <script type="text/javascript" src="gradebook_overview.js">
+    <script type="text/javascript" tal:attributes="src context/++resource++gradebook_overview.js">
     </script>
+    <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
+      var numstudents = <tal:block replace="python: len(view.students)"/>;
+      var students = new Array(numstudents);
+      <tal:loop repeat="row view/table">
+      students[<tal:block replace="repeat/row/index"/>] = '<tal:block replace="python: view.breakJSString(row['student']['id'])"/>';
+      </tal:loop>
+      var numactivities = <tal:block replace="python: len(view.scorableActivities())"/>;
+      var activities = new Array(numactivities);
+      <tal:loop repeat="activity view/activities">
+      activities[<tal:block replace="repeat/activity/index"/>] = '<tal:block replace="activity/hash"/>';
+      </tal:loop>
+      var numscores = <tal:block replace="python: len(view.scores)"/>;
+      var scores = new Object();
+      <tal:loop repeat="activity view/scores">
+      scores['<tal:block replace="activity" />'] = new Array(<tal:block replace="python: view.scores[activity]" />);
+      </tal:loop>
+      var numdescriptions = <tal:block replace="python: len(view.descriptions)"/>;
+      var descriptions = new Array(numdescriptions);
+      <tal:loop repeat="activity view/descriptions">
+      descriptions['<tal:block replace="activity/act_hash"/>'] = '<tal:block replace="activity/description"/>';
+      </tal:loop>
+      var edited = false;
+      var currentCell;
+      var currentDesc = '';
+      window.onload = onLoadHandler;
+      window.onunload = checkChanges;
+      warningText = '<tal:block replace="view/warningText" />';
+    <metal:block tal:replace="structure string:&lt;/script&gt;" />
   </metal:block>
 </head>
 <body>
@@ -68,7 +96,7 @@
 
     <tal:if condition="not: view/due_date_hide">
       <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-      <input type="checkbox" checked name="due_date" 
+      <input type="checkbox" checked="checked" name="due_date" 
              tal:condition="view/getDueDateFilter" />
       <input type="checkbox" name="due_date:list" 
              tal:condition="not: view/getDueDateFilter" />
