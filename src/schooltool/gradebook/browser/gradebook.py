@@ -113,7 +113,7 @@ class GradebookStartup(object):
             url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
             self.request.response.redirect(url)
             return ''
-        template = ViewPageTemplateFile('gradebook_startup.pt')
+        template = ViewPageTemplateFile('templates/gradebook_startup.pt')
         return template(self)
 
     def update(self):
@@ -973,7 +973,7 @@ class NoCurrentTerm(BrowserView):
 class GradeStudent(z3cform.EditForm):
     """Edit form for a student's grades."""
     z3cform.extends(z3cform.EditForm)
-    template = ViewPageTemplateFile('grade_student.pt')
+    template = ViewPageTemplateFile('templates/grade_student.pt')
 
     def __init__(self, context, request):
         super(GradeStudent, self).__init__(context, request)
