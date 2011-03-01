@@ -26,7 +26,6 @@ import xlwt
 from StringIO import StringIO
 
 from zope.container.interfaces import INameChooser
-from zope.app.form.browser.editview import EditView
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
@@ -38,7 +37,6 @@ from zope.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
 from zope.security.proxy import removeSecurityProxy
 from zope.component import queryAdapter, getAdapter, queryUtility
-from zope.formlib import form
 from zope import interface, schema
 from zope.viewlet.viewlet import ViewletBase
 
@@ -249,7 +247,6 @@ class LinkedActivityAddView(z3cform.AddForm):
         self.request.response.redirect(url)
 
     def create(self, data):
-        adapter = data.get("external_activity")[0]
         external_activity = data.get("external_activity")[1]
         category = data.get("category")
         points = data.get("points")
@@ -271,19 +268,6 @@ class LinkedActivityAddView(z3cform.AddForm):
 
     def updateGrades(self, linked_activity):
         LinkedActivityGradesUpdater().update(linked_activity, self.request)
-
-
-class BaseEditView(EditView):
-    """A base class for edit views that need special redirect."""
-
-    def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect(self.nextURL())
-        else:
-            status = EditView.update(self)
-            if 'UPDATE_SUBMIT' in self.request and not self.errors:
-                self.request.response.redirect(self.nextURL())
-            return status
 
 
 class ActivityEditView(z3cform.EditForm):

@@ -129,7 +129,8 @@ activities:
 
 Let's add a new external activity as an assignment. For this test we
 have registered two external utilities stubs titled "Hardware" and
-"HTML" (see schooltool.gradebook.tests.stubs):
+"HTML" (see schooltool.gradebook.tests.stubs). We'll also test the
+Cancel button in that form:
 
     >>> stephan.getLink('New External Activity').click()
     >>> stephan.printQuery('//h3/text()')
@@ -137,6 +138,11 @@ have registered two external utilities stubs titled "Hardware" and
     >>> stephan.printQuery('id("form-widgets-external_activity")/option[@value!=""]/text()')
     Sample Source - HTML
     Sample Source - Hardware
+    >>> stephan.getControl('Cancel').click()
+
+    >>> stephan.getLink('New External Activity').click()
+    >>> stephan.printQuery('//h3/text()')
+    Add an External Activity
     >>> stephan.getControl('External Activity').value = ['samplesource-hardware']
     >>> stephan.getControl('Category').value = ['assignment']
     >>> stephan.getControl('Points').value = '15'
@@ -188,7 +194,8 @@ loaded with the latest grades:
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
-recalculate the activity grades from the external activity:
+recalculate the activity grades from the external activity. We'll also
+test the Cancel button in that form:
 
     >>> stephan.getLink('Manage Worksheet').click()
     >>> stephan.getLink('Hardware').click()
@@ -215,6 +222,12 @@ recalculate the activity grades from the external activity:
     Assignment
     >>> stephan.printQuery('id("form-widgets-points")/@value')
     15
+    >>> stephan.getControl('Cancel').click()
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Hardware').click()
+    >>> stephan.printQuery('//h3/text()')
+    Edit External Activity
     >>> stephan.getControl('Title').value = u"Hardware Assignment"
     >>> stephan.getControl('Description').value = "The Hardware assignment"
     >>> stephan.getControl('Points').value = '25'

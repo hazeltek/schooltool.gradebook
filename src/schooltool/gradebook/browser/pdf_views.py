@@ -44,7 +44,7 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_KEY)
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.gradebook.interfaces import IGradebook, IWorksheet
+from schooltool.gradebook.interfaces import IGradebook
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
@@ -671,7 +671,6 @@ class SectionAbsencesPDFView(BasePDFView):
             student_data['absences'] = 0
             student_data['tardies'] = 0
             for meeting in jd.recordedMeetings(student):
-                period = meeting.period_id[:5]
                 grade = jd.getGrade(student, meeting)
                 if grade == 'n':
                     student_data['absences'] += 1
@@ -772,7 +771,6 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
         return _('Student')
 
     def widths(self, start_col, end_col):
-        result = '6cm' + ',1.6cm' * (8)
         num_cols = end_col - start_col
         if not self.total_hide:
             num_cols += 1
