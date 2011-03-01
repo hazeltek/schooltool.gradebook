@@ -11,10 +11,11 @@ Spring):
     >>> from schooltool.app.browser.ftests import setup
     >>> setup.setUpBasicSchool()
 
-Set up two courses:
+Set up three courses:
 
     >>> setup.addCourse('Physics I', '2005-2006')
     >>> setup.addCourse('English I', '2005-2006')
+    >>> setup.addCourse('Math I', '2005-2006')
 
 Set up persons:
 
@@ -24,9 +25,13 @@ Set up persons:
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
 
-Set up two sections with instructor and students for the Fall:
+Set up three sections with instructor and students, two for the Fall
+and one for the Spring:
 
     >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Math I', '2005-2006', 'Fall',
     ...                  instructors=['Stephan'],
     ...                  members=['Tom', 'Claudia', 'Paul'])
     >>> setup.addSection('English I', '2005-2006', 'Spring',
@@ -110,6 +115,7 @@ to the first one.
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option/text()')
     Physics I - Physics I (1)
+    Math I - Math I (2)
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Physics I - Physics I (1)
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
@@ -124,8 +130,50 @@ to the first one.
     Hoffman, Tom
     Richter, Claudia
 
-Now, let's add some activities to it.  After adding the first activity we'll
-note that the new activity appears in the gradebook.
+Now, we'll test the Term and Section dropdowns which allow the
+teachers to navigate through their sections. Lets change to Stephan's
+Math section of the Fall:
+
+    >>> stephan.getControl(name='currentSection').value = ['Math I - Math I (2)']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
+    2005-2006 / Fall
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option/text()')
+    Physics I - Physics I (1)
+    Math I - Math I (2)
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (2)
+
+Now, to the Spring term:
+
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.spring-']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
+    2005-2006 / Fall
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentSection"]/option/text()')
+    English I - English I (1)
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    English I - English I (1)
+
+If we change back to the Fall term, we get to the first section of the
+Section dropdown, in this case the Physics I section:
+
+    >>> stephan.getControl(name='currentTerm').value = ['2005-2006-.fall-']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+
+Let's add some activities to the Physics I section worksheet.  After
+adding the first activity we'll note that the new activity appears in
+the gradebook.
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'

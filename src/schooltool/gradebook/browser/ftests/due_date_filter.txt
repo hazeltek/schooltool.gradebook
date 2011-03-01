@@ -1,0 +1,459 @@
+Due date filter for activities
+------------------------------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Set the date for the tests to June 1st:
+
+    >>> manager.open('http://localhost/time')
+    >>> manager.getControl('Today').value = "2011-06-01"
+    >>> manager.getControl('Apply').click()
+    >>> manager.printQuery('//div[@class="summary"]/text()')
+    Data successfully updated.
+
+Add a schoolyear:
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.addSchoolYear('2011', '2011-01-01', '2011-12-31')
+
+Add two terms to the schoolyear:
+
+    >>> setup.addTerm('Semester One', '2011-01-01', '2011-06-30', '2011')
+    >>> setup.addTerm('Second Semester', '2011-07-01', '2011-12-31', '2011')
+
+Set up three courses:
+
+    >>> setup.addCourse('Soccer', '2011')
+    >>> setup.addCourse('Golf', '2011')
+    >>> setup.addCourse('Tennis', '2011')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Mario', 'Tejada', 'mario', 'pwd', browser=manager)
+    >>> addPerson('Camila', 'Cerna', 'camila', 'pwd', browser=manager)
+    >>> addPerson('Nestor', 'Guzman', 'nestor', 'pwd', browser=manager)
+    >>> addPerson('William', 'Mejia', 'william', 'pwd', browser=manager)
+
+Set up four sections with instructor and students, two in the first
+semester and two in the second:
+
+    >>> setup.addSection('Soccer', '2011', 'Semester One',
+    ...                  instructors=['William'],
+    ...                  members=['Mario', 'Camila', 'Nestor'])
+    >>> setup.addSection('Golf', '2011', 'Semester One',
+    ...                  instructors=['William'],
+    ...                  members=['Mario', 'Camila', 'Nestor'])
+    >>> setup.addSection('Tennis', '2011', 'Second Semester',
+    ...                  instructors=['William'],
+    ...                  members=['Mario', 'Camila', 'Nestor'])
+    >>> setup.addSection('Golf', '2011', 'Second Semester',
+    ...                  instructors=['William'],
+    ...                  members=['Mario', 'Camila', 'Nestor'])
+
+Log in as teacher:
+
+    >>> teacher = Browser('william', 'pwd')
+
+Go to his gradebook:
+
+    >>> teacher.getLink('Gradebook').click()
+
+Check we are in the Soccer section of the first semester:
+
+    >>> teacher.printQuery('//select[@name="currentTerm"]/option/text()')
+    2011 / Semester One
+    2011 / Second Semester
+    >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2011 / Semester One
+    >>> teacher.printQuery('//select[@name="currentSection"]/option/text()')
+    Soccer - Soccer (1)
+    Golf - Golf (2)
+    >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Soccer - Soccer (1)
+
+Add a homework activity with due date on February 11th:
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Get a ball'
+    >>> teacher.getControl('Label').value = 'BALL'
+    >>> teacher.getControl('Due Date').value = '2011-02-11'
+    >>> teacher.getControl('Category').value = ['homework']
+    >>> teacher.getControl('Maximum').value = '10'
+    >>> teacher.getControl('Add').click()
+
+Grade this homework:
+
+    >>> teacher.getLink('BALL').click()
+    >>> teacher.getControl('Cerna, Camila').value = '7'
+    >>> teacher.getControl('Guzman, Nestor').value = '10'
+    >>> teacher.getControl('Tejada, Mario').value = '8'
+    >>> teacher.getControl('Save').click()
+    
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cerna, Camila
+    Guzman, Nestor
+    Tejada, Mario
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    7
+    10
+    8
+
+Add a second homework with due date on April 4th and grade it:
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Get a team'
+    >>> teacher.getControl('Label').value = 'TEAM'
+    >>> teacher.getControl('Due Date').value = '2011-04-04'
+    >>> teacher.getControl('Category').value = ['homework']
+    >>> teacher.getControl('Maximum').value = '10'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('TEAM').click()
+    >>> teacher.getControl('Cerna, Camila').value = '10'
+    >>> teacher.getControl('Guzman, Nestor').value = '6'
+    >>> teacher.getControl('Tejada, Mario').value = '8'
+    >>> teacher.getControl('Save').click()
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cerna, Camila
+    Guzman, Nestor
+    Tejada, Mario
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    10
+    6
+    8
+
+And a third one with due date on April 29th:
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Play a game'
+    >>> teacher.getControl('Label').value = 'GAME'
+    >>> teacher.getControl('Due Date').value = '2011-04-29'
+    >>> teacher.getControl('Category').value = ['homework']
+    >>> teacher.getControl('Maximum').value = '10'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('GAME').click()
+    >>> teacher.getControl('Cerna, Camila').value = '9'
+    >>> teacher.getControl('Guzman, Nestor').value = '9'
+    >>> teacher.getControl('Tejada, Mario').value = '9'
+    >>> teacher.getControl('Save').click()
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cerna, Camila
+    Guzman, Nestor
+    Tejada, Mario
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input/@value')
+    9
+    9
+    9
+
+Now, let's add an exam with due date on May 20th:
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Score a goal'
+    >>> teacher.getControl('Label').value = 'GOAL'
+    >>> teacher.getControl('Due Date').value = '2011-05-20'
+    >>> teacher.getControl('Category').value = ['exam']
+    >>> teacher.getControl('Maximum').value = '10'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('GOAL').click()
+    >>> teacher.getControl('Cerna, Camila').value = '10'
+    >>> teacher.getControl('Guzman, Nestor').value = '5'
+    >>> teacher.getControl('Tejada, Mario').value = '10'
+    >>> teacher.getControl('Save').click()
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cerna, Camila
+    Guzman, Nestor
+    Tejada, Mario
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/input/@value')
+    10
+    5
+    10
+
+Let's list our activity headers:
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    BALL
+    TEAM
+    GAME
+    GOAL
+
+And go grade a single student:
+
+    >>> teacher.getLink('>', index=0).click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Cerna, Camila
+
+To see all the activities available to be graded:
+
+    >>> teacher.printQuery('//fieldset//label/span/text()')
+    Get a ball
+    Get a team
+    Play a game
+    Score a goal
+
+Let's check the 'view.html' view for the student (XXX: which btw has no way
+to be accessed, no links, no button, nothing!):
+
+    >>> url = teacher.url
+    >>> teacher.open(url + '/view.html')
+    >>> teacher.printQuery('//h1/text()')
+    Sheet1 for Camila Cerna in Soccer - Soccer (1)
+    >>> teacher.printQuery('//div[@class="info-block"]/h3/text()')
+    Get a ball
+    Get a team
+    Play a game
+    Score a goal
+
+Now, let's test the due date widget. The widget has a checkbox and a
+dropdown with numbers from 1-9 representing past weeks to filter the
+activities. By default the weeks dropdown is set to 9:
+
+    >>> teacher.getLink('Gradebook').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option/text()')
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    9
+
+Let's mark the checkbox and hit the 'Save' button to filter the
+activities, showing only those with due date in the past 9 weeks:
+
+    >>> teacher.getControl(name='due_date:list').value = True
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    TEAM
+    GAME
+    GOAL
+
+Notice how the 'Get a ball (BALL)' activity is filtered out.
+
+If we get back to grade a single student:
+
+    >>> teacher.getLink('>', index=0).click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Cerna, Camila
+
+We see the filter works there too:
+
+    >>> teacher.printQuery('//fieldset//label/span/text()')
+    Get a team
+    Play a game
+    Score a goal
+
+Let's check again the 'view.html' view for the student and see the
+filter works there too:
+
+    >>> url = teacher.url
+    >>> teacher.open(url + '/view.html')
+    >>> teacher.printQuery('//h1/text()')
+    Sheet1 for Camila Cerna in Soccer - Soccer (1)
+    >>> teacher.printQuery('//div[@class="info-block"]/h3/text()')
+    Get a team
+    Play a game
+    Score a goal
+
+Let's change the dropdown to show only activities with due date in the
+past two weeks:
+
+    >>> teacher.getLink('Gradebook').click()
+    >>> teacher.getControl(name='num_weeks').value = ['2']
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    2
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    GOAL
+
+And if we change the dropdown to one week, all the activities are
+filtered out:
+
+    >>> teacher.getControl(name='num_weeks').value = ['1']
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    1
+    >>> teacher.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    []
+
+Let's change the due date for the GOAL activity to May 30th:
+
+    >>> teacher.getLink('Manage Worksheet').click()
+    >>> teacher.getLink('Score a goal').click()
+    >>> teacher.getControl('Due Date').value = '2011-05-30'
+    >>> teacher.getControl('Apply').click()
+    >>> teacher.getLink('Return to Gradebook').click()
+
+And now the activity is not filtered out because its due date is in
+the past week:
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    GOAL
+    >>> teacher.getControl(name='num_weeks').value = ['2']
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    2
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    GOAL
+
+To show all the activities again, we unmark the checkbox:
+
+    >>> teacher.getControl(name='due_date:list').value = False
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    2
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    BALL
+    TEAM
+    GAME
+    GOAL
+
+
+Filter keeps its value through term, section and worksheet changes (BUG?)
+-------------------------------------------------------------------------
+
+The checkbox and dropdown values of the due date filter widget are
+stored globally for the person. This means that both values are
+applied to any term, section and worksheet that the user visits.
+
+Let's unmark the checkbox and change the dropdown value to 9 weeks:
+
+    >>> teacher.getControl(name='due_date:list').value = False
+    >>> teacher.getControl(name='num_weeks').value = ['9']
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    9
+
+All the activities are shown in the default worksheet of the Soccer
+section of the first semester:
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    BALL
+    TEAM
+    GAME
+    GOAL
+
+We'll add a second worksheet with two activities, one with due date on
+April 11th and the other on May 27th:
+
+    >>> teacher.getLink('Worksheets').click()
+
+    >>> teacher.getLink('New Worksheet').click()
+    >>> teacher.getControl('Title').value = 'Second WS'
+    >>> teacher.getControl('Add').click()
+    >>> teacher.getLink('Second WS').click()
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Win a game'
+    >>> teacher.getControl('Label').value = 'WIN'
+    >>> teacher.getControl('Due Date').value = '2011-04-11'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Make a save'
+    >>> teacher.getControl('Label').value = 'SAVE'
+    >>> teacher.getControl('Due Date').value = '2011-05-27'
+    >>> teacher.getControl('Add').click()
+
+All the activites are shown in the second worksheet:
+
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <a href="...">Sheet1</a>
+    </td>
+    <td class="active_tab">
+      <span style="font-weight: bold;">Second WS</span>
+    </td>
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    WIN
+    SAVE
+
+Let's apply the due filter in the second worksheet:
+
+    >>> teacher.getControl(name='due_date:list').value = True
+    >>> teacher.getControl(name='num_weeks').value = ['1']
+    >>> teacher.getControl('Save').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    1
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    SAVE
+
+If we change back to the first worksheet, the checkbox is marked and
+the dropdown has its new value, so the old filter is also applied to
+this worksheet:
+
+    >>> teacher.getLink('Sheet1').click()
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    1
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Second WS</a>
+    </td>
+    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    GOAL
+
+If we change to another section, the old filter keeps its values:
+
+    >>> teacher.getControl(name='currentSection').value = ['Golf - Golf (2)']
+    >>> teacher.getForm().submit()
+
+    >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2011 / Semester One
+    >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Golf - Golf (2)
+
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    1
+
+Or to another term:
+
+    >>> teacher.getControl(name='currentTerm').value = ['2011-.second-semester-']
+    >>> teacher.getForm().submit()
+
+    >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2011 / Second Semester
+    >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Tennis - Tennis (1)
+
+    >>> teacher.printQuery('//input[@name="due_date:list"]')
+    <input type="checkbox" name="due_date:list" checked="checked" />
+    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
+    1

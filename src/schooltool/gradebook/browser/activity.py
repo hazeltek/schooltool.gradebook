@@ -200,7 +200,8 @@ class ActivityAddView(z3cform.AddForm):
         scoresystem = RangedValuesScoreSystem(
             u'generated', min=data['min'], max=data['max'])
         activity = Activity(data['title'], data['category'], scoresystem,
-                            data['description'], data['label'])
+                            data['description'], data['label'],
+                            data.get('due_date'))
         return activity
 
     def add(self, activity):

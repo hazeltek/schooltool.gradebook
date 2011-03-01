@@ -234,3 +234,85 @@ Check with extended letter grade scoresystem:
     B
     A-
     F
+
+Now, let's test a corner case. The Gradebook allows extra credits in
+scores, and because of the way the average is calculated, there's a
+possibility of having averages higher that 100%.
+
+Before testing this, let's remove the extended letter grade
+scoresystem for the average:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').value = ['']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    49.3%
+
+Let's grade Claudia so we get an average higher than 100%:
+
+    >>> stephan.getControl(name='Activity_claudia').value = '51'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '101'
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    152.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    101.3%
+
+Even though this average is higher than 100%, if we convert it back to
+the extended letter grade scoresystem, we should get an A+:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    152.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    B
+    A-
+    A+
+
+And if we change to the Good/Bad scoresystem, we should get Good:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').value = ['goodbad']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    152.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    Good
+    Good
+    Good
