@@ -231,6 +231,12 @@ class SectionFinder(GradebookBase):
                  'selected': term is currentTerm and 'selected' or None}
                 for term in terms]
 
+    def getSectionId(self, section):
+        term = ITerm(section)
+        year = ISchoolYear(term)
+        return '%s.%s.%s' % (simple_form_key(year), simple_form_key(term),
+                             simple_form_key(section))
+
     def getSections(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
@@ -249,7 +255,9 @@ class SectionFinder(GradebookBase):
             css = 'inactive-menu-item'
             if section == currentSection:
                 css = 'active-menu-item'
-            yield {'obj': section, 'url': url, 'title': title, 'css': css}
+            yield {'obj': section, 'url': url, 'title': title, 'css': css,
+                   'form_id': self.getSectionId(section),
+                   'selected': title==self.getCurrentSection() and 'selected' or None}
 
     @property
     def worksheets(self):
@@ -315,7 +323,7 @@ class SectionFinder(GradebookBase):
         gradebook = proxy.removeSecurityProxy(self.context)
         if 'currentSection' in self.request:
             for section in self.getSections():
-                if section['title'] == self.request['currentSection']:
+                if self.getSectionId(section['obj']) == self.request['currentSection']:
                     if section['obj'] == ISection(gradebook):
                         break
                     self.request.response.redirect(section['url'])

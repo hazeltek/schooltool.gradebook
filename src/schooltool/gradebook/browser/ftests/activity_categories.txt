@@ -23,8 +23,8 @@ As you can see, there are already several categories pre-defined. Often,
 those categories do not work for a school. Either you do not need some and/or
 others are missing. So let's start by deleting a couple of categories:
 
-    >>> manager.getControl(name='field.categories:list').value = [
-    ...     'essay', 'journal', 'homework', 'presentation']
+    >>> manager.getControl(name='field.categories:list').displayValue = [
+    ...     'Essay', 'Journal', 'Homework', 'Presentation']
     >>> manager.getControl('Remove').click()
     >>> manager.printQuery('//div[@class="info"]/text()')
     Categories successfully deleted.
@@ -82,7 +82,7 @@ We can also change the default category:
 
     >>> manager.getControl('Default Category').value
     ['assignment']
-    >>> manager.getControl('Default Category').value = ['project']
+    >>> manager.getControl('Default Category').displayValue = ['Project']
     >>> manager.getControl('Change').click()
     >>> manager.getControl('Default Category').value
     ['project']
@@ -161,7 +161,7 @@ Let's change the default category:
     >>> manager.getLink('Activity Categories').click()
     >>> manager.getControl('Default Category').value
     ['project']
-    >>> manager.getControl('Default Category').value = ['labreport-']
+    >>> manager.getControl('Default Category').displayValue = ['Lab Report']
     >>> manager.getControl('Change').click()
     >>> manager.getControl('Default Category').value
     ['labreport-']

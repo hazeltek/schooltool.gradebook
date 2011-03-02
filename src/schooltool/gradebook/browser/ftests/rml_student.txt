@@ -113,17 +113,17 @@ Add two report sheets with four activities:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.2'
-    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Score System').displayValue = ['Comment']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.3'
-    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.4'
-    >>> manager.getControl('Score System').value = ['Pass/Fail-']
+    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('Manage').click()
@@ -135,17 +135,17 @@ Add two report sheets with four activities:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 2.2'
-    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Score System').displayValue = ['Comment']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 2.3'
-    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 2.4'
-    >>> manager.getControl('Score System').value = ['Pass/Fail-']
+    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
     >>> manager.getControl('Add').click()
 
 Deploy one report sheet in each term:
@@ -153,47 +153,47 @@ Deploy one report sheet in each term:
     >>> manager.getLink('2010').click()
     >>> manager.getLink('First Term').click()
     >>> manager.getLink('Deploy Report Sheet').click()
-    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Template').displayValue = ['Report Sheet One']
     >>> manager.getControl('Deploy').click()
 
     >>> manager.getLink('2010').click()
     >>> manager.getLink('Second Term').click()
     >>> manager.getLink('Deploy Report Sheet').click()
-    >>> manager.getControl('Template').value = ['ReportWorksheet-2']
+    >>> manager.getControl('Template').displayValue = ['Report Sheet Two']
     >>> manager.getControl('Deploy').click()
 
 Layout a report card:
 
     >>> manager.getLink('2010').click()
     >>> manager.getLink('Report Card Layout').click()
-    >>> manager.getControl('New Column').value = ['first-term|2010_first-term|ReportActivity']
+    >>> manager.getControl('New Column').displayValue = ['First Term - Report Sheet One - Report Activity 1.1']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading1').value = 'FT-1'
-    >>> manager.getControl('New Column').value = ['first-term|2010_first-term|ReportActivity-3']
+    >>> manager.getControl('New Column').displayValue = ['First Term - Report Sheet One - Report Activity 1.3']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading2').value = 'FT-3'
-    >>> manager.getControl('New Column').value = ['first-term|2010_first-term|ReportActivity-4']
+    >>> manager.getControl('New Column').displayValue = ['First Term - Report Sheet One - Report Activity 1.4']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading3').value = 'FT-4'
-    >>> manager.getControl('New Column').value = ['second-term|2010_second-term|ReportActivity']
+    >>> manager.getControl('New Column').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.1']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading4').value = 'ST-1'
-    >>> manager.getControl('New Column').value = ['second-term|2010_second-term|ReportActivity-3']
+    >>> manager.getControl('New Column').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.3']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading5').value = 'ST-3'
-    >>> manager.getControl('New Column').value = ['second-term|2010_second-term|ReportActivity-4']
+    >>> manager.getControl('New Column').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.4']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading6').value = 'ST-4'
-    >>> manager.getControl('New Column').value = ['tardy']
+    >>> manager.getControl('New Column').displayValue = ['Tardy']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading7').value = 'T'
-    >>> manager.getControl('New Column').value = ['absent']
+    >>> manager.getControl('New Column').displayValue = ['Absent']
     >>> manager.getControl('Add', index=0).click()
     >>> manager.getControl(name='Heading8').value = 'A'
-    >>> manager.getControl('New Activity').value = ['first-term|2010_first-term|ReportActivity-2']
+    >>> manager.getControl('New Activity').displayValue = ['First Term - Report Sheet One - Report Activity 1.2']
     >>> manager.getControl('Add', index=1).click()
     >>> manager.getControl(name='ActivityHeading1').value = 'FT-2'
-    >>> manager.getControl('New Activity').value = ['second-term|2010_second-term|ReportActivity-2']
+    >>> manager.getControl('New Activity').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.2']
     >>> manager.getControl('Add', index=1).click()
     >>> manager.getControl(name='ActivityHeading2').value = 'ST-2'
     >>> manager.getControl('OK').click()
@@ -308,10 +308,10 @@ Log in as teacher and go to the gradebook:
 
 Now, let's add some grades to the First Term sections:
 
-    >>> teacher.getControl(name='currentTerm').value = ['2010-.first-term-']
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2010 / First Term']
     >>> teacher.getForm().submit()
 
-    >>> teacher.getControl(name='currentSection').value = ['Chemistry - Chemistry (2)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Chemistry - Chemistry (2)']
     >>> teacher.getForm().submit()
     >>> teacher.getLink('>', index=0).click()
 
@@ -332,7 +332,7 @@ Now, let's add some grades to the First Term sections:
     >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
     >>> teacher.getControl('Apply').click()
 
-    >>> teacher.getControl(name='currentSection').value = ['Math - Math (1)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Math - Math (1)']
     >>> teacher.getForm().submit()
     >>> teacher.getLink('>', index=0).click()
 
@@ -352,7 +352,7 @@ Now, let's add some grades to the First Term sections:
     >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
     >>> teacher.getControl('Apply').click()
 
-    >>> teacher.getControl(name='currentSection').value = ['Physics - Physics (3)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Physics - Physics (3)']
     >>> teacher.getForm().submit()
     >>> teacher.getLink('>', index=0).click()
 
@@ -376,10 +376,10 @@ Now, let's add some grades to the First Term sections:
 
 Now, let's add some grades to the Second Term sections:
 
-    >>> teacher.getControl(name='currentTerm').value = ['2010-.second-term-']
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2010 / Second Term']
     >>> teacher.getForm().submit()
 
-    >>> teacher.getControl(name='currentSection').value = ['Chemistry - Chemistry (2)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Chemistry - Chemistry (2)']
     >>> teacher.getForm().submit()
     >>> teacher.getLink('>', index=0).click()
 
@@ -399,7 +399,7 @@ Now, let's add some grades to the Second Term sections:
     >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
     >>> teacher.getControl('Apply').click()
 
-    >>> teacher.getControl(name='currentSection').value = ['Math - Math (1)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Math - Math (1)']
     >>> teacher.getForm().submit()
     >>> teacher.getLink('>', index=0).click()
 
@@ -420,7 +420,7 @@ Now, let's add some grades to the Second Term sections:
     >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
     >>> teacher.getControl('Apply').click()
 
-    >>> teacher.getControl(name='currentSection').value = ['Physics - Physics (3)']
+    >>> teacher.getControl(name='currentSection').displayValue = ['Physics - Physics (3)']
     >>> teacher.getForm().submit()
     >>> teacher.getLink('>', index=0).click()
 

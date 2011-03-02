@@ -42,14 +42,14 @@ Add a couple of activities to the default worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
 Add some grades:
@@ -143,8 +143,8 @@ Cancel button in that form:
     >>> stephan.getLink('New External Activity').click()
     >>> stephan.printQuery('//h3/text()')
     Add an External Activity
-    >>> stephan.getControl('External Activity').value = ['samplesource-hardware']
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('External Activity').displayValue = ['Sample Source - Hardware']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Points').value = '15'
     >>> stephan.getControl('Add').click()
 

@@ -66,24 +66,24 @@ Add a report sheet template with four activities:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Second Common Activity'
-    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Score System').displayValue = ['Comment']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Third Common Activity'
-    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Forth Common Activity'
-    >>> manager.getControl('Score System').value = ['Pass/Fail-']
+    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
     >>> manager.getControl('Add').click()
 
 Deploy the report sheet template in the 2011 schoolyear:
 
     >>> manager.getLink('2011').click()
     >>> manager.getLink('Deploy Report Sheet').click()
-    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Template').displayValue = ['Common Worksheet']
     >>> manager.getControl('Deploy').click()
 
 Log in as teacher:

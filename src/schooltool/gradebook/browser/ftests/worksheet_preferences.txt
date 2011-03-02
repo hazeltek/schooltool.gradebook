@@ -63,14 +63,14 @@ Add a couple of activities to the default worksheet:
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
-    >>> stephan.getControl('Category').value = ['assignment']
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '50'
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Quiz'
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
-    >>> stephan.getControl('Category').value = ['exam']
+    >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
 
 Add some grades:
@@ -151,7 +151,7 @@ Let's change all preferences
     >>> stephan.getControl(name='label_total').value = 'Summe'
     >>> stephan.getControl(name='hide_average').value = ['on']
     >>> stephan.getControl(name='label_average').value = 'Durchschnitt'
-    >>> stephan.getControl(name='scoresystem_average').value = ['goodbad']
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Good/Bad']
     >>> stephan.getControl(name='hide_due_date').value = ['on']
     >>> stephan.getControl('Update').click()
 
@@ -227,7 +227,7 @@ Show the total and average columns, and test that Average is converted to Good/B
 Check with extended letter grade scoresystem:
 
     >>> stephan.getLink('Preferences').click()
-    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade']
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
     >>> stephan.getControl('Update').click()
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
@@ -251,7 +251,7 @@ Before testing this, let's remove the extended letter grade
 scoresystem for the average:
 
     >>> stephan.getLink('Preferences').click()
-    >>> stephan.getControl(name='scoresystem_average').value = ['']
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['-- No score system --']
     >>> stephan.getControl('Update').click()
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
@@ -290,7 +290,7 @@ Even though this average is higher than 100%, if we convert it back to
 the extended letter grade scoresystem, we should get an A+:
 
     >>> stephan.getLink('Preferences').click()
-    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade']
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
     >>> stephan.getControl('Update').click()
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
@@ -309,7 +309,7 @@ the extended letter grade scoresystem, we should get an A+:
 And if we change to the Good/Bad scoresystem, we should get Good:
 
     >>> stephan.getLink('Preferences').click()
-    >>> stephan.getControl(name='scoresystem_average').value = ['goodbad']
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Good/Bad']
     >>> stephan.getControl('Update').click()
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')

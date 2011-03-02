@@ -83,8 +83,8 @@
               onchange="this.form.submit()">
         <tal:block repeat="section view/getSections">
 	  <option
-	      tal:attributes="value section/title;
-			      selected python:section['title']==view.getCurrentSection();"
+	      tal:attributes="value section/form_id;
+			      selected section/selected;"
 	      tal:content="section/title" />
         </tal:block>
       </select>
