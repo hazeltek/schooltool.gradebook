@@ -5,6 +5,8 @@ CHANGES
 0.9.0 (unreleased)
 ------------------
 
+- Removed width restriction on names in layout report card view (https://launchpad.net/bugs/643700)
+- Fixed linked column forms to use activity categories properly (https://launchpad.net/bugs/703078)
 - Fixed the Detailed Student Report to show data only from the selected term and not the whole school year
 - Save due_date attribute in New Activity form (https://launchpad.net/bugs/700520)
 - Fixed default category selection for new activity form (https://launchpad.net/bugs/562875)

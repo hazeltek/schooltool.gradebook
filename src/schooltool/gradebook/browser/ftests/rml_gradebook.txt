@@ -142,6 +142,11 @@ Let's go to the Common Worksheet and grade the students:
 
     >>> teacher.printQuery('//h3/text()')
     Enter grades for Cardune, Paul
+    >>> teacher.printQuery('//label/span/text()')
+    First Common Activity (100)
+    Second Common Activity
+    Third Common Activity (A+)
+    Forth Common Activity (Pass)
     >>> teacher.getControl('First Common Activity').value = '85'
     >>> teacher.getControl('Second Common Activity').value = '<p>This is the comment grade for:</p><p>&nbsp;</p><p><strong>Paul <em>Carduner</em></strong></p>'
     >>> teacher.getControl('Forth Common Activity').value = 'Fail'
@@ -285,6 +290,6 @@ Table columns representing student names, total, average and grades:
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[6]/para')
     <para style="grid_heading">Logic</para>
-    <para style="cell">90.0</para>
+    <para style="cell">90</para>
     <para style="cell"/>
-    <para style="cell">85.0</para>
+    <para style="cell">85</para>

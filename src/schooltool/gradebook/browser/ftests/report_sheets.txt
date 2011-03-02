@@ -357,9 +357,9 @@ gradebook. Let's grade Nestor's activities:
     >>> teacher.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Guzman, Nestor</h3>
     >>> teacher.printQuery('id("form")//fieldset//label/span/text()')
-    Report Activity 1.2
+    Report Activity 1.2 (A+)
     Report Activity 1.1
-    REPORT ACTIVITY 1.3
+    REPORT ACTIVITY 1.3 (100)
     >>> teacher.getControl('Report Activity 1.1').value = '<p>This is the report for Nestor for:</p><p>&nbsp;</p><p><strong>Report Activity 1.1</strong></p><p>&nbsp;</p><p>His teacher.</p>'
     >>> teacher.getControl('REPORT ACTIVITY 1.3').value = '87'
 
@@ -370,9 +370,9 @@ and now for Camila:
     >>> teacher.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Cerna, Camila</h3>
     >>> teacher.printQuery('id("form")//fieldset//label/span/text()')
-    Report Activity 1.2
+    Report Activity 1.2 (A+)
     Report Activity 1.1
-    REPORT ACTIVITY 1.3
+    REPORT ACTIVITY 1.3 (100)
     >>> teacher.getControl('Report Activity 1.2').value = 'A-'
     >>> teacher.getControl('Report Activity 1.1').value = '<p>This is the report for Camila for:</p><p>&nbsp;</p><p><strong>Report Activity 1.1</strong></p><p>&nbsp;</p><p>Her teacher.</p>'
     >>> teacher.getControl('REPORT ACTIVITY 1.3').value = '78'

@@ -568,7 +568,9 @@ class GradebookOverview(SectionFinder):
                 value = self.getStudentActivityValue(student, activity)
                 if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
-                    if value is not UNSCORED and value != '':
+                    sourceObj = getSourceObj(activity.source)
+                    if value is not UNSCORED and value != '' and \
+                       interfaces.IWorksheet.providedBy(sourceObj):
                         value = '%.1f' % value
                 else:
                     editable = not ICommentScoreSystem.providedBy(
@@ -988,17 +990,25 @@ class GradeStudent(z3cform.EditForm):
         for index, activity in enumerate(self.getFilteredActivities()):
             if interfaces.ILinkedColumnActivity.providedBy(activity):
                 obj = getSourceObj(activity.source)
+                if interfaces.IWorksheet.providedBy(obj):
+                    bestScore = '100'
+                else:
+                    bestScore = obj.scoresystem.getBestScore()
+                title = '%s (%s)' % (obj.title, bestScore)
                 newSchemaFld = TextLine(
-                    title=obj.title,
+                    title=title,
                     readonly = True,
                     required=False)
             else:
                 if ICommentScoreSystem.providedBy(activity.scoresystem):
                     field_cls = HtmlFragment
+                    title = activity.title
                 else:
                     field_cls = TextLine
+                    bestScore = activity.scoresystem.getBestScore()
+                    title = "%s (%s)" % (activity.title, bestScore)
                 newSchemaFld = field_cls(
-                    title=activity.title,
+                    title=title,
                     description=activity.description,
                     constraint=activity.scoresystem.fromUnicode,
                     required=False)

@@ -139,3 +139,6 @@ td.active_tab {
     margin-left: 1em;
 }
 
+form p.passing-score-description {
+    margin-bottom: 1em;
+}

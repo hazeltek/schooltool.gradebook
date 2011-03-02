@@ -251,7 +251,7 @@ class GradebookBase(object):
                 value, ss = self.getEvaluation(student, activity)
                 category = activity.category
                 if value is not None and value is not UNSCORED:
-                    if category in weights:
+                    if category in weights and weights[category] is not None:
                         adjusted_weights[category] = weights[category]
             total_percentage = 0
             for key in adjusted_weights:
@@ -282,7 +282,7 @@ class GradebookBase(object):
                     average_counts[activity.category] += (maximum - minimum)
             average = Decimal(0)
             for category, value in average_totals.items():
-                if category in weights:
+                if category in weights and weights[category] is not None:
                     average += ((value / average_counts[category]) *
                         adjusted_weights[category])
             if not len(average_counts):
@@ -473,6 +473,10 @@ class StudentGradebookFormAdapter(object):
             activity)
         if value is None or value is UNSCORED:
             value = ''
+        elif interfaces.ILinkedColumnActivity.providedBy(activity):
+            sourceObj = getSourceObj(activity.source)
+            if interfaces.IWorksheet.providedBy(sourceObj):
+                return '%.1f' % value
         return value
 
 

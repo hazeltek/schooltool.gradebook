@@ -336,23 +336,24 @@ class LinkedActivityEditView(z3cform.EditForm):
 class WeightCategoriesView(object):
     """A view for providing category weights for the worksheet context."""
 
+    def title(self):
+        return _('Category weights for worksheet ${worksheet}',
+                 mapping={'worksheet': self.context.title})
+
     def nextURL(self):
         section = self.context.__parent__.__parent__
         return absoluteURL(section, self.request) + '/gradebook'
 
     def update(self):
         self.message = ''
-        language = 'en' # XXX this need to be dynamic
         categories = getCategories(ISchoolToolApplication(None))
-
         newValues = {}
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
-
         elif 'UPDATE_SUBMIT' in self.request:
             for category in sorted(categories.getKeys()):
-                if category in self.request and self.request[category]:
-                    value = self.request[category]
+                if category in self.request and self.request[category].strip():
+                    value = self.request[category].strip()
                     try:
                         value = Decimal(value)
                         if value < 0 or value > 100:
@@ -361,37 +362,47 @@ class WeightCategoriesView(object):
                         self.message = _('$value is not a valid weight.',
                             mapping={'value': value})
                         break
-                    newValues[category] = value
+                else:
+                    value = None
+                newValues[category] = value
             else:
                 total = 0
-                for category in newValues:
-                    total += newValues[category]
+                for category, value in newValues.items():
+                    if value is not None:
+                        total += value
                 if total != Decimal(100):
                     self.message = _('Category weights must add up to 100.')
                 else:
-                    for category in newValues:
-                        self.context.setCategoryWeight(category, 
-                            newValues[category] / 100)
+                    for category, value in newValues.items():
+                        if value is not None:
+                            value = value / 100
+                        self.context.setCategoryWeight(category, value)
                     self.request.response.redirect(self.nextURL())
 
+    def rows(self):
+        language = 'en' # XXX this need to be dynamic
         weights = self.context.getCategoryWeights()
-        self.rows = []
+        categories = getCategories(ISchoolToolApplication(None))
+        result = []
         for category in sorted(categories.getKeys()):
             if category in self.request:
                 weight = self.request[category]
             else:
-                weight = unicode(weights.get(category, '') * 100)
-                if '.' in weight:
-                    while weight.endswith('0'):
-                        weight = weight[:-1]
-                    if weight[-1] == '.':
-                        weight = weight[:-1]
+                weight = weights.get(category)
+                if weight is not None:
+                    weight = unicode(weights.get(category) * 100)
+                    if '.' in weight:
+                        while weight.endswith('0'):
+                            weight = weight[:-1]
+                        if weight[-1] == '.':
+                            weight = weight[:-1]
             row = {
                 'category': category,
                 'category_value': categories.getValue(category, language),
                 'weight': weight,
                 }
-            self.rows.append(row)
+            result.append(row)
+        return result
 
 
 class ExternalActivitiesTerms(object):
@@ -488,10 +499,12 @@ class LinkedColumnBase(BrowserView):
     """Base class for add/edit linked column views"""
     def __init__(self, context, request):
         super(LinkedColumnBase, self).__init__(context, request)
+        self.addForm = True
         if interfaces.IWorksheet.providedBy(self.context):
             self.currentWorksheet = self.context
         else:
             self.currentWorksheet = self.context.__parent__
+            self.addForm = False
         self.person = IPerson(self.request.principal)
 
     def title(self):
@@ -511,10 +524,15 @@ class LinkedColumnBase(BrowserView):
         categories = getCategories(ISchoolToolApplication(None))
 
         results = []
+        if self.addForm:
+            default_category = defaultCategory(None)
+        else:
+            default_category = self.context.category
         for category in sorted(categories.getKeys()):
             result = {
                 'name': category,
                 'value': categories.getValue(category, language),
+                'selected': category == default_category and 'selected' or None,
                 }
             results.append(result)
         return results
