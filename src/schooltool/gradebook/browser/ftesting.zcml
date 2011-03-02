@@ -12,6 +12,7 @@
   <include package="schooltool.timetable" />
   <include package="schooltool.requirement" />
   <include package="schooltool.gradebook" />
+  <include package="schooltool.lyceum.journal" />
 
   <class class="schooltool.gradebook.tests.stubs.ExternalActivityStub">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
@@ -35,15 +36,79 @@
       name="samplesource"
       />
 
-    <interface
-        interface="schooltool.basicperson.ftesting.IBasicPersonFtestingSkin"
-        type="zope.publisher.interfaces.browser.IBrowserSkinType"
-        name="BasicPerson"
-        />
+  <interface
+      interface="schooltool.basicperson.ftesting.IBasicPersonFtestingSkin"
+      type="zope.publisher.interfaces.browser.IBrowserSkinType"
+      name="BasicPerson"
+      />
 
-    <!-- Provide local overrides of standard configurations-->
-    <includeOverrides package="schooltool.basicperson" file="overrides.zcml" />
+  <!-- Provide local overrides of standard configurations-->
+  <includeOverrides package="schooltool.basicperson" file="overrides.zcml" />
 
-    <browser:defaultSkin name="BasicPerson" />
+  <browser:defaultSkin name="BasicPerson" />
+
+  <browser:page
+      name="gradebook.pdf"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class="schooltool.gradebook.browser.pdf_views.GradebookPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="report_card.pdf"
+      for="schooltool.person.interfaces.IPerson"
+      class="schooltool.gradebook.browser.pdf_views.StudentReportCardPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="student_detail.pdf"
+      for="schooltool.person.interfaces.IPerson"
+      class="schooltool.gradebook.browser.pdf_views.StudentDetailPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="report_card.pdf"
+      for="schooltool.group.interfaces.IGroup"
+      class="schooltool.gradebook.browser.pdf_views.GroupReportCardPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="student_detail.pdf"
+      for="schooltool.group.interfaces.IGroup"
+      class="schooltool.gradebook.browser.pdf_views.GroupDetailPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="section_absences.pdf"
+      for="schooltool.course.interfaces.ISection"
+      class="schooltool.gradebook.browser.pdf_views.SectionAbsencesPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="absences_by_day.pdf"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class="schooltool.gradebook.browser.pdf_views.AbsencesByDayPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
+
+  <browser:page
+      name="failures_by_term.pdf"
+      for="schooltool.term.interfaces.ITerm"
+      class="schooltool.gradebook.browser.pdf_views.FailingReportPDFView"
+      permission="schooltool.edit"
+      attribute="template"
+      />
 
 </configure>

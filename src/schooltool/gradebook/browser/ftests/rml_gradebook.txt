@@ -1,0 +1,290 @@
+RML test for gradebook.pdf
+--------------------------
+
+Here we're going to test the rml generated for the gradebook.pdf view
+of worksheets. Since we're going to test XML, let's extend the Browser
+class:
+
+    >>> from schooltool.testing.analyze import etree, to_string
+    >>> class XMLBrowser(Browser):
+    ...     def queryXML(self, xpath):
+    ...         doc = etree.XML(self.contents)
+    ...         result = [to_string(node) for node in doc.xpath(xpath)]
+    ...         return result
+    ...     def printXMLQuery(self, xpath):
+    ...         for result in self.queryXML(xpath):
+    ...             print result
+
+
+Log in as manager:
+
+    >>> manager = XMLBrowser('manager', 'schooltool')
+
+Add a schoolyear:
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.addSchoolYear('2011', '2011-01-01', '2011-12-31')
+
+Add one term to the 2011 schoolyear:
+
+    >>> setup.addTerm('Single Term', '2011-01-01', '2011-12-31', '2011')
+
+Set up two courses:
+
+    >>> setup.addCourse('Math', '2011')
+    >>> setup.addCourse('Chemistry', '2011')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section for each course:
+
+    >>> setup.addSection('Math', '2011', 'Single Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Chemistry', '2011', 'Single Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Add a report sheet template with four activities:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Common Worksheet'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('Common Worksheet').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'First Common Activity'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Second Common Activity'
+    >>> manager.getControl('Score System').value = ['Comment-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Third Common Activity'
+    >>> manager.getControl('Score System').value = ['Extended Letter Grade-']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Forth Common Activity'
+    >>> manager.getControl('Score System').value = ['Pass/Fail-']
+    >>> manager.getControl('Add').click()
+
+Deploy the report sheet template in the 2011 schoolyear:
+
+    >>> manager.getLink('2011').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.getControl('Template').value = ['ReportWorksheet']
+    >>> manager.getControl('Deploy').click()
+
+Log in as teacher:
+
+    >>> teacher = XMLBrowser('stephan', 'pwd')
+
+Set up two extra worksheets for the Math section, each with three
+activities:
+
+    >>> teacher.getLink('Gradebook').click()
+    >>> teacher.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2011 / Single Term
+    >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math - Math (1)
+
+    >>> teacher.getLink('Worksheets').click()
+    >>> teacher.getLink('New Worksheet').click()
+    >>> teacher.getControl('Title').value = 'Second Worksheet'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('New Worksheet').click()
+    >>> teacher.getControl('Title').value = 'Third Worksheet'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('Second Worksheet').click()
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Geometry'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Algebra'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Logic'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('Worksheets').click()
+    >>> teacher.getLink('Third Worksheet').click()
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.getControl('Title').value = 'Polynomials'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('New External Activity').click()
+    >>> teacher.getControl('Points').value = '10'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('New Linked Column').click()
+    >>> teacher.getControl('Logic').click()
+
+Let's go to the Common Worksheet and grade the students:
+
+    >>> teacher.getLink('Common Workshee').click()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> teacher.getControl('First Common Activity').value = '85'
+    >>> teacher.getControl('Second Common Activity').value = '<p>This is the comment grade for:</p><p>&nbsp;</p><p><strong>Paul <em>Carduner</em></strong></p>'
+    >>> teacher.getControl('Forth Common Activity').value = 'Fail'
+
+    >>> teacher.getControl('Next').click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Hoffman, Tom
+    >>> teacher.getControl('First Common Activity').value = '90'
+    >>> teacher.getControl('Second Common Activity').value = '<p>This is the comment grade for:</p><p>&nbsp;</p><p><strong>Tom <em>Hoffman</em></strong></p><p>&nbsp;</p><p>This is his <a href="http://www.google.com">website</a></p>'
+    >>> teacher.getControl('Third Common Activity').value = 'C+'
+
+    >>> teacher.getControl('Next').click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Richter, Claudia
+    >>> teacher.getControl('Third Common Activity').value = 'A-'
+    >>> teacher.getControl('Forth Common Activity').value = 'Pass'
+    >>> teacher.getControl('Apply').click()
+
+Now, to the Second Worksheet and enter more grades:
+
+    >>> teacher.getLink('Second Workshee').click()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> teacher.getControl('Geometry').value = '80'
+    >>> teacher.getControl('Algebra').value = ''
+    >>> teacher.getControl('Logic').value = '90'
+
+    >>> teacher.getControl('Next').click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Hoffman, Tom
+    >>> teacher.getControl('Geometry').value = '90'
+    >>> teacher.getControl('Algebra').value = '83'
+
+    >>> teacher.getControl('Next').click()
+    >>> teacher.printQuery('//h3/text()')
+    Enter grades for Richter, Claudia
+    >>> teacher.getControl('Geometry').value = '81'
+    >>> teacher.getControl('Algebra').value = '78'
+    >>> teacher.getControl('Logic').value = '85'
+    >>> teacher.getControl('Apply').click()
+
+Now, let's get the rml generated for the gradebook.pdf view of
+the Common Worksheet:
+
+    >>> teacher.getLink('Common Workshee').click()
+    >>> teacher.getLink('Download PDF').click()
+
+Term, section and worksheet information:
+
+    >>> teacher.printXMLQuery('//blockTable[1]/tr[1]/td/para/text()')
+    Term
+    Single Term
+    Section
+    Math (1)
+    >>> teacher.printXMLQuery('//blockTable[1]/tr[2]/td/para/text()')
+    Worksheet
+    Common Worksheet
+
+Table columns representing student names and grades:
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[1]/para/text()')
+    Student
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[2]/para')
+    <para style="grid_heading">First</para>
+    <para style="cell">85</para>
+    <para style="cell">90</para>
+    <para style="cell"/>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[3]/para')
+    <para style="grid_heading">Secon</para>
+    <para style="cell">...</para>
+    <para style="cell">...</para>
+    <para style="cell"/>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[4]/para')
+    <para style="grid_heading">Third</para>
+    <para style="cell"/>
+    <para style="cell">C+</para>
+    <para style="cell">A-</para>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[5]/para')
+    <para style="grid_heading">Forth</para>
+    <para style="cell">Fail</para>
+    <para style="cell"/>
+    <para style="cell">Pass</para>
+
+Let's go back and get the gradebook.pdf rml for the Third Worksheet:
+
+    >>> teacher.goBack()
+    >>> teacher.getLink('Third Worksheet').click()
+    >>> teacher.getLink('Download PDF').click()
+
+Term, section and worksheet information:
+
+    >>> teacher.printXMLQuery('//blockTable[1]/tr[1]/td/para/text()')
+    Term
+    Single Term
+    Section
+    Math (1)
+    >>> teacher.printXMLQuery('//blockTable[1]/tr[2]/td/para/text()')
+    Worksheet
+    Third Worksheet
+
+Table columns representing student names, total, average and grades:
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[1]/para/text()')
+    Student
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[2]/para')
+    <para style="grid_heading">Total</para>
+    <para style="cell">95.0</para>
+    <para style="cell">0.0</para>
+    <para style="cell">93.0</para>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[3]/para')
+    <para style="grid_heading">Ave.</para>
+    <para style="cell">86.4%</para>
+    <para style="cell">N/A</para>
+    <para style="cell">84.5%</para>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[4]/para')
+    <para style="grid_heading">Polyn</para>
+    <para style="cell"/>
+    <para style="cell"/>
+    <para style="cell"/>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[5]/para')
+    <para style="grid_heading">HTML</para>
+    <para style="cell">5.00</para>
+    <para style="cell"/>
+    <para style="cell">8.00</para>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[6]/para')
+    <para style="grid_heading">Logic</para>
+    <para style="cell">90.0</para>
+    <para style="cell"/>
+    <para style="cell">85.0</para>
