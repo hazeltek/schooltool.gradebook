@@ -9,7 +9,15 @@ CHANGES
 - Fixed linked column forms to use activity categories properly (https://launchpad.net/bugs/703078)
 - Fixed the Detailed Student Report to show data only from the selected term and not the whole school year
 - Save due_date attribute in New Activity form (https://launchpad.net/bugs/700520)
+- Make gradebook.js static thus greatly improving Gradebook performance.
+
+
+0.9.0a1 (2011-02-23)
+--------------------
+
 - Fixed default category selection for new activity form (https://launchpad.net/bugs/562875)
+- Sort student names in the gradebook according to locale.
+- Split and improve functional tests.
 
 
 0.8.1 (2010-10-04)
