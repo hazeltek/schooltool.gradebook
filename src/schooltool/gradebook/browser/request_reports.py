@@ -277,18 +277,10 @@ class RequestStudentReportView(BrowserView):
 
     def __call__(self):
         """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
+        if getUtility(IDateManager).current_term is None:
+            template = ViewPageTemplateFile('templates/no_current_term.pt')
+            return template(self)
         return super(RequestStudentReportView, self).__call__()
-
-    def noCurrentTerm(self):
-        current_term = getUtility(IDateManager).current_term
-        if current_term is None:
-            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
-            next_url += '/no_current_term.html'
-            self.request.response.redirect(next_url)
-            return True
-        return False
 
     def action(self):
         index = self.request['PATH_INFO'].rfind('/') + 1

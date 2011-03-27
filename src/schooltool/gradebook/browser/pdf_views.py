@@ -66,14 +66,6 @@ class BasePDFView(ReportPDFView):
         else:
             self.term = None
 
-    def noCurrentTerm(self):
-        if self.current_term is None:
-            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
-            next_url += '/no_current_term.html'
-            self.request.response.redirect(next_url)
-            return True
-        return False
-
 
 class BaseStudentPDFView(BasePDFView):
     """A base class for all student PDF views"""
@@ -195,8 +187,9 @@ class BaseReportCardPDFView(BaseStudentPDFView):
 
     def __call__(self):
         """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
+        if self.current_term is None:
+            template = ViewPageTemplateFile('templates/no_current_term.pt')
+            return template(self)
         return super(BaseReportCardPDFView, self).__call__()
 
     def title(self):
@@ -308,8 +301,9 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
 
     def __call__(self):
         """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
+        if self.current_term is None:
+            template = ViewPageTemplateFile('templates/no_current_term.pt')
+            return template(self)
         return super(BaseStudentDetailPDFView, self).__call__()
 
     def title(self):
