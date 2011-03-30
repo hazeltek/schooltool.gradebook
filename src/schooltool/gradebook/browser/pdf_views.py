@@ -45,7 +45,7 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.gradebook.interfaces import IIndependentSectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
@@ -74,7 +74,9 @@ class BaseStudentPDFView(BasePDFView):
         return layout.source in [ABSENT_KEY, TARDY_KEY]
 
     def getJournalScore(self, student, section, layout):
-        jd = ISectionJournalData(section)
+        jd = IIndependentSectionJournalData(section, None)
+        if jd is None:
+            return None
         result = 0
         for meeting in jd.recordedMeetings(student):
             grade = jd.getGrade(student, meeting)
@@ -352,7 +354,9 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
                 continue
             sections.append(section)
         for section in sections:
-            jd = ISectionJournalData(section)
+            jd = IIndependentSectionJournalData(section, None)
+            if jd is None:
+                continue
             for meeting in jd.recordedMeetings(student):
                 period = meeting.period_id[:5]
                 day = meeting.dtstart
@@ -576,7 +580,9 @@ class AbsencesByDayPDFView(BasePDFView):
 
         data = {}
         for section in ISectionContainer(term).values():
-            jd = ISectionJournalData(section)
+            jd = IIndependentSectionJournalData(section, None)
+            if jd is None:
+                continue
             for student in section.members:
                 for meeting in jd.recordedMeetings(student):
                     if not self.compareDates(meeting.dtstart, day):
@@ -676,21 +682,26 @@ class SectionAbsencesPDFView(BasePDFView):
     def total_heading(self):
         return _('Total')
 
+    def getStudentData(self, jd, student):
+        student_data = {}
+        student_data['absences'] = 0
+        student_data['tardies'] = 0
+        for meeting in jd.recordedMeetings(student):
+            grade = jd.getGrade(student, meeting)
+            if grade == 'n':
+                student_data['absences'] += 1
+            if grade == 'p':
+                student_data['tardies'] += 1
+        return student_data
+
     def students(self):
         data = {}
-        jd = ISectionJournalData(self.section)
-        for student in self.section.members:
-            student_data = {}
-            student_data['absences'] = 0
-            student_data['tardies'] = 0
-            for meeting in jd.recordedMeetings(student):
-                grade = jd.getGrade(student, meeting)
-                if grade == 'n':
-                    student_data['absences'] += 1
-                if grade == 'p':
-                    student_data['tardies'] += 1
-            if student_data['absences'] + student_data['tardies'] > 0:
-                data[student] = student_data
+        jd = IIndependentSectionJournalData(self.section, None)
+        if jd is not None:
+            for student in self.section.members:
+                student_data = self.getStudentData(jd, student)
+                if student_data['absences'] + student_data['tardies'] > 0:
+                    data[student] = student_data
 
         rows = []
         for student in sorted(data, key=lambda s: s.title):

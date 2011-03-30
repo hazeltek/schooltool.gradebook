@@ -444,24 +444,19 @@ Now, let's add some grades to the Second Term sections:
 Let's add some attendance data. First let's define some helper
 functions:
 
-    >>> def baseHelper(student, month, day, browser, value):
-    ...     browser.getLink('Term Grading').click()
-    ...     browser.getLink(month).click()
-    ...     browser.getLink(student).click()
-    ...     dates = browser.queryHTML('//table[@class="data"]/thead/tr[1]//a/text()[1]')
-    ...     assert day in dates, (student, month, day, dates)
-    ...     input_names = browser.queryHTML('//input[@type="text"]/@name')
-    ...     name = input_names[dates.index(day)]
-    ...     browser.getControl(name=name).value = value
-    ...     browser.getControl('Update').click()
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=0).click()
+    >>> section_url = teacher.url + '/test_only_update_section_journal.html'
+
+    >>> def baseHelper(student, month, day, browser, grade):
+    ...     url = '%s?student=%s&month=%s&day=%s&grade=%s' % (section_url,
+    ...         student, month, day, grade)
+    ...     browser.open(url)
+    ...     browser.open('http://localhost')
     >>> def setAbsence(student, month, day, browser):
     ...     baseHelper(student, month, day, browser, 'a')
     >>> def setTardy(student, month, day, browser):
     ...     baseHelper(student, month, day, browser, 't')
-
-    >>> teacher.getLink('Home').click()
-    >>> teacher.getLink('Chemistry (2)', index=0).click()
-    >>> teacher.getLink('Journal', index=1).click()
 
     >>> setAbsence('Paul', 'January', '05', teacher)
     >>> setAbsence('Paul', 'February', '11', teacher)
@@ -479,7 +474,7 @@ functions:
 
     >>> teacher.getLink('Home').click()
     >>> teacher.getLink('Chemistry (2)', index=1).click()
-    >>> teacher.getLink('Journal', index=1).click()
+    >>> section_url = teacher.url + '/test_only_update_section_journal.html'
 
     >>> setAbsence('Paul', 'August', '05', teacher)
     >>> setAbsence('Paul', 'October', '21', teacher)

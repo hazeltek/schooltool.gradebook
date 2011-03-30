@@ -412,3 +412,7 @@ class ILinkedColumnActivity(IActivity):
         description=_(u"A text string that specifies the source of the column"),
         required=True)
 
+
+class IIndependentSectionJournalData(Interface):
+    """Bridge interface to remove gradebook dependency on lyceum journal."""
+

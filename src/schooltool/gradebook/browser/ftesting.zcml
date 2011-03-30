@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
            i18n_domain="zope">
@@ -12,7 +13,6 @@
   <include package="schooltool.timetable" />
   <include package="schooltool.requirement" />
   <include package="schooltool.gradebook" />
-  <include package="schooltool.lyceum.journal" />
 
   <class class="schooltool.gradebook.tests.stubs.ExternalActivityStub">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
@@ -47,6 +47,7 @@
 
   <browser:defaultSkin name="BasicPerson" />
 
+  <!-- Override rml views so that they return the template instead of pdf -->
   <browser:page
       name="gradebook.pdf"
       for="schooltool.gradebook.interfaces.IGradebook"
@@ -54,7 +55,6 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="report_card.pdf"
       for="schooltool.person.interfaces.IPerson"
@@ -62,7 +62,6 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="student_detail.pdf"
       for="schooltool.person.interfaces.IPerson"
@@ -70,7 +69,6 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="report_card.pdf"
       for="schooltool.group.interfaces.IGroup"
@@ -78,7 +76,6 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="student_detail.pdf"
       for="schooltool.group.interfaces.IGroup"
@@ -86,7 +83,6 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="section_absences.pdf"
       for="schooltool.course.interfaces.ISection"
@@ -94,7 +90,6 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="absences_by_day.pdf"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
@@ -102,13 +97,22 @@
       permission="schooltool.edit"
       attribute="template"
       />
-
   <browser:page
       name="failures_by_term.pdf"
       for="schooltool.term.interfaces.ITerm"
       class="schooltool.gradebook.browser.pdf_views.FailingReportPDFView"
       permission="schooltool.edit"
       attribute="template"
+      />
+
+  <!-- Stub views and adapters for soft journal dependency-->
+  <adapter
+      factory="schooltool.gradebook.browser.ftests.test_functional.getSectionIndependentSectionJournalData"  />
+  <browser:page
+      name="test_only_update_section_journal.html"
+      for="schooltool.course.interfaces.ISection"
+      class="schooltool.gradebook.browser.ftests.test_functional.TestOnlyUpdateSectionJournalView"
+      permission="schooltool.edit"
       />
 
 </configure>
