@@ -669,13 +669,6 @@
 
   <!-- Views for ISchoolToolApplication -->
   <page
-      name="no_current_term.html"
-      for="schooltool.app.interfaces.ISchoolToolApplication"
-      class=".gradebook.NoCurrentTerm"
-      template="templates/no_current_term.pt"
-      permission="schooltool.view"
-      />
-  <page
       name="no_report_sheets.html"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       template="templates/no_report_sheets.pt"

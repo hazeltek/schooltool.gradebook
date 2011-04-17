@@ -7,6 +7,7 @@ CHANGES
 
 - Reports action menus were moved to schooltool 1.6.0b1. Register our reports
   using the new reportLink directive.
+- Add meta.zcml to support making this plugin optional.
 
 
 0.9.0b1 (2011-04-17)

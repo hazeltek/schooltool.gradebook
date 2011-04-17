@@ -14,16 +14,16 @@ Let's log in as manager and create a student.
 
 We'll navigate to the student and request a report card, an operation that is
 impossible without there being at least one term set up.  We'll test that the
-user gets redirected to the error page.
+user gets the error message.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('One').click()
     >>> manager.getLink('Reports').click()
     >>> manager.getLink('Student Report Card').click()
-    >>> manager.url
-    'http://localhost/no_current_term.html'
-    >>> 'currently' in manager.contents
-    True
-    >>> 'administration' in manager.contents
-    True
+    >>> manager.printQuery("id('content-body')//h1/text()")
+    The operation you attempted cannot be completed because there are
+    currently no terms set up in your SchoolTool instance. Please have
+    a user with administration access set up at least one term and try
+    the operation again.
+
