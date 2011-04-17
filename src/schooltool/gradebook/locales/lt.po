@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-03-02 22:21+0200\n"
+"POT-Creation-Date: 2011-04-18 01:51+0300\n"
 "PO-Revision-Date: 2010-05-20 20:32+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
@@ -159,15 +159,15 @@ msgid "Add a Report Sheet"
 msgstr "Pridėti ataskaitos lentelę"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:158
+msgid "Edit Worksheet"
+msgstr "Keisti lentelę"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:158
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 #: /src/schooltool/gradebook/browser/configure.zcml:218
 #: /src/schooltool/gradebook/browser/configure.zcml:241
 msgid "Edit"
 msgstr "Keisti"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:158
-msgid "Edit Worksheet"
-msgstr "Keisti lentelę"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 msgid "Edit Report Sheet"
@@ -264,16 +264,8 @@ msgstr "Atnaujinti pažymius"
 msgid "Deploy Report Sheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:531
-#: /src/schooltool/gradebook/browser/configure.zcml:582
-#: /src/schooltool/gradebook/browser/configure.zcml:626
-#: /src/schooltool/gradebook/browser/configure.zcml:669
-#: /src/schooltool/gradebook/browser/configure.zcml:712
-msgid "Reports"
-msgstr "Ataskaitos"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:575
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:13
+#: /src/schooltool/gradebook/browser/configure.zcml:569
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr "Ataskaitos kortelės išdėstymas"
 
@@ -461,6 +453,76 @@ msgstr "Kursas"
 msgid "Worksheet"
 msgstr "Lentelė"
 
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Contains scores from report sheets.  Formatted to be sent to parents."
+msgstr "Pažymiai iš ataskaitų lentelių. Skirta siųsti tėvams."
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Student Report Card"
+msgstr "Mokinio ataskaitos kortelė"
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid ""
+"Contains scores from report sheets and attendance.  For use by school staff."
+msgstr ""
+"Pažymiai iš ataskaitų lentelių ir lankomumo duomenys. Skirta mokyklos "
+"personalui."
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid "Student Detail Report"
+msgstr "Išsami mokinio ataskaita"
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "A single PDF containing report cards for all students in the group."
+msgstr "Vienas PDF kuriame yra visų mokinių grupėje ataskaitos kortelės."
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "Student Report Card by Group"
+msgstr "Mokinių grupės ataskaitos kortelės"
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Group"
+msgstr "Grupė"
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "A single PDF containing detail reports for all students in the group."
+msgstr "Vienas PDF kuriame yra visų mokinių grupėje išsamios ataskaitos."
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Student Detail Report by Group"
+msgstr "Mokinių grupės išsamios ataskaitos"
+
+#: /src/schooltool/gradebook/browser/report.zcml:44
+msgid "Absences By Day"
+msgstr "Dienos lankomumas"
+
+#: /src/schooltool/gradebook/browser/report.zcml:44
+msgid "Lists students absent on a given day."
+msgstr "Sąrašas mokinių, praleidusių pamokas nurodytą dieną."
+
+#: /src/schooltool/gradebook/browser/report.zcml:44
+msgid "School Year"
+msgstr "Mokslo metai"
+
+#: /src/schooltool/gradebook/browser/report.zcml:53
+msgid "Failures by Term"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:53
+msgid ""
+"Shows all students receiving failing scores in the selected report activity "
+"and term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Absences by Section"
+msgstr "Kurso lankomumas"
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Summary of absences and tardies from a single section and term."
+msgstr "Praleistų ir pavėluotų pamokų apžvalga duotam kursui ir semestrui."
+
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "Absent"
 msgstr "Praleido"
@@ -520,51 +582,7 @@ msgstr "Pridėti naują ataskaitos veiklą"
 msgid "Apply"
 msgstr "Pritaikyti"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:52
-msgid "Student Reports"
-msgstr "Mokinio ataskaitos"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:59
-#: /src/schooltool/gradebook/browser/request_reports.py:79
-#: /src/schooltool/gradebook/browser/request_reports.py:299
-msgid "Request Report Card"
-msgstr "Prašyti ataskaitos kortelės"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:63
-#: /src/schooltool/gradebook/browser/request_reports.py:83
-#: /src/schooltool/gradebook/browser/request_reports.py:301
-msgid "Request Detailed Student Report"
-msgstr "Prašyti išsamios mokinio ataskaitos"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:72
-msgid "Group Reports"
-msgstr "Grupės ataskaitos"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:92
-msgid "Term Reports"
-msgstr "Semestro ataskaitos"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:99
-msgid "Failures by Term"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:108
-msgid "School Year Reports"
-msgstr "Mokslo metų ataskaitos"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:115
-msgid "Absences By Day"
-msgstr "Dienos lankomumas"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:124
-msgid "Section Reports"
-msgstr "Kurso ataskaitos"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:131
-msgid "Download Absences by Section Report"
-msgstr "Atsisiųsti kurso lankomumo ataskaitą"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
+#: /src/schooltool/gradebook/browser/request_reports.py:42
 msgid "Request Failures by Term Report"
 msgstr ""
 
@@ -591,6 +609,14 @@ msgstr "Prašyti lankomumo ataskaitos"
 #: /src/schooltool/gradebook/browser/request_reports.py:254
 msgid "You must specify a valid date within the school year."
 msgstr "Reikia nurodyti tinkamą datą mokslo metuose."
+
+#: /src/schooltool/gradebook/browser/request_reports.py:201
+msgid "Request Report Card"
+msgstr "Prašyti ataskaitos kortelės"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:203
+msgid "Request Detailed Student Report"
+msgstr "Prašyti išsamios mokinio ataskaitos"
 
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 msgid "Hide"
@@ -1349,11 +1375,17 @@ msgstr "Rodyti vertinimo sistemą"
 msgid "Delete?"
 msgstr "Pašalinti?"
 
+#~ msgid "Reports"
+#~ msgstr "Ataskaitos"
+
 #~ msgid "Report Card"
 #~ msgstr "Ataskaitos kortelė"
 
-#~ msgid "Manage Activities"
-#~ msgstr "Tvarkyti veiklas"
+#~ msgid "Group Reports"
+#~ msgstr "Grupės ataskaitos"
 
-#~ msgid "Absences by Section"
-#~ msgstr "Kurso lankomumas"
+#~ msgid "Term Reports"
+#~ msgstr "Semestro ataskaitos"
+
+#~ msgid "Section Reports"
+#~ msgstr "Kurso ataskaitos"
