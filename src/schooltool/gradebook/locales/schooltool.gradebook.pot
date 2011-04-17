@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2011-03-02 22:21+0200\n"
+"POT-Creation-Date: 2011-04-18 01:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -268,15 +268,7 @@ msgstr ""
 msgid "Deploy Report Sheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:538
-#: /src/schooltool/gradebook/browser/configure.zcml:589
-#: /src/schooltool/gradebook/browser/configure.zcml:633
-#: /src/schooltool/gradebook/browser/configure.zcml:676
-#: /src/schooltool/gradebook/browser/configure.zcml:719
-msgid "Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/configure.zcml:582
+#: /src/schooltool/gradebook/browser/configure.zcml:569
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr ""
@@ -461,6 +453,71 @@ msgstr ""
 msgid "Worksheet"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Contains scores from report sheets.  Formatted to be sent to parents."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Student Report Card"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid "Contains scores from report sheets and attendance.  For use by school staff."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid "Student Detail Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "A single PDF containing report cards for all students in the group."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "Student Report Card by Group"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Group"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "A single PDF containing detail reports for all students in the group."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Student Detail Report by Group"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:44
+msgid "Absences By Day"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:44
+msgid "Lists students absent on a given day."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:44
+msgid "School Year"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:53
+msgid "Failures by Term"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:53
+msgid "Shows all students receiving failing scores in the selected report activity and term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Absences by Section"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Summary of absences and tardies from a single section and term."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "Absent"
 msgstr ""
@@ -520,51 +577,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:52
-msgid "Student Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:59
-#: /src/schooltool/gradebook/browser/request_reports.py:79
-#: /src/schooltool/gradebook/browser/request_reports.py:299
-msgid "Request Report Card"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:63
-#: /src/schooltool/gradebook/browser/request_reports.py:83
-#: /src/schooltool/gradebook/browser/request_reports.py:301
-msgid "Request Detailed Student Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:72
-msgid "Group Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:92
-msgid "Term Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:99
-msgid "Failures by Term"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:108
-msgid "School Year Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:115
-msgid "Absences By Day"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:124
-msgid "Section Reports"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:131
-msgid "Download Absences by Section Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
+#: /src/schooltool/gradebook/browser/request_reports.py:42
 msgid "Request Failures by Term Report"
 msgstr ""
 
@@ -590,6 +603,14 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/request_reports.py:254
 msgid "You must specify a valid date within the school year."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:201
+msgid "Request Report Card"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:203
+msgid "Request Detailed Student Report"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
