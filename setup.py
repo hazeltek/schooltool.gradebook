@@ -59,7 +59,7 @@ setup(
     package_dir={'': 'src'},
     namespace_packages=["schooltool"],
     packages=find_packages('src'),
-    install_requires=['schooltool>=1.5.2',
+    install_requires=['schooltool>=1.6.0b1',
                       'schooltool.lyceum.journal',
                       'rwproperty',
                       'setuptools',

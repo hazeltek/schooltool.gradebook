@@ -32,7 +32,7 @@ report card report for the Students group, we should get an error:
     >>> manager.getLink('Groups').click()
     >>> manager.getLink('Students').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
     >>> manager.printQuery('//h1/text()')
     The operation you attempted cannot be completed because there are
     currently no terms set up in your SchoolTool instance. Please have
@@ -46,7 +46,7 @@ group:
     >>> manager.getLink('Groups').click()
     >>> manager.getLink('Students').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getLink('Student Detail Report').click()
     >>> manager.printQuery('//h1/text()')
     The operation you attempted cannot be completed because there are
     currently no terms set up in your SchoolTool instance. Please have
@@ -510,14 +510,14 @@ Now, let's look at the person reports for Paul:
     >>> manager.getLink('Reports').click()
     >>> manager.printQuery('//h1/text()')
     Student Reports
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
 
 Let's make the form to use its Cancel button:
 
     >>> manager.getControl('Cancel').click()
     >>> manager.printQuery('//h1/text()')
     Student Reports
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
 
 Let's get his report card for 2010:
 
@@ -721,7 +721,7 @@ Students group for 2010:
     >>> manager.getLink('Groups').click()
     >>> manager.getLink('Students').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
     >>> manager.getControl('Term or Year').displayValue = ['2010']
     >>> manager.getControl('Download').click()
 
@@ -1038,7 +1038,7 @@ Term of 2010:
     >>> manager.getLink('Groups').click()
     >>> manager.getLink('Students').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
     >>> manager.getControl('Term or Year').displayValue = ['First Term']
     >>> manager.getControl('Download').click()
 
@@ -1246,7 +1246,7 @@ detailed student report for 2010:
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('Paul').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getLink('Student Detail Report').click()
     >>> manager.getControl('Term or Year').displayValue = ['2010']
     >>> manager.getControl('Download').click()
 
@@ -1435,7 +1435,7 @@ Now let's look at Students group detailed student report for 2010:
     >>> manager.getLink('Groups').click()
     >>> manager.getLink('Students').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getLink('Student Detail Report').click()
     >>> manager.getControl('Term or Year').displayValue = ['2010']
     >>> manager.getControl('Download').click()
 
@@ -1943,7 +1943,7 @@ section of the First Term of 2010:
     >>> teacher.getLink('Home').click()
     >>> teacher.getLink('Chemistry (2)', index=0).click()
     >>> teacher.getLink('Reports').click()
-    >>> teacher.getLink('Download Absences by Section Report').click()
+    >>> teacher.getLink('Absences by Section').click()
 
 Header:
 
@@ -1987,7 +1987,7 @@ Test the Absences by Section report for another section:
     >>> teacher.getLink('Home').click()
     >>> teacher.getLink('Chemistry (2)', index=1).click()
     >>> teacher.getLink('Reports').click()
-    >>> teacher.getLink('Download Absences by Section Report').click()
+    >>> teacher.getLink('Absences by Section').click()
 
 Header:
 

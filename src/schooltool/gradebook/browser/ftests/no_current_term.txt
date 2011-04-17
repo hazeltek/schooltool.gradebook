@@ -20,7 +20,7 @@ user gets redirected to the error page.
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('One').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
     >>> manager.url
     'http://localhost/no_current_term.html'
     >>> 'currently' in manager.contents
