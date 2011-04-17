@@ -54,7 +54,7 @@
   <zope:view
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       for="schooltool.requirement.scoresystem.IScoreSystemField"
-      provides="zope.app.form.interfaces.IInputWidget"
+      provides="zope.formlib.interfaces.IInputWidget"
       factory=".scoresystem.ScoreSystemWidget"
       permission="zope.Public"
       />
@@ -64,8 +64,6 @@
       class="schooltool.requirement.browser.requirement.RequirementView"
       template="requirement.pt"
       permission="schooltool.view"
-      menu="zmi_views"
-      title="View"
       />
   <page
       name="treenode"

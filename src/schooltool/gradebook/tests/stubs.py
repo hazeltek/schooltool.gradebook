@@ -21,8 +21,10 @@ Stubs for Gradebook-related Tests
 
 """
 from decimal import Decimal
+import datetime
 import zope.interface
 
+from schooltool.term.interfaces import IDateManager
 from schooltool.gradebook import interfaces
 
 
@@ -119,4 +121,12 @@ class SampleSource(ExternalActivitiesStub):
             activity.__parent__ = context
             result.append((name, activity))
         self.activities = dict(result)
-            
+
+
+class DateManagerStub(object):
+
+    zope.interface.implements(IDateManager)
+
+    def __init__(self):
+        self.current_term = None
+        self.today = datetime.date(2011, 1, 23)

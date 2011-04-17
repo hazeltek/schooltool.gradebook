@@ -1,0 +1,88 @@
+due_date and date attributes of activities
+------------------------------------------
+
+We'll test the functional logic of two attributes of activities:
+due_date and date.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Add a schoolyear:
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.addSchoolYear('2011', '2011-01-01', '2011-12-31')
+
+Add a term to the schoolyear:
+
+    >>> setup.addTerm('Term', '2011-01-01', '2011-12-31', '2011')
+
+Set up one course:
+
+    >>> setup.addCourse('Soccer', '2011')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Mario', 'Tejada', 'mario', 'pwd', browser=manager)
+    >>> addPerson('Camila', 'Cerna', 'camila', 'pwd', browser=manager)
+    >>> addPerson('Nestor', 'Guzman', 'nestor', 'pwd', browser=manager)
+    >>> addPerson('William', 'Mejia', 'william', 'pwd', browser=manager)
+
+Set up a section:
+
+    >>> setup.addSection('Soccer', '2011', 'Term',
+    ...                  instructors=['William'],
+    ...                  members=['Mario', 'Camila', 'Nestor'])
+
+We'll change the date of the system to May 25th, 2011:
+
+    >>> manager.open('http://localhost/time')
+    >>> manager.getControl('Today').value = "2011-05-25"
+    >>> manager.getControl('Apply').click()
+    >>> manager.printQuery('//div[@class="summary"]/text()')
+    Data successfully updated.
+
+Log in as teacher:
+
+    >>> teacher = Browser('william', 'pwd')
+
+Go to his gradebook:
+
+    >>> teacher.getLink('Gradebook').click()
+
+By default the New Activity form shows the system date in the Due Date field:
+
+    >>> teacher.getLink('New Activity').click()
+    >>> teacher.printQuery('id("form-widgets-due_date")/@value')
+    2011-05-25
+    >>> teacher.getControl('Title').value = 'My First Activity'
+    >>> teacher.getControl('Due Date').value = '2011-06-17'
+    >>> teacher.getControl('Add').click()
+
+The Edit activity form should show the stored due date instead of the
+system date:
+
+    >>> teacher.getLink('Manage Worksheet').click()
+    >>> teacher.getLink('My First Activity').click()
+    >>> teacher.printQuery('id("form-widgets-due_date")/@value')
+    2011-06-17
+
+The same due_date logic applies to the New External Activity and Edit
+external activity forms:
+
+    >>> teacher.getControl('Cancel').click()
+    >>> teacher.getLink('New External Activity').click()
+    >>> teacher.printQuery('id("form-widgets-due_date")/@value')
+    2011-05-25
+    >>> teacher.getControl('External Activity').displayValue = ['Sample Source - HTML']
+    >>> teacher.getControl('Due Date').value = '2011-07-01'
+    >>> teacher.getControl('Points').value = '20'
+    >>> teacher.getControl('Add').click()
+
+    >>> teacher.getLink('Manage Worksheet').click()
+    >>> teacher.getLink('HTML').click()
+    >>> teacher.printQuery('id("form-widgets-due_date")/@value')
+    2011-07-01
+
+# XXX: add ftests for Activity.date

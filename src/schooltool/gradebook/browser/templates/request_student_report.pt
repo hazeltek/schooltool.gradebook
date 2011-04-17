@@ -20,7 +20,7 @@
     </tal:block>
 
     <label for="selectedTerm" class="gradebook_margin_left1" i18n:translate="">Term or Year</label>
-    <select name="selectedTerm">
+    <select name="selectedTerm" id="selectedTerm">
       <tal:block repeat="term view/availableTerms">
         <option
             tal:attributes="value term/value;

@@ -1,0 +1,113 @@
+My Grades
+---------
+
+Students should also be able to view their grades (not change them), so there's
+a view for the student to see them.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+Check the Total and Average columns viewed by the teacher:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    49.3%
+
+Let's log in as Claudia and go to her grades for the section. It will
+come up with Sheet1 as the current worksheet, As Claudia is only a
+student and only attends the one section, the 'Gradebook' tab will
+take her directly to her grades for that section.
+
+    >>> claudia = Browser('claudia', 'pwd')
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/mygrades'
+
+    >>> claudia.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+She sees her average:
+
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div> Ave.: 49.3%</div>
+    </td>
+
+And her grades for the gradebook activities:
+
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[1]/div/text()')
+    Activity
+    HW 1 - Homework 1
+    Quiz - Week 1 Pop Quiz
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[2]/div/text()')
+    Grade
+    45 / 50
+    29 / 100

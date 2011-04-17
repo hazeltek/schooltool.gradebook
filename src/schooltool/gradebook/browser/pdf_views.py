@@ -44,7 +44,7 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_KEY)
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.gradebook.interfaces import IGradebook, IWorksheet
+from schooltool.gradebook.interfaces import IGradebook
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
@@ -191,7 +191,7 @@ class BaseStudentPDFView(BasePDFView):
 class BaseReportCardPDFView(BaseStudentPDFView):
     """The report card (PDF) base class"""
 
-    template=ViewPageTemplateFile('report_card_rml.pt')
+    template=ViewPageTemplateFile('rml/report_card_rml.pt')
 
     def __call__(self):
         """Make sure there is a current term."""
@@ -200,7 +200,8 @@ class BaseReportCardPDFView(BaseStudentPDFView):
         return super(BaseReportCardPDFView, self).__call__()
 
     def title(self):
-        return _('Report Card') + ': ' + self.schoolyear.title
+        return _('Report Card: ${schoolyear}',
+                 mapping={'schoolyear': self.schoolyear.title})
 
     def course_heading(self):
         return _('Courses')
@@ -210,7 +211,8 @@ class BaseReportCardPDFView(BaseStudentPDFView):
         for student in self.collectStudents():
             student_name = u'%s %s' % (
                 student.first_name, student.last_name)
-            student_title = _('Student') + ': ' + student_name
+            student_title = _('Student: ${student}',
+                              mapping={'student': student_name})
 
             sections = []
             for section in ILearner(student).sections():
@@ -218,7 +220,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
                 schoolyear = ISchoolYear(term)
                 if schoolyear != self.schoolyear:
                     continue
-                if self.term and term != self.term:
+                if self.term is not None and term != self.term:
                     continue
                 sections.append(section)
 
@@ -242,6 +244,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
         section_list = []
         for section in sections:
             worksheets = []
+            term = ITerm(section)
             for layout in layouts:
                 termName, worksheetName, activityName = layout.source.split('|')
                 activities = IActivities(section)
@@ -276,7 +279,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
 
             if len(worksheets):
                 section_result = {
-                    'heading': section.title,
+                    'heading': "%s - %s" % (term.title, section.title),
                     'worksheets': worksheets,
                     }
                 section_list.append(section_result)
@@ -301,7 +304,7 @@ class GroupReportCardPDFView(BaseReportCardPDFView):
 class BaseStudentDetailPDFView(BaseStudentPDFView):
     """The report card (PDF) base class"""
 
-    template=ViewPageTemplateFile('student_detail_rml.pt')
+    template=ViewPageTemplateFile('rml/student_detail_rml.pt')
 
     def __call__(self):
         """Make sure there is a current term."""
@@ -310,7 +313,8 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         return super(BaseStudentDetailPDFView, self).__call__()
 
     def title(self):
-        return _('Detailed Student Report') + ': ' + self.schoolyear.title
+        return _('Detailed Student Report: ${schoolyear}',
+                 mapping={'schoolyear': self.schoolyear.title})
 
     def grades_heading(self):
         return _('Grade Detail')
@@ -331,14 +335,28 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         return _('User Id')
 
     def grades(self, student):
-        sections = [section for section in ILearner(student).sections()
-                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        sections = []
+        for section in ILearner(student).sections():
+            term = ITerm(section)
+            schoolyear = ISchoolYear(term)
+            if schoolyear != self.schoolyear:
+                continue
+            if self.term is not None and term != self.term:
+                continue
+            sections.append(section)
         return self.getGrid(student, sections)
 
     def attendance(self, student):
         data = {}
-        sections = [section for section in ILearner(student).sections()
-                    if ISchoolYear(ITerm(section)) == self.schoolyear]
+        sections = []
+        for section in ILearner(student).sections():
+            term = ITerm(section)
+            schoolyear = ISchoolYear(term)
+            if schoolyear != self.schoolyear:
+                continue
+            if self.term is not None and term != self.term:
+                continue
+            sections.append(section)
         for section in sections:
             jd = ISectionJournalData(section)
             for meeting in jd.recordedMeetings(student):
@@ -409,7 +427,7 @@ class GroupDetailPDFView(BaseStudentDetailPDFView):
 class FailingReportPDFView(BasePDFView):
     """A view for printing a report of all the students failing an activity"""
 
-    template=ViewPageTemplateFile('failing_report_rml.pt')
+    template=ViewPageTemplateFile('rml/failing_report_rml.pt')
 
     def __init__(self, context, request):
         super(FailingReportPDFView, self).__init__(context, request)
@@ -426,7 +444,8 @@ class FailingReportPDFView(BasePDFView):
         return root.deployed[worksheetName][activityName]
 
     def title(self):
-        return _('Failures by Term Report') + ': ' + self.term.title
+        return _('Failures by Term Report: ${term}',
+                 mapping={'term': self.term.title})
 
     def worksheet_heading(self):
         return _('Report Sheet:')
@@ -528,7 +547,7 @@ class FailingReportPDFView(BasePDFView):
 class AbsencesByDayPDFView(BasePDFView):
     """A view for printing a report with those students absent on a given day"""
 
-    template=ViewPageTemplateFile('absences_by_day_rml.pt')
+    template=ViewPageTemplateFile('rml/absences_by_day_rml.pt')
 
     def __init__(self, context, request):
         super(AbsencesByDayPDFView, self).__init__(context, request)
@@ -613,7 +632,7 @@ class AbsencesByDayPDFView(BasePDFView):
         periods = self.getPeriods(data)
 
         rows = []
-        for student in sorted(data):
+        for student in sorted(data, key=lambda s: s.title):
             scores = [''] * len(periods)
             for period in data[student]:
                 index = periods.index(period)
@@ -629,7 +648,7 @@ class AbsencesByDayPDFView(BasePDFView):
 class SectionAbsencesPDFView(BasePDFView):
     """A view for printing a report with absences for a given section"""
 
-    template=ViewPageTemplateFile('section_absences_rml.pt')
+    template=ViewPageTemplateFile('rml/section_absences_rml.pt')
 
     def __init__(self, context, request):
         super(SectionAbsencesPDFView, self).__init__(context, request)
@@ -671,7 +690,6 @@ class SectionAbsencesPDFView(BasePDFView):
             student_data['absences'] = 0
             student_data['tardies'] = 0
             for meeting in jd.recordedMeetings(student):
-                period = meeting.period_id[:5]
                 grade = jd.getGrade(student, meeting)
                 if grade == 'n':
                     student_data['absences'] += 1
@@ -695,7 +713,7 @@ class SectionAbsencesPDFView(BasePDFView):
 class GradebookPDFView(BasePDFView, GradebookOverview):
     """The gradebook pdf view class"""
 
-    template=ViewPageTemplateFile('gradebook_rml.pt')
+    template=ViewPageTemplateFile('rml/gradebook_rml.pt')
     topMargin = 30
     leftMargin = 35
 
@@ -735,8 +753,6 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
                 next_row = end_row
             else:
                 end_col = next_col
-            #db = start_row, end_row, next_row, start_col, end_col, next_col
-            #import pdb; pdb.set_trace()
 
             rows = deepcopy(table)[start_row:end_row]
             for row in rows:
@@ -772,7 +788,6 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
         return _('Student')
 
     def widths(self, start_col, end_col):
-        result = '6cm' + ',1.6cm' * (8)
         num_cols = end_col - start_col
         if not self.total_hide:
             num_cols += 1

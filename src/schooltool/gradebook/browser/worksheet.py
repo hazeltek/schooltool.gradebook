@@ -26,11 +26,11 @@ from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.publisher.browser import BrowserView
+from zope.app.form.browser.editview import EditView
 
 from schooltool.app.browser import app
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook import interfaces
-from schooltool.gradebook.browser.activity import BaseEditView
 from schooltool.person.interfaces import IPerson
 
 
@@ -53,7 +53,6 @@ class WorksheetManageView(object):
     
     def activities(self):
         pos = 0
-        results = []
         for activity in list(self.context.values()):
             pos += 1
             url = absoluteURL(activity, self.request)
@@ -110,22 +109,21 @@ class WorksheetAddView(app.BaseAddView):
         return absoluteURL(self.context.context, self.request)
 
 
+class BaseEditView(EditView):
+    """A base class for edit views that need special redirect."""
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        else:
+            status = EditView.update(self)
+            if 'UPDATE_SUBMIT' in self.request and not self.errors:
+                self.request.response.redirect(self.nextURL())
+            return status
+
+
 class WorksheetEditView(BaseEditView):
     """A view for editing worksheet info."""
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
-
-
-class WorksheetDeleteView(object):
-    """A view for deleting a worksheet."""
-
-    def update(self):
-        import pdb; pdb.set_trace()
-        next_url = absoluteURL(self.context.__parent__, self.request)
-        if 'CANCEL' in self.request:
-            self.request.response.redirect(next_url)
-        elif 'DELETE' in self.request:
-            next_url += '?DELETE_WORKSHEET=' + self.context.__name__
-            self.request.response.redirect(next_url)
-

@@ -7,7 +7,7 @@ from persistent.interfaces import IPersistent
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.publication.zopepublication import ZopePublication
 from zope.app.testing.setup import setUpAnnotations
-from zope.component import provideAdapter
+from zope.component import provideAdapter, provideUtility
 from zope.interface import implements
 
 from schooltool.app.app import SchoolToolApplication
@@ -20,6 +20,8 @@ from schooltool.requirement.evaluation import getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IHaveEvaluations
 from schooltool.requirement.scoresystem import ScoreSystemsProxy
+from schooltool.term.interfaces import IDateManager
+from schooltool.gradebook.tests import stubs
 
 
 class ContextStub(object):
@@ -70,3 +72,6 @@ def provideAdapters():
     provideAdapter(getEvaluations, adapts=(IHaveEvaluations,), 
                                    provides=IEvaluations)
 
+
+def provideUtilities():
+    provideUtility(stubs.DateManagerStub(), IDateManager, '')

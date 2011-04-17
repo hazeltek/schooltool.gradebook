@@ -1,0 +1,198 @@
+Sections without Courses
+------------------------
+
+A corner case to handle is the gradebook of sections that for some
+reason are not related with a course. This can happen if the course is
+created, then the section is created and related to the course and
+then the course is deleted. Of course that's not a very smart way to
+use SchoolTool, but some users have done it.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up two courses:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+    >>> setup.addCourse('Math I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up one section with instructor and students:
+
+    >>> setup.addSection('Math I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics I', '2005-2006', 'Spring',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+Let's delete the course of this section:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('School Years').click()
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getControl(name='delete.math-i').value = True
+    >>> manager.getControl('Delete').click()
+    >>> manager.getControl('Confirm').click()
+
+Now, let's go to our orphan section:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('School Years').click()
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Math I (1)').click()
+
+And we can access its gradebook:
+
+    >>> manager.getLink('Gradebook', index=1).click()
+    >>> manager.printQuery('//form/*[position()<3]/text()')
+    Term:
+    2005-2006 / Fall
+    >>> manager.printQuery('//form/*[position()>3 and position()<6]/text()')
+    Section:
+    - Math I (1)
+    >>> manager.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+
+Now, let's check that the teacher can access the orphan
+gradebook. We'll do it by first going to the Spring section and then
+using the Term dropdown:
+
+    >>> stephan.getLink('Home').click()
+    >>> stephan.getLink('Physics I').click()
+    >>> stephan.getLink('Gradebook', index=1).click()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    []
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    - Math I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
+    ['HW1', 'Quiz']
+
+And the 'view.html' view on the Student gradebook:
+
+    >>> stephan.open('http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/paul/view.html')
+    >>> stephan.printQuery('id("content-header")/h1')
+    <h1>Sheet1 for Paul Cardune in - Math I (1)</h1>
+
+Now, let's check that a student can access the orphan gradebook:
+
+    >>> claudia = Browser('claudia', 'pwd')
+    >>> claudia.getLink('Home').click()
+    >>> claudia.getLink('Math I (1)').click()
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> claudia.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    - Math I (1)
+    >>> claudia.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div> Ave.: 49.3%</div>
+    </td>
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[1]/div/text()')
+    Activity
+    HW 1 - Homework 1
+    Quiz - Week 1 Pop Quiz
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[2]/div/text()')
+    Grade
+    45 / 50
+    29 / 100
+
+And her other gradebooks:
+
+    >>> claudia.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> claudia.getForm(index=0).submit()
+    >>> claudia.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Spring
+    >>> claudia.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+    >>> claudia.printQuery('//td[@class="active_tab"]')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div>Nothing Graded</div>
+    </td>
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[1]/div/text()')
+    Activity
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[position()>1]/*[2]/div/text()')
+    Grade

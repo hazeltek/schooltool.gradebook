@@ -1,0 +1,326 @@
+Worksheet Preferences
+---------------------
+
+Teachers may want to hide or change the label of the summary columns or, in
+the case of the average column, they may want to choose a score system to
+be used in converting the average to a discrete value.  To support this, we
+provide the column preferences view.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+We will add a custom score system which we will use as a column
+preference.
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Score Systems').click()
+    >>> manager.getLink('Add Score System').click()
+
+    >>> manager.getControl('Title').value = 'Good/Bad'
+    >>> manager.getControl(name='displayed1').value = 'Good'
+    >>> manager.getControl(name='abbr1').value = 'G'
+    >>> manager.getControl(name='value1').value = '1'
+    >>> manager.getControl(name='percent1').value = '70'
+    >>> manager.getControl('Add a lower score').click()
+    >>> manager.getControl(name='displayed2').value = 'Bad'
+    >>> manager.getControl(name='abbr2').value = 'B'
+    >>> manager.getControl(name='value2').value = '0'
+    >>> manager.getControl(name='percent2').value = '0'
+    >>> manager.getControl('Save').click()
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one courses:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up two sections with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+Check the worksheet headers:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+
+Check the due date filter:
+
+    >>> stephan.printQuery('//form/span[3]')
+    <span>show only activities due in past
+    <select name="num_weeks">...</select>
+    weeks</span>
+    >>> stephan.printQuery('//select[@name="num_weeks"]')
+    <select name="num_weeks">
+    ...
+    </select>
+    weeks
+
+By default the Total and Average columns are calculated normally:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    49.3%
+
+We'll call up the current column preferences and note that there are
+none set yet.
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.printQuery('id("content-body")/form//table//input')
+    <input type="checkbox" name="hide_total" />
+    <input type="text" name="label_total" value="" />
+    <input type="checkbox" name="hide_average" />
+    <input type="text" name="label_average" value="" />
+
+    >>> stephan.printQuery("id('content-body')/form//table//option")
+    <option selected="selected" value="">-- No score system --</option>
+    <option value="extended-letter-grade">Extended Letter Grade</option>
+    <option value="goodbad">Good/Bad</option>
+    <option value="letter-grade">Letter Grade</option>
+    <option value="passfail">Pass/Fail</option>
+
+    >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
+    <input type="checkbox" name="hide_due_date" />
+
+Let's change all preferences
+
+    >>> stephan.getControl(name='hide_total').value = ['on']
+    >>> stephan.getControl(name='label_total').value = 'Summe'
+    >>> stephan.getControl(name='hide_average').value = ['on']
+    >>> stephan.getControl(name='label_average').value = 'Durchschnitt'
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Good/Bad']
+    >>> stephan.getControl(name='hide_due_date').value = ['on']
+    >>> stephan.getControl('Update').click()
+
+Total and average columns were hidden:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+
+Due date filter was also hidden:
+
+    >>> 'show only activities due in past' in stephan.contents
+    False
+    >>> stephan.queryHTML('//form/span[3]')
+    []
+    >>> stephan.queryHTML('//select[@name="num_weeks"]')
+    []
+
+Look that all the preferences were saved
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.printQuery("id('content-body')/form//table//input")
+    <input type="checkbox" checked="checked" name="hide_total" />
+    <input type="text" name="label_total" value="Summe" />
+    <input type="checkbox" checked="checked" name="hide_average" />
+    <input type="text" name="label_average" value="Durchschnitt" />
+
+    >>> stephan.printQuery("id('content-body')/form//table//option")
+    <option value="">-- No score system --</option>
+    <option value="extended-letter-grade">Extended Letter Grade</option>
+    <option selected="selected" value="goodbad">Good/Bad</option>
+    <option value="letter-grade">Letter Grade</option>
+    <option value="passfail">Pass/Fail</option>
+
+    >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
+    <input type="checkbox" name="hide_due_date" checked="checked" />
+
+Show the total and average columns, and test that Average is converted to Good/Bad:
+
+    >>> stephan.getControl(name='hide_total').value = False
+    >>> stephan.getControl(name='hide_average').value = False
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Summe</div>
+    <div>Durchschnitt</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    Good
+    Good
+    Bad
+
+Check with extended letter grade scoresystem:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    B
+    A-
+    F
+
+Now, let's test a corner case. The Gradebook allows extra credits in
+scores, and because of the way the average is calculated, there's a
+possibility of having averages higher that 100%.
+
+Before testing this, let's remove the extended letter grade
+scoresystem for the average:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['-- No score system --']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    49.3%
+
+Let's grade Claudia so we get an average higher than 100%:
+
+    >>> stephan.getControl(name='Activity_claudia').value = '51'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '101'
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    152.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    101.3%
+
+Even though this average is higher than 100%, if we convert it back to
+the extended letter grade scoresystem, we should get an A+:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    152.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    B
+    A-
+    A+
+
+And if we change to the Good/Bad scoresystem, we should get Good:
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Good/Bad']
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    152.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    Good
+    Good
+    Good

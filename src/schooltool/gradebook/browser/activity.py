@@ -26,7 +26,6 @@ import xlwt
 from StringIO import StringIO
 
 from zope.container.interfaces import INameChooser
-from zope.app.form.browser.editview import EditView
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
@@ -34,16 +33,16 @@ from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.api import getName
-from zope.app.form.browser.interfaces import ITerms
+from zope.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
 from zope.security.proxy import removeSecurityProxy
-from zope.component import queryAdapter, getAdapter
-from zope.formlib import form
+from zope.component import queryAdapter, getAdapter, queryUtility
 from zope import interface, schema
 from zope.viewlet.viewlet import ViewletBase
 
 from z3c.form import form as z3cform
-from z3c.form import field, button
+from z3c.form import field, button, widget
+from z3c.form.interfaces import DISPLAY_MODE
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IDemographics
@@ -60,7 +59,7 @@ from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.term.interfaces import ITerm
+from schooltool.term.interfaces import ITerm, IDateManager
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -168,7 +167,7 @@ class UnhideWorksheetsView(object):
 class ActivityAddView(z3cform.AddForm):
     """A view for adding an activity."""
     label = _("Add new activity")
-    template = ViewPageTemplateFile('add_edit_activity.pt')
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
     fields = fields.select('title', 'label', 'due_date', 'description', 
@@ -200,7 +199,8 @@ class ActivityAddView(z3cform.AddForm):
         scoresystem = RangedValuesScoreSystem(
             u'generated', min=data['min'], max=data['max'])
         activity = Activity(data['title'], data['category'], scoresystem,
-                            data['description'], data['label'])
+                            data['description'], data['label'],
+                            data.get('due_date'))
         return activity
 
     def add(self, activity):
@@ -214,65 +214,66 @@ class ActivityAddView(z3cform.AddForm):
         return absoluteURL(self.context, self.request)
 
 
-class LinkedActivityAddView(form.AddForm):
+class LinkedActivityAddView(z3cform.AddForm):
     """A view for adding a linked activity."""
 
-    form_fields = form.Fields(ILinkedActivityFields,
-                              interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "due_date", "label",
-                                     "category", "points")
-
     label = _(u"Add an External Activity")
-    template = ViewPageTemplateFile("templates/linkedactivity_add.pt")
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
+
+    fields = field.Fields(ILinkedActivityFields,
+                          interfaces.ILinkedActivity)
+    fields = fields.select("external_activity", "label", "due_date",
+                           "category", "points")
+
+    def updateActions(self):
+        super(LinkedActivityAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    @button.buttonAndHandler(_('Add'), name='add')
+    def handleAdd(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        obj = self.createAndAdd(data)
+        if obj is not None:
+            # mark only as finished if we get the new object
+            self._finishedAdd = True
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
 
     def create(self, data):
-        adapter = data.get("external_activity")[0]
         external_activity = data.get("external_activity")[1]
         category = data.get("category")
         points = data.get("points")
         label = data.get("label")
         due_date = data.get("due_date")
         return LinkedActivity(external_activity, category, points,
-                                       label, due_date)
+                              label, due_date)
 
-    @form.action(_("Add"), condition=form.haveInputWidgets)
-    def handle_add(self, action, data):
-        self.createAndAdd(data)
-
-    @form.action(_("Cancel"), validator=lambda *x:())
-    def handle_cancel_action(self, action, data):
-        self.request.response.redirect(self.nextURL())
+    def add(self, activity):
+        """Add activity to the worksheet."""
+        chooser = INameChooser(self.context)
+        name = chooser.chooseName('', activity)
+        self.context[name] = activity
+        self.updateGrades(activity)
+        return activity
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        return absoluteURL(self.context, self.request)
 
     def updateGrades(self, linked_activity):
         LinkedActivityGradesUpdater().update(linked_activity, self.request)
-
-    def add(self, object):
-        ob = self.context.add(object)
-        self.updateGrades(object)
-        self._finished_add = True
-        return ob
-
-
-class BaseEditView(EditView):
-    """A base class for edit views that need special redirect."""
-
-    def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect(self.nextURL())
-        else:
-            status = EditView.update(self)
-            if 'UPDATE_SUBMIT' in self.request and not self.errors:
-                self.request.response.redirect(self.nextURL())
-            return status
 
 
 class ActivityEditView(z3cform.EditForm):
     """Edit form for basic person."""
     z3cform.extends(z3cform.EditForm)
-    template = ViewPageTemplateFile('add_edit_activity.pt')
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
     fields = fields.select('title', 'label', 'due_date', 'description',
@@ -301,34 +302,43 @@ class ActivityEditView(z3cform.EditForm):
         return absoluteURL(worksheet, self.request) + '/manage.html'
 
 
-class LinkedActivityEditView(form.EditForm):
-    """A view for editing a linked activity."""
+class LinkedActivityEditView(z3cform.EditForm):
+    """Edit form for linked activity."""
 
-    form_fields = form.Fields(
-        form.Fields(ILinkedActivityFields, for_display=True),
-        interfaces.ILinkedActivity)
-    form_fields = form_fields.select("external_activity", "title", 'label',
-                                     'due_date', "description", "category",
-                                     "points")
+    z3cform.extends(z3cform.EditForm)
+    template = ViewPageTemplateFile('templates/add_edit_activity.pt')
+    label = _(u'Edit External Activity')
 
-    label = _(u"Edit External Activity")
-    template = ViewPageTemplateFile("templates/linkedactivity_edit.pt")
+    fields = field.Fields(ILinkedActivityFields, mode=DISPLAY_MODE)
+    fields += field.Fields(interfaces.ILinkedActivity)
+    fields = fields.select("external_activity", "title", 'label',
+                           'due_date', "description", "category",
+                           "points")
 
-    @form.action(_("Apply"), condition=form.haveInputWidgets)
-    def handle_edit(self, action, data):
-        form.applyChanges(self.context, self.form_fields, data)
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
         self.request.response.redirect(self.nextURL())
 
-    @form.action(_("Cancel"), validator=lambda *x:())
-    def handle_cancel_action(self, action, data):
+    def updateActions(self):
+        super(LinkedActivityEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+    def applyChanges(self, data):
+        super(LinkedActivityEditView, self).applyChanges(data)
         self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        worksheet = self.context.__parent__
+        return absoluteURL(worksheet, self.request)
 
 
 class WeightCategoriesView(object):
     """A view for providing category weights for the worksheet context."""
+
+    def title(self):
+        return _('Category weights for worksheet ${worksheet}',
+                 mapping={'worksheet': self.context.title})
 
     def nextURL(self):
         section = self.context.__parent__.__parent__
@@ -336,17 +346,14 @@ class WeightCategoriesView(object):
 
     def update(self):
         self.message = ''
-        language = 'en' # XXX this need to be dynamic
         categories = getCategories(ISchoolToolApplication(None))
-
         newValues = {}
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
-
         elif 'UPDATE_SUBMIT' in self.request:
             for category in sorted(categories.getKeys()):
-                if category in self.request and self.request[category]:
-                    value = self.request[category]
+                if category in self.request and self.request[category].strip():
+                    value = self.request[category].strip()
                     try:
                         value = Decimal(value)
                         if value < 0 or value > 100:
@@ -355,37 +362,47 @@ class WeightCategoriesView(object):
                         self.message = _('$value is not a valid weight.',
                             mapping={'value': value})
                         break
-                    newValues[category] = value
+                else:
+                    value = None
+                newValues[category] = value
             else:
                 total = 0
-                for category in newValues:
-                    total += newValues[category]
+                for category, value in newValues.items():
+                    if value is not None:
+                        total += value
                 if total != Decimal(100):
                     self.message = _('Category weights must add up to 100.')
                 else:
-                    for category in newValues:
-                        self.context.setCategoryWeight(category, 
-                            newValues[category] / 100)
+                    for category, value in newValues.items():
+                        if value is not None:
+                            value = value / 100
+                        self.context.setCategoryWeight(category, value)
                     self.request.response.redirect(self.nextURL())
 
+    def rows(self):
+        language = 'en' # XXX this need to be dynamic
         weights = self.context.getCategoryWeights()
-        self.rows = []
+        categories = getCategories(ISchoolToolApplication(None))
+        result = []
         for category in sorted(categories.getKeys()):
             if category in self.request:
                 weight = self.request[category]
             else:
-                weight = unicode(weights.get(category, '') * 100)
-                if '.' in weight:
-                    while weight.endswith('0'):
-                        weight = weight[:-1]
-                    if weight[-1] == '.':
-                        weight = weight[:-1]
+                weight = weights.get(category)
+                if weight is not None:
+                    weight = unicode(weights.get(category) * 100)
+                    if '.' in weight:
+                        while weight.endswith('0'):
+                            weight = weight[:-1]
+                        if weight[-1] == '.':
+                            weight = weight[:-1]
             row = {
                 'category': category,
                 'category_value': categories.getValue(category, language),
                 'weight': weight,
                 }
-            self.rows.append(row)
+            result.append(row)
+        return result
 
 
 class ExternalActivitiesTerms(object):
@@ -482,10 +499,12 @@ class LinkedColumnBase(BrowserView):
     """Base class for add/edit linked column views"""
     def __init__(self, context, request):
         super(LinkedColumnBase, self).__init__(context, request)
+        self.addForm = True
         if interfaces.IWorksheet.providedBy(self.context):
             self.currentWorksheet = self.context
         else:
             self.currentWorksheet = self.context.__parent__
+            self.addForm = False
         self.person = IPerson(self.request.principal)
 
     def title(self):
@@ -505,10 +524,15 @@ class LinkedColumnBase(BrowserView):
         categories = getCategories(ISchoolToolApplication(None))
 
         results = []
+        if self.addForm:
+            default_category = defaultCategory(None)
+        else:
+            default_category = self.context.category
         for category in sorted(categories.getKeys()):
             result = {
                 'name': category,
                 'value': categories.getValue(category, language),
+                'selected': category == default_category and 'selected' or None,
                 }
             results.append(result)
         return results
@@ -645,3 +669,24 @@ class EditLinkedColumnView(LinkedColumnBase):
             self.buildUpdateTarget(self.context)
             self.request.response.redirect(self.nextURL())
 
+
+def defaultCategory(adapter):
+    categories = getCategories(ISchoolToolApplication(None))
+    return categories.getDefaultKey()
+
+
+ActivityDefaultCategory = widget.ComputedWidgetAttribute(
+    defaultCategory,
+    field=interfaces.IActivity['category']
+    )
+
+
+def defaultDueDate(adapter):
+    today = queryUtility(IDateManager).today
+    return today
+
+
+ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
+    defaultDueDate,
+    field=interfaces.IActivity['due_date']
+    )

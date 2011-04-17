@@ -1,0 +1,659 @@
+Column Linking
+--------------
+
+To add a spreadsheet feature we created LindedColumnActivity objects to allow
+the user to pull in columns from other worksheets.  These columns will not only
+display the contents of the source column, but the values will be factored
+into the average for the worksheet where the linked column activity lives.
+
+There are two types of linked activities, a link to an other worksheet's
+activity, or a link to the average column of the worksheet.  Activity links
+will use the score system of the source activity whereas worksheet average
+links will use an assumed 100 point system.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up two courses:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+    >>> setup.addCourse('Math I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up one section with instructor and students for each term:
+
+    >>> setup.addSection('Math I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics I', '2005-2006', 'Spring',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Set up the default category for activities:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Activity Categories').click()
+    >>> manager.getControl('Default Category').displayValue = ['Journal']
+    >>> manager.getControl('Change').click()
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (1)
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+Check the totals and averages:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    130.0
+    136.0
+    74.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    86.7%
+    90.7%
+    49.3%
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+
+We'll add another worksheet:
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getLink('New Worksheet').click()
+    >>> stephan.getControl('Title').value = 'Second Sheet'
+    >>> stephan.getControl('Add').click()
+
+Let's add some activities, weighting and grades to the new worksheet:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.getLink('Second Sheet').click()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <a href="...">Sheet1</a>
+    </td>
+    <td class="active_tab">
+      <span style="font-weight: bold;">Second Sheet</span>
+    </td>
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'First Homework'
+    >>> stephan.getControl('Label').value = '1st HW'
+    >>> stephan.getControl('Category').displayValue = ['Homework']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'First Presentation'
+    >>> stephan.getControl('Label').value = '1st Presentation'
+    >>> stephan.getControl('Category').displayValue = ['Presentation']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Second Presentation'
+    >>> stephan.getControl('Label').value = '2nd Presentation'
+    >>> stephan.getControl('Category').displayValue = ['Presentation']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('Weight Categories').click()
+    >>> stephan.getControl('Homework').value = '25'
+    >>> stephan.getControl('Presentation').value = '75'
+    >>> stephan.getControl('Update').click()
+
+    >>> stephan.getLink('1stHW').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'70'
+    >>> stephan.getControl('Hoffman, Tom').value = u'75'
+    >>> stephan.getControl('Richter, Claudia').value = u'85'
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.getLink('1stPr').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'84'
+    >>> stephan.getControl('Hoffman, Tom').value = u'73'
+    >>> stephan.getControl('Richter, Claudia').value = u'67'
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.getLink('2ndPr').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'72'
+    >>> stephan.getControl('Hoffman, Tom').value = u'81'
+    >>> stephan.getControl('Richter, Claudia').value = u'89'
+    >>> stephan.getControl('Save').click()
+
+Check the total and averages for this worksheet:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>1stHW</a>
+    </div>
+    <div class="padded">
+      <a ...>1stPr</a>
+    </div>
+    <div class="padded">
+      <a ...>2ndPr</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    226.0
+    229.0
+    241.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    76.0%
+    76.5%
+    79.8%
+
+We'll switch to the Spring term and add some activities and scores to
+the Physics I section:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Lab 1'
+    >>> stephan.getControl('Description').value = 'Laboratory 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '99'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Final'
+    >>> stephan.getControl('Description').value = 'Final Exam'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('Lab1').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'89'
+    >>> stephan.getControl('Hoffman, Tom').value = u'72'
+    >>> stephan.getControl('Richter, Claudia').value = u'91'
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.getLink('Final').click()
+    >>> stephan.getControl('Cardune, Paul').value = u'99'
+    >>> stephan.getControl('Hoffman, Tom').value = u'88'
+    >>> stephan.getControl('Richter, Claudia').value = u'89'
+    >>> stephan.getControl('Save').click()
+
+We'll test the totals and averages so that we can check the linked
+values later:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>Lab1</a>
+    </div>
+    <div class="padded">
+      <a ...>Final</a>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    188.0
+    160.0
+    180.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    94.5%
+    80.4%
+    90.5%
+
+Now we'll return to the Fall Math I section and add our first linked
+column to the Sheet1 worksheet. We'll also test the Cancel button in
+the New Linked Column form:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Second Sheet</a>
+    </td>
+
+    >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.printQuery('//h1/text()')
+    Add Linked Column
+    >>> stephan.getControl('Cancel').click()
+
+First we'll test the contents of the form and the table of available
+activities and worksheet averages that can be chosen as the link:
+
+    >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.printQuery('//h1/text()')
+    Add Linked Column
+
+    >>> stephan.printQuery('//input[@name="title"]')
+    <input type="text" name="title" id="title" value="" />
+    >>> stephan.printQuery('//input[@name="label"]')
+    <input type="text" name="label" id="label" value="" />
+    >>> stephan.printQuery('id("category")/option/text()')
+    Assignment
+    Essay
+    Exam
+    Homework
+    Journal
+    Lab
+    Presentation
+    Project
+    >>> stephan.printQuery('id("category")/option[@selected="selected"]/text()')
+    Journal
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[1]/text()')
+    Term
+    Fall
+    Spring
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[2]/text()')
+    Section
+    Math I
+    Physics I
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[3]/text()')
+    Worksheet
+    Second Sheet
+    Sheet1
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/th[4]/text()')
+    Activity
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/td[4]/input/@value')
+    First Homework
+    First Presentation
+    Second Presentation
+    Average
+    Lab 1
+    Final
+    Average
+
+We'll add a link to the Second Presentation from the Second Sheet and
+then we'll test that the category for our new linked column has been
+saved correctly:
+
+    >>> stephan.getControl('Category').displayValue = ['Essay']
+    >>> stephan.getControl('Second Presentation').click()
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Second Presentation').click()
+    >>> stephan.printQuery('id("category")/option[@selected="selected"]/text()')
+    Essay
+    >>> stephan.getControl('Cancel').click()
+    
+then the average of the worksheet from the Spring Physics I section,
+Sheet1:
+
+    >>> stephan.getLink('New Linked Column').click()
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Label').value = 'PHSICS'
+    >>> stephan.getControl('Average', index=1).click()
+
+We made a mistake in the label of the linked column, let's go change
+it from the Manage Worksheet view:
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('id("category")/option[@selected="selected"]/text()')
+    Assignment
+    >>> stephan.getControl('Label').value = 'PHYSICS'
+    >>> stephan.getControl('Average', index=1).click()
+
+The worksheet now has two new columns whose values are pulled in from
+the sources of the links.
+
+    >>> # XXX: 2nd Presentation should be converted to '2ndPr'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <span>2nd Presentation</span>
+    </div>
+    <div class="padded">
+      <span>PHYSI</span>
+    </div>
+
+The total and average columns have been recalculated:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    296.5
+    297.4
+    253.5
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    84.7%
+    85.0%
+    72.4%
+
+The editable grades:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
+    40
+    48
+    45
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
+    90
+    88
+    29
+
+And the non-editable linked columns:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
+    72
+    81
+    89
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/span/text()')
+    94.5
+    80.4
+    90.5
+
+If the value of the source of a linked column change. Let's change the
+grade for Paul's Second Presentation of the Second Sheet:
+
+    >>> stephan.getLink('Second Sheet').click()
+    >>> stephan.getLink('2ndPr').click()
+    >>> stephan.getControl('Cardune, Paul').value = '99'
+    >>> stephan.getControl('Save').click()
+
+And let's change a grade for Tom in the Spring Physics I section so
+his average also changes:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Final').click()
+    >>> stephan.getControl('Hoffman, Tom').value = u'60'
+    >>> stephan.getControl('Save').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
+    188.0
+    132.0
+    180.0
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
+    94.5%
+    66.3%
+    90.5%
+
+The linked columns should also change:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <span>2nd Presentation</span>
+    </div>
+    <div class="padded">
+      <span>PHYSI</span>
+    </div>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
+    99
+    81
+    89
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/span/text()')
+    94.5
+    66.3
+    90.5
+
+If we grade student by student, we'll see that linked columns are read
+only there too:
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> stephan.printQuery('//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    Second Presentation (100)
+    Sheet1 (100)
+    >>> stephan.printQuery('//div[@class="widget"]/*')
+    <input id="form-widgets-Activity"... value="40" type="text" />
+    <input id="form-widgets-Activity-2"... value="90" type="text" />
+    <span id="form-widgets-LinkedColumnActivity" ...>99</span>
+    <span id="form-widgets-LinkedColumnActivity-2" ...>94.5</span>
+
+Now, let's go back to the Physics I section of the Spring and delete
+all grades for Paul, so he will have no average for that worksheet:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl('Lab 1').value = ''
+    >>> stephan.getControl('Final').value = ''
+    >>> stephan.getControl('Apply').click()
+
+Let's go back to the Math I section of the Fall and check the grades for Paul:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> stephan.printQuery('//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    Second Presentation (100)
+    Sheet1 (100)
+    >>> stephan.printQuery('//div[@class="widget"]/*')
+    <input id="form-widgets-Activity"... value="40" type="text" />
+    <input id="form-widgets-Activity-2"... value="90" type="text" />
+    <span id="form-widgets-LinkedColumnActivity" ...>99</span>
+    <span id="form-widgets-LinkedColumnActivity-2" ...></span>
+
+Now, we're going to delete the source of a linked column. Let's delete
+the 2nd Presentation activity of the Second Sheet worksheet, leaving
+the 2nd Presentation linked column of Sheet1 with no source:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getLink('Second Sheet').click()
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getControl(name='delete:list').value = ['Activity-3']
+    >>> stephan.getControl('Delete').click()
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>1stHW</a>
+    </div>
+    <div class="padded">
+      <a ...>1stPr</a>
+    </div>
+
+Now, when we get back to Sheet1, the linked column should have
+disappeared:
+
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <span>PHYSI</span>
+    </div>
+
+Same if we grade a student:
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery('//h3/text()')
+    Enter grades for Cardune, Paul
+    >>> stephan.printQuery('//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    Sheet1 (100)
+    >>> stephan.printQuery('//div[@class="widget"]/*')
+    <input id="form-widgets-Activity"... value="40" type="text" />
+    <input id="form-widgets-Activity-2"... value="90" type="text" />
+    <span id="form-widgets-LinkedColumnActivity-2" ...></span>
+
+Deletion should also work with columns linked to the average of a
+worksheet. It's not possible to delete worksheets, but we can hide
+them. Let's hide the Sheet1 worksheet of the Physics Spring section:
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.getControl(name='hide:list').value = ['Worksheet']
+    >>> stephan.getControl('Hide').click()
+
+    >>> # XXX: Hack to get back to the other term,
+    >>> #      hiding all the worksheets in a gradebook
+    >>> #      makes this impossible, because the Term and Section
+    >>> #      dropdowns are not shown
+    >>> stephan.getLink('Home').click()
+    >>> stephan.getLink('Math I -- Math I (1)').click()
+    >>> stephan.getLink('Gradebook', index=1).click()
+
+We're back to the Sheet1 worksheet of the Math Fall section:
+
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Sheet1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Second Sheet</a>
+    </td>
+
+and we don't see the PHYSICS linked column anymore:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+
+If we unhide the worksheet:
+
+    >>> # XXX: Hack to unhide the only worksheet in the gradebook
+    >>> #      the Unhide button is not shown when all the worksheets
+    >>> #      have been hidden in a gradebook
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Unhide Worksheets').click()
+    >>> url = stephan.url
+    >>> stephan.open(url + '?UNHIDE=True&unhide:list=Worksheet')
+    >>> stephan.getLink('Return to Gradebook').click()
+
+the linked column is shown again:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
+    <div>Name</div>
+    <div>Total</div>
+    <div>Ave.</div>
+    <div class="padded">
+      <a ...>HW1</a>
+    </div>
+    <div class="padded">
+      <a ...>Quiz</a>
+    </div>
+    <div class="padded">
+      <span>PHYSI</span>
+    </div>

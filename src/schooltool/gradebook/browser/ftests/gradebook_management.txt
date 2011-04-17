@@ -1,0 +1,751 @@
+Gradebook Management
+--------------------
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up three courses:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+    >>> setup.addCourse('English I', '2005-2006')
+    >>> setup.addCourse('Math I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up three sections with instructor and students, two for the Fall
+and one for the Spring:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Math I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('English I', '2005-2006', 'Spring',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Once the term started, the instructor of the section will start by
+creating two worksheets, one for each week in our two week section.
+To set up the activities, we will start by clicking the 'Gradebook'
+tab.
+
+    >>> stephan.getLink('Gradebook').click()
+
+As Stephan is only a teacher at this point and does not attend any
+classes himself (we will change that later), he will be taken directly
+to the gradebook view for the first section in the list of sections he
+teaches.
+
+Since his section has not yet been set up to have any worksheets, a default
+worksheet called, 'Sheet1', will automatically be created.
+
+    >>> stephan.getLink('Worksheets').click()
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Sheet1
+
+First, we will change the title of our default worksheet to 'Week
+1'. We'll also change the Cancel button in the Edit form for
+worksheets:
+
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.printQuery('//h1/text()')
+    Activities
+
+    >>> stephan.getLink('Edit').click()
+    >>> stephan.getControl('Cancel').click()
+
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Sheet1
+
+    >>> stephan.getLink('Sheet1').click()
+    >>> stephan.getLink('Edit').click()
+    >>> stephan.getControl('Title').value = 'Week 1'
+    >>> stephan.getControl('Apply').click()
+
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Week 1
+
+We'll note the message that appears for empty worksheets.  Also, the fact that
+there's no delete button.
+
+    >>> stephan.getLink('Week 1').click()
+    >>> stephan.printQuery("id('content-body')/form/div[1]")
+    <div>This worksheet has no activities.</div>
+    >>> stephan.printQuery("id('content-body')/form/div[3]")
+    >>> stephan.getLink('Worksheets').click()
+
+Then, we can use the 'New Worksheet' action link to create our second worksheet.
+
+    >>> stephan.getLink('New Worksheet').click()
+    >>> stephan.getControl('Title').value = 'Week 2'
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Week 1
+    Week 2
+
+Worksheets can be reordered:
+
+    >>> stephan.getControl(name='pos.Worksheet-2').displayValue = ['1']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Week 2
+    Week 1
+
+    >>> stephan.getControl(name='pos.Worksheet').displayValue = ['1']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//h1')
+    <h1>Worksheets</h1>
+    >>> stephan.printQuery('//form//table/tr/td[3]/a/text()')
+    Week 1
+    Week 2
+
+To return to the gradebook for this section, we will click on the
+'Return to Gradebook' link.  Since this is the first time Stephan has
+entered the gradebook for this section, the current worksheet will default
+to the first one.
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
+    Worksheets
+    New Activity
+    New External Activity
+    New Linked Column
+    Manage Worksheet
+    Weight Categories
+    Preferences
+    Export XLS
+    Download PDF
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
+    2005-2006 / Fall
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option/text()')
+    Physics I - Physics I (1)
+    Math I - Math I (2)
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Week 2</a>
+    </td>
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+
+Now, we'll test the Term and Section dropdowns which allow the
+teachers to navigate through their sections. Lets change to Stephan's
+Math section of the Fall:
+
+    >>> stephan.getControl(name='currentSection').displayValue = ['Math I - Math I (2)']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
+    2005-2006 / Fall
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option/text()')
+    Physics I - Physics I (1)
+    Math I - Math I (2)
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Math I - Math I (2)
+
+Now, to the Spring term:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option/text()')
+    2005-2006 / Fall
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentSection"]/option/text()')
+    English I - English I (1)
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    English I - English I (1)
+
+If we change back to the Fall term, we get to the first section of the
+Section dropdown, in this case the Physics I section:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+
+Let's add some activities to the Physics I section worksheet.  After
+adding the first activity we'll note that the new activity appears in
+the gradebook.
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
+    Worksheets
+    New Activity
+    New External Activity
+    New Linked Column
+    Manage Worksheet
+    Weight Categories
+    Preferences
+    Export XLS
+    Download PDF
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    HW1
+
+We'll add a second activity.
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    HW1
+    Quiz
+
+We'll test editing an activity's description.  To do this, we need to go to use
+the 'Manage Worksheet' link.  This presents us with a view of the current
+worksheet's activities with links to edit them.
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
+    Edit
+    New Activity
+    New External Activity
+    New Linked Column
+    Return to Gradebook
+    Worksheets
+    >>> stephan.printQuery('//h1')
+    <h1>Activities</h1>
+    >>> stephan.printQuery('//form/div/a/text()')
+    HW 1
+    Quiz
+    >>> stephan.printQuery('//form/div[@class="controls"]/input/@value')
+    Delete
+
+Now let's click on 'HW 1' to change its description.
+
+    >>> stephan.getLink('HW 1').click()
+    >>> stephan.getControl('Description').value = 'Homework One'
+    >>> stephan.getControl('Apply').click()
+
+Now let's change the current worksheet to 'Week 2'.
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.getLink('Week 2').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <a href="...">Week 1</a>
+    </td>
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 2</span>
+    </td>
+
+Now we'll add some activities to it.
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 2'
+    >>> stephan.getControl('Description').value = 'Homework 2'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    HW2
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Final'
+    >>> stephan.getControl('Description').value = 'Final Exam'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    HW2
+    Final
+
+The 'Manage Worksheet' view allows for reordering the columns of the gradebook.
+We'll switch the order or our two activities.  Since Javascript is not working
+in the tests, we submit the form manually:
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.printQuery("id('content-body')//a")
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
+    >>> stephan.getControl(name='pos.Activity-2').displayValue = ['1']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery("id('content-body')//a")
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+
+The gradebook shows the new positions:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    Final
+    HW2
+
+We'll switch them back.
+
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getControl(name='pos.Activity').displayValue = ['1']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery("id('content-body')//a")
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity">HW 2</a>
+    <a href="http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet-2/Activity-2">Final</a>
+
+We'll switch to the Spring term and add some activities to the English I section:
+
+    >>> stephan.getLink('Return to Gradebook').click()
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Lab 1'
+    >>> stephan.getControl('Description').value = 'Laboratory 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '99'
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    Lab1
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Final'
+    >>> stephan.getControl('Description').value = 'Final Exam'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    Lab1
+    Final
+
+Finally, we'll change the section back to the Physics section of the
+Fall and the current worksheet back to 'Week 1'.
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
+    >>> stephan.getForm().submit()
+    >>> stephan.getLink('Week 1').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Week 2</a>
+    </td>
+
+
+Grading
+~~~~~~~
+
+The initial gradebook screen is a simple spreadsheet.  Since we just loaded up
+the gradebook for the first time, the current worksheet will be the first one,
+Week 1.  Only the activities for that worksheet should appear.
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
+    HW1
+    Quiz
+
+We can enter a score into any cell.  Let's enter one for Claudia's HW 1
+activity:
+
+    >>> stephan.getControl(name='Activity_claudia').value = '56'
+    >>> stephan.getControl('Save').click()
+
+We should see the score reflected in the spreadsheet.
+
+    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
+    56
+
+If we enter an invalid score, we will get an error message.
+
+    >>> stephan.getControl(name='Activity_claudia').value = 'Bad'
+    >>> stephan.getControl('Save').click()
+    >>> stephan.printQuery('//div[@class="message"]/text()')
+    Invalid scores (highlighted in red) were not saved.
+
+We can change the score and see the change reflected in the spreadsheet.
+
+    >>> stephan.getControl(name='Activity_claudia').value = '88'
+    >>> stephan.getControl('Save').click()
+    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
+    88
+
+Finally, we can remove the score by clearing out the cell.
+
+    >>> stephan.getControl(name='Activity_claudia').value = ''
+    >>> stephan.getControl('Save').click()
+    >>> stephan.queryHTML('//input[@name="Activity_claudia"]/@value')
+    ['']
+
+We need to put the score back for future tests to pass.
+
+    >>> stephan.getControl(name='Activity_claudia').value = '36'
+    >>> stephan.getControl('Save').click()
+
+
+Entering Scores for a Column (Activity)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's say we want to enter the grades for Homework 1. All we do is to simply
+click on the activity's name:
+
+    >>> stephan.getLink('HW1').click()
+    >>> stephan.printQuery('//h3')
+    <h3>
+      Grade HW 1
+    </h3>
+
+Now we just enter the grades. Since Claudia has already a grade, we only need
+to grade Paul and Tom:
+
+    >>> stephan.getControl('Cardune, Paul').value = u'-1'
+    >>> stephan.getControl('Hoffman, Tom').value = u'42'
+    >>> stephan.getControl('Save').click()
+
+Again, we entered an invalid value, this time for Paul:
+
+    >>> stephan.printQuery('//div[@class="message"]/text()')
+    The grade -1 for Cardune, Paul is not valid.
+
+Also note that all the other entered values should be retained:
+
+    >>> stephan.printQuery('id("paul")/@value')
+    -1
+    >>> stephan.printQuery('id("tom")/@value')
+    42
+    >>> stephan.printQuery('id("claudia")/@value')
+    36
+    >>> stephan.getControl('Cardune, Paul').value = u'32'
+    >>> stephan.getControl('Save').click()
+
+The screen will return to the grade overview, where the grades are now
+visible:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Week 2</a>
+    </td>
+    >>> stephan.printQuery('//input[@name="Activity_paul"]/@value')
+    32
+    >>> stephan.printQuery('//input[@name="Activity_tom"]/@value')
+    42
+    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
+    36
+
+Now let's enter again and change a grade:
+
+    >>> stephan.getLink('HW1').click()
+    >>> stephan.printQuery('//h3')
+    <h3>
+      Grade HW 1
+    </h3>
+    >>> stephan.getControl('Richter, Claudia').value = u'48'
+    >>> stephan.getControl('Save').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
+    <td class="active_tab">
+      <span style="font-weight: bold;">Week 1</span>
+    </td>
+    <td class="active_tab">
+      <a href="...">Week 2</a>
+    </td>
+    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
+    48
+
+When you want to delete an evaluation altogether, simply blank the value:
+
+    >>> stephan.getLink('HW1').click()
+    >>> stephan.printQuery('//h3')
+    <h3>
+      Grade HW 1
+    </h3>
+    >>> stephan.getControl('Richter, Claudia').value = u''
+    >>> stephan.getControl('Save').click()
+    >>> stephan.queryHTML('//input[@name="Activity_claudia"]/@value')
+    ['']
+
+Of course, you can also abort the grading.
+
+    >>> stephan.getLink('HW1').click()
+    >>> stephan.printQuery('//h3')
+    <h3>
+      Grade HW 1
+    </h3>
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/gradeActivity.html?activity=Activity'
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/index.html'
+
+Let's enter some grades for the second worksheet, 'Week 2', so that we have
+some interesting numbers for the summary view.
+
+    >>> stephan.getLink('Week 2').click()
+    >>> stephan.getLink('HW2').click()
+    >>> stephan.printQuery('//h3')
+    <h3>
+      Grade HW 2
+    </h3>
+    >>> stephan.getControl('Cardune, Paul').value = u'90'
+    >>> stephan.getControl('Hoffman, Tom').value = u'72'
+    >>> stephan.getControl('Richter, Claudia').value = u'42'
+    >>> stephan.getControl('Save').click()
+
+We'll set the current worksheet back to week 1 for the rest of the tests.
+
+    >>> stephan.getLink('Week 1').click()
+
+We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
+
+    >>> stephan.getLink('Quiz').click()
+    >>> stephan.getControl('Richter, Claudia').value = u'86'
+    >>> stephan.getControl('Save').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/index.html'
+
+
+Entering Scores for a Row (Student)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With the introduction of the comment score system, we need to provide the user
+with a way of entering comments into the gradebook.  Since comments have
+arbitrary length, we need a special view for entering them.  We will provide
+a row view (by student) for this purpose.  When the user clicks on a student,
+they will see a form with one field for each activity, comments having the
+fckEditor widget, the rest of the score system types just having a TextLine
+widget.
+
+Additionally, the user will have two special buttons, 'Previous' and 'Next',
+which allows them to go from student to student without having to return to
+the gradebook spreadsheet each time.  'Apply' and 'Cancel' return to the
+spreadsheet as one would expect.
+
+We'll start by clicking on Paul and testing the contents of the form.
+Since Paul is the first student in the list of students, there will be
+no 'Previous' button.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.printQuery("id('form')/div[1]/h3")
+    <h3>Enter grades for Cardune, Paul</h3>
+    >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    >>> stephan.printQuery("id('form')/div[2]//input")
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
+
+When we click on the 'Next' button it takes us to the middle student, Tom.
+Here we will see both a 'Previous' and a 'Next' button.
+
+    >>> stephan.getControl('Next').click()
+    >>> stephan.printQuery("id('form')/div[1]/h3")
+    <h3>Enter grades for Hoffman, Tom</h3>
+    >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    >>> stephan.printQuery("id('form')/div[2]//input")
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
+
+When we click on the 'Next' button it takes us to the last student, Claudia.
+Here we will see no 'Next' button.
+
+    >>> stephan.getControl('Next').click()
+    >>> stephan.printQuery("id('form')/div[1]/h3")
+    <h3>Enter grades for Richter, Claudia</h3>
+    >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
+    HW 1 (50)
+    Quiz (100)
+    >>> stephan.printQuery("id('form')/div[2]//input")
+    <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
+
+Hitting the 'Cancel' button takes the user back to the gradebook.
+
+    >>> stephan.getControl('Cancel').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
+    ['32', '42', '']
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
+    ['', '', '86']
+
+Now we'll go change a cell for Paul and come back.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '85'
+    >>> stephan.getControl('Apply').click()
+
+We see the new value where it wasn't before.
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
+    ['32', '42', '']
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
+    ['85', '', '86']
+
+Let's change that new value to something else.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
+    >>> stephan.getControl('Apply').click()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
+    ['32', '42', '']
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
+    ['35', '', '86']
+
+Finally, we'll change it back to the way it was, demonstrating that we can
+remove scores in the student gradebook.
+
+    >>> stephan.getLink('>', index=0).click()
+    >>> stephan.getControl(name='form.widgets.Activity-2').value = ''
+    >>> stephan.getControl('Apply').click()
+
+The data cells are set as before.
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
+    ['32', '42', '']
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
+    ['', '', '86']
+
+
+Sorting
+~~~~~~~
+
+Another feature of the gradebook is the ability to sort each column in a
+descending and ascending fashion.
+
+By default the student's name is sorted alphabetically:
+
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Cardune, Paul
+    Hoffman, Tom
+    Richter, Claudia
+
+Let's add some fake students to our section:
+
+    >>> addPerson('Fake1', 'Čardune', 'fake1', 'pwd', browser=manager)
+    >>> addPerson('Fake2', 'Álvarez', 'fake2', 'pwd', browser=manager)
+    >>> addPerson('Fake3', 'Alvarado', 'fake3', 'pwd', browser=manager)
+    >>> addPerson('Fake4', 'Sandoval', 'fake4', 'pwd', browser=manager)
+    >>> addPerson('Fake5', 'Šandoval', 'fake5', 'pwd', browser=manager)
+    >>> addPerson('Fake6', 'Navarro', 'fake6', 'pwd', browser=manager)
+    >>> addPerson('Fake7', 'Ñoño', 'fake7', 'pwd', browser=manager)
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Courses').click()
+    >>> manager.getLink('Physics I').click()
+    >>> manager.getLink('Physics I (1)').click()
+    >>> manager.getLink('edit individuals').click()
+    >>> manager.getControl('Fake1').click()
+    >>> manager.getControl('Fake2').click()
+    >>> manager.getControl('Fake3').click()
+    >>> manager.getControl('Fake4').click()
+    >>> manager.getControl('Fake5').click()
+    >>> manager.getControl('Fake6').click()
+    >>> manager.getControl('Fake7').click()
+    >>> manager.getControl('Add').click()
+
+And check the gradebook again to see the new sorting:
+
+    >>> stephan.reload()
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    Alvarado, Fake3
+    ...lvarez, Fake2
+    ...ardune, Fake1
+    Cardune, Paul
+    Hoffman, Tom
+    Navarro, Fake6
+    ...o...o, Fake7
+    Richter, Claudia
+    Sandoval, Fake4
+    ...andoval, Fake5
+
+We can sort by student name in reverse order:
+
+    >>> url = stephan.url
+    >>> stephan.open(url+'?sort_by=student')
+    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
+    <BLANKLINE>
+    ...andoval, Fake5
+    Sandoval, Fake4
+    Richter, Claudia
+    ...o...o, Fake7
+    Navarro, Fake6
+    Hoffman, Tom
+    Cardune, Paul
+    ...ardune, Fake1
+    ...lvarez, Fake2
+    Alvarado, Fake3
+
+Let's add more grades for Homework 1:
+
+    >>> stephan.getLink('HW1').click()
+    >>> stephan.getControl('Alvarado, Fake3').value = '44'
+    >>> stephan.getControl('lvarez, Fake2').value = '32'
+    >>> stephan.getControl('ardune, Fake1').value = '50'
+    >>> stephan.getControl('Navarro, Fake6').value = '22'
+    >>> stephan.getControl('andoval, Fake5').value = '39'
+    >>> stephan.getControl('Save').click()
+
+Then we want to sort by grade in Homework 1:
+
+    >>> stephan.open(url + '?sort_by=Activity')
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
+    ['22', '32', '32', '39', '42', '44', '50', '', '', '']
+
+Clicking it again, reverses the order:
+
+    >>> stephan.open(url + '?sort_by=Activity')
+    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
+    ['', '', '', '50', '44', '42', '39', '32', '32', '22']

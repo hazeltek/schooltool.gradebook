@@ -76,7 +76,7 @@ setup(
                       'zope.componentvocabulary',
                       'zope.container',
                       'zope.event',
-                      'zope.formlib',
+                      'zope.formlib>=4',
                       'zope.html',
                       'zope.i18n',
                       'zope.i18nmessageid',

@@ -22,7 +22,6 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-import datetime
 import persistent.dict
 import rwproperty
 from decimal import Decimal
@@ -32,13 +31,15 @@ from zope import annotation
 from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
-from zope.component import queryAdapter, getAdapters
+from zope.component import queryAdapter, getAdapters, getUtility
 from zope.schema.interfaces import IVocabularyFactory
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import requirement, scoresystem
 from schooltool.gradebook import interfaces
+from schooltool.term.interfaces import IDateManager
+from schooltool.course.interfaces import ISection
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
@@ -105,6 +106,11 @@ def isHiddenSource(source):
     else:
         worksheet = obj.__parent__
     return worksheet.hidden
+
+
+def today():
+    today = getUtility(IDateManager).today
+    return today
 
 
 class Activities(requirement.Requirement):
@@ -206,10 +212,10 @@ class Activity(requirement.Requirement):
         self.category = category
         self.scoresystem = scoresystem
         if not due_date:
-            due_date = datetime.date.today()
+            due_date = today()
         self.due_date = due_date
         if not date:
-            date = datetime.date.today()
+            date = today()
         self.date = date
 
     def __repr__(self):
@@ -295,7 +301,6 @@ class ExternalActivitiesSource(object):
 
     def __contains__(self, other_tuple):
         try:
-            adapter = other_tuple[0]
             external_activity = other_tuple[1]
             return bool([value for value in self.activities()
                          if value[1] == external_activity])
@@ -307,7 +312,11 @@ class ExternalActivitiesVocabulary(object):
     zope.interface.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        section = context.context.__parent__.__parent__
+        try:
+            section = ISection(context)
+        except (TypeError,):
+            linked_activity = proxy.removeSecurityProxy(context)
+            section = ISection(linked_activity.__parent__)
         return ExternalActivitiesSource(section)
 
 

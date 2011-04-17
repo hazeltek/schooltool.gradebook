@@ -40,6 +40,9 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.interfaces import IAbsoluteURL
+from zope.ucol.localeadapter import LocaleCollator
+from zope.i18n.interfaces.locales import ICollator
+from zope.i18n import translate
 
 from schooltool.app.interfaces import (ISchoolToolApplication,
      ISchoolToolCalendar, ISchoolToolCalendarEvent)
@@ -173,25 +176,6 @@ class ApplicationStub(btree.BTreeContainer):
         int_ids.register(self.term)
 
         setUpGradebookRoot(self)
-        root = IGradebookRoot(self)
-
-        worksheet = root.deployed['Worksheet'] = Worksheet('Worksheet')
-        worksheet['Activity'] = Activity('Activity', 'exam',
-            AmericanLetterScoreSystem)
-
-        scores = [
-            ('A', u'', Decimal(4), Decimal(75)),
-            ('B', u'', Decimal(3), Decimal(50)),
-            ('C', u'', Decimal(2), Decimal(25)),
-            ('D', u'', Decimal(1), Decimal(0)),
-            ]
-        maxss = DiscreteValuesScoreSystem('Max', '', scores, 'A', 'C', True)
-        worksheet['Activity-2'] = Activity('Activity 2', 'max', maxss)
-
-        source = 'Term|Worksheet|Activity'
-        layout = root.layouts[self.schoolyear.__name__] = ReportLayout()
-        layout.columns = [ReportColumn(source, '')]
-        layout.outline_activities = [OutlineActivity(source, '')]
 
 
 class DateManagerStub(object):
@@ -200,6 +184,7 @@ class DateManagerStub(object):
     def __init__(self):
         app = ISchoolToolApplication(None)
         self.current_term = app[SCHOOLYEAR_CONTAINER_KEY]['2009']['term']
+        self.today = BEGIN_2009
 
 
 def setupSections(app):
@@ -253,6 +238,28 @@ def setupSections(app):
     jd.setAbsence(aelkner, meeting, 'n')
 
 
+def setupGradebook(app):
+    root = IGradebookRoot(app)
+
+    worksheet = root.deployed['Worksheet'] = Worksheet('Worksheet')
+    worksheet['Activity'] = Activity('Activity', 'exam',
+                                     AmericanLetterScoreSystem)
+
+    scores = [
+        ('A', u'', Decimal(4), Decimal(75)),
+        ('B', u'', Decimal(3), Decimal(50)),
+        ('C', u'', Decimal(2), Decimal(25)),
+        ('D', u'', Decimal(1), Decimal(0)),
+        ]
+    maxss = DiscreteValuesScoreSystem('Max', '', scores, 'A', 'C', True)
+    worksheet['Activity-2'] = Activity('Activity 2', 'max', maxss)
+
+    source = 'Term|Worksheet|Activity'
+    layout = root.layouts[app.schoolyear.__name__] = ReportLayout()
+    layout.columns = [ReportColumn(source, '')]
+    layout.outline_activities = [OutlineActivity(source, '')]
+
+
 def doctest_StudentReportCardPDFView():
     r"""Tests for StudentReportCardPDFView.
 
@@ -261,16 +268,19 @@ def doctest_StudentReportCardPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Report Card: 2009
 
     The data used by the template is returned by the students() method:
 
-        >>> pprint(view.students())
+        >>> students = view.students()
+        >>> for student in students:
+        ...     student['title'] = translate(student['title'], context=request)
+        >>> pprint(students)
         [{'grid': {'headings': ['Activ'],
                    'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
                    'widths': '8.2cm,1.6cm'},
-          'outline': [{'heading': 'Section 1',
+          'outline': [{'heading': 'Term - Section 1',
                        'worksheets': [{'activities': [{'heading': 'Activity',
                                                        'value': [u'F']}],
                                        'heading': 'Worksheet',
@@ -290,16 +300,19 @@ def doctest_GroupReportCardPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Report Card: 2009
 
     The data used by the template is returned by the students() method:
 
-        >>> pprint(view.students())
+        >>> students = view.students()
+        >>> for student in students:
+        ...     student['title'] = translate(student['title'], context=request)
+        >>> pprint(students)
         [{'grid': {'headings': ['Activ'],
                    'rows': [{'scores': [u'F'], 'title': 'Course 1 (Tom Hoffman)'}],
                    'widths': '8.2cm,1.6cm'},
-          'outline': [{'heading': 'Section 1',
+          'outline': [{'heading': 'Term - Section 1',
                        'worksheets': [{'activities': [{'heading': 'Activity',
                                                        'value': [u'F']}],
                                        'heading': 'Worksheet',
@@ -316,7 +329,7 @@ def doctest_StudentDetailPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Detailed Student Report: 2009
 
     The data used by the template is returned by the students() method:
@@ -344,7 +357,7 @@ def doctest_GroupDetailPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Detailed Student Report: 2009
 
     The data used by the template is returned by the students() method:
@@ -372,7 +385,7 @@ def doctest_FailingReportPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Failures by Term Report: Term
 
     The data used by the template is returned by the students() method:
@@ -423,7 +436,7 @@ def doctest_AbsencesByDayPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Absences By Day Report
 
     The data used by the template is returned by the students() method:
@@ -443,7 +456,7 @@ def doctest_SectionAbsencesPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Absences by Section Report
 
     The data used by the template is returned by the students() method:
@@ -469,7 +482,7 @@ def doctest_GradebookPDFView():
 
     The view has a title:
 
-        >>> print view.title()
+        >>> print translate(view.title(), context=request)
         Gradebook Report
 
     The data used by the template is returned by the table() method:
@@ -534,6 +547,8 @@ def pdfSetUp(test=None):
 
     provideAdapter(getCalendar, [object], provides=ISchoolToolCalendar)
 
+    provideAdapter(LocaleCollator, adapts=[None], provides=ICollator)
+
     app = ApplicationStub()
     provideAdapter(lambda x: app, [None], provides=ISchoolToolApplication)
 
@@ -543,6 +558,8 @@ def pdfSetUp(test=None):
         'schooltool.requirement.discretescoresystems')
 
     setupSections(app)
+
+    setupGradebook(app)
 
 
 def pdfTearDown(test=None):

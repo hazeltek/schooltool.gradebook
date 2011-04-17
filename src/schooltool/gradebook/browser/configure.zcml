@@ -23,25 +23,21 @@
       />
   <resource
       name="gradebook.css"
-      file="gradebook.css"
+      file="resources/gradebook.css"
       layer="schooltool.skin.ISchoolToolLayer" />
 
   <!-- Javascript -->
-  <page
-     name="gradebook_overview.js"
-     for="..gradebook.Gradebook"
-     template="gradebook_overview.js.pt"
-     permission="schooltool.edit"
-     class=".gradebook.GradebookOverview"
-     layer="schooltool.skin.ISchoolToolLayer"
-     />
+  <resource
+      name="gradebook_overview.js"
+      file="resources/gradebook_overview.js"
+      layer="schooltool.skin.ISchoolToolLayer" />
 
   <!-- Report Sheet Templates view -->
   <page
       name="index.html"
       for="..interfaces.IGradebookTemplates"
       class=".report_card.TemplatesView"
-      template="templates_overview.pt"
+      template="templates/templates_overview.pt"
       permission="schooltool.edit"
       />
 
@@ -58,7 +54,7 @@
       name="categories.html"
       schema=".category.ICategoriesForm"
       for="schooltool.app.interfaces.ISchoolToolApplication"
-      template="categories.pt"
+      template="templates/categories.pt"
       class=".category.CategoryOverview"
       permission="schooltool.edit"
       />
@@ -68,7 +64,7 @@
       name="Gradebook"
       for="*"
       manager="schooltool.skin.skin.INavigationManager"
-      template="gradebook_tab.pt"
+      template="templates/gradebook_tab.pt"
       permission="schooltool.view"
       link="gradebook.html"
       order="100"
@@ -116,14 +112,14 @@
       name="index.html"
       for="..interfaces.IActivities"
       class=".activity.ActivitiesView"
-      template="activities_overview.pt"
+      template="templates/activities_overview.pt"
       permission="schooltool.view"
       />
   <page
       name="unhide.html"
       for="..interfaces.IActivities"
       class=".activity.UnhideWorksheetsView"
-      template="unhide_worksheets.pt"
+      template="templates/unhide_worksheets.pt"
       permission="schooltool.view"
       />
   <page
@@ -194,21 +190,21 @@
       name="manage.html"
       for="..interfaces.IWorksheet"
       class=".worksheet.WorksheetManageView"
-      template="worksheet_overview.pt"
+      template="templates/worksheet_overview.pt"
       permission="schooltool.view"
       />
   <page
       name="index.html"
       for="..interfaces.IReportWorksheet"
       class=".worksheet.WorksheetManageView"
-      template="report_worksheet_overview.pt"
+      template="templates/report_worksheet_overview.pt"
       permission="schooltool.view"
       />
   <page
       name="weights.html"
       for="..interfaces.IWorksheet"
       class=".activity.WeightCategoriesView"
-      template="weight_categories.pt"
+      template="templates/weight_categories.pt"
       permission="schooltool.edit"
       />
 
@@ -251,8 +247,8 @@
       title="Edit"
       />
   <page
-      for="zope.browser.interfaces.IAdding"
       name="addLinkedActivity.html"
+      for="schooltool.gradebook.interfaces.IWorksheet"
       class="schooltool.gradebook.browser.activity.LinkedActivityAddView"
       permission="schooltool.edit"
       />
@@ -275,14 +271,14 @@
      name="addLinkedColumn.html"
      for="schooltool.gradebook.interfaces.IWorksheet"
      class=".activity.AddLinkedColumnView"
-     template="add_edit_linked_column.pt"
+     template="templates/add_edit_linked_column.pt"
      permission="schooltool.edit"
      />
   <page
      name="editLinkedColumn.html"
      for="schooltool.gradebook.interfaces.ILinkedColumnActivity"
      class=".activity.EditLinkedColumnView"
-     template="add_edit_linked_column.pt"
+     template="templates/add_edit_linked_column.pt"
      permission="schooltool.edit"
      />
 
@@ -344,7 +340,7 @@
       menu="schooltool_actions"
       title="New External Activity"
       for="..interfaces.IWorksheet"
-      action="+/addLinkedActivity.html"
+      action="addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -388,7 +384,7 @@
       menu="schooltool_actions"
       title="New External Activity"
       for="..interfaces.IGradebook"
-      action="../+/addLinkedActivity.html"
+      action="../addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
@@ -400,7 +396,7 @@
       />
   <menuItem
       menu="schooltool_actions"
-      title="Manage Activities"
+      title="Manage Worksheet"
       for="..interfaces.IGradebook"
       action="../manage.html"
       permission="schooltool.view"
@@ -452,7 +448,7 @@
       name="gradebook.html"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".gradebook.GradebookStartup"
-      template="gradebook_startup.pt"
+      template="templates/gradebook_startup.pt"
       permission="schooltool.view"
       />
   <page
@@ -471,21 +467,21 @@
       name="index.html"
       for="..interfaces.IGradebook"
       class=".gradebook.GradebookOverview"
-      template="gradebook_overview.pt"
+      template="templates/gradebook_overview.pt"
       permission="schooltool.view"
       />
   <page
       name="index.html"
       for="..interfaces.IMyGrades"
       class=".gradebook.MyGradesView"
-      template="mygrades.pt"
+      template="templates/mygrades.pt"
       permission="schooltool.view"
       />
   <page
       name="gradeActivity.html"
       for="..interfaces.IGradebook"
       class=".gradebook.GradeActivity"
-      template="gradebook_grade_activity.pt"
+      template="templates/gradebook_grade_activity.pt"
       permission="schooltool.edit"
       />
   <page
@@ -498,7 +494,7 @@
       name="column_preferences.html"
       for="..interfaces.IGradebook"
       class=".gradebook.GradebookColumnPreferences"
-      template="gradebook_column_preferences.pt"
+      template="templates/gradebook_column_preferences.pt"
       permission="schooltool.view"
       />
   <page
@@ -513,14 +509,14 @@
       name="index.html"
       for="..interfaces.IStudentGradebook"
       class=".gradebook.GradeStudent"
-      template="grade_student.pt"
+      template="templates/grade_student.pt"
       permission="schooltool.edit"
       />
   <page
       name="view.html"
       for="..interfaces.IStudentGradebook"
       class=".gradebook.StudentGradebookView"
-      template="student_gradebook.pt"
+      template="templates/student_gradebook.pt"
       permission="schooltool.edit"
       />
 
@@ -552,7 +548,7 @@
       name="deploy_report_worksheet.html"
       for="schooltool.term.interfaces.ITerm"
       class=".report_card.DeployReportWorksheetTermView"
-      template="deploy_report_worksheet.pt"
+      template="templates/deploy_report_worksheet.pt"
       permission="schooltool.edit"
       />
   <page
@@ -565,7 +561,7 @@
       name="request_failing_report.html"
       for="schooltool.term.interfaces.ITerm"
       class=".request_reports.RequestFailingReportView"
-      template="request_failing_report.pt"
+      template="templates/request_failing_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -603,14 +599,14 @@
       name="deploy_report_worksheet.html"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".report_card.DeployReportWorksheetSchoolYearView"
-      template="deploy_report_worksheet.pt"
+      template="templates/deploy_report_worksheet.pt"
       permission="schooltool.edit"
       />
   <page
       name="layout_report_card.html"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".report_card.LayoutReportCardView"
-      template="layout_report_card.pt"
+      template="templates/layout_report_card.pt"
       permission="schooltool.edit"
       />
   <page
@@ -623,7 +619,7 @@
       name="request_absences_by_day.html"
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".request_reports.RequestAbsencesByDayView"
-      template="request_absences_by_day.pt"
+      template="templates/request_absences_by_day.pt"
       permission="schooltool.edit"
       />
   <page
@@ -653,7 +649,7 @@
       name="request_report_card.html"
       for="schooltool.person.interfaces.IPerson"
       class=".request_reports.RequestStudentReportView"
-      template="request_student_report.pt"
+      template="templates/request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -666,7 +662,7 @@
       name="request_student_detail.html"
       for="schooltool.person.interfaces.IPerson"
       class=".request_reports.RequestStudentReportView"
-      template="request_student_report.pt"
+      template="templates/request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -696,7 +692,7 @@
       name="request_report_card.html"
       for="schooltool.group.interfaces.IGroup"
       class=".request_reports.RequestStudentReportView"
-      template="request_student_report.pt"
+      template="templates/request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -709,7 +705,7 @@
       name="request_student_detail.html"
       for="schooltool.group.interfaces.IGroup"
       class=".request_reports.RequestStudentReportView"
-      template="request_student_report.pt"
+      template="templates/request_student_report.pt"
       permission="schooltool.edit"
       />
   <page
@@ -747,13 +743,13 @@
       name="no_current_term.html"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".gradebook.NoCurrentTerm"
-      template="no_current_term.pt"
+      template="templates/no_current_term.pt"
       permission="schooltool.view"
       />
   <page
       name="no_report_sheets.html"
       for="schooltool.app.interfaces.ISchoolToolApplication"
-      template="no_report_sheets.pt"
+      template="templates/no_report_sheets.pt"
       permission="schooltool.view"
       />
   <page
@@ -767,13 +763,21 @@
       factory=".report_card.ReportScoresSystem" />
 
   <!-- Handling sections that are added after deployment already made to a term -->
-  <zope:subscriber
-      for="zope.lifecycleevent.interfaces.IObjectAddedEvent"
-      handler=".report_card.handleSectionAdded"
+  <zope:adapter
+      factory=".report_card.SectionAddedSubscriber"
+      name="section_added"
       />
 
   <zope:adapter
       factory=".report_card.ApplyLabel"
       name="title" />
+
+  <zope:adapter
+      factory=".activity.ActivityDefaultCategory"
+      name="default" />
+
+  <zope:adapter
+      factory=".activity.ActivityDefaultDueDate"
+      name="default" />
 
 </configure>

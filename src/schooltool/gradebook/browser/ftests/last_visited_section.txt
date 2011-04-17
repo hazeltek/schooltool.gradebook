@@ -1,0 +1,157 @@
+Last visited section tests
+--------------------------
+
+The gradebook remembers where a teacher or student was last time they were
+in the gradebook, so we will test this.
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up one section with instructor and students for each term:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics I', '2005-2006', 'Spring',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Fall
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 1'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Maximum').value = '50'
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+Add some grades:
+
+    >>> stephan.getControl(name='Activity_paul').value = '40'
+    >>> stephan.getControl(name='Activity_tom').value = '48'
+    >>> stephan.getControl(name='Activity_claudia').value = '45'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '29'
+
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+
+Change to the other section and add some activities and grades:
+
+    >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> stephan.getForm().submit()
+    >>> stephan.printQuery('//select[@name="currentTerm"]/option[@selected="selected"]/text()')
+    2005-2006 / Spring
+    >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
+    Physics I - Physics I (1)
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'HW 1'
+    >>> stephan.getControl('Description').value = 'Homework 2'
+    >>> stephan.getControl('Category').displayValue = ['Assignment']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getLink('New Activity').click()
+    >>> stephan.getControl('Title').value = 'Quiz'
+    >>> stephan.getControl('Description').value = 'Spring Pop Quiz'
+    >>> stephan.getControl('Category').displayValue = ['Exam']
+    >>> stephan.getControl('Add').click()
+
+    >>> stephan.getControl(name='Activity_paul').value = '80'
+    >>> stephan.getControl(name='Activity_tom').value = '95'
+    >>> stephan.getControl(name='Activity_claudia').value = '85'
+
+    >>> stephan.getControl(name='Activity-2_paul').value = '90'
+    >>> stephan.getControl(name='Activity-2_tom').value = '88'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '79'
+
+    >>> stephan.getControl('Save').click()
+
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/gradebook'
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/gradebook'
+
+Log in as a student and change to the spring section:
+
+    >>> claudia = Browser('claudia', 'pwd')
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/mygrades'
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div> Ave.: 49.3%</div>
+    </td>
+
+    >>> claudia.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
+    >>> claudia.getForm().submit()
+    >>> claudia.url
+    'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/mygrades'
+    >>> claudia.printQuery('//table[@class="student_gradebook"]/tr[1]/td')
+    <td colspan="2" class="odd student_cell">
+      <div> Ave.: 82.0%</div>
+    </td>
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2005-2006/spring/sections/1/activities/Worksheet/mygrades'
+
+We need to make sure that we can handle the case where the last visited section
+was since deleted.  First we'll delete the spring section of Physics.
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Spring').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getControl(name='delete.1').value = True
+    >>> manager.getControl('Delete').click()
+    >>> manager.getControl('Confirm').click()
+
+Now when Stephan or Claudia hit the Gradebook tab, they get redirected to the
+fall term for the Physics section since the spring section is gone.
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
+
+    >>> claudia.getLink('Gradebook').click()
+    >>> claudia.url
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/mygrades'

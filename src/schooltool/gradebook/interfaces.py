@@ -22,8 +22,6 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-import datetime
-
 from zope.interface import Interface, Attribute
 import zope.schema
 from zope.container.constraints import containers, contains
@@ -118,8 +116,7 @@ class IActivity(interfaces.IRequirement):
     due_date = zope.schema.Date(
         title=_("Due Date"),
         description=_("The date the activity is due to be graded."),
-        required=True,
-        default = datetime.date.today())
+        required=True)
 
     label = zope.schema.TextLine(
         title=_(u"Label"),

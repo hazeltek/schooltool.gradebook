@@ -39,6 +39,7 @@ from zope.security import proxy
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.viewlet import viewlet
+from zope.i18n.interfaces.locales import ICollator
 
 from z3c.form import form as z3cform
 from z3c.form import field, button
@@ -62,7 +63,7 @@ from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
-from schooltool.term.interfaces import ITerm
+from schooltool.term.interfaces import ITerm, IDateManager
 
 from schooltool.gradebook import GradebookMessage as _
 
@@ -112,7 +113,7 @@ class GradebookStartup(object):
             url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
             self.request.response.redirect(url)
             return ''
-        template = ViewPageTemplateFile('gradebook_startup.pt')
+        template = ViewPageTemplateFile('templates/gradebook_startup.pt')
         return template(self)
 
     def update(self):
@@ -155,8 +156,6 @@ class SectionGradebookRedirectView(BrowserView):
                 url += '/mygrades'
             else:
                 url += '/gradebook'
-            if 'final' in self.request:
-                url += '/final.html'
         self.request.response.redirect(url)
         return "Redirecting..."
 
@@ -166,12 +165,6 @@ class GradebookBase(BrowserView):
     def __init__(self, context, request):
         super(GradebookBase, self).__init__(context, request)
         self.changed = False
-
-    @property
-    def time(self):
-        t = datetime.datetime.now()
-        return "%s-%s-%s %s:%s:%s" % (t.year, t.month, t.day,
-                                      t.hour, t.minute, t.second)
 
     @property
     def students(self):
@@ -238,6 +231,12 @@ class SectionFinder(GradebookBase):
                  'selected': term is currentTerm and 'selected' or None}
                 for term in terms]
 
+    def getSectionId(self, section):
+        term = ITerm(section)
+        year = ISchoolYear(term)
+        return '%s.%s.%s' % (simple_form_key(year), simple_form_key(term),
+                             simple_form_key(section))
+
     def getSections(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
@@ -256,7 +255,9 @@ class SectionFinder(GradebookBase):
             css = 'inactive-menu-item'
             if section == currentSection:
                 css = 'active-menu-item'
-            yield {'obj': section, 'url': url, 'title': title, 'css': css}
+            yield {'obj': section, 'url': url, 'title': title, 'css': css,
+                   'form_id': self.getSectionId(section),
+                   'selected': title==self.getCurrentSection() and 'selected' or None}
 
     @property
     def worksheets(self):
@@ -322,7 +323,7 @@ class SectionFinder(GradebookBase):
         gradebook = proxy.removeSecurityProxy(self.context)
         if 'currentSection' in self.request:
             for section in self.getSections():
-                if section['title'] == self.request['currentSection']:
+                if self.getSectionId(section['obj']) == self.request['currentSection']:
                     if section['obj'] == ISection(gradebook):
                         break
                     self.request.response.redirect(section['url'])
@@ -529,7 +530,8 @@ class GradebookOverview(SectionFinder):
         flag, weeks = self.context.getDueDateFilter(self.person)
         if not flag:
             return False
-        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
     def getFilteredActivities(self):
@@ -566,7 +568,9 @@ class GradebookOverview(SectionFinder):
                 value = self.getStudentActivityValue(student, activity)
                 if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
-                    if value is not UNSCORED and value != '':
+                    sourceObj = getSourceObj(activity.source)
+                    if value is not UNSCORED and value != '' and \
+                       interfaces.IWorksheet.providedBy(sourceObj):
                         value = '%.1f' % value
                 else:
                     editable = not ICommentScoreSystem.providedBy(
@@ -603,16 +607,16 @@ class GradebookOverview(SectionFinder):
 
         # Do the sorting
         key, reverse = self.sortKey
+        self.collator = ICollator(self.request.locale)
         def generateKey(row):
             if key != 'student':
                 grades = dict([(unicode(grade['activity']), grade['value'])
                                for grade in row['grades']])
                 if not grades.get(key, ''):
-                    return (1, row['student']['title'])
+                    return (1, self.collator.key(row['student']['title']))
                 else:
                     return (0, grades.get(key))
-            return row['student']['title']
-
+            return self.collator.key(row['student']['title'])
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property
@@ -972,7 +976,7 @@ class NoCurrentTerm(BrowserView):
 class GradeStudent(z3cform.EditForm):
     """Edit form for a student's grades."""
     z3cform.extends(z3cform.EditForm)
-    template = ViewPageTemplateFile('grade_student.pt')
+    template = ViewPageTemplateFile('templates/grade_student.pt')
 
     def __init__(self, context, request):
         super(GradeStudent, self).__init__(context, request)
@@ -986,17 +990,25 @@ class GradeStudent(z3cform.EditForm):
         for index, activity in enumerate(self.getFilteredActivities()):
             if interfaces.ILinkedColumnActivity.providedBy(activity):
                 obj = getSourceObj(activity.source)
+                if interfaces.IWorksheet.providedBy(obj):
+                    bestScore = '100'
+                else:
+                    bestScore = obj.scoresystem.getBestScore()
+                title = '%s (%s)' % (obj.title, bestScore)
                 newSchemaFld = TextLine(
-                    title=obj.title,
+                    title=title,
                     readonly = True,
                     required=False)
             else:
                 if ICommentScoreSystem.providedBy(activity.scoresystem):
                     field_cls = HtmlFragment
+                    title = activity.title
                 else:
                     field_cls = TextLine
+                    bestScore = activity.scoresystem.getBestScore()
+                    title = "%s (%s)" % (activity.title, bestScore)
                 newSchemaFld = field_cls(
-                    title=activity.title,
+                    title=title,
                     description=activity.description,
                     constraint=activity.scoresystem.fromUnicode,
                     required=False)
@@ -1085,7 +1097,8 @@ class GradeStudent(z3cform.EditForm):
         flag, weeks = self.context.gradebook.getDueDateFilter(self.person)
         if not flag:
             return False
-        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
     def getFilteredActivities(self):
@@ -1146,7 +1159,8 @@ class StudentGradebookView(object):
         flag, weeks = self.context.gradebook.getDueDateFilter(self.person)
         if not flag:
             return False
-        cutoff = datetime.date.today() - datetime.timedelta(7 * int(weeks))
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
         return activity.due_date < cutoff
 
 

@@ -1,0 +1,2214 @@
+RML test for the student report pdfs
+------------------------------------
+
+Here we're going to test the rml generated for the student_detail.pdf
+and the report_card.pdf views of students. Since we're going to test
+XML, let's extend the Browser class:
+
+    >>> from schooltool.testing.analyze import etree, to_string
+    >>> class XMLBrowser(Browser):
+    ...     def queryXML(self, xpath):
+    ...         doc = etree.XML(self.contents)
+    ...         result = [to_string(node) for node in doc.xpath(xpath)]
+    ...         return result
+    ...     def printXMLQuery(self, xpath):
+    ...         for result in self.queryXML(xpath):
+    ...             print result
+
+Log in as manager:
+
+    >>> manager = XMLBrowser('manager', 'schooltool')
+
+Add a schoolyears:
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.addSchoolYear('2010', '2010-01-01', '2010-12-31')
+
+If at this point, when we have no terms yet, we try to generate a
+report card report for the Students group, we should get an error:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.printQuery('//h1/text()')
+    The operation you attempted cannot be completed because there are
+    currently no terms set up in your SchoolTool instance. Please have
+    a user with administration access set up at least one term and try
+    the operation again.
+
+Same if we try to generate a detailed student report fo the Students
+group:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.printQuery('//h1/text()')
+    The operation you attempted cannot be completed because there are
+    currently no terms set up in your SchoolTool instance. Please have
+    a user with administration access set up at least one term and try
+    the operation again.
+
+Add two terms to the schoolyear:
+
+    >>> setup.addTerm('First Term', '2010-01-01', '2010-06-30', '2010')
+    >>> setup.addTerm('Second Term', '2010-07-01', '2010-12-31', '2010')
+
+Set up three courses:
+
+    >>> setup.addCourse('Math', '2010')
+    >>> setup.addCourse('Chemistry', '2010')
+    >>> setup.addCourse('Physics', '2010')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', ['students'], manager)
+    >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', ['students'], manager)
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', ['students'], manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', ['teachers'], manager)
+
+Set up a section in each term for each course:
+
+    >>> setup.addSection('Math', '2010', 'First Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Chemistry', '2010', 'First Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics', '2010', 'First Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+    >>> setup.addSection('Math', '2010', 'Second Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Chemistry', '2010', 'Second Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+    >>> setup.addSection('Physics', '2010', 'Second Term',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Tom', 'Claudia', 'Paul'])
+
+Add two report sheets with four activities:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Report Sheet One'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Sheet').click()
+    >>> manager.getControl('Title').value = 'Report Sheet Two'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('Report Sheet One').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.1'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.2'
+    >>> manager.getControl('Score System').displayValue = ['Comment']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.3'
+    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 1.4'
+    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Report Sheet Templates').click()
+    >>> manager.getLink('Report Sheet Two').click()
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.1'
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.2'
+    >>> manager.getControl('Score System').displayValue = ['Comment']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.3'
+    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
+    >>> manager.getControl('Add').click()
+
+    >>> manager.getLink('New Report Activity').click()
+    >>> manager.getControl('Title').value = 'Report Activity 2.4'
+    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
+    >>> manager.getControl('Add').click()
+
+Deploy one report sheet in each term:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.getControl('Template').displayValue = ['Report Sheet One']
+    >>> manager.getControl('Deploy').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Deploy Report Sheet').click()
+    >>> manager.getControl('Template').displayValue = ['Report Sheet Two']
+    >>> manager.getControl('Deploy').click()
+
+Layout a report card:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Report Card Layout').click()
+    >>> manager.getControl('New Column').displayValue = ['First Term - Report Sheet One - Report Activity 1.1']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading1').value = 'FT-1'
+    >>> manager.getControl('New Column').displayValue = ['First Term - Report Sheet One - Report Activity 1.3']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading2').value = 'FT-3'
+    >>> manager.getControl('New Column').displayValue = ['First Term - Report Sheet One - Report Activity 1.4']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading3').value = 'FT-4'
+    >>> manager.getControl('New Column').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.1']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading4').value = 'ST-1'
+    >>> manager.getControl('New Column').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.3']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading5').value = 'ST-3'
+    >>> manager.getControl('New Column').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.4']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading6').value = 'ST-4'
+    >>> manager.getControl('New Column').displayValue = ['Tardy']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading7').value = 'T'
+    >>> manager.getControl('New Column').displayValue = ['Absent']
+    >>> manager.getControl('Add', index=0).click()
+    >>> manager.getControl(name='Heading8').value = 'A'
+    >>> manager.getControl('New Activity').displayValue = ['First Term - Report Sheet One - Report Activity 1.2']
+    >>> manager.getControl('Add', index=1).click()
+    >>> manager.getControl(name='ActivityHeading1').value = 'FT-2'
+    >>> manager.getControl('New Activity').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.2']
+    >>> manager.getControl('Add', index=1).click()
+    >>> manager.getControl(name='ActivityHeading2').value = 'ST-2'
+    >>> manager.getControl('OK').click()
+
+Set up a timetable:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('School Timetables').click()
+    >>> manager.getLink('New Timetable').click()
+    >>> manager.getLink('simple weekly timetable schema').click()
+    >>> manager.getControl(name='field.period_name_1').value = 'First period'
+    >>> manager.getControl(name='field.period_name_2').value = 'Second period'
+    >>> manager.getControl(name='field.period_name_3').value = 'Third period'
+    >>> manager.getControl(name='field.period_start_1').value = '8:00'
+    >>> manager.getControl(name='field.period_start_2').value = '9:00'
+    >>> manager.getControl(name='field.period_start_3').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_1').value = '9:00'
+    >>> manager.getControl(name='field.period_finish_2').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_3').value = '11:00'
+    >>> manager.getControl('Create').click()
+
+Define a schedule for each section:
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Chemistry (2)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('First period', index=0).click()
+    >>> manager.getControl('First period', index=1).click()
+    >>> manager.getControl('First period', index=2).click()
+    >>> manager.getControl('First period', index=3).click()
+    >>> manager.getControl('First period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Math (1)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Second period', index=0).click()
+    >>> manager.getControl('Second period', index=1).click()
+    >>> manager.getControl('Second period', index=2).click()
+    >>> manager.getControl('Second period', index=3).click()
+    >>> manager.getControl('Second period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Physics (3)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Third period', index=0).click()
+    >>> manager.getControl('Third period', index=1).click()
+    >>> manager.getControl('Third period', index=2).click()
+    >>> manager.getControl('Third period', index=3).click()
+    >>> manager.getControl('Third period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Chemistry (2)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('First period', index=0).click()
+    >>> manager.getControl('First period', index=1).click()
+    >>> manager.getControl('First period', index=2).click()
+    >>> manager.getControl('First period', index=3).click()
+    >>> manager.getControl('First period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Math (1)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Second period', index=0).click()
+    >>> manager.getControl('Second period', index=1).click()
+    >>> manager.getControl('Second period', index=2).click()
+    >>> manager.getControl('Second period', index=3).click()
+    >>> manager.getControl('Second period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Physics (3)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('Third period', index=0).click()
+    >>> manager.getControl('Third period', index=1).click()
+    >>> manager.getControl('Third period', index=2).click()
+    >>> manager.getControl('Third period', index=3).click()
+    >>> manager.getControl('Third period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+Log in as teacher and go to the gradebook:
+
+    >>> teacher = XMLBrowser('stephan', 'pwd')
+    >>> teacher.getLink('Gradebook').click()
+
+Now, let's add some grades to the First Term sections:
+
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2010 / First Term']
+    >>> teacher.getForm().submit()
+
+    >>> teacher.getControl(name='currentSection').displayValue = ['Chemistry - Chemistry (2)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '85'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>A <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Paul</strong></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'B-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '90'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>A <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Tom</strong></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'A+'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '95'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>A <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Claudia</strong></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'F'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').displayValue = ['Math - Math (1)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '70'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>Another <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'C-'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '80'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>Another <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'B-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '60'
+    >>> teacher.getControl('Report Activity 1.3').value = 'D'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').displayValue = ['Physics - Physics (3)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '60'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>More <strong>comments</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'A-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '75'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>More <strong>comments</strong> for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'C-'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Fail'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 1.1').value = '65'
+    >>> teacher.getControl('Report Activity 1.2').value = '<p>More <strong>comments</strong> for:</p><p>&nbsp;</p><p><em>Claudia</em></p>'
+    >>> teacher.getControl('Report Activity 1.3').value = 'C+'
+    >>> teacher.getControl('Report Activity 1.4').value = 'Pass'
+    >>> teacher.getControl('Apply').click()
+
+Now, let's add some grades to the Second Term sections:
+
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2010 / Second Term']
+    >>> teacher.getForm().submit()
+
+    >>> teacher.getControl(name='currentSection').displayValue = ['Chemistry - Chemistry (2)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '63'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>A different <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Paul</strong></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A+'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '73'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>A different <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Tom</strong></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A+'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '83'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>A different <em>comment</em> for:</p><p>&nbsp;</p><p><strong>Claudia</strong></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'F'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').displayValue = ['Math - Math (1)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'C-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '67'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A+'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '57'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Claudia</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Apply').click()
+
+    >>> teacher.getControl(name='currentSection').displayValue = ['Physics - Physics (3)']
+    >>> teacher.getForm().submit()
+    >>> teacher.getLink('>', index=0).click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '81'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>No comments for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'B-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Pass'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '61'
+    >>> teacher.getControl('Report Activity 2.2').value = '<p>No comments for:</p><p>&nbsp;</p><p><em>Tom</em></p>'
+    >>> teacher.getControl('Report Activity 2.3').value = 'A-'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
+    >>> teacher.getControl('Next').click()
+
+    >>> teacher.getControl('Report Activity 2.1').value = '91'
+    >>> teacher.getControl('Report Activity 2.3').value = 'C+'
+    >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
+    >>> teacher.getControl('Apply').click()
+
+Let's add some attendance data. First let's define some helper
+functions:
+
+    >>> def baseHelper(student, month, day, browser, value):
+    ...     browser.getLink('Term Grading').click()
+    ...     browser.getLink(month).click()
+    ...     browser.getLink(student).click()
+    ...     dates = browser.queryHTML('//table[@class="data"]/thead/tr[1]//a/text()[1]')
+    ...     assert day in dates, (student, month, day, dates)
+    ...     input_names = browser.queryHTML('//input[@type="text"]/@name')
+    ...     name = input_names[dates.index(day)]
+    ...     browser.getControl(name=name).value = value
+    ...     browser.getControl('Update').click()
+    >>> def setAbsence(student, month, day, browser):
+    ...     baseHelper(student, month, day, browser, 'a')
+    >>> def setTardy(student, month, day, browser):
+    ...     baseHelper(student, month, day, browser, 't')
+
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=0).click()
+    >>> teacher.getLink('Journal', index=1).click()
+
+    >>> setAbsence('Paul', 'January', '05', teacher)
+    >>> setAbsence('Paul', 'February', '11', teacher)
+    >>> setAbsence('Paul', 'February', '26', teacher)
+    >>> setTardy('Paul', 'January', '27', teacher)
+    >>> setTardy('Paul', 'April', '19', teacher)
+
+    >>> setAbsence('Tom', 'February', '11', teacher)
+    >>> setAbsence('Tom', 'May', '07', teacher)
+    >>> setAbsence('Tom', 'June', '09', teacher)
+    >>> setTardy('Tom', 'March', '25', teacher)
+
+    >>> setAbsence('Claudia', 'January', '28', teacher)
+    >>> setTardy('Claudia', 'May', '19', teacher)
+
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=1).click()
+    >>> teacher.getLink('Journal', index=1).click()
+
+    >>> setAbsence('Paul', 'August', '05', teacher)
+    >>> setAbsence('Paul', 'October', '21', teacher)
+    >>> setAbsence('Paul', 'November', '16', teacher)
+    >>> setAbsence('Paul', 'November', '25', teacher)
+    >>> setAbsence('Paul', 'December', '10', teacher)
+    >>> setTardy('Paul', 'September', '23', teacher)
+    >>> setTardy('Paul', 'September', '24', teacher)
+
+    >>> setAbsence('Tom', 'July', '19', teacher)
+    >>> setAbsence('Tom', 'July', '30', teacher)
+    >>> setAbsence('Tom', 'October', '01', teacher)
+    >>> setTardy('Tom', 'November', '08', teacher)
+    >>> setTardy('Tom', 'November', '09', teacher)
+
+    >>> setAbsence('Claudia', 'September', '14', teacher)
+    >>> setAbsence('Claudia', 'October', '01', teacher)
+    >>> setAbsence('Claudia', 'December', '02', teacher)
+    >>> setTardy('Claudia', 'July', '13', teacher)
+    >>> setTardy('Claudia', 'July', '30', teacher)
+    >>> setTardy('Claudia', 'November', '22', teacher)
+
+Now, let's look at the person reports for Paul:
+
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Persons').click()
+    >>> manager.getLink('Paul').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.printQuery('//h1/text()')
+    Student Reports
+    >>> manager.getLink('Request Report Card').click()
+
+Let's make the form to use its Cancel button:
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    Student Reports
+    >>> manager.getLink('Request Report Card').click()
+
+Let's get his report card for 2010:
+
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Report Card: 2010
+    >>> manager.printXMLQuery('//para[@style="h1"]/text()')
+    Student: Paul Cardune
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">8</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">First Term - Math (1)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">Another <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">Second Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">No comments for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+
+Now, let's go back and get his report card for the Second Term of
+2010:
+
+    >>> manager.goBack()
+    >>> manager.getControl('Term or Year').displayValue = ['Second Term']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Report Card: 2010
+    >>> manager.printXMLQuery('//para[@style="h1"]/text()')
+    Student: Paul Cardune
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">5</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">Second Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">No comments for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+
+Now, let's test the report card functionality for groups, using of
+course the Students group. Let's get the report card report for the
+Students group for 2010:
+
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Report Card: 2010
+
+Students:
+
+    >>> manager.printXMLQuery('//para[@style="h1"]/text()')
+    Student: Paul Cardune
+    Student: Tom Hoffman
+    Student: Claudia Richter
+
+Courses and grades for Paul:
+
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">8</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="h1"][2]/preceding-sibling::para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">First Term - Math (1)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">Another <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">Second Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">No comments for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+
+Courses and grades for Tom:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">80</para>
+    <para style="normal">90</para>
+    <para style="normal">75</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">B-</para>
+    <para style="normal">A+</para>
+    <para style="normal">C-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal">67</para>
+    <para style="normal">73</para>
+    <para style="normal">61</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">A+</para>
+    <para style="normal">A+</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">6</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="h1"][3]/preceding-sibling::para[@style="section" or @style="worksheet" or @style="activity" or @style="score"][position()<37]')
+    <para style="section">First Term - Math (1)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">Another <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Tom</em>
+    </para>
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Tom</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Tom</em>
+    </para>
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Tom</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Tom</strong>
+    </para>
+    <para style="section">Second Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">No comments for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Tom</em>
+    </para>
+
+Courses and grades for Claudia:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">60</para>
+    <para style="normal">95</para>
+    <para style="normal">65</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">D</para>
+    <para style="normal">F</para>
+    <para style="normal">C+</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal">57</para>
+    <para style="normal">83</para>
+    <para style="normal">91</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">A-</para>
+    <para style="normal">F</para>
+    <para style="normal">C+</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="h1"][3]/following-sibling::para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Claudia</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Claudia</em>
+    </para>
+    <para style="section">Second Term - Math (1)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">Another different <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Claudia</em>
+    </para>
+    <para style="section">Second Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet Two</para>
+    <para style="activity">ST-2</para>
+    <para style="score">A different <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Claudia</strong>
+    </para>
+
+Now, we'll get the report card for the Students group for the First
+Term of 2010:
+
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getControl('Term or Year').displayValue = ['First Term']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Report Card: 2010
+
+Students:
+
+    >>> manager.printXMLQuery('//para[@style="h1"]/text()')
+    Student: Paul Cardune
+    Student: Tom Hoffman
+    Student: Claudia Richter
+
+Courses and grades for Paul:
+
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="h1"][2]/preceding-sibling::para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">First Term - Math (1)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">Another <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Paul</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Paul</em>
+    </para>
+
+Courses and grades for Tom:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">80</para>
+    <para style="normal">90</para>
+    <para style="normal">75</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">B-</para>
+    <para style="normal">A+</para>
+    <para style="normal">C-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">1</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="h1"][3]/preceding-sibling::para[@style="section" or @style="worksheet" or @style="activity" or @style="score"][position()<19]')
+    <para style="section">First Term - Math (1)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">Another <strong>comment</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Tom</em>
+    </para>
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Tom</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Tom</em>
+    </para>
+
+Courses and grades for Claudia:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">60</para>
+    <para style="normal">95</para>
+    <para style="normal">65</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">D</para>
+    <para style="normal">F</para>
+    <para style="normal">C+</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">1</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">1</para>
+    <para style="normal"/>
+
+Outlined activities:
+
+    >>> manager.printXMLQuery('//story/para[@style="h1"][3]/following-sibling::para[@style="section" or @style="worksheet" or @style="activity" or @style="score"]')
+    <para style="section">First Term - Chemistry (2)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">A <em>comment</em> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <strong>Claudia</strong>
+    </para>
+    <para style="section">First Term - Physics (3)</para>
+    <para style="worksheet">Report Sheet One</para>
+    <para style="activity">FT-2</para>
+    <para style="score">More <strong>comments</strong> for:</para>
+    <para style="score"> </para>
+    <para style="score">
+      <em>Claudia</em>
+    </para>
+
+Now let's look at the detail student report. We'll look at Paul's
+detailed student report for 2010:
+
+    >>> manager.goBack()
+    >>> manager.getLink('Manage').click()
+    >>> manager.getLink('Persons').click()
+    >>> manager.getLink('Paul').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Detailed Student Report: 2010
+    >>> manager.printXMLQuery('//story/blockTable[1]//td/para/text()')
+    Student Name
+    Paul Cardune
+    User Id
+    paul
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">8</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[1]/para/text()')
+    Dates
+    01/05/10
+    01/27/10
+    02/11/10
+    02/26/10
+    04/19/10
+    08/05/10
+    09/23/10
+    09/24/10
+    10/21/10
+    11/16/10
+    11/25/10
+    12/10/10
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    A
+    A
+    T
+    A
+    T
+    T
+    A
+    A
+    A
+    A
+
+Now let's look at Paul's detail student report for the Second Term of
+2010:
+
+    >>> manager.goBack()
+    >>> manager.getControl('Term or Year').displayValue = ['Second Term']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Detailed Student Report: 2010
+    >>> manager.printXMLQuery('//story/blockTable[1]//td/para/text()')
+    Student Name
+    Paul Cardune
+    User Id
+    paul
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[2]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">5</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[1]/para/text()')
+    Dates
+    08/05/10
+    09/23/10
+    09/24/10
+    10/21/10
+    11/16/10
+    11/25/10
+    12/10/10
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    T
+    A
+    A
+    A
+    A
+
+Now let's look at Students group detailed student report for 2010:
+
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('Students').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Request Detailed Student Report').click()
+    >>> manager.getControl('Term or Year').displayValue = ['2010']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Detailed Student Report: 2010
+
+Paul's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')
+    Student Name
+    Paul Cardune
+    User Id
+    paul
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/preceding-sibling::para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">70</para>
+    <para style="normal">85</para>
+    <para style="normal">60</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">B-</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">8</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/tr/td[1]/para/text()')
+    Dates
+    01/05/10
+    01/27/10
+    02/11/10
+    02/26/10
+    04/19/10
+    08/05/10
+    09/23/10
+    09/24/10
+    10/21/10
+    11/16/10
+    11/25/10
+    12/10/10
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    A
+    A
+    T
+    A
+    T
+    T
+    A
+    A
+    A
+    A
+
+Tom's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="headings_table"][2]//td/para/text()')
+    Student Name
+    Tom Hoffman
+    User Id
+    tom
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/preceding-sibling::para[@style="section_heading"][position()<3]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">80</para>
+    <para style="normal">90</para>
+    <para style="normal">75</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">B-</para>
+    <para style="normal">A+</para>
+    <para style="normal">C-</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal">67</para>
+    <para style="normal">73</para>
+    <para style="normal">61</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">A+</para>
+    <para style="normal">A+</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">6</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/tr/td[1]/para/text()')
+    Dates
+    02/11/10
+    03/25/10
+    05/07/10
+    06/09/10
+    07/19/10
+    07/30/10
+    10/01/10
+    11/08/10
+    11/09/10
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    A
+    A
+    A
+    A
+    A
+    T
+    T
+
+Claudia's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="headings_table"][3]//td/para/text()')
+    Student Name
+    Claudia Richter
+    User Id
+    claudia
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/following-sibling::para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[2]/para')
+    <para style="bold">FT-1</para>
+    <para style="normal">60</para>
+    <para style="normal">95</para>
+    <para style="normal">65</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[3]/para')
+    <para style="bold">FT-3</para>
+    <para style="normal">D</para>
+    <para style="normal">F</para>
+    <para style="normal">C+</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[4]/para')
+    <para style="bold">FT-4</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[5]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal">57</para>
+    <para style="normal">83</para>
+    <para style="normal">91</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[6]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">A-</para>
+    <para style="normal">F</para>
+    <para style="normal">C+</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[7]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[8]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[9]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">4</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][6]/tr/td[1]/para/text()')
+    Dates
+    01/28/10
+    05/19/10
+    07/13/10
+    07/30/10
+    09/14/10
+    10/01/10
+    11/22/10
+    12/02/10
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][6]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    T
+    T
+    A
+    A
+    T
+    A
+
+Now let's look at the Students group detailed student report for the
+Second Term of 2010:
+
+    >>> manager.goBack()
+    >>> manager.getControl('Term or Year').displayValue = ['Second Term']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Detailed Student Report: 2010
+
+Paul's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')
+    Student Name
+    Paul Cardune
+    User Id
+    paul
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/preceding-sibling::para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal"/>
+    <para style="normal">63</para>
+    <para style="normal">81</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">C-</para>
+    <para style="normal">A+</para>
+    <para style="normal">B-</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Pass</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][1]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">5</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/tr/td[1]/para/text()')
+    Dates
+    08/05/10
+    09/23/10
+    09/24/10
+    10/21/10
+    11/16/10
+    11/25/10
+    12/10/10
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/tr/td[2]/para/text()')
+    First
+    A
+    T
+    T
+    A
+    A
+    A
+    A
+
+Tom's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="headings_table"][2]//td/para/text()')
+    Student Name
+    Tom Hoffman
+    User Id
+    tom
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/preceding-sibling::para[@style="section_heading"][position()<3]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal">67</para>
+    <para style="normal">73</para>
+    <para style="normal">61</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">A+</para>
+    <para style="normal">A+</para>
+    <para style="normal">A-</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal"/>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">2</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][3]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/tr/td[1]/para/text()')
+    Dates
+    07/19/10
+    07/30/10
+    10/01/10
+    11/08/10
+    11/09/10
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/tr/td[2]/para/text()')
+    First
+    A
+    A
+    A
+    T
+    T
+
+Claudia's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="headings_table"][3]//td/para/text()')
+    Student Name
+    Claudia Richter
+    User Id
+    claudia
+
+Report sections:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/following-sibling::para[@style="section_heading"]/text()')
+    Grade Detail
+    Attendance Detail
+
+Courses:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[1]/para/text()')
+    Courses
+    Math (Stephan Richter)
+    Chemistry (Stephan Richter)
+    Physics (Stephan Richter)
+
+Grade columns:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[2]/para')
+    <para style="bold">ST-1</para>
+    <para style="normal">57</para>
+    <para style="normal">83</para>
+    <para style="normal">91</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[3]/para')
+    <para style="bold">ST-3</para>
+    <para style="normal">A-</para>
+    <para style="normal">F</para>
+    <para style="normal">C+</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[4]/para')
+    <para style="bold">ST-4</para>
+    <para style="normal">Pass</para>
+    <para style="normal">Fail</para>
+    <para style="normal">Fail</para>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[5]/para')
+    <para style="bold">Tardy</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][5]/tr/td[6]/para')
+    <para style="bold">Absent</para>
+    <para style="normal"/>
+    <para style="normal">3</para>
+    <para style="normal"/>
+
+Attendance detail:
+
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][6]/tr/td[1]/para/text()')
+    Dates
+    07/13/10
+    07/30/10
+    09/14/10
+    10/01/10
+    11/22/10
+    12/02/10
+    >>> manager.printXMLQuery('//story/blockTable[@style="grid"][6]/tr/td[2]/para/text()')
+    First
+    T
+    T
+    A
+    A
+    T
+    A
+
+Now, let's test the Absences by Section report using the Chemistry
+section of the First Term of 2010:
+
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=0).click()
+    >>> teacher.getLink('Reports').click()
+    >>> teacher.getLink('Download Absences by Section Report').click()
+
+Header:
+
+    >>> teacher.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences by Section Report
+    >>> teacher.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')
+    Course
+    Chemistry
+    Teacher
+    Stephan Richter
+
+Students:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Paul Cardune
+    Tom Hoffman
+    Claudia Richter
+
+Attendance detail:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    Absences
+    3
+    3
+    1
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[3]/para/text()')
+    Tardies
+    2
+    1
+    1
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[4]/para/text()')
+    Total
+    5
+    4
+    2
+
+Test the Absences by Section report for another section:
+
+    >>> teacher.goBack()
+    >>> teacher.getLink('Home').click()
+    >>> teacher.getLink('Chemistry (2)', index=1).click()
+    >>> teacher.getLink('Reports').click()
+    >>> teacher.getLink('Download Absences by Section Report').click()
+
+Header:
+
+    >>> teacher.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences by Section Report
+    >>> teacher.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')
+    Course
+    Chemistry
+    Teacher
+    Stephan Richter
+
+Students:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Paul Cardune
+    Tom Hoffman
+    Claudia Richter
+
+Attendance detail:
+
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    Absences
+    5
+    3
+    3
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[3]/para/text()')
+    Tardies
+    2
+    2
+    3
+    >>> teacher.printXMLQuery('//story/blockTable[position()>1]/tr/td[4]/para/text()')
+    Total
+    7
+    5
+    6
+
+Now, let's test the Absences by Day report:
+
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.printQuery('//h1/text()')
+    School Year Reports
+    >>> manager.getLink('Absences By Day').click()
+
+Let's make the form to use its Cancel button and field validation:
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    School Year Reports
+    >>> manager.getLink('Absences By Day').click()
+    >>> manager.getControl('Date').value = 'hello world'
+    >>> manager.getControl('Download').click()
+    >>> manager.printQuery('//span[@class="message"]/text()')
+    You must specify a valid date within the school year.
+    >>> manager.getControl('Date').value = '2020-02-11'
+    >>> manager.getControl('Download').click()
+    >>> manager.printQuery('//span[@class="message"]/text()')
+    You must specify a valid date within the school year.
+    >>> manager.getControl('Date').value = '2010-02-11'
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences By Day Report
+    >>> manager.printXMLQuery('//para[@style="section_heading"]/text()')
+    Thursday February 11, 2010
+
+Students:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Paul Cardune
+    Tom Hoffman
+
+Attendance details:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    First
+    A
+    A
+
+Let's test the Absences by Day report in another day:
+
+    >>> manager.goBack()
+    >>> manager.getControl('Date').value = '2010-10-01'
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Absences By Day Report
+    >>> manager.printXMLQuery('//para[@style="section_heading"]/text()')
+    Friday October 01, 2010
+
+Students:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[1]/para/text()')
+    Student
+    Tom Hoffman
+    Claudia Richter
+
+Attendance details:
+
+    >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
+    First
+    A
+    A
+
+Now, let's test the Failures by Term report, which lists students with
+grades below a minimum in a selected report activity. Since the report
+is designed to work on terms, we'll test it first in the First Term of
+2010:
+
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('First Term').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.printQuery('//h1/text()')
+    Term Reports
+    >>> manager.getLink('Failures by Term').click()
+
+Let's make the form to use its Cancel button and field validation:
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.printQuery('//h1/text()')
+    Term Reports
+    >>> manager.getLink('Failures by Term').click()
+    >>> manager.getControl('Download').click()
+    >>> manager.printQuery('//span[@class="message"]/text()')
+    You must specify both a report activity and a minimum passing score.
+
+We'll check how many students have grades lower than 70 for the Report
+Activity 1.1:
+
+    >>> manager.getControl(name='source').displayValue = ['First Term - Report Sheet One - Report Activity 1.1']
+    >>> manager.getForm().submit()
+    >>> manager.getControl('Minimum Passing Score').value = '70'
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Failures by Term Report: First Term
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td/para/text()')
+    Report Sheet:
+    Report Sheet One
+    Activity:
+    Report Activity 1.1
+    Passing Score:
+    70
+
+Warning text and students:
+
+    >>> manager.printXMLQuery('//story/para[@style="bold"]/text()')
+    The following students are at risk of failing the following courses:
+    Paul Cardune
+    Claudia Richter
+
+Paul's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td/para/text()')
+    Physics
+    Stephan Richter
+    60
+
+Claudia's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[4]/tr/td/para/text()')
+    Math
+    Stephan Richter
+    60
+    Physics
+    Stephan Richter
+    65
+
+Let's test the Failures by Term report in the other term using another
+activity:
+
+    >>> manager.goBack()
+    >>> manager.getLink('2010').click()
+    >>> manager.getLink('Second Term').click()
+    >>> manager.getLink('Reports').click()
+    >>> manager.getLink('Failures by Term').click()
+
+    >>> manager.getControl(name='source').displayValue = ['Second Term - Report Sheet Two - Report Activity 2.3']
+    >>> manager.getForm().submit()
+    >>> manager.getControl('Minimum Passing Score').value = ['C']
+    >>> manager.getControl('Download').click()
+
+Header:
+
+    >>> manager.printXMLQuery('//pageTemplate//drawCenteredString/text()')
+    Failures by Term Report: Second Term
+    >>> manager.printXMLQuery('//story/blockTable[1]/tr/td/para/text()')
+    Report Sheet:
+    Report Sheet Two
+    Activity:
+    Report Activity 2.3
+    Passing Score:
+    C
+
+Warning text and students:
+
+    >>> manager.printXMLQuery('//story/para[@style="bold"]/text()')
+    The following students are at risk of failing the following courses:
+    Paul Cardune
+    Claudia Richter
+
+Paul's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[3]/tr/td/para/text()')
+    Math
+    Stephan Richter
+    C-
+
+Claudia's data:
+
+    >>> manager.printXMLQuery('//story/blockTable[4]/tr/td/para/text()')
+    Chemistry
+    Stephan Richter
+    F
