@@ -7,18 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-05-20 21:46+0300\n"
-"PO-Revision-Date: 2010-05-20 20:39+0000\n"
+"POT-Creation-Date: 2011-03-02 22:21+0200\n"
+"PO-Revision-Date: 2010-10-04 17:37+0000\n"
 "Last-Translator: Agnieszka Piskorska <mirekaga@poczta.onet.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-03-04 05:01+0000\n"
+"X-Generator: Launchpad (build 12351)\n"
 "X-Rosetta-Version: 0.1\n"
 
-#: /src/schooltool/gradebook/activity.py:51
+#: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
 msgstr "Arkusz1"
 
@@ -28,20 +29,7 @@ msgstr "Arkusz1"
 msgid "Activities"
 msgstr "Ćwiczenia"
 
-#: /src/schooltool/gradebook/browser/activities_overview.pt:4
-#: /src/schooltool/gradebook/browser/activities_overview.pt:8
-#: /src/schooltool/gradebook/browser/configure.zcml:353
-#: /src/schooltool/gradebook/browser/configure.zcml:362
-#: /src/schooltool/gradebook/interfaces.py:201
-#: /src/schooltool/gradebook/interfaces.py:306
-msgid "Worksheets"
-msgstr "zeszyt ćwiczeń"
-
-#: /src/schooltool/gradebook/browser/activities_overview.pt:47
-msgid "Hide"
-msgstr "Ukryj"
-
-#: /src/schooltool/gradebook/browser/activity.py:69
+#: /src/schooltool/gradebook/browser/activity.py:68
 msgid "External Activity"
 msgstr "Działania zewnętrzne"
 
@@ -91,14 +79,13 @@ msgstr "Zmień informacje dla ${fullname}"
 msgid "Edit External Activity"
 msgstr "Edytuj zewnętrzne działania"
 
-#: /src/schooltool/gradebook/browser/activity.py:317
-#: /src/schooltool/gradebook/browser/report_card.py:306
-#: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:50
-msgid "Apply"
-msgstr "Zastosuj"
+#. Default: ""
+#: /src/schooltool/gradebook/browser/activity.py:340
+msgid "Category weights for worksheet ${worksheet}"
+msgstr ""
 
 #. Default: ""
-#: /src/schooltool/gradebook/browser/activity.py:355
+#: /src/schooltool/gradebook/browser/activity.py:362
 msgid "$value is not a valid weight."
 msgstr "$value nie jest poprawną wagą."
 
@@ -123,72 +110,7 @@ msgstr "Dodaj podobną kolumnę"
 msgid "Edit Linked Column"
 msgstr "Edytuj podobną kolumnę"
 
-#: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:15
-#: /src/schooltool/gradebook/interfaces.py:362
-#: /src/schooltool/gradebook/interfaces.py:390
-#: /src/schooltool/requirement/browser/scoresystem_add.pt:43
-msgid "Title"
-msgstr "Tytuł"
-
-#: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:18
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:21
-#: /src/schooltool/gradebook/interfaces.py:125
-msgid "Label"
-msgstr "Nazwa"
-
-#: /src/schooltool/gradebook/browser/add_edit_linked_column.pt:21
-#: /src/schooltool/gradebook/interfaces.py:135
-msgid "Category"
-msgstr "Kategoria"
-
-#: /src/schooltool/gradebook/browser/categories.pt:4
-#: /src/schooltool/gradebook/browser/categories.pt:15
-msgid "Manage Activity Categories"
-msgstr "Zarządzaj kategoriami działań"
-
-#: /src/schooltool/gradebook/browser/categories.pt:19
-msgid ""
-"Categories are used in SchoolTool's gradebook to organize activities and to "
-"allow teachers to weight different types of activities differently to "
-"calculate grades. For example, the grade in a section might be comprised of "
-"60% test scores, 20% homework and 20% class participation."
-msgstr ""
-"Dziennik ocen systemu SchoolTool wykorzystuje mechanizm kategorii do "
-"organizowania aktywności i do nadawania im różnych wag wykorzystywanych do "
-"wyznaczania ocen. Przykładowo, ocena z danego przedmiotu może być wyznaczana "
-"na podstawie wyników testów (z wagą 60%), zadań domowych (waga 20%) i "
-"aktywności (pozostałe 20%)."
-
-#: /src/schooltool/gradebook/browser/categories.pt:22
-msgid ""
-"Currently, the list of available categories for all teachers is managed "
-"through this form. That is, if one or more teachers would like to use a "
-"category not in the current list, the site manager can add it here. "
-"Likewise, if some of the default categories are not relevant to your school, "
-"remove them below."
-msgstr ""
-"Formularz ten dostarcza uaktualnioną listę  dostępnych kategorii wszystkim "
-"nauczycielom.Jeśli jeden lub kilkoro nauczycieli chciałoby skorzystać z "
-"kategorii która nie znajduje się na aktualnej liście ,administrator może "
-"dodać ją w tym miejscu. Podobnie jeśli  jakieś pozycje są nieaktualne  to "
-"powinny być w tym miejscu usunięte."
-
-#. Default: "Remove"
-#: /src/schooltool/gradebook/browser/categories.pt:33
-msgid "remove-button"
-msgstr "Usuń"
-
-#. Default: "Add"
-#: /src/schooltool/gradebook/browser/categories.pt:42
-msgid "add-button"
-msgstr "Dodaj"
-
-#. Default: "Change"
-#: /src/schooltool/gradebook/browser/categories.pt:51
-msgid "change-button"
-msgstr "Zmień"
-
-#: /src/schooltool/gradebook/browser/category.py:43
+#: /src/schooltool/gradebook/browser/category.py:44
 msgid "Categories"
 msgstr "Kategorie"
 
@@ -224,7 +146,11 @@ msgstr "Kategorie aktywności"
 msgid "Report Sheet Templates"
 msgstr "Szablony raportów"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:127
+#: /src/schooltool/gradebook/browser/configure.zcml:97
+msgid "Download Gradebook CSV"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/configure.zcml:134
 msgid "Add a Worksheet"
 msgstr "Dodaj zeszyt"
 
@@ -232,18 +158,18 @@ msgstr "Dodaj zeszyt"
 msgid "Add a Report Sheet"
 msgstr "Dodaj sprawozdanie"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-msgid "Edit Worksheet"
-msgstr "Edytuj zeszyt"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:151
-#: /src/schooltool/gradebook/browser/configure.zcml:163
-#: /src/schooltool/gradebook/browser/configure.zcml:211
-#: /src/schooltool/gradebook/browser/configure.zcml:234
+#: /src/schooltool/gradebook/browser/configure.zcml:158
+#: /src/schooltool/gradebook/browser/configure.zcml:170
+#: /src/schooltool/gradebook/browser/configure.zcml:218
+#: /src/schooltool/gradebook/browser/configure.zcml:241
 msgid "Edit"
 msgstr "Edycja"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:163
+#: /src/schooltool/gradebook/browser/configure.zcml:158
+msgid "Edit Worksheet"
+msgstr "Edytuj zeszyt"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:170
 msgid "Edit Report Sheet"
 msgstr "Edytuj raport"
 
@@ -302,12 +228,21 @@ msgstr "Nowa czynność zewnętrzna"
 msgid "New Linked Column"
 msgstr "Nowa pokrewna kolumna"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:390
-msgid "Manage Activities"
-msgstr "Zarządzaj aktywnościami"
+#: /src/schooltool/gradebook/browser/configure.zcml:360
+#: /src/schooltool/gradebook/browser/configure.zcml:369
+#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:4
+#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:8
+#: /src/schooltool/gradebook/interfaces.py:198
+#: /src/schooltool/gradebook/interfaces.py:303
+msgid "Worksheets"
+msgstr "zeszyt ćwiczeń"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:397
-#: /src/schooltool/gradebook/browser/weight_categories.pt:5
+msgid "Manage Worksheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/configure.zcml:404
+#: /src/schooltool/gradebook/browser/templates/weight_categories.pt:5
 msgid "Weight Categories"
 msgstr "Kategorie wag"
 
@@ -342,21 +277,8 @@ msgstr "Raporty"
 msgid "Report Card Layout"
 msgstr "Układ strony z raportem"
 
-#: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:4
-#: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:8
-msgid "Deploy Report Worksheet Template"
-msgstr "Szablon rozmieszczenia raportu karty pracy"
-
-#: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:16
-msgid "Template"
-msgstr "Szablon"
-
-#: /src/schooltool/gradebook/browser/deploy_report_worksheet.pt:25
-msgid "Deploy"
-msgstr "Umieszczenie"
-
-#: /src/schooltool/gradebook/browser/gradebook.py:73
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:74
+#: /src/schooltool/gradebook/browser/gradebook.py:76
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:74
 msgid "Summary"
 msgstr "Podsumowanie"
 
@@ -413,8 +335,352 @@ msgstr "Wpisz oceny dla ${fullname}"
 msgid "$worksheet for $student in $section"
 msgstr "$worksheet dla $student w $section"
 
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:4
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:13
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:203
+msgid "Report Card: ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:207
+#: /src/schooltool/gradebook/browser/pdf_views.py:323
+msgid "Courses"
+msgstr "Przedmioty"
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:214
+msgid "Student: ${student}"
+msgstr ""
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:316
+msgid "Detailed Student Report: ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:320
+msgid "Grade Detail"
+msgstr "Szczegóły oceny"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:326
+msgid "Attendance Detail"
+msgstr "Szczegóły obecności"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:329
+msgid "Dates"
+msgstr "Daty"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:332
+msgid "Student Name"
+msgstr "Imię ucznia"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:335
+msgid "User Id"
+msgstr "Id użytkownika"
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:447
+msgid "Failures by Term Report: ${term}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:451
+msgid "Report Sheet:"
+msgstr "Raport"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:457
+msgid "Activity:"
+msgstr "Aktywność:"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:463
+msgid "Passing Score:"
+msgstr "Ilość punktów potrzebna do zaliczenia"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:469
+msgid "The following students are at risk of failing the following courses:"
+msgstr "Następujący uczniowie są zagrożeni"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:472
+#: /src/schooltool/gradebook/browser/pdf_views.py:619
+#: /src/schooltool/gradebook/browser/pdf_views.py:674
+#: /src/schooltool/gradebook/browser/pdf_views.py:788
+msgid "Student"
+msgstr "Uczeń"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:475
+#: /src/schooltool/gradebook/browser/pdf_views.py:661
+msgid "Course"
+msgstr "Przedmiot"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:478
+msgid "Teacher(s)"
+msgstr "Nauczyciel(e)"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:481
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
+msgid "Grade"
+msgstr "Ocena"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:557
+msgid "Absences By Day Report"
+msgstr "Raport nieobecności w dniu"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:616
+msgid "Period Number"
+msgstr "Numer okresu"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:658
+msgid "Absences by Section Report"
+msgstr "Raport nieobecności według sekcji"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:667
+msgid "Teacher"
+msgstr "Nauczyciel"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:677
+msgid "Absences"
+msgstr "Nieobecności"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:680
+msgid "Tardies"
+msgstr "Spóźnienia"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:776
+msgid "Gradebook Report"
+msgstr "Zapis w dzienniku"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:779
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:63
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:19
+msgid "Term"
+msgstr "Okres"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:782
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:81
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:37
+msgid "Section"
+msgstr "Sekcja"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:785
+#: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:4
+msgid "Worksheet"
+msgstr "Karta pracy"
+
+#: /src/schooltool/gradebook/browser/report_card.py:58
+msgid "Absent"
+msgstr "Nieobecny/a"
+
+#: /src/schooltool/gradebook/browser/report_card.py:59
+msgid "Tardy"
+msgstr "Spóźnienie"
+
+#: /src/schooltool/gradebook/browser/report_card.py:60
+msgid "A"
+msgstr "N"
+
+#: /src/schooltool/gradebook/browser/report_card.py:61
+msgid "T"
+msgstr "S"
+
+#: /src/schooltool/gradebook/browser/report_card.py:122
+msgid "-- Use range below --"
+msgstr "zastosuj poniższe możliwości"
+
+#: /src/schooltool/gradebook/browser/report_card.py:138
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:22
+#: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
+#: /src/schooltool/requirement/interfaces.py:167
+msgid "Score System"
+msgstr "System oceniania"
+
+#: /src/schooltool/gradebook/browser/report_card.py:139
+msgid "Choose an existing score system or use range below"
+msgstr ""
+"Wybierz istniejący system oceniania albo skorzystaj z przedziału poniżej"
+
+#: /src/schooltool/gradebook/browser/report_card.py:144
+#: /src/schooltool/requirement/browser/scoresystem.py:226
+#: /src/schooltool/requirement/interfaces.py:145
+msgid "Minimum"
+msgstr "Minimum"
+
+#: /src/schooltool/gradebook/browser/report_card.py:145
+msgid "Lowest integer score value possible"
+msgstr "Najniższa możliwa ocena (liczba całkowita)"
+
+#: /src/schooltool/gradebook/browser/report_card.py:150
+#: /src/schooltool/requirement/browser/scoresystem.py:226
+#: /src/schooltool/requirement/interfaces.py:151
+msgid "Maximum"
+msgstr "Maksimum"
+
+#: /src/schooltool/gradebook/browser/report_card.py:151
+msgid "Highest integer score value possible"
+msgstr "Najwyższa możliwa ocena (liczba całkowita)"
+
+#: /src/schooltool/gradebook/browser/report_card.py:219
+msgid "Add new report activity"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report_card.py:308
+msgid "Apply"
+msgstr "Zastosuj"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:52
+msgid "Student Reports"
+msgstr "Raporty ucznia"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:59
+#: /src/schooltool/gradebook/browser/request_reports.py:79
+#: /src/schooltool/gradebook/browser/request_reports.py:299
+msgid "Request Report Card"
+msgstr "Raport na żądanie"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:63
+#: /src/schooltool/gradebook/browser/request_reports.py:83
+#: /src/schooltool/gradebook/browser/request_reports.py:301
+msgid "Request Detailed Student Report"
+msgstr "Szczegółowy raport na żądanie"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:72
+msgid "Group Reports"
+msgstr "Raporty grupowe"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:92
+msgid "Term Reports"
+msgstr "Raporty semestralne"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:99
+msgid "Failures by Term"
+msgstr "Niezaliczone przedmioty"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:108
+msgid "School Year Reports"
+msgstr "Raporty roczne"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:115
+msgid "Absences By Day"
+msgstr "Nieobecności w dniu"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:124
+msgid "Section Reports"
+msgstr "Raporty cząstkowe"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:131
+msgid "Download Absences by Section Report"
+msgstr "Pobierz raport nieobecności według przedmiotów"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:140
+msgid "Request Failures by Term Report"
+msgstr "Usprawiedliwione niezaliczenia na semestr"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:155
+msgid "Choose a report activity"
+msgstr "Wybierz oceniany przedmiot"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:189
+msgid "Maximum Passing Score"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:191
+msgid "Minimum Passing Score"
+msgstr "Najniższa ocena aby zaliczyć semestr"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:209
+msgid "You must specify both a report activity and a minimum passing score."
+msgstr ""
+"Musisz określić ćwiczenie oraz minimalną punktację potrzebną do zaliczenia"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:234
+msgid "Request Absences By Day Report"
+msgstr "Usprawiedliwione nieobecności według raportu dziennego"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:254
+msgid "You must specify a valid date within the school year."
+msgstr "Musisz podać aktualne dane dotyczące danego roku szkolnego"
+
+#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
+msgid "Hide"
+msgstr "Ukryj"
+
+#: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:15
+#: /src/schooltool/gradebook/interfaces.py:359
+#: /src/schooltool/gradebook/interfaces.py:387
+#: /src/schooltool/requirement/browser/scoresystem_add.pt:43
+#: /src/schooltool/requirement/interfaces.py:48
+#: /src/schooltool/requirement/interfaces.py:64
+msgid "Title"
+msgstr "Tytuł"
+
+#: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:21
+#: /src/schooltool/gradebook/interfaces.py:122
+msgid "Label"
+msgstr "Nazwa"
+
+#: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:21
+#: /src/schooltool/gradebook/interfaces.py:132
+msgid "Category"
+msgstr "Kategoria"
+
+#: /src/schooltool/gradebook/browser/templates/categories.pt:4
+#: /src/schooltool/gradebook/browser/templates/categories.pt:15
+msgid "Manage Activity Categories"
+msgstr "Zarządzaj kategoriami działań"
+
+#: /src/schooltool/gradebook/browser/templates/categories.pt:19
+msgid ""
+"Categories are used in SchoolTool's gradebook to organize activities and to "
+"allow teachers to weight different types of activities differently to "
+"calculate grades. For example, the grade in a section might be comprised of "
+"60% test scores, 20% homework and 20% class participation."
+msgstr ""
+"Dziennik ocen systemu SchoolTool wykorzystuje mechanizm kategorii do "
+"organizowania aktywności i do nadawania im różnych wag wykorzystywanych do "
+"wyznaczania ocen. Przykładowo, ocena z danego przedmiotu może być wyznaczana "
+"na podstawie wyników testów (z wagą 60%), zadań domowych (waga 20%) i "
+"aktywności (pozostałe 20%)."
+
+#: /src/schooltool/gradebook/browser/templates/categories.pt:22
+msgid ""
+"Currently, the list of available categories for all teachers is managed "
+"through this form. That is, if one or more teachers would like to use a "
+"category not in the current list, the site manager can add it here. "
+"Likewise, if some of the default categories are not relevant to your school, "
+"remove them below."
+msgstr ""
+"Formularz ten dostarcza uaktualnioną listę  dostępnych kategorii wszystkim "
+"nauczycielom.Jeśli jeden lub kilkoro nauczycieli chciałoby skorzystać z "
+"kategorii która nie znajduje się na aktualnej liście ,administrator może "
+"dodać ją w tym miejscu. Podobnie jeśli  jakieś pozycje są nieaktualne  to "
+"powinny być w tym miejscu usunięte."
+
+#. Default: "Remove"
+#: /src/schooltool/gradebook/browser/templates/categories.pt:33
+msgid "remove-button"
+msgstr "Usuń"
+
+#. Default: "Add"
+#: /src/schooltool/gradebook/browser/templates/categories.pt:42
+msgid "add-button"
+msgstr "Dodaj"
+
+#. Default: "Change"
+#: /src/schooltool/gradebook/browser/templates/categories.pt:51
+msgid "change-button"
+msgstr "Zmień"
+
+#: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:8
+msgid "Deploy Report Worksheet Template"
+msgstr "Szablon rozmieszczenia raportu karty pracy"
+
+#: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:16
+msgid "Template"
+msgstr "Szablon"
+
+#: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:25
+msgid "Deploy"
+msgstr "Umieszczenie"
+
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:4
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:13
 msgid "Set Column Preferences"
 msgstr "Kolumna preferencji"
 
@@ -426,17 +692,16 @@ msgstr "Typ kolumny"
 msgid "Hide?"
 msgstr "Ukryć?"
 
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:22
-#: /src/schooltool/gradebook/browser/report_card.py:136
-#: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
-msgid "Score System"
-msgstr "System oceniania"
-
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:62
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:62
 msgid "Hide 'show only activities due in past _ weeks'"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook_column_preferences.pt:76
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:68
+#: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
+msgid "Update"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:76
 msgid ""
 "You can add a summary worksheet to each of your gradebooks that "
 "automatically includes a column for the average of all existing worksheets."
@@ -500,24 +765,12 @@ msgstr ""
 msgid "Term:"
 msgstr "Okres:"
 
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:35
-#: /src/schooltool/gradebook/browser/mygrades.pt:19
-#: /src/schooltool/gradebook/browser/pdf_views.py:755
-msgid "Term"
-msgstr "Okres"
-
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:49
-#: /src/schooltool/gradebook/browser/mygrades.pt:33
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:77
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:33
 msgid "Section:"
 msgstr "Sekcja:"
 
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:53
-#: /src/schooltool/gradebook/browser/mygrades.pt:37
-#: /src/schooltool/gradebook/browser/pdf_views.py:758
-msgid "Section"
-msgstr "Sekcja"
-
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:76
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:98
 msgid "show only activities due in past ${num_weeks} weeks"
 msgstr "pokaż tylko aktywnośći z ostatnich ${num_weeks} tygodni"
 
@@ -527,7 +780,15 @@ msgstr "pokaż tylko aktywnośći z ostatnich ${num_weeks} tygodni"
 msgid "(sort)"
 msgstr "(sortuj)"
 
-#: /src/schooltool/gradebook/browser/gradebook_startup.pt:13
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:239
+msgid "S"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:239
+msgid "Shortcut: Alt-S"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/gradebook_startup.pt:13
 msgid "You do not teach or attend any classes."
 msgstr "Nie uczysz lub nie uczestniczych w żadnych zajęciach"
 
@@ -586,12 +847,7 @@ msgstr "Brak ocen"
 msgid "Activity"
 msgstr "Aktywność"
 
-#: /src/schooltool/gradebook/browser/mygrades.pt:83
-#: /src/schooltool/gradebook/browser/pdf_views.py:462
-msgid "Grade"
-msgstr "Ocena"
-
-#: /src/schooltool/gradebook/browser/no_current_term.pt:5
+#: /src/schooltool/gradebook/browser/templates/no_current_term.pt:5
 msgid "No Current Term"
 msgstr "Brak aktualnego okresu"
 
@@ -605,152 +861,37 @@ msgstr ""
 "warunków. Użytkownik z dostępem do administracji powinien spełnić "
 "przynajmniej jeden warunek by wznowić operację."
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:203
-msgid "Report Card"
-msgstr "Karta raportu"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:206
-#: /src/schooltool/gradebook/browser/pdf_views.py:319
-msgid "Courses"
-msgstr "Przedmioty"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:213
-#: /src/schooltool/gradebook/browser/pdf_views.py:453
-#: /src/schooltool/gradebook/browser/pdf_views.py:592
-#: /src/schooltool/gradebook/browser/pdf_views.py:647
-#: /src/schooltool/gradebook/browser/pdf_views.py:764
-msgid "Student"
-msgstr "Uczeń"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:313
-msgid "Detailed Student Report"
-msgstr "Szczegółowy raport ucznia"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:316
-msgid "Grade Detail"
-msgstr "Szczegóły oceny"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:322
-msgid "Attendance Detail"
-msgstr "Szczegóły obecności"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:325
-msgid "Dates"
-msgstr "Daty"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:328
-msgid "Student Name"
-msgstr "Imię ucznia"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:331
-msgid "User Id"
-msgstr "Id użytkownika"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:429
-msgid "Failures by Term Report"
-msgstr "Niepowodzenia"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:432
-msgid "Report Sheet:"
-msgstr "Raport"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:438
-msgid "Activity:"
-msgstr "Aktywność:"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:444
-msgid "Passing Score:"
-msgstr "Ilość punktów potrzebna do zaliczenia"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:450
-msgid "The following students are at risk of failing the following courses:"
-msgstr "Następujący uczniowie są zagrożeni"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:456
-#: /src/schooltool/gradebook/browser/pdf_views.py:634
-msgid "Course"
-msgstr "Przedmiot"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:459
-msgid "Teacher(s)"
-msgstr "Nauczyciel(e)"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:530
-msgid "Absences By Day Report"
-msgstr "Raport nieobecności w dniu"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:589
-msgid "Period Number"
-msgstr "Numer okresu"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:631
-msgid "Absences by Section Report"
-msgstr "Raport nieobecności według sekcji"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:640
-msgid "Teacher"
-msgstr "Nauczyciel"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:650
-msgid "Absences"
-msgstr "Nieobecności"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:653
-msgid "Tardies"
-msgstr "Spóźnienia"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:752
-msgid "Gradebook Report"
-msgstr "Zapis w dzienniku"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:761
-#: /src/schooltool/gradebook/browser/worksheet_overview.pt:4
-msgid "Worksheet"
-msgstr "Karta pracy"
-
-#: /src/schooltool/gradebook/browser/report_card.py:56
-msgid "Absent"
-msgstr "Nieobecny/a"
-
-#: /src/schooltool/gradebook/browser/report_card.py:57
-msgid "Tardy"
-msgstr "Spóźnienie"
-
-#: /src/schooltool/gradebook/browser/report_card.py:58
-msgid "A"
-msgstr "N"
-
-#: /src/schooltool/gradebook/browser/report_card.py:59
-msgid "T"
-msgstr "S"
-
-#: /src/schooltool/gradebook/browser/report_card.py:120
-msgid "-- Use range below --"
-msgstr "zastosuj poniższe możliwości"
-
-#: /src/schooltool/gradebook/browser/report_card.py:137
-msgid "Choose an existing score system or use range below"
+#: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:4
+msgid "No Report Sheets"
 msgstr ""
-"Wybierz istniejący system oceniania albo skorzystaj z przedziału poniżej"
 
-#: /src/schooltool/gradebook/browser/report_card.py:142
-msgid "Minimum"
-msgstr "Minimum"
+#: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:10
+msgid ""
+"The operation you attempted cannot be completed because there are currently "
+"no report sheets set up in your SchoolTool instance. Please have a user with "
+"administration access set up at least one report sheet and try the operation "
+"again."
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:143
-msgid "Lowest integer score value possible"
-msgstr "Najniższa możliwa ocena (liczba całkowita)"
+#: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:4
+msgid "Report Worksheet"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:148
-msgid "Maximum"
-msgstr "Maksimum"
+#: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:9
+msgid "Activities of ${title}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:149
-msgid "Highest integer score value possible"
-msgstr "Najwyższa możliwa ocena (liczba całkowita)"
+#: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:14
+#: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:14
+msgid ""
+"A report sheet template defines the activities to be included in a report "
+"sheet deployed to each section in a term or year."
+msgstr ""
+"Szablon świadectwa określa zajęcia które mają być zawarte na świadectwie w "
+"odniesieniu do całego semestru"
 
-#: /src/schooltool/gradebook/browser/request_absences_by_day.pt:26
-#: /src/schooltool/gradebook/interfaces.py:146
+#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
+#: /src/schooltool/gradebook/interfaces.py:143
 msgid "Date"
 msgstr "Data"
 
@@ -789,80 +930,7 @@ msgstr ""
 msgid "Report Activity"
 msgstr "Raport na temat ćwiczenia"
 
-#: /src/schooltool/gradebook/browser/request_failing_report.pt:60
-msgid "Minimum Passing Score"
-msgstr "Najniższa ocena aby zaliczyć semestr"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:52
-msgid "Student Reports"
-msgstr "Raporty ucznia"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:59
-#: /src/schooltool/gradebook/browser/request_reports.py:79
-#: /src/schooltool/gradebook/browser/request_reports.py:290
-msgid "Request Report Card"
-msgstr "Raport na żądanie"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:63
-#: /src/schooltool/gradebook/browser/request_reports.py:83
-#: /src/schooltool/gradebook/browser/request_reports.py:292
-msgid "Request Detailed Student Report"
-msgstr "Szczegółowy raport na żądanie"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:72
-msgid "Group Reports"
-msgstr "Raporty grupowe"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:92
-msgid "Term Reports"
-msgstr "Raporty semestralne"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:99
-msgid "Failures by Term"
-msgstr "Niezaliczone przedmioty"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:108
-msgid "School Year Reports"
-msgstr "Raporty roczne"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:115
-msgid "Absences By Day"
-msgstr "Nieobecności w dniu"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:124
-msgid "Section Reports"
-msgstr "Raporty cząstkowe"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:131
-msgid "Download Absences by Section Report"
-msgstr "Pobierz raport nieobecności według przedmiotów"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
-msgid "Request Failures by Term Report"
-msgstr "Usprawiedliwione niezaliczenia na semestr"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:155
-msgid "Choose a report activity"
-msgstr "Wybierz oceniany przedmiot"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:187
-msgid "Choose a minimum passing score"
-msgstr "Wybierz minimum punktów potrzebną do zaliczenia"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:200
-msgid "You must specify both a report activity and a minimum passing score."
-msgstr ""
-"Musisz określić ćwiczenie oraz minimalną punktację potrzebną do zaliczenia"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:225
-msgid "Request Absences By Day Report"
-msgstr "Usprawiedliwione nieobecności według raportu dziennego"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:245
-msgid "You must specify a valid date within the school year."
-msgstr "Musisz podać aktualne dane dotyczące danego roku szkolnego"
-
-#: /src/schooltool/gradebook/browser/request_student_report.pt:22
+#: /src/schooltool/gradebook/browser/templates/request_student_report.pt:22
 msgid "Term or Year"
 msgstr "Semestr"
 
@@ -870,17 +938,7 @@ msgstr "Semestr"
 msgid "Section Worksheet Summary"
 msgstr "Arkusz podsumowujący dany dział"
 
-#: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:5
-#: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:5
-msgid "SchoolTool"
-msgstr "SchoolTool"
-
-#: /src/schooltool/gradebook/browser/templates/linkedactivity_add.pt:28
-#: /src/schooltool/gradebook/browser/templates/linkedactivity_edit.pt:28
-msgid "There are ${num_errors} input errors."
-msgstr "Jest ${num_errors} błędów wejścia."
-
-#: /src/schooltool/gradebook/browser/unhide_worksheets.pt:28
+#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:28
 msgid "Unhide"
 msgstr "Odkryj"
 
@@ -912,11 +970,7 @@ msgstr ""
 msgid "Category Weights"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/worksheet.py:101
-msgid "This worksheet has no activities."
-msgstr "Ta karta pracy nie ma ćwiczeń"
-
-#: /src/schooltool/gradebook/browser/worksheet_delete.pt:4
+#: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:4
 msgid "Delete Worksheet"
 msgstr "Wykasuj kartę pracy"
 
@@ -932,13 +986,9 @@ msgstr ""
 msgid "Delete"
 msgstr "Usuń"
 
-#: /src/schooltool/gradebook/browser/worksheet_overview.pt:14
-msgid ""
-"A report sheet template defines the activities to be included in a report "
-"sheet deployed to each section in a term or year."
-msgstr ""
-"Szablon świadectwa określa zajęcia które mają być zawarte na świadectwie w "
-"odniesieniu do całego semestru"
+#: /src/schooltool/gradebook/browser/worksheet.py:100
+msgid "This worksheet has no activities."
+msgstr "Ta karta pracy nie ma ćwiczeń"
 
 #: /src/schooltool/gradebook/configure.zcml:302
 msgid "Gradebook API"
@@ -1128,8 +1178,14 @@ msgid "View gradebook data for a section."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:33
-msgid "Administration can grade students"
-msgstr "Administracja może oceniać uczniów"
+msgid "Only the instructor of a section can edit its gradebook."
+msgstr ""
+
+#: /src/schooltool/gradebook/security.zcml:33
+msgid ""
+"The instructor of a section and school administration can edit a section's "
+"gradebook."
+msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
@@ -1142,10 +1198,6 @@ msgstr "Systemy oceniania"
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:13
 msgid "Add Score System"
 msgstr "Dodaj system zdobywania punktów"
-
-#: /src/schooltool/requirement/browser/configure.zcml:61
-msgid "View"
-msgstr "Widok"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
@@ -1219,11 +1271,19 @@ msgstr "Duplikat punktacji jest niedozwolony"
 msgid "Duplicate abbreviations are not allowed."
 msgstr "Duplikat skrótów jest niedozwolony"
 
+#: /src/schooltool/requirement/browser/scoresystem.py:257
+msgid "Yes"
+msgstr ""
+
 #: /src/schooltool/requirement/browser/scoresystem.py:259
-msgid "Exisiting Score System"
+msgid "No"
+msgstr ""
+
+#: /src/schooltool/requirement/browser/scoresystem.py:294
+msgid "Existing Score System"
 msgstr "Istniejąca punktacja"
 
-#: /src/schooltool/requirement/browser/scoresystem.py:264
+#: /src/schooltool/requirement/browser/scoresystem.py:299
 msgid "Custom score system"
 msgstr "Własna punktacja"
 
@@ -1301,8 +1361,18 @@ msgstr ""
 msgid "Add a lower score"
 msgstr ""
 
+#: /src/schooltool/requirement/browser/scoresystem_add.pt:83
+msgid ""
+"If the values in the score system descend, e.g., 1 is the best score, set "
+"the value below to say 'Maximum' passing score. Otherwise leave it a "
+"'Minimum' passing score."
+msgstr ""
+
+#: /src/schooltool/requirement/browser/scoresystem_add.pt:98
+msgid "passing score:"
+msgstr ""
+
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
-#: /src/schooltool/requirement/browser/scoresystem_view.pt:7
 msgid "View Score System"
 msgstr "Podgląd Systemu Oceniania"
 
@@ -1310,27 +1380,20 @@ msgstr "Podgląd Systemu Oceniania"
 msgid "Delete?"
 msgstr ""
 
-#: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
-msgid "Update"
-msgstr ""
+#~ msgid "Failures by Term Report"
+#~ msgstr "Niepowodzenia"
 
-#~ msgid "${DYNAMIC_CONTENT}"
-#~ msgstr "${DYNAMIC_CONTENT}"
+#~ msgid "Detailed Student Report"
+#~ msgstr "Szczegółowy raport ucznia"
 
-#~ msgid "(Due) Date"
-#~ msgstr "Termin"
+#~ msgid "Report Card"
+#~ msgstr "Karta raportu"
 
 #~ msgid "Modification Date"
 #~ msgstr "Data zmiany"
 
-#~ msgid "Max. Score"
-#~ msgstr "Maks. ocena"
+#~ msgid "(Due) Date"
+#~ msgstr "Termin"
 
-#~ msgid "weeks"
-#~ msgstr "tygodni"
-
-#~ msgid "Remove?"
-#~ msgstr "Usunąć?"
-
-#~ msgid "Workheet"
-#~ msgstr "Karta pracy"
+#~ msgid "Manage Activities"
+#~ msgstr "Zarządzaj aktywnościami"
