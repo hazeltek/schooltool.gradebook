@@ -94,7 +94,7 @@ setup(
                              'zope.intid',
                              'zope.site',
                              'zope.testbrowser',
-                             'zope.testing']},
+                             'zope.ucol']},
     include_package_data=True,
     zip_safe=False,
     entry_points="""
