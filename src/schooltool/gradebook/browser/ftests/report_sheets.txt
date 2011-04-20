@@ -1,6 +1,10 @@
 Report sheets
 -------------
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -256,14 +260,17 @@ worksheet:
     2011 / Term1
     >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Soccer - Soccer (1)
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+
 
 Now, let's deploy our report sheet templates so sections can use
 them. Let's deploy the first template in the 2011 schoolyear, the
@@ -311,42 +318,33 @@ and we see our default Sheet1 worksheet we used before, the report
 sheet deployed in the 2011 schoolyear and the report sheet deployed
 for Term1:
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1/gradebook">Report Sheet 1</a>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/gradebook">Report Sheet 2</a>
-    </td>
+    >>> printGradebook(teacher.contents)
+    +----------+----------------+----------------+
+    | *Sheet1* | Report Sheet 1 | Report Sheet 2 |
+    +----------+----------------+----------------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+
 
 The 2011 report sheet, Report Sheet 1, should have three activities,
 and like all deployed sheets it has no totals or average columns:
 
     >>> teacher.getLink('Report Sheet 1').click()
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/Worksheet/gradebook">Sheet1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/gradebook">Report Sheet 2</a>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-2" title="Report Activity 1.2">Repor</a>
-    </div>
-    <div class="padded">
-      <span>RA1.1</span>
-    </div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-4" title="REPORT ACTIVITY 1.3">RA1.4</a>
-    </div>
+    >>> printGradebook(teacher.contents)
+    +--------+------------------+----------------+
+    | Sheet1 | *Report Sheet 1* | Report Sheet 2 |
+    +--------+------------------+----------------+
+    +----------------+---------+-------+---------+
+    | Name           | Repor   | RA1.1 | RA1.4   |
+    +----------------+---------+-------+---------+
+    | Cerna, Camila  | [_____] |       | [_____] |
+    | Guzman, Nestor | [_____] |       | [_____] |
+    | Tejada, Mario  | [_____] |       | [_____] |
+    +----------------+---------+-------+---------+
 
 Note that the 'Report Activity 1 (RA1.1)' cannot be graded directly in
 the worksheet nor on it's own. That's because it uses a Comment score
@@ -380,56 +378,32 @@ and now for Camila:
 
 We get back to the 'Report Sheet 1' sheet:
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/Worksheet/gradebook">Sheet1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1-2/gradebook">Report Sheet 2</a>
-    </td>
-
-Let's check the stored grades:
-
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
-    >>> teacher.queryHTML('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[2]/input/@value')
-    ['A-', '', '']
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[3]/span')
-    <span>...</span>
-    <span>...</span>
-    <span></span>
-    >>> teacher.queryHTML('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    ['78', '87', '']
+    >>> printGradebook(teacher.contents)
+    +--------+------------------+----------------+
+    | Sheet1 | *Report Sheet 1* | Report Sheet 2 |
+    +--------+------------------+----------------+
+    +----------------+---------+-------+---------+
+    | Name           | Repor   | RA1.1 | RA1.4   |
+    +----------------+---------+-------+---------+
+    | Cerna, Camila  | [A-___] | ...   | [78___] |
+    | Guzman, Nestor | [_____] | ...   | [87___] |
+    | Tejada, Mario  | [_____] |       | [_____] |
+    +----------------+---------+-------+---------+
 
 Let's check the Report Sheet 2 sheet:
 
     >>> teacher.getLink('Report Sheet 2').click()
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/Worksheet/gradebook">Sheet1</a>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/1/activities/2011_term1/gradebook">Report Sheet 1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 2</span>
-    </td>
-
-it should have two activities:
-
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity" title="Report Activity 2-1">Repor</a>
-    </div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-2" title="Report Activity 2-2">Repor</a>
-    </div>
+    >>> printGradebook(teacher.contents)
+    +--------+----------------+------------------+
+    | Sheet1 | Report Sheet 1 | *Report Sheet 2* |
+    +--------+----------------+------------------+
+    +----------------+---------+---------+
+    | Name           | Repor   | Repor   |
+    +----------------+---------+---------+
+    | Cerna, Camila  | [_____] | [_____] |
+    | Guzman, Nestor | [_____] | [_____] |
+    | Tejada, Mario  | [_____] | [_____] |
+    +----------------+---------+---------+
 
 Now, if we go to the other section in this term, we should see these
 same report sheets and activities deployed:
@@ -442,41 +416,30 @@ same report sheets and activities deployed:
     >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Baseball - Baseball (2)
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/2/activities/2011_term1-2/gradebook">Report Sheet 2</a>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-2" title="Report Activity 1.2">Repor</a>
-    </div>
-    <div class="padded">
-      <span>RA1.1</span>
-    </div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-4" title="REPORT ACTIVITY 1.3">RA1.4</a>
-    </div>
+    >>> printGradebook(teacher.contents)
+    +------------------+----------------+
+    | *Report Sheet 1* | Report Sheet 2 |
+    +------------------+----------------+
+    +----------------+---------+-------+---------+
+    | Name           | Repor   | RA1.1 | RA1.4   |
+    +----------------+---------+-------+---------+
+    | Cerna, Camila  | [_____] |       | [_____] |
+    | Guzman, Nestor | [_____] |       | [_____] |
+    | Tejada, Mario  | [_____] |       | [_____] |
+    +----------------+---------+-------+---------+
 
     >>> teacher.getLink('Report Sheet 2').click()
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term1/sections/2/activities/2011_term1/gradebook">Report Sheet 1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 2</span>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity" title="Report Activity 2-1">Repor</a>
-    </div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-2" title="Report Activity 2-2">Repor</a>
-    </div>
+    >>> printGradebook(teacher.contents)
+    +----------------+------------------+
+    | Report Sheet 1 | *Report Sheet 2* |
+    +----------------+------------------+
+    +----------------+---------+---------+
+    | Name           | Repor   | Repor   |
+    +----------------+---------+---------+
+    | Cerna, Camila  | [_____] | [_____] |
+    | Guzman, Nestor | [_____] | [_____] |
+    | Tejada, Mario  | [_____] | [_____] |
+    +----------------+---------+---------+
 
 And if we go to the other term, Term2, in this schoolyear, we'll see
 that the 'Report Sheet 1' sheet is common for both terms and we'll see
@@ -490,38 +453,30 @@ the other 'Report Sheet 3' deployed only for that term:
     >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Swimming - Swimming (1)
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term2/sections/1/activities/2011_term2-2/gradebook">Report Sheet 3</a>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-2" title="Report Activity 1.2">Repor</a>
-    </div>
-    <div class="padded">
-      <span>RA1.1</span>
-    </div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity-4" title="REPORT ACTIVITY 1.3">RA1.4</a>
-    </div>
+    >>> printGradebook(teacher.contents)
+    +------------------+----------------+
+    | *Report Sheet 1* | Report Sheet 3 |
+    +------------------+----------------+
+    +----------------+---------+-------+---------+
+    | Name           | Repor   | RA1.1 | RA1.4   |
+    +----------------+---------+-------+---------+
+    | Cerna, Camila  | [_____] |       | [_____] |
+    | Guzman, Nestor | [_____] |       | [_____] |
+    | Tejada, Mario  | [_____] |       | [_____] |
+    +----------------+---------+-------+---------+
 
     >>> teacher.getLink('Report Sheet 3').click()
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="http://localhost/schoolyears/2011/term2/sections/1/activities/2011_term2/gradebook">Report Sheet 1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Report Sheet 3</span>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a href="gradeActivity.html?activity=ReportActivity" title="Report Activity 3_1">REPAC</a>
-    </div>
+    >>> printGradebook(teacher.contents)
+    +----------------+------------------+
+    | Report Sheet 1 | *Report Sheet 3* |
+    +----------------+------------------+
+    +----------------+---------+
+    | Name           | REPAC   |
+    +----------------+---------+
+    | Cerna, Camila  | [_____] |
+    | Guzman, Nestor | [_____] |
+    | Tejada, Mario  | [_____] |
+    +----------------+---------+
 
 And now, if we go to the section in the 2012 schoolyear, we won't see
 any common report sheet deployed, just the default worksheet:
@@ -534,10 +489,18 @@ any common report sheet deployed, just the default worksheet:
     2012 / Single Term
     >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Soccer - Soccer (1)
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
+
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+
 
 Now, let's visit the unreachable 'view.html' view for Camila's Report Sheet 1 grades:
 

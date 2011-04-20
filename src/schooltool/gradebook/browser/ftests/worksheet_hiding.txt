@@ -5,6 +5,10 @@ We want to allow the user to hide a worksheet so that it no longer figures in
 the gradebook.  The worksheet will not be deleted from the database, but it
 will be ignored in all areas of gradebook management.
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -44,10 +48,18 @@ Add a couple of activities to the default worksheet:
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Math I - Math I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
+
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
@@ -79,13 +91,17 @@ a worksheet that happens to be the current one for the user.
 
     >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.getLink('Second Sheet').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="...">Sheet1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Second Sheet</span>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +--------+----------------+
+    | Sheet1 | *Second Sheet* |
+    +--------+----------------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
 Now we'll hide our newly added worksheet, noting its absense from the list.
 
@@ -102,10 +118,17 @@ worksheet being hidden, changing the current worksheet to the first one that
 is not hidden.
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW1     | Quiz    |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 
 Unhiding Worksheets
@@ -138,10 +161,14 @@ the worksheet has reappeared in the worksheets list.
 We'll return to the gradebook to see both worksheets:
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Second Sheet</a>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW1     | Quiz    |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
