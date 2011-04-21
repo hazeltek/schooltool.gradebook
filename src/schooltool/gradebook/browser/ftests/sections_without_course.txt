@@ -7,6 +7,10 @@ created, then the section is created and related to the course and
 then the course is deleted. Of course that's not a very smart way to
 use SchoolTool, but some users have done it.
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -50,10 +54,18 @@ Add a couple of activities to the default worksheet:
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Math I - Math I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
+
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'HW 1'
     >>> stephan.getControl('Description').value = 'Homework 1'
@@ -123,12 +135,17 @@ using the Term dropdown:
     2005-2006 / Spring
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Physics I - Physics I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    []
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
@@ -136,12 +153,17 @@ using the Term dropdown:
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     - Math I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    ['HW1', 'Quiz']
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 And the 'view.html' view on the Student gradebook:
 

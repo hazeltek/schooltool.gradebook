@@ -130,7 +130,7 @@
   </table>
 
   <table class="schooltool_gradebook">
-    <tr tal:condition="python:len(view.descriptions) > 0">
+    <tr>
       <td id="description" class="gradebook_description"
           tal:attributes="colspan python:len(view.descriptions) + view.apply_all_colspan" />
     </tr>

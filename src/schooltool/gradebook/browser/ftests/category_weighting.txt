@@ -1,6 +1,10 @@
 Category Weighting
 ------------------
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -100,14 +104,17 @@ Add grades for the first three activities for Claudia:
 
 By default the Average column is calculated normally:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    87.5%
-    87.5%
-    97.5%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz1   | HW2     | Quiz2   |
+    +------------------+-------+-------+---------+---------+---------+---------+
+    | Cardune, Paul    | 175.0 | 87.5% | [40___] | [90___] | [45___] | [_____] |
+    | Hoffman, Tom     | 175.0 | 87.5% | [45___] | [80___] | [50___] | [_____] |
+    | Richter, Claudia | 195.0 | 97.5% | [50___] | [95___] | [50___] | [_____] |
+    +------------------+-------+-------+---------+---------+---------+---------+
 
 Let's create some category weights for the current worksheet. Note
 that the categories are ordered alphabetically.
@@ -164,14 +171,17 @@ weighting in the Average column.
     >>> stephan.getControl('Exam').value = u'50'
     >>> stephan.getControl('Homework').value = u'30'
     >>> stephan.getControl('Update').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    88.1%
-    85.6%
-    96.9%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz1   | HW2     | Quiz2   |
+    +------------------+-------+-------+---------+---------+---------+---------+
+    | Cardune, Paul    | 175.0 | 88.1% | [40___] | [90___] | [45___] | [_____] |
+    | Hoffman, Tom     | 175.0 | 85.6% | [45___] | [80___] | [50___] | [_____] |
+    | Richter, Claudia | 195.0 | 96.9% | [50___] | [95___] | [50___] | [_____] |
+    +------------------+-------+-------+---------+---------+---------+---------+
 
 Finally, we'll test hitting the 'Cancel' button.  It should return to the
 gradebook without changing the weights.
@@ -216,14 +226,17 @@ Let's grade the new assignment for Paul and Tom:
 
 Note how the Average changed for Paul and Tom, but not for Claudia:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    88.5%
-    82.5%
-    96.9%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz1   | HW2     | Quiz2   | Exper   |
+    +------------------+-------+-------+---------+---------+---------+---------+---------+
+    | Cardune, Paul    | 184.0 | 88.5% | [40___] | [90___] | [45___] | [_____] | [9____] |
+    | Hoffman, Tom     | 182.0 | 82.5% | [45___] | [80___] | [50___] | [_____] | [7____] |
+    | Richter, Claudia | 195.0 | 96.9% | [50___] | [95___] | [50___] | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+---------+---------+---------+
 
 Now, let's give Homeworks the 100% of weight:
 
@@ -250,14 +263,17 @@ correctly:
 The Averages have changed:
 
     >>> stephan.getControl('Cancel').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    85.0%
-    95.0%
-    100.0%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------+---------+---------+---------+---------+---------+
+    | Name             | Total | Ave.   | HW1     | Quiz1   | HW2     | Quiz2   | Exper   |
+    +------------------+-------+--------+---------+---------+---------+---------+---------+
+    | Cardune, Paul    | 184.0 | 85.0%  | [40___] | [90___] | [45___] | [_____] | [9____] |
+    | Hoffman, Tom     | 182.0 | 95.0%  | [45___] | [80___] | [50___] | [_____] | [7____] |
+    | Richter, Claudia | 195.0 | 100.0% | [50___] | [95___] | [50___] | [_____] | [_____] |
+    +------------------+-------+--------+---------+---------+---------+---------+---------+
 
 Let's test that explicit zeros are saved:
 
@@ -283,11 +299,14 @@ Let's test that explicit zeros are saved:
 Since all these weights are zero, they shouldn't affect the averages:
 
     >>> stephan.getControl('Cancel').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    85.0%
-    95.0%
-    100.0%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------+---------+---------+---------+---------+---------+
+    | Name             | Total | Ave.   | HW1     | Quiz1   | HW2     | Quiz2   | Exper   |
+    +------------------+-------+--------+---------+---------+---------+---------+---------+
+    | Cardune, Paul    | 184.0 | 85.0%  | [40___] | [90___] | [45___] | [_____] | [9____] |
+    | Hoffman, Tom     | 182.0 | 95.0%  | [45___] | [80___] | [50___] | [_____] | [7____] |
+    | Richter, Claudia | 195.0 | 100.0% | [50___] | [95___] | [50___] | [_____] | [_____] |
+    +------------------+-------+--------+---------+---------+---------+---------+---------+

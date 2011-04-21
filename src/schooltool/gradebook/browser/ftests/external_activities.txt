@@ -4,6 +4,10 @@ External Activities
 External activities allow to get grades for a worksheet activity from
 another schooltool module.
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -82,36 +86,17 @@ And one exam:
 And our grades are:
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    90.7%
-    49.3%
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 We should have a 'New External Activity' button to add external
 activities:
@@ -154,43 +139,17 @@ loaded with the latest grades:
 
     >>> stephan.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <a ...>Hardw</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    145.0
-    80.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    87.9%
-    48.5%
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
-    <input ... value="" ... />
-    <input ... value="9.00" ... />
-    <input ... value="6.00" ... />
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
+    +------------------+-------+-------+---------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] | [_____] |
+    | Hoffman, Tom     | 145.0 | 87.9% | [48___] | [88___] | [9.00_] |
+    | Richter, Claudia | 80.0  | 48.5% | [45___] | [29___] | [6.00_] |
+    +------------------+-------+-------+---------+---------+---------+
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
@@ -239,43 +198,17 @@ not been updated:
 
     >>> stephan.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <a ...>Hardw</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    145.0
-    80.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    82.9%
-    45.7%
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
-    <input ... value="" ... />
-    <input ... value="9.00" ... />
-    <input ... value="6.00" ... />
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
+    +------------------+-------+-------+---------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] | [_____] |
+    | Hoffman, Tom     | 145.0 | 82.9% | [48___] | [88___] | [9.00_] |
+    | Richter, Claudia | 80.0  | 45.7% | [45___] | [29___] | [6.00_] |
+    +------------------+-------+-------+---------+---------+---------+
 
 Let's go back to the edit form of the external activity to update the
 grades using the 'Update Grades' button:
@@ -312,43 +245,17 @@ activity, the total of points and the averages should have changed:
 
     >>> stephan.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <a ...>Hardw</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    151.0
-    84.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    86.3%
-    48.0%
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
-    <input ... value="" ... />
-    <input ... value="15.00" ... />
-    <input ... value="10.00" ... />
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
+    +------------------+-------+-------+---------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] | [_____] |
+    | Hoffman, Tom     | 151.0 | 86.3% | [48___] | [88___] | [15.00] |
+    | Richter, Claudia | 84.0  | 48.0% | [45___] | [29___] | [10.00] |
+    +------------------+-------+-------+---------+---------+---------+
 
 External activities should also be weightable. Let's add some
 weighting to the worksheet:
@@ -362,40 +269,14 @@ The averages have changed to reflect the weighting:
 
     >>> stephan.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <a ...>Hardw</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    151.0
-    84.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.9%
-    86.8%
-    42.7%
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input')
-    <input ... value="" ... />
-    <input ... value="15.00" ... />
-    <input ... value="10.00" ... />
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
+    +------------------+-------+-------+---------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.9% | [40___] | [90___] | [_____] |
+    | Hoffman, Tom     | 151.0 | 86.8% | [48___] | [88___] | [15.00] |
+    | Richter, Claudia | 84.0  | 42.7% | [45___] | [29___] | [10.00] |
+    +------------------+-------+-------+---------+---------+---------+

@@ -1,6 +1,10 @@
 Gradebook Startup View
 ----------------------
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -48,14 +52,17 @@ He's taken to the teacher gradebook:
     ...
     </select>
     weeks
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[1]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
 Let's log in as Claudia, a student:
 
@@ -139,14 +146,17 @@ that allows him to go to either his gradebook or his mygrades views.
     ...
     </select>
     weeks
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[1]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you attend').click()

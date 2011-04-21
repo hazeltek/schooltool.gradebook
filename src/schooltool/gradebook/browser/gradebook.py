@@ -491,10 +491,6 @@ class GradebookOverview(SectionFinder):
                 if interfaces.IActivity.providedBy(source):
                     shortTitle, longTitle, bestScore = \
                         self.getActivityAttrs(source)
-                    if source.label is not None and len(source.label):
-                        shortTitle = source.label
-                    if source.title is not None and len(source.title):
-                        longTitle = source.title
                 elif interfaces.IWorksheet.providedBy(source):
                     shortTitle = source.title
                     if activity.label is not None and len(activity.label):
@@ -615,7 +611,7 @@ class GradebookOverview(SectionFinder):
                 if not grades.get(key, ''):
                     return (1, self.collator.key(row['student']['title']))
                 else:
-                    return (0, grades.get(key))
+                    return (0, grades.get(key), self.collator.key(row['student']['title']))
             return self.collator.key(row['student']['title'])
         return sorted(rows, key=generateKey, reverse=reverse)
 
