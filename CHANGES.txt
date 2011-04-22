@@ -10,9 +10,8 @@ CHANGES
 - Fixed the Detailed Student Report to show data only from the selected term and not the whole school year
 - Save due_date attribute in New Activity form (https://launchpad.net/bugs/700520)
 - Make gradebook.js static thus greatly improving Gradebook performance.
-- Developers: schooltool.gradebook gained meta.zcml, apps that include
-  gradebook manually in their configure.zcml need to update.
-- Removed dependency on schooltool.lyceum.journal by using zcml condtion
+- Add meta.zcml to support making this plugin optional.
+- Make dependency on schooltool.lyceum.journal optional (https://launchpad.net/bugs/768885).
 
 
 0.9.0a1 (2011-02-23)

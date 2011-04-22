@@ -93,7 +93,8 @@ setup(
                              'zope.intid',
                              'zope.site',
                              'zope.testbrowser',
-                             'zope.testing']},
+                             'zope.testing'],
+                    'attendance': ['schooltool.lyceum.journal']},
     include_package_data=True,
     zip_safe=False,
     entry_points="""
