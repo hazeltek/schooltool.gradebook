@@ -37,103 +37,6 @@ from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 
 
-class BaseView(BrowserView):
-    """Base class for all request report views"""
-
-    template=ViewPageTemplateFile('templates/request_reports.pt')
-
-    def __call__(self):
-        return self.template()
-
-
-class StudentReportsView(BaseView):
-
-    def title(self):
-        return _('Student Reports')
-
-    def links(self):
-        url = absoluteURL(self.context, self.request)
-        results = [
-            {
-                'url': url +  '/request_report_card.html',
-                'content': _('Request Report Card'),
-            },
-            {
-                'url': url +  '/request_student_detail.html',
-                'content': _('Request Detailed Student Report'),
-            },
-        ]
-        return results
-
-
-class GroupReportsView(BaseView):
-
-    def title(self):
-        return _('Group Reports')
-
-    def links(self):
-        url = absoluteURL(self.context, self.request)
-        results = [
-            {
-                'url': url +  '/request_report_card.html',
-                'content': _('Request Report Card'),
-            },
-            {
-                'url': url +  '/request_student_detail.html',
-                'content': _('Request Detailed Student Report'),
-            },
-         ]
-        return results
-
-
-class TermReportsView(BaseView):
-
-    def title(self):
-        return _('Term Reports')
-
-    def links(self):
-        url = absoluteURL(self.context, self.request)
-        results = [
-            {
-                'url': url +  '/request_failing_report.html',
-                'content': _('Failures by Term'),
-            },
-         ]
-        return results
-
-
-class SchoolYearReportsView(BaseView):
-
-    def title(self):
-        return _('School Year Reports')
-
-    def links(self):
-        url = absoluteURL(self.context, self.request)
-        results = [
-            {
-                'url': url +  '/request_absences_by_day.html',
-                'content': _('Absences By Day'),
-            },
-         ]
-        return results
-
-
-class SectionReportsView(BaseView):
-
-    def title(self):
-        return _('Section Reports')
-
-    def links(self):
-        url = absoluteURL(self.context, self.request)
-        results = [
-            {
-                'url': url +  '/section_absences.pdf',
-                'content': _('Download Absences by Section Report'),
-            },
-         ]
-        return results
-
-
 class RequestFailingReportView(BrowserView):
 
     def title(self):
@@ -225,7 +128,7 @@ class RequestFailingReportView(BrowserView):
         return absoluteURL(self.context, self.request) + '/failures_by_term.pdf'
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+        return absoluteURL(self.context, self.request) + '/reports'
 
 
 class RequestAbsencesByDayView(BrowserView):
@@ -270,7 +173,7 @@ class RequestAbsencesByDayView(BrowserView):
         return absoluteURL(self.context, self.request) + '/absences_by_day.pdf'
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+        return absoluteURL(self.context, self.request) + '/reports'
 
 
 class RequestStudentReportView(BrowserView):
@@ -327,5 +230,5 @@ class RequestStudentReportView(BrowserView):
         return absoluteURL(self.context, self.request) + url
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_pdfs.html'
+        return absoluteURL(self.context, self.request) + '/reports'
 

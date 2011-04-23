@@ -20,7 +20,7 @@ user gets the error message.
     >>> manager.getLink('Persons').click()
     >>> manager.getLink('One').click()
     >>> manager.getLink('Reports').click()
-    >>> manager.getLink('Request Report Card').click()
+    >>> manager.getLink('Student Report Card').click()
     >>> manager.printQuery("id('content-body')//h1/text()")
     The operation you attempted cannot be completed because there are
     currently no terms set up in your SchoolTool instance. Please have
