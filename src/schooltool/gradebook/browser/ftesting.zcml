@@ -11,6 +11,10 @@
   <include package="schooltool.term" file="time_machine.zcml" />
   <include package="schooltool.schoolyear" />
   <include package="schooltool.timetable" />
+  <!-- TODO: remove journal from here and include only in tests -->
+  <include package="schooltool.lyceum.journal" file="meta.zcml" />
+  <include package="schooltool.lyceum.journal" />
+
   <include package="schooltool.requirement" />
   <include package="schooltool.gradebook" />
 

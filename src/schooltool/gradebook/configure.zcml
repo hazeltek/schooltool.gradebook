@@ -9,7 +9,7 @@
 
   <include file="security.zcml" />
 
-  <include zcml:condition="have plugin-schooltool.lyceum.journal"
+  <include zcml:condition="have schooltool.lyceum.journal"
            file="lyceum_journal_integration.zcml" />
 
   <!-- Gradebook Root adapters -->
