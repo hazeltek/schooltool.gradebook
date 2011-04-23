@@ -2,6 +2,7 @@
 <configure
     xmlns="http://namespaces.zope.org/browser"
     xmlns:zope="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="schooltool.gradebook">
 
   <!-- Gradebook Root Traverser -->
@@ -589,19 +590,6 @@
       template="templates/layout_report_card.pt"
       permission="schooltool.edit"
       />
-  <page
-      name="request_absences_by_day.html"
-      for="schooltool.schoolyear.interfaces.ISchoolYear"
-      class=".request_reports.RequestAbsencesByDayView"
-      template="templates/request_absences_by_day.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="absences_by_day.pdf"
-      for="schooltool.schoolyear.interfaces.ISchoolYear"
-      class=".pdf_views.AbsencesByDayPDFView"
-      permission="schooltool.edit"
-      />
 
   <!-- Views for IBasicPerson -->
   <page
@@ -659,14 +647,6 @@
       permission="schooltool.edit"
       />
 
-  <!-- Views for ISection -->
-  <page
-      name="section_absences.pdf"
-      for="schooltool.course.interfaces.ISection"
-      class=".pdf_views.SectionAbsencesPDFView"
-      permission="schooltool.edit"
-      />
-
   <!-- Views for ISchoolToolApplication -->
   <page
       name="no_report_sheets.html"
@@ -680,6 +660,29 @@
       class=".gradebook.GradebookCSVView"
       permission="schooltool.edit"
       />
+
+  <!-- Attendance reports -->
+  <configure zcml:condition="have schooltool.lyceum.journal">
+    <page
+        name="request_absences_by_day.html"
+        for="schooltool.schoolyear.interfaces.ISchoolYear"
+        class=".request_reports.RequestAbsencesByDayView"
+        template="templates/request_absences_by_day.pt"
+        permission="schooltool.edit"
+        />
+    <page
+        name="absences_by_day.pdf"
+        for="schooltool.schoolyear.interfaces.ISchoolYear"
+        class=".pdf_views.AbsencesByDayPDFView"
+        permission="schooltool.edit"
+        />
+    <page
+        name="section_absences.pdf"
+        for="schooltool.course.interfaces.ISection"
+        class=".pdf_views.SectionAbsencesPDFView"
+        permission="schooltool.edit"
+        />
+  </configure>
 
   <zope:adapter
       factory=".report_card.ReportScoresSystem" />
