@@ -10,9 +10,13 @@
   <include package="schooltool.term" file="time_machine.zcml" />
   <include package="schooltool.schoolyear" />
   <include package="schooltool.timetable" />
+
+  <!-- TODO: remove journal from here and include only in tests -->
+  <include package="schooltool.lyceum.journal" file="meta.zcml" />
+  <include package="schooltool.lyceum.journal" />
+
   <include package="schooltool.requirement" />
   <include package="schooltool.gradebook" />
-  <include package="schooltool.lyceum.journal" />
 
   <class class="schooltool.gradebook.tests.stubs.ExternalActivityStub">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
@@ -47,6 +51,7 @@
 
   <browser:defaultSkin name="BasicPerson" />
 
+  <!-- Override rml views so that they return the template instead of pdf -->
   <browser:page
       name="gradebook.pdf"
       for="schooltool.gradebook.interfaces.IGradebook"

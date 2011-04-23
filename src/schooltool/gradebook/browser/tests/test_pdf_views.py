@@ -31,6 +31,7 @@ from zope.intid.interfaces import IIntIds
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
+from zope.component import adapter
 from zope.container import btree
 from zope.interface import implements, alsoProvides
 from zope.location.interfaces import ILocation
@@ -70,10 +71,11 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
 from schooltool.gradebook.gradebook import Gradebook, getWorksheetSection 
+from schooltool.gradebook.attendance import getSectionAttendanceData
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
 from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
-    IActivities, IWorksheet)
+    IActivities, IWorksheet, ISectionAttendanceData)
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
     getSectionJournalData, getSectionForSectionJournalData)
@@ -227,15 +229,15 @@ def setupSections(app):
     evaluation = Evaluation(activity2, maxss, 'C', thoffman)
     evaluations.addEvaluation(evaluation)
 
-    jd = ISectionJournalData(section1)
+    jd = ISectionAttendanceData(section1)
     calendar = ISchoolToolCalendar(section1)
     meeting = MeetingStub()
     meeting.unique_id = "unique-id-2009-01-01"
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
     meeting.period_id = "10:30-11:30"
     calendar.addEvent(meeting)
-    jd.setGrade(aelkner, meeting, 'n')
-    jd.setAbsence(aelkner, meeting, 'n')
+    if jd:
+        jd.setGrade(aelkner, meeting, 'n')
 
 
 def setupGradebook(app):
@@ -530,6 +532,8 @@ def pdfSetUp(test=None):
     provideAdapter(getTermForSection, [ISection], provides=ITerm)
     provideAdapter(getSectionJournalData, [ISection],
                    provides=ISectionJournalData)
+    provideAdapter(getSectionAttendanceData, [ISection],
+                   provides=ISectionAttendanceData)
     provideAdapter(getSectionForSectionJournalData, [ISectionJournalData],
                    provides=ISection)
 

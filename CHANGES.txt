@@ -13,6 +13,7 @@ Improvements
   using the new ``reportLink`` directive.
 - Add meta.zcml to support making this plugin optional.
 - Added ``printGradebook`` helper to print the gradebook in ftests.
+- Make dependency on schooltool.lyceum.journal optional (https://launchpad.net/bugs/768885).
 
 Bug fixes
 +++++++++

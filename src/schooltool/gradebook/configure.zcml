@@ -2,11 +2,15 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="schooltool.gradebook">
 
   <include package="schooltool.requirement" />
 
   <include file="security.zcml" />
+
+  <include zcml:condition="have schooltool.lyceum.journal"
+           file="attendance.zcml" />
 
   <!-- Gradebook Root adapters -->
   <adapter
