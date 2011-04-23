@@ -71,11 +71,11 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
 from schooltool.gradebook.gradebook import Gradebook, getWorksheetSection 
-from schooltool.gradebook.lyceum_journal_integration import getIndependentSectionJournalData
+from schooltool.gradebook.attendance import getSectionAttendanceData
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
 from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
-    IActivities, IWorksheet, IIndependentSectionJournalData)
+    IActivities, IWorksheet, ISectionAttendanceData)
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
 from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
     getSectionJournalData, getSectionForSectionJournalData)
@@ -229,7 +229,7 @@ def setupSections(app):
     evaluation = Evaluation(activity2, maxss, 'C', thoffman)
     evaluations.addEvaluation(evaluation)
 
-    jd = IIndependentSectionJournalData(section1)
+    jd = ISectionAttendanceData(section1)
     calendar = ISchoolToolCalendar(section1)
     meeting = MeetingStub()
     meeting.unique_id = "unique-id-2009-01-01"
@@ -532,8 +532,8 @@ def pdfSetUp(test=None):
     provideAdapter(getTermForSection, [ISection], provides=ITerm)
     provideAdapter(getSectionJournalData, [ISection],
                    provides=ISectionJournalData)
-    provideAdapter(getIndependentSectionJournalData, [ISection],
-                   provides=IIndependentSectionJournalData)
+    provideAdapter(getSectionAttendanceData, [ISection],
+                   provides=ISectionAttendanceData)
     provideAdapter(getSectionForSectionJournalData, [ISectionJournalData],
                    provides=ISection)
 

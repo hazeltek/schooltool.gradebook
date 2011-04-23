@@ -20,8 +20,8 @@
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
 
 
-# adapt section to IIndependentSectionJournalData interface, returning
+# adapt section to ISectionAttendanceData interface, returning
 # ISectionJournalData
-def getIndependentSectionJournalData(section):
+def getSectionAttendanceData(section):
     return ISectionJournalData(section)
 

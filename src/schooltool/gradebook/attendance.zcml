@@ -7,8 +7,8 @@
   <!-- bridge adapter to get to schooltool.lyceum.journal package -->
   <adapter
       for="schooltool.course.interfaces.ISection"
-      provides="schooltool.gradebook.interfaces.IIndependentSectionJournalData"
-      factory=".lyceum_journal_integration.getIndependentSectionJournalData"
+      provides="schooltool.gradebook.interfaces.ISectionAttendanceData"
+      factory=".attendance.getSectionAttendanceData"
       />
 
 </configure>

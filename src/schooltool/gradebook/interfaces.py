@@ -413,6 +413,6 @@ class ILinkedColumnActivity(IActivity):
         required=True)
 
 
-class IIndependentSectionJournalData(Interface):
+class ISectionAttendanceData(Interface):
     """Bridge interface to remove gradebook dependency on lyceum journal."""
 

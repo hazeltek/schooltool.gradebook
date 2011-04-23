@@ -10,7 +10,7 @@
   <include file="security.zcml" />
 
   <include zcml:condition="have schooltool.lyceum.journal"
-           file="lyceum_journal_integration.zcml" />
+           file="attendance.zcml" />
 
   <!-- Gradebook Root adapters -->
   <adapter
