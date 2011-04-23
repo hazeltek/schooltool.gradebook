@@ -109,14 +109,4 @@
       attribute="template"
       />
 
-  <!-- Stub views and adapters for soft journal dependency-->
-  <adapter
-      factory="schooltool.gradebook.browser.ftests.test_functional.getSectionIndependentSectionJournalData"  />
-  <browser:page
-      name="test_only_update_section_journal.html"
-      for="schooltool.course.interfaces.ISection"
-      class="schooltool.gradebook.browser.ftests.test_functional.TestOnlyUpdateSectionJournalView"
-      permission="schooltool.edit"
-      />
-
 </configure>

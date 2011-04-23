@@ -33,7 +33,7 @@ from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
 from zope.component import adapter
 from zope.container import btree
-from zope.interface import implementer, implements, alsoProvides
+from zope.interface import implements, alsoProvides
 from zope.location.interfaces import ILocation
 from zope.location.location import locate
 from zope.publisher.browser import TestRequest
@@ -71,10 +71,14 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
 from schooltool.gradebook.gradebook import Gradebook, getWorksheetSection 
+from schooltool.gradebook.lyceum_journal_integration import getIndependentSectionJournalData
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
 from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
     IActivities, IWorksheet, IIndependentSectionJournalData)
+from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
+    getSectionJournalData, getSectionForSectionJournalData)
 from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     GroupReportCardPDFView, StudentDetailPDFView, GroupDetailPDFView,
     FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView,
@@ -160,6 +164,7 @@ class ApplicationStub(btree.BTreeContainer):
         self.syc = self[SCHOOLYEAR_CONTAINER_KEY] = SchoolYearContainer()
         self['schooltool.course.course'] = CourseContainerContainer()
         self['schooltool.course.section'] = SectionContainerContainer()
+        self['schooltool.lyceum.journal'] = LyceumJournalContainer()
         self['schooltool.group'] = GroupContainerContainer()
         self['persons'] = PersonContainer()
 
@@ -182,39 +187,6 @@ class DateManagerStub(object):
         app = ISchoolToolApplication(None)
         self.current_term = app[SCHOOLYEAR_CONTAINER_KEY]['2009']['term']
         self.today = BEGIN_2009
-
-
-class IndependentSectionJournalDataStub(object):
-    implements(IIndependentSectionJournalData)
-
-    def __init__(self, section):
-        self.section = section
-        self.students = {}
-
-    def setGrade(self, student, meeting, grade):
-        self.students.setdefault(student, {})[meeting] = grade
-
-    def recordedMeetings(self, student):
-        return self.students.get(student, {}).keys()
-
-    def getGrade(self, student, meeting):
-        return self.students.get(student, {}).get(meeting)
-
-
-section_journal_data = {}
-
-
-@adapter(ISection)
-@implementer(IIndependentSectionJournalData)
-def getSectionIndependentSectionJournalData(section):
-    return section_journal_data.setdefault(section,
-        IndependentSectionJournalDataStub(section))
-
-
-@adapter(IIndependentSectionJournalData)
-@implementer(ISection)
-def getIndependentSectionJournalDataSection(journal_data):
-    return journal_data.section
 
 
 def setupSections(app):
@@ -264,7 +236,8 @@ def setupSections(app):
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
     meeting.period_id = "10:30-11:30"
     calendar.addEvent(meeting)
-    jd.setGrade(aelkner, meeting, 'n')
+    if jd:
+        jd.setGrade(aelkner, meeting, 'n')
 
 
 def setupGradebook(app):
@@ -557,8 +530,12 @@ def pdfSetUp(test=None):
                    provides=ITerm)
     provideAdapter(getSectionActivities, [ISection], provides=IActivities)
     provideAdapter(getTermForSection, [ISection], provides=ITerm)
-    provideAdapter(getSectionIndependentSectionJournalData)
-    provideAdapter(getIndependentSectionJournalDataSection)
+    provideAdapter(getSectionJournalData, [ISection],
+                   provides=ISectionJournalData)
+    provideAdapter(getIndependentSectionJournalData, [ISection],
+                   provides=IIndependentSectionJournalData)
+    provideAdapter(getSectionForSectionJournalData, [ISectionJournalData],
+                   provides=ISection)
 
     provideAdapter(getGradebookRoot, [ISchoolToolApplication],
                    provides=IGradebookRoot)
