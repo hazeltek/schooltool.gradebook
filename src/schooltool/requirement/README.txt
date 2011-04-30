@@ -879,6 +879,30 @@ This section demonstrates the implementation of the ``IMapping`` API.
   2
 
 
+Score System Container
+----------------------
+
+There is a score system container attached to the app which we get via its
+adapter.
+
+    >>> from schooltool.testing import setup
+    >>> from schooltool.app.interfaces import ISchoolToolApplication
+    >>> app = setup.setUpSchoolToolSite()
+    >>> scoresystems = interfaces.IScoreSystemContainer(app)
+    >>> from zope.interface.verify import verifyObject
+    >>> verifyObject(interfaces.IScoreSystemContainer, scoresystems)
+    True
+
+The first time the adapter is called, it will initialize the container with
+the standard, pre-defined, score systems.  We see that the standard names
+chooser is used.
+
+    >>> sorted(scoresystems.items())
+    [(u'extended-letter-grade', <CustomScoreSystem u'Extended Letter Grade'>),
+     (u'letter-grade', <CustomScoreSystem u'Letter Grade'>),
+     (u'passfail', <CustomScoreSystem u'Pass/Fail'>)]
+
+
 The ScoresSystemsProxy
 ~~~~~~~~~~~~~~~~~~~~~~
 

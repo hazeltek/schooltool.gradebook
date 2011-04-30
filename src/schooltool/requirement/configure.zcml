@@ -47,6 +47,16 @@
   </class>
 
   <!-- Scoresystem Content -->
+  <class class=".scoresystem.ScoreSystemContainer">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IScoreSystemContainer"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IScoreSystemContainer"
+        />
+  </class>
   <class class=".scoresystem.GlobalCommentScoreSystem">
     <require
         permission="zope.View"
@@ -189,6 +199,12 @@
       adapter=".interfaces.IScoreSystemsProxy"
       permission="schooltool.edit"
       />
+
+  <!-- NameChooser -->
+  <adapter
+      for=".interfaces.IScoreSystemContainer"
+      factory="schooltool.app.app.SimpleNameChooser"
+      provides="zope.container.interfaces.INameChooser" />
 
   <include package=".browser" />
 
