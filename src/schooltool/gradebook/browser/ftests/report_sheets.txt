@@ -150,7 +150,7 @@ form:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.2'
-    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
+    >>> manager.getControl('Score System').value = ['extended-letter-grade-']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()

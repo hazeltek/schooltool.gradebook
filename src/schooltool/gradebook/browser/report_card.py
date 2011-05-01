@@ -53,6 +53,7 @@ from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IScoreSystem
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
+from schooltool.requirement.scoresystem import DiscreteScoreSystemsVocabulary
 
 
 ABSENT_HEADING = _('Absent')
@@ -120,14 +121,12 @@ class TemplatesView(object):
 def ReportScoreSystemsVocabulary(context):
     terms = [SimpleVocabulary.createTerm('ranged', 'ranged',
                                          _('-- Use range below --'))]
-    for name, utility in getUtilitiesFor(IScoreSystem, context):
-        hidden = getattr(utility, 'hidden', False)
-        if not hidden:
-            value = utility
-            token = name.encode('punycode')
-            title = name
-            term = SimpleVocabulary.createTerm(value, token, title)
-            terms.append(term)
+    for name, utility in sorted(getUtilitiesFor(IScoreSystem, context)):
+        token = name.encode('punycode')
+        term = SimpleVocabulary.createTerm(utility, token, name)
+        terms.append(term)
+    for term in DiscreteScoreSystemsVocabulary(context):
+        terms.append(term)
     return SimpleVocabulary(terms)
 
 

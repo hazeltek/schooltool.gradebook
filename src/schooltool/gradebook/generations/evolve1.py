@@ -26,7 +26,7 @@ from zope.app.generations.utility import getRootFolder
 
 from schooltool.gradebook.interfaces import IActivities, IGradebookRoot
 from schooltool.gradebook.gradebook_init import setUpGradebookRoot
-from schooltool.requirement.interfaces import IScoreSystemsProxy
+from schooltool.requirement.interfaces import ICustomScoreSystem
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.scoresystem import CustomScoreSystem, PassFail
 from schooltool.requirement.scoresystem import AmericanLetterScoreSystem
@@ -77,12 +77,12 @@ def evolve(context):
 
     app = getRootFolder(context)
     setUpGradebookRoot(app)
-    ssProxy = IScoreSystemsProxy(app)
     for ss in [PassFail, AmericanLetterScoreSystem, 
                ExtendedAmericanLetterScoreSystem]:
         custom_ss = CustomScoreSystem(ss.title, ss.description, ss.scores,
             ss._bestScore, ss._minPassingScore)
-        ssProxy.addScoreSystem(custom_ss)
+        app.getSiteManager().registerUtility(custom_ss, ICustomScoreSystem,
+            name=custom_ss.title)
         updateEvaluations(app, ss, custom_ss)
         updateAllActivities(app, ss, custom_ss)
 

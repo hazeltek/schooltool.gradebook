@@ -118,12 +118,12 @@ Add two report sheets with four activities:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.3'
-    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
+    >>> manager.getControl('Score System').value = ['extended-letter-grade-']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 1.4'
-    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
+    >>> manager.getControl('Score System').value = ['passfail-']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('Manage').click()
@@ -140,12 +140,12 @@ Add two report sheets with four activities:
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 2.3'
-    >>> manager.getControl('Score System').displayValue = ['Extended Letter Grade']
+    >>> manager.getControl('Score System').value = ['extended-letter-grade-']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Report Activity 2.4'
-    >>> manager.getControl('Score System').displayValue = ['Pass/Fail']
+    >>> manager.getControl('Score System').value = ['passfail-']
     >>> manager.getControl('Add').click()
 
 Deploy one report sheet in each term:

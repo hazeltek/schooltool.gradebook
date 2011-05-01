@@ -903,55 +903,6 @@ chooser is used.
      (u'passfail', <CustomScoreSystem u'Pass/Fail'>)]
 
 
-The ScoresSystemsProxy
-~~~~~~~~~~~~~~~~~~~~~~
-
-Score systems are utilities that are pre-created in code (eventually we will
-migrate these to the application's site manager) and user created ones that
-we add to the site manager by way of the ScoresSystemsProxy class.
-
-First we'll set up the site and initialize the app object.
-
-    >>> from schooltool.testing import setup
-    >>> app = setup.setUpSchoolToolSite()
-
-The ScoresSystemsProxy class is itself an adapter of the app object.
-
-    >>> from schooltool.app.interfaces import ISchoolToolApplication
-    >>> from schooltool.requirement.interfaces import IScoreSystemsProxy
-    >>> from schooltool.requirement.scoresystem import ScoreSystemsProxy
-    >>> from zope.component import provideAdapter
-    >>> provideAdapter(ScoreSystemsProxy)
-    >>> ssProxy = IScoreSystemsProxy(app)
-    >>> ssProxy
-    <schooltool.requirement.scoresystem.ScoreSystemsProxy object at ...>
-
-At fist, there are no scoresystems registered with the app.
-
-    >>> ssProxy.getScoreSystems()
-    []
-
-We'll create a couple of custom score systems and add them to the proxy.
-
-    >>> from schooltool.requirement.scoresystem import CustomScoreSystem
-    >>> custom1 = CustomScoreSystem('Custom 1')
-    >>> ssProxy.addScoreSystem( custom1)
-    >>> custom2 = CustomScoreSystem('Custom 2')
-    >>> ssProxy.addScoreSystem(custom2)
-
-Now, when we ask the proxy for what score systems it has, it will return both
-of the newly added ones.
-
-    >>> ssProxy.getScoreSystems()
-    [(u'Custom 1', <CustomScoreSystem 'Custom 1'>), 
-     (u'Custom 2', <CustomScoreSystem 'Custom 2'>)]
-
-We can get one of them by name.
-
-    >>> ssProxy.getScoreSystem('Custom 1')
-    <CustomScoreSystem 'Custom 1'>
-
-
 Score System Vocabularies
 -------------------------
 
@@ -997,13 +948,12 @@ that they deliver the desired list of utilities.
 
 First the discrete values score systems vocabulary, used when only discrete
 values score systems are valid, like when converting an average into a discrete
-grade.  Note the presence of the custom score systems we just created.
+grade.  These were added to the scoresystem container when the adapter was
+first called.
 
     >>> from zope.componentvocabulary.vocabulary import UtilityVocabulary
     >>> vocab = UtilityVocabulary(None, interface=interfaces.IDiscreteValuesScoreSystem)
     >>> for v in vocab: print v
-    <UtilityTerm Custom 1, instance of CustomScoreSystem>
-    <UtilityTerm Custom 2, instance of CustomScoreSystem>
     <UtilityTerm Extended Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
     <UtilityTerm Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
     <UtilityTerm Pass/Fail, instance of GlobalDiscreteValuesScoreSystem>
@@ -1014,8 +964,6 @@ systems registered.  This is used for report sheet activities.
     >>> vocab = UtilityVocabulary(None, interface=interfaces.IScoreSystem)
     >>> for v in vocab: print v
     <UtilityTerm 100 Points, instance of GlobalRangedValuesScoreSystem>
-    <UtilityTerm Custom 1, instance of CustomScoreSystem>
-    <UtilityTerm Custom 2, instance of CustomScoreSystem>
     <UtilityTerm Extended Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
     <UtilityTerm Letter Grade, instance of GlobalDiscreteValuesScoreSystem>
     <UtilityTerm Pass/Fail, instance of GlobalDiscreteValuesScoreSystem>

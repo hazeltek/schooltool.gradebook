@@ -32,6 +32,7 @@ from zope.container.btree import BTreeContainer
 from zope.container.interfaces import INameChooser
 from zope.interface import implements, Interface
 import zope.schema
+from zope.schema.vocabulary import SimpleVocabulary
 import zope.security.checker
 from zope.security.proxy import removeSecurityProxy
 
@@ -52,6 +53,7 @@ def getScoreSystemContainer(app):
     """Adapt app to IScoreSystemContainer, initializing if necessary"""
 
     if SCORESYSTEM_CONTAINER_KEY not in app:
+        app = removeSecurityProxy(app)
         scoresystems = app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
         chooser = INameChooser(scoresystems)
         for ss in [PassFail, AmericanLetterScoreSystem, 
@@ -78,8 +80,15 @@ def ScoreSystemsVocabulary(context):
 
 
 def DiscreteScoreSystemsVocabulary(context):
-    return UtilityVocabulary(context,
-                             interface=interfaces.IDiscreteValuesScoreSystem)
+    """Vocabulary of custom scoresytems"""
+    terms = []
+    container = interfaces.IScoreSystemContainer(ISchoolToolApplication(None))
+    for name, ss in sorted(container.items()):
+        if not getattr(ss, 'hidden', False):
+            token = name.encode('punycode')
+            term = SimpleVocabulary.createTerm(ss, token, ss.title)
+            terms.append(term)
+    return SimpleVocabulary(terms)
 
 
 class UNSCORED(object):
@@ -388,47 +397,4 @@ class CustomScoreSystem(DiscreteValuesScoreSystem, Persistent):
     """ScoreSystem class for custom (user-created) score systems"""
 
     implements(interfaces.ICustomScoreSystem)
-
-
-class ScoreSystemsProxy(object):
-    """The Proxy class for adding/editing score systems"""
-
-    implements(IScoreSystemsProxy)
-    adapts(ISchoolToolApplication)
-
-    def __init__(self, app):
-        self.app = app
-        self.siteManager = app.getSiteManager()
-        self.__parent__ = app
-        self.__name__ = 'scoresystems'
-
-    def getScoreSystems(self):
-        """Return list of tuples (name, scoresystem)"""
-        results = []
-        for name, util in sorted(self.siteManager.getUtilitiesFor(
-                                 interfaces.ICustomScoreSystem)):
-            util = removeSecurityProxy(util)
-            if util.hidden:
-                continue
-            results.append((name, util))
-        return results
-
-    def addScoreSystem(self, scoresystem):
-        """Add scoresystem to app utilitiles"""
-        names = [name for name, util in self.getScoreSystems()]
-        name = scoresystem.title
-        n = name
-        i = 1
-        while n in names:
-            n = name + u'-' + unicode(i)
-            i += 1
-        self.siteManager.registerUtility(scoresystem,
-            interfaces.ICustomScoreSystem, name=n)
-
-    def getScoreSystem(self, name):
-        """Get scoresystem from app utilitiles by the given name"""
-        for n, util in self.getScoreSystems():
-            if n == name:
-                return removeSecurityProxy(util)
-        raise KeyError
 

@@ -137,10 +137,10 @@ none set yet.
 
     >>> stephan.printQuery("id('content-body')/form//table//option")
     <option selected="selected" value="">-- No score system --</option>
-    <option value="extended-letter-grade">Extended Letter Grade</option>
-    <option value="goodbad">Good/Bad</option>
-    <option value="letter-grade">Letter Grade</option>
-    <option value="passfail">Pass/Fail</option>
+    <option value="extended-letter-grade-">Extended Letter Grade</option>
+    <option value="goodbad-">Good/Bad</option>
+    <option value="letter-grade-">Letter Grade</option>
+    <option value="passfail-">Pass/Fail</option>
 
     >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
     <input type="checkbox" name="hide_due_date" />
@@ -186,10 +186,10 @@ Look that all the preferences were saved
 
     >>> stephan.printQuery("id('content-body')/form//table//option")
     <option value="">-- No score system --</option>
-    <option value="extended-letter-grade">Extended Letter Grade</option>
-    <option selected="selected" value="goodbad">Good/Bad</option>
-    <option value="letter-grade">Letter Grade</option>
-    <option value="passfail">Pass/Fail</option>
+    <option value="extended-letter-grade-">Extended Letter Grade</option>
+    <option selected="selected" value="goodbad-">Good/Bad</option>
+    <option value="letter-grade-">Letter Grade</option>
+    <option value="passfail-">Pass/Fail</option>
 
     >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
     <input type="checkbox" name="hide_due_date" checked="checked" />
@@ -227,7 +227,7 @@ Show the total and average columns, and test that Average is converted to Good/B
 Check with extended letter grade scoresystem:
 
     >>> stephan.getLink('Preferences').click()
-    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
+    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade-']
     >>> stephan.getControl('Update').click()
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')

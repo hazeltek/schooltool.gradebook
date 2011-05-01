@@ -19,7 +19,6 @@ from schooltool.gradebook.gradebook_init import getGradebookRoot
 from schooltool.requirement.evaluation import getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IHaveEvaluations
-from schooltool.requirement.scoresystem import ScoreSystemsProxy
 from schooltool.term.interfaces import IDateManager
 from schooltool.gradebook.tests import stubs
 
@@ -64,7 +63,6 @@ class StupidKeyReference(object):
 def provideAdapters():
     setUpAnnotations()
     provideAdapter(StupidKeyReference, [IPersistent], IKeyReference)
-    provideAdapter(ScoreSystemsProxy)
     provideAdapter(getGradebookRoot, adapts=(ISchoolToolApplication,), 
                                      provides=IGradebookRoot)
     provideAdapter(getSectionActivities, adapts=(ISection,), 

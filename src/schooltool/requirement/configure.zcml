@@ -28,6 +28,10 @@
       for=".interfaces.IHaveRequirement"
       factory=".requirement.requirementNamespace"
       />
+  <adapter
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      provides=".interfaces.IScoreSystemContainer"
+      factory=".scoresystem.getScoreSystemContainer" />
 
   <!-- Requirement Content -->
   <class class=".requirement.Requirement">
@@ -178,25 +182,12 @@
     <implements interface=".interfaces.IHaveEvaluations" />
   </class>
 
-  <!-- ScoreSystemsProxy adapter -->
-  <class class=".scoresystem.ScoreSystemsProxy">
-    <require
-        permission="schooltool.edit"
-        interface=".interfaces.IScoreSystemsProxy" />
-  </class>
-  <adapter
-      for="schooltool.app.app.SchoolToolApplication"
-      provides=".interfaces.IScoreSystemsProxy"
-      factory=".scoresystem.ScoreSystemsProxy"
-      trusted="true"
-      />
-
   <!-- Pluggable traverser plugins for HTTP paths -->
   <adapterTraverserPlugin
       for="schooltool.app.interfaces.ISchoolToolApplication"
       layer="zope.publisher.interfaces.http.IHTTPRequest"
       name="scoresystems"
-      adapter=".interfaces.IScoreSystemsProxy"
+      adapter=".interfaces.IScoreSystemContainer"
       permission="schooltool.edit"
       />
 
