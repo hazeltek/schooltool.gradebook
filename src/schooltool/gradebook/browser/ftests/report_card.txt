@@ -90,11 +90,11 @@ when we added it.
 We'll change it, apply the change, and revisit the activity to see that the
 change took.
 
-    >>> manager.getControl('Score System').value = ['Letter Grade-']
+    >>> manager.getControl('Score System').value = ['letter-grade-']
     >>> manager.getControl('Apply').click()
     >>> manager.getLink('Activity 1').click()
     >>> manager.getControl('Score System').value
-    ['Letter Grade-']
+    ['letter-grade-']
 
 Now we'll change it to use a dynamically generated ranged values score system.
 The min and max fields don't need to be filled in as they defualt to 0 and 100.

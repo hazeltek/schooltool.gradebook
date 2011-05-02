@@ -197,6 +197,13 @@
       factory="schooltool.app.app.SimpleNameChooser"
       provides="zope.container.interfaces.INameChooser" />
 
+  <!-- generations -->
+  <utility
+      name="schooltool.requirement"
+      provides="zope.app.generations.interfaces.ISchemaManager"
+      component=".generations.schemaManager"
+      />
+
   <include package=".browser" />
 
 </configure>
