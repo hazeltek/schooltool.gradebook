@@ -86,7 +86,7 @@ from schooltool.requirement.interfaces import (IScoreSystemContainer,
     IEvaluations)
 from schooltool.requirement.scoresystem import (AmericanLetterScoreSystem,
     DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem,
-    getScoreSystemContainer)
+    getScoreSystemContainer, ScoreSystemAppStartup)
 
 
 BEGIN_2009 = datetime.date(datetime(2009, 1, 1))
@@ -178,6 +178,7 @@ class ApplicationStub(btree.BTreeContainer):
         int_ids.register(self.term)
 
         setUpGradebookRoot(self)
+        ScoreSystemAppStartup(self)()
 
 
 class DateManagerStub(object):

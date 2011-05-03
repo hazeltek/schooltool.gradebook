@@ -888,15 +888,20 @@ adapter.
     >>> from schooltool.testing import setup
     >>> from schooltool.app.interfaces import ISchoolToolApplication
     >>> app = setup.setUpSchoolToolSite()
+
+But first we must call the AppStartup adapter to make sure the container
+exists.
+
+    >>> scoresystem.ScoreSystemAppStartup(app)()
+
+Now we will call the adapter.  We see that the container was initialized with
+the standard, pre-defined, score systems.  We see that the standard names
+chooser is used.
+
     >>> scoresystems = interfaces.IScoreSystemContainer(app)
     >>> from zope.interface.verify import verifyObject
     >>> verifyObject(interfaces.IScoreSystemContainer, scoresystems)
     True
-
-The first time the adapter is called, it will initialize the container with
-the standard, pre-defined, score systems.  We see that the standard names
-chooser is used.
-
     >>> sorted(scoresystems.items())
     [(u'extended-letter-grade', <CustomScoreSystem u'Extended Letter Grade'>),
      (u'letter-grade', <CustomScoreSystem u'Letter Grade'>),

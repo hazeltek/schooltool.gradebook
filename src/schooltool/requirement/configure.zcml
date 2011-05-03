@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-
 <configure xmlns="http://namespaces.zope.org/zope">
 
   <include file="security.zcml" />
+  <include file="scoresystem.zcml" />
 
   <adapter
       for=".interfaces.IHaveRequirement"
@@ -50,105 +50,6 @@
         />
   </class>
 
-  <!-- Scoresystem Content -->
-  <class class=".scoresystem.ScoreSystemContainer">
-    <require
-        permission="schooltool.view"
-        interface=".interfaces.IScoreSystemContainer"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.IScoreSystemContainer"
-        />
-  </class>
-  <class class=".scoresystem.GlobalCommentScoreSystem">
-    <require
-        permission="zope.View"
-        interface=".interfaces.ICommentScoreSystem"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.IScoreSystem"
-        />
-  </class>
-  <class class=".scoresystem.DiscreteValuesScoreSystem">
-    <require
-        permission="zope.View"
-        interface=".interfaces.IDiscreteValuesScoreSystem"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.IScoreSystem"
-        />
-  </class>
-  <class class=".scoresystem.GlobalDiscreteValuesScoreSystem">
-    <require
-        permission="zope.View"
-        interface=".interfaces.IDiscreteValuesScoreSystem"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.IScoreSystem"
-        />
-  </class>
-  <class class=".scoresystem.RangedValuesScoreSystem">
-    <require
-        permission="zope.View"
-        interface=".interfaces.IRangedValuesScoreSystem"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.IScoreSystem"
-        />
-  </class>
-  <class class=".scoresystem.GlobalRangedValuesScoreSystem">
-    <require
-        permission="zope.View"
-        interface=".interfaces.IRangedValuesScoreSystem"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.IScoreSystem"
-        />
-  </class>
-  <class class=".scoresystem.CustomScoreSystem">
-    <require
-        permission="zope.View"
-        interface=".interfaces.ICustomScoreSystem"
-        />
-    <require
-        permission="schooltool.edit"
-        set_schema=".interfaces.ICustomScoreSystem"
-        />
-  </class>
-
-  <!-- Score System registrations -->
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".scoresystem.ScoreSystemsVocabulary"
-      name="schooltool.requirement.scoresystems"
-      />
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component=".scoresystem.DiscreteScoreSystemsVocabulary"
-      name="schooltool.requirement.discretescoresystems"
-      />
-  <utility
-      provides="schooltool.requirement.interfaces.IScoreSystem"
-      component=".scoresystem.PercentScoreSystem"
-      name="Percent"
-      />
-  <utility
-      provides="schooltool.requirement.interfaces.IScoreSystem"
-      component=".scoresystem.HundredPointsScoreSystem"
-      name="100 Points"
-      />
-  <utility
-      provides="schooltool.requirement.interfaces.IScoreSystem"
-      component=".scoresystem.CommentScoreSystem"
-      name="Comment"
-      />
-
   <!-- Evaluations Content -->
   <class class=".evaluation.Evaluations">
     <require
@@ -181,21 +82,6 @@
   <class class="schooltool.person.person.Person">
     <implements interface=".interfaces.IHaveEvaluations" />
   </class>
-
-  <!-- Pluggable traverser plugins for HTTP paths -->
-  <adapterTraverserPlugin
-      for="schooltool.app.interfaces.ISchoolToolApplication"
-      layer="zope.publisher.interfaces.http.IHTTPRequest"
-      name="scoresystems"
-      adapter=".interfaces.IScoreSystemContainer"
-      permission="schooltool.edit"
-      />
-
-  <!-- NameChooser -->
-  <adapter
-      for=".interfaces.IScoreSystemContainer"
-      factory="schooltool.app.app.SimpleNameChooser"
-      provides="zope.container.interfaces.INameChooser" />
 
   <!-- generations -->
   <utility

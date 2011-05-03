@@ -43,7 +43,6 @@ def evolve(context):
         setSite(app)
         sm = app.getSiteManager()
         scoresystems = app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
-        contained(scoresystems, root, 'scoresystems')
         chooser = INameChooser(scoresystems)
         for key, util in sm.getUtilitiesFor(ICustomScoreSystem):
             name = chooser.chooseName('', util)

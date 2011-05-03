@@ -36,11 +36,26 @@ from zope.schema.vocabulary import SimpleVocabulary
 import zope.security.checker
 from zope.security.proxy import removeSecurityProxy
 
+from schooltool.app.app import StartUpBase
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces
 from schooltool.requirement.interfaces import IScoreSystemsProxy
 
 SCORESYSTEM_CONTAINER_KEY = 'schooltool.requirement.scoresystem_container'
+
+
+class ScoreSystemAppStartup(StartUpBase):
+    def __call__(self):
+        if SCORESYSTEM_CONTAINER_KEY not in self.app:
+            self.app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
+            scoresystems = self.app[SCORESYSTEM_CONTAINER_KEY]
+            chooser = INameChooser(scoresystems)
+            for ss in [PassFail, AmericanLetterScoreSystem, 
+                       ExtendedAmericanLetterScoreSystem]:
+                custom_ss = CustomScoreSystem(ss.title, ss.description,
+                    ss.scores, ss._bestScore, ss._minPassingScore)
+                name = chooser.chooseName('', custom_ss)
+                scoresystems[name] = custom_ss
 
 
 class ScoreSystemContainer(BTreeContainer):
@@ -52,16 +67,6 @@ class ScoreSystemContainer(BTreeContainer):
 def getScoreSystemContainer(app):
     """Adapt app to IScoreSystemContainer, initializing if necessary"""
 
-    if SCORESYSTEM_CONTAINER_KEY not in app:
-        app = removeSecurityProxy(app)
-        scoresystems = app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
-        chooser = INameChooser(scoresystems)
-        for ss in [PassFail, AmericanLetterScoreSystem, 
-                   ExtendedAmericanLetterScoreSystem]:
-            custom_ss = CustomScoreSystem(ss.title, ss.description,
-                ss.scores, ss._bestScore, ss._minPassingScore)
-            name = chooser.chooseName('', custom_ss)
-            scoresystems[name] = custom_ss
     return app[SCORESYSTEM_CONTAINER_KEY]
 
 
