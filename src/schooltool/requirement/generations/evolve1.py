@@ -34,6 +34,19 @@ from schooltool.requirement.scoresystem import (SCORESYSTEM_CONTAINER_KEY,
 from schooltool.requirement.interfaces import ICustomScoreSystem
 
 
+def removeUtils(site_manager, provided):
+    """HACK: this does not work properly in generic case!"""
+    utilities = list(site_manager.getUtilitiesFor(provided))
+    for key, util in utilities:
+        site_manager.unregisterUtility(util, provided, key)
+
+    n_utils = len(utilities)
+    n_provided = site_manager.utilities._provided[provided]
+    assert n_provided == n_utils
+    del site_manager.utilities._provided[provided]
+    site_manager.utilities._v_lookup.remove_extendor(provided)
+
+
 def evolve(context):
     root = context.connection.root().get(ZopePublication.root_name, None)
 
@@ -41,13 +54,16 @@ def evolve(context):
     apps = findObjectsProviding(root, ISchoolToolApplication)
     for app in apps:
         setSite(app)
-        sm = app.getSiteManager()
         scoresystems = app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
+
+        site_manager = app.getSiteManager()
         chooser = INameChooser(scoresystems)
-        for key, util in sm.getUtilitiesFor(ICustomScoreSystem):
+        utilities = list(site_manager.getUtilitiesFor(ICustomScoreSystem))
+        for key, util in utilities:
             name = chooser.chooseName('', util)
             scoresystems[name] = util
-            sm.unregisterUtility(util, ICustomScoreSystem, key)
+
+        removeUtils(site_manager, ICustomScoreSystem)
 
     setSite(old_site)
 
