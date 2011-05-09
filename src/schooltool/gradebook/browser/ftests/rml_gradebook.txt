@@ -129,6 +129,7 @@ activities:
     >>> teacher.getControl('Add').click()
 
     >>> teacher.getLink('New External Activity').click()
+    >>> teacher.getControl('External Activity').displayValue = ['Sample Source - HTML']
     >>> teacher.getControl('Points').value = '10'
     >>> teacher.getControl('Add').click()
 

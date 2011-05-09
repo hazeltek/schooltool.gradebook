@@ -11,5 +11,22 @@
       factory=".attendance.getSectionAttendanceData"
       />
 
+  <!-- external activities source adapter for journal data -->
+  <adapter
+      for="schooltool.course.interfaces.ISection"
+      provides="schooltool.gradebook.interfaces.IExternalActivities"
+      factory=".attendance.JournalSource"
+      name="journalsource"
+      />
+  <class class=".attendance.JournalExternalActivity">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IExternalActivity"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IExternalActivity"
+        />
+  </class>
 </configure>
 

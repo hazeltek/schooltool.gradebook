@@ -1,0 +1,127 @@
+Journal Average External Activity
+---------------------------------
+
+The user can add a column to the gradebook for displaying the student's
+section journal average.  To do this they have to add the journal average
+external activity.
+
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Claudia'])
+
+Set up a timetable:
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('School Timetables').click()
+    >>> manager.getLink('New Timetable').click()
+    >>> manager.getLink('simple weekly timetable schema').click()
+    >>> manager.getControl(name='field.period_name_1').value = 'First period'
+    >>> manager.getControl(name='field.period_name_2').value = 'Second period'
+    >>> manager.getControl(name='field.period_name_3').value = 'Third period'
+    >>> manager.getControl(name='field.period_start_1').value = '8:00'
+    >>> manager.getControl(name='field.period_start_2').value = '9:00'
+    >>> manager.getControl(name='field.period_start_3').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_1').value = '9:00'
+    >>> manager.getControl(name='field.period_finish_2').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_3').value = '11:00'
+    >>> manager.getControl('Create').click()
+
+Define a schedule for our section:
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Physics I (1)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('First period', index=0).click()
+    >>> manager.getControl('First period', index=1).click()
+    >>> manager.getControl('First period', index=2).click()
+    >>> manager.getControl('First period', index=3).click()
+    >>> manager.getControl('First period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+Click the 'New External Activity' button to add the external activitiy for the
+journal average:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('New External Activity').click()
+    >>> stephan.getControl('External Activity').displayValue = ['Journal Source - Journal Average']
+    >>> stephan.getControl('Label').value = u"Att."
+    >>> stephan.getControl('Points').value = '10'
+    >>> stephan.getControl('Add').click()
+
+Printing the gradebook, we see that the column is there but no data is in the
+cell:
+
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+---------+
+    | Name             | Total | Ave. | Att.    |
+    +------------------+-------+------+---------+
+    | Richter, Claudia | 0.0   | N/A  | [_____] |
+    +------------------+-------+------+---------+
+
+Let's add some attendance data for the student.
+
+    >>> stephan.getLink('Journal').click()
+    >>> stephan.getLink('Physics I (1)').click()
+    >>> stephan.getLink('Claudia').click()
+    >>> input_names = stephan.queryHTML('//input[@type="text"]/@name')
+    >>> stephan.getControl(name=input_names[0]).value = '9'
+    >>> stephan.getControl(name=input_names[1]).value = '8'
+    >>> stephan.getControl('Update').click()
+
+Let's go back to the edit form of the external activity to update the
+grades using the 'Update Grades' button:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Manage Worksheet').click()
+    >>> stephan.getLink('Journal Average').click()
+    >>> stephan.getLink('Update Grades').click()
+
+Now we see that the journal average will show up in the gradebook.
+
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+
+    | Name             | Total | Ave.  | Att.    |
+    +------------------+-------+-------+---------+
+    | Richter, Claudia | 8.5   | 85.0% | [8.50_] |
+    +------------------+-------+-------+---------+
+
