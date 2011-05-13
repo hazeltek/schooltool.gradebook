@@ -75,7 +75,14 @@ RANGED_SCORE_SYSTEM = 'r'
 COMMENT_SCORE_SYSTEM = 'c'
 SUMMARY_TITLE = _('Summary')
 
-column_keys = [('total', _("Total")), ('average', _("Ave."))]
+
+def getColumnKeys(gradebook):
+    column_keys =  [('total', _("Total")), ('average', _("Ave."))]
+    journal_data = interfaces.ISectionAttendanceData(ISection(gradebook))
+    if journal_data is not None:
+        column_keys = ([('absences', _("Abs.")), ('tardies', _("Trd."))] +
+            column_keys)
+    return column_keys
 
 
 def escName(name):
@@ -345,7 +352,19 @@ class SectionFinder(GradebookBase):
             columnPreferences = {}
         else:
             columnPreferences = gradebook.getColumnPreferences(person)
-        column_keys_dict = dict(column_keys)
+        column_keys_dict = dict(getColumnKeys(gradebook))
+
+        prefs = columnPreferences.get('absences', {})
+        self.absences_hide = prefs.get('hide', True)
+        self.absences_label = prefs.get('label', '')
+        if len(self.absences_label) == 0:
+            self.absences_label = column_keys_dict['absences']
+
+        prefs = columnPreferences.get('tardies', {})
+        self.tardies_hide = prefs.get('hide', True)
+        self.tardies_label = prefs.get('label', '')
+        if len(self.tardies_label) == 0:
+            self.tardies_label = column_keys_dict['tardies']
 
         prefs = columnPreferences.get('total', {})
         self.total_hide = prefs.get('hide', False)
@@ -368,6 +387,10 @@ class SectionFinder(GradebookBase):
         if gradebook.context.deployed:
             self.total_hide = True
             self.average_hide = True
+        if not self.absences_hide:
+            self.apply_all_colspan += 1
+        if not self.tardies_hide:
+            self.apply_all_colspan += 1
         if not self.total_hide:
             self.apply_all_colspan += 1
         if not self.average_hide:
@@ -557,6 +580,7 @@ class GradebookOverview(SectionFinder):
         worksheet = gradebook.getCurrentWorksheet(self.person)
         activities = [(activity.__name__, activity)
             for activity in self.getFilteredActivities()]
+        journal_data = interfaces.ISectionAttendanceData(ISection(gradebook))
         rows = []
         for student in self.context.students:
             grades = []
@@ -589,6 +613,17 @@ class GradebookOverview(SectionFinder):
             else:
                 average = convertAverage(average, self.average_scoresystem)
 
+            if journal_data is None:
+                absences = tardies = ''
+            else:
+                absences = tardies = 0
+                for meeting in journal_data.recordedMeetings(student):
+                    grade = journal_data.getGrade(student, meeting)
+                    if grade.strip().lower() == 'n':
+                        absences += 1
+                    if grade.strip().lower() == 'p':
+                        tardies += 1
+
             rows.append(
                 {'student': {'title': student.title,
                              'id': student.username,
@@ -597,6 +632,8 @@ class GradebookOverview(SectionFinder):
                                     ('/%s' % student.username),
                             },
                  'grades': grades,
+                 'absences': unicode(absences),
+                 'tardies': unicode(tardies),
                  'total': unicode(total),
                  'average': unicode(average)
                 })
@@ -886,7 +923,7 @@ class GradebookColumnPreferences(BrowserView):
 
         if 'UPDATE_SUBMIT' in self.request:
             columnPreferences = gradebook.getColumnPreferences(self.person)
-            for key, name in column_keys:
+            for key, name in getColumnKeys(gradebook):
                 prefs = columnPreferences.setdefault(key, {})
                 if 'hide_' + key in self.request:
                     prefs['hide'] = True
@@ -896,7 +933,7 @@ class GradebookColumnPreferences(BrowserView):
                     prefs['label'] = self.request['label_' + key]
                 else:
                     prefs['label'] = ''
-                if key != 'total':
+                if key == 'average':
                     prefs['scoresystem'] = self.request['scoresystem_' + key]
             prefs = columnPreferences.setdefault('due_date', {})
             if 'hide_due_date' in self.request:
@@ -925,9 +962,9 @@ class GradebookColumnPreferences(BrowserView):
         gradebook = proxy.removeSecurityProxy(self.context)
         results = []
         columnPreferences = gradebook.getColumnPreferences(self.person)
-        for key, name in column_keys:
+        for key, name in getColumnKeys(gradebook):
             prefs = columnPreferences.get(key, {})
-            hide = prefs.get('hide', False)
+            hide = prefs.get('hide', key in ['absences', 'tardies'])
             label = prefs.get('label', '')
             scoresystem = prefs.get('scoresystem', '')
             result = {
@@ -936,6 +973,7 @@ class GradebookColumnPreferences(BrowserView):
                 'hide_value': hide,
                 'label_name': 'label_' + key,
                 'label_value': label,
+                'has_scoresystem': key == 'average',
                 'scoresystem_name': 'scoresystem_' + key,
                 'scoresystem_value': scoresystem,
                 }
