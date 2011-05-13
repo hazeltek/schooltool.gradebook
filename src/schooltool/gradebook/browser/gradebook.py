@@ -78,7 +78,7 @@ SUMMARY_TITLE = _('Summary')
 
 def getColumnKeys(gradebook):
     column_keys =  [('total', _("Total")), ('average', _("Ave."))]
-    journal_data = interfaces.ISectionAttendanceData(ISection(gradebook))
+    journal_data = interfaces.ISectionAttendanceData(ISection(gradebook), None)
     if journal_data is not None:
         column_keys = ([('absences', _("Abs.")), ('tardies', _("Trd."))] +
             column_keys)
@@ -358,13 +358,13 @@ class SectionFinder(GradebookBase):
         self.absences_hide = prefs.get('hide', True)
         self.absences_label = prefs.get('label', '')
         if len(self.absences_label) == 0:
-            self.absences_label = column_keys_dict['absences']
+            self.absences_label = column_keys_dict.get('absences')
 
         prefs = columnPreferences.get('tardies', {})
         self.tardies_hide = prefs.get('hide', True)
         self.tardies_label = prefs.get('label', '')
         if len(self.tardies_label) == 0:
-            self.tardies_label = column_keys_dict['tardies']
+            self.tardies_label = column_keys_dict.get('tardies')
 
         prefs = columnPreferences.get('total', {})
         self.total_hide = prefs.get('hide', False)
@@ -578,9 +578,10 @@ class GradebookOverview(SectionFinder):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
+        section = ISection(worksheet)
         activities = [(activity.__name__, activity)
             for activity in self.getFilteredActivities()]
-        journal_data = interfaces.ISectionAttendanceData(ISection(gradebook))
+        journal_data = interfaces.ISectionAttendanceData(section, None)
         rows = []
         for student in self.context.students:
             grades = []
