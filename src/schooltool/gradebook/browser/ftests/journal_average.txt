@@ -103,6 +103,7 @@ Let's add some attendance data for the student.
     >>> input_names = stephan.queryHTML('//input[@type="text"]/@name')
     >>> stephan.getControl(name=input_names[0]).value = '9'
     >>> stephan.getControl(name=input_names[1]).value = '8'
+    >>> stephan.getControl(name=input_names[2]).value = '8'
     >>> stephan.getControl('Update').click()
 
 Let's go back to the edit form of the external activity to update the
@@ -122,6 +123,6 @@ Now we see that the journal average will show up in the gradebook.
     +------------------+-------+-------+---------+
     | Name             | Total | Ave.  | Att.    |
     +------------------+-------+-------+---------+
-    | Richter, Claudia | 8.5   | 85.0% | [8.50_] |
+    | Richter, Claudia | 8.3   | 83.3% | [8.33_] |
     +------------------+-------+-------+---------+
 
