@@ -3,7 +3,7 @@
            xmlns:zope="http://namespaces.zope.org/zope"
            xmlns:zcml="http://namespaces.zope.org/zcml"
            xmlns:report="http://namespaces.schooltool.org/report"
-           i18n_domain="schooltool">
+           i18n_domain="schooltool.gradebook">
 
   <!-- Report links -->
   <report:reportLink
@@ -11,8 +11,7 @@
        for="schooltool.basicperson.interfaces.IBasicPerson"
        permission="schooltool.edit"
        group="Student"
-       description="Contains scores from report sheets and attendance.
-                    Customizable layout.  Formatted to be sent to parents."
+       description="Contains scores from report sheets.  Formatted to be sent to parents."
        title="Student Report Card"
        link="request_report_card.html"
        />
@@ -21,8 +20,7 @@
        for="schooltool.basicperson.interfaces.IBasicPerson"
        permission="schooltool.edit"
        group="Student"
-       description="Contains scores from report sheets, detailed attendance
-                    and demographic data.  For use by school staff."
+       description="Contains scores from report sheets and attendance.  For use by school staff."
        title="Student Detail Report"
        link="request_student_detail.html"
        />
@@ -31,8 +29,7 @@
        for="schooltool.group.interfaces.IGroup"
        permission="schooltool.edit"
        group="Group"
-       description="A single pdf containing report cards for all students in
-                    the selected group."
+       description="A single PDF containing report cards for all students in the group."
        title="Student Report Card by Group"
        link="request_report_card.html"
        />
@@ -41,8 +38,7 @@
        for="schooltool.group.interfaces.IGroup"
        permission="schooltool.edit"
        group="Group"
-       description="A single pdf containing detail reports for all students
-                    in the selected group."
+       description="A single PDF containing detail reports for all students in the group."
        title="Student Detail Report by Group"
        link="request_student_detail.html"
        />
@@ -51,8 +47,7 @@
        for="schooltool.term.interfaces.ITerm"
        permission="schooltool.edit"
        group="Term"
-       description="Shows all students receiving failing scores in the
-                    selected report activity and term."
+       description="Shows all students receiving failing scores in the selected report activity and term."
        title="Failures by Term"
        link="request_failing_report.html"
        />

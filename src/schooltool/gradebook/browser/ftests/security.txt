@@ -5,6 +5,10 @@ It was desirable to move the security tests out of schooltool and into the
 schooltool.gradebook package where they belong, so here is where they will
 be.
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -95,28 +99,18 @@ For managers, the default is to allow them to view, but not edit.
     >>> manager.getLink('Gradebook', index=1).click()
     >>> manager.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    90.7%
-    49.3%
+    >>> printGradebook(manager.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
+
     >>> manager.getLink('HW1').click()
     Traceback (most recent call last):
     ...
@@ -145,34 +139,33 @@ And try again:
     </h3>
     >>> manager.getControl(name='tom').value = '30'
     >>> manager.getControl('Save').click()
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    118.0
-    74.0
-    >>> manager.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    78.7%
-    49.3%
+    >>> printGradebook(manager.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 118.0 | 78.7% | [30___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 A teacher should be able to view and edit his own gradebook.
 
     >>> stephan.getLink('Gradebook').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    118.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    78.7%
-    49.3%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 118.0 | 78.7% | [30___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
+
     >>> stephan.getLink('HW1').click()
     >>> stephan.printQuery('//h3')
     <h3>
@@ -180,18 +173,17 @@ A teacher should be able to view and edit his own gradebook.
     </h3>
     >>> stephan.getControl(name='tom').value = '50'
     >>> stephan.getControl('Save').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    138.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    92.0%
-    49.3%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 138.0 | 92.0% | [50___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 Students won't be able to see each other's grade's because the mygrades view
 uses the request's principal to determine which grades to display.

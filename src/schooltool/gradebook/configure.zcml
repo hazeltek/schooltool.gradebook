@@ -24,7 +24,7 @@
 
   <!-- Category Vocabulary -->
   <include package="z3c.optionstorage" />
-
+ 
   <utility
       provides="zope.schema.interfaces.IVocabularyFactory"
       component="schooltool.gradebook.category.CategoryVocabulary"

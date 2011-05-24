@@ -11,6 +11,10 @@ activity, or a link to the average column of the worksheet.  Activity links
 will use the score system of the source activity whereas worksheet average
 links will use an assumed 100 point system.
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -88,36 +92,17 @@ Add some grades:
 
 Check the totals and averages:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    90.7%
-    49.3%
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 We'll add another worksheet:
 
@@ -134,13 +119,17 @@ Let's add some activities, weighting and grades to the new worksheet:
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Math I - Math I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="...">Sheet1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Second Sheet</span>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +--------+----------------+
+    | Sheet1 | *Second Sheet* |
+    +--------+----------------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'First Homework'
@@ -185,31 +174,17 @@ Let's add some activities, weighting and grades to the new worksheet:
 
 Check the total and averages for this worksheet:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>1stHW</a>
-    </div>
-    <div class="padded">
-      <a ...>1stPr</a>
-    </div>
-    <div class="padded">
-      <a ...>2ndPr</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    226.0
-    229.0
-    241.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    76.0%
-    76.5%
-    79.8%
+    >>> printGradebook(stephan.contents)
+    +--------+----------------+
+    | Sheet1 | *Second Sheet* |
+    +--------+----------------+
+    +------------------+-------+-------+---------+---------+---------+
+    | Name             | Total | Ave.  | 1stHW   | 1stPr   | 2ndPr   |
+    +------------------+-------+-------+---------+---------+---------+
+    | Cardune, Paul    | 226.0 | 76.0% | [70___] | [84___] | [72___] |
+    | Hoffman, Tom     | 229.0 | 76.5% | [75___] | [73___] | [81___] |
+    | Richter, Claudia | 241.0 | 79.8% | [85___] | [67___] | [89___] |
+    +------------------+-------+-------+---------+---------+---------+
 
 We'll switch to the Spring term and add some activities and scores to
 the Physics I section:
@@ -244,28 +219,17 @@ the Physics I section:
 We'll test the totals and averages so that we can check the linked
 values later:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>Lab1</a>
-    </div>
-    <div class="padded">
-      <a ...>Final</a>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    188.0
-    160.0
-    180.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    94.5%
-    80.4%
-    90.5%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | Lab1    | Final   |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 188.0 | 94.5% | [89___] | [99___] |
+    | Hoffman, Tom     | 160.0 | 80.4% | [72___] | [88___] |
+    | Richter, Claudia | 180.0 | 90.5% | [91___] | [89___] |
+    +------------------+-------+-------+---------+---------+
 
 Now we'll return to the Fall Math I section and add our first linked
 column to the Sheet1 worksheet. We'll also test the Cancel button in
@@ -274,13 +238,17 @@ the New Linked Column form:
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Sheet1').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Second Sheet</a>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
     >>> stephan.getLink('New Linked Column').click()
     >>> stephan.printQuery('//h1/text()')
@@ -366,63 +334,21 @@ it from the Manage Worksheet view:
 The worksheet now has two new columns whose values are pulled in from
 the sources of the links.
 
-    >>> # XXX: 2nd Presentation should be converted to '2ndPr'
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <span>2nd Presentation</span>
-    </div>
-    <div class="padded">
-      <span>PHYSI</span>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+-------+---------+---------+-------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | 2ndPr | PHYSI |
+    +------------------+-------+-------+---------+---------+-------+-------+
+    | Cardune, Paul    | 296.5 | 84.7% | [40___] | [90___] | 72    | 94.5  |
+    | Hoffman, Tom     | 297.4 | 85.0% | [48___] | [88___] | 81    | 80.4  |
+    | Richter, Claudia | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
+    +------------------+-------+-------+---------+---------+-------+-------+
 
-The total and average columns have been recalculated:
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    296.5
-    297.4
-    253.5
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    84.7%
-    85.0%
-    72.4%
-
-The editable grades:
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    40
-    48
-    45
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    90
-    88
-    29
-
-And the non-editable linked columns:
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
-    72
-    81
-    89
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/span/text()')
-    94.5
-    80.4
-    90.5
-
-If the value of the source of a linked column change. Let's change the
-grade for Paul's Second Presentation of the Second Sheet:
+What happens if the value of the source of a linked column
+change. Let's change the grade for Paul's Second Presentation of the
+Second Sheet:
 
     >>> stephan.getLink('Second Sheet').click()
     >>> stephan.getLink('2ndPr').click()
@@ -437,48 +363,34 @@ his average also changes:
     >>> stephan.getLink('Final').click()
     >>> stephan.getControl('Hoffman, Tom').value = u'60'
     >>> stephan.getControl('Save').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    188.0
-    132.0
-    180.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    94.5%
-    66.3%
-    90.5%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | Lab1    | Final   |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 188.0 | 94.5% | [89___] | [99___] |
+    | Hoffman, Tom     | 132.0 | 66.3% | [72___] | [60___] |
+    | Richter, Claudia | 180.0 | 90.5% | [91___] | [89___] |
+    +------------------+-------+-------+---------+---------+
 
 The linked columns should also change:
 
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Sheet1').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <span>2nd Presentation</span>
-    </div>
-    <div class="padded">
-      <span>PHYSI</span>
-    </div>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/span/text()')
-    99
-    81
-    89
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/span/text()')
-    94.5
-    66.3
-    90.5
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+-------+---------+---------+-------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | 2ndPr | PHYSI |
+    +------------------+-------+-------+---------+---------+-------+-------+
+    | Cardune, Paul    | 323.5 | 92.4% | [40___] | [90___] | 99    | 94.5  |
+    | Hoffman, Tom     | 283.3 | 81.0% | [48___] | [88___] | 81    | 66.3  |
+    | Richter, Claudia | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
+    +------------------+-------+-------+---------+---------+-------+-------+
 
 If we grade student by student, we'll see that linked columns are read
 only there too:
@@ -537,34 +449,33 @@ the 2nd Presentation linked column of Sheet1 with no source:
     >>> stephan.getControl(name='delete:list').value = ['Activity-3']
     >>> stephan.getControl('Delete').click()
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>1stHW</a>
-    </div>
-    <div class="padded">
-      <a ...>1stPr</a>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +--------+----------------+
+    | Sheet1 | *Second Sheet* |
+    +--------+----------------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | 1stHW   | 1stPr   |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 154.0 | 80.5% | [70___] | [84___] |
+    | Hoffman, Tom     | 148.0 | 73.5% | [75___] | [73___] |
+    | Richter, Claudia | 152.0 | 71.5% | [85___] | [67___] |
+    +------------------+-------+-------+---------+---------+
 
 Now, when we get back to Sheet1, the linked column should have
 disappeared:
 
     >>> stephan.getLink('Sheet1').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <span>PHYSI</span>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+-------+---------+---------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | PHYSI |
+    +------------------+-------+-------+---------+---------+-------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Hoffman, Tom     | 202.3 | 80.9% | [48___] | [88___] | 66.3  |
+    | Richter, Claudia | 164.5 | 65.8% | [45___] | [29___] | 90.5  |
+    +------------------+-------+-------+---------+---------+-------+
 
 Same if we grade a student:
 
@@ -606,26 +517,17 @@ We're back to the Sheet1 worksheet of the Math Fall section:
     2005-2006 / Fall
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Math I - Math I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Second Sheet</a>
-    </td>
-
-and we don't see the PHYSICS linked column anymore:
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 If we unhide the worksheet:
 
@@ -644,16 +546,14 @@ the linked column is shown again:
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-    <div class="padded">
-      <span>PHYSI</span>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +----------+--------------+
+    | *Sheet1* | Second Sheet |
+    +----------+--------------+
+    +------------------+-------+-------+---------+---------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | PHYSI |
+    +------------------+-------+-------+---------+---------+-------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Hoffman, Tom     | 202.3 | 80.9% | [48___] | [88___] | 66.3  |
+    | Richter, Claudia | 164.5 | 65.8% | [45___] | [29___] | 90.5  |
+    +------------------+-------+-------+---------+---------+-------+

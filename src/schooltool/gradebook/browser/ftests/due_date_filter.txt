@@ -1,6 +1,10 @@
 Due date filter for activities
 ------------------------------
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -92,14 +96,17 @@ Grade this homework:
     >>> teacher.getControl('Tejada, Mario').value = '8'
     >>> teacher.getControl('Save').click()
     
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[4]/input/@value')
-    7
-    10
-    8
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+--------+---------+
+    | Name           | Total | Ave.   | BALL    |
+    +----------------+-------+--------+---------+
+    | Cerna, Camila  | 7.0   | 70.0%  | [7____] |
+    | Guzman, Nestor | 10.0  | 100.0% | [10___] |
+    | Tejada, Mario  | 8.0   | 80.0%  | [8____] |
+    +----------------+-------+--------+---------+
 
 Add a second homework with due date on April 4th and grade it:
 
@@ -117,14 +124,17 @@ Add a second homework with due date on April 4th and grade it:
     >>> teacher.getControl('Tejada, Mario').value = '8'
     >>> teacher.getControl('Save').click()
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[5]/input/@value')
-    10
-    6
-    8
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+
+    | Name           | Total | Ave.  | BALL    | TEAM    |
+    +----------------+-------+-------+---------+---------+
+    | Cerna, Camila  | 17.0  | 85.0% | [7____] | [10___] |
+    | Guzman, Nestor | 16.0  | 80.0% | [10___] | [6____] |
+    | Tejada, Mario  | 16.0  | 80.0% | [8____] | [8____] |
+    +----------------+-------+-------+---------+---------+
 
 And a third one with due date on April 29th:
 
@@ -142,14 +152,17 @@ And a third one with due date on April 29th:
     >>> teacher.getControl('Tejada, Mario').value = '9'
     >>> teacher.getControl('Save').click()
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[6]/input/@value')
-    9
-    9
-    9
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+---------+
+    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    |
+    +----------------+-------+-------+---------+---------+---------+
+    | Cerna, Camila  | 26.0  | 86.7% | [7____] | [10___] | [9____] |
+    | Guzman, Nestor | 25.0  | 83.3% | [10___] | [6____] | [9____] |
+    | Tejada, Mario  | 25.0  | 83.3% | [8____] | [8____] | [9____] |
+    +----------------+-------+-------+---------+---------+---------+
 
 Now, let's add an exam with due date on May 20th:
 
@@ -167,22 +180,17 @@ Now, let's add an exam with due date on May 20th:
     >>> teacher.getControl('Tejada, Mario').value = '10'
     >>> teacher.getControl('Save').click()
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]/tr[position()>3]/td[7]/input/@value')
-    10
-    5
-    10
-
-Let's list our activity headers:
-
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    BALL
-    TEAM
-    GAME
-    GOAL
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Cerna, Camila  | 36.0  | 90.0% | [7____] | [10___] | [9____] | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +----------------+-------+-------+---------+---------+---------+---------+
 
 And go grade a single student:
 
@@ -203,6 +211,17 @@ and change one:
 
     >>> teacher.getControl('Get a ball').value = ''
     >>> teacher.getControl('Apply').click()
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +----------------+-------+-------+---------+---------+---------+---------+
 
 Let's check the 'view.html' view for the student (XXX: which btw has no way
 to be accessed, no links, no button, nothing!):
@@ -243,12 +262,20 @@ activities, showing only those with due date in the past 9 weeks:
     >>> teacher.getControl('Save').click()
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" checked="checked" />
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    TEAM
-    GAME
-    GOAL
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+---------+
+    | Name           | Total | Ave.  | TEAM    | GAME    | GOAL    |
+    +----------------+-------+-------+---------+---------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [10___] | [9____] | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [6____] | [9____] | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [9____] | [10___] |
+    +----------------+-------+-------+---------+---------+---------+
 
-Notice how the 'Get a ball (BALL)' activity is filtered out.
+Notice how the 'Get a ball (BALL)' activity is filtered out, but the
+Total and Average values stay the same.
 
 If we get back to grade a single student:
 
@@ -285,8 +312,17 @@ past two weeks:
     <input type="checkbox" name="due_date:list" checked="checked" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
     2
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    GOAL
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+
+    | Name           | Total | Ave.  | GOAL    |
+    +----------------+-------+-------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [10___] |
+    +----------------+-------+-------+---------+
 
 And if we change the dropdown to one week, all the activities are
 filtered out:
@@ -297,8 +333,17 @@ filtered out:
     <input type="checkbox" name="due_date:list" checked="checked" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
     1
-    >>> teacher.queryHTML('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    []
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+
+    | Name           | Total | Ave.  |
+    +----------------+-------+-------+
+    | Cerna, Camila  | 29.0  | 96.7% |
+    | Guzman, Nestor | 30.0  | 75.0% |
+    | Tejada, Mario  | 35.0  | 87.5% |
+    +----------------+-------+-------+
 
 Let's change the due date for the GOAL activity to May 30th:
 
@@ -311,16 +356,17 @@ Let's change the due date for the GOAL activity to May 30th:
 And now the activity is not filtered out because its due date is in
 the past week:
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    GOAL
-    >>> teacher.getControl(name='num_weeks').displayValue = ['2']
-    >>> teacher.getControl('Save').click()
-    >>> teacher.printQuery('//input[@name="due_date:list"]')
-    <input type="checkbox" name="due_date:list" checked="checked" />
-    >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
-    2
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    GOAL
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+
+    | Name           | Total | Ave.  | GOAL    |
+    +----------------+-------+-------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [10___] |
+    +----------------+-------+-------+---------+
 
 To show all the activities again, we unmark the checkbox:
 
@@ -329,12 +375,18 @@ To show all the activities again, we unmark the checkbox:
     >>> teacher.printQuery('//input[@name="due_date:list"]')
     <input type="checkbox" name="due_date:list" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
-    2
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    BALL
-    TEAM
-    GAME
-    GOAL
+    1
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +----------------+-------+-------+---------+---------+---------+---------+
 
 
 Filter keeps its value through term, section and worksheet changes (BUG?)
@@ -357,15 +409,17 @@ Let's unmark the checkbox and change the dropdown value to 9 weeks:
 All the activities are shown in the default worksheet of the Soccer
 section of the first semester:
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    BALL
-    TEAM
-    GAME
-    GOAL
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +----------------+-------+-------+---------+---------+---------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +----------------+-------+-------+---------+---------+---------+---------+
 
 We'll add a second worksheet with two activities, one with due date on
 April 11th and the other on May 27th:
@@ -391,16 +445,17 @@ April 11th and the other on May 27th:
 
 All the activites are shown in the second worksheet:
 
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="...">Sheet1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Second WS</span>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    WIN
-    SAVE
+    >>> printGradebook(teacher.contents)
+    +--------+-------------+
+    | Sheet1 | *Second WS* |
+    +--------+-------------+
+    +----------------+-------+------+---------+---------+
+    | Name           | Total | Ave. | WIN     | SAVE    |
+    +----------------+-------+------+---------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
+    +----------------+-------+------+---------+---------+
 
 Let's apply the due filter in the second worksheet:
 
@@ -411,8 +466,17 @@ Let's apply the due filter in the second worksheet:
     <input type="checkbox" name="due_date:list" checked="checked" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
     1
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    SAVE
+    >>> printGradebook(teacher.contents)
+    +--------+-------------+
+    | Sheet1 | *Second WS* |
+    +--------+-------------+
+    +----------------+-------+------+---------+
+    | Name           | Total | Ave. | SAVE    |
+    +----------------+-------+------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] |
+    +----------------+-------+------+---------+
 
 If we change back to the first worksheet, the checkbox is marked and
 the dropdown has its new value, so the old filter is also applied to
@@ -423,15 +487,17 @@ this worksheet:
     <input type="checkbox" name="due_date:list" checked="checked" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
     1
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Sheet1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Second WS</a>
-    </td>
-    >>> teacher.printQuery('//table[@class="schooltool_gradebook"][2]//a[contains(@href, "gradeActivity.html")]/text()')
-    GOAL
+    >>> printGradebook(teacher.contents)
+    +----------+-----------+
+    | *Sheet1* | Second WS |
+    +----------+-----------+
+    +----------------+-------+-------+---------+
+    | Name           | Total | Ave.  | GOAL    |
+    +----------------+-------+-------+---------+
+    | Cerna, Camila  | 29.0  | 96.7% | [10___] |
+    | Guzman, Nestor | 30.0  | 75.0% | [5____] |
+    | Tejada, Mario  | 35.0  | 87.5% | [10___] |
+    +----------------+-------+-------+---------+
 
 If we change to another section, the old filter keeps its values:
 
@@ -447,6 +513,17 @@ If we change to another section, the old filter keeps its values:
     <input type="checkbox" name="due_date:list" checked="checked" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
     1
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+
 
 Or to another term:
 
@@ -462,3 +539,14 @@ Or to another term:
     <input type="checkbox" name="due_date:list" checked="checked" />
     >>> teacher.printQuery('//select[@name="num_weeks"]/option[@selected="selected"]/text()')
     1
+    >>> printGradebook(teacher.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+

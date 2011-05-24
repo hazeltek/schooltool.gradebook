@@ -2,6 +2,6 @@
 <configure
     xmlns:meta="http://namespaces.zope.org/meta">
 
-  <meta:provides feature="plugin-schooltool.gradebook" />
+  <meta:provides feature="schooltool.gradebook" />
 
 </configure>

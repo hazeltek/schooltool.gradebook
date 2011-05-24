@@ -1,6 +1,10 @@
 Gradebook Management
 --------------------
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -153,17 +157,17 @@ to the first one.
     Math I - Math I (2)
     >>> stephan.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Physics I - Physics I (1)
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Week 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Week 2</a>
-    </td>
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
 Now, we'll test the Term and Section dropdowns which allow the
 teachers to navigate through their sections. Lets change to Stephan's
@@ -226,8 +230,17 @@ the gradebook.
     Preferences
     Export XLS
     Download PDF
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    HW1
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+------+---------+
+    | Name             | Total | Ave. | HW1     |
+    +------------------+-------+------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] |
+    +------------------+-------+------+---------+
 
 We'll add a second activity.
 
@@ -236,9 +249,17 @@ We'll add a second activity.
     >>> stephan.getControl('Description').value = 'Week 1 Pop Quiz'
     >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    HW1
-    Quiz
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW1     | Quiz    |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 We'll test editing an activity's description.  To do this, we need to go to use
 the 'Manage Worksheet' link.  This presents us with a view of the current
@@ -270,13 +291,17 @@ Now let's change the current worksheet to 'Week 2'.
 
     >>> stephan.getLink('Return to Gradebook').click()
     >>> stephan.getLink('Week 2').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <a href="...">Week 1</a>
-    </td>
-    <td class="active_tab">
-      <span style="font-weight: bold;">Week 2</span>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +--------+----------+
+    | Week 1 | *Week 2* |
+    +--------+----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Cardune, Paul    | 0.0   | N/A  |
+    | Hoffman, Tom     | 0.0   | N/A  |
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
 
 Now we'll add some activities to it.
 
@@ -285,16 +310,34 @@ Now we'll add some activities to it.
     >>> stephan.getControl('Description').value = 'Homework 2'
     >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Add').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    HW2
+    >>> printGradebook(stephan.contents)
+    +--------+----------+
+    | Week 1 | *Week 2* |
+    +--------+----------+
+    +------------------+-------+------+---------+
+    | Name             | Total | Ave. | HW2     |
+    +------------------+-------+------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] |
+    +------------------+-------+------+---------+
+
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
     >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    HW2
-    Final
+    >>> printGradebook(stephan.contents)
+    +--------+----------+
+    | Week 1 | *Week 2* |
+    +--------+----------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW2     | Final   |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 The 'Manage Worksheet' view allows for reordering the columns of the gradebook.
 We'll switch the order or our two activities.  Since Javascript is not working
@@ -313,9 +356,17 @@ in the tests, we submit the form manually:
 The gradebook shows the new positions:
 
     >>> stephan.getLink('Return to Gradebook').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    Final
-    HW2
+    >>> printGradebook(stephan.contents)
+    +--------+----------+
+    | Week 1 | *Week 2* |
+    +--------+----------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | Final   | HW2     |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 We'll switch them back.
 
@@ -338,16 +389,34 @@ We'll switch to the Spring term and add some activities to the English I section
     >>> stephan.getControl('Category').displayValue = ['Assignment']
     >>> stephan.getControl('Maximum').value = '99'
     >>> stephan.getControl('Add').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    Lab1
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+---------+
+    | Name             | Total | Ave. | Lab1    |
+    +------------------+-------+------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] |
+    +------------------+-------+------+---------+
+
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
     >>> stephan.getControl('Description').value = 'Final Exam'
     >>> stephan.getControl('Category').displayValue = ['Exam']
     >>> stephan.getControl('Add').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    Lab1
-    Final
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | Lab1    | Final   |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 Finally, we'll change the section back to the Physics section of the
 Fall and the current worksheet back to 'Week 1'.
@@ -355,13 +424,17 @@ Fall and the current worksheet back to 'Week 1'.
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Fall']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Week 1').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Week 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Week 2</a>
-    </td>
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW1     | Quiz    |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 
 Grading
@@ -371,20 +444,37 @@ The initial gradebook screen is a simple spreadsheet.  Since we just loaded up
 the gradebook for the first time, the current worksheet will be the first one,
 Week 1.  Only the activities for that worksheet should appear.
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[@class="padded"]/a/text()')
-    HW1
-    Quiz
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW1     | Quiz    |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 We can enter a score into any cell.  Let's enter one for Claudia's HW 1
 activity:
 
-    >>> stephan.getControl(name='Activity_claudia').value = '56'
+    >>> stephan.getControl(name='Activity_claudia').value = '36'
     >>> stephan.getControl('Save').click()
 
 We should see the score reflected in the spreadsheet.
 
-    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
-    56
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A   | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A   | [_____] | [_____] |
+    | Richter, Claudia | 36.0  | 72.0% | [36___] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 If we enter an invalid score, we will get an error message.
 
@@ -395,22 +485,38 @@ If we enter an invalid score, we will get an error message.
 
 We can change the score and see the change reflected in the spreadsheet.
 
-    >>> stephan.getControl(name='Activity_claudia').value = '88'
+    >>> stephan.getControl(name='Activity_claudia').value = '58'
     >>> stephan.getControl('Save').click()
-    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
-    88
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+--------+---------+---------+
+    | Name             | Total | Ave.   | HW1     | Quiz    |
+    +------------------+-------+--------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A    | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A    | [_____] | [_____] |
+    | Richter, Claudia | 58.0  | 116.0% | [58___] | [_____] |
+    +------------------+-------+--------+---------+---------+
+
+Note how the average shows a value greater than 100%. The gradebook
+allows extra credits for ranged score systems (e.g. 0-50).
 
 Finally, we can remove the score by clearing out the cell.
 
     >>> stephan.getControl(name='Activity_claudia').value = ''
     >>> stephan.getControl('Save').click()
-    >>> stephan.queryHTML('//input[@name="Activity_claudia"]/@value')
-    ['']
-
-We need to put the score back for future tests to pass.
-
-    >>> stephan.getControl(name='Activity_claudia').value = '36'
-    >>> stephan.getControl('Save').click()
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+------+---------+---------+
+    | Name             | Total | Ave. | HW1     | Quiz    |
+    +------------------+-------+------+---------+---------+
+    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
+    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
+    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
+    +------------------+-------+------+---------+---------+
 
 
 Entering Scores for a Column (Activity)
@@ -425,8 +531,8 @@ click on the activity's name:
       Grade HW 1
     </h3>
 
-Now we just enter the grades. Since Claudia has already a grade, we only need
-to grade Paul and Tom:
+Now we just enter the grades. Let's only enter grades for Paul and
+Tom:
 
     >>> stephan.getControl('Cardune, Paul').value = u'-1'
     >>> stephan.getControl('Hoffman, Tom').value = u'42'
@@ -443,46 +549,45 @@ Also note that all the other entered values should be retained:
     -1
     >>> stephan.printQuery('id("tom")/@value')
     42
-    >>> stephan.printQuery('id("claudia")/@value')
-    36
     >>> stephan.getControl('Cardune, Paul').value = u'32'
     >>> stephan.getControl('Save').click()
 
 The screen will return to the grade overview, where the grades are now
 visible:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Week 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Week 2</a>
-    </td>
-    >>> stephan.printQuery('//input[@name="Activity_paul"]/@value')
-    32
-    >>> stephan.printQuery('//input[@name="Activity_tom"]/@value')
-    42
-    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
-    36
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom     | 42.0  | 84.0% | [42___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
-Now let's enter again and change a grade:
+Now let's modify some grades:
 
     >>> stephan.getLink('HW1').click()
     >>> stephan.printQuery('//h3')
     <h3>
       Grade HW 1
     </h3>
+    >>> stephan.getControl('Hoffman, Tom').value = u'40'
     >>> stephan.getControl('Richter, Claudia').value = u'48'
     >>> stephan.getControl('Save').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][1]/tr/td')
-    <td class="active_tab">
-      <span style="font-weight: bold;">Week 1</span>
-    </td>
-    <td class="active_tab">
-      <a href="...">Week 2</a>
-    </td>
-    >>> stephan.printQuery('//input[@name="Activity_claudia"]/@value')
-    48
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 48.0  | 96.0% | [48___] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 When you want to delete an evaluation altogether, simply blank the value:
 
@@ -493,8 +598,17 @@ When you want to delete an evaluation altogether, simply blank the value:
     </h3>
     >>> stephan.getControl('Richter, Claudia').value = u''
     >>> stephan.getControl('Save').click()
-    >>> stephan.queryHTML('//input[@name="Activity_claudia"]/@value')
-    ['']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 Of course, you can also abort the grading.
 
@@ -522,18 +636,17 @@ some interesting numbers for the summary view.
     >>> stephan.getControl('Hoffman, Tom').value = u'72'
     >>> stephan.getControl('Richter, Claudia').value = u'42'
     >>> stephan.getControl('Save').click()
-
-We'll set the current worksheet back to week 1 for the rest of the tests.
-
-    >>> stephan.getLink('Week 1').click()
-
-We need to set Claudia's Quiz score to 86 to replace tests that we deleted.
-
-    >>> stephan.getLink('Quiz').click()
-    >>> stephan.getControl('Richter, Claudia').value = u'86'
-    >>> stephan.getControl('Save').click()
-    >>> stephan.url
-    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/index.html'
+    >>> printGradebook(stephan.contents)
+    +--------+----------+
+    | Week 1 | *Week 2* |
+    +--------+----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW2     | Final   |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 90.0  | 90.0% | [90___] | [_____] |
+    | Hoffman, Tom     | 72.0  | 72.0% | [72___] | [_____] |
+    | Richter, Claudia | 42.0  | 42.0% | [42___] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 
 Entering Scores for a Row (Student)
@@ -552,10 +665,11 @@ which allows them to go from student to student without having to return to
 the gradebook spreadsheet each time.  'Apply' and 'Cancel' return to the
 spreadsheet as one would expect.
 
-We'll start by clicking on Paul and testing the contents of the form.
-Since Paul is the first student in the list of students, there will be
-no 'Previous' button.
+We'll start on the Week 1 worksheet by clicking on Paul and testing
+the contents of the form.  Since Paul is the first student in the list
+of students, there will be no 'Previous' button.
 
+    >>> stephan.getLink('Week 1').click()
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.printQuery("id('form')/div[1]/h3")
     <h3>Enter grades for Cardune, Paul</h3>
@@ -601,14 +715,17 @@ Hitting the 'Cancel' button takes the user back to the gradebook.
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
-    ['32', '42', '']
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
-    ['', '', '86']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 Now we'll go change a cell for Paul and come back.
 
@@ -618,28 +735,34 @@ Now we'll go change a cell for Paul and come back.
 
 We see the new value where it wasn't before.
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
-    ['32', '42', '']
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
-    ['85', '', '86']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 117.0 | 78.0% | [32___] | [85___] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 Let's change that new value to something else.
 
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.getControl(name='form.widgets.Activity-2').value = '35'
     >>> stephan.getControl('Apply').click()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
-    ['32', '42', '']
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
-    ['35', '', '86']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 67.0  | 44.7% | [32___] | [35___] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 Finally, we'll change it back to the way it was, demonstrating that we can
 remove scores in the student gradebook.
@@ -650,14 +773,17 @@ remove scores in the student gradebook.
 
 The data cells are set as before.
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
-    ['32', '42', '']
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[5]/input[@class="data"]/@value')
-    ['', '', '86']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 
 Sorting
@@ -668,10 +794,17 @@ descending and ascending fashion.
 
 By default the student's name is sorted alphabetically:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
+    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
+    +------------------+-------+-------+---------+---------+
 
 Let's add some fake students to our section:
 
@@ -699,34 +832,47 @@ Let's add some fake students to our section:
 And check the gradebook again to see the new sorting:
 
     >>> stephan.reload()
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Alvarado, Fake3
-    ...lvarez, Fake2
-    ...ardune, Fake1
-    Cardune, Paul
-    Hoffman, Tom
-    Navarro, Fake6
-    ...o...o, Fake7
-    Richter, Claudia
-    Sandoval, Fake4
-    ...andoval, Fake5
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +--------------------+-------+-------+---------+---------+
+    | Name               | Total | Ave.  | HW1     | Quiz    |
+    +--------------------+-------+-------+---------+---------+
+    | Alvarado, Fake3    | 0.0   | N/A   | [_____] | [_____] |
+    | ...lvarez, Fake2   | 0.0   | N/A   | [_____] | [_____] |
+    | ...ardune, Fake1   | 0.0   | N/A   | [_____] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0% | [32___] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0% | [40___] | [_____] |
+    | Navarro, Fake6     | 0.0   | N/A   | [_____] | [_____] |
+    | ...o...o, Fake7    | 0.0   | N/A   | [_____] | [_____] |
+    | Richter, Claudia   | 0.0   | N/A   | [_____] | [_____] |
+    | Sandoval, Fake4    | 0.0   | N/A   | [_____] | [_____] |
+    | ...andoval, Fake5  | 0.0   | N/A   | [_____] | [_____] |
+    +--------------------+-------+-------+---------+---------+
 
 We can sort by student name in reverse order:
 
     >>> url = stephan.url
     >>> stephan.open(url+'?sort_by=student')
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    <BLANKLINE>
-    ...andoval, Fake5
-    Sandoval, Fake4
-    Richter, Claudia
-    ...o...o, Fake7
-    Navarro, Fake6
-    Hoffman, Tom
-    Cardune, Paul
-    ...ardune, Fake1
-    ...lvarez, Fake2
-    Alvarado, Fake3
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +--------------------+-------+-------+---------+---------+
+    | Name               | Total | Ave.  | HW1     | Quiz    |
+    +--------------------+-------+-------+---------+---------+
+    | ...andoval, Fake5  | 0.0   | N/A   | [_____] | [_____] |
+    | Sandoval, Fake4    | 0.0   | N/A   | [_____] | [_____] |
+    | Richter, Claudia   | 0.0   | N/A   | [_____] | [_____] |
+    | ...o...o, Fake7    | 0.0   | N/A   | [_____] | [_____] |
+    | Navarro, Fake6     | 0.0   | N/A   | [_____] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0% | [40___] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0% | [32___] | [_____] |
+    | ...ardune, Fake1   | 0.0   | N/A   | [_____] | [_____] |
+    | ...lvarez, Fake2   | 0.0   | N/A   | [_____] | [_____] |
+    | Alvarado, Fake3    | 0.0   | N/A   | [_____] | [_____] |
+    +--------------------+-------+-------+---------+---------+
 
 Let's add more grades for Homework 1:
 
@@ -736,16 +882,70 @@ Let's add more grades for Homework 1:
     >>> stephan.getControl('ardune, Fake1').value = '50'
     >>> stephan.getControl('Navarro, Fake6').value = '22'
     >>> stephan.getControl('andoval, Fake5').value = '39'
+    >>> stephan.getControl('Richter, Claudia').value = '32'
     >>> stephan.getControl('Save').click()
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +--------------------+-------+--------+---------+---------+
+    | Name               | Total | Ave.   | HW1     | Quiz    |
+    +--------------------+-------+--------+---------+---------+
+    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
+    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
+    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
+    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
+    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
+    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
+    +--------------------+-------+--------+---------+---------+
 
 Then we want to sort by grade in Homework 1:
 
     >>> stephan.open(url + '?sort_by=Activity')
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
-    ['22', '32', '32', '39', '42', '44', '50', '', '', '']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +--------------------+-------+--------+---------+---------+
+    | Name               | Total | Ave.   | HW1     | Quiz    |
+    +--------------------+-------+--------+---------+---------+
+    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
+    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
+    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
+    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
+    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
+    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
+    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
+    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
+    +--------------------+-------+--------+---------+---------+
+
+Note that after sorting by the selected activity, rows are also sorted
+by student.
 
 Clicking it again, reverses the order:
 
     >>> stephan.open(url + '?sort_by=Activity')
-    >>> stephan.queryHTML('//table[@class="schooltool_gradebook"][2]/tr/td[4]/input[@class="data"]/@value')
-    ['', '', '', '50', '44', '42', '39', '32', '32', '22']
+    >>> printGradebook(stephan.contents)
+    +----------+--------+
+    | *Week 1* | Week 2 |
+    +----------+--------+
+    +--------------------+-------+--------+---------+---------+
+    | Name               | Total | Ave.   | HW1     | Quiz    |
+    +--------------------+-------+--------+---------+---------+
+    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
+    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
+    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
+    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
+    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
+    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
+    +--------------------+-------+--------+---------+---------+
