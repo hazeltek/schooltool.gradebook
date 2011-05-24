@@ -36,7 +36,7 @@
                      tal:attributes="name column/label_name; value column/label_value" />
             </td>
             <td class="cell fully_padded">
-              <tal:block condition="python: column['hide_name'] != 'hide_total'">
+              <tal:block condition="column/has_scoresystem">
                 <select tal:attributes="id column/scoresystem_name; name column/scoresystem_name">
                   <tal:block repeat="scoresystem view/scoresystems">
                     <option tal:condition="python: scoresystem['value'] == column['scoresystem_value']"

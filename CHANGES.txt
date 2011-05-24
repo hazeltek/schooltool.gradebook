@@ -7,6 +7,8 @@ CHANGES
 
 - Move custom score systems to a new container. Fixes crash on startup
   if gradebook has been disabled after use (https://lauchpad.net/bugs/717277).
+- Created external activity and source for journal average
+- Created absences and tardies columns in the gradebook (hidden by default)
 
 
 0.9.0 (2011-04-25)

@@ -70,7 +70,8 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
-from schooltool.gradebook.gradebook import Gradebook, getWorksheetSection 
+from schooltool.gradebook.gradebook import (Gradebook, getWorksheetSection,
+    getGradebookSection)
 from schooltool.gradebook.attendance import getSectionAttendanceData
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
@@ -505,13 +506,15 @@ def doctest_GradebookPDFView():
           'shortTitle': 'Activ'}]
 
         >>> pprint(view.table())
-        [{'average': u'14.3%',
+        [{'absences': u'1',
+          'average': u'14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
           'student': {'gradeurl': '...',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
+          'tardies': u'0',
           'total': u'1.0'}]
     """
 
@@ -544,6 +547,7 @@ def pdfSetUp(test=None):
                    provides=IGradebookRoot)
     provideAdapter(Gradebook, [IWorksheet], provides=IGradebook)
     provideAdapter(getWorksheetSection, [IWorksheet], provides=ISection)
+    provideAdapter(getGradebookSection, [IGradebook], provides=ISection)
     provideAdapter(getSchoolYearContainer, [ISchoolToolApplication], 
                    provides=ISchoolYearContainer)
 

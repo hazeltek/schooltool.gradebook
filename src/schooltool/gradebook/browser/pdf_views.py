@@ -740,6 +740,10 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
         num_cols = len(self.activities())
         start_row, start_col = 0, 0
         max_rows, max_cols = 34, 8
+        if not self.absences_hide:
+            max_cols -= 1
+        if not self.tardies_hide:
+            max_cols -= 1
         if not self.total_hide:
             max_cols -= 1
         if not self.average_hide:
@@ -794,6 +798,10 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
 
     def widths(self, start_col, end_col):
         num_cols = end_col - start_col
+        if not self.absences_hide:
+            num_cols += 1
+        if not self.tardies_hide:
+            num_cols += 1
         if not self.total_hide:
             num_cols += 1
         if not self.average_hide:

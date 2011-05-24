@@ -121,6 +121,7 @@ Cancel button in that form:
     >>> stephan.printQuery('//h3/text()')
     Add an External Activity
     >>> stephan.printQuery('id("form-widgets-external_activity")/option[@value!=""]/text()')
+    Journal Source - Journal Average
     Sample Source - HTML
     Sample Source - Hardware
     >>> stephan.getControl('Cancel').click()
