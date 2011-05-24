@@ -1,6 +1,7 @@
 """
 Tests for generation scripts.
 """
+import datetime
 
 from persistent.interfaces import IPersistent
 
@@ -11,16 +12,7 @@ from zope.component import provideAdapter, provideUtility
 from zope.interface import implements
 
 from schooltool.app.app import SchoolToolApplication
-from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.course.interfaces import ISection
-from schooltool.gradebook.activity import getSectionActivities
-from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
-from schooltool.gradebook.gradebook_init import getGradebookRoot
-from schooltool.requirement.evaluation import getEvaluations
-from schooltool.requirement.interfaces import IEvaluations
-from schooltool.requirement.interfaces import IHaveEvaluations
 from schooltool.term.interfaces import IDateManager
-from schooltool.gradebook.tests import stubs
 
 
 class ContextStub(object):
@@ -60,16 +52,19 @@ class StupidKeyReference(object):
         return cmp(hash(self), hash(other))
 
 
+class DateManagerStub(object):
+    implements(IDateManager)
+
+    def __init__(self):
+        self.current_term = None
+        self.today = datetime.date(2011, 1, 23)
+
+
 def provideAdapters():
     setUpAnnotations()
     provideAdapter(StupidKeyReference, [IPersistent], IKeyReference)
-    provideAdapter(getGradebookRoot, adapts=(ISchoolToolApplication,), 
-                                     provides=IGradebookRoot)
-    provideAdapter(getSectionActivities, adapts=(ISection,), 
-                                         provides=IActivities)
-    provideAdapter(getEvaluations, adapts=(IHaveEvaluations,), 
-                                   provides=IEvaluations)
 
 
 def provideUtilities():
-    provideUtility(stubs.DateManagerStub(), IDateManager, '')
+    provideUtility(DateManagerStub(), IDateManager, '')
+

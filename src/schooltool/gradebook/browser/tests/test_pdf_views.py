@@ -84,9 +84,11 @@ from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView,
     GradebookPDFView)
 from schooltool.requirement.evaluation import Evaluation, getEvaluations
-from schooltool.requirement.interfaces import IEvaluations
+from schooltool.requirement.interfaces import (IScoreSystemContainer,
+    IEvaluations)
 from schooltool.requirement.scoresystem import (AmericanLetterScoreSystem,
-    DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem)
+    DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem,
+    getScoreSystemContainer, ScoreSystemAppStartup)
 
 
 BEGIN_2009 = datetime.date(datetime(2009, 1, 1))
@@ -178,6 +180,7 @@ class ApplicationStub(btree.BTreeContainer):
         int_ids.register(self.term)
 
         setUpGradebookRoot(self)
+        ScoreSystemAppStartup(self)()
 
 
 class DateManagerStub(object):
@@ -543,6 +546,9 @@ def pdfSetUp(test=None):
     provideAdapter(getWorksheetSection, [IWorksheet], provides=ISection)
     provideAdapter(getSchoolYearContainer, [ISchoolToolApplication], 
                    provides=ISchoolYearContainer)
+
+    provideAdapter(getScoreSystemContainer, [ISchoolToolApplication],
+                   provides=IScoreSystemContainer)
 
     provideAdapter(StupidKeyReference, [object], IKeyReference)
     provideAdapter(FakeURL, [ISchoolToolApplication, IBrowserRequest],

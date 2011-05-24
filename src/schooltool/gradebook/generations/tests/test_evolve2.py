@@ -57,10 +57,9 @@ def doctest_evolve2():
     We'll set up our test with data that will be effected by running the
     evolve script:
 
-        >>> from schooltool.requirement.interfaces import IScoreSystemsProxy
-        >>> proxy = IScoreSystemsProxy(app)
         >>> custom_ss = CustomScoreSystemStub()
-        >>> proxy.addScoreSystem(custom_ss)
+        >>> app.getSiteManager().registerUtility(custom_ss, ICustomScoreSystem,
+        ...     name=custom_ss.title)
 
     Finally, we'll run the evolve script, testing the effected values before and
     after:

@@ -24,7 +24,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 import zope.schema
-from zope.container.interfaces import IOrderedContainer
+from zope.container.interfaces import IOrderedContainer, IContainer
 from zope.container.constraints import contains, containers
 from zope.location.interfaces import IContained
 from zope.location.interfaces import ILocation
@@ -55,6 +55,12 @@ class IRequirement(IOrderedContainer, IContained):
 
 class IHaveRequirement(zope.interface.Interface):
     """Marker interface for objects having requirements"""
+
+
+class IScoreSystemContainer(IContainer):
+    """A Container for Score Systems"""
+
+    contains('.ICustomScoreSystem')
 
 
 class IScoreSystem(zope.interface.Interface):

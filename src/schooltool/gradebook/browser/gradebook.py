@@ -57,10 +57,9 @@ from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
 from schooltool.requirement.scoresystem import UNSCORED
-from schooltool.requirement.interfaces import ICommentScoreSystem
-from schooltool.requirement.interfaces import IValuesScoreSystem
-from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
-from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.requirement.interfaces import (ICommentScoreSystem,
+    IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
+    IScoreSystemContainer)
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm, IDateManager
@@ -76,23 +75,6 @@ COMMENT_SCORE_SYSTEM = 'c'
 SUMMARY_TITLE = _('Summary')
 
 column_keys = [('total', _("Total")), ('average', _("Ave."))]
-
-
-def escName(name):
-    """converts title-based scoresystem name to querystring format"""
-    chars = [c for c in name.lower() if c.isalnum() or c == ' ']
-    return u''.join(chars).replace(' ', '-')
-
-
-def getScoreSystemFromEscName(name):
-    """converts escaped scoresystem title to scoresystem"""
-    factory = queryUtility(IVocabularyFactory,
-                           'schooltool.requirement.discretescoresystems')
-    vocab = factory(None)
-    for term in vocab:
-        if name == escName(term.token):
-            return term.value
-    return None
 
 
 def convertAverage(average, scoresystem):
@@ -332,6 +314,7 @@ class SectionFinder(GradebookBase):
 
     def processColumnPreferences(self):
         gradebook = proxy.removeSecurityProxy(self.context)
+        scoresystems = IScoreSystemContainer(ISchoolToolApplication(None))
         if self.isTeacher:
             person = self.person
         else:
@@ -358,7 +341,7 @@ class SectionFinder(GradebookBase):
         self.average_label = prefs.get('label', '')
         if len(self.average_label) == 0:
             self.average_label = column_keys_dict['average']
-        self.average_scoresystem = getScoreSystemFromEscName(
+        self.average_scoresystem = scoresystems.get(
             prefs.get('scoresystem', ''))
 
         prefs = columnPreferences.get('due_date', {})
@@ -883,6 +866,9 @@ class GradebookColumnPreferences(BrowserView):
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
+        factory = queryUtility(IVocabularyFactory,
+                               'schooltool.requirement.discretescoresystems')
+        vocab = factory(None)
 
         if 'UPDATE_SUBMIT' in self.request:
             columnPreferences = gradebook.getColumnPreferences(self.person)
@@ -897,7 +883,12 @@ class GradebookColumnPreferences(BrowserView):
                 else:
                     prefs['label'] = ''
                 if key != 'total':
-                    prefs['scoresystem'] = self.request['scoresystem_' + key]
+                    token = self.request['scoresystem_' + key]
+                    if token:
+                        name = vocab.getTermByToken(token).value.__name__
+                    else:
+                        name = token
+                    prefs['scoresystem'] = name
             prefs = columnPreferences.setdefault('due_date', {})
             if 'hide_due_date' in self.request:
                 prefs['hide'] = True
@@ -937,7 +928,7 @@ class GradebookColumnPreferences(BrowserView):
                 'label_name': 'label_' + key,
                 'label_value': label,
                 'scoresystem_name': 'scoresystem_' + key,
-                'scoresystem_value': scoresystem,
+                'scoresystem_value': scoresystem.encode('punycode'),
                 }
             results.append(result)
         return results
@@ -954,8 +945,8 @@ class GradebookColumnPreferences(BrowserView):
         results = [result]
         for term in vocab:
             result = {
-                'name': term.token,
-                'value': escName(term.token),
+                'name': term.value.title,
+                'value': term.token,
                 }
             results.append(result)
         return results

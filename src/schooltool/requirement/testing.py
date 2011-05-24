@@ -24,9 +24,14 @@ __docformat__ = 'reStructuredText'
 
 from zope.interface import Interface
 from zope.component import provideAdapter
+from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 
-from schooltool.requirement import requirement, interfaces, evaluation
+from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.app.app import SimpleNameChooser
+
+from schooltool.requirement import (requirement, interfaces, evaluation,
+    scoresystem)
 
 class KeyReferenceStub(object):
     """A stub implementation to allow testing of evaluations."""
@@ -50,6 +55,14 @@ def setUpRequirement(test=None):
     provideAdapter(requirement.getRequirement,
                    (Interface,),
                    interfaces.IRequirement)
+
+def setUpScoreSystem(test=None):
+    provideAdapter(scoresystem.getScoreSystemContainer,
+                   (ISchoolToolApplication,),
+                   interfaces.IScoreSystemContainer)
+    provideAdapter(SimpleNameChooser,
+                   adapts=(interfaces.IScoreSystemContainer,),
+                   provides=INameChooser)
 
 def setUpEvaluation(test=None):
     provideAdapter(evaluation.getEvaluations,

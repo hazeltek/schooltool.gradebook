@@ -94,9 +94,8 @@ def doctest_evolve1():
     Finally, we'll run the evolve script, testing the effected values before and
     after:
 
-        >>> from schooltool.requirement.interfaces import IScoreSystemsProxy
-        >>> proxy = IScoreSystemsProxy(app)
-        >>> proxy.getScoreSystems()
+        >>> from schooltool.requirement.interfaces import ICustomScoreSystem
+        >>> sorted(app.getSiteManager().getUtilitiesFor(ICustomScoreSystem))
         []
 
         >>> temp_act.scoresystem
@@ -110,7 +109,7 @@ def doctest_evolve1():
 
         >>> evolve(context)
 
-        >>> proxy.getScoreSystems()
+        >>> sorted(app.getSiteManager().getUtilitiesFor(ICustomScoreSystem))
         [(u'Extended Letter Grade', <CustomScoreSystem u'Extended Letter Grade'>),
          (u'Letter Grade', <CustomScoreSystem u'Letter Grade'>),
          (u'Pass/Fail', <CustomScoreSystem u'Pass/Fail'>)]

@@ -81,9 +81,9 @@ to the 'Manage' tab and clicks on the 'Score Systems' link.
 We see the score systems that come with schooltool.
 
     >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
-    <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
-    <a href="http://localhost/scoresystems/view.html?name=letter-grade">Letter Grade</a>
-    <a href="http://localhost/scoresystems/view.html?name=passfail">Pass/Fail</a>
+    <a href="http://localhost/scoresystems/extended-letter-grade">Extended Letter Grade</a>
+    <a href="http://localhost/scoresystems/letter-grade">Letter Grade</a>
+    <a href="http://localhost/scoresystems/passfail">Pass/Fail</a>
 
 To add a new score system, the user clicks 'Add Score System'.
 
@@ -103,10 +103,10 @@ We'll send the form values necessary to add a score system called 'Good/Bad'.
 Now we see the new score system in the list.
 
     >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
-    <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
-    <a href="http://localhost/scoresystems/view.html?name=goodbad">Good/Bad</a>
-    <a href="http://localhost/scoresystems/view.html?name=letter-grade">Letter Grade</a>
-    <a href="http://localhost/scoresystems/view.html?name=passfail">Pass/Fail</a>
+    <a href="http://localhost/scoresystems/extended-letter-grade">Extended Letter Grade</a>
+    <a href="http://localhost/scoresystems/goodbad">Good/Bad</a>
+    <a href="http://localhost/scoresystems/letter-grade">Letter Grade</a>
+    <a href="http://localhost/scoresystems/passfail">Pass/Fail</a>
 
 Let's hide the 'Pass/Fail' one.
 
@@ -116,9 +116,9 @@ Let's hide the 'Pass/Fail' one.
 Now we won't see it in the list.
 
     >>> analyze.printQuery("id('content-body')/form//a", manager.contents)
-    <a href="http://localhost/scoresystems/view.html?name=extended-letter-grade">Extended Letter Grade</a>
-    <a href="http://localhost/scoresystems/view.html?name=goodbad">Good/Bad</a>
-    <a href="http://localhost/scoresystems/view.html?name=letter-grade">Letter Grade</a>
+    <a href="http://localhost/scoresystems/extended-letter-grade">Extended Letter Grade</a>
+    <a href="http://localhost/scoresystems/goodbad">Good/Bad</a>
+    <a href="http://localhost/scoresystems/letter-grade">Letter Grade</a>
 
 Let's click on 'Good/Bad' and test it's view.
 

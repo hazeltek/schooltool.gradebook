@@ -28,11 +28,13 @@ import zope.formlib
 import zope.schema
 from zope.app.form import utility
 from zope.browserpage import ViewPageTemplateFile
+from zope.container.interfaces import INameChooser
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.interface import implements, directlyProvides
 
+from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import interfaces, scoresystem
 
@@ -51,38 +53,34 @@ DUPLICATE_DISPLAYED = _('Duplicate scores are not allowed.')
 DUPLICATE_ABBREVIATION = _('Duplicate abbreviations are not allowed.')
 
 
-def escName(name):
-    """converts title-based scoresystem name to querystring format"""
-    chars = [c for c in name.lower() if c.isalnum() or c == ' ']
-    return u''.join(chars).replace(' ', '-')
-
-
-class ScoreSystemsView(BrowserView):
-    """A view for maintaining user-created scoresystem utilities"""
+class ScoreSystemContainerView(BrowserView):
+    """A view for maintaining custom score systems"""
 
     def update(self):
         if 'form-submitted' in self.request:
-            for name, ss in self.context.getScoreSystems():
+            for name, ss in self.context.items():
                 ss = removeSecurityProxy(ss)
-                if 'hide_' + escName(name) in self.request:
+                if 'hide_' + name in self.request:
                     ss.hidden = True
 
     def scoresystems(self):
-        url = absoluteURL(self.context, self.request) + '/view.html'
+        app = ISchoolToolApplication(None)
+        url = absoluteURL(app, self.request) + '/scoresystems'
         results = []
-        for name, ss in self.context.getScoreSystems():
+        for name, ss in self.context.items():
             ss = removeSecurityProxy(ss)
-            result = {
-                'title': ss.title,
-                'url': '%s?name=%s' % (url, escName(name)),
-                'hide_name': 'hide_' + escName(name),
-                }
-            results.append(result)
+            if not ss.hidden:
+                result = {
+                    'title': ss.title,
+                    'url': '%s/%s' % (url, name),
+                    'hide_name': 'hide_' + name,
+                    }
+                results.append(result)
         return results
 
 
-class ScoreSystemAddView(BrowserView):
-    """A view for adding a user-created scoresystem utility"""
+class CustomScoreSystemAddView(BrowserView):
+    """A view for adding a custom score system"""
 
     def update(self):
         self.message = ''
@@ -98,8 +96,13 @@ class ScoreSystemAddView(BrowserView):
                     return
                 target = scoresystem.CustomScoreSystem()
                 self.updateScoreSystem(target)
-                self.context.addScoreSystem(target)
+                self.addScoreSystem(target)
                 self.request.response.redirect(self.nextURL())
+
+    def addScoreSystem(self, target):
+        chooser = INameChooser(self.context)
+        name = chooser.chooseName('', target)
+        self.context[name] = target
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
@@ -246,14 +249,13 @@ class ScoreSystemAddView(BrowserView):
         return results
 
 
-class ScoreSystemViewView(BrowserView):
-    """A view for viewing a user-created scoresystem utility"""
+class CustomScoreSystemView(BrowserView):
+    """A view for viewing a custom score system"""
 
     def scores(self):
-        target = self.getScoreSystem()
         result = []
-        for displayed, abbr, value, percent in target.scores:
-            if target.isPassingScore(displayed):
+        for displayed, abbr, value, percent in self.context.scores:
+            if self.context.isPassingScore(displayed):
                 passing = _('Yes')
             else:
                 passing = _('No')
@@ -271,20 +273,9 @@ class ScoreSystemViewView(BrowserView):
             }
 
     @property
-    def title_value(self):
-        target = self.getScoreSystem()
-        return target.title
-
-    def getScoreSystem(self):
-        name = self.request['name']
-        for n, ss in self.context.getScoreSystems():
-            if escName(n) == name:
-                return removeSecurityProxy(ss)
-        raise KeyError
-
-    @property
     def nextURL(self):
-        return absoluteURL(self.context, self.request)
+        app = ISchoolToolApplication(None)
+        return absoluteURL(app, self.request) + '/scoresystems'
 
 
 class IWidgetData(interfaces.IRangedValuesScoreSystem):
