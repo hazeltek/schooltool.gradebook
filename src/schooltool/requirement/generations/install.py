@@ -20,7 +20,7 @@
 Initial deployment of generations to schooltool.requirement.
 
 Manually evolves to generation 1. Needed to support upgrade from a
-database that did not have generations (schooltool.gradebook << 0.4.9)
+database that did not have generations (schooltool.gradebook < 0.10dev)
 """
 
 import evolve1

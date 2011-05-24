@@ -126,7 +126,7 @@ commentary scoring system, which can have any comment as a score.
 
   >>> from schooltool.requirement import scoresystem
   >>> scoresystem.CommentScoreSystem.title
-  u'Comments'
+  u'Comment'
   >>> scoresystem.CommentScoreSystem.description
   u'Scores are commentary text.'
 

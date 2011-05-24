@@ -121,9 +121,9 @@ class TemplatesView(object):
 def ReportScoreSystemsVocabulary(context):
     terms = [SimpleVocabulary.createTerm('ranged', 'ranged',
                                          _('-- Use range below --'))]
-    for name, utility in sorted(getUtilitiesFor(IScoreSystem, context)):
+    for name, ss in sorted(getUtilitiesFor(IScoreSystem, context)):
         token = name.encode('punycode')
-        term = SimpleVocabulary.createTerm(utility, token, name)
+        term = SimpleVocabulary.createTerm(ss, token, ss.title)
         terms.append(term)
     for term in DiscreteScoreSystemsVocabulary(context):
         terms.append(term)

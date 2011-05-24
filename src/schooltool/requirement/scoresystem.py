@@ -158,7 +158,7 @@ class GlobalCommentScoreSystem(AbstractScoreSystem):
 
 # Singelton
 CommentScoreSystem = GlobalCommentScoreSystem(
-    u'Comments', u'Scores are commentary text.')
+    u'Comment', u'Scores are commentary text.')
 
 
 class AbstractValuesScoreSystem(AbstractScoreSystem):

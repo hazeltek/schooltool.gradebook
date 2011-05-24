@@ -22,10 +22,8 @@ Evolve database to generation 1.
 Moves custom score system utilities to the new scoresystems container.
 """
 
-from zope.app.generations.utility import findObjectsProviding
-from zope.app.publication.zopepublication import ZopePublication
+from zope.app.generations.utility import findObjectsProviding, getRootFolder
 from zope.component.hooks import getSite, setSite
-from zope.container.contained import contained
 from zope.container.interfaces import INameChooser
 
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -48,7 +46,7 @@ def removeUtils(site_manager, provided):
 
 
 def evolve(context):
-    root = context.connection.root().get(ZopePublication.root_name, None)
+    root = getRootFolder(context)
 
     old_site = getSite()
     apps = findObjectsProviding(root, ISchoolToolApplication)

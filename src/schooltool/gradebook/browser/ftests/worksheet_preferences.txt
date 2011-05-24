@@ -227,7 +227,7 @@ Show the total and average columns, and test that Average is converted to Good/B
 Check with extended letter grade scoresystem:
 
     >>> stephan.getLink('Preferences').click()
-    >>> stephan.getControl(name='scoresystem_average').value = ['extended-letter-grade-']
+    >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
     >>> stephan.getControl('Update').click()
 
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
