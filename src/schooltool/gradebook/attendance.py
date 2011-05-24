@@ -17,11 +17,74 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+from zope.interface import implements
+
 from schooltool.lyceum.journal.interfaces import ISectionJournalData
+
+from schooltool.gradebook import interfaces
+from schooltool.gradebook import GradebookMessage as _
 
 
 # adapt section to ISectionAttendanceData interface, returning
 # ISectionJournalData
 def getSectionAttendanceData(section):
     return ISectionJournalData(section)
+
+
+class JournalSource(object):
+
+    implements(interfaces.IExternalActivities)
+
+    source = "journalsource"
+    title = _('Journal Source')
+
+    def __init__(self, context):
+        self.context = context
+        self.activities = [JournalExternalActivity(self)]
+        self.__parent__ = context
+
+    def getExternalActivities(self):
+        return self.activities
+
+    def getExternalActivity(self, external_activity_id):
+        return self.activities[0]
+
+    def __repr__(self):
+        return '<JournalSource...>'
+
+
+class JournalExternalActivity(object):
+
+    implements(interfaces.IExternalActivity)
+
+    title = _('Journal Average')
+    description = _('External Activity for Section Journal Average')
+    external_activity_id = 'journal_average'
+
+    def __init__(self, context):
+        self.context = context
+        section = context.context
+        self.journal_data = getSectionAttendanceData(section)
+        self.__parent__ = section
+        self.source = context.source
+
+    def getGrade(self, student):
+        grades = []
+        for meeting in self.journal_data.recordedMeetings(student):
+            grade = self.journal_data.getGrade(student, meeting)
+            try:
+                grade = int(grade)
+            except ValueError:
+                continue
+            grades.append(grade)
+        if len(grades):
+            return sum(grades) / float(10 * len(grades))
+
+    def __eq__(self, other):
+        return interfaces.IExternalActivity.providedBy(other) and \
+               self.source == other.source and \
+               self.external_activity_id == other.external_activity_id
+
+    def __repr__(self):
+        return '<ExternalActivity %r>' % (self.title)
 
