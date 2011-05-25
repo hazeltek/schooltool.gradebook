@@ -72,14 +72,11 @@ from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
 from schooltool.gradebook.gradebook import (Gradebook, getWorksheetSection,
     getGradebookSection)
-from schooltool.gradebook.attendance import getSectionAttendanceData
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
 from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
-    IActivities, IWorksheet, ISectionAttendanceData)
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
-from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
-    getSectionJournalData, getSectionForSectionJournalData)
+    IActivities, IWorksheet, ISectionJournalData)
+from schooltool.lyceum.journal.journal import LyceumJournalContainer
 from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     GroupReportCardPDFView, StudentDetailPDFView, GroupDetailPDFView,
     FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView,
@@ -230,7 +227,7 @@ def setupSections(app):
     evaluation = Evaluation(activity2, maxss, 'C', thoffman)
     evaluations.addEvaluation(evaluation)
 
-    jd = ISectionAttendanceData(section1)
+    jd = ISectionJournalData(section1)
     calendar = ISchoolToolCalendar(section1)
     meeting = MeetingStub()
     meeting.unique_id = "unique-id-2009-01-01"
@@ -533,10 +530,17 @@ def pdfSetUp(test=None):
                    provides=ITerm)
     provideAdapter(getSectionActivities, [ISection], provides=IActivities)
     provideAdapter(getTermForSection, [ISection], provides=ITerm)
+
+    from schooltool.gradebook.interfaces import ISectionJournalData
+    from schooltool.gradebook.journal import getSectionJournalData
     provideAdapter(getSectionJournalData, [ISection],
                    provides=ISectionJournalData)
-    provideAdapter(getSectionAttendanceData, [ISection],
-                   provides=ISectionAttendanceData)
+
+    from schooltool.lyceum.journal.interfaces import ISectionJournalData
+    from schooltool.lyceum.journal.journal import getSectionJournalData
+    from schooltool.lyceum.journal.journal import getSectionForSectionJournalData
+    provideAdapter(getSectionJournalData, [ISection],
+                   provides=ISectionJournalData)
     provideAdapter(getSectionForSectionJournalData, [ISectionJournalData],
                    provides=ISection)
 

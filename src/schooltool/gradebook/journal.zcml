@@ -7,18 +7,18 @@
   <!-- bridge adapter to get to schooltool.lyceum.journal package -->
   <adapter
       for="schooltool.course.interfaces.ISection"
-      provides="schooltool.gradebook.interfaces.ISectionAttendanceData"
-      factory=".attendance.getSectionAttendanceData"
+      provides="schooltool.gradebook.interfaces.ISectionJournalData"
+      factory=".journal.getSectionJournalData"
       />
 
   <!-- external activities source adapter for journal data -->
   <adapter
       for="schooltool.course.interfaces.ISection"
       provides="schooltool.gradebook.interfaces.IExternalActivities"
-      factory=".attendance.JournalSource"
+      factory=".journal.JournalSource"
       name="journalsource"
       />
-  <class class=".attendance.JournalExternalActivity">
+  <class class=".journal.JournalExternalActivity">
     <require
         permission="schooltool.view"
         interface=".interfaces.IExternalActivity"

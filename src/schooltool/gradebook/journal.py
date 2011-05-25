@@ -25,9 +25,9 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook import GradebookMessage as _
 
 
-# adapt section to ISectionAttendanceData interface, returning
-# ISectionJournalData
-def getSectionAttendanceData(section):
+# adapt section to gradebook's ISectionJournalData interface, returning
+# real ISectionJournalData
+def getSectionJournalData(section):
     return ISectionJournalData(section)
 
 
@@ -64,7 +64,7 @@ class JournalExternalActivity(object):
     def __init__(self, context):
         self.context = context
         section = context.context
-        self.journal_data = getSectionAttendanceData(section)
+        self.journal_data = getSectionJournalData(section)
         self.__parent__ = section
         self.source = context.source
 

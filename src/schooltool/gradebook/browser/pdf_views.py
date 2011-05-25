@@ -45,7 +45,7 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
-from schooltool.gradebook.interfaces import ISectionAttendanceData
+from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
@@ -74,7 +74,7 @@ class BaseStudentPDFView(BasePDFView):
         return layout.source in [ABSENT_KEY, TARDY_KEY]
 
     def getJournalScore(self, student, section, layout):
-        jd = ISectionAttendanceData(section, None)
+        jd = ISectionJournalData(section, None)
         if jd is None:
             return None
         result = 0
@@ -354,7 +354,7 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
                 continue
             sections.append(section)
         for section in sections:
-            jd = ISectionAttendanceData(section, None)
+            jd = ISectionJournalData(section, None)
             if jd is None:
                 continue
             for meeting in jd.recordedMeetings(student):
@@ -580,7 +580,7 @@ class AbsencesByDayPDFView(BasePDFView):
 
         data = {}
         for section in ISectionContainer(term).values():
-            jd = ISectionAttendanceData(section, None)
+            jd = ISectionJournalData(section, None)
             if jd is None:
                 continue
             for student in section.members:
@@ -696,7 +696,7 @@ class SectionAbsencesPDFView(BasePDFView):
 
     def students(self):
         data = {}
-        jd = ISectionAttendanceData(self.section, None)
+        jd = ISectionJournalData(self.section, None)
         if jd is not None:
             for student in self.section.members:
                 student_data = self.getStudentData(jd, student)

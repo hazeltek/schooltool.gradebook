@@ -78,7 +78,7 @@ SUMMARY_TITLE = _('Summary')
 
 def getColumnKeys(gradebook):
     column_keys =  [('total', _("Total")), ('average', _("Ave."))]
-    journal_data = interfaces.ISectionAttendanceData(ISection(gradebook), None)
+    journal_data = interfaces.ISectionJournalData(ISection(gradebook), None)
     if journal_data is not None:
         column_keys = ([('absences', _("Abs.")), ('tardies', _("Trd."))] +
             column_keys)
@@ -581,7 +581,7 @@ class GradebookOverview(SectionFinder):
         section = ISection(worksheet)
         activities = [(activity.__name__, activity)
             for activity in self.getFilteredActivities()]
-        journal_data = interfaces.ISectionAttendanceData(section, None)
+        journal_data = interfaces.ISectionJournalData(section, None)
         rows = []
         for student in self.context.students:
             grades = []
