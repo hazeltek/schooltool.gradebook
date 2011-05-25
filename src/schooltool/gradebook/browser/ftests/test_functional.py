@@ -18,8 +18,6 @@
 #
 """
 Functional tests for schooltool.gradebook.
-
-$Id$
 """
 
 import unittest
@@ -30,13 +28,33 @@ from schooltool.testing.functional import ZCMLLayer
 
 dir = os.path.abspath(os.path.dirname(__file__))
 filename = os.path.join(dir, '../ftesting.zcml')
+journal_filename = os.path.join(dir, '../ftesting_journal.zcml')
+
+need_journal = ('absences_tardies.txt',
+                'journal_average.txt',
+                'journal_reports.txt',
+                'rml_student.txt',
+                )
+
+testdir = os.path.dirname(__file__)
+ftests = [fn for fn in os.listdir(testdir)
+          if (fn.endswith('.txt') and
+              not fn.startswith('.') and
+              not fn in need_journal)]
 
 gradebook_functional_layer = ZCMLLayer(filename,
                                        __name__,
                                        'gradebook_functional_layer')
 
+journal_functional_layer = ZCMLLayer(journal_filename,
+                                     __name__,
+                                     'journal_functional_layer')
+
 def test_suite():
-    return collect_ftests(layer=gradebook_functional_layer)
+    return unittest.TestSuite([
+        collect_ftests(layer=gradebook_functional_layer, filenames=ftests),
+        collect_ftests(layer=journal_functional_layer, filenames=need_journal)
+        ])
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

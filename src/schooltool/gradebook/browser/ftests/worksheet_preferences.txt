@@ -121,10 +121,6 @@ set to their defaults.
 
     >>> stephan.getLink('Preferences').click()
     >>> stephan.printQuery('id("content-body")/form//table//input')
-    <input type="checkbox" checked="checked" name="hide_absences" />
-    <input type="text" name="label_absences" value="" />
-    <input type="checkbox" checked="checked" name="hide_tardies" />
-    <input type="text" name="label_tardies" value="" />
     <input type="checkbox" name="hide_total" />
     <input type="text" name="label_total" value="" />
     <input type="checkbox" name="hide_average" />
@@ -140,8 +136,7 @@ set to their defaults.
     >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
     <input type="checkbox" name="hide_due_date" />
 
-Let's change all preferences that are not related to journal data.  Those
-tests are found in absences_tardies.txt:
+Let's change all preferences:
 
     >>> stephan.getControl(name='hide_total').value = ['on']
     >>> stephan.getControl(name='label_total').value = 'Summe'
@@ -178,10 +173,6 @@ Look that all the preferences were saved:
 
     >>> stephan.getLink('Preferences').click()
     >>> stephan.printQuery("id('content-body')/form//table//input")
-    <input type="checkbox" checked="checked" name="hide_absences" />
-    <input type="text" name="label_absences" value="" />
-    <input type="checkbox" checked="checked" name="hide_tardies" />
-    <input type="text" name="label_tardies" value="" />
     <input type="checkbox" checked="checked" name="hide_total" />
     <input type="text" name="label_total" value="Summe" />
     <input type="checkbox" checked="checked" name="hide_average" />

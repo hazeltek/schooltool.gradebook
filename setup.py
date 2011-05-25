@@ -97,7 +97,7 @@ setup(
                              'zope.testbrowser',
                              'zope.ucol',
                              'schooltool.lyceum.journal'],
-                    'attendance': ['schooltool.lyceum.journal'],
+                    'journal': ['schooltool.lyceum.journal'],
                     },
     include_package_data=True,
     zip_safe=False,

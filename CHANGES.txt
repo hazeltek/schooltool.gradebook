@@ -9,6 +9,8 @@ CHANGES
   if gradebook has been disabled after use (https://lauchpad.net/bugs/717277).
 - Created external activity and source for journal average
 - Created absences and tardies columns in the gradebook (hidden by default)
+- Run functional tests without journal, add separate tests that need journal to
+  another layer (https://launchpad.net/bugs/783540)
 
 
 0.9.0 (2011-04-25)
