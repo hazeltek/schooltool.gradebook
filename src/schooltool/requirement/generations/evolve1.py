@@ -35,6 +35,9 @@ from schooltool.requirement.interfaces import ICustomScoreSystem
 def removeUtils(site_manager, provided):
     """HACK: this does not work properly in generic case!"""
     utilities = list(site_manager.getUtilitiesFor(provided))
+    if not utilities:
+        return
+
     for key, util in utilities:
         site_manager.unregisterUtility(util, provided, key)
 
