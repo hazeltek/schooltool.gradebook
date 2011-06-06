@@ -1,0 +1,50 @@
+<tal:define define="dummy view/update"/>
+<html metal:use-macro="view/@@standard_macros/page" i18n:domain="schooltool.gradebook">
+<head>
+  <title metal:fill-slot="title" i18n:translate="">Unhide Deployed Report Worksheet</title>
+</head>
+<body>
+
+<h1 metal:fill-slot="content-header"
+    i18n:translate="">Unhide Deployed Report Worksheet</h1>
+
+<metal:block metal:fill-slot="body"
+             tal:define="worksheets view/worksheets">
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/unhide_report_worksheet.html">
+    <input type="hidden" name="confirm" 
+           tal:attributes="value view/confirm|nothing" />
+    <tal:block condition="not:view/confirm">
+      <tal:block condition="not: view/available">
+        <p>There are no hidden deployed report sheets to unhide.</p>
+      </tal:block>
+      <tal:block condition="view/available">
+        <p>Select a deployed report sheet to hide and hit the 'Hide' button.</p>
+        <label for="reportWorksheet" i18n:translate="">Report Sheet</label>
+        <select id="reportWorksheet" name="reportWorksheet">
+          <tal:block repeat="worksheet view/worksheets">
+            <option tal:attributes="value worksheet/name"
+                    tal:content="worksheet/title" />
+          </tal:block>
+        </select>
+      </tal:block>
+    </tal:block>
+    <tal:block condition="view/confirm">
+      <p tal:content="string:Are you sure you want to unhide the report sheet, 
+                      '${view/confirm_title}' in every section of term, 
+                      '${context/title}'?  If so, hit the 'Unhide' button again
+                      to confirm." />
+    </tal:block>
+    <div class="controls">
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+      <tal:block condition="view/available">
+        <input type="submit" class="button-ok" name="UNHIDE" value="Unhide"
+               i18n:attributes="value" />
+      </tal:block>
+    </div>
+  </form>
+
+</metal:block>
+</body>
+</html>
+

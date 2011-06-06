@@ -372,6 +372,90 @@ class DeployReportWorksheetTermView(DeployReportWorksheetBaseView):
         self.deployTerm(self.context)
 
 
+class HideReportWorksheetView(object):
+    """A view for hiding a report sheet that is deployed in a term"""
+
+    @property
+    def worksheets(self):
+        """Get a list of all deployed report worksheets that are not hidden."""
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyear = ISchoolYear(self.context)
+        deployedKey = '%s_%s' % (schoolyear.__name__, self.context.__name__)
+        for key, worksheet in sorted(root.deployed.items()):
+            if worksheet.hidden:
+                continue
+            if key.startswith(deployedKey):
+                yield {
+                    'name': key,
+                    'title': worksheet.title
+                    }
+
+    def update(self):
+        self.available = bool(list(self.worksheets))
+        self.confirm = self.request.get('confirm')
+        self.confirm_title = ''
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'HIDE' in self.request:
+            if not self.confirm:
+                self.confirm = self.request['reportWorksheet']
+                self.confirm_title = root.deployed[self.confirm].title
+            else:
+                worksheet = root.deployed[self.confirm]
+                worksheet.hidden = True
+                sections = ISectionContainer(self.context)
+                for section in sections.values():
+                    activities = IActivities(section)
+                    activities[worksheet.__name__].hidden = True
+                self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+
+class UnhideReportWorksheetView(object):
+    """A view for unhiding a deployed report sheet that is hidden"""
+
+    @property
+    def worksheets(self):
+        """Get a list of all deployed report worksheets that are hidden."""
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyear = ISchoolYear(self.context)
+        deployedKey = '%s_%s' % (schoolyear.__name__, self.context.__name__)
+        for key, worksheet in sorted(root.deployed.items()):
+            if not worksheet.hidden:
+                continue
+            if key.startswith(deployedKey):
+                yield {
+                    'name': key,
+                    'title': worksheet.title
+                    }
+
+    def update(self):
+        self.available = bool(list(self.worksheets))
+        self.confirm = self.request.get('confirm')
+        self.confirm_title = ''
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'UNHIDE' in self.request:
+            if not self.confirm:
+                self.confirm = self.request['reportWorksheet']
+                self.confirm_title = root.deployed[self.confirm].title
+            else:
+                worksheet = root.deployed[self.confirm]
+                worksheet.hidden = False
+                sections = ISectionContainer(self.context)
+                for section in sections.values():
+                    activities = IActivities(section)
+                    activities[worksheet.__name__].hidden = False
+                self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+
 class LayoutReportCardView(object):
     """A view for laying out the columns of the schoolyear's report card"""
 

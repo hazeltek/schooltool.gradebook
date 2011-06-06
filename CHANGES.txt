@@ -11,6 +11,7 @@ CHANGES
 - Created absences and tardies columns in the gradebook (hidden by default)
 - Run functional tests without journal, add separate tests that need journal to
   another layer (https://launchpad.net/bugs/783540)
+- Created Hide and Unhide deployed report sheet feature
 
 
 0.9.0 (2011-04-25)
