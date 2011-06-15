@@ -472,9 +472,11 @@ class WorksheetsExportView(export.ExcelExportView):
                      export.Text(student.first_name),
                      export.Text(student.last_name)]
             for activity in activities:
-                value, ss = gradebook.getEvaluation(student, activity)
-                if value is None or value is UNSCORED:
+                score = gradebook.getScore(student, activity)
+                if score is None or score.value is UNSCORED:
                     value = ''
+                else:
+                    value = score.value
                 cells.append(export.Text(value))
             for col, cell in enumerate(cells):
                 self.write(ws, starting_row+row, col, cell.data, **cell.style) 

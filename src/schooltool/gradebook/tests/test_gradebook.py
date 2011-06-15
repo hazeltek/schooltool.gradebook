@@ -28,10 +28,13 @@ import z3c.optionstorage
 import zope.annotation.interfaces
 from zope.app.testing import setup
 from zope.component import provideAdapter, provideUtility
+from zope.interface import classImplements
 
 from schooltool.course.interfaces import ISection
 from schooltool.relationship.tests import setUpRelationships
+from schooltool.person.person import Person
 from schooltool.requirement import testing
+from schooltool.requirement.interfaces import IHaveEvaluations
 from schooltool.term.interfaces import IDateManager
 from schooltool.gradebook import activity, gradebook, interfaces
 from schooltool.gradebook.tests import stubs
@@ -63,6 +66,12 @@ def setUp(test):
         stubs.ThirdPartyStub,
         (ISection,), interfaces.IExternalActivities,
         name=u"thirdparty")
+
+    classImplements(Person, IHaveEvaluations)
+
+    provideAdapter(gradebook.getActivityScore)
+    provideAdapter(gradebook.getLinkedActivityScore)
+    provideAdapter(gradebook.getWorksheetAverageScore)  
 
     provideUtility(stubs.DateManagerStub(), IDateManager, '')
 

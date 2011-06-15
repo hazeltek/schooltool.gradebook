@@ -164,26 +164,30 @@ class IHaveEvaluations(zope.interface.Interface):
     """A marker interface for objects that can have evaluations"""
 
 
-class IEvaluation(IContained):
-    """An Evaluation"""
-
-    containers(".IEvaluations")
+class IScore(zope.interface.Interface):
+    """A score valid in a score system."""
 
     scoreSystem = zope.schema.Object(
         title=_(u'Score System'),
         description=u'The score system used for grading.',
         schema=IScoreSystem)
 
-    requirement = zope.schema.Object(
-        title=u'Requirement',
-        description=u'The requirement being evaluated.',
-        schema=IRequirement)
-
     value = zope.schema.Object(
         title=u'Value',
         description=u'A scoresystem-valid score that represents the grade.',
         schema=zope.interface.Interface,
         required=True)
+
+
+class IEvaluation(IScore, IContained):
+    """An Evaluation"""
+
+    containers(".IEvaluations")
+
+    requirement = zope.schema.Object(
+        title=u'Requirement',
+        description=u'The requirement being evaluated.',
+        schema=IRequirement)
 
     time = zope.schema.Datetime(
         title=u'Time',

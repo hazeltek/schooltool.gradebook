@@ -376,7 +376,8 @@ activity.  This represents a column of the worksheet
 We can get an evaluation for a student, activity pair, which represents 
 a cell in the worksheet.
 
-    >>> gradebook.getEvaluation(paul, hw1)
+    >>> score = gradebook.getScore(paul, hw1)
+    >>> (score.value, score.scoreSystem)
     (10, <RangedValuesScoreSystem None>)
 
 We can get the total of points and the average in a worksheet for a

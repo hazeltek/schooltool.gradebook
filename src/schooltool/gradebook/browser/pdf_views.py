@@ -488,27 +488,28 @@ class FailingReportPDFView(BasePDFView):
         else:
             return []
         for student in gb.students:
-            value, ss = gb.getEvaluation(student, activity)
+            score = gb.getScore(student, activity)
+            if score is None or score.value is UNSCORED:
+                continue
             failure = False
-            if value is not None:
-                if IDiscreteValuesScoreSystem.providedBy(ss):
-                    for score in ss.scores:
-                        if score[0] == self.score:
-                            passing_value = score[2]
-                        if score[0] == value:
-                            this_value = score[2]
-                    if ss._isMaxPassingScore:
-                        if this_value > passing_value:
-                            failure = True
-                    elif this_value < passing_value:
+            if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
+                for definition in score.scoreSystem.scores:
+                    if definition[0] == self.score:
+                        passing_value = definition[2]
+                    if definition[0] == score.value:
+                        this_value = definition[2]
+                if score.scoreSystem._isMaxPassingScore:
+                    if this_value > passing_value:
                         failure = True
-                else:
-                    passing_value = Decimal(self.score)
-                    this_value = value
-                    if this_value < passing_value:
-                        failure = True
+                elif this_value < passing_value:
+                    failure = True
+            else:
+                passing_value = Decimal(self.score)
+                this_value = score.value
+                if this_value < passing_value:
+                    failure = True
             if failure:
-                data.append([student, value])
+                data.append([student, score.value])
         return data
 
     def students(self):
