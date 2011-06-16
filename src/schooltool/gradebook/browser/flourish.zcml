@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<configure xmlns="http://namespaces.zope.org/browser"
+           xmlns:z3c="http://namespaces.zope.org/z3c"
+           xmlns:zope="http://namespaces.zope.org/zope"
+           xmlns:flourish="http://schooltool.org/flourish"
+           i18n_domain="schooltool.gradebook">
+
+  <flourish:viewlet
+      name="gradebook"
+      after="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      class="schooltool.gradebook.browser.gradebook.GradebookStartupNavLink"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="gradebook.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      title="Gradebook"
+      content_template="templates/f_gradebook_startup.pt"
+      class=".gradebook.FlourishGradebookStartup"
+      permission="schooltool.view"
+      />
+
+</configure>

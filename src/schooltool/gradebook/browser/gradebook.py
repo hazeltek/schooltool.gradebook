@@ -63,6 +63,8 @@ from schooltool.requirement.interfaces import (ICommentScoreSystem,
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm, IDateManager
+from schooltool.skin import flourish
+import schooltool.skin.flourish.page
 
 from schooltool.gradebook import GradebookMessage as _
 
@@ -102,8 +104,7 @@ class GradebookStartup(object):
             url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
             self.request.response.redirect(url)
             return ''
-        template = ViewPageTemplateFile('templates/gradebook_startup.pt')
-        return template(self)
+        return self.template()
 
     def update(self):
         self.person = IPerson(self.request.principal)
@@ -124,6 +125,39 @@ class GradebookStartup(object):
             self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
+
+
+class FlourishGradebookStartup(GradebookStartup, flourish.page.Page):
+    
+    def render(self, *args, **kw):
+        if IPerson(self.request.principal, None) is None:
+            url = absoluteURL(ISchoolToolApplication(None), self.request)
+            url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
+            self.request.response.redirect(url)
+            return ''
+        return flourish.page.Page.render(self, *args, **kw)
+
+    def __call__(self, *args, **kw):
+        return flourish.page.Page.__call__(self, *args, **kw)
+        
+
+class GradebookStartupNavLink(flourish.page.LinkViewlet):
+
+    @property
+    def title(self):
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            return ''
+        return _('Gradebook')
+
+    @property
+    def url(self):
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            return ''
+        app = ISchoolToolApplication(None)
+        app_url = absoluteURL(app, self.request)
+        return '%s/gradebook.html' % app_url
 
 
 class SectionGradebookRedirectView(BrowserView):

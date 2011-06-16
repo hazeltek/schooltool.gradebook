@@ -451,6 +451,7 @@
       class=".gradebook.GradebookStartup"
       template="templates/gradebook_startup.pt"
       permission="schooltool.view"
+      layer="schooltool.skin.ISchoolToolLayer"
       />
   <page
       name="gradebook"
@@ -695,5 +696,7 @@
       name="default" />
 
   <include file="report.zcml" />
+
+  <include file="flourish.zcml" />
 
 </configure>

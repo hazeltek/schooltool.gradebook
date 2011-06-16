@@ -1,0 +1,15 @@
+<div>
+
+  <tal:block condition="python:not view.sectionsTaught and not view.sectionsAttended">
+    <h1 i18n:translate="">You do not teach or attend any classes.</h1>
+  </tal:block>
+  <div tal:condition="view/sectionsTaught">
+    <a class="navigation_header" i18n:translate=""
+       tal:attributes="href view/gradebookURL">Classes you teach</a>
+  </div>
+  <div tal:condition="view/sectionsAttended">
+    <a class="navigation_header" i18n:translate=""
+       tal:attributes="href view/mygradesURL">Classes you attend</a>
+  </div>
+
+</div>
