@@ -34,10 +34,4 @@
       permission="schooltool.view"
       />
 
-  <flourish:activeViewlet
-      name="gradebook"
-      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
-      for="schooltool.gradebook.interfaces.IGradebookRoot"
-      />
-
 </configure>
