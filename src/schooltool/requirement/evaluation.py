@@ -155,16 +155,13 @@ class Evaluations(persistent.Persistent, Contained):
         return '<%s for %r>' % (self.__class__.__name__, parent)
 
 
-class Evaluation(Contained):
+class Score(object):
+    implements(interfaces.IScore)
 
-    implements(interfaces.IEvaluation)
-
-    def __init__(self, requirement, scoreSystem, value, evaluator):
-        self._value = None
-        self.requirement = requirement
+    def __init__(self, scoreSystem, value):
         self.scoreSystem = scoreSystem
+        self._value = None
         self.value = value
-        self.evaluator = evaluator
 
     @apply
     def value():
@@ -182,6 +179,20 @@ class Evaluation(Contained):
             self.time = datetime.datetime.utcnow()
 
         return property(get, set)
+
+    def __nonzero__(self):
+        return bool(self.value)
+
+
+
+class Evaluation(Contained, Score):
+    implements(interfaces.IEvaluation)
+
+    def __init__(self, requirement, scoreSystem, value, evaluator):
+        Contained.__init__(self)
+        Score.__init__(self, scoreSystem, value)
+        self.requirement = requirement
+        self.evaluator = evaluator
 
     @property
     def evaluatee(self):

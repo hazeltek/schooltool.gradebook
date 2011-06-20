@@ -109,6 +109,9 @@ class UNSCORED(object):
     def __repr__(self):
         return 'UNSCORED'
 
+    def __nonzero__(self):
+        return False
+
 
 zope.security.checker.BasicTypes[UNSCORED] = zope.security.checker.NoProxy
 UNSCORED = UNSCORED()

@@ -209,8 +209,8 @@ class IReadGradebook(Interface):
     def hasEvaluation(student, activity):
         """Check whether an evaluation exists for a student-activity pair."""
 
-    def getEvaluation(student, activity):
-        """Get the evaluation of a student for a given activity."""
+    def getScore(student, activity):
+        """Get the score of a student for a given activity."""
 
     def getCurrentEvaluationsForStudent(student):
         """Get the evaluations of the curretn worksheet for this student.
@@ -303,8 +303,8 @@ class IMyGrades(Interface):
         title=_('Worksheets'),
         description=_('Worksheets in this gradebook.'))
 
-    def getEvaluation(student, activity):
-        """Get the evaluation of a student for a given activity."""
+    def getScore(student, activity):
+        """Get the score of a student for a given activity."""
 
     def getCurrentWorksheet():
         """Get the currently active worksheet."""
