@@ -180,6 +180,10 @@ class Score(object):
 
         return property(get, set)
 
+    def __nonzero__(self):
+        return bool(self.value)
+
+
 
 class Evaluation(Contained, Score):
     implements(interfaces.IEvaluation)

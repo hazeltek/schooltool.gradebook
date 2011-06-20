@@ -279,7 +279,7 @@ class GradebookBase(object):
             for activity in self.getWorksheetActivities(worksheet):
                 score = self.getScore(student, activity)
                 category = activity.category
-                if score is not None and score.value is not UNSCORED:
+                if score:
                     if category in weights and weights[category] is not None:
                         adjusted_weights[category] = weights[category]
             total_percentage = 0
@@ -293,7 +293,7 @@ class GradebookBase(object):
             average_counts = {}
             for activity in self.getWorksheetActivities(worksheet):
                 score = self.getScore(student, activity)
-                if score is None or score.value is UNSCORED:
+                if not score:
                     continue
                 
                 if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
@@ -330,7 +330,7 @@ class GradebookBase(object):
             count = 0
             for activity in self.getWorksheetActivities(worksheet):
                 score = self.getScore(student, activity)
-                if score is None or score.value is UNSCORED:
+                if not score:
                     continue
                 if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
                     minimum = score.scoreSystem.scores[-1][2]
@@ -494,8 +494,7 @@ class StudentGradebookFormAdapter(object):
         try:
             if value is None or value == '':
                 score = gradebook.getScore(student, activity)
-                if (score is not None and
-                    score.value is not UNSCORED):
+                if score:
                     gradebook.removeEvaluation(student, activity)
             else:
                 score_value = activity.scoresystem.fromUnicode(value)
@@ -506,7 +505,7 @@ class StudentGradebookFormAdapter(object):
     def __getattr__(self, name):
         activity = self.context.activities[name]
         score = self.context.gradebook.getScore(self.context.student, activity)
-        if score is None or score.value is UNSCORED:
+        if not score:
             return ''
         elif interfaces.ILinkedColumnActivity.providedBy(activity):
             sourceObj = getSourceObj(activity.source)

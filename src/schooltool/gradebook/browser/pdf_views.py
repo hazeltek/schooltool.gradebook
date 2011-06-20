@@ -150,7 +150,7 @@ class BaseStudentPDFView(BasePDFView):
                     if activity is None:
                         continue
                     score = evaluations.get(activity, None)
-                    if score is not None and score.value is not UNSCORED:
+                    if score:
                         byCourse[course] = unicode(score.value)
             if len(byCourse):
                 scores[layout.source] = byCourse
@@ -250,7 +250,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
                 activity = activities[worksheetName][activityName]
 
                 score = evaluations.get(activity, None)
-                if score is None or score.value is UNSCORED:
+                if not score:
                     continue
 
                 for worksheet in worksheets:
@@ -489,7 +489,7 @@ class FailingReportPDFView(BasePDFView):
             return []
         for student in gb.students:
             score = gb.getScore(student, activity)
-            if score is None or score.value is UNSCORED:
+            if not score:
                 continue
             failure = False
             if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):

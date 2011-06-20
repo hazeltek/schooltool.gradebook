@@ -58,7 +58,6 @@ from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
-from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.term.interfaces import ITerm, IDateManager
 
 
@@ -473,7 +472,7 @@ class WorksheetsExportView(export.ExcelExportView):
                      export.Text(student.last_name)]
             for activity in activities:
                 score = gradebook.getScore(student, activity)
-                if score is None or score.value is UNSCORED:
+                if not score:
                     value = ''
                 else:
                     value = score.value

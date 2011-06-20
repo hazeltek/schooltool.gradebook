@@ -452,20 +452,14 @@ class GradebookOverview(SectionFinder):
                         continue
                     score = gradebook.getScore(student, activity)
                     # Delete the score
-                    if ((score is not None and
-                         score.value is not UNSCORED) and
-                        (cell_score_value is UNSCORED)):
+                    if score and cell_score_value is UNSCORED:
                         self.context.removeEvaluation(student, activity)
                         self.changed = True
                     # Do nothing
-                    elif ((score is None or
-                           score.value is UNSCORED) and
-                          (cell_score_value is UNSCORED)):
+                    elif not score and cell_score_value is UNSCORED:
                         continue
                     # Replace the score or add new one
-                    elif ((score is None or
-                           score.value is UNSCORED) or
-                          (cell_score_value != score.value)):
+                    elif not score or cell_score_value != score.value:
                         self.changed = True
                         self.context.evaluate(
                             student, activity, cell_score_value, evaluator)
@@ -556,7 +550,7 @@ class GradebookOverview(SectionFinder):
     def getStudentActivityValue(self, student, activity):
         gradebook = proxy.removeSecurityProxy(self.context)
         score = gradebook.getScore(student, activity)
-        if score is None or score.value is UNSCORED:
+        if not score:
             value = ''
         else:
             value = score.value
@@ -682,7 +676,7 @@ class GradeActivity(object):
         for student in self.context.students:
             reqValue = self.request.get(student.username)
             score = gradebook.getScore(student, self.activity['obj'])
-            if score is None or score.value is UNSCORED:
+            if not score:
                 value = reqValue or ''
             else:
                 value = reqValue or score.value
@@ -720,19 +714,13 @@ class GradeActivity(object):
                         continue
                     score = gradebook.getScore(student, activity)
                     # Delete the score
-                    if ((score is not None and
-                         score.value is not UNSCORED) and
-                        (request_score_value is UNSCORED)):
+                    if score and request_score_value is UNSCORED:
                         self.context.removeEvaluation(student, activity)
                     # Do nothing
-                    elif ((score is None or
-                           score.value is UNSCORED) and
-                          (request_score_value is UNSCORED)):
+                    elif not score and request_score_value is UNSCORED:
                         continue
                     # Replace the score or add new one
-                    elif ((score is None or
-                           score.value is UNSCORED) or
-                          (request_score_value != score.value)):
+                    elif not score or request_score_value != score.value:
                         self.context.evaluate(
                             student, activity, request_score_value, evaluator)
 
@@ -772,7 +760,7 @@ class MyGradesView(SectionFinder):
             activity = proxy.removeSecurityProxy(activity)
             score = self.context.getScore(self.person, activity)
 
-            if score is not None and score.value is not UNSCORED:
+            if score:
                 if ICommentScoreSystem.providedBy(score.scoreSystem):
                     grade = {
                         'comment': True,
@@ -1187,7 +1175,7 @@ class StudentGradebookView(object):
                       if not self.isFiltered(activity)]
         for activity in activities:
             score = gradebook.getScore(self.context.student, activity)
-            if score is None or score.value is UNSCORED:
+            if not score:
                 value = ''
             else:
                 value = score.value
@@ -1235,7 +1223,7 @@ class GradebookCSVView(BrowserView):
             for student in gb.students:
                 for activity in gb.activities:
                     score = gb.getScore(student, activity)
-                    if score is None or score.value is UNSCORED:
+                    if not score:
                         continue
                     value = unicode(score.value).replace('\n', '\\n')
                     value = value.replace('\r', '\\r')
