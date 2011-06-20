@@ -660,3 +660,175 @@ Let's check the report sheets for the other graded student:
     <td class="odd student_cell">
       <div>87 / 100</div>
     </td>
+
+
+Hiding deployed report sheets
+-----------------------------
+
+We allow the manager to hide deployed report sheets.  We only support this
+for a term because some combinations of term and full year deployments would
+leave it confusing have the user hide deployed report sheets by year
+
+    >>> manager.getLink('2011').click()
+    >>> manager.getLink('Term1').click()
+    >>> manager.getLink('Hide Report Sheet').click()
+
+We see the title and select field with the two report sheets deployed in
+Term1.
+
+    >>> manager.printQuery('//h1/text()')
+    Hide Deployed Report Worksheet
+    >>> manager.printQuery('//select[@name="reportWorksheet"]/option')
+    <option value="2011_term1">Report Sheet 1</option>
+    <option value="2011_term1-2">Report Sheet 2</option>
+
+If the user hits cancel, they are returned to the term view.
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url
+    'http://localhost/schoolyears/2011/term1'
+
+If they go again and hit Hide, a confirmation view comes up.
+
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.getControl(name='reportWorksheet').displayValue = ['Report Sheet 2']
+    >>> manager.getControl('Hide').click()
+    >>> manager.printQuery('//form/p/text()')
+    Are you sure you want to hide the report sheet, 'Report Sheet 2' in every
+    section of term, 'Term1'?  If so, hit the 'Hide' button again to confirm.
+
+If the user hits cancel, they are returned to the term view.
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url
+    'http://localhost/schoolyears/2011/term1'
+
+This time, the user will conform the action by hitting Hide a second time.
+
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.getControl(name='reportWorksheet').displayValue = ['Report Sheet 2']
+    >>> manager.getControl('Hide').click()
+    >>> manager.getControl('Hide').click()
+
+Now, returning the hide view, we see that only Report Sheet 1 is available
+for hiding.
+
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.printQuery('//select[@name="reportWorksheet"]/option')
+    <option value="2011_term1">Report Sheet 1</option>
+
+To confirm that the report sheet was hidden, we'll have the teacher view
+their gradebook for one of the sections in Term1.
+
+    >>> teacher.getLink('Gradebook').click()
+    >>> teacher.getControl(name='currentTerm').displayValue = ['2011 / Term1']
+    >>> teacher.getForm().submit()
+    >>> printGradebook(teacher.contents)
+    +----------+----------------+
+    | *Sheet1* | Report Sheet 1 |
+    +----------+----------------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+
+
+We can also unhide report sheets that we have hidden.  We see that the one
+we just hid is available for unhiding.
+
+    >>> manager.getLink('Unhide Report Sheet').click()
+    >>> manager.printQuery('//h1/text()')
+    Unhide Deployed Report Worksheet
+    >>> manager.printQuery('//select[@name="reportWorksheet"]/option')
+    <option value="2011_term1-2">Report Sheet 2</option>
+
+If the user hits cancel, they are returned to the term view.
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url
+    'http://localhost/schoolyears/2011/term1'
+
+If they go again and hit Unhide, a confirmation view comes up.
+
+    >>> manager.getLink('Unhide Report Sheet').click()
+    >>> manager.getControl(name='reportWorksheet').displayValue = ['Report Sheet 2']
+    >>> manager.getControl('Unhide').click()
+    >>> manager.printQuery('//form/p/text()')
+    Are you sure you want to unhide the report sheet, 'Report Sheet 2' in every
+    section of term, 'Term1'?  If so, hit the 'Unhide' button again to confirm.
+
+If the user hits cancel, they are returned to the term view.
+
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url
+    'http://localhost/schoolyears/2011/term1'
+
+This time, the user will conform the action by hitting Unhide a second time.
+
+    >>> manager.getLink('Unhide Report Sheet').click()
+    >>> manager.getControl(name='reportWorksheet').displayValue = ['Report Sheet 2']
+    >>> manager.getControl('Unhide').click()
+    >>> manager.getControl('Unhide').click()
+
+Now we see that both report sheets are available again for hiding.
+
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.printQuery('//select[@name="reportWorksheet"]/option')
+    <option value="2011_term1">Report Sheet 1</option>
+    <option value="2011_term1-2">Report Sheet 2</option>
+
+The teacher can see Report Sheet 2 again.  We'll click on the tab to make
+sure it's still ok.
+
+    >>> teacher.reload()
+    >>> teacher.getLink('Report Sheet 2').click()
+    >>> printGradebook(teacher.contents)
+    +--------+----------------+------------------+
+    | Sheet1 | Report Sheet 1 | *Report Sheet 2* |
+    +--------+----------------+------------------+
+    +----------------+---------+---------+
+    | Name           | Repor   | Repor   |
+    +----------------+---------+---------+
+    | Cerna, Camila  | [_____] | [_____] |
+    | Guzman, Nestor | [_____] | [_____] |
+    | Tejada, Mario  | [_____] | [_____] |
+    +----------------+---------+---------+
+
+Finally, we need the hide and unhide views to handle the case where there
+are no report sheets to hide or unhide.  Presently there are no report sheets
+in Term1 to unhide.
+
+    >>> manager.getLink('Unhide Report Sheet').click()
+    >>> manager.printQuery('//form/p/text()')
+    There are no hidden deployed report sheets to unhide.
+
+We also see that there is only the Cancel button to click which still takes
+the user back to the term view.
+
+    >>> manager.printQuery('//input[@type="submit"]')
+    <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url
+    'http://localhost/schoolyears/2011/term1'
+
+If we go ahead and hide both report sheets again, we'll see the same is
+true for the hide view.
+
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.getControl('Hide').click()
+    >>> manager.getControl('Hide').click()
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.getControl('Hide').click()
+    >>> manager.getControl('Hide').click()
+
+    >>> manager.getLink('Hide Report Sheet').click()
+    >>> manager.printQuery('//form/p/text()')
+    There are no deployed report sheets to hide.
+    >>> manager.printQuery('//input[@type="submit"]')
+    <input type="submit" class="button-cancel" name="CANCEL" value="Cancel" />
+    >>> manager.getControl('Cancel').click()
+    >>> manager.url
+    'http://localhost/schoolyears/2011/term1'
+

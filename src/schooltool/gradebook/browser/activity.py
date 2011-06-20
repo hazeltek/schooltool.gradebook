@@ -158,6 +158,8 @@ class UnhideWorksheetsView(object):
                 worksheet = removeSecurityProxy(self.context[name])
                 worksheet.hidden = False
             self.request.response.redirect(self.nextURL())
+        elif 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
