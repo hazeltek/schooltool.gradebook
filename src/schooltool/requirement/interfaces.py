@@ -178,6 +178,10 @@ class IScore(zope.interface.Interface):
         schema=zope.interface.Interface,
         required=True)
 
+    time = zope.schema.Datetime(
+        title=u'Time',
+        description=u'The time when value was set.')
+
 
 class IEvaluation(IScore, IContained):
     """An Evaluation"""
@@ -188,10 +192,6 @@ class IEvaluation(IScore, IContained):
         title=u'Requirement',
         description=u'The requirement being evaluated.',
         schema=IRequirement)
-
-    time = zope.schema.Datetime(
-        title=u'Time',
-        description=u'The time the evaluation was made')
 
     evaluatee = zope.schema.Object(
         title=u'Evaluatee',
