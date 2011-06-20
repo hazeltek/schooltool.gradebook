@@ -8,8 +8,7 @@
 <h1 metal:fill-slot="content-header"
     i18n:translate="">Hide Deployed Report Worksheet</h1>
 
-<metal:block metal:fill-slot="body"
-             tal:define="worksheets view/worksheets">
+<metal:block metal:fill-slot="body">
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}/hide_report_worksheet.html">
     <input type="hidden" name="confirm" 
@@ -36,11 +35,11 @@
                       to confirm." />
     </tal:block>
     <div class="controls">
-      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
       <tal:block condition="view/available">
         <input type="submit" class="button-ok" name="HIDE" value="Hide"
                i18n:attributes="value" />
       </tal:block>
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
     </div>
   </form>
 

@@ -8,12 +8,11 @@
 <h1 metal:fill-slot="content-header"
     i18n:translate="">Unhide Worksheets</h1>
 
-<metal:block metal:fill-slot="body"
-             tal:define="worksheets view/worksheets">
+<metal:block metal:fill-slot="body">
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}/unhide.html">
     <table>
-      <tr tal:repeat="worksheet worksheets">
+      <tr tal:repeat="worksheet view/worksheets">
         <td>
           <input type="checkbox" name="unhide:list"
                  tal:attributes="value worksheet/name" />
@@ -24,10 +23,11 @@
       </tr>
     </table>
     <div class="controls" tal:condition="view/canModify">
-      <tal:block tal:condition="python: len(list(context.values())) > 0">
+      <tal:block tal:condition="python:len(list(view.worksheets))">
         <input type="submit" class="button-ok" name="UNHIDE" value="Unhide"
                i18n:attributes="value" />
       </tal:block>
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
     </div>
   </form>
 
