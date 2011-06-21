@@ -677,7 +677,7 @@ We see the title and select field with the two report sheets deployed in
 Term1.
 
     >>> manager.printQuery('//h1/text()')
-    Hide Deployed Report Worksheet
+    Hide Deployed Report Sheet
     >>> manager.printQuery('//select[@name="reportWorksheet"]/option')
     <option value="2011_term1">Report Sheet 1</option>
     <option value="2011_term1-2">Report Sheet 2</option>
@@ -740,7 +740,7 @@ we just hid is available for unhiding.
 
     >>> manager.getLink('Unhide Report Sheet').click()
     >>> manager.printQuery('//h1/text()')
-    Unhide Deployed Report Worksheet
+    Unhide Deployed Report Sheet
     >>> manager.printQuery('//select[@name="reportWorksheet"]/option')
     <option value="2011_term1-2">Report Sheet 2</option>
 
