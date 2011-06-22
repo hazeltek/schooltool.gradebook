@@ -6,6 +6,7 @@
            i18n_domain="schooltool.gradebook">
 
   <!-- Report links -->
+
   <report:reportLink
        name="student_report_card"
        for="schooltool.basicperson.interfaces.IBasicPerson"
@@ -13,6 +14,7 @@
        group="Student"
        description="Contains scores from report sheets.  Formatted to be sent to parents."
        title="Student Report Card"
+       file_type="pdf"
        link="request_report_card.html"
        />
   <report:reportLink
@@ -22,6 +24,7 @@
        group="Student"
        description="Contains scores from report sheets and attendance.  For use by school staff."
        title="Student Detail Report"
+       file_type="pdf"
        link="request_student_detail.html"
        />
   <report:reportLink
@@ -31,6 +34,7 @@
        group="Group"
        description="A single PDF containing report cards for all students in the group."
        title="Student Report Card by Group"
+       file_type="pdf"
        link="request_report_card.html"
        />
   <report:reportLink
@@ -40,6 +44,7 @@
        group="Group"
        description="A single PDF containing detail reports for all students in the group."
        title="Student Detail Report by Group"
+       file_type="pdf"
        link="request_student_detail.html"
        />
   <report:reportLink
@@ -49,6 +54,7 @@
        group="Term"
        description="Shows all students receiving failing scores in the selected report activity and term."
        title="Failures by Term"
+       file_type="pdf"
        link="request_failing_report.html"
        />
 
@@ -61,6 +67,7 @@
          group="School Year"
          description="Lists students absent on a given day."
          title="Absences By Day"
+         file_type="pdf"
          link="request_absences_by_day.html"
          />
     <report:reportLink
@@ -70,6 +77,7 @@
          group="Section"
          description="Summary of absences and tardies from a single section and term."
          title="Absences by Section"
+         file_type="pdf"
          link="section_absences.pdf"
          />
   </configure>
