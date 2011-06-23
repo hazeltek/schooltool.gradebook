@@ -35,6 +35,7 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.skin import flourish
 
 
 class RequestFailingReportView(BrowserView):
@@ -231,4 +232,14 @@ class RequestStudentReportView(BrowserView):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request) + '/reports'
+
+
+class FlourishRequestStudentReportView(flourish.page.Page,
+                                       RequestStudentReportView):
+
+    def update(self):
+        RequestStudentReportView.update(self)
+
+    def form_title(self):
+        return RequestStudentReportView.title(self)
 

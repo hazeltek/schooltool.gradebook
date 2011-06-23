@@ -34,4 +34,20 @@
       permission="schooltool.view"
       />
 
+  <flourish:page
+      name="request_report_card.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.FlourishRequestStudentReportView"
+      template="templates/f_request_student_report.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="request_student_detail.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.FlourishRequestStudentReportView"
+      template="templates/f_request_student_report.pt"
+      permission="schooltool.edit"
+      />
+
 </configure>
