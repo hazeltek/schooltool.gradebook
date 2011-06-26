@@ -269,6 +269,15 @@ class GradebookBase(object):
             return []
 
     def getWorksheetTotalAverage(self, worksheet, student):
+        def getMinMaxValue(score):
+            ss = score.scoreSystem
+            if IDiscreteValuesScoreSystem.providedBy(ss):
+                return (ss.scores[-1][2], ss.scores[0][2],
+                    ss.getNumericalValue(score.value))
+            elif IRangedValuesScoreSystem.providedBy(ss):
+                return ss.min, ss.max, score.value
+            return None, None, None
+
         if worksheet is None:
             return 0, UNSCORED
         weights = worksheet.getCategoryWeights()
@@ -285,8 +294,9 @@ class GradebookBase(object):
             total_percentage = 0
             for key in adjusted_weights:
                 total_percentage += adjusted_weights[key]
-            for key in adjusted_weights:
-                adjusted_weights[key] /= total_percentage
+            if total_percentage:
+                for key in adjusted_weights:
+                    adjusted_weights[key] /= total_percentage
 
             totals = {}
             average_totals = {}
@@ -295,16 +305,9 @@ class GradebookBase(object):
                 score = self.getScore(student, activity)
                 if not score:
                     continue
-                
-                if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
-                    minimum = score.scoreSystem.scores[-1][2]
-                    maximum = score.scoreSystem.scores[0][2]
-                    value = score.scoreSystem.getNumericalValue(score.value)
-                elif IRangedValuesScoreSystem.providedBy(score.scoreSystem):
-                    minimum = score.scoreSystem.min
-                    maximum = score.scoreSystem.max
-                    value = score.value
-                else:
+
+                minimum, maximum, value = getMinMaxValue(score)
+                if minimum is None:
                     continue
 
                 totals.setdefault(activity.category, Decimal(0))
@@ -332,15 +335,8 @@ class GradebookBase(object):
                 score = self.getScore(student, activity)
                 if not score:
                     continue
-                if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
-                    minimum = score.scoreSystem.scores[-1][2]
-                    maximum = score.scoreSystem.scores[0][2]
-                    value = score.scoreSystem.getNumericalValue(score.value)
-                elif IRangedValuesScoreSystem.providedBy(score.scoreSystem):
-                    minimum = score.scoreSystem.min
-                    maximum = score.scoreSystem.max
-                    value = score.value
-                else:
+                minimum, maximum, value = getMinMaxValue(score)
+                if minimum is None:
                     continue
                 total += value - minimum
                 count += maximum - minimum

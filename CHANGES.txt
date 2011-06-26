@@ -12,6 +12,7 @@ CHANGES
 - Run functional tests without journal, add separate tests that need journal to
   another layer (https://launchpad.net/bugs/783540)
 - Hide/Unhide deployed report sheets (https://launchpad.net/bugs/788323)
+- Fixed divide by zero bug (https://launchpad.net/bugs/801121)
 
 
 0.9.0 (2011-04-25)

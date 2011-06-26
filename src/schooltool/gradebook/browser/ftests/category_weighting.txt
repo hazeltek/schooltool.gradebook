@@ -310,3 +310,35 @@ Since all these weights are zero, they shouldn't affect the averages:
     | Hoffman, Tom     | 182.0 | 95.0%  | [45___] | [80___] | [50___] | [_____] | [7____] |
     | Richter, Claudia | 195.0 | 100.0% | [50___] | [95___] | [50___] | [_____] | [_____] |
     +------------------+-------+--------+---------+---------+---------+---------+---------+
+
+Divide by zero bug
+------------------
+
+Until we fixed the bug, there was a case that crashed the gradebook where there
+was a score for a non-wieghted category but no score for a weighted one.  To
+prove that the bug has been fixed, we will remove all the scores for Claudia
+and add one for the 'Experiment' activity whose category, 'Assignment', has a
+weight of zero.
+
+    >>> stephan.getControl(name='Activity_claudia').value = '0'
+    >>> stephan.getControl(name='Activity-2_claudia').value = '0'
+    >>> stephan.getControl(name='Activity-3_claudia').value = '0'
+    >>> stephan.getControl(name='Activity-3_claudia').value = '0'
+    >>> stephan.getControl(name='Activity-5_claudia').value = '50'
+    >>> stephan.getControl('Save').click()
+
+It didn't crash.  We see that Claudia has an average of zero even though she
+has a score for 'Experiment' because it has a weight of zero.
+
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+---------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz1   | HW2     | Quiz2   | Exper   |
+    +------------------+-------+-------+---------+---------+---------+---------+---------+
+    | Cardune, Paul    | 184.0 | 85.0% | [40___] | [90___] | [45___] | [_____] | [9____] |
+    | Hoffman, Tom     | 182.0 | 95.0% | [45___] | [80___] | [50___] | [_____] | [7____] |
+    | Richter, Claudia | 50.0  | 0.0%  | [0____] | [0____] | [0____] | [_____] | [50___] |
+    +------------------+-------+-------+---------+---------+---------+---------+---------+
+
