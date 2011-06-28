@@ -17,7 +17,7 @@
   </table>
   </div>
   <div class="controls">
-    <input type="submit" class="submit-widget" name="DOWNLOAD" value="Download"
+    <input type="submit" class="submit-widget" name="DOWNLOAD" value="Submit"
            i18n:attributes="value" />
     <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
   </div>
