@@ -1,17 +1,25 @@
 <div tal:define="dummy view/update" i18n:domain="schooltool">
   <form method="post" class="standalone"
         tal:attributes="action string:${context/@@absolute_url}/${view/action}">
+  <input type="hidden" name="form-submitted" value="" />
   <h2 i18n:translate="">Select a year or term</h2>
   <div class="viewspace">
   <h3 tal:content="view/form_title" />
   <table>
-    <tr tal:repeat="row view/rows">
+    <tr tal:repeat="term view/availableTerms">
       <td>
-        <a class="download_link"
-           tal:attributes="href row/url" tal:content="row/title" />
+        <input type="radio" name="selectedTerm"
+               tal:attributes="value term/value;
+                               checked term/selected" />
+        <span class="download_link" tal:content="term/title" />
       </td>
     </tr>
   </table>
+  </div>
+  <div class="controls">
+    <input type="submit" class="submit-widget" name="DOWNLOAD" value="Download"
+           i18n:attributes="value" />
+    <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
   </div>
   </form>
 </div>

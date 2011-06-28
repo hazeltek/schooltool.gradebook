@@ -238,24 +238,8 @@ class FlourishRequestStudentReportView(flourish.page.Page,
                                        RequestStudentReportView):
 
     def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect(self.nextURL())
+        RequestStudentReportView.update(self)
 
     def form_title(self):
         return RequestStudentReportView.title(self)
-
-    def rows(self):
-        current_term = getUtility(IDateManager).current_term
-        current_year = ISchoolYear(current_term)
-        url = self.reportURL()
-        results = [{
-            'title': current_year.__name__,
-            'url': url,
-            }]
-        for term in current_year.values():
-            results.append({
-                'title': term.title,
-                'url': '%s?term=%s' % (url, term.__name__),
-                })
-        return results
 
