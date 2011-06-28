@@ -1,14 +1,10 @@
 <div tal:define="dummy view/update" i18n:domain="schooltool">
   <form method="post" class="standalone"
         tal:attributes="action string:${context/@@absolute_url}/${view/action}">
+  <h2 i18n:translate="">Select a year or term</h2>
   <div class="viewspace">
   <h3 tal:content="view/form_title" />
   <table>
-    <thead>
-      <tr>
-        <th i18n:translate="">Year or Term</th>
-      </tr>
-    </thead>
     <tr tal:repeat="row view/rows">
       <td>
         <a class="download_link"
