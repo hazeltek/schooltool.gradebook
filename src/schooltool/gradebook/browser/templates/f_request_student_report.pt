@@ -1,5 +1,8 @@
 <div tal:define="dummy view/update" i18n:domain="schooltool">
-  <h2 tal:content="view/form_title" />
+  <form method="post" class="standalone"
+        tal:attributes="action string:${context/@@absolute_url}/${view/action}">
+  <div class="viewspace">
+  <h3 tal:content="view/form_title" />
   <table>
     <thead>
       <tr>
@@ -13,13 +16,7 @@
       </td>
     </tr>
   </table>
-
-  <form method="post" class="standalone"
-        tal:attributes="action string:${context/@@absolute_url}/${view/action}">
-    <input type="hidden" name="form-submitted" value="" />
-    <div class="controls">
-      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
-    </div>
+  </div>
   </form>
 </div>
 
