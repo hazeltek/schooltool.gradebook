@@ -133,9 +133,9 @@ Cancel button in that form:
     >>> stephan.getControl('Points').value = '15'
     >>> stephan.getControl('Add').click()
 
-Adding an external activity gets us back to the gradebook index view
-where we can see the external activity which by default has been
-loaded with the latest grades:
+Adding an external activity gets us back to the gradebook where we can see
+the external activity which has been loaded with the latest grades, but cannot
+be scored:
 
     >>> stephan.url
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
@@ -143,13 +143,13 @@ loaded with the latest grades:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
-    +------------------+-------+-------+---------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] | [_____] |
-    | Hoffman, Tom     | 145.0 | 87.9% | [48___] | [88___] | [9.00_] |
-    | Richter, Claudia | 80.0  | 48.5% | [45___] | [29___] | [6.00_] |
-    +------------------+-------+-------+---------+---------+---------+
+    +------------------+-------+-------+---------+---------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw |
+    +------------------+-------+-------+---------+---------+-------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Hoffman, Tom     | 145.0 | 87.9% | [48___] | [88___] | 9.00  |
+    | Richter, Claudia | 80.0  | 48.5% | [45___] | [29___] | 6.00  |
+    +------------------+-------+-------+---------+---------+-------+
 
 Let's edit the external activity. The form doesn't allow to edit the
 score system. The edit view also shows an 'Update Grades' button to
@@ -202,42 +202,19 @@ not been updated:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
-    +------------------+-------+-------+---------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] | [_____] |
-    | Hoffman, Tom     | 145.0 | 82.9% | [48___] | [88___] | [9.00_] |
-    | Richter, Claudia | 80.0  | 45.7% | [45___] | [29___] | [6.00_] |
-    +------------------+-------+-------+---------+---------+---------+
+    +------------------+-------+-------+---------+---------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw |
+    +------------------+-------+-------+---------+---------+-------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Hoffman, Tom     | 145.0 | 82.9% | [48___] | [88___] | 9.00  |
+    | Richter, Claudia | 80.0  | 45.7% | [45___] | [29___] | 6.00  |
+    +------------------+-------+-------+---------+---------+-------+
 
 Let's go back to the edit form of the external activity to update the
 grades using the 'Update Grades' button:
 
     >>> stephan.getLink('Manage Worksheet').click()
     >>> stephan.getLink('Hardware Assignment').click()
-    >>> stephan.printQuery('//h3/text()')
-    Edit External Activity
-    >>> stephan.printQuery('id("content-nav-group")/div/a/text()')
-    Edit
-    Update Grades
-    >>> stephan.printQuery('//label/span[1]/text()')
-    External Activity
-    Title
-    Label
-    Due Date
-    Description
-    Category
-    Points
-    >>> stephan.printQuery('id("form-widgets-external_activity")/span/text()')
-    Sample Source - Hardware
-    >>> stephan.printQuery('id("form-widgets-title")/@value')
-    Hardware Assignment
-    >>> stephan.printQuery('id("form-widgets-description")/text()')
-    The Hardware assignment
-    >>> stephan.printQuery('id("form-widgets-category")/option[@selected="selected"]/text()')
-    Assignment
-    >>> stephan.printQuery('id("form-widgets-points")/@value')
-    25
     >>> stephan.getLink('Update Grades').click()
 
 This takes us to the gradebook where the grades of the external
@@ -249,13 +226,13 @@ activity, the total of points and the averages should have changed:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
-    +------------------+-------+-------+---------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] | [_____] |
-    | Hoffman, Tom     | 151.0 | 86.3% | [48___] | [88___] | [15.00] |
-    | Richter, Claudia | 84.0  | 48.0% | [45___] | [29___] | [10.00] |
-    +------------------+-------+-------+---------+---------+---------+
+    +------------------+-------+-------+---------+---------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw |
+    +------------------+-------+-------+---------+---------+-------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Hoffman, Tom     | 151.0 | 86.3% | [48___] | [88___] | 15.00 |
+    | Richter, Claudia | 84.0  | 48.0% | [45___] | [29___] | 10.00 |
+    +------------------+-------+-------+---------+---------+-------+
 
 External activities should also be weightable. Let's add some
 weighting to the worksheet:
@@ -273,10 +250,10 @@ The averages have changed to reflect the weighting:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw   |
-    +------------------+-------+-------+---------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.9% | [40___] | [90___] | [_____] |
-    | Hoffman, Tom     | 151.0 | 86.8% | [48___] | [88___] | [15.00] |
-    | Richter, Claudia | 84.0  | 42.7% | [45___] | [29___] | [10.00] |
-    +------------------+-------+-------+---------+---------+---------+
+    +------------------+-------+-------+---------+---------+-------+
+    | Name             | Total | Ave.  | HW1     | Quiz    | Hardw |
+    +------------------+-------+-------+---------+---------+-------+
+    | Cardune, Paul    | 130.0 | 86.9% | [40___] | [90___] |       |
+    | Hoffman, Tom     | 151.0 | 86.8% | [48___] | [88___] | 15.00 |
+    | Richter, Claudia | 84.0  | 42.7% | [45___] | [29___] | 10.00 |
+    +------------------+-------+-------+---------+---------+-------+

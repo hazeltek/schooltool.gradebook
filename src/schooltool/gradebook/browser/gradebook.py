@@ -526,8 +526,9 @@ class GradebookOverview(SectionFinder):
                 else:
                     shortTitle = longTitle = bestScore = ''
             else:
-                scorable = not ICommentScoreSystem.providedBy(
-                    activity.scoresystem)
+                scorable = not (
+                    ICommentScoreSystem.providedBy(activity.scoresystem) or
+                    interfaces.ILinkedActivity.providedBy(activity))
                 shortTitle, longTitle, bestScore = \
                     self.getActivityAttrs(activity)
             result = {
@@ -591,12 +592,12 @@ class GradebookOverview(SectionFinder):
                 if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
                     sourceObj = getSourceObj(activity.source)
-                    if value is not UNSCORED and value != '' and \
-                       interfaces.IWorksheet.providedBy(sourceObj):
+                    if value and interfaces.IWorksheet.providedBy(sourceObj):
                         value = '%.1f' % value
                 else:
-                    editable = not ICommentScoreSystem.providedBy(
-                        activity.scoresystem)
+                    editable = not (
+                        ICommentScoreSystem.providedBy(activity.scoresystem) or
+                        interfaces.ILinkedActivity.providedBy(activity))
 
                 grade = {
                     'activity': act_hash,
