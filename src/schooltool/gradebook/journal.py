@@ -19,10 +19,17 @@
 
 from zope.interface import implements
 
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
-
 from schooltool.gradebook import interfaces
 from schooltool.gradebook import GradebookMessage as _
+
+try:
+    from schooltool.lyceum.journal.interfaces import ISectionJournalData
+    from schooltool.lyceum.journal.journal import ABSENT, TARDY
+except ImportError:
+    def ISectionJournalData(section):
+        return None
+    ABSENT = 'n'
+    TARDY = 'p'
 
 
 # adapt section to gradebook's ISectionJournalData interface, returning
