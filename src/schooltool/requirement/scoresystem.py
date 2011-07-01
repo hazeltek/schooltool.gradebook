@@ -39,7 +39,7 @@ from zope.security.proxy import removeSecurityProxy
 from schooltool.app.app import StartUpBase
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces
-from schooltool.requirement.interfaces import IScoreSystemsProxy
+
 
 SCORESYSTEM_CONTAINER_KEY = 'schooltool.requirement.scoresystem_container'
 

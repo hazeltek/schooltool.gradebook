@@ -252,17 +252,3 @@ class IEvaluationsQuery(zope.interface.Interface):
         The returned ``IEvaluations`` object *must* have the same parent and
         name that the original ``IEvaluations`` object had.
         """
-
-
-class IScoreSystemsProxy(ILocation):
-    """The Proxy class for adding/editing score systems"""
-
-    def getScoreSystems():
-        """Return list of tuples (name, scoresystem)"""
-
-    def addScoreSystem(scoresystem):
-        """Add scoresystem to app utilitiles"""
-
-    def getScoreSystem(name):
-        """Get scoresystem from app utilitiles by the given name"""
-
