@@ -36,6 +36,7 @@ from zope.keyreference.interfaces import IKeyReference
 from zope.traversing.api import getParent, getName
 
 from schooltool.requirement import interfaces
+from schooltool.requirement.scoresystem import UNSCORED
 
 
 EVALUATIONS_KEY = "schooltool.evaluations"
@@ -181,7 +182,7 @@ class Score(object):
         return property(get, set)
 
     def __nonzero__(self):
-        return bool(self.value)
+        return self.value is not UNSCORED
 
 
 
