@@ -480,9 +480,7 @@ class GradebookOverview(SectionFinder):
         return weeks
 
     def getActivityAttrs(self, activity):
-        shortTitle = activity.label
-        if shortTitle is None or len(shortTitle) == 0:
-            shortTitle = activity.title
+        shortTitle = activity.label or activity.title
         shortTitle = shortTitle.replace(' ', '')
         if len(shortTitle) > 5:
             shortTitle = shortTitle[:5].strip()
@@ -505,9 +503,7 @@ class GradebookOverview(SectionFinder):
                     shortTitle, longTitle, bestScore = \
                         self.getActivityAttrs(source)
                 elif interfaces.IWorksheet.providedBy(source):
-                    shortTitle = source.title
-                    if activity.label is not None and len(activity.label):
-                        shortTitle = activity.label
+                    shortTitle = activity.label or source.title
                     if len(shortTitle) > 5:
                         shortTitle = shortTitle[:5].strip()
                     longTitle = source.title
