@@ -83,19 +83,19 @@ journal average:
     >>> stephan.getControl('Add').click()
 
 Printing the gradebook, we see that the column is there but no data is in the
-cell:
+cell, and it cannot be edited:
 
     >>> printGradebook(stephan.contents)
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+---------+
-    | Name             | Total | Ave. | Att.    |
-    +------------------+-------+------+---------+
-    | Richter, Claudia | 0.0   | N/A  | [_____] |
-    +------------------+-------+------+---------+
+    +------------------+-------+------+------+
+    | Name             | Total | Ave. | Att. |
+    +------------------+-------+------+------+
+    | Richter, Claudia | 0.0   | N/A  |      |
+    +------------------+-------+------+------+
 
-Let's add some attendance data for the student.
+Let's add some grades for the student.
 
     >>> stephan.getLink('Journal').click()
     >>> stephan.getLink('Physics I (1)').click()
@@ -120,9 +120,9 @@ Now we see that the journal average will show up in the gradebook.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+
-    | Name             | Total | Ave.  | Att.    |
-    +------------------+-------+-------+---------+
-    | Richter, Claudia | 8.3   | 83.3% | [8.33_] |
-    +------------------+-------+-------+---------+
+    +------------------+-------+-------+------+
+    | Name             | Total | Ave.  | Att. |
+    +------------------+-------+-------+------+
+    | Richter, Claudia | 8.3   | 83.3% | 8.33 |
+    +------------------+-------+-------+------+
 

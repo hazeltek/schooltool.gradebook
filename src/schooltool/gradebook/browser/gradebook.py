@@ -56,6 +56,7 @@ from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionTaught, getCurrentSectionAttended,
     setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
+from schooltool.gradebook.journal import ABSENT, TARDY
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
@@ -514,8 +515,9 @@ class GradebookOverview(SectionFinder):
                 else:
                     shortTitle = longTitle = bestScore = ''
             else:
-                scorable = not ICommentScoreSystem.providedBy(
-                    activity.scoresystem)
+                scorable = not (
+                    ICommentScoreSystem.providedBy(activity.scoresystem) or
+                    interfaces.ILinkedActivity.providedBy(activity))
                 shortTitle, longTitle, bestScore = \
                     self.getActivityAttrs(activity)
             result = {
@@ -580,12 +582,12 @@ class GradebookOverview(SectionFinder):
                 if interfaces.ILinkedColumnActivity.providedBy(activity):
                     editable = False
                     sourceObj = getSourceObj(activity.source)
-                    if value is not UNSCORED and value != '' and \
-                       interfaces.IWorksheet.providedBy(sourceObj):
+                    if value and interfaces.IWorksheet.providedBy(sourceObj):
                         value = '%.1f' % value
                 else:
-                    editable = not ICommentScoreSystem.providedBy(
-                        activity.scoresystem)
+                    editable = not (
+                        ICommentScoreSystem.providedBy(activity.scoresystem) or
+                        interfaces.ILinkedActivity.providedBy(activity))
 
                 grade = {
                     'activity': act_hash,
@@ -604,15 +606,13 @@ class GradebookOverview(SectionFinder):
             else:
                 average = convertAverage(average, self.average_scoresystem)
 
-            if journal_data is None:
-                absences = tardies = ''
-            else:
-                absences = tardies = 0
+            absences = tardies = 0
+            if (journal_data and not (self.absences_hide and self.tardies_hide)):
                 for meeting in journal_data.recordedMeetings(student):
                     grade = journal_data.getGrade(student, meeting)
-                    if grade.strip().lower() == 'n':
+                    if grade == ABSENT:
                         absences += 1
-                    if grade.strip().lower() == 'p':
+                    elif grade == TARDY:
                         tardies += 1
 
             rows.append(
@@ -623,10 +623,10 @@ class GradebookOverview(SectionFinder):
                                     ('/%s' % student.username),
                             },
                  'grades': grades,
-                 'absences': unicode(absences),
-                 'tardies': unicode(tardies),
-                 'total': unicode(total),
-                 'average': unicode(average)
+                 'absences': absences or '',
+                 'tardies': tardies or '',
+                 'total': total,
+                 'average': average,
                 })
 
         # Do the sorting
