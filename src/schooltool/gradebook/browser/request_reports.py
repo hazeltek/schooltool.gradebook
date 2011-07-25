@@ -239,7 +239,3 @@ class FlourishRequestStudentReportView(flourish.page.Page,
 
     def update(self):
         RequestStudentReportView.update(self)
-
-    def form_title(self):
-        return RequestStudentReportView.title(self)
-
