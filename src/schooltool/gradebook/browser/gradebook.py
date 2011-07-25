@@ -64,7 +64,6 @@ from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm, IDateManager
 from schooltool.skin import flourish
-import schooltool.skin.flourish.page
 
 from schooltool.gradebook import GradebookMessage as _
 
