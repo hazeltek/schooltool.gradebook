@@ -53,6 +53,24 @@
       permission="schooltool.view"
       />
 
+  <flourish:viewlet
+      name="gradebook_overview"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      for="..interfaces.IGradebook"
+      title="Add"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
+      name="../addActivity.html"
+      title="Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      permission="schooltool.edit"
+      />
+
   <flourish:page
       name="request_report_card.html"
       for="schooltool.person.interfaces.IPerson"
