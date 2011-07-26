@@ -683,6 +683,10 @@ class GradebookOverview(SectionFinder):
         return results
 
 
+class FlourishGradebookOverview(GradebookOverview, flourish.page.Page):
+    """flourish Gradebook Overview/Table"""
+
+
 class GradeActivity(object):
     """Grading a single activity"""
 
