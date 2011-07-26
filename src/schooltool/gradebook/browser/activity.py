@@ -46,6 +46,7 @@ from z3c.form.interfaces import DISPLAY_MODE
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IDemographics
+from schooltool.common.inlinept import InheritTemplate
 from schooltool.course.interfaces import ISection, IInstructor
 from schooltool.export import export
 from schooltool.gradebook import GradebookMessage as _
@@ -60,6 +61,7 @@ from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.term.interfaces import ITerm, IDateManager
+from schooltool.skin import flourish
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -212,6 +214,22 @@ class ActivityAddView(z3cform.AddForm):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
+
+
+class FlourishActivityAddView(flourish.form.AddForm, ActivityAddView):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Activity Details'
+
+    @button.buttonAndHandler(_('Submit'), name='add')
+    def handleAdd(self, action):
+        super(FlourishActivityAddView, self).handleAdd.func(self, action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        super(FlourishActivityAddView, self).handle_cancel_action.func(self,
+            action)
 
 
 class LinkedActivityAddView(z3cform.AddForm):

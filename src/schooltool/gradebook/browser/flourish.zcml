@@ -72,6 +72,16 @@
       />
 
   <flourish:page
+      name="addActivity.html"
+      for="..interfaces.IWorksheet"
+      title="Gradebook"
+      subtitle="New Activity"
+      content_template="templates/f_add_edit_activity.pt"
+      class=".activity.FlourishActivityAddView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
       name="request_report_card.html"
       for="schooltool.person.interfaces.IPerson"
       class=".request_reports.FlourishRequestStudentReportView"
