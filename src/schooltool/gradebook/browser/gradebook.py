@@ -683,6 +683,14 @@ class GradebookOverview(SectionFinder):
         return results
 
 
+class FlourishGradebookOverview(GradebookOverview, flourish.page.Page):
+    """flourish Gradebook Overview/Table"""
+
+
+class FlourishSchoolGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
+    """SchoolYear container links viewlet."""
+
+
 class GradeActivity(object):
     """Grading a single activity"""
 

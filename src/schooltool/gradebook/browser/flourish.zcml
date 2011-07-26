@@ -5,6 +5,16 @@
            xmlns:flourish="http://schooltool.org/flourish"
            i18n_domain="schooltool.gradebook">
 
+  <zope:resourceLibrary
+      name="schooltool.gradebook.flourish"
+      require=""
+      layer="schooltool.skin.flourish.IFlourishLayer">
+    <directory
+          source="resources"
+          include="gradebook_overview.js"
+          />
+  </zope:resourceLibrary>
+
   <flourish:viewlet
       name="gradebook"
       after="manage_school"
@@ -31,6 +41,43 @@
       title="Gradebook"
       content_template="templates/f_gradebook_startup.pt"
       class=".gradebook.FlourishGradebookStartup"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="index.html"
+      for="..interfaces.IGradebook"
+      title="Gradebook"
+      content_template="templates/f_gradebook_overview.pt"
+      class=".gradebook.FlourishGradebookOverview"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="gradebook_overview"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      for="..interfaces.IGradebook"
+      title="Add"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
+      name="../addActivity.html"
+      title="Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="addActivity.html"
+      for="..interfaces.IWorksheet"
+      title="Gradebook"
+      subtitle="New Activity"
+      content_template="templates/f_add_edit_activity.pt"
+      class=".activity.FlourishActivityAddView"
       permission="schooltool.view"
       />
 

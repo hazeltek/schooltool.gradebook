@@ -1,0 +1,253 @@
+<div>
+    <script type="text/javascript" tal:attributes="src context/++resource++schooltool.gradebook.flourish/gradebook_overview.js">
+    </script>
+    <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
+      var numstudents = <tal:block replace="python: len(view.students)"/>;
+      var students = new Array(numstudents);
+      <tal:loop repeat="row view/table">
+      students[<tal:block replace="repeat/row/index"/>] = '<tal:block replace="python: view.breakJSString(row['student']['id'])"/>';
+      </tal:loop>
+      var numactivities = <tal:block replace="python: len(view.scorableActivities())"/>;
+      var activities = new Array(numactivities);
+      <tal:loop repeat="activity view/activities">
+      activities[<tal:block replace="repeat/activity/index"/>] = '<tal:block replace="activity/hash"/>';
+      </tal:loop>
+      var numscores = <tal:block replace="python: len(view.scores)"/>;
+      var scores = new Object();
+      <tal:loop repeat="activity view/scores">
+      scores['<tal:block replace="activity" />'] = new Array(<tal:block replace="python: view.scores[activity]" />);
+      </tal:loop>
+      var numdescriptions = <tal:block replace="python: len(view.descriptions)"/>;
+      var descriptions = new Array(numdescriptions);
+      <tal:loop repeat="activity view/descriptions">
+      descriptions['<tal:block replace="activity/act_hash"/>'] = '<tal:block replace="activity/description"/>';
+      </tal:loop>
+      var edited = false;
+      var currentCell;
+      var currentDesc = '';
+      window.onload = onLoadHandler;
+      window.onunload = checkChanges;
+      warningText = '<tal:block replace="view/warningText" />';
+    <metal:block tal:replace="structure string:&lt;/script&gt;" />
+    <h1 style="color: red" id="javascript-warning" i18n:translate="">
+    Your browser either has Javascript turned off, or it is not supported.
+    Javascript is <b>required</b> for the gradebook.
+    Please enable Javascript or use a browser with Javascript.
+    </h1>
+    <script type="text/javascript">
+      <!--
+	  document.getElementById("javascript-warning").innerHTML = "";
+	  //-->
+    </script>
+    <form method="post"
+          tal:attributes="action string:${context/@@absolute_url}">
+
+    <tal:if condition="python:not list(view.getSections())">
+      <b i18n:translate="">Term:</b>
+      <span tal:content="view/getCurrentTerm" />
+    </tal:if>
+
+    <tal:if condition="python:list(view.getTerms())">
+      <label for="currentTerm" i18n:translate="">Term</label>
+      <select name="currentTerm"
+              onchange="this.form.submit()">
+        <tal:block repeat="term view/getTerms">
+          <option
+              tal:attributes="value term/form_id;
+                              selected term/selected"
+              tal:content="term/title" />
+        </tal:block>
+      </select>
+    </tal:if>
+
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <tal:if condition="python:not list(view.getSections())">
+      <b i18n:translate="">Section:</b>
+      <span tal:content="view/getCurrentSection" />
+    </tal:if>
+    <tal:if condition="python:list(view.getSections())">
+      <label for="currentSection" i18n:translate="">Section</label>
+      <select name="currentSection"
+              onchange="this.form.submit()">
+        <tal:block repeat="section view/getSections">
+	  <option
+	      tal:attributes="value section/form_id;
+			      selected section/selected;"
+	      tal:content="section/title" />
+        </tal:block>
+      </select>
+    </tal:if>
+
+    <tal:if condition="not: view/due_date_hide">
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <input type="checkbox" name="due_date:list" 
+             tal:attributes="checked view/getDueDateFilter" />
+      <span i18n:translate="">show only activities due in past
+      <select name="num_weeks" i18n:name="num_weeks">
+        <tal:block repeat="weeks view/weeksChoices">
+          <option value="1"
+              tal:attributes="value weeks;
+			      selected python:weeks==view.getCurrentWeeks()"
+              tal:content="weeks" />
+        </tal:block>
+      </select>
+      weeks</span>
+    </tal:if>
+    <div style="height: 5px;"></div>
+
+  <div class="message" style="color:red"
+       tal:condition="view/message"
+       tal:content="view/message">
+    Message
+  </div>
+  <br />
+
+  <table class="schooltool_gradebook">
+    <tr>
+      <tal:block repeat="worksheet view/worksheets">
+        <td class="active_tab">
+          <a tal:condition="not: worksheet/current"
+             tal:attributes="href worksheet/url"
+             tal:content="worksheet/title" />
+          <span style="font-weight: bold;"
+                tal:condition="worksheet/current"
+                tal:content="worksheet/title" />
+        </td>
+      </tal:block>
+    <tr>
+  </table>
+
+  <table class="schooltool_gradebook">
+    <tr>
+      <td id="description" class="gradebook_description"
+          tal:attributes="colspan python:len(view.descriptions) + view.apply_all_colspan" />
+    </tr>
+
+    <tr>
+     <th class="cell header">
+       <div i18n:translate="">Name</div>
+       <a href="?sort_by=student" i18n:translate="">(sort)</a>
+     </th>
+     <th tal:condition="not: view/absences_hide" class="cell padded header">
+       <div tal:content="view/absences_label" />
+     </th>
+     <th tal:condition="not: view/tardies_hide" class="cell padded header">
+       <div tal:content="view/tardies_label" />
+     </th>
+     <th tal:condition="not: view/total_hide" class="cell padded header">
+       <div tal:content="view/total_label" />
+     </th>
+     <th tal:condition="not: view/average_hide" class="cell padded header">
+       <div tal:content="view/average_label" />
+       <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
+     </th>
+     <th class="cell title header" tal:repeat="activity view/activities"
+         tal:attributes="onmouseover string:tempDescription('${activity/hash}');
+                         onmouseout string:restoreDescription()">
+       <div class="padded">
+         <a href=""
+            tal:condition="activity/scorable"
+            tal:attributes="href 
+                            string:gradeActivity.html?activity=${activity/hash};
+                            title activity/longTitle;"
+            tal:content="activity/shortTitle" />
+         <span
+            tal:condition="not: activity/scorable"
+            tal:content="activity/shortTitle" />
+       </div>
+       <a href="?sort_by="
+          tal:attributes="href
+              string:${request/URL}?sort_by=${activity/hash}"
+          i18n:translate="">
+         (sort)
+       </a>
+       <div tal:content="activity/max" />
+     </th>
+    </tr>
+
+    <tr>
+      <td tal:attributes="colspan view/apply_all_colspan"
+          class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
+      <td class="cell padded fd_cell" tal:repeat="activity view/activities"
+          tal:attributes="id string:fd_${activity/hash}_cell">
+        <input type="text" size="4" class="data fd"
+               onkeydown="return spreadsheetBehaviour(event)"
+               tal:condition="activity/scorable"
+               tal:attributes="id string:fd_${activity/hash};
+                               onkeyup string:checkFillDown('${activity/hash}');
+                               onfocus string:handleCellFocus(this, '${activity/hash}')">
+        <input type="button"
+               style="display: none"
+               class="fdbtn"
+               value="Apply"
+               tal:condition="activity/scorable"
+               tal:attributes="id string:fdbtn_${activity/hash};
+                               onclick string:performFillDown('${activity/hash}')">
+      </td>
+    </tr>
+
+    <tr tal:repeat="row view/table">
+      <metal:block tal:define="css_class python:repeat['row'].even() and 'even' or 'odd'">
+        <td tal:attributes="class string:cell padded ${css_class}" style="text-align: left">
+          <a href=""
+             tal:attributes="href row/student/url"
+             tal:content="row/student/title">
+            Tom Hoffman
+          </a>
+          <a href=""
+             tal:attributes="href row/student/gradeurl">
+            &gt;
+          </a>
+        </td>
+        <td tal:condition="not: view/absences_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
+	      <tal:if condition="row/absences|nothing">
+	        <b><span tal:replace="row/absences" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/tardies_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
+	      <tal:if condition="row/tardies|nothing">
+	        <b><span tal:replace="row/tardies" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/total_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
+	      <tal:if condition="row/total|nothing">
+	        <b><span tal:replace="row/total" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/average_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
+	      <tal:if condition="row/average|nothing">
+	        <b><span tal:replace="row/average" /></b>
+	      </tal:if>
+        </td>
+        <td tal:repeat="grade row/grades"
+            tal:attributes="id string:${grade/activity}_${row/student/id}_cell;
+			    class string:cell ${css_class}">
+          <span tal:condition="not: grade/editable"
+             tal:content="grade/value" />
+          <input class="data" type="text" name="" value="" size="4"
+                 tal:condition="grade/editable"
+                 onkeydown="return spreadsheetBehaviour(event)"
+                 tal:attributes="name string:${grade/activity}_${row/student/id};
+                                 id string:${grade/activity}_${row/student/id};
+                                 value grade/value;
+                                 onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
+                                 onfocus string:handleCellFocus(this, '${grade/activity}')"/>
+        </td>
+      </metal:block>
+    </tr>
+  </table>
+
+  <div class="controls">
+    <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
+           onclick="setNotEdited()"
+           title="Shortcut: Alt-S" accesskey="S"
+           i18n:attributes="value; title; accesskey" />
+  </div>
+
+  </form>
+</div>
+
