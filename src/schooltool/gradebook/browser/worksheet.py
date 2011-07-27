@@ -21,6 +21,7 @@
 $Id$
 """
 
+from zope.container.interfaces import INameChooser
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
@@ -28,10 +29,15 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.publisher.browser import BrowserView
 from zope.app.form.browser.editview import EditView
 
+from z3c.form import form, field, button
+
 from schooltool.app.browser import app
+from schooltool.common.inlinept import InheritTemplate
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook import interfaces
+from schooltool.gradebook.activity import Worksheet
 from schooltool.person.interfaces import IPerson
+from schooltool.skin import flourish
 
 
 class WorksheetGradebookView(BrowserView):
@@ -107,6 +113,45 @@ class WorksheetAddView(app.BaseAddView):
         #person = IPerson(self.request.principal, None)
         #self.context.context.resetCurrentWorksheet(person)
         return absoluteURL(self.context.context, self.request)
+
+
+class FlourishWorksheetAddView(flourish.form.AddForm):
+    """flourish view for adding a worksheet."""
+
+    fields = field.Fields(interfaces.IWorksheet).select('title')
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Worksheet Details'
+
+    @button.buttonAndHandler(_('Submit'), name='add')
+    def handleAdd(self, action):
+        super(FlourishWorksheetAddView, self).handleAdd.func(self, action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            worksheet = self.context._getDefaultWorksheet()
+        else:
+            worksheet = self.context.getCurrentWorksheet(person)
+        if worksheet is None:
+            url = absoluteURL(self.context.__parent__, self.request)
+        else:
+            url = absoluteURL(worksheet, self.request) + '/gradebook'
+        self.request.response.redirect(url)
+
+    def create(self, data):
+        self.worksheet = Worksheet(data['title'])
+        return self.worksheet
+
+    def add(self, worksheet):
+        chooser = INameChooser(self.context)
+        name = chooser.chooseName(worksheet.title, worksheet)
+        self.context[name] = worksheet
+        return worksheet
+
+    def nextURL(self):
+        return absoluteURL(self.worksheet, self.request)
 
 
 class BaseEditView(EditView):

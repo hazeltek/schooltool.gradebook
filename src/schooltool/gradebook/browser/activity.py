@@ -288,6 +288,23 @@ class LinkedActivityAddView(z3cform.AddForm):
         LinkedActivityGradesUpdater().update(linked_activity, self.request)
 
 
+class FlourishLinkedActivityAddView(flourish.form.AddForm,
+                                    LinkedActivityAddView):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Linked Activity Details'
+
+    @button.buttonAndHandler(_('Submit'), name='add')
+    def handleAdd(self, action):
+        super(FlourishLinkedActivityAddView, self).handleAdd.func(self, action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        super(FlourishLinkedActivityAddView, self).handle_cancel_action.func(
+            self, action)
+
+
 class ActivityEditView(z3cform.EditForm):
     """Edit form for basic person."""
     z3cform.extends(z3cform.EditForm)
@@ -650,6 +667,19 @@ class AddLinkedColumnView(LinkedColumnBase):
             name = chooser.chooseName('', activity)
             self.context[name] = activity
             self.request.response.redirect(self.nextURL())
+
+
+class FlourishLinkedColumnAddView(flourish.page.Page, AddLinkedColumnView):
+    """flourish view for adding a linked column to the gradebook"""
+
+    def object_title(self):
+        return LinkedColumnBase.title(self)
+
+    def object_label(self):
+        return LinkedColumnBase.label(self)
+
+    def update(self):
+        AddLinkedColumnView.update(self)
 
 
 class EditLinkedColumnView(LinkedColumnBase):
