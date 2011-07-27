@@ -64,6 +64,14 @@
       />
 
   <flourish:viewlet
+      name="../../addWorksheet.html"
+      title="Worksheet"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="../addActivity.html"
       title="Activity"
       class="schooltool.skin.flourish.page.LinkViewlet"
@@ -86,6 +94,18 @@
       manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
       permission="schooltool.edit"
       />
+
+  <configure package="schooltool.skin.flourish">
+    <flourish:page
+       name="addWorksheet.html"
+       for="schooltool.gradebook.interfaces.IActivities"
+       class="schooltool.gradebook.browser.worksheet.FlourishWorksheetAddView"
+       content_template="templates/z3c_form_edit.pt"
+       permission="schooltool.edit"
+       title="Gradebook"
+       subtitle="New Worksheet"
+       />
+  </configure>
 
   <flourish:page
       name="addActivity.html"
