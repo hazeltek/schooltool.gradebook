@@ -1,0 +1,85 @@
+<div>
+  <form method="post" id="form" class="standalone"
+        tal:attributes="action view/actionURL">
+    <input type="hidden" name="form-submitted" value="" />
+    <div class="viewspace">
+      <fieldset>
+        <legend>
+          <span i18n:translate="">Enter Details and Select Column</span>
+        </legend>
+        <div class="row">
+          <div class="label">
+            <label for="title">
+              <span i18n:translate="">Title</span>
+            </label>
+          </div>
+          <div class="widget">
+            <input type="text" name="title" id="title"
+                   tal:attributes="value view/object_title" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="label">
+              <span i18n:translate="">Label</span>
+            </label>
+          </div>
+          <div class="widget">
+            <input type="text" name="label" id="label"
+                   tal:attributes="value view/object_label" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="category">
+              <span i18n:translate="">Category</span>
+            </label>
+          </div>
+          <div class="widget">
+            <select id="category" name="category" id="category">
+              <tal:block repeat="category view/getCategories">
+                <option tal:attributes="value category/name;
+		        		selected category/selected"
+                        tal:content="category/value" />
+              </tal:block>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th i18n:translate="">Term</th>
+              <th i18n:translate="">Section</th>
+              <th i18n:translate="">Worksheet</th>
+              <th i18n:translate="">Activity</th>
+            </tr>
+          </thead>
+          <tr tal:repeat="row view/getRows">
+            <tal:if condition="repeat/row/odd">
+              <td tal:content="row/term" />
+              <td tal:content="row/section" />
+              <td tal:content="row/worksheet" />
+              <td>
+                <input type="submit"
+                       tal:attributes="name row/activity_name;value row/activity_value" />
+              </td>
+            </tal:if>
+            <tal:if condition="repeat/row/even">
+              <td tal:content="row/term" />
+              <td tal:content="row/section" />
+              <td tal:content="row/worksheet" />
+              <td>
+                <input type="submit"
+                       tal:attributes="name row/activity_name;value row/activity_value" />
+              </td>
+            </tal:if>
+          </tr>
+        </table>
+      </fieldset>
+      <div class="buttons controls">
+        <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+      </div>
+    </div>
+  </form>
+</div>
+

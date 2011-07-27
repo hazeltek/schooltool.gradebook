@@ -669,6 +669,19 @@ class AddLinkedColumnView(LinkedColumnBase):
             self.request.response.redirect(self.nextURL())
 
 
+class FlourishLinkedColumnAddView(flourish.page.Page, AddLinkedColumnView):
+    """flourish view for adding a linked column to the gradebook"""
+
+    def object_title(self):
+        return LinkedColumnBase.title(self)
+
+    def object_label(self):
+        return LinkedColumnBase.label(self)
+
+    def update(self):
+        AddLinkedColumnView.update(self)
+
+
 class EditLinkedColumnView(LinkedColumnBase):
     """View for editing a linked column in the gradebook"""
 
