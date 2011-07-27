@@ -71,6 +71,14 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="../addLinkedActivity.html"
+      title="Linked Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      permission="schooltool.edit"
+      />
+
   <flourish:page
       name="addActivity.html"
       for="..interfaces.IWorksheet"
@@ -78,6 +86,16 @@
       subtitle="New Activity"
       content_template="templates/f_add_edit_activity.pt"
       class=".activity.FlourishActivityAddView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="addLinkedActivity.html"
+      for="..interfaces.IWorksheet"
+      title="Gradebook"
+      subtitle="New Linked Activity"
+      content_template="templates/f_add_edit_activity.pt"
+      class=".activity.FlourishLinkedActivityAddView"
       permission="schooltool.view"
       />
 
