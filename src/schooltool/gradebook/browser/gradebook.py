@@ -45,6 +45,7 @@ from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection, ISectionContainer
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
@@ -689,6 +690,33 @@ class FlourishGradebookOverview(GradebookOverview, flourish.page.Page):
 
 class FlourishSchoolGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
     """SchoolYear container links viewlet."""
+
+
+class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+
+    template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    list_class = 'third-nav'
+
+    @property
+    def items(self):
+        result = []
+        gradebook = proxy.removeSecurityProxy(self.context)
+        current = gradebook.context.__name__
+        for worksheet in gradebook.worksheets:
+            url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+            result.append({
+                'class': worksheet.__name__ == current and 'active' or None,
+                'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
+                })
+        return result
 
 
 class GradeActivity(object):

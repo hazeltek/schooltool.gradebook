@@ -95,6 +95,14 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".gradebook.GradebookTertiaryNavigationManager"
+      view=".gradebook.FlourishGradebookOverview"
+      permission="zope.Public"
+      />
+
   <configure package="schooltool.skin.flourish">
     <flourish:page
        name="addWorksheet.html"

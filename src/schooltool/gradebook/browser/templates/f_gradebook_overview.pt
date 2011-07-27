@@ -104,21 +104,6 @@
 
   <table class="schooltool_gradebook">
     <tr>
-      <tal:block repeat="worksheet view/worksheets">
-        <td class="active_tab">
-          <a tal:condition="not: worksheet/current"
-             tal:attributes="href worksheet/url"
-             tal:content="worksheet/title" />
-          <span style="font-weight: bold;"
-                tal:condition="worksheet/current"
-                tal:content="worksheet/title" />
-        </td>
-      </tal:block>
-    <tr>
-  </table>
-
-  <table class="schooltool_gradebook">
-    <tr>
       <td id="description" class="gradebook_description"
           tal:attributes="colspan python:len(view.descriptions) + view.apply_all_colspan" />
     </tr>
