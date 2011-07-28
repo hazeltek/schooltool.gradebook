@@ -138,6 +138,11 @@ class FlourishGradebookStartup(GradebookStartup, flourish.page.Page):
         return flourish.page.Page.render(self, *args, **kw)
 
     def __call__(self, *args, **kw):
+        if IPerson(self.request.principal, None) is None:
+            url = absoluteURL(ISchoolToolApplication(None), self.request)
+            url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
+            self.request.response.redirect(url)
+            return ''
         return flourish.page.Page.__call__(self, *args, **kw)
         
 
@@ -684,7 +689,8 @@ class GradebookOverview(SectionFinder):
         return results
 
 
-class FlourishGradebookOverview(GradebookOverview, flourish.page.Page):
+class FlourishGradebookOverview(GradebookOverview,
+                                flourish.page.WideContainerPage):
     """flourish Gradebook Overview/Table"""
 
 
