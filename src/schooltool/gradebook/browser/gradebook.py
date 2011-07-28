@@ -688,8 +688,66 @@ class FlourishGradebookOverview(GradebookOverview, flourish.page.Page):
     """flourish Gradebook Overview/Table"""
 
 
-class FlourishSchoolGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
-    """SchoolYear container links viewlet."""
+class FlourishGradebookTermNavigation(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview term navigation viewlet."""
+
+
+class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
+                                             GradebookOverview):
+    template = InlineViewPageTemplate('''
+    <form method="post"
+          tal:attributes="action string:${context/@@absolute_url}">
+      <select name="currentTerm"
+              onchange="this.form.submit()">
+        <tal:block repeat="term view/getTerms">
+          <option
+              tal:attributes="value term/form_id;
+                              selected term/selected"
+              tal:content="term/title" />
+        </tal:block>
+      </select>
+    </form>
+    ''')
+
+    @property
+    def person(self):
+        return IPerson(self.request.principal)
+
+    def render(self, *args, **kw):
+        return self.template(*args, **kw)
+
+
+class FlourishGradebookSectionNavigation(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview section navigation viewlet."""
+
+
+class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
+                                                GradebookOverview):
+    template = InlineViewPageTemplate('''
+    <form method="post"
+          tal:attributes="action string:${context/@@absolute_url}">
+      <select name="currentSection"
+              onchange="this.form.submit()">
+        <tal:block repeat="section view/getSections">
+	  <option
+	      tal:attributes="value section/form_id;
+			      selected section/selected;"
+	      tal:content="section/title" />
+        </tal:block>
+      </select>
+    </form>
+    ''')
+
+    @property
+    def person(self):
+        return IPerson(self.request.principal)
+
+    def render(self, *args, **kw):
+        return self.template(*args, **kw)
+
+
+class FlourishGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview add links viewlet."""
 
 
 class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):

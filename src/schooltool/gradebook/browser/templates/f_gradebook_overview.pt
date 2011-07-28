@@ -42,59 +42,6 @@
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
 
-    <tal:if condition="python:not list(view.getSections())">
-      <b i18n:translate="">Term:</b>
-      <span tal:content="view/getCurrentTerm" />
-    </tal:if>
-
-    <tal:if condition="python:list(view.getTerms())">
-      <label for="currentTerm" i18n:translate="">Term</label>
-      <select name="currentTerm"
-              onchange="this.form.submit()">
-        <tal:block repeat="term view/getTerms">
-          <option
-              tal:attributes="value term/form_id;
-                              selected term/selected"
-              tal:content="term/title" />
-        </tal:block>
-      </select>
-    </tal:if>
-
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <tal:if condition="python:not list(view.getSections())">
-      <b i18n:translate="">Section:</b>
-      <span tal:content="view/getCurrentSection" />
-    </tal:if>
-    <tal:if condition="python:list(view.getSections())">
-      <label for="currentSection" i18n:translate="">Section</label>
-      <select name="currentSection"
-              onchange="this.form.submit()">
-        <tal:block repeat="section view/getSections">
-	  <option
-	      tal:attributes="value section/form_id;
-			      selected section/selected;"
-	      tal:content="section/title" />
-        </tal:block>
-      </select>
-    </tal:if>
-
-    <tal:if condition="not: view/due_date_hide">
-      <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-      <input type="checkbox" name="due_date:list" 
-             tal:attributes="checked view/getDueDateFilter" />
-      <span i18n:translate="">show only activities due in past
-      <select name="num_weeks" i18n:name="num_weeks">
-        <tal:block repeat="weeks view/weeksChoices">
-          <option value="1"
-              tal:attributes="value weeks;
-			      selected python:weeks==view.getCurrentWeeks()"
-              tal:content="weeks" />
-        </tal:block>
-      </select>
-      weeks</span>
-    </tal:if>
-    <div style="height: 5px;"></div>
-
   <div class="message" style="color:red"
        tal:condition="view/message"
        tal:content="view/message">
@@ -126,9 +73,7 @@
        <div tal:content="view/average_label" />
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
-     <th class="cell title header" tal:repeat="activity view/activities"
-         tal:attributes="onmouseover string:tempDescription('${activity/hash}');
-                         onmouseout string:restoreDescription()">
+     <th class="cell title header" tal:repeat="activity view/activities">
        <div class="padded">
          <a href=""
             tal:condition="activity/scorable"

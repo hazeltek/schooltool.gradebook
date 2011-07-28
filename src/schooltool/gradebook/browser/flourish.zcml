@@ -54,9 +54,31 @@
       />
 
   <flourish:viewlet
+      name="gradebook_term_navigation"
+      before="gradebook_section_navigation"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishGradebookTermNavigation"
+      for="..interfaces.IGradebook"
+      title="Term"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
+      name="gradebook_section_navigation"
+      before="gradebook_overview"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishGradebookSectionNavigation"
+      for="..interfaces.IGradebook"
+      title="Section"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
       name="gradebook_overview"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
-      class=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      class=".gradebook.FlourishGradebookOverviewLinks"
       for="..interfaces.IGradebook"
       title="Add"
       permission="schooltool.edit"
@@ -64,10 +86,24 @@
       />
 
   <flourish:viewlet
+      name="select_term"
+      class=".gradebook.FlourishGradebookTermNavigationViewlet"
+      manager=".gradebook.FlourishGradebookTermNavigation"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="select_section"
+      class=".gradebook.FlourishGradebookSectionNavigationViewlet"
+      manager=".gradebook.FlourishGradebookSectionNavigation"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="../../addWorksheet.html"
       title="Worksheet"
       class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      manager=".gradebook.FlourishGradebookOverviewLinks"
       permission="schooltool.edit"
       />
 
@@ -75,7 +111,7 @@
       name="../addActivity.html"
       title="Activity"
       class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      manager=".gradebook.FlourishGradebookOverviewLinks"
       permission="schooltool.edit"
       />
 
@@ -83,7 +119,7 @@
       name="../addLinkedActivity.html"
       title="Linked Activity"
       class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      manager=".gradebook.FlourishGradebookOverviewLinks"
       permission="schooltool.edit"
       />
 
@@ -91,7 +127,7 @@
       name="../addLinkedColumn.html"
       title="Linked Column"
       class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishSchoolGradebookOverviewLinks"
+      manager=".gradebook.FlourishGradebookOverviewLinks"
       permission="schooltool.edit"
       />
 
