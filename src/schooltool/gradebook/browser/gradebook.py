@@ -45,6 +45,7 @@ from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection, ISectionContainer
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
@@ -687,8 +688,93 @@ class FlourishGradebookOverview(GradebookOverview, flourish.page.Page):
     """flourish Gradebook Overview/Table"""
 
 
-class FlourishSchoolGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
-    """SchoolYear container links viewlet."""
+class FlourishGradebookTermNavigation(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview term navigation viewlet."""
+
+
+class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
+                                             GradebookOverview):
+    template = InlineViewPageTemplate('''
+    <form method="post"
+          tal:attributes="action string:${context/@@absolute_url}">
+      <select name="currentTerm"
+              onchange="this.form.submit()">
+        <tal:block repeat="term view/getTerms">
+          <option
+              tal:attributes="value term/form_id;
+                              selected term/selected"
+              tal:content="term/title" />
+        </tal:block>
+      </select>
+    </form>
+    ''')
+
+    @property
+    def person(self):
+        return IPerson(self.request.principal)
+
+    def render(self, *args, **kw):
+        return self.template(*args, **kw)
+
+
+class FlourishGradebookSectionNavigation(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview section navigation viewlet."""
+
+
+class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
+                                                GradebookOverview):
+    template = InlineViewPageTemplate('''
+    <form method="post"
+          tal:attributes="action string:${context/@@absolute_url}">
+      <select name="currentSection"
+              onchange="this.form.submit()">
+        <tal:block repeat="section view/getSections">
+	  <option
+	      tal:attributes="value section/form_id;
+			      selected section/selected;"
+	      tal:content="section/title" />
+        </tal:block>
+      </select>
+    </form>
+    ''')
+
+    @property
+    def person(self):
+        return IPerson(self.request.principal)
+
+    def render(self, *args, **kw):
+        return self.template(*args, **kw)
+
+
+class FlourishGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview add links viewlet."""
+
+
+class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+
+    template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    list_class = 'third-nav'
+
+    @property
+    def items(self):
+        result = []
+        gradebook = proxy.removeSecurityProxy(self.context)
+        current = gradebook.context.__name__
+        for worksheet in gradebook.worksheets:
+            url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+            result.append({
+                'class': worksheet.__name__ == current and 'active' or None,
+                'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
+                })
+        return result
 
 
 class GradeActivity(object):
