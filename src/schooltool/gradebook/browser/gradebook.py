@@ -693,6 +693,77 @@ class FlourishGradebookOverview(GradebookOverview,
                                 flourish.page.WideContainerPage):
     """flourish Gradebook Overview/Table"""
 
+    def handleYearChange(self):
+        if 'currentYear' in self.request:
+            currentSection = ISection(proxy.removeSecurityProxy(self.context))
+            currentYear = ISchoolYear(ITerm(currentSection))
+            requestYearId = self.request['currentYear']
+            if requestYearId != currentYear.__name__:
+                for section in self.getUserSections():
+                    year = ISchoolYear(ITerm(section))
+                    if year.__name__ == requestYearId:
+                        newSection = section
+                        break
+                else:
+                    return False
+                url = absoluteURL(newSection, self.request)
+                if self.isTeacher:
+                    url += '/gradebook'
+                else:
+                    url += '/mygrades'
+                self.request.response.redirect(url)
+                return True
+        return False
+
+    def update(self):
+        """Handle change of current year."""
+        self.person = IPerson(self.request.principal)
+        if self.handleYearChange():
+            return
+        GradebookOverview.update(self)
+
+
+class FlourishGradebookYearNavigation(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Overview year navigation viewlet."""
+
+
+class FlourishGradebookYearNavigationViewlet(flourish.viewlet.Viewlet,
+                                             GradebookOverview):
+    template = InlineViewPageTemplate('''
+    <form method="post"
+          tal:attributes="action string:${context/@@absolute_url}">
+      <select name="currentYear" class="navigator"
+              onchange="this.form.submit()">
+        <tal:block repeat="year view/getYears">
+          <option
+              tal:attributes="value year/form_id;
+                              selected year/selected"
+              tal:content="year/title" />
+        </tal:block>
+      </select>
+    </form>
+    ''')
+
+    @property
+    def person(self):
+        return IPerson(self.request.principal)
+
+    def getYears(self):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentYear = ISchoolYear(ITerm(currentSection))
+        years = []
+        for section in self.getUserSections():
+            year = ISchoolYear(ITerm(section))
+            if year not in years:
+                years.append(year)
+        return [{'title': year.title,
+                 'form_id': year.__name__,
+                 'selected': year is currentYear and 'selected' or None}
+                for year in years]
+
+    def render(self, *args, **kw):
+        return self.template(*args, **kw)
+
 
 class FlourishGradebookTermNavigation(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Overview term navigation viewlet."""
@@ -703,7 +774,7 @@ class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
     template = InlineViewPageTemplate('''
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentTerm"
+      <select name="currentTerm" class="navigator"
               onchange="this.form.submit()">
         <tal:block repeat="term view/getTerms">
           <option
@@ -719,6 +790,20 @@ class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
     def person(self):
         return IPerson(self.request.principal)
 
+    def getTerms(self):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentTerm = ITerm(currentSection)
+        currentYear = ISchoolYear(currentTerm)
+        terms = []
+        for section in self.getUserSections():
+            term = ITerm(section)
+            if term not in terms and ISchoolYear(term) == currentYear:
+                terms.append(term)
+        return [{'title': term.title,
+                 'form_id': self.getTermId(term),
+                 'selected': term is currentTerm and 'selected' or None}
+                for term in terms]
+
     def render(self, *args, **kw):
         return self.template(*args, **kw)
 
@@ -732,7 +817,7 @@ class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
     template = InlineViewPageTemplate('''
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentSection"
+      <select name="currentSection" class="navigator"
               onchange="this.form.submit()">
         <tal:block repeat="section view/getSections">
 	  <option
@@ -747,6 +832,30 @@ class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
     @property
     def person(self):
         return IPerson(self.request.principal)
+
+    def getSections(self):
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentTerm = ITerm(currentSection)
+        for section in self.getUserSections():
+            term = ITerm(section)
+            if term != currentTerm:
+                continue
+            url = absoluteURL(section, self.request)
+            if self.isTeacher:
+                url += '/gradebook'
+            else:
+                url += '/mygrades'
+            css = 'inactive-menu-item'
+            if section == currentSection:
+                css = 'active-menu-item'
+            yield {
+                'obj': section,
+                'url': url,
+                'title': section.title,
+                'css': css,
+                'form_id': self.getSectionId(section),
+                'selected': section==currentSection and 'selected' or None,
+                }
 
     def render(self, *args, **kw):
         return self.template(*args, **kw)

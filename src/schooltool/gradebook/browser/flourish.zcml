@@ -11,7 +11,8 @@
       layer="schooltool.skin.flourish.IFlourishLayer">
     <directory
           source="resources"
-          include="gradebook_overview.js"
+          include="f_gradebook_overview.js
+                   f_gradebook.css"
           />
   </zope:resourceLibrary>
 
@@ -54,6 +55,17 @@
       />
 
   <flourish:viewlet
+      name="gradebook_year_navigation"
+      before="gradebook_term_navigation"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishGradebookYearNavigation"
+      for="..interfaces.IGradebook"
+      title="Year"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
       name="gradebook_term_navigation"
       before="gradebook_section_navigation"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
@@ -83,6 +95,13 @@
       title="Add"
       permission="schooltool.edit"
       view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
+      name="select_year"
+      class=".gradebook.FlourishGradebookYearNavigationViewlet"
+      manager=".gradebook.FlourishGradebookYearNavigation"
+      permission="schooltool.edit"
       />
 
   <flourish:viewlet
