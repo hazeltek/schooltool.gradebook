@@ -1,6 +1,5 @@
 <div>
-    <script type="text/javascript" tal:attributes="src context/++resource++schooltool.gradebook.flourish/gradebook_overview.js">
-    </script>
+    <tal:block replace="resource_library:schooltool.gradebook.flourish" />
     <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
       var numstudents = <tal:block replace="python: len(view.students)"/>;
       var students = new Array(numstudents);
@@ -50,11 +49,6 @@
   <br />
 
   <table class="schooltool_gradebook">
-    <tr>
-      <td id="description" class="gradebook_description"
-          tal:attributes="colspan python:len(view.descriptions) + view.apply_all_colspan" />
-    </tr>
-
     <tr>
      <th class="cell header">
        <div i18n:translate="">Name</div>

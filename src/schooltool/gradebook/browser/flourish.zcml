@@ -11,7 +11,8 @@
       layer="schooltool.skin.flourish.IFlourishLayer">
     <directory
           source="resources"
-          include="gradebook_overview.js"
+          include="f_gradebook_overview.js
+                   f_gradebook.css"
           />
   </zope:resourceLibrary>
 

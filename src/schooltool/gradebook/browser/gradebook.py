@@ -703,7 +703,7 @@ class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
     template = InlineViewPageTemplate('''
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentTerm"
+      <select name="currentTerm" class="navigator"
               onchange="this.form.submit()">
         <tal:block repeat="term view/getTerms">
           <option
@@ -732,7 +732,7 @@ class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
     template = InlineViewPageTemplate('''
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentSection"
+      <select name="currentSection" class="navigator"
               onchange="this.form.submit()">
         <tal:block repeat="section view/getSections">
 	  <option
