@@ -28,8 +28,9 @@
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
     <metal:block tal:replace="structure string:&lt;/script&gt;" />
-    <form method="post"
-          tal:attributes="action string:${context/@@absolute_url}">
+
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}">
 
   <div class="gradebook-message"
        tal:condition="view/message"
@@ -37,7 +38,8 @@
     Message
   </div>
 
-  <table class="schooltool_gradebook">
+  <div class="schooltool_gradebook">
+  <table>
     <tr>
      <th>
        <div i18n:translate="">Name</div>
@@ -128,6 +130,7 @@
       </metal:block>
     </tr>
   </table>
+  </div>
 
   <div class="buttons controls">
     <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
