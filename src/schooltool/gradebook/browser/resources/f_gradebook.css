@@ -6,3 +6,15 @@
     display: none;
 }
 
+.activity {
+    width: 40px;
+}
+
+.activity input {
+    width: 40px;
+}
+
+.activity span {
+    width: 40px;
+}
+
