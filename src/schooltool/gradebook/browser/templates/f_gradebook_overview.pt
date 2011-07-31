@@ -28,25 +28,14 @@
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
     <metal:block tal:replace="structure string:&lt;/script&gt;" />
-    <h1 style="color: red" id="javascript-warning" i18n:translate="">
-    Your browser either has Javascript turned off, or it is not supported.
-    Javascript is <b>required</b> for the gradebook.
-    Please enable Javascript or use a browser with Javascript.
-    </h1>
-    <script type="text/javascript">
-      <!--
-	  document.getElementById("javascript-warning").innerHTML = "";
-	  //-->
-    </script>
     <form method="post"
           tal:attributes="action string:${context/@@absolute_url}">
 
-  <div class="message" style="color:red"
+  <div class="gradebook-message"
        tal:condition="view/message"
        tal:content="view/message">
     Message
   </div>
-  <br />
 
   <table class="schooltool_gradebook">
     <tr>

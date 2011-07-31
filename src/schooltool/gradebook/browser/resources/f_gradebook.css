@@ -2,3 +2,7 @@
     width: 140px;
 }
 
+.gradebook-message {
+    display: none;
+}
+
