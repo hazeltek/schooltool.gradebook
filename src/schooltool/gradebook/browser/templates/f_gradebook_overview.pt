@@ -27,6 +27,20 @@
       window.onload = onLoadHandler;
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
+
+      $(document).ready(function() {
+        $('.activity_heading').click(function(e) {
+          $('.activity_menu').hide().removeClass('activity_menu');
+          $(this).parent().prev('ul.popup_menu').addClass('activity_menu');
+          $('.activity_menu').show();
+          e.preventDefault();
+        });
+        $(document).click(function(e) {
+          if ($(e.target).hasClass('activity_heading') == false) {
+            $('.activity_menu').hide();
+          }
+        });
+      });
     <metal:block tal:replace="structure string:&lt;/script&gt;" />
 
   <form method="post"
@@ -60,22 +74,32 @@
      </th>
      <th class="activity" tal:repeat="activity view/activities">
        <div>
-         <a href=""
-            tal:condition="activity/scorable"
-            tal:attributes="href 
-                            string:gradeActivity.html?activity=${activity/hash};
-                            title activity/longTitle;"
-            tal:content="activity/shortTitle" />
-         <span
-            tal:condition="not: activity/scorable"
-            tal:content="activity/shortTitle" />
+         <ul class="popup_menu">
+           <li>
+             <span tal:content="activity/shortTitle" />
+           </li>
+           <li>
+             <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
+                i18n:translate="">Edit</a>
+           </li>
+           <li>
+             <a tal:condition="activity/scorable"
+                tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
+                i18n:translate="">Score this</a>
+           </li>
+           <li>
+             <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
+                i18n:translate="">Sort by</a>
+           </li>
+         </ul>
+         <div>
+           <a class="activity_heading"
+              href=""
+              tal:attributes="title activity/longTitle;
+                              href string:gradeActivity.html?activity=${activity/hash};"
+              tal:content="activity/shortTitle" />
+         </div>
        </div>
-       <a href="?sort_by="
-          tal:attributes="href
-              string:${request/URL}?sort_by=${activity/hash}"
-          i18n:translate="">
-         (sort)
-       </a>
        <div tal:content="activity/max" />
      </th>
     </tr>

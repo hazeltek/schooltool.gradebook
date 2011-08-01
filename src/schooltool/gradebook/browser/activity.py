@@ -333,6 +333,9 @@ class ActivityEditView(z3cform.EditForm):
                  mapping={'fullname': self.context.title})
 
     def nextURL(self):
+        next = self.request.get('nexturl')
+        if next:
+            return next
         worksheet = self.context.__parent__
         return absoluteURL(worksheet, self.request) + '/manage.html'
 

@@ -24,3 +24,20 @@ div.schooltool_gradebook {
     width: 40px;
 }
 
+.popup_menu {
+    display: none;
+    position: absolute;
+    z-index: 10000;
+}
+
+.popup_menu li {
+    border-bottom: solid 1px #808080;
+    background-color: #EEEEEE;
+    padding: 3px 10px 3px 10px;
+    display: block;
+}
+
+.popup_menu a {
+    display: block;
+}
+
