@@ -961,6 +961,10 @@ class GradeActivity(object):
                 self.request.response.redirect('index.html')
 
 
+class FlourishGradeActivity(GradeActivity, flourish.page.Page):
+    """flourish Grading a single activity"""
+
+
 def getScoreSystemDiscreteValues(ss):
     if IDiscreteValuesScoreSystem.providedBy(ss):
         return (ss.scores[-1][2], ss.scores[0][2])

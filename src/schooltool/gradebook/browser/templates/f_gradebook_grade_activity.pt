@@ -1,0 +1,65 @@
+<div tal:define="activity view/activity">
+  <div class="gradebook-message"
+       tal:repeat="message view/messages"
+       tal:content="message">
+    Message
+  </div>
+
+  <form tal:attributes="action request/URL"
+        method="post" enctype="multipart/form-data">
+    <input type="hidden" name="activity" value=""
+           tal:attributes="value request/activity" />
+
+    <table class="schooltool_gradebook">
+      <tr>
+        <th i18n:translate="">Name</th>
+        <th>
+          <div tal:content="activity/title">
+            HW 1
+          </div>
+          <div tal:content="activity/max|nothing" />
+        </th>
+      </tr>
+
+      <tr tal:repeat="grade view/grades">
+        <tal:if condition="repeat/grade/even">
+          <td>
+            <label for=""
+                tal:attributes="for grade/student/id"
+                tal:content="grade/student/title">
+              Tom Hoffman
+            </label>
+          </td>
+          <td>
+            <input type="text" name="" value="" size="4"
+                tal:attributes="name grade/student/id;
+                                id grade/student/id;
+                                value grade/value" />
+          </td>
+        </tal:if>
+        <tal:if condition="repeat/grade/odd">
+          <td>
+            <label for=""
+                tal:attributes="for grade/student/id"
+                tal:content="grade/student/title">
+              Tom Hoffman
+            </label>
+          </td>
+          <td>
+            <input type="text" name="" value="" size="4"
+                tal:attributes="name grade/student/id;
+                                id grade/student/id;
+                                value grade/value" />
+          </td>
+        </tal:if>
+      </tr>
+    </table>
+
+    <div class="buttons controls">
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save"
+             i18n:attributes="value" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+  </form>
+</div>
+
