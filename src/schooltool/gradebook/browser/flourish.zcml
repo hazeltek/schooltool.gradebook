@@ -177,7 +177,7 @@
       subtitle="New Activity"
       content_template="templates/f_add_edit_activity.pt"
       class=".activity.FlourishActivityAddView"
-      permission="schooltool.view"
+      permission="schooltool.edit"
       />
 
   <flourish:page
@@ -187,7 +187,7 @@
       subtitle="New Linked Activity"
       content_template="templates/f_add_edit_activity.pt"
       class=".activity.FlourishLinkedActivityAddView"
-      permission="schooltool.view"
+      permission="schooltool.edit"
       />
 
   <flourish:page
@@ -197,9 +197,20 @@
       subtitle="New Linked Column"
       content_template="templates/f_add_edit_linked_column.pt"
       class=".activity.FlourishLinkedColumnAddView"
-      permission="schooltool.view"
+      permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="edit.html"
+      for="..interfaces.IActivity"
+      title="Gradebook"
+      subtitle="Edit Activity"
+      content_template="templates/f_add_edit_activity.pt"
+      class=".activity.FlourishActivityEditView"
+      permission="schooltool.edit"
+      />
+
+  <!-- Reports -->
   <flourish:page
       name="request_report_card.html"
       for="schooltool.person.interfaces.IPerson"
