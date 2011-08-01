@@ -24,6 +24,10 @@ div.schooltool_gradebook {
     width: 40px;
 }
 
+.gradebook-name {
+    min-width: 160px;
+}
+
 .popup_menu {
     display: none;
     position: absolute;
