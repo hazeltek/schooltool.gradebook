@@ -175,46 +175,6 @@ function setBackgroundColor(name, activity, value, errors_only)
     return true;    
 }
 
-function performFillDown(activity) {
-    var fd = document.getElementById('fd_'+activity);
-    if (fd.value=='') return false;
-    changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
-    if (checkValid(null, 'fd_'+activity) == false)  {
-    	changeBackgroundColor('fd_'+activity+'_cell', 'warning_bg');
-	    return false;
-	}
-    for(j=0;j!=numstudents;j++) {
-        name = activity+'_'+students[j];
-        document.getElementById(name).value = fd.value;
-        setBackgroundColor(name, activity, fd.value, false);
-    }
-    document.getElementById('fd_'+activity).value = '';
-    document.getElementById('fdbtn_'+activity).style.display = 'none';
-    changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
-    edited = true;
-}
-
-function checkFillDown(activity)
-{
-    var fd = document.getElementById('fd_'+activity);
-    if (checkValid(null, 'fd_'+activity))
-	{
-	    var el = document.getElementById('fdbtn_'+activity);
-	    el.style.display='block';
-	    if (document.getElementById('fd_'+activity).value=='')  {
-	    	changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
-	    	el.style.display='none';
-	    }
-	}
-    else
-	{
-	    document.getElementById('fdbtn_'+activity).style.display='none';
-	    if (document.getElementById('fd_'+activity).value=='')  {
-    		changeBackgroundColor('fd_'+activity+'_cell', 'default_bg');
-		}
-	}
-}
-
 function changeBackgroundColor(id, class)    {
     obj = document.getElementById(id);
     $(obj).removeClass('default_bg');

@@ -333,8 +333,31 @@ class ActivityEditView(z3cform.EditForm):
                  mapping={'fullname': self.context.title})
 
     def nextURL(self):
+        next = self.request.get('nexturl')
+        if next:
+            return next
         worksheet = self.context.__parent__
         return absoluteURL(worksheet, self.request) + '/manage.html'
+
+
+class FlourishActivityEditView(flourish.form.Form,
+                               ActivityEditView):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Activity Details'
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishActivityEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            self.request.response.redirect(self.nextURL())
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
 
 
 class LinkedActivityEditView(z3cform.EditForm):

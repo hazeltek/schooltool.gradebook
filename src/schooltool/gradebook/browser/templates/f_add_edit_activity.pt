@@ -1,2 +1,7 @@
-<div metal:use-macro="macro:form" />
+<div metal:use-macro="macro:form">
+  <metal:block metal:fill-slot="above-buttons">
+    <input type="hidden" name="nexturl" 
+           tal:attributes="value request/nexturl|nothing;" />
+  </metal:block>
+</div>
 
