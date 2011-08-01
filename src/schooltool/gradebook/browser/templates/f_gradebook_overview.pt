@@ -106,7 +106,7 @@
 
     <tr tal:repeat="row view/table">
       <metal:block>
-        <td>
+        <td class="gradebook-name">
           <a href=""
              tal:attributes="href row/student/url"
              tal:content="row/student/title">
