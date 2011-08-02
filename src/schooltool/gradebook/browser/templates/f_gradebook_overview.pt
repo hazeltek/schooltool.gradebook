@@ -160,7 +160,7 @@
   </div>
 
   <div class="schooltool_gradebook gradebook-freezecol"
-       tal:condition="python: True">
+       tal:condition="python: False">
   <table>
     <tr>
      <th class="gradebook-name">

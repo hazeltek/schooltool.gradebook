@@ -1,9 +1,7 @@
 div.schooltool_gradebook {
-    position: absolute;
     overflow: auto;
     width: 736px;
     margin-bottom: 20px;
-    z-index: 100;
 }
 
 div.gradebook-freezecol {
@@ -75,3 +73,16 @@ div.gradebook-buttons {
     display: block;
 }
 
+.schooltool > .grid {
+    padding-top: 36px;
+}
+
+.grid > .third-nav {
+    position: absolute;
+    left: 208px;
+}
+
+.grid > .body > .widecontainer {
+    padding-top: 37px;
+    width: 736px;
+}
