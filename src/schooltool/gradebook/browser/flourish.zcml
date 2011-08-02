@@ -55,19 +55,19 @@
       />
 
   <flourish:viewlet
-      name="gradebook_year_navigation"
+      name="gradebook_section_navigation"
       before="gradebook_term_navigation"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
-      class=".gradebook.FlourishGradebookYearNavigation"
+      class=".gradebook.FlourishGradebookSectionNavigation"
       for="..interfaces.IGradebook"
-      title="Year"
+      title="Section"
       permission="schooltool.edit"
       view=".gradebook.FlourishGradebookOverview"
       />
 
   <flourish:viewlet
       name="gradebook_term_navigation"
-      before="gradebook_section_navigation"
+      before="gradebook_year_navigation"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.FlourishGradebookTermNavigation"
       for="..interfaces.IGradebook"
@@ -77,12 +77,12 @@
       />
 
   <flourish:viewlet
-      name="gradebook_section_navigation"
+      name="gradebook_year_navigation"
       before="gradebook_overview"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
-      class=".gradebook.FlourishGradebookSectionNavigation"
+      class=".gradebook.FlourishGradebookYearNavigation"
       for="..interfaces.IGradebook"
-      title="Section"
+      title="Year"
       permission="schooltool.edit"
       view=".gradebook.FlourishGradebookOverview"
       />
@@ -119,14 +119,6 @@
       />
 
   <flourish:viewlet
-      name="../../addWorksheet.html"
-      title="Worksheet"
-      class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishGradebookOverviewLinks"
-      permission="schooltool.edit"
-      />
-
-  <flourish:viewlet
       name="../addActivity.html"
       title="Activity"
       class="schooltool.skin.flourish.page.LinkViewlet"
@@ -145,6 +137,15 @@
   <flourish:viewlet
       name="../addLinkedColumn.html"
       title="Linked Column"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishGradebookOverviewLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="../../addWorksheet.html"
+      after="../addLinkedColumn.html"
+      title="Worksheet"
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager=".gradebook.FlourishGradebookOverviewLinks"
       permission="schooltool.edit"

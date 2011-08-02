@@ -1,7 +1,27 @@
 div.schooltool_gradebook {
+    position: absolute;
     overflow: auto;
     width: 736px;
     margin-bottom: 20px;
+    z-index: 100;
+}
+
+div.gradebook-freezecol {
+    position: absolute;
+    overflow: hidden;
+    z-index: 101;
+}
+
+div.gradebook-freezecol table {
+    width: auto;
+}
+
+div.gradebook-buttons {
+    float: bottom;
+}
+
+.gradebook-row {
+    height: 30px;
 }
 
 .navigator {
@@ -26,6 +46,16 @@ div.schooltool_gradebook {
 
 .gradebook-name {
     min-width: 160px;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.gradebook-total {
+    min-width: 40px;
+    max-width: 40px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .popup_menu {

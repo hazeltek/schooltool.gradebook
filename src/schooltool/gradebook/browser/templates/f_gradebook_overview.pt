@@ -52,23 +52,25 @@
     Message
   </div>
 
-  <div class="schooltool_gradebook">
+  <div>
+  <div class="schooltool_gradebook"
+       tal:condition="python: True">
   <table>
     <tr>
-     <th>
+     <th class="gradebook-name">
        <div i18n:translate="">Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
      </th>
-     <th tal:condition="not: view/absences_hide">
+     <th tal:condition="not: view/absences_hide" class="gradebook-total">
        <div tal:content="view/absences_label" />
      </th>
-     <th tal:condition="not: view/tardies_hide">
+     <th tal:condition="not: view/tardies_hide" class="gradebook-total">
        <div tal:content="view/tardies_label" />
      </th>
-     <th tal:condition="not: view/total_hide">
+     <th tal:condition="not: view/total_hide" class="gradebook-total">
        <div tal:content="view/total_label" />
      </th>
-     <th tal:condition="not: view/average_hide">
+     <th tal:condition="not: view/average_hide" class="gradebook-total">
        <div tal:content="view/average_label" />
        <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
      </th>
@@ -104,11 +106,12 @@
      </th>
     </tr>
 
-    <tr tal:repeat="row view/table">
+    <tr tal:repeat="row view/table" class="gradebook-row">
       <metal:block>
         <td class="gradebook-name">
           <a href=""
-             tal:attributes="href row/student/url"
+             tal:attributes="href row/student/url;
+                             title row/student/title"
              tal:content="row/student/title">
             Tom Hoffman
           </a>
@@ -117,22 +120,22 @@
             &gt;
           </a>
         </td>
-        <td tal:condition="not: view/absences_hide">
+        <td tal:condition="not: view/absences_hide" class="gradebook-total">
 	      <tal:if condition="row/absences|nothing">
 	        <b><span tal:replace="row/absences" /></b>
 	      </tal:if>
         </td>
-        <td tal:condition="not: view/tardies_hide">
+        <td tal:condition="not: view/tardies_hide" class="gradebook-total">
 	      <tal:if condition="row/tardies|nothing">
 	        <b><span tal:replace="row/tardies" /></b>
 	      </tal:if>
         </td>
-        <td tal:condition="not: view/total_hide">
+        <td tal:condition="not: view/total_hide" class="gradebook-total">
 	      <tal:if condition="row/total|nothing">
 	        <b><span tal:replace="row/total" /></b>
 	      </tal:if>
         </td>
-        <td tal:condition="not: view/average_hide">
+        <td tal:condition="not: view/average_hide" class="gradebook-total">
 	      <tal:if condition="row/average|nothing">
 	        <b><span tal:replace="row/average" /></b>
 	      </tal:if>
@@ -156,7 +159,70 @@
   </table>
   </div>
 
-  <div class="buttons controls">
+  <div class="schooltool_gradebook gradebook-freezecol"
+       tal:condition="python: True">
+  <table>
+    <tr>
+     <th class="gradebook-name">
+       <div i18n:translate="">Name</div>
+       <a href="?sort_by=student" i18n:translate="">(sort)</a>
+     </th>
+     <th tal:condition="not: view/absences_hide" class="gradebook-total">
+       <div tal:content="view/absences_label" />
+     </th>
+     <th tal:condition="not: view/tardies_hide" class="gradebook-total">
+       <div tal:content="view/tardies_label" />
+     </th>
+     <th tal:condition="not: view/total_hide" class="gradebook-total">
+       <div tal:content="view/total_label" />
+     </th>
+     <th tal:condition="not: view/average_hide" class="gradebook-total">
+       <div tal:content="view/average_label" />
+       <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
+     </th>
+    </tr>
+
+    <tr tal:repeat="row view/table" class="gradebook-row">
+      <metal:block>
+        <td class="gradebook-name">
+          <a href=""
+             tal:attributes="href row/student/url;
+                             title row/student/title"
+             tal:content="row/student/title">
+            Tom Hoffman
+          </a>
+          <a href=""
+             tal:attributes="href row/student/gradeurl">
+            &gt;
+          </a>
+        </td>
+        <td tal:condition="not: view/absences_hide" class="gradebook-total">
+	      <tal:if condition="row/absences|nothing">
+	        <b><span tal:replace="row/absences" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/tardies_hide" class="gradebook-total">
+	      <tal:if condition="row/tardies|nothing">
+	        <b><span tal:replace="row/tardies" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/total_hide" class="gradebook-total">
+	      <tal:if condition="row/total|nothing">
+	        <b><span tal:replace="row/total" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/average_hide" class="gradebook-total">
+	      <tal:if condition="row/average|nothing">
+	        <b><span tal:replace="row/average" /></b>
+	      </tal:if>
+        </td>
+      </metal:block>
+    </tr>
+  </table>
+  </div>
+  </div>
+
+  <div class="buttons controls gradebook-buttons">
     <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
            onclick="setNotEdited()"
            title="Shortcut: Alt-S" accesskey="S"
