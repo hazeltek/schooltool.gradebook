@@ -56,7 +56,7 @@
   <div class="schooltool_gradebook"
        tal:condition="python: True">
   <table>
-    <tr>
+    <tr class="gradebook-header">
      <th class="gradebook-name">
        <div i18n:translate="">Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
@@ -160,9 +160,9 @@
   </div>
 
   <div class="schooltool_gradebook gradebook-freezecol"
-       tal:condition="python: False">
+       tal:condition="python: True">
   <table>
-    <tr>
+    <tr class="gradebook-header">
      <th class="gradebook-name">
        <div i18n:translate="">Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
