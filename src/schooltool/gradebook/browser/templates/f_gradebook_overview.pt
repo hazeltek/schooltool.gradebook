@@ -43,7 +43,7 @@
       });
     <metal:block tal:replace="structure string:&lt;/script&gt;" />
 
-  <form method="post"
+  <form method="post" class="grid-form"
         tal:attributes="action string:${context/@@absolute_url}">
 
   <div class="gradebook-message"

@@ -1,6 +1,6 @@
 div.schooltool_gradebook {
     overflow: auto;
-    width: 736px;
+    width: 752px;
     margin-bottom: 20px;
 }
 
@@ -12,10 +12,6 @@ div.gradebook-freezecol {
 
 div.gradebook-freezecol table {
     width: auto;
-}
-
-div.gradebook-buttons {
-    float: bottom;
 }
 
 .gradebook-row {
@@ -83,6 +79,15 @@ div.gradebook-buttons {
 }
 
 .grid > .body > .widecontainer {
-    padding-top: 37px;
-    width: 736px;
+    margin-top: 40px;
+    padding: 0px;
+    width: 752px;
+}
+
+.grid .grid-form {
+    margin-top: 0px;
+}
+
+.grid .grid-form table {
+    margin-top: 0px;
 }
