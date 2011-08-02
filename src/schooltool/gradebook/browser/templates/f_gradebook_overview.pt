@@ -108,7 +108,8 @@
       <metal:block>
         <td class="gradebook-name">
           <a href=""
-             tal:attributes="href row/student/url"
+             tal:attributes="href row/student/url;
+                             title row/student/title"
              tal:content="row/student/title">
             Tom Hoffman
           </a>
