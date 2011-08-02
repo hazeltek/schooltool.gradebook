@@ -868,6 +868,10 @@ class FlourishGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Overview add links viewlet."""
 
 
+class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Settings links viewlet."""
+
+
 class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
 
     template = InlineViewPageTemplate("""
@@ -1238,6 +1242,11 @@ class GradebookColumnPreferences(BrowserView):
                 }
             results.append(result)
         return results
+
+
+class FlourishGradebookColumnPreferences(GradebookColumnPreferences,
+                                         flourish.page.Page):
+    """A flourish view for editing a teacher's gradebook column preferences."""
 
 
 class NoCurrentTerm(BrowserView):
