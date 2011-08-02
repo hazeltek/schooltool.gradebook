@@ -693,6 +693,9 @@ class FlourishGradebookOverview(GradebookOverview,
                                 flourish.page.WideContainerPage):
     """flourish Gradebook Overview/Table"""
 
+    has_header = False
+    page_class = 'page grid'
+
     def handleYearChange(self):
         if 'currentYear' in self.request:
             currentSection = ISection(proxy.removeSecurityProxy(self.context))
