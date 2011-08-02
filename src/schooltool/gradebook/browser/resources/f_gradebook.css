@@ -1,27 +1,65 @@
-div.schooltool_gradebook {
+.schooltool > .grid {
+    padding-top: 36px;
+}
+
+.grid > .third-nav {
+    left: 208px;
     position: absolute;
-    overflow: auto;
-    width: 736px;
+}
+
+.grid > .body > .widecontainer {
+    margin-top: 40px;
+    padding: 0px;
+    width: 752px;
+}
+
+.grid .grid-form {
+    margin-top: 0px;
+}
+
+.grid-form table {
+    margin-top: 0px;
+}
+
+.grid-form table tr {
+    height: 32px;
+}
+
+.grid-form table tr .gradebook-name {
+    max-width: 160px;
+    min-width: 160px;
+    overflow: hidden;
+    padding-left: 4px;
+    padding-right: 4px;
+    white-space: nowrap;
+}
+
+.grid-form table tr .gradebook-total {
+    max-width: 40px;
+    min-width: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+div.schooltool_gradebook {
     margin-bottom: 20px;
-    z-index: 100;
+    overflow: auto;
+    width: 752px;
 }
 
 div.gradebook-freezecol {
-    position: absolute;
+    background: #F7F7F7;
     overflow: hidden;
+    position: absolute;
+    top: 0px;
+    width: auto;
     z-index: 101;
 }
 
-div.gradebook-freezecol table {
-    width: auto;
-}
-
-div.gradebook-buttons {
-    float: bottom;
-}
-
-.gradebook-row {
-    height: 30px;
+.gradebook-row td, .gradebook-header td {
+    padding: 2px auto;
+    vertical-align: middle;
+    width: 50px;
 }
 
 .navigator {
@@ -33,29 +71,7 @@ div.gradebook-buttons {
 }
 
 .activity {
-    width: 40px;
-}
-
-.activity input {
-    width: 40px;
-}
-
-.activity span {
-    width: 40px;
-}
-
-.gradebook-name {
-    min-width: 160px;
-    max-width: 160px;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.gradebook-total {
-    min-width: 40px;
-    max-width: 40px;
-    white-space: nowrap;
-    overflow: hidden;
+    padding: 2px 0px;
 }
 
 .popup_menu {
@@ -74,4 +90,3 @@ div.gradebook-buttons {
 .popup_menu a {
     display: block;
 }
-
