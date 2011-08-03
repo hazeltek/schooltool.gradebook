@@ -19,6 +19,7 @@
 
 .grid-form table {
     margin-top: 0px;
+    width: auto;
 }
 
 .grid-form table tr {
