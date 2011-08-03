@@ -1,6 +1,6 @@
 <div>
-    <tal:block replace="resource_library:schooltool.gradebook.flourish" />
-    <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
+  <tal:block replace="resource_library:schooltool.gradebook.flourish" />
+  <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
       var numstudents = <tal:block replace="python: len(view.students)"/>;
       var students = new Array(numstudents);
       <tal:loop repeat="row view/table">
@@ -41,194 +41,187 @@
           }
         });
       });
-    <metal:block tal:replace="structure string:&lt;/script&gt;" />
-
+  <metal:block tal:replace="structure string:&lt;/script&gt;" />
   <form method="post" class="grid-form"
         tal:attributes="action string:${context/@@absolute_url}">
-
-  <div class="gradebook-message"
-       tal:condition="view/message"
-       tal:content="view/message">
-    Message
-  </div>
-
-  <div>
-  <div class="schooltool_gradebook"
-       tal:condition="python: True">
-  <table>
-    <tr class="gradebook-header">
-     <th class="gradebook-name">
-       <div i18n:translate="">Name</div>
-       <a href="?sort_by=student" i18n:translate="">(sort)</a>
-     </th>
-     <th tal:condition="not: view/absences_hide" class="gradebook-total">
-       <div tal:content="view/absences_label" />
-     </th>
-     <th tal:condition="not: view/tardies_hide" class="gradebook-total">
-       <div tal:content="view/tardies_label" />
-     </th>
-     <th tal:condition="not: view/total_hide" class="gradebook-total">
-       <div tal:content="view/total_label" />
-     </th>
-     <th tal:condition="not: view/average_hide" class="gradebook-total">
-       <div tal:content="view/average_label" />
-       <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
-     </th>
-     <th class="activity" tal:repeat="activity view/activities">
-       <div>
-         <ul class="popup_menu">
-           <li>
-             <span tal:content="activity/shortTitle" />
-           </li>
-           <li>
-             <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
-                i18n:translate="">Edit</a>
-           </li>
-           <li>
-             <a tal:condition="activity/scorable"
-                tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
-                i18n:translate="">Score this</a>
-           </li>
-           <li>
-             <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
-                i18n:translate="">Sort by</a>
-           </li>
-         </ul>
-         <div>
-           <a class="activity_heading"
-              href=""
-              tal:attributes="title activity/longTitle;
-                              href string:gradeActivity.html?activity=${activity/hash};"
-              tal:content="activity/shortTitle" />
-         </div>
-       </div>
-       <div tal:content="activity/max" />
-     </th>
-    </tr>
-
-    <tr tal:repeat="row view/table" class="gradebook-row">
-      <metal:block>
-        <td class="gradebook-name">
-          <a href=""
-             tal:attributes="href row/student/url;
-                             title row/student/title"
-             tal:content="row/student/title">
-            Tom Hoffman
-          </a>
-          <a href=""
-             tal:attributes="href row/student/gradeurl">
-            &gt;
-          </a>
-        </td>
-        <td tal:condition="not: view/absences_hide" class="gradebook-total">
-	      <tal:if condition="row/absences|nothing">
-	        <b><span tal:replace="row/absences" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/tardies_hide" class="gradebook-total">
-	      <tal:if condition="row/tardies|nothing">
-	        <b><span tal:replace="row/tardies" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/total_hide" class="gradebook-total">
-	      <tal:if condition="row/total|nothing">
-	        <b><span tal:replace="row/total" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/average_hide" class="gradebook-total">
-	      <tal:if condition="row/average|nothing">
-	        <b><span tal:replace="row/average" /></b>
-	      </tal:if>
-        </td>
-        <td class="activity"
-            tal:repeat="grade row/grades"
-            tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-          <span tal:condition="not: grade/editable"
-             tal:content="grade/value" />
-          <input type="text" name="" value="" size="4"
-                 tal:condition="grade/editable"
-                 onkeydown="return spreadsheetBehaviour(event)"
-                 tal:attributes="name string:${grade/activity}_${row/student/id};
-                                 id string:${grade/activity}_${row/student/id};
-                                 value grade/value;
-                                 onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                 onfocus string:handleCellFocus(this, '${grade/activity}')"/>
-        </td>
-      </metal:block>
-    </tr>
-  </table>
-  </div>
-
-  <div class="schooltool_gradebook gradebook-freezecol"
-       tal:condition="python: True">
-  <table>
-    <tr class="gradebook-header">
-     <th class="gradebook-name">
-       <div i18n:translate="">Name</div>
-       <a href="?sort_by=student" i18n:translate="">(sort)</a>
-     </th>
-     <th tal:condition="not: view/absences_hide" class="gradebook-total">
-       <div tal:content="view/absences_label" />
-     </th>
-     <th tal:condition="not: view/tardies_hide" class="gradebook-total">
-       <div tal:content="view/tardies_label" />
-     </th>
-     <th tal:condition="not: view/total_hide" class="gradebook-total">
-       <div tal:content="view/total_label" />
-     </th>
-     <th tal:condition="not: view/average_hide" class="gradebook-total">
-       <div tal:content="view/average_label" />
-       <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
-     </th>
-    </tr>
-
-    <tr tal:repeat="row view/table" class="gradebook-row">
-      <metal:block>
-        <td class="gradebook-name">
-          <a href=""
-             tal:attributes="href row/student/url;
-                             title row/student/title"
-             tal:content="row/student/title">
-            Tom Hoffman
-          </a>
-          <a href=""
-             tal:attributes="href row/student/gradeurl">
-            &gt;
-          </a>
-        </td>
-        <td tal:condition="not: view/absences_hide" class="gradebook-total">
-	      <tal:if condition="row/absences|nothing">
-	        <b><span tal:replace="row/absences" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/tardies_hide" class="gradebook-total">
-	      <tal:if condition="row/tardies|nothing">
-	        <b><span tal:replace="row/tardies" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/total_hide" class="gradebook-total">
-	      <tal:if condition="row/total|nothing">
-	        <b><span tal:replace="row/total" /></b>
-	      </tal:if>
-        </td>
-        <td tal:condition="not: view/average_hide" class="gradebook-total">
-	      <tal:if condition="row/average|nothing">
-	        <b><span tal:replace="row/average" /></b>
-	      </tal:if>
-        </td>
-      </metal:block>
-    </tr>
-  </table>
-  </div>
-  </div>
-
-  <div class="buttons controls gradebook-buttons">
-    <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
-           onclick="setNotEdited()"
-           title="Shortcut: Alt-S" accesskey="S"
-           i18n:attributes="value; title; accesskey" />
-  </div>
-
+    <div>
+      <div class="schooltool_gradebook">
+        <table>
+          <tr class="gradebook-header">
+            <th class="gradebook-name">
+              <div>
+                <div i18n:translate="">Name</div>
+                <a href="?sort_by=student" i18n:translate="">(sort)</a>
+              </div>
+            </th>
+            <th tal:condition="not: view/absences_hide" class="gradebook-total">
+              <div tal:content="view/absences_label" />
+            </th>
+            <th tal:condition="not: view/tardies_hide" class="gradebook-total">
+              <div tal:content="view/tardies_label" />
+            </th>
+            <th tal:condition="not: view/total_hide" class="gradebook-total">
+              <div tal:content="view/total_label" />
+            </th>
+            <th tal:condition="not: view/average_hide" class="gradebook-total">
+              <div tal:content="view/average_label" />
+              <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
+            </th>
+            <th class="activity" tal:repeat="activity view/activities">
+              <div>
+                <ul class="popup_menu">
+                  <li>
+                    <span tal:content="activity/shortTitle" />
+                  </li>
+                  <li>
+                    <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
+                       i18n:translate="">Edit</a>
+                  </li>
+                  <li>
+                    <a tal:condition="activity/scorable"
+                       tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
+                       i18n:translate="">Score this</a>
+                  </li>
+                  <li>
+                    <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
+                       i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="activity_heading"
+                     href=""
+                     tal:attributes="title activity/longTitle;
+                                     href string:gradeActivity.html?activity=${activity/hash};"
+                     tal:content="activity/shortTitle" />
+                </div>
+              </div>
+              <div tal:content="activity/max" />
+            </th>
+          </tr>
+          <tr tal:repeat="row view/table" class="gradebook-row">
+            <metal:block>
+              <td class="gradebook-name">
+                <div>
+                  <a href=""
+                     tal:attributes="href row/student/url;
+                                     title row/student/title"
+                     tal:content="row/student/title">
+                    Tom Hoffman
+                  </a>
+                  <a href=""
+                     tal:attributes="href row/student/gradeurl">
+                    &gt;
+                  </a>
+                </div>
+              </td>
+              <td tal:condition="not: view/absences_hide" class="gradebook-total">
+                <tal:if condition="row/absences|nothing">
+                  <b><span tal:replace="row/absences" /></b>
+                </tal:if>
+              </td>
+              <td tal:condition="not: view/tardies_hide" class="gradebook-total">
+                <tal:if condition="row/tardies|nothing">
+                  <b><span tal:replace="row/tardies" /></b>
+                </tal:if>
+              </td>
+              <td tal:condition="not: view/total_hide" class="gradebook-total">
+                <tal:if condition="row/total|nothing">
+                  <b><span tal:replace="row/total" /></b>
+                </tal:if>
+              </td>
+              <td tal:condition="not: view/average_hide" class="gradebook-total">
+                <tal:if condition="row/average|nothing">
+                  <b><span tal:replace="row/average" /></b>
+                </tal:if>
+              </td>
+              <td class="activity"
+                  tal:repeat="grade row/grades"
+                  tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+                <span tal:condition="not: grade/editable"
+                      tal:content="grade/value" />
+                <input type="text" name="" value="" size="4"
+                       tal:condition="grade/editable"
+                       onkeydown="return spreadsheetBehaviour(event)"
+                       tal:attributes="name string:${grade/activity}_${row/student/id};
+                                       id string:${grade/activity}_${row/student/id};
+                                       value grade/value;
+                                       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
+                                       onfocus string:handleCellFocus(this, '${grade/activity}')"/>
+              </td>
+            </metal:block>
+          </tr>
+        </table>
+      </div>
+      <div class="schooltool_gradebook gradebook-freezecol">
+        <table>
+          <tr class="gradebook-header">
+            <th class="gradebook-name">
+              <div>
+                <div i18n:translate="">Name</div>
+                <a href="?sort_by=student" i18n:translate="">(sort)</a>
+              </div>
+            </th>
+            <th tal:condition="not: view/absences_hide" class="gradebook-total">
+              <div tal:content="view/absences_label" />
+            </th>
+            <th tal:condition="not: view/tardies_hide" class="gradebook-total">
+              <div tal:content="view/tardies_label" />
+            </th>
+            <th tal:condition="not: view/total_hide" class="gradebook-total">
+              <div tal:content="view/total_label" />
+            </th>
+            <th tal:condition="not: view/average_hide" class="gradebook-total">
+              <div tal:content="view/average_label" />
+              <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
+            </th>
+          </tr>
+          <tr tal:repeat="row view/table" class="gradebook-row">
+            <metal:block>
+              <td class="gradebook-name">
+                <div>
+                  <a href=""
+                     tal:attributes="href row/student/url;
+                                     title row/student/title"
+                     tal:content="row/student/title">
+                    Tom Hoffman
+                  </a>
+                  <a href=""
+                     tal:attributes="href row/student/gradeurl">
+                    &gt;
+                  </a>
+                </div>
+              </td>
+              <td tal:condition="not: view/absences_hide" class="gradebook-total">
+                <tal:if condition="row/absences|nothing">
+                  <b><span tal:replace="row/absences" /></b>
+                </tal:if>
+              </td>
+              <td tal:condition="not: view/tardies_hide" class="gradebook-total">
+                <tal:if condition="row/tardies|nothing">
+                  <b><span tal:replace="row/tardies" /></b>
+                </tal:if>
+              </td>
+              <td tal:condition="not: view/total_hide" class="gradebook-total">
+                <tal:if condition="row/total|nothing">
+                  <b><span tal:replace="row/total" /></b>
+                </tal:if>
+              </td>
+              <td tal:condition="not: view/average_hide" class="gradebook-total">
+                <tal:if condition="row/average|nothing">
+                  <b><span tal:replace="row/average" /></b>
+                </tal:if>
+              </td>
+            </metal:block>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="buttons controls gradebook-buttons">
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
+             onclick="setNotEdited()"
+             title="Shortcut: Alt-S" accesskey="S"
+             i18n:attributes="value; title; accesskey" />
+    </div>
   </form>
 </div>
 
