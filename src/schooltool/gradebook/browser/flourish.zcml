@@ -169,6 +169,14 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="../weights.html"
+      title="Category Weights"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishGradebookSettingsLinks"
+      permission="schooltool.edit"
+      />
+
   <flourish:viewletManager
       name="tertiary_navigation"
       provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
@@ -255,6 +263,16 @@
       title="Gradebook"
       content_template="templates/f_grade_student.pt"
       class=".gradebook.FlourishGradeStudent"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="weights.html"
+      for="..interfaces.IWorksheet"
+      title="Gradebook"
+      subtitle="Edit Category Weights"
+      content_template="templates/f_weight_categories.pt"
+      class=".activity.FlourishWeightCategoriesView"
       permission="schooltool.edit"
       />
 

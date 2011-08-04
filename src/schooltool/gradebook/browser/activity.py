@@ -463,6 +463,10 @@ class WeightCategoriesView(object):
         return result
 
 
+class FlourishWeightCategoriesView(WeightCategoriesView, flourish.page.Page):
+    """A flourish view for providing category weights for the worksheet."""
+
+
 class ExternalActivitiesTerms(object):
     """Terms for external activities"""
 
