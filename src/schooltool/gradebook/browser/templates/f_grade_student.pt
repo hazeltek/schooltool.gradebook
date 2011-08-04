@@ -1,0 +1,8 @@
+<div>
+  <div metal:use-macro="macro:form">
+    <metal:block metal:fill-slot="extra-info">
+      <input name="nexturl" type="hidden"
+             tal:attributes="value view/nexturl" />
+    </metal:block>
+  </div>
+</div>

@@ -179,16 +179,23 @@
             <metal:block>
               <td class="gradebook-name">
                 <div>
-                  <a href=""
-                     tal:attributes="href row/student/url;
-                                     title row/student/title"
-                     tal:content="row/student/title">
-                    Tom Hoffman
-                  </a>
-                  <a href=""
-                     tal:attributes="href row/student/gradeurl">
-                    &gt;
-                  </a>
+                  <ul class="popup_menu">
+                    <li>
+                      <span tal:content="row/student/title" />
+                    </li>
+                    <li>
+                      <a href="" i18n:translate=""
+                         tal:attributes="href row/student/gradeurl">
+                        Score
+                      </a>
+                    </li>
+                  </ul>
+                  <div>
+                    <a class="activity_heading"
+                       href=""
+                       tal:attributes="title row/student/title"
+                       tal:content="row/student/title" />
+                  </div>
                 </div>
               </td>
               <td tal:condition="not: view/absences_hide" class="gradebook-total">

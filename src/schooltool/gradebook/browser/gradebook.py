@@ -45,6 +45,7 @@ from z3c.form import form as z3cform
 from z3c.form import field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection, ISectionContainer
 from schooltool.course.interfaces import ILearner, IInstructor
@@ -1397,6 +1398,38 @@ class GradeStudent(z3cform.EditForm):
 
     def gradebookURL(self):
         return absoluteURL(self.context.gradebook, self.request)
+
+
+class FlourishGradeStudent(GradeStudent, flourish.form.Form):
+    """A flourish view for editing a teacher's gradebook column preferences."""
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = _('Enter grade details below')
+
+    @property
+    def subtitle(self):
+        return _(u'Grade ${student_title}',
+                 mapping={'student_title': self.context.student.title})
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishGradeStudent, self).handleApply.func(self, action)
+
+    @button.buttonAndHandler(_("Previous"))
+    def handle_previous_action(self, action):
+        super(FlourishGradeStudent, self).handle_previous_action.func(self,
+            action)
+
+    @button.buttonAndHandler(_("Next"))
+    def handle_next_action(self, action):
+        super(FlourishGradeStudent, self).handle_next_action.func(self,
+            action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        super(FlourishGradeStudent, self).handle_cancel_action.func(self,
+            action)
 
 
 class StudentGradebookView(object):
