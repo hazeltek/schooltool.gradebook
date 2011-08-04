@@ -40,6 +40,26 @@
             $('.activity_menu').hide();
           }
         });
+        var factor = 1.05;
+        var min_size = 8;
+        var max_size = 18;
+        var default_size = 10;
+        $('.zoom-button').click(function () {
+          var $form = $('.grid-form');
+          var current_size = $form.css('fontSize');
+          var num = parseFloat(current_size, default_size);
+          var unit = current_size.slice(-2);
+          if (this.id == 'zoom-in') {
+            num *= factor;
+          } else if (this.id == 'zoom-out') {
+            num /= factor;
+          } else if (this.id == 'zoom-normal') {
+            num = default_size;
+          }
+          if (num >= min_size && num <= max_size) {
+            $form.css('fontSize', num + unit);
+          }
+        });
       });
   <metal:block tal:replace="structure string:&lt;/script&gt;" />
   <form method="post" class="grid-form"
@@ -228,6 +248,11 @@
              onclick="setNotEdited()"
              title="Shortcut: Alt-S" accesskey="S"
              i18n:attributes="value; title; accesskey" />
+    </div>
+    <div class="buttons zoom-buttons">
+      <input type="button" class="button-neutral zoom-button" id="zoom-out" value="-" />
+      <input type="button" class="button-neutral zoom-button" id="zoom-normal" value="0" />
+      <input type="button" class="button-neutral zoom-button" id="zoom-in" value="+" />
     </div>
   </form>
 </div>

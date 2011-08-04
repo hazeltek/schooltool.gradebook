@@ -1,11 +1,11 @@
 .schooltool > .grid {
     padding-top: 36px;
-    font-size: 62.5%;
 }
 
 .grid > .third-nav {
     left: 208px;
     position: absolute;
+    overflow: auto;
 }
 
 .grid > .body > .widecontainer {
@@ -16,10 +16,11 @@
 
 .grid .grid-form {
     margin-top: 0px;
+    font-size: 10px;
 }
 
 .grid-form table {
-    margin-top: 0px;
+    margin-top: 0em;
     width: auto;
 }
 
@@ -47,10 +48,6 @@
     white-space: nowrap;
 }
 
-.grid-form table tr td.gradebook-total {
-    border-right: 1px solid #bbbbbb;
-}
-
 div.schooltool_gradebook {
     margin-bottom: 20px;
     overflow: auto;
@@ -70,7 +67,7 @@ div.gradebook-freezecol {
     font-size: 1em;
 }
 
-.gradebook-row td, .gradebook-header td {
+.gradebook-row td, .gradebook-header th {
     border-left: 1px solid #bbbbbb;
     line-height: 1.4em;
     padding: 0.2em auto;
@@ -83,7 +80,7 @@ div.gradebook-freezecol {
 }
 
 .activity {
-    padding: 0.2em 0px;
+    padding: 0px;
 }
 
 .activity input[type="text"] {
@@ -107,4 +104,12 @@ div.gradebook-freezecol {
 
 .popup_menu a {
     display: block;
+}
+
+.grid-form .gradebook-buttons {
+    float: left;
+}
+
+.grid-form .zoom-buttons {
+    float: right;
 }
