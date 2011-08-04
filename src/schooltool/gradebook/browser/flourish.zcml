@@ -249,6 +249,15 @@
       permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="index.html"
+      for="..interfaces.IStudentGradebook"
+      title="Gradebook"
+      content_template="templates/f_grade_student.pt"
+      class=".gradebook.FlourishGradeStudent"
+      permission="schooltool.edit"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"
