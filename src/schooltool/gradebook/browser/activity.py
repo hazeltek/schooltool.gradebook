@@ -54,6 +54,7 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
+from schooltool.gradebook.activity import Activities
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
@@ -132,6 +133,58 @@ class ActivitiesView(object):
                 new_pos = int(self.request['pos.'+name])
                 if new_pos != old_pos:
                     self.context.changePosition(name, new_pos-1)
+
+
+class FlourishWorksheetsView(flourish.page.Page):
+    """A flourish view of the gradebook's worksheets."""
+
+    @property
+    def title(self):
+        return self.context.__parent__.title
+
+    def positions(self):
+        return range(1, len(self.context.values())+1)
+
+    @property
+    def worksheets(self):
+        """Get  a list of all worksheets."""
+        pos, hidden, not_hidden = 1, [], []
+        activities = removeSecurityProxy(self.context)
+        for worksheet in super(Activities, activities).values():
+            result = {
+               'name': getName(worksheet),
+               'title': worksheet.title,
+               'url': absoluteURL(worksheet, self.request) + '/edit.html',
+               'pos': pos,
+               'checked': worksheet.hidden and 'checked' or '',
+               'deployed': worksheet.deployed,
+               }
+            if worksheet.hidden:
+                hidden.append(result)
+            else:
+                not_hidden.append(result)
+                pos += 1
+        return not_hidden + hidden
+
+    def update(self):
+        if 'form-submitted' in self.request:
+            old_pos = 0
+            for worksheet in self.context.values():
+                old_pos += 1
+                name = getName(worksheet)
+                if 'pos.'+name not in self.request:
+                    continue
+                new_pos = int(self.request['pos.'+name])
+                if new_pos != old_pos:
+                    self.context.changePosition(name, new_pos-1)
+
+            hidden = self.request.get('hidden', [])
+            activities = removeSecurityProxy(self.context)
+            for worksheet in super(Activities, activities).values():
+                if worksheet.hidden and not worksheet.__name__ in hidden:
+                    worksheet.hidden = False
+                if not worksheet.hidden and worksheet.__name__ in hidden:
+                    worksheet.hidden = True
 
 
 class UnhideWorksheetsView(object):

@@ -1,0 +1,57 @@
+<div>
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}">
+    <input type="hidden" name="form-submitted" value="" />
+    <table>
+      <thead>
+        <tr>
+          <th i18n:translate="">Order</th>
+          <th i18n:translate="">Title</th>
+          <th i18n:translate="">Hidden?</th>
+        </tr>
+      </thead>
+      <tr tal:repeat="worksheet view/worksheets">
+        <td>
+          <select name=""
+                  tal:condition="not: worksheet/checked"
+                  onchange="this.form.submit()"
+                  tal:attributes="name string:pos.${worksheet/name}">
+            <tal:block repeat="num view/positions">
+              <option value="1"
+                  tal:condition="python:num != worksheet['pos']"
+                  tal:attributes="value num"
+                  tal:content="num" />
+              <option value="1" selected="selected"
+                  tal:condition="python:num == worksheet['pos']"
+                  tal:attributes="value num"
+                  tal:content="num" />
+            </tal:block>
+          </select>
+        </td>
+        <td>
+          <span tal:content="worksheet/title" />
+          <a class="modify" href="" title="Edit"
+             tal:attributes="href worksheet/url"
+             i18n:attributes="title"
+             i18n:translate="">
+            <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
+                 alt="Edit"
+                 i18n:attributes="alt" />
+          </a>
+        </td>
+        <td>
+          <input type="checkbox" name="hidden:list"
+                 onchange="this.form.submit()"
+                 tal:condition="not: worksheet/deployed"
+                 tal:attributes="value worksheet/name;
+                                 checked worksheet/checked" />
+        </td>
+      </tr>
+    </table>
+    <h3>
+      <a tal:attributes="href string:${context/__parent__/@@absolute_url}/gradebook"
+         i18n:translate="">Done</a>
+    </h3>
+  </form>
+</div>
+
