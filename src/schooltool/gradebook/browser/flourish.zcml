@@ -162,8 +162,9 @@
       />
 
   <flourish:viewlet
-      name="column_preferences.html"
-      title="Preferences"
+      name="../.."
+      before="../weights.html"
+      title="Worksheets"
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager=".gradebook.FlourishGradebookSettingsLinks"
       permission="schooltool.edit"
@@ -172,6 +173,14 @@
   <flourish:viewlet
       name="../weights.html"
       title="Category Weights"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishGradebookSettingsLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="column_preferences.html"
+      title="Preferences"
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager=".gradebook.FlourishGradebookSettingsLinks"
       permission="schooltool.edit"
@@ -273,6 +282,15 @@
       subtitle="Edit Category Weights"
       content_template="templates/f_weight_categories.pt"
       class=".activity.FlourishWeightCategoriesView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="index.html"
+      for="..interfaces.IActivities"
+      subtitle="Worksheets"
+      content_template="templates/f_worksheets.pt"
+      class=".activity.FlourishWorksheetsView"
       permission="schooltool.edit"
       />
 
