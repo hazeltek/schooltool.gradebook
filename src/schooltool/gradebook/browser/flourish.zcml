@@ -204,6 +204,15 @@
        title="Gradebook"
        subtitle="New Worksheet"
        />
+
+    <flourish:page
+        name="edit.html"
+        for="schooltool.gradebook.interfaces.IWorksheet"
+        class="schooltool.gradebook.browser.worksheet.FlourishWorksheetEditView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        subtitle="Edit"
+        />
   </configure>
 
   <flourish:page
