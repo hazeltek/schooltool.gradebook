@@ -1409,8 +1409,7 @@ class FlourishGradeStudent(GradeStudent, flourish.form.Form):
 
     @property
     def subtitle(self):
-        return _(u'Grade ${student_title}',
-                 mapping={'student_title': self.context.student.title})
+        return self.context.student.title
 
     @button.buttonAndHandler(_('Submit'), name='apply')
     def handleApply(self, action):
