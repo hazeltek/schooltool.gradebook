@@ -172,3 +172,33 @@ class WorksheetEditView(BaseEditView):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+
+class FlourishWorksheetEditView(flourish.form.Form, form.EditForm):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = _('Worksheet Information')
+    fields = field.Fields(interfaces.IWorksheet).select('title')
+
+    @property
+    def title(self):
+        return self.context.title
+
+    def update(self):
+        return form.EditForm.update(self)
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishWorksheetEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            url = absoluteURL(self.context.__parent__, self.request)
+            self.request.response.redirect(url)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        url = absoluteURL(self.context.__parent__, self.request)
+        self.request.response.redirect(url)
+
