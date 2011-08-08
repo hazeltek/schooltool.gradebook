@@ -70,8 +70,17 @@
           <tr class="gradebook-header">
             <th class="gradebook-name">
               <div>
-                <div i18n:translate="">Name</div>
-                <a href="?sort_by=student" i18n:translate="">(sort)</a>
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Name</span>
+                  </li>
+                  <li>
+                    <a href="?sort_by=student" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="activity_heading" href="" i18n:translate="">Name</a>
+                </div>
               </div>
             </th>
             <th tal:condition="not: view/absences_hide" class="gradebook-total">
@@ -177,8 +186,17 @@
           <tr class="gradebook-header">
             <th class="gradebook-name">
               <div>
-                <div i18n:translate="">Name</div>
-                <a href="?sort_by=student" i18n:translate="">(sort)</a>
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Name</span>
+                  </li>
+                  <li>
+                    <a href="?sort_by=student" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="activity_heading" href="" i18n:translate="">Name</a>
+                </div>
               </div>
             </th>
             <th tal:condition="not: view/absences_hide" class="gradebook-total">
