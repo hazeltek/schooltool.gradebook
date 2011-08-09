@@ -627,15 +627,15 @@ class GradebookOverview(SectionFinder):
                     }
                 grades.append(grade)
 
-            total, average = gradebook.getWorksheetTotalAverage(worksheet,
+            total, raw_average = gradebook.getWorksheetTotalAverage(worksheet,
                 student)
 
             total = "%.1f" % total
 
-            if average is UNSCORED:
+            if raw_average is UNSCORED:
                 average = _('N/A')
             else:
-                average = convertAverage(average, self.average_scoresystem)
+                average = convertAverage(raw_average, self.average_scoresystem)
 
             if journal_data is None:
                 absences = tardies = ''
@@ -659,21 +659,34 @@ class GradebookOverview(SectionFinder):
                  'absences': unicode(absences),
                  'tardies': unicode(tardies),
                  'total': unicode(total),
-                 'average': unicode(average)
+                 'average': unicode(average),
+                 'raw_average': raw_average,
                 })
 
         # Do the sorting
         key, reverse = self.sortKey
         self.collator = ICollator(self.request.locale)
+        def generateStudentKey(row):
+            return self.collator.key(row['student']['title'])
         def generateKey(row):
-            if key != 'student':
+            if key == 'student':
+                return generateStudentKey(row)
+            elif key == 'total':
+                return (float(row['total']), generateStudentKey(row))
+            elif key == 'average':
+                if row['raw_average'] is UNSCORED:
+                    return ('', generateStudentKey(row))
+                else:
+                    converted = convertAverage(row['raw_average'],
+                                               self.average_scoresystem)
+                    return (converted, generateStudentKey(row))
+            else: # sorting by activity
                 grades = dict([(unicode(grade['activity']), grade['value'])
                                for grade in row['grades']])
                 if not grades.get(key, ''):
-                    return (1, self.collator.key(row['student']['title']))
+                    return (1, generateStudentKey(row))
                 else:
-                    return (0, grades.get(key), self.collator.key(row['student']['title']))
-            return self.collator.key(row['student']['title'])
+                    return (0, grades.get(key), generateStudentKey(row))
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property

@@ -29,15 +29,15 @@
       warningText = '<tal:block replace="view/warningText" />';
 
       $(document).ready(function() {
-        $('.activity_heading').click(function(e) {
-          $('.activity_menu').hide().removeClass('activity_menu');
-          $(this).parent().prev('ul.popup_menu').addClass('activity_menu');
-          $('.activity_menu').show();
+        $('.popup_link').click(function(e) {
+          $('.popup_active').hide().removeClass('popup_active');
+          $(this).parent().prev('ul.popup_menu').addClass('popup_active');
+          $('.popup_active').show();
           e.preventDefault();
         });
         $(document).click(function(e) {
-          if ($(e.target).hasClass('activity_heading') == false) {
-            $('.activity_menu').hide();
+          if ($(e.target).hasClass('popup_link') == false) {
+            $('.popup_active').hide().removeClass('popup_active');
           }
         });
         var factor = 1.05;
@@ -69,32 +69,19 @@
         <table>
           <tr class="gradebook-header">
             <th class="gradebook-name">
-              <div>
-                <ul class="popup_menu">
-                  <li>
-                    <span i18n:translate="">Name</span>
-                  </li>
-                  <li>
-                    <a href="?sort_by=student" i18n:translate="">Sort by</a>
-                  </li>
-                </ul>
-                <div>
-                  <a class="activity_heading" href="" i18n:translate="">Name</a>
-                </div>
-              </div>
+              <div></div>
             </th>
             <th tal:condition="not: view/absences_hide" class="gradebook-total">
-              <div tal:content="view/absences_label" />
+              <div></div>
             </th>
             <th tal:condition="not: view/tardies_hide" class="gradebook-total">
-              <div tal:content="view/tardies_label" />
+              <div></div>
             </th>
             <th tal:condition="not: view/total_hide" class="gradebook-total">
-              <div tal:content="view/total_label" />
+              <div></div>
             </th>
             <th tal:condition="not: view/average_hide" class="gradebook-total">
-              <div tal:content="view/average_label" />
-              <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
+              <div></div>
             </th>
             <th class="activity" tal:repeat="activity view/activities">
               <div>
@@ -117,7 +104,7 @@
                   </li>
                 </ul>
                 <div>
-                  <a class="activity_heading"
+                  <a class="popup_link"
                      href=""
                      tal:attributes="title activity/longTitle;
                                      href string:gradeActivity.html?activity=${activity/hash};"
@@ -130,38 +117,19 @@
           <tr tal:repeat="row view/table" class="gradebook-row">
             <metal:block>
               <td class="gradebook-name">
-                <div>
-                  <a href=""
-                     tal:attributes="href row/student/url;
-                                     title row/student/title"
-                     tal:content="row/student/title">
-                    Tom Hoffman
-                  </a>
-                  <a href=""
-                     tal:attributes="href row/student/gradeurl">
-                    &gt;
-                  </a>
-                </div>
+                <div></div>
               </td>
               <td tal:condition="not: view/absences_hide" class="gradebook-total">
-                <tal:if condition="row/absences|nothing">
-                  <b><span tal:replace="row/absences" /></b>
-                </tal:if>
+                <div></div>
               </td>
               <td tal:condition="not: view/tardies_hide" class="gradebook-total">
-                <tal:if condition="row/tardies|nothing">
-                  <b><span tal:replace="row/tardies" /></b>
-                </tal:if>
+                <div></div>
               </td>
               <td tal:condition="not: view/total_hide" class="gradebook-total">
-                <tal:if condition="row/total|nothing">
-                  <b><span tal:replace="row/total" /></b>
-                </tal:if>
+                <div></div>
               </td>
               <td tal:condition="not: view/average_hide" class="gradebook-total">
-                <tal:if condition="row/average|nothing">
-                  <b><span tal:replace="row/average" /></b>
-                </tal:if>
+                <div></div>
               </td>
               <td class="activity"
                   tal:repeat="grade row/grades"
@@ -195,7 +163,7 @@
                   </li>
                 </ul>
                 <div>
-                  <a class="activity_heading" href="" i18n:translate="">Name</a>
+                  <a class="popup_link" href="" i18n:translate="">Name</a>
                 </div>
               </div>
             </th>
@@ -206,11 +174,34 @@
               <div tal:content="view/tardies_label" />
             </th>
             <th tal:condition="not: view/total_hide" class="gradebook-total">
-              <div tal:content="view/total_label" />
+              <div>
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Total</span>
+                  </li>
+                  <li>
+                    <a href="?sort_by=total" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="popup_link" href="" i18n:translate="">Total</a>
+                </div>
+              </div>
             </th>
             <th tal:condition="not: view/average_hide" class="gradebook-total">
-              <div tal:content="view/average_label" />
-              <a tal:condition="nothing" href="?sort_by=average" i18n:translate="">(sort)</a>
+              <div>
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Ave.</span>
+                  </li>
+                  <li>
+                    <a href="?sort_by=average" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="popup_link" href="" i18n:translate="">Ave.</a>
+                </div>
+              </div>
             </th>
           </tr>
           <tr tal:repeat="row view/table" class="gradebook-row">
@@ -229,7 +220,7 @@
                     </li>
                   </ul>
                   <div>
-                    <a class="activity_heading"
+                    <a class="popup_link"
                        href=""
                        tal:attributes="title row/student/title"
                        tal:content="row/student/title" />
