@@ -29,15 +29,15 @@
       warningText = '<tal:block replace="view/warningText" />';
 
       $(document).ready(function() {
-        $('.activity_heading').click(function(e) {
-          $('.activity_menu').hide().removeClass('activity_menu');
-          $(this).parent().prev('ul.popup_menu').addClass('activity_menu');
-          $('.activity_menu').show();
+        $('.popup_link').click(function(e) {
+          $('.popup_active').hide().removeClass('popup_active');
+          $(this).parent().prev('ul.popup_menu').addClass('popup_active');
+          $('.popup_active').show();
           e.preventDefault();
         });
         $(document).click(function(e) {
-          if ($(e.target).hasClass('activity_heading') == false) {
-            $('.activity_menu').hide();
+          if ($(e.target).hasClass('popup_link') == false) {
+            $('.popup_active').hide().removeClass('popup_active');
           }
         });
         var factor = 1.05;
@@ -104,7 +104,7 @@
                   </li>
                 </ul>
                 <div>
-                  <a class="activity_heading"
+                  <a class="popup_link"
                      href=""
                      tal:attributes="title activity/longTitle;
                                      href string:gradeActivity.html?activity=${activity/hash};"
@@ -163,7 +163,7 @@
                   </li>
                 </ul>
                 <div>
-                  <a class="activity_heading" href="" i18n:translate="">Name</a>
+                  <a class="popup_link" href="" i18n:translate="">Name</a>
                 </div>
               </div>
             </th>
@@ -197,7 +197,7 @@
                     </li>
                   </ul>
                   <div>
-                    <a class="activity_heading"
+                    <a class="popup_link"
                        href=""
                        tal:attributes="title row/student/title"
                        tal:content="row/student/title" />
