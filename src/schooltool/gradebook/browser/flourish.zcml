@@ -194,6 +194,14 @@
       permission="zope.Public"
       />
 
+  <flourish:viewletManager
+      name="tertiary_activity_add"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".activity.ActivityAddTertiaryNavigationManager"
+      view=".activity.FlourishActivityAddView"
+      permission="zope.Public"
+      />
+
   <configure package="schooltool.skin.flourish">
     <flourish:page
        name="addWorksheet.html"

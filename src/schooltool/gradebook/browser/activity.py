@@ -47,6 +47,7 @@ from z3c.form.interfaces import DISPLAY_MODE
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IDemographics
 from schooltool.common.inlinept import InheritTemplate
+from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection, IInstructor
 from schooltool.export import export
 from schooltool.gradebook import GradebookMessage as _
@@ -818,3 +819,35 @@ ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
     defaultDueDate,
     field=interfaces.IActivity['due_date']
     )
+
+
+class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+
+    template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    list_class = 'third-nav'
+
+    @property
+    def items(self):
+        result = []
+        current = 'addActivity.html'
+        actions = [
+            ('addActivity.html', _('Activity')),
+            ('addLinkedActivity.html', _('Linked Activity')),
+            ('addLinkedColumn.html', _('Linked Column')),
+            ]
+        for action, title in actions:
+            url = '%s/%s' % (absoluteURL(self.context, self.request), action)
+            result.append({
+                'class': action == current and 'active' or None,
+                'viewlet': u'<a href="%s">%s</a>' % (url, title),
+                })
+        return result
+
