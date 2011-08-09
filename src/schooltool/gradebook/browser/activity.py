@@ -837,7 +837,8 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
     @property
     def items(self):
         result = []
-        current = 'addActivity.html'
+        path = self.request['PATH_INFO']
+        current = path[path.rfind('/')+1:]
         actions = [
             ('addActivity.html', _('Activity')),
             ('addLinkedActivity.html', _('Linked Activity')),
