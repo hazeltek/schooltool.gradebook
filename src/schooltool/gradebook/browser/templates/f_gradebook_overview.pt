@@ -98,8 +98,8 @@
                                      href string:gradeActivity.html?activity=${activity/hash};"
                      tal:content="activity/shortTitle" />
                 </div>
+                <div tal:content="activity/max" />
               </div>
-              <div tal:content="activity/max" />
             </th>
           </tr>
           <tr tal:repeat="row view/table" class="gradebook-row">
