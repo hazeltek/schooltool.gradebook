@@ -379,14 +379,21 @@ class SectionFinder(GradebookBase):
             columnPreferences = gradebook.getColumnPreferences(person)
         column_keys_dict = dict(getColumnKeys(gradebook))
 
+        journal_data = interfaces.ISectionJournalData(ISection(gradebook), None)
         prefs = columnPreferences.get('absences', {})
-        self.absences_hide = prefs.get('hide', True)
+        if journal_data is None:
+            self.absences_hide = True
+        else:
+            self.absences_hide = prefs.get('hide', True)
         self.absences_label = prefs.get('label', '')
         if len(self.absences_label) == 0:
             self.absences_label = column_keys_dict.get('absences')
 
         prefs = columnPreferences.get('tardies', {})
-        self.tardies_hide = prefs.get('hide', True)
+        if journal_data is None:
+            self.tardies_hide = True
+        else:
+            self.tardies_hide = prefs.get('hide', True)
         self.tardies_label = prefs.get('label', '')
         if len(self.tardies_label) == 0:
             self.tardies_label = column_keys_dict.get('tardies')
