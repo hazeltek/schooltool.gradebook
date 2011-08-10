@@ -122,7 +122,7 @@
         <table>
           <thead>
             <tr>
-              <th class="activity" tal:repeat="activity view/activities">
+              <th tal:repeat="activity view/activities">
                 <ul class="popup_menu">
                   <li>
                     <span tal:content="activity/shortTitle" />
@@ -154,8 +154,7 @@
           </thead>
           <tbody>
             <tr tal:repeat="row view/table">
-              <td class="activity"
-                  tal:repeat="grade row/grades"
+              <td tal:repeat="grade row/grades"
                   tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
                 <span tal:condition="not: grade/editable"
                       tal:content="grade/value" />
@@ -176,13 +175,13 @@
         <table>
           <thead>
             <tr>
-              <th tal:condition="not: view/absences_hide" class="gradebook-total">
+              <th tal:condition="not: view/absences_hide">
                 <div tal:replace="view/absences_label" />
               </th>
-              <th tal:condition="not: view/tardies_hide" class="gradebook-total">
+              <th tal:condition="not: view/tardies_hide">
                 <div tal:replace="view/tardies_label" />
               </th>
-              <th tal:condition="not: view/total_hide" class="gradebook-total">
+              <th tal:condition="not: view/total_hide">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Total</span>
@@ -195,7 +194,7 @@
                   <a class="popup_link" href="" i18n:translate="">Total</a>
                 </div>
               </th>
-              <th tal:condition="not: view/average_hide" class="gradebook-total">
+              <th tal:condition="not: view/average_hide">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Ave.</span>
@@ -212,22 +211,22 @@
           </thead>
           <tbody>
             <tr tal:repeat="row view/table">
-              <td tal:condition="not: view/absences_hide" class="gradebook-total">
+              <td tal:condition="not: view/absences_hide">
                 <tal:if condition="row/absences|nothing">
                   <span tal:replace="row/absences" />
                 </tal:if>
               </td>
-              <td tal:condition="not: view/tardies_hide" class="gradebook-total">
+              <td tal:condition="not: view/tardies_hide">
                 <tal:if condition="row/tardies|nothing">
                   <span tal:replace="row/tardies" />
                 </tal:if>
               </td>
-              <td tal:condition="not: view/total_hide" class="gradebook-total">
+              <td tal:condition="not: view/total_hide">
                 <tal:if condition="row/total|nothing">
                   <span tal:replace="row/total" />
                 </tal:if>
               </td>
-              <td tal:condition="not: view/average_hide" class="gradebook-total">
+              <td tal:condition="not: view/average_hide">
                 <tal:if condition="row/average|nothing">
                   <span tal:replace="row/average" />
                 </tal:if>
