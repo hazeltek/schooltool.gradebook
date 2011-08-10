@@ -21,7 +21,8 @@ Gradebook Initialization
 """
 
 from persistent import Persistent
-from zope.container.contained import contained, Contained
+import zope.event
+from zope.container.contained import containedEvent, Contained
 from zope.interface import implements
 from zope.security.proxy import removeSecurityProxy
 
@@ -45,9 +46,15 @@ class GradebookRoot(object):
     implements(IGradebookRoot)
 
     def __init__(self):
-        self.templates = GradebookTemplates(_('Report Sheet Templates'))
-        self.deployed = GradebookDeployed(_('Deployed Report Sheets'))
-        self.layouts = GradebookLayouts(_('Report Card Layouts'))
+        self.templates, event = containedEvent(
+            GradebookTemplates(_('Report Sheet Templates')),
+            self, 'templates')
+        self.deployed, event = containedEvent(
+            GradebookDeployed(_('Deployed Report Sheets')),
+            self, 'deployed')
+        self.layouts, event = containedEvent(
+            GradebookLayouts(_('Report Card Layouts')),
+            self, 'layouts')
 
 
 class GradebookTemplates(Requirement):
@@ -142,6 +149,5 @@ def getGradebookRoot(app):
 def getGradebookTemplates(root):
     root = removeSecurityProxy(root)
     templates = removeSecurityProxy(root.templates)
-    contained(templates, root, 'templates')
     return templates
 

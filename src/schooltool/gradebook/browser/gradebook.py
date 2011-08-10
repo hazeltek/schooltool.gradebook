@@ -44,6 +44,8 @@ from zope.i18n.interfaces.locales import ICollator
 from z3c.form import form as z3cform
 from z3c.form import field, button
 
+import schooltool.skin.flourish.page
+import schooltool.skin.flourish.form
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
@@ -129,7 +131,7 @@ class GradebookStartup(object):
 
 
 class FlourishGradebookStartup(GradebookStartup, flourish.page.Page):
-    
+
     def render(self, *args, **kw):
         if IPerson(self.request.principal, None) is None:
             url = absoluteURL(ISchoolToolApplication(None), self.request)
@@ -145,7 +147,7 @@ class FlourishGradebookStartup(GradebookStartup, flourish.page.Page):
             self.request.response.redirect(url)
             return ''
         return flourish.page.Page.__call__(self, *args, **kw)
-        
+
 
 class GradebookStartupNavLink(flourish.page.LinkViewlet):
 
