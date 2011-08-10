@@ -54,11 +54,21 @@ div.schooltool_gradebook {
     width: 752px;
 }
 
-div.gradebook-freezecol {
+div.gradebook-freezecol-names {
     background: #F7F7F7;
     overflow: hidden;
     position: absolute;
     top: 0px;
+    width: auto;
+    z-index: 101;
+}
+
+div.gradebook-freezecol-totals {
+    background: #F7F7F7;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    right: 0px;
     width: auto;
     z-index: 101;
 }

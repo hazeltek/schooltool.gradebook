@@ -71,18 +71,6 @@
             <th class="gradebook-name">
               <div></div>
             </th>
-            <th tal:condition="not: view/absences_hide" class="gradebook-total">
-              <div></div>
-            </th>
-            <th tal:condition="not: view/tardies_hide" class="gradebook-total">
-              <div></div>
-            </th>
-            <th tal:condition="not: view/total_hide" class="gradebook-total">
-              <div></div>
-            </th>
-            <th tal:condition="not: view/average_hide" class="gradebook-total">
-              <div></div>
-            </th>
             <th class="activity" tal:repeat="activity view/activities">
               <div>
                 <ul class="popup_menu">
@@ -119,18 +107,6 @@
               <td class="gradebook-name">
                 <div></div>
               </td>
-              <td tal:condition="not: view/absences_hide" class="gradebook-total">
-                <div></div>
-              </td>
-              <td tal:condition="not: view/tardies_hide" class="gradebook-total">
-                <div></div>
-              </td>
-              <td tal:condition="not: view/total_hide" class="gradebook-total">
-                <div></div>
-              </td>
-              <td tal:condition="not: view/average_hide" class="gradebook-total">
-                <div></div>
-              </td>
               <td class="activity"
                   tal:repeat="grade row/grades"
                   tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
@@ -149,7 +125,7 @@
           </tr>
         </table>
       </div>
-      <div class="schooltool_gradebook gradebook-freezecol">
+      <div class="schooltool_gradebook gradebook-freezecol-names">
         <table>
           <tr class="gradebook-header">
             <th class="gradebook-name">
@@ -167,6 +143,37 @@
                 </div>
               </div>
             </th>
+          </tr>
+          <tr tal:repeat="row view/table" class="gradebook-row">
+            <metal:block>
+              <td class="gradebook-name">
+                <div>
+                  <ul class="popup_menu">
+                    <li>
+                      <span tal:content="row/student/title" />
+                    </li>
+                    <li>
+                      <a href="" i18n:translate=""
+                         tal:attributes="href row/student/gradeurl">
+                        Score
+                      </a>
+                    </li>
+                  </ul>
+                  <div>
+                    <a class="popup_link"
+                       href=""
+                       tal:attributes="title row/student/title"
+                       tal:content="row/student/title" />
+                  </div>
+                </div>
+              </td>
+            </metal:block>
+          </tr>
+        </table>
+      </div>
+      <div class="schooltool_gradebook gradebook-freezecol-totals">
+        <table>
+          <tr class="gradebook-header">
             <th tal:condition="not: view/absences_hide" class="gradebook-total">
               <div tal:content="view/absences_label" />
             </th>
@@ -206,27 +213,6 @@
           </tr>
           <tr tal:repeat="row view/table" class="gradebook-row">
             <metal:block>
-              <td class="gradebook-name">
-                <div>
-                  <ul class="popup_menu">
-                    <li>
-                      <span tal:content="row/student/title" />
-                    </li>
-                    <li>
-                      <a href="" i18n:translate=""
-                         tal:attributes="href row/student/gradeurl">
-                        Score
-                      </a>
-                    </li>
-                  </ul>
-                  <div>
-                    <a class="popup_link"
-                       href=""
-                       tal:attributes="title row/student/title"
-                       tal:content="row/student/title" />
-                  </div>
-                </div>
-              </td>
               <td tal:condition="not: view/absences_hide" class="gradebook-total">
                 <tal:if condition="row/absences|nothing">
                   <b><span tal:replace="row/absences" /></b>
