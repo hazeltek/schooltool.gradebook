@@ -41,7 +41,10 @@
             $('.popup_active').hide().removeClass('popup_active');
           }
         });
-        // grades right margin
+        // grades margins
+        if ($('.students').width()) {
+          $('.grades').css('marginLeft', $('.students').width() + 'px');
+        }
         if ($('.totals').width()) {
           $('.grades').css('marginRight', $('.totals').width() + 'px');
         }
@@ -73,9 +76,9 @@
     <div class="gradebook">
       <div class="students gradebook-part">
         <table>
-          <tr>
-            <th>
-              <div>
+          <thead>
+            <tr>
+              <th>
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Name</span>
@@ -87,44 +90,39 @@
                 <div>
                   <a class="popup_link" href="" i18n:translate="">Name</a>
                 </div>
-              </div>
-            </th>
-          </tr>
-          <tr tal:repeat="row view/table">
-            <metal:block>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="row view/table">
               <td>
+                <ul class="popup_menu">
+                  <li>
+                    <span tal:content="row/student/title" />
+                  </li>
+                  <li>
+                    <a href="" i18n:translate=""
+                       tal:attributes="href row/student/gradeurl">
+                      Score
+                    </a>
+                  </li>
+                </ul>
                 <div>
-                  <ul class="popup_menu">
-                    <li>
-                      <span tal:content="row/student/title" />
-                    </li>
-                    <li>
-                      <a href="" i18n:translate=""
-                         tal:attributes="href row/student/gradeurl">
-                        Score
-                      </a>
-                    </li>
-                  </ul>
-                  <div>
-                    <a class="popup_link"
-                       href=""
-                       tal:attributes="title row/student/title"
-                       tal:content="row/student/title" />
-                  </div>
+                  <a class="popup_link"
+                     href=""
+                     tal:attributes="title row/student/title"
+                     tal:content="row/student/title" />
                 </div>
               </td>
-            </metal:block>
-          </tr>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div class="grades gradebook-part">
         <table>
-          <tr>
-            <th class="gradebook-name">
-              <div></div>
-            </th>
-            <th class="activity" tal:repeat="activity view/activities">
-              <div>
+          <thead>
+            <tr>
+              <th class="activity" tal:repeat="activity view/activities">
                 <ul class="popup_menu">
                   <li>
                     <span tal:content="activity/shortTitle" />
@@ -151,45 +149,40 @@
                      tal:content="activity/shortTitle" />
                 </div>
                 <div tal:content="activity/max" />
-              </div>
-            </th>
-          </tr>
-          <tr tal:repeat="row view/table">
-            <metal:block>
-              <td class="gradebook-name">
-                <div></div>
-              </td>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="row view/table">
               <td class="activity"
                   tal:repeat="grade row/grades"
                   tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-                <div>
-                  <span tal:condition="not: grade/editable"
-                        tal:content="grade/value" />
-                  <input type="text" name="" value="" size="4"
-                         tal:condition="grade/editable"
-                         onkeydown="return spreadsheetBehaviour(event)"
-                         tal:attributes="name string:${grade/activity}_${row/student/id};
-                                         id string:${grade/activity}_${row/student/id};
-                                         value grade/value;
-                                         onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                         onfocus string:handleCellFocus(this, '${grade/activity}')"/>
-                </div>
+                <span tal:condition="not: grade/editable"
+                      tal:content="grade/value" />
+                <input type="text" name="" value="" size="4"
+                       tal:condition="grade/editable"
+                       onkeydown="return spreadsheetBehaviour(event)"
+                       tal:attributes="name string:${grade/activity}_${row/student/id};
+                                       id string:${grade/activity}_${row/student/id};
+                                       value grade/value;
+                                       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
+                                       onfocus string:handleCellFocus(this, '${grade/activity}')"/>
               </td>
-            </metal:block>
-          </tr>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div class="totals gradebook-part">
         <table>
-          <tr>
-            <th tal:condition="not: view/absences_hide" class="gradebook-total">
-              <div tal:content="view/absences_label" />
-            </th>
-            <th tal:condition="not: view/tardies_hide" class="gradebook-total">
-              <div tal:content="view/tardies_label" />
-            </th>
-            <th tal:condition="not: view/total_hide" class="gradebook-total">
-              <div>
+          <thead>
+            <tr>
+              <th tal:condition="not: view/absences_hide" class="gradebook-total">
+                <div tal:replace="view/absences_label" />
+              </th>
+              <th tal:condition="not: view/tardies_hide" class="gradebook-total">
+                <div tal:replace="view/tardies_label" />
+              </th>
+              <th tal:condition="not: view/total_hide" class="gradebook-total">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Total</span>
@@ -201,10 +194,8 @@
                 <div>
                   <a class="popup_link" href="" i18n:translate="">Total</a>
                 </div>
-              </div>
-            </th>
-            <th tal:condition="not: view/average_hide" class="gradebook-total">
-              <div>
+              </th>
+              <th tal:condition="not: view/average_hide" class="gradebook-total">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Ave.</span>
@@ -216,33 +207,33 @@
                 <div>
                   <a class="popup_link" href="" i18n:translate="">Ave.</a>
                 </div>
-              </div>
-            </th>
-          </tr>
-          <tr tal:repeat="row view/table">
-            <metal:block>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="row view/table">
               <td tal:condition="not: view/absences_hide" class="gradebook-total">
                 <tal:if condition="row/absences|nothing">
-                  <b><span tal:replace="row/absences" /></b>
+                  <span tal:replace="row/absences" />
                 </tal:if>
               </td>
               <td tal:condition="not: view/tardies_hide" class="gradebook-total">
                 <tal:if condition="row/tardies|nothing">
-                  <b><span tal:replace="row/tardies" /></b>
+                  <span tal:replace="row/tardies" />
                 </tal:if>
               </td>
               <td tal:condition="not: view/total_hide" class="gradebook-total">
                 <tal:if condition="row/total|nothing">
-                  <b><span tal:replace="row/total" /></b>
+                  <span tal:replace="row/total" />
                 </tal:if>
               </td>
               <td tal:condition="not: view/average_hide" class="gradebook-total">
                 <tal:if condition="row/average|nothing">
-                  <b><span tal:replace="row/average" /></b>
+                  <span tal:replace="row/average" />
                 </tal:if>
               </td>
-            </metal:block>
-          </tr>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
