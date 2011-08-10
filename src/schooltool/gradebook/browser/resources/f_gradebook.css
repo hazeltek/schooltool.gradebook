@@ -102,6 +102,10 @@
     width: 3.8em;
 }
 
+.grades .placeholder {
+    width: 100%;
+}
+
 .totals {
     overflow: hidden;
     position: absolute;

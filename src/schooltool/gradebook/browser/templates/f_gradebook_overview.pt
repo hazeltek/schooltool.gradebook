@@ -28,6 +28,22 @@
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
 
+      $(window).load(function() {
+        // grades margins
+        var gradebook_width = $('.gradebook').width();
+        var students_width = $('.students').width();
+        var totals_width = $('.totals').width();
+        if (students_width) {
+          $('.grades').css('marginLeft', students_width + 'px');
+        }
+        if (totals_width) {
+          $('.grades').css('marginRight', totals_width + 'px');
+        }
+        if (gradebook_width) {
+          var placeholder_width = gradebook_width - (students_width + totals_width);
+          $('.placeholder').css('width', placeholder_width + 'px');
+        }
+      });
       $(document).ready(function() {
         // popup menus
         $('.popup_link').click(function(e) {
@@ -41,13 +57,6 @@
             $('.popup_active').hide().removeClass('popup_active');
           }
         });
-        // grades margins
-        if ($('.students').width()) {
-          $('.grades').css('marginLeft', $('.students').width() + 'px');
-        }
-        if ($('.totals').width()) {
-          $('.grades').css('marginRight', $('.totals').width() + 'px');
-        }
         // zoom buttons
         var factor = 1.05;
         var min_size = 8;
@@ -118,11 +127,11 @@
           </tbody>
         </table>
       </div>
-      <div class="grades gradebook-part">
+      <div class="grades gradebook-part" tal:define="activities view/activities">
         <table>
           <thead>
-            <tr>
-              <th tal:repeat="activity view/activities">
+            <tr tal:condition="activities">
+              <th tal:repeat="activity activities">
                 <ul class="popup_menu">
                   <li>
                     <span tal:content="activity/shortTitle" />
@@ -151,23 +160,31 @@
                 <div tal:content="activity/max" />
               </th>
             </tr>
+            <tr tal:condition="not:activities">
+              <th class="placeholder">&nbsp;</th>
+            </tr>
           </thead>
           <tbody>
-            <tr tal:repeat="row view/table">
-              <td tal:repeat="grade row/grades"
-                  tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-                <span tal:condition="not: grade/editable"
-                      tal:content="grade/value" />
-                <input type="text" name="" value="" size="4"
-                       tal:condition="grade/editable"
-                       onkeydown="return spreadsheetBehaviour(event)"
-                       tal:attributes="name string:${grade/activity}_${row/student/id};
-                                       id string:${grade/activity}_${row/student/id};
-                                       value grade/value;
-                                       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                       onfocus string:handleCellFocus(this, '${grade/activity}')"/>
-              </td>
-            </tr>
+            <metal:block tal:repeat="row view/table">
+              <tr tal:condition="activities">
+                <td tal:repeat="grade row/grades"
+                    tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
+                  <span tal:condition="not: grade/editable"
+                        tal:content="grade/value" />
+                  <input type="text" name="" value="" size="4"
+                         tal:condition="grade/editable"
+                         onkeydown="return spreadsheetBehaviour(event)"
+                         tal:attributes="name string:${grade/activity}_${row/student/id};
+                                         id string:${grade/activity}_${row/student/id};
+                                         value grade/value;
+                                         onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
+                                         onfocus string:handleCellFocus(this, '${grade/activity}')"/>
+                </td>
+              </tr>
+              <tr tal:condition="not:activities">
+                <td class="placeholder">&nbsp;</td>
+              </tr>
+            </metal:block>
           </tbody>
         </table>
       </div>
