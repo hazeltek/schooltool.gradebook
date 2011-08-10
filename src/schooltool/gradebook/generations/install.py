@@ -24,8 +24,12 @@ database that did not have generations (schooltool.gradebook << 0.4.9)
 """
 
 import evolve1
+import evolve2
+import evolve3
 
 
 def evolve(context):
     evolve1.evolve(context)
+    evolve2.evolve(context)
+    evolve3.evolve(context)
 

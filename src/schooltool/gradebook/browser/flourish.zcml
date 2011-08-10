@@ -137,22 +137,6 @@
       />
 
   <flourish:viewlet
-      name="../addLinkedActivity.html"
-      title="Linked Activity"
-      class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishGradebookOverviewLinks"
-      permission="schooltool.edit"
-      />
-
-  <flourish:viewlet
-      name="../addLinkedColumn.html"
-      title="Linked Column"
-      class="schooltool.skin.flourish.page.LinkViewlet"
-      manager=".gradebook.FlourishGradebookOverviewLinks"
-      permission="schooltool.edit"
-      />
-
-  <flourish:viewlet
       name="../../addWorksheet.html"
       after="../addLinkedColumn.html"
       title="Worksheet"
@@ -195,10 +179,26 @@
       />
 
   <flourish:viewletManager
-      name="tertiary_activity_add"
+      name="tertiary_navigation"
       provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
       class=".activity.ActivityAddTertiaryNavigationManager"
       view=".activity.FlourishActivityAddView"
+      permission="zope.Public"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".activity.ActivityAddTertiaryNavigationManager"
+      view=".activity.FlourishLinkedActivityAddView"
+      permission="zope.Public"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".activity.ActivityAddTertiaryNavigationManager"
+      view=".activity.FlourishLinkedColumnAddView"
       permission="zope.Public"
       />
 
