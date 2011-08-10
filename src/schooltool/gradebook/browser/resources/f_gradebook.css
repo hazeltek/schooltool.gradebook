@@ -73,6 +73,10 @@
     height: 2.2em;
 }
 
+.gradebook-part tbody tr.odd {
+    background-color: #dfdcd9;
+}
+
 .students {
     overflow: hidden;
     position: absolute;

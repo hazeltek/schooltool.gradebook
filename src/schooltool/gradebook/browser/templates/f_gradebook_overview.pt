@@ -57,6 +57,10 @@
             $('.popup_active').hide().removeClass('popup_active');
           }
         });
+        // row colors
+        $('.students tbody tr:odd').addClass('odd');
+        $('.grades tbody tr:odd').addClass('odd');
+        $('.totals tbody tr:odd').addClass('odd');
         // zoom buttons
         var factor = 1.05;
         var min_size = 8;
