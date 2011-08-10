@@ -24,7 +24,7 @@
     width: auto;
 }
 
-.grid-form table tr th.gradebook-name > div {
+.grid-form table tr th > div {
     height: 3em;
 }
 
