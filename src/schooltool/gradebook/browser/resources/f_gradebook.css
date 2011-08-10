@@ -1,3 +1,5 @@
+/* Layout */
+
 .schooltool > .grid {
     padding-top: 36px;
 }
@@ -14,7 +16,9 @@
     width: 752px;
 }
 
-.grid .grid-form {
+/* Grid form */
+
+.grid-form {
     margin-top: 0px;
     font-size: 10px;
 }
@@ -28,33 +32,36 @@
     height: 3em;
 }
 
-.grid-form table tr td.gradebook-name > div {
+.grid-form table tr td > div {
     height: 1.4em;
 }
 
-.grid-form table tr .gradebook-name {
-    max-width: 16em;
-    min-width: 16em;
-    overflow: hidden;
-    padding-left: 0.4em;
-    padding-right: 0.4em;
-    white-space: nowrap;
+.grid-form th, .grid-form td, td.activity input[type="text"] {
+    font-size: 1em;
 }
 
-.grid-form table tr .gradebook-total {
-    max-width: 4em;
-    min-width: 4em;
-    overflow: hidden;
-    white-space: nowrap;
-}
+/* Gradebook parts */
 
-div.schooltool_gradebook {
-    margin-bottom: 20px;
-    overflow: auto;
+.gradebook {
     width: 752px;
+    float: left;
 }
 
-div.gradebook-freezecol-names {
+.gradebook table td, .gradebook table th {
+    border-left: 1px solid #bbbbbb;
+    line-height: 1.4em;
+    padding: 0.2em auto;
+    vertical-align: middle;
+    width: 5em;
+}
+
+.gradebook-part {
+    margin-bottom: 20px;
+    width: auto;
+    overflow: auto;
+}
+
+.students {
     background: #F7F7F7;
     overflow: hidden;
     position: absolute;
@@ -63,7 +70,21 @@ div.gradebook-freezecol-names {
     z-index: 101;
 }
 
-div.gradebook-freezecol-totals {
+.students th, .students td {
+    max-width: 16em;
+    min-width: 16em;
+    overflow: hidden;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    white-space: nowrap;
+}
+
+.grades {
+    margin-left: 16em;
+    margin-right: 0px;
+}
+
+.totals {
     background: #F7F7F7;
     overflow: hidden;
     position: absolute;
@@ -73,31 +94,44 @@ div.gradebook-freezecol-totals {
     z-index: 101;
 }
 
-.grid-form table tr th, .grid-form table td, .activity input[type="text"] {
-    font-size: 1em;
-}
-
-.gradebook-row td, .gradebook-header th {
-    border-left: 1px solid #bbbbbb;
-    line-height: 1.4em;
-    padding: 0.2em auto;
-    vertical-align: middle;
-    width: 5em;
-}
-
-.navigator {
-    width: 140px;
+.totals th, .totals td {
+    max-width: 4em;
+    min-width: 4em;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .activity {
     padding: 0px;
 }
 
-.activity input[type="text"] {
+td.activity input[type="text"] {
     border: 0px;
     background: transparent;
     height: 1.2em;
+    width: 4em;
 }
+
+td.activity input[type="text"]:focus {
+    border: 1px solid #bbbbbb;
+    width: 3.8em;
+}
+
+/* Controls */
+
+.grid-form .gradebook-controls {
+    clear: both;
+}
+
+.grid-form .gradebook-controls .buttons {
+    float: left;
+}
+
+.grid-form .gradebook-controls .zoom-buttons {
+    float: right;
+}
+
+/* Popup menus */
 
 .popup_menu {
     display: none;
@@ -116,10 +150,8 @@ div.gradebook-freezecol-totals {
     display: block;
 }
 
-.grid-form .gradebook-buttons {
-    float: left;
-}
+/* Section/Term/Year navigation */
 
-.grid-form .zoom-buttons {
-    float: right;
+.navigator {
+    width: 140px;
 }

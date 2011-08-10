@@ -29,6 +29,7 @@
       warningText = '<tal:block replace="view/warningText" />';
 
       $(document).ready(function() {
+        // popup menus
         $('.popup_link').click(function(e) {
           $('.popup_active').hide().removeClass('popup_active');
           $(this).parent().prev('ul.popup_menu').addClass('popup_active');
@@ -40,6 +41,11 @@
             $('.popup_active').hide().removeClass('popup_active');
           }
         });
+        // grades right margin
+        if ($('.totals').width()) {
+          $('.grades').css('marginRight', $('.totals').width() + 'px');
+        }
+        // zoom buttons
         var factor = 1.05;
         var min_size = 8;
         var max_size = 18;
@@ -64,10 +70,56 @@
   <metal:block tal:replace="structure string:&lt;/script&gt;" />
   <form method="post" class="grid-form"
         tal:attributes="action string:${context/@@absolute_url}">
-    <div>
-      <div class="schooltool_gradebook">
+    <div class="gradebook">
+      <div class="students gradebook-part">
         <table>
-          <tr class="gradebook-header">
+          <tr>
+            <th>
+              <div>
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Name</span>
+                  </li>
+                  <li>
+                    <a href="?sort_by=student" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="popup_link" href="" i18n:translate="">Name</a>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr tal:repeat="row view/table">
+            <metal:block>
+              <td>
+                <div>
+                  <ul class="popup_menu">
+                    <li>
+                      <span tal:content="row/student/title" />
+                    </li>
+                    <li>
+                      <a href="" i18n:translate=""
+                         tal:attributes="href row/student/gradeurl">
+                        Score
+                      </a>
+                    </li>
+                  </ul>
+                  <div>
+                    <a class="popup_link"
+                       href=""
+                       tal:attributes="title row/student/title"
+                       tal:content="row/student/title" />
+                  </div>
+                </div>
+              </td>
+            </metal:block>
+          </tr>
+        </table>
+      </div>
+      <div class="grades gradebook-part">
+        <table>
+          <tr>
             <th class="gradebook-name">
               <div></div>
             </th>
@@ -102,7 +154,7 @@
               </div>
             </th>
           </tr>
-          <tr tal:repeat="row view/table" class="gradebook-row">
+          <tr tal:repeat="row view/table">
             <metal:block>
               <td class="gradebook-name">
                 <div></div>
@@ -110,70 +162,26 @@
               <td class="activity"
                   tal:repeat="grade row/grades"
                   tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
-                <span tal:condition="not: grade/editable"
-                      tal:content="grade/value" />
-                <input type="text" name="" value="" size="4"
-                       tal:condition="grade/editable"
-                       onkeydown="return spreadsheetBehaviour(event)"
-                       tal:attributes="name string:${grade/activity}_${row/student/id};
-                                       id string:${grade/activity}_${row/student/id};
-                                       value grade/value;
-                                       onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
-                                       onfocus string:handleCellFocus(this, '${grade/activity}')"/>
-              </td>
-            </metal:block>
-          </tr>
-        </table>
-      </div>
-      <div class="schooltool_gradebook gradebook-freezecol-names">
-        <table>
-          <tr class="gradebook-header">
-            <th class="gradebook-name">
-              <div>
-                <ul class="popup_menu">
-                  <li>
-                    <span i18n:translate="">Name</span>
-                  </li>
-                  <li>
-                    <a href="?sort_by=student" i18n:translate="">Sort by</a>
-                  </li>
-                </ul>
                 <div>
-                  <a class="popup_link" href="" i18n:translate="">Name</a>
-                </div>
-              </div>
-            </th>
-          </tr>
-          <tr tal:repeat="row view/table" class="gradebook-row">
-            <metal:block>
-              <td class="gradebook-name">
-                <div>
-                  <ul class="popup_menu">
-                    <li>
-                      <span tal:content="row/student/title" />
-                    </li>
-                    <li>
-                      <a href="" i18n:translate=""
-                         tal:attributes="href row/student/gradeurl">
-                        Score
-                      </a>
-                    </li>
-                  </ul>
-                  <div>
-                    <a class="popup_link"
-                       href=""
-                       tal:attributes="title row/student/title"
-                       tal:content="row/student/title" />
-                  </div>
+                  <span tal:condition="not: grade/editable"
+                        tal:content="grade/value" />
+                  <input type="text" name="" value="" size="4"
+                         tal:condition="grade/editable"
+                         onkeydown="return spreadsheetBehaviour(event)"
+                         tal:attributes="name string:${grade/activity}_${row/student/id};
+                                         id string:${grade/activity}_${row/student/id};
+                                         value grade/value;
+                                         onkeyup string:checkValid(event,'${grade/activity}_${row/student/id}');
+                                         onfocus string:handleCellFocus(this, '${grade/activity}')"/>
                 </div>
               </td>
             </metal:block>
           </tr>
         </table>
       </div>
-      <div class="schooltool_gradebook gradebook-freezecol-totals">
+      <div class="totals gradebook-part">
         <table>
-          <tr class="gradebook-header">
+          <tr>
             <th tal:condition="not: view/absences_hide" class="gradebook-total">
               <div tal:content="view/absences_label" />
             </th>
@@ -211,7 +219,7 @@
               </div>
             </th>
           </tr>
-          <tr tal:repeat="row view/table" class="gradebook-row">
+          <tr tal:repeat="row view/table">
             <metal:block>
               <td tal:condition="not: view/absences_hide" class="gradebook-total">
                 <tal:if condition="row/absences|nothing">
@@ -238,16 +246,18 @@
         </table>
       </div>
     </div>
-    <div class="buttons controls gradebook-buttons">
-      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
-             onclick="setNotEdited()"
-             title="Shortcut: Alt-S" accesskey="S"
-             i18n:attributes="value; title; accesskey" />
-    </div>
-    <div class="buttons zoom-buttons">
-      <input type="button" class="button-neutral zoom-button" id="zoom-out" value="-" />
-      <input type="button" class="button-neutral zoom-button" id="zoom-normal" value="0" />
-      <input type="button" class="button-neutral zoom-button" id="zoom-in" value="+" />
+    <div class="gradebook-controls">
+      <div class="buttons">
+        <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save" 
+               onclick="setNotEdited()"
+               title="Shortcut: Alt-S" accesskey="S"
+               i18n:attributes="value; title; accesskey" />
+      </div>
+      <div class="buttons zoom-buttons">
+        <input type="button" class="button-neutral zoom-button" id="zoom-out" value="-" />
+        <input type="button" class="button-neutral zoom-button" id="zoom-normal" value="0" />
+        <input type="button" class="button-neutral zoom-button" id="zoom-in" value="+" />
+      </div>
     </div>
   </form>
 </div>
