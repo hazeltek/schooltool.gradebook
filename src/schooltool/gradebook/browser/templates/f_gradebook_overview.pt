@@ -29,20 +29,7 @@
       warningText = '<tal:block replace="view/warningText" />';
 
       $(window).load(function() {
-        // grades margins
-        var gradebook_width = $('.gradebook').width();
-        var students_width = $('.students').width();
-        var totals_width = $('.totals').width();
-        if (students_width) {
-          $('.grades').css('marginLeft', students_width + 'px');
-        }
-        if (totals_width) {
-          $('.grades').css('marginRight', totals_width + 'px');
-        }
-        if (gradebook_width) {
-          var placeholder_width = gradebook_width - (students_width + totals_width);
-          $('.placeholder').css('width', placeholder_width + 'px');
-        }
+        updateWidths();
       });
       $(document).ready(function() {
         // popup menus
@@ -81,6 +68,7 @@
           if (num >= min_size && num <= max_size) {
             $form.css('fontSize', num + unit);
           }
+          updateWidths();
         });
       });
   <metal:block tal:replace="structure string:&lt;/script&gt;" />

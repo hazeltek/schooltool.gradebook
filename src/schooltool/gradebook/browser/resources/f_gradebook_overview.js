@@ -183,3 +183,20 @@ function changeBackgroundColor(id, class)    {
     $(obj).removeClass('error_bg');
     $(obj).addClass(class);
 }
+
+function updateWidths() {
+    // grades margins
+    var gradebook_width = $('.gradebook').width();
+    var students_width = $('.students').width();
+    var totals_width = $('.totals').width();
+    if (students_width) {
+        $('.grades').css('marginLeft', students_width + 'px');
+    }
+    if (totals_width) {
+        $('.grades').css('marginRight', totals_width + 'px');
+    }
+    if (gradebook_width) {
+        var placeholder_width = gradebook_width - (students_width + totals_width);
+        $('.placeholder').css('width', placeholder_width + 'px');
+    }
+}
