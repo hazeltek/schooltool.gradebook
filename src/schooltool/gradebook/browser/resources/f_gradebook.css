@@ -28,15 +28,16 @@
     width: auto;
 }
 
-.grid-form table tr th > div {
-    height: 3em;
+.grid-form th, .grid-form td {
+    padding: 0px;
 }
 
-.grid-form table tr td > div {
-    height: 1.4em;
+.grid-form th {
+    font-weight: normal;
+    color: #333333;
 }
 
-.grid-form th, .grid-form td, td.activity input[type="text"] {
+.grid-form th, .grid-form td, input[type="text"] {
     font-size: 1em;
 }
 
@@ -44,13 +45,12 @@
 
 .gradebook {
     width: 752px;
-    float: left;
+    margin-bottom: 8px;
 }
 
 .gradebook table td, .gradebook table th {
-    border-left: 1px solid #bbbbbb;
+    border-left: 1px solid #cccccc;
     line-height: 1.4em;
-    padding: 0.2em auto;
     vertical-align: middle;
     width: 5em;
 }
@@ -61,8 +61,23 @@
     overflow: auto;
 }
 
+.gradebook-part thead {
+    background-color: #dfdcd9;
+}
+
+.gradebook-part thead tr {
+    height: 4em;
+}
+
+.gradebook-part tbody tr {
+    height: 2.2em;
+}
+
+.gradebook-part tbody tr.odd {
+    background-color: #dfdcd9;
+}
+
 .students {
-    background: #F7F7F7;
     overflow: hidden;
     position: absolute;
     top: 0px;
@@ -79,13 +94,23 @@
     white-space: nowrap;
 }
 
-.grades {
-    margin-left: 16em;
-    margin-right: 0px;
+.grades input[type="text"] {
+    border: 0px;
+    background: transparent;
+    height: 1.2em;
+    width: 4em;
+}
+
+.grades input[type="text"]:focus {
+    border: 1px solid #cccccc;
+    width: 3.8em;
+}
+
+.grades .placeholder {
+    width: 100%;
 }
 
 .totals {
-    background: #F7F7F7;
     overflow: hidden;
     position: absolute;
     top: 0px;
@@ -101,22 +126,6 @@
     white-space: nowrap;
 }
 
-.activity {
-    padding: 0px;
-}
-
-td.activity input[type="text"] {
-    border: 0px;
-    background: transparent;
-    height: 1.2em;
-    width: 4em;
-}
-
-td.activity input[type="text"]:focus {
-    border: 1px solid #bbbbbb;
-    width: 3.8em;
-}
-
 /* Controls */
 
 .grid-form .gradebook-controls {
@@ -125,6 +134,7 @@ td.activity input[type="text"]:focus {
 
 .grid-form .gradebook-controls .buttons {
     float: left;
+    margin-top: 0px;
 }
 
 .grid-form .gradebook-controls .zoom-buttons {
