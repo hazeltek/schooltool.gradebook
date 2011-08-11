@@ -187,8 +187,8 @@ function changeBackgroundColor(id, klass) {
 function updateWidths() {
     // grades margins
     var gradebook_width = $('.gradebook').width();
-    var students_width = $('.students').width();
-    var totals_width = $('.totals').width();
+    var students_width = $('.students').outerWidth();
+    var totals_width = $('.totals').outerWidth();
     if (students_width) {
         $('.grades').css('marginLeft', students_width + 'px');
     }
