@@ -99,6 +99,32 @@
                   <li>
                     <a href="?sort_by=student" i18n:translate="">Sort by</a>
                   </li>
+                  <li tal:condition="view/total_hide">
+                    <a href="?show=total" i18n:translate="">Show Total</a>
+                  </li>
+                  <li tal:condition="not: view/total_hide">
+                    <a href="?hide=total" i18n:translate="">Hide Total</a>
+                  </li>
+                  <li tal:condition="view/average_hide">
+                    <a href="?show=average" i18n:translate="">Show Ave.</a>
+                  </li>
+                  <li tal:condition="not: view/average_hide">
+                    <a href="?hide=average" i18n:translate="">Hide Ave.</a>
+                  </li>
+                  <tal:block tal:condition="view/journal_present">
+                    <li tal:condition="view/absences_hide">
+                      <a href="?show=absences" i18n:translate="">Show Abs.</a>
+                    </li>
+                    <li tal:condition="not: view/absences_hide">
+                      <a href="?hide=absences" i18n:translate="">Hide Abs.</a>
+                    </li>
+                    <li tal:condition="view/tardies_hide">
+                      <a href="?show=tardies" i18n:translate="">Show Trd.</a>
+                    </li>
+                    <li tal:condition="not: view/tardies_hide">
+                      <a href="?hide=tardies" i18n:translate="">Hide Trd.</a>
+                    </li>
+                  </tal:block>
                 </ul>
                 <div>
                   <a class="popup_link" href="" i18n:translate="">Name</a>
