@@ -719,6 +719,11 @@ class FlourishGradebookOverview(GradebookOverview,
     has_header = False
     page_class = 'page grid'
 
+    @property
+    def journal_present(self):
+        section = ISection(proxy.removeSecurityProxy(self.context))
+        return interfaces.ISectionJournalData(section, None) is not None
+
     def handleYearChange(self):
         if 'currentYear' in self.request:
             currentSection = ISection(proxy.removeSecurityProxy(self.context))
@@ -741,11 +746,35 @@ class FlourishGradebookOverview(GradebookOverview,
                 return True
         return False
 
+    def handlePreferencesChange(self):
+        if not self.isTeacher:
+            return
+        show = self.request.get('show')
+        hide = self.request.get('hide')
+        if show or hide:
+            gradebook = proxy.removeSecurityProxy(self.context)
+            column_keys_dict = dict(getColumnKeys(gradebook))
+            if show not in column_keys_dict and hide not in column_keys_dict:
+                return
+            columnPreferences = gradebook.getColumnPreferences(self.person)
+            if show:
+                prefs = columnPreferences.setdefault(show, {})
+                prefs['hide'] = False
+            if hide:
+                prefs = columnPreferences.setdefault(hide, {})
+                prefs['hide'] = True
+            gradebook.setColumnPreferences(self.person, columnPreferences)
+
     def update(self):
         """Handle change of current year."""
         self.person = IPerson(self.request.principal)
         if self.handleYearChange():
             return
+
+        """Handle change of column preferences."""
+        self.handlePreferencesChange()
+
+        """Everything else handled by old skin method."""
         GradebookOverview.update(self)
 
 
