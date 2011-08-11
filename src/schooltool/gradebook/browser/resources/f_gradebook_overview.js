@@ -175,13 +175,13 @@ function setBackgroundColor(name, activity, value, errors_only)
     return true;    
 }
 
-function changeBackgroundColor(id, class)    {
+function changeBackgroundColor(id, klass) {
     obj = document.getElementById(id);
     $(obj).removeClass('default_bg');
     $(obj).removeClass('changed_bg');
     $(obj).removeClass('warning_bg');
     $(obj).removeClass('error_bg');
-    $(obj).addClass(class);
+    $(obj).addClass(klass);
 }
 
 function updateWidths() {
