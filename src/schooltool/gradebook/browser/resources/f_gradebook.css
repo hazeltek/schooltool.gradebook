@@ -4,10 +4,23 @@
     padding-top: 36px;
 }
 
+.schooltool > .grid:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    }
+
 .grid > .third-nav {
     left: 208px;
     position: absolute;
     overflow: auto;
+}
+
+.grid > .body {
+    overflow: visible;
 }
 
 .grid > .body > .widecontainer {
@@ -26,6 +39,7 @@
 .grid-form table {
     margin-top: 0em;
     width: auto;
+    border-collapse: collapse;
 }
 
 .grid-form th, .grid-form td {
@@ -49,7 +63,6 @@
 }
 
 .gradebook table td, .gradebook table th {
-    border-left: 1px solid #cccccc;
     line-height: 1.4em;
     vertical-align: middle;
     width: 5em;
@@ -58,7 +71,6 @@
 .gradebook-part {
     margin-bottom: 20px;
     width: auto;
-    overflow: auto;
 }
 
 .gradebook-part thead {
@@ -78,7 +90,6 @@
 }
 
 .students {
-    overflow: hidden;
     position: absolute;
     top: 0px;
     width: auto;
@@ -86,6 +97,7 @@
 }
 
 .students th, .students td {
+    border-right: 1px solid #cccccc;
     max-width: 16em;
     min-width: 16em;
     overflow: hidden;
@@ -101,6 +113,15 @@
     width: 4em;
 }
 
+.grades {
+    overflow: auto;
+}
+
+.grades th, .grades td {
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+}
+
 .grades input[type="text"]:focus {
     border: 1px solid #cccccc;
     width: 3.8em;
@@ -111,7 +132,6 @@
 }
 
 .totals {
-    overflow: hidden;
     position: absolute;
     top: 0px;
     right: 0px;
@@ -120,6 +140,7 @@
 }
 
 .totals th, .totals td {
+    border-left: 1px solid #cccccc;
     max-width: 4em;
     min-width: 4em;
     overflow: hidden;
