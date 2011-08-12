@@ -193,6 +193,22 @@
                   <li>
                     <a href="?sort_by=average" i18n:translate="">Sort by</a>
                   </li>
+                  <li>
+                    <a class="hover_link" href="#" i18n:translate="">Score System</a>
+                    <div class="hover_menu">
+                      <ul>
+                        <li tal:repeat="scoresystem view/scoresystems">
+                          <tal:block condition="scoresystem/current">
+                            <span tal:content="scoresystem/title" />
+                          </tal:block>
+                          <tal:block condition="not: scoresystem/current">
+                            <a tal:attributes="href scoresystem/url"
+                               tal:content="scoresystem/title" />
+                          </tal:block>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
                 </ul>
                 <div>
                   <a class="popup_link" href="" i18n:translate="">Ave.</a>

@@ -749,14 +749,14 @@ class FlourishGradebookOverview(GradebookOverview,
     def handlePreferencesChange(self):
         if not self.isTeacher:
             return
+        gradebook = proxy.removeSecurityProxy(self.context)
+        columnPreferences = gradebook.getColumnPreferences(self.person)
         show = self.request.get('show')
         hide = self.request.get('hide')
         if show or hide:
-            gradebook = proxy.removeSecurityProxy(self.context)
             column_keys_dict = dict(getColumnKeys(gradebook))
             if show not in column_keys_dict and hide not in column_keys_dict:
                 return
-            columnPreferences = gradebook.getColumnPreferences(self.person)
             if show:
                 prefs = columnPreferences.setdefault(show, {})
                 prefs['hide'] = False
@@ -764,6 +764,36 @@ class FlourishGradebookOverview(GradebookOverview,
                 prefs = columnPreferences.setdefault(hide, {})
                 prefs['hide'] = True
             gradebook.setColumnPreferences(self.person, columnPreferences)
+        elif 'scoresystem' in self.request:
+            vocab = queryUtility(IVocabularyFactory,
+                'schooltool.requirement.discretescoresystems')(None)
+            scoresystem = self.request.get('scoresystem', '')
+            if scoresystem:
+                name = vocab.getTermByToken(scoresystem).value.__name__
+            else:
+                name = scoresystem
+            columnPreferences.get('average', {})['scoresystem'] = name
+            gradebook.setColumnPreferences(self.person, columnPreferences)
+
+    @property
+    def scoresystems(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        columnPreferences = gradebook.getColumnPreferences(self.person)
+        vocab = queryUtility(IVocabularyFactory,
+            'schooltool.requirement.discretescoresystems')(None)
+        current = columnPreferences.get('average', {}).get('scoresystem', '')
+        results = [{
+            'title': _('No score system'),
+            'url': '?scoresystem',
+            'current': not current,
+            }]
+        for term in vocab:
+            results.append({
+                'title': term.value.title,
+                'url': '?scoresystem=%s' % term.token,
+                'current': term.value.__name__ == current,
+                })
+        return results
 
     def update(self):
         """Handle change of current year."""
