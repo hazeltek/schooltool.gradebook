@@ -1331,11 +1331,6 @@ class GradebookColumnPreferences(BrowserView):
         return results
 
 
-class FlourishGradebookColumnPreferences(GradebookColumnPreferences,
-                                         flourish.page.Page):
-    """A flourish view for editing a teacher's gradebook column preferences."""
-
-
 class NoCurrentTerm(BrowserView):
     """A view for informing the user of the need to set up a schoolyear
        and at least one term."""
