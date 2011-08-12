@@ -454,7 +454,7 @@ class GradebookOverview(SectionFinder):
             if sort_by == key:
                 reverse = not reverse
             else:
-                reverse=False
+                reverse = False
             gradebook.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = gradebook.getSortKey(self.person)
 
@@ -689,6 +689,11 @@ class GradebookOverview(SectionFinder):
                     converted = convertAverage(row['raw_average'],
                                                self.average_scoresystem)
                     return (converted, generateStudentKey(row))
+            elif key in ['absences', 'tardies']:
+                if journal_data is None:
+                    return (0, generateStudentKey(row))
+                else:
+                    return (int(row[key]), generateStudentKey(row))
             else: # sorting by activity
                 grades = dict([(unicode(grade['activity']), grade['value'])
                                for grade in row['grades']])
