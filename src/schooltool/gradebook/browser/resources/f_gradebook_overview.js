@@ -184,8 +184,11 @@ function changeBackgroundColor(id, klass) {
     $(obj).addClass(klass);
 }
 
+// Changes made for flourish
+
 function updateWidths() {
-    // grades margins
+    // Used to calculate the margins of the div.grades area and
+    // placeholders (when there are no activity columns)
     var gradebook_width = $('.gradebook').width();
     var students_width = $('.students').outerWidth();
     var totals_width = $('.totals').outerWidth();
@@ -195,8 +198,57 @@ function updateWidths() {
     if (totals_width) {
         $('.grades').css('marginRight', totals_width + 'px');
     }
-    if (gradebook_width) {
+    if ($('.placeholder').length > 0) {
         var placeholder_width = gradebook_width - (students_width + totals_width);
         $('.placeholder').css('width', placeholder_width + 'px');
     }
 }
+
+$(window).load(function() {
+    // XXX: Chrome doesn't calculate the widths correctly
+    //      when this call is in $(document).ready()
+    //      because it loads js and css in paralell
+    //      and the width information may not be available yet
+    updateWidths();
+});
+
+$(document).ready(function() {
+    // popup menus
+    $('.popup_link').click(function(e) {
+        $('.popup_active').hide().removeClass('popup_active');
+        $(this).parent().prev('ul.popup_menu').addClass('popup_active');
+        $('.popup_active').show();
+        e.preventDefault();
+    });
+    $(document).click(function(e) {
+        if ($(e.target).hasClass('popup_link') == false) {
+            $('.popup_active').hide().removeClass('popup_active');
+        }
+    });
+    // row colors
+    $('.students tbody tr:odd').addClass('odd');
+    $('.grades tbody tr:odd').addClass('odd');
+    $('.totals tbody tr:odd').addClass('odd');
+    // zoom buttons
+    var factor = 1.05;
+    var min_size = 8;
+    var max_size = 18;
+    var default_size = 10;
+    $('.zoom-button').click(function () {
+        var $form = $('.grid-form');
+        var current_size = $form.css('fontSize');
+        var num = parseFloat(current_size, default_size);
+        var unit = current_size.slice(-2);
+        if (this.id == 'zoom-in') {
+            num *= factor;
+        } else if (this.id == 'zoom-out') {
+            num /= factor;
+        } else if (this.id == 'zoom-normal') {
+            num = default_size;
+        }
+        if (num >= min_size && num <= max_size) {
+            $form.css('fontSize', num + unit);
+        }
+        updateWidths();
+    });
+});

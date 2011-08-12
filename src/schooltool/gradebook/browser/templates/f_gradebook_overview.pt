@@ -1,4 +1,4 @@
-<div>
+<div i18n:domain="schooltool.gradebook">
   <tal:block replace="resource_library:schooltool.gradebook.flourish" />
   <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
       var numstudents = <tal:block replace="python: len(view.students)"/>;
@@ -27,50 +27,6 @@
       window.onload = onLoadHandler;
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
-
-      $(window).load(function() {
-        updateWidths();
-      });
-      $(document).ready(function() {
-        // popup menus
-        $('.popup_link').click(function(e) {
-          $('.popup_active').hide().removeClass('popup_active');
-          $(this).parent().prev('ul.popup_menu').addClass('popup_active');
-          $('.popup_active').show();
-          e.preventDefault();
-        });
-        $(document).click(function(e) {
-          if ($(e.target).hasClass('popup_link') == false) {
-            $('.popup_active').hide().removeClass('popup_active');
-          }
-        });
-        // row colors
-        $('.students tbody tr:odd').addClass('odd');
-        $('.grades tbody tr:odd').addClass('odd');
-        $('.totals tbody tr:odd').addClass('odd');
-        // zoom buttons
-        var factor = 1.05;
-        var min_size = 8;
-        var max_size = 18;
-        var default_size = 10;
-        $('.zoom-button').click(function () {
-          var $form = $('.grid-form');
-          var current_size = $form.css('fontSize');
-          var num = parseFloat(current_size, default_size);
-          var unit = current_size.slice(-2);
-          if (this.id == 'zoom-in') {
-            num *= factor;
-          } else if (this.id == 'zoom-out') {
-            num /= factor;
-          } else if (this.id == 'zoom-normal') {
-            num = default_size;
-          }
-          if (num >= min_size && num <= max_size) {
-            $form.css('fontSize', num + unit);
-          }
-          updateWidths();
-        });
-      });
   <metal:block tal:replace="structure string:&lt;/script&gt;" />
   <form method="post" class="grid-form"
         tal:attributes="action string:${context/@@absolute_url}">
