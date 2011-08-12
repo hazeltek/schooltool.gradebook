@@ -167,15 +167,44 @@
           <thead>
             <tr>
               <th tal:condition="not: view/absences_hide">
-                <div tal:replace="view/absences_label" />
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Abs.</span>
+                  </li>
+                  <li>
+                    <a href="?hide=absences" i18n:translate="">Hide</a>
+                  </li>
+                  <li>
+                    <a href="?sort_by=absences" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="popup_link" href="" i18n:translate="">Abs.</a>
+                </div>
               </th>
               <th tal:condition="not: view/tardies_hide">
-                <div tal:replace="view/tardies_label" />
+                <ul class="popup_menu">
+                  <li>
+                    <span i18n:translate="">Trd.</span>
+                  </li>
+                  <li>
+                    <a href="?hide=tardies" i18n:translate="">Hide</a>
+                  </li>
+                  <li>
+                    <a href="?sort_by=tardies" i18n:translate="">Sort by</a>
+                  </li>
+                </ul>
+                <div>
+                  <a class="popup_link" href="" i18n:translate="">Trd.</a>
+                </div>
               </th>
               <th tal:condition="not: view/total_hide">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Total</span>
+                  </li>
+                  <li>
+                    <a href="?hide=total" i18n:translate="">Hide</a>
                   </li>
                   <li>
                     <a href="?sort_by=total" i18n:translate="">Sort by</a>
@@ -189,6 +218,9 @@
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Ave.</span>
+                  </li>
+                  <li>
+                    <a href="?hide=average" i18n:translate="">Hide</a>
                   </li>
                   <li>
                     <a href="?sort_by=average" i18n:translate="">Sort by</a>
