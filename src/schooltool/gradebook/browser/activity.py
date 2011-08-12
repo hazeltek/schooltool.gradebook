@@ -55,7 +55,7 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
-from schooltool.gradebook.activity import Activities
+from schooltool.gradebook.activity import Activities, Worksheet
 from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
@@ -64,6 +64,8 @@ from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.term.interfaces import ITerm, IDateManager
 from schooltool.skin import flourish
+
+SUMMARY_TITLE = _('Summary')
 
 
 class ILinkedActivityFields(interface.Interface):
@@ -167,8 +169,59 @@ class FlourishWorksheetsView(flourish.page.Page):
                 pos += 1
         return not_hidden + hidden
 
+    def nextSummaryTitle(self):
+        index = 1
+        next = SUMMARY_TITLE
+        while True:
+            for worksheet in self.context.values():
+                if worksheet.title == next:
+                    break
+            else:
+                break
+            index += 1
+            next = SUMMARY_TITLE + str(index)
+        return next
+
+    def summaryFound(self):
+        return self.nextSummaryTitle() != SUMMARY_TITLE
+
+    def addSummary(self):
+        overwrite = self.request.get('overwrite', '') == 'on'
+        if overwrite:
+            currentWorksheets = []
+            for worksheet in self.context.values():
+                if worksheet.deployed:
+                    continue
+                if worksheet.title == SUMMARY_TITLE:
+                    while len(worksheet.values()):
+                        del worksheet[worksheet.values()[0].__name__]
+                    summary = worksheet
+                else:
+                    currentWorksheets.append(worksheet)
+            next = SUMMARY_TITLE
+        else:
+            next = self.nextSummaryTitle()
+            currentWorksheets = [worksheet for worksheet in self.context.values()
+                                 if not worksheet.deployed]
+            summary = Worksheet(next)
+            chooser = INameChooser(self.context)
+            name = chooser.chooseName('', summary)
+            self.context[name] = summary
+
+        for worksheet in currentWorksheets:
+            if worksheet.title.startswith(SUMMARY_TITLE):
+                continue
+            activity = LinkedColumnActivity(worksheet.title, u'assignment',
+                '', createSourceString(worksheet))
+            chooser = INameChooser(summary)
+            name = chooser.chooseName('', activity)
+            summary[name] = activity
+
     def update(self):
-        if 'form-submitted' in self.request:
+        if 'ADD_SUMMARY' in self.request:
+            self.addSummary()
+
+        elif 'form-submitted' in self.request:
             old_pos = 0
             for worksheet in self.context.values():
                 old_pos += 1
