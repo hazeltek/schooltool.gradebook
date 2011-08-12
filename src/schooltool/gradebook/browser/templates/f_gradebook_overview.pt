@@ -172,6 +172,9 @@
                     <span i18n:translate="">Abs.</span>
                   </li>
                   <li>
+                    <a href="?hide=absences" i18n:translate="">Hide Abs.</a>
+                  </li>
+                  <li>
                     <a href="?sort_by=absences" i18n:translate="">Sort by</a>
                   </li>
                 </ul>
@@ -183,6 +186,9 @@
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Trd.</span>
+                  </li>
+                  <li>
+                    <a href="?hide=tardies" i18n:translate="">Hide Trd.</a>
                   </li>
                   <li>
                     <a href="?sort_by=tardies" i18n:translate="">Sort by</a>
@@ -198,6 +204,9 @@
                     <span i18n:translate="">Total</span>
                   </li>
                   <li>
+                    <a href="?hide=total" i18n:translate="">Hide Total</a>
+                  </li>
+                  <li>
                     <a href="?sort_by=total" i18n:translate="">Sort by</a>
                   </li>
                 </ul>
@@ -209,6 +218,9 @@
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Ave.</span>
+                  </li>
+                  <li>
+                    <a href="?hide=average" i18n:translate="">Hide Ave.</a>
                   </li>
                   <li>
                     <a href="?sort_by=average" i18n:translate="">Sort by</a>
