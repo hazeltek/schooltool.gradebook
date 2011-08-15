@@ -114,9 +114,8 @@
                     <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
                        i18n:translate="">Edit</a>
                   </li>
-                  <li>
-                    <a tal:condition="activity/scorable"
-                       tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
+                  <li tal:condition="activity/scorable">
+                    <a tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
                        i18n:translate="">Score this</a>
                   </li>
                   <li>
