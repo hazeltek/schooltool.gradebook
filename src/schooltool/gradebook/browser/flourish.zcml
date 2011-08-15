@@ -256,6 +256,16 @@
       />
 
   <flourish:page
+      name="edit.html"
+      for="..interfaces.ILinkedColumnActivity"
+      title="Gradebook"
+      subtitle="Edit Linked Column"
+      content_template="templates/f_add_edit_linked_column.pt"
+      class=".activity.FlourishEditLinkedColumnView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
       name="gradeActivity.html"
       for="..interfaces.IGradebook"
       title="Gradebook"

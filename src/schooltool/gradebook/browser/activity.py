@@ -852,6 +852,22 @@ class EditLinkedColumnView(LinkedColumnBase):
             self.request.response.redirect(self.nextURL())
 
 
+class FlourishEditLinkedColumnView(flourish.page.Page, EditLinkedColumnView):
+    """flourish view for adding a linked column to the gradebook"""
+
+    def object_title(self):
+        return LinkedColumnBase.title(self)
+
+    def object_label(self):
+        return LinkedColumnBase.label(self)
+
+    def actionURL(self):
+        return absoluteURL(self.context, self.request) + '/edit.html'
+
+    def update(self):
+        EditLinkedColumnView.update(self)
+
+
 def defaultCategory(adapter):
     categories = getCategories(ISchoolToolApplication(None))
     return categories.getDefaultKey()
