@@ -1,6 +1,13 @@
-<div>
-  <form method="post" class="standalone"
-        tal:attributes="action string:${context/@@absolute_url}/weights.html">
+<form method="post" class="standalone"
+      tal:attributes="action string:${context/@@absolute_url}/weights.html">
+  <div class="viewspace">
+    <div class="status"
+         tal:condition="view/message">
+      <div class="summary ui-state-error ui-corner-all">
+        <span class="ui-icon ui-icon-info">icon</span>
+        <tal:block content="view/message" />
+      </div>
+    </div>
 
     <div>
       <p i18n:translate="">
@@ -18,33 +25,28 @@
       <legend>
         <span i18n:translate="">Category Weights</span>
       </legend>
-      <div class="message" style="color:red; padding:1em"
-           tal:condition="view/message"
-           tal:content="view/message">
-        Message
+
+      <div class="row" tal:repeat="row view/rows">
+        <div class="label">
+          <label tal:attributes="for row/category">
+            <span tal:content="row/category_value" />
+          </label>
+        </div>
+        <div class="widget">
+          <input type="text" size="24"
+                 tal:attributes="id row/category; name row/category; 
+                                 value row/weight"/>
+        </div>
       </div>
-      <br />
+    </fieldset>
 
-      <table>
-        <tr tal:repeat="row view/rows">
-          <td>
-            <label tal:attributes="for row/category" 
-                   tal:content="row/category_value" />
-          </td>
-          <td>
-            <input type="text" tal:attributes="id row/category; name row/category; 
-                                               value row/weight" />
-          </td>
-        </tr>
-      </table>
-
+    <div>
       <div class="buttons controls">
-        <input type="submit" class="submit-widget button-cancel" name="SUBMIT"
+        <input type="submit" class="submit-widget button-cancel" name="UPDATE_SUBMIT"
                value="Submit" i18n:attributes="value" />
         <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
       </div>
-
-    </fieldset>
-  </form>
-</div>
+    </div>
+  </div>
+</form>
 
