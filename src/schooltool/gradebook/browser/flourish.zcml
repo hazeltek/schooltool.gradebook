@@ -16,6 +16,27 @@
           />
   </zope:resourceLibrary>
 
+  <flourish:breadcrumb
+      for="..interfaces.IActivities"
+      title="Gradebook"
+      class=".breadcrumbs.ActivitiesBreadcrumbs"
+      />
+
+  <flourish:breadcrumb
+      for="..interfaces.IWorksheet"
+      class=".breadcrumbs.SkipSelfBreadcrumbs"
+      />
+
+  <flourish:breadcrumb
+      for="..interfaces.IGradebook"
+      class=".breadcrumbs.SkipSelfBreadcrumbs"
+      />
+
+  <flourish:breadcrumb
+      for="..interfaces.IActivity"
+      class=".breadcrumbs.SkipSelfBreadcrumbs"
+      />
+
   <flourish:viewlet
       name="gradebook"
       after="manage_school"
@@ -48,7 +69,7 @@
   <flourish:page
       name="index.html"
       for="..interfaces.IGradebook"
-      title="Gradebook"
+      title="Enter Grades"
       content_template="templates/f_gradebook_overview.pt"
       class=".gradebook.FlourishGradebookOverview"
       permission="schooltool.view"
