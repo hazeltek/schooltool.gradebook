@@ -498,6 +498,26 @@ class LinkedActivityEditView(z3cform.EditForm):
         return absoluteURL(worksheet, self.request)
 
 
+class FlourishLinkedActivityEditView(flourish.form.Form,
+                                     LinkedActivityEditView):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Linked Activity Details'
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishLinkedActivityEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            self.request.response.redirect(self.nextURL())
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+
 class WeightCategoriesView(object):
     """A view for providing category weights for the worksheet context."""
 
