@@ -24,17 +24,17 @@
 
   <flourish:breadcrumb
       for="..interfaces.IWorksheet"
-      class=".breadcrumbs.SkipSelfBreadcrumbs"
+      title=""
       />
 
   <flourish:breadcrumb
       for="..interfaces.IGradebook"
-      class=".breadcrumbs.SkipSelfBreadcrumbs"
+      title=""
       />
 
   <flourish:breadcrumb
       for="..interfaces.IActivity"
-      class=".breadcrumbs.SkipSelfBreadcrumbs"
+      title=""
       />
 
   <flourish:viewlet

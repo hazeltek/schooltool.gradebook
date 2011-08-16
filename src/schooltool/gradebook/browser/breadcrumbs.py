@@ -31,13 +31,3 @@ class ActivitiesBreadcrumbs(Breadcrumbs):
     def link(self):
         return absoluteURL(self.context.__parent__, self.request) + '/gradebook'
 
-
-class SkipSelfBreadcrumbs(Breadcrumbs):
-
-    @property
-    def breadcrumbs(self):
-        follow = self.follow_crumb
-        if follow is not None:
-            return follow.breadcrumbs
-        return []
-
