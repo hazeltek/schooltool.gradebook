@@ -35,7 +35,7 @@
         <table>
           <thead>
             <tr>
-              <th>
+              <th rowspan="2" class="name">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Name</span>
@@ -74,11 +74,15 @@
                   <a class="popup_link" href="" i18n:translate="">Name</a>
                 </div>
               </th>
+              <th i18n:translate="" class="activity-title">Activity</th>
+            </tr>
+            <tr>
+              <th i18n:translate="">Points</th>
             </tr>
           </thead>
           <tbody>
             <tr tal:repeat="row view/table">
-              <td>
+              <td colspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span tal:content="row/student/title" />
@@ -104,37 +108,43 @@
       <div class="grades gradebook-part" tal:define="activities view/activities">
         <table>
           <thead>
-            <tr tal:condition="activities">
-              <th tal:repeat="activity activities">
-                <ul class="popup_menu">
-                  <li>
-                    <span tal:content="activity/shortTitle" />
-                  </li>
-                  <li>
-                    <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
-                       i18n:translate="">Edit</a>
-                  </li>
-                  <li tal:condition="activity/scorable">
-                    <a tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
-                       i18n:translate="">Score this</a>
-                  </li>
-                  <li>
-                    <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
-                       i18n:translate="">Sort by</a>
-                  </li>
-                </ul>
-                <div>
-                  <a class="popup_link"
-                     href=""
-                     tal:attributes="title activity/longTitle;
-                                     href string:gradeActivity.html?activity=${activity/hash};"
-                     tal:content="activity/shortTitle" />
-                </div>
-                <div tal:content="activity/max" />
-              </th>
-            </tr>
+            <metal:block tal:condition="activities">
+              <tr>
+                <th tal:repeat="activity activities" class="activity-title">
+                  <ul class="popup_menu">
+                    <li>
+                      <span tal:content="activity/longTitle" />
+                    </li>
+                    <li>
+                      <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
+                         i18n:translate="">Edit</a>
+                    </li>
+                    <li tal:condition="activity/scorable">
+                      <a tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
+                         i18n:translate="">Score this</a>
+                    </li>
+                    <li>
+                      <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
+                         i18n:translate="">Sort by</a>
+                    </li>
+                  </ul>
+                  <div>
+                    <a class="popup_link"
+                       href=""
+                       tal:attributes="title activity/longTitle;
+                                       href string:gradeActivity.html?activity=${activity/hash};"
+                       tal:content="activity/shortTitle" />
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th tal:repeat="activity activities">
+                  <div tal:content="activity/max" />
+                </th>
+              </tr>
+            </metal:block>
             <tr tal:condition="not:activities">
-              <th class="placeholder">&nbsp;</th>
+              <th class="placeholder" rowspan="2">&nbsp;</th>
             </tr>
           </thead>
           <tbody>
@@ -165,7 +175,8 @@
         <table>
           <thead>
             <tr>
-              <th tal:condition="not: view/absences_hide">
+              <th tal:condition="not: view/absences_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Abs.</span>
@@ -181,7 +192,8 @@
                   <a class="popup_link" href="" i18n:translate="">Abs.</a>
                 </div>
               </th>
-              <th tal:condition="not: view/tardies_hide">
+              <th tal:condition="not: view/tardies_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Trd.</span>
@@ -197,7 +209,8 @@
                   <a class="popup_link" href="" i18n:translate="">Trd.</a>
                 </div>
               </th>
-              <th tal:condition="not: view/total_hide">
+              <th tal:condition="not: view/total_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Total</span>
@@ -213,7 +226,8 @@
                   <a class="popup_link" href="" i18n:translate="">Total</a>
                 </div>
               </th>
-              <th tal:condition="not: view/average_hide">
+              <th tal:condition="not: view/average_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Ave.</span>
@@ -245,6 +259,8 @@
                   <a class="popup_link" href="" i18n:translate="">Ave.</a>
                 </div>
               </th>
+            </tr>
+            <tr>
             </tr>
           </thead>
           <tbody>
