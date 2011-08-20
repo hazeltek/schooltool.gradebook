@@ -298,9 +298,18 @@
                i18n:attributes="value; title; accesskey" />
       </div>
       <div class="buttons zoom-buttons">
-        <input type="button" class="button-neutral zoom-button" id="zoom-out" value="-" />
-        <input type="button" class="button-neutral zoom-button" id="zoom-normal" value="0" />
-        <input type="button" class="button-neutral zoom-button" id="zoom-in" value="+" />
+        <button type="button" class="button-neutral zoom-button" id="zoom-out"
+                title="Zoom Out" i18n:attributes="title">
+          <span class="ui-icon ui-icon-zoomout"></span>
+        </button>
+        <button type="button" class="button-neutral zoom-button" id="zoom-normal"
+                title="Zoom Normal" i18n:attributes="title">
+          <span class="ui-icon ui-icon-search"></span>
+        </button>
+        <button type="button" class="button-neutral zoom-button" id="zoom-in"
+                title="Zoom In" i18n:attributes="title">
+          <span class="ui-icon ui-icon-zoomin"></span>
+        </button>
       </div>
     </div>
   </form>
