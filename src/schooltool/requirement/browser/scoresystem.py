@@ -37,6 +37,8 @@ from zope.interface import implements, directlyProvides
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import interfaces, scoresystem
+from schooltool.skin.flourish.page import Page
+from schooltool.skin.flourish.page import RefineLinksViewlet
 
 
 MISSING_TITLE = _('The Title field must not be empty.')
@@ -448,3 +450,40 @@ class ScoreSystemWidget(object):
     def __call__(self):
         """See zope.formlib.browser.interfaces.IBrowserWidget"""
         return self.template()
+
+
+class FlourishScoreSystemContainerView(Page, ScoreSystemContainerView):
+
+    def update(self):
+        ScoreSystemContainerView.update(self)
+
+
+class FlourishScoreSystemContainerLinks(RefineLinksViewlet):
+    """Score system container links viewlet."""
+
+
+class FlourishCustomScoreSystemAddView(Page, CustomScoreSystemAddView):
+
+    def update(self):
+        CustomScoreSystemAddView.update(self)
+
+
+class FlourishCustomScoreSystemView(Page, CustomScoreSystemView):
+
+    @property
+    def subtitle(self):
+        return self.context.title
+
+    def done_link(self):
+        return self.nextURL
+
+    def scores(self):
+        result = []
+        for displayed, abbr, value, percent in self.context.scores:
+            if self.context.isPassingScore(displayed):
+                passing = True
+            else:
+                passing = False
+            row = self.buildScoreRow(displayed, abbr, value, percent, passing)
+            result.append(row)
+        return result

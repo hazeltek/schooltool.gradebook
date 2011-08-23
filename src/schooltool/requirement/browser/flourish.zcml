@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<configure xmlns="http://namespaces.zope.org/browser"
+           xmlns:z3c="http://namespaces.zope.org/z3c"
+           xmlns:zope="http://namespaces.zope.org/zope"
+           xmlns:flourish="http://schooltool.org/flourish"
+           i18n_domain="schooltool.gradebook">
+
+  <flourish:breadcrumb
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
+      title="Score Systems"
+      />
+
+  <flourish:breadcrumb
+      for="schooltool.requirement.interfaces.ICustomScoreSystem"
+      />
+
+  <flourish:page
+      name="index.html"
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
+      class=".scoresystem.FlourishScoreSystemContainerView"
+      title="Score Systems"
+      content_template="f_scoresystems_overview.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="add.html"
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
+      class=".scoresystem.FlourishCustomScoreSystemAddView"
+      title="Score Systems"
+      subtitle="Add Score System"
+      content_template="f_scoresystem_add.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="index.html"
+      for="schooltool.requirement.interfaces.ICustomScoreSystem"
+      class=".scoresystem.FlourishCustomScoreSystemView"
+      title="Score Systems"
+      content_template="f_scoresystem_view.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="scoresystems"
+      after="schoolName.html"
+      title="Score Systems"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="scoresystem-container"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".scoresystem.FlourishScoreSystemContainerLinks"
+      view=".scoresystem.FlourishScoreSystemContainerView"
+      title="Add"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="add.html"
+      manager=".scoresystem.FlourishScoreSystemContainerLinks"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      title="Score System"
+      permission="schooltool.edit"
+      />
+
+</configure>

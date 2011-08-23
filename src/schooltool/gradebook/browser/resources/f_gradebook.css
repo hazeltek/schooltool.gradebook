@@ -209,3 +209,38 @@ th.activity-title {
 .navigator {
     width: 140px;
 }
+
+/* Score systems */
+
+table.scoresystem-scores tbody tr {
+    border-bottom: 0px;
+}
+
+table.scoresystem-scores tbody td {
+    width: 125px;
+    padding: 0px;
+    vertical-align: middle;
+}
+
+table.scoresystem-scores tbody td.buttons {
+    width: 44px;
+}
+
+table.scoresystem-scores tbody td.buttons input[type="submit"] {
+    width: 100%;
+    height: 24px;
+}
+
+table.scoresystem-scores tbody input[type="text"] {
+    background-color: #ffffff;
+    border: 1px solid #ccc1c1;
+    color: #333333;
+    font-size: 12px;
+    height: 20px;
+    width: 123px;
+}
+table.scoresystem-scores tbody input[type="text"]:focus {
+    border: 2px solid #aa0000;
+    height: 18px;
+    width: 121px;
+}
