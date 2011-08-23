@@ -1,0 +1,38 @@
+<div i18n:domain="schooltool.gradebook">
+  <table>
+    <thead>
+      <tr>
+        <th i18n:translate="">Score</th>
+        <th i18n:translate="">Abbreviation</th>
+        <th i18n:translate="">Point Value</th>
+        <th i18n:translate="">Low Percentage</th>
+        <th i18n:translate="">Passing Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tal:block repeat="score view/scores">
+        <tr>
+          <td>
+            <span tal:content="score/displayed_value" />
+          </td>
+          <td>
+            <span tal:content="score/abbr_value" />
+          </td>
+          <td>
+            <span tal:content="score/value_value" />
+          </td>
+          <td>
+            <span tal:content="score/percent_value" />
+          </td>
+          <td>
+            <span tal:condition="score/passing_value"
+                  class="ui-icon ui-icon-check ui-icon-center"></span>
+          </td>
+        </tr>
+      </tal:block>
+    </tbody>
+  </table>
+  <h3>
+    <a tal:attributes="href view/done_link" i18n:translate="">Done</a>
+  </h3>
+</div>

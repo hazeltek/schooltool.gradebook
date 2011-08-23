@@ -78,7 +78,7 @@
 }
 
 .gradebook-part thead tr {
-    height: 4em;
+    height: 1.6em;
 }
 
 .gradebook-part tbody tr {
@@ -98,19 +98,27 @@
 
 .students th, .students td {
     border-right: 1px solid #cccccc;
-    max-width: 16em;
-    min-width: 16em;
     overflow: hidden;
     padding-left: 0.4em;
     padding-right: 0.4em;
     white-space: nowrap;
 }
 
-.grades input[type="text"] {
-    border: 0px;
-    background: transparent;
-    height: 1.2em;
-    width: 4em;
+.students th {
+    max-width: 5em;
+    min-width: 5em;
+    text-align: right;
+}
+
+.students th.name {
+    max-width: 11em;
+    min-width: 11em;
+    text-align: left;
+}
+
+.students td {
+    max-width: 16em;
+    min-width: 16em;
 }
 
 .grades {
@@ -120,6 +128,13 @@
 .grades th, .grades td {
     border-left: 1px solid #cccccc;
     border-right: 1px solid #cccccc;
+}
+
+.grades input[type="text"] {
+    border: 0px;
+    background: transparent;
+    height: 1.2em;
+    width: 4em;
 }
 
 .grades input[type="text"]:focus {
@@ -145,6 +160,14 @@
     min-width: 4em;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.totals th > div {
+    text-align: center;
+}
+
+th.activity-title {
+    border-bottom: 1px solid #cccccc;
 }
 
 /* Controls */
@@ -185,4 +208,39 @@
 
 .navigator {
     width: 140px;
+}
+
+/* Score systems */
+
+table.scoresystem-scores tbody tr {
+    border-bottom: 0px;
+}
+
+table.scoresystem-scores tbody td {
+    width: 125px;
+    padding: 0px;
+    vertical-align: middle;
+}
+
+table.scoresystem-scores tbody td.buttons {
+    width: 44px;
+}
+
+table.scoresystem-scores tbody td.buttons input[type="submit"] {
+    width: 100%;
+    height: 24px;
+}
+
+table.scoresystem-scores tbody input[type="text"] {
+    background-color: #ffffff;
+    border: 1px solid #ccc1c1;
+    color: #333333;
+    font-size: 12px;
+    height: 20px;
+    width: 123px;
+}
+table.scoresystem-scores tbody input[type="text"]:focus {
+    border: 2px solid #aa0000;
+    height: 18px;
+    width: 121px;
 }

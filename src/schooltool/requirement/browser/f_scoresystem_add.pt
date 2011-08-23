@@ -1,0 +1,120 @@
+<tal:block replace="resource_library:schooltool.gradebook.flourish" />
+<div i18n:domain="schooltool.gradebook">
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/add.html">
+    <input type="hidden" name="form-submitted" value="" />
+    <p i18n:translate="">
+      This form allows you to create a customized "score system" or grading scale.
+    </p>
+    <p i18n:translate="">
+      Each score system needs a short title to identify it to users, for example, if your school's grades go from "A" to "E," the title could be "A-E."
+    </p>
+    <p i18n:translate="">
+      A score system is made up of a sequence of possible scores with decreasing values.
+    </p>
+    <p i18n:translate="">
+      Each score is associated with a numeric point value. For example, in the US, an "A" is usually worth 4 points, a "B," 3 points, etc. This value will be used in any calculations made with the scores, such as finding a grade point average.
+    </p>
+    <p i18n:translate="">
+      Each score is also associated with a minimum percentage necessary to achieve the corresponding grade. For example, 95% and above is an "A," 87% and up is a "B," etc.
+    </p>
+    <p i18n:translate="">
+      Enter an abbreviation for a score only if the score has more than four characters and you wish to create an alternative abbreviation for the gradebook.
+    </p>
+    <p i18n:translate="">
+      Start with the highest score. Click "Add" to add scores until you have created a score with a minimum percentage of 0.
+    </p>
+    <div class="status"
+         tal:condition="view/message">
+      <div class="summary ui-state-error ui-corner-all">
+        <span class="ui-icon ui-icon-alert">icon</span>
+        <tal:block content="view/message" />
+      </div>
+    </div>
+    <fieldset>
+      <legend><span i18n:translate="">New Score System</span></legend>
+      <div class="row">
+        <div class="label">
+          <label for="title" i18n:translate="">Title</label>
+        </div>
+        <div class="widget">
+          <input type="text" name="title" id="title"
+                 tal:attributes="value view/title_value" />
+        </div>
+      </div>
+    </fieldset>
+    <table class="scoresystem-scores">
+      <thead>
+        <tr>
+          <th i18n:translate="">Score</th>
+          <th i18n:translate="">Abbreviation</th>
+          <th i18n:translate="">Point Value</th>
+          <th i18n:translate="">Low Percentage</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tal:block repeat="score view/scores">
+          <tr>
+            <td>
+              <input type="text"
+                     tal:attributes="name score/displayed_name;
+                                     value score/displayed_value" />
+            </td>
+            <td>
+              <input type="text"
+                     tal:attributes="name score/abbr_name;
+                                     value score/abbr_value" />
+            </td>
+            <td>
+              <input type="text"
+                     tal:attributes="name score/value_name;
+                                     value score/value_value" />
+            </td>
+            <td>
+              <input type="text"
+                     tal:attributes="name score/percent_name;
+                                     value score/percent_value" />
+            </td>
+            <td class="buttons">
+              <metal:block tal:condition="repeat/score/end">
+                <input type="submit" class="button-ok" name="SAVE" value="Add"
+                       i18n:attributes="value" />
+              </metal:block>
+            </td>
+          </tr>
+        </tal:block>
+      </tbody>
+    </table>
+    <p i18n:translate="">
+      If the values in the score system descend, e.g., 1 is the best
+      score, set the value below to say 'Maximum' passing score.
+      Otherwise leave it a 'Minimum' passing score.
+    </p>
+    <div>
+      <select name="minMax">
+        <tal:block repeat="minMax view/getMinMax">
+          <option
+              tal:attributes="value minMax/form_id;
+                              selected minMax/selected"
+              tal:content="minMax/title" />
+        </tal:block>
+      </select>
+      <span i18n:translate="">passing score:</span>
+      <select name="minScore">
+        <tal:block repeat="minScore view/getMinScores">
+          <option
+              tal:attributes="value minScore/form_id;
+                              selected minScore/selected"
+              tal:content="minScore/title" />
+        </tal:block>
+      </select>
+    </div>
+    <div class="buttons">
+      <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save"
+             i18n:attributes="value" />
+      <input type="submit" class="button-cancel" name="CANCEL" value="Cancel"
+             i18n:attributes="value" />
+    </div>
+  </form>
+</div>

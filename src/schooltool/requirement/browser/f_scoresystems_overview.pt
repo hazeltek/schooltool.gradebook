@@ -1,0 +1,36 @@
+<div i18n:domain="schooltool.gradebook"
+     tal:define="scoresystems view/scoresystems">
+  <form method="post" tal:attributes="action request/getURL"
+        tal:condition="scoresystems">
+    <input type="hidden" name="form-submitted" value="" />
+    <table>
+      <thead>
+        <tr>
+          <th i18n:translate="">
+            Title
+          </th>
+          <th i18n:translate="">
+            Delete
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="scoresystem scoresystems">
+          <td>
+            <a tal:attributes="href scoresystem/url"
+               tal:content="scoresystem/title" />
+          </td>
+          <td>
+            <input type="image" alt="Delete" value="1" title="Delete"
+                   tal:attributes="name scoresystem/hide_name;
+                                   src context/++resource++schooltool.skin.flourish/remove-icon.png"
+                   i18n:attributes="alt title" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <p tal:condition="not:scoresystems" i18n:translate="">
+    There are none.
+  </p>
+</div>

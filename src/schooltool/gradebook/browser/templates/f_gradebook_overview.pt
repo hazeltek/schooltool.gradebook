@@ -1,14 +1,16 @@
-<div i18n:domain="schooltool.gradebook">
+<div i18n:domain="schooltool.gradebook"
+     tal:define="table view/table;
+                 activities view/activities">
   <tal:block replace="resource_library:schooltool.gradebook.flourish" />
   <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
       var numstudents = <tal:block replace="python: len(view.students)"/>;
       var students = new Array(numstudents);
-      <tal:loop repeat="row view/table">
+      <tal:loop repeat="row table">
       students[<tal:block replace="repeat/row/index"/>] = '<tal:block replace="python: view.breakJSString(row['student']['id'])"/>';
       </tal:loop>
       var numactivities = <tal:block replace="python: len(view.scorableActivities())"/>;
       var activities = new Array(numactivities);
-      <tal:loop repeat="activity view/activities">
+      <tal:loop repeat="activity activities">
       activities[<tal:block replace="repeat/activity/index"/>] = '<tal:block replace="activity/hash"/>';
       </tal:loop>
       var numscores = <tal:block replace="python: len(view.scores)"/>;
@@ -16,14 +18,8 @@
       <tal:loop repeat="activity view/scores">
       scores['<tal:block replace="activity" />'] = new Array(<tal:block replace="python: view.scores[activity]" />);
       </tal:loop>
-      var numdescriptions = <tal:block replace="python: len(view.descriptions)"/>;
-      var descriptions = new Array(numdescriptions);
-      <tal:loop repeat="activity view/descriptions">
-      descriptions['<tal:block replace="activity/act_hash"/>'] = '<tal:block replace="activity/description"/>';
-      </tal:loop>
       var edited = false;
       var currentCell;
-      var currentDesc = '';
       window.onload = onLoadHandler;
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
@@ -35,7 +31,7 @@
         <table>
           <thead>
             <tr>
-              <th>
+              <th rowspan="2" class="name">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Name</span>
@@ -74,11 +70,15 @@
                   <a class="popup_link" href="" i18n:translate="">Name</a>
                 </div>
               </th>
+              <th i18n:translate="" class="activity-title">Activity</th>
+            </tr>
+            <tr>
+              <th i18n:translate="">Points</th>
             </tr>
           </thead>
           <tbody>
-            <tr tal:repeat="row view/table">
-              <td>
+            <tr tal:repeat="row table">
+              <td colspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span tal:content="row/student/title" />
@@ -101,44 +101,55 @@
           </tbody>
         </table>
       </div>
-      <div class="grades gradebook-part" tal:define="activities view/activities">
+      <div class="grades gradebook-part">
         <table>
           <thead>
-            <tr tal:condition="activities">
-              <th tal:repeat="activity activities">
-                <ul class="popup_menu">
-                  <li>
-                    <span tal:content="activity/shortTitle" />
-                  </li>
-                  <li>
-                    <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
-                       i18n:translate="">Edit</a>
-                  </li>
-                  <li tal:condition="activity/scorable">
-                    <a tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
-                       i18n:translate="">Score this</a>
-                  </li>
-                  <li>
-                    <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
-                       i18n:translate="">Sort by</a>
-                  </li>
-                </ul>
-                <div>
-                  <a class="popup_link"
-                     href=""
-                     tal:attributes="title activity/longTitle;
-                                     href string:gradeActivity.html?activity=${activity/hash};"
-                     tal:content="activity/shortTitle" />
-                </div>
-                <div tal:content="activity/max" />
-              </th>
-            </tr>
-            <tr tal:condition="not:activities">
-              <th class="placeholder">&nbsp;</th>
-            </tr>
+            <metal:block tal:condition="activities">
+              <tr>
+                <th tal:repeat="activity activities" class="activity-title">
+                  <ul class="popup_menu">
+                    <li>
+                      <span tal:content="activity/longTitle" />
+                    </li>
+                    <li>
+                      <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
+                         i18n:translate="">Edit</a>
+                    </li>
+                    <li tal:condition="activity/scorable">
+                      <a tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
+                         i18n:translate="">Score this</a>
+                    </li>
+                    <li>
+                      <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
+                         i18n:translate="">Sort by</a>
+                    </li>
+                  </ul>
+                  <div>
+                    <a class="popup_link"
+                       href=""
+                       tal:attributes="title activity/longTitle;
+                                       href string:gradeActivity.html?activity=${activity/hash};"
+                       tal:content="activity/shortTitle" />
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th tal:repeat="activity activities">
+                  <div tal:content="activity/max" />
+                </th>
+              </tr>
+            </metal:block>
+            <metal:block tal:condition="not:activities">
+              <tr>
+                <th class="placeholder">&nbsp;</th>
+              </tr>
+              <tr>
+                <th class="placeholder">&nbsp;</th>
+              </tr>
+            </metal:block>
           </thead>
           <tbody>
-            <metal:block tal:repeat="row view/table">
+            <metal:block tal:repeat="row table">
               <tr tal:condition="activities">
                 <td tal:repeat="grade row/grades"
                     tal:attributes="id string:${grade/activity}_${row/student/id}_cell">
@@ -165,7 +176,8 @@
         <table>
           <thead>
             <tr>
-              <th tal:condition="not: view/absences_hide">
+              <th tal:condition="not: view/absences_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Abs.</span>
@@ -181,7 +193,8 @@
                   <a class="popup_link" href="" i18n:translate="">Abs.</a>
                 </div>
               </th>
-              <th tal:condition="not: view/tardies_hide">
+              <th tal:condition="not: view/tardies_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Trd.</span>
@@ -197,7 +210,8 @@
                   <a class="popup_link" href="" i18n:translate="">Trd.</a>
                 </div>
               </th>
-              <th tal:condition="not: view/total_hide">
+              <th tal:condition="not: view/total_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Total</span>
@@ -213,7 +227,8 @@
                   <a class="popup_link" href="" i18n:translate="">Total</a>
                 </div>
               </th>
-              <th tal:condition="not: view/average_hide">
+              <th tal:condition="not: view/average_hide"
+                  rowspan="2">
                 <ul class="popup_menu">
                   <li>
                     <span i18n:translate="">Ave.</span>
@@ -246,9 +261,11 @@
                 </div>
               </th>
             </tr>
+            <tr>
+            </tr>
           </thead>
           <tbody>
-            <tr tal:repeat="row view/table">
+            <tr tal:repeat="row table">
               <td tal:condition="not: view/absences_hide">
                 <tal:if condition="row/absences|nothing">
                   <span tal:replace="row/absences" />
@@ -282,9 +299,18 @@
                i18n:attributes="value; title; accesskey" />
       </div>
       <div class="buttons zoom-buttons">
-        <input type="button" class="button-neutral zoom-button" id="zoom-out" value="-" />
-        <input type="button" class="button-neutral zoom-button" id="zoom-normal" value="0" />
-        <input type="button" class="button-neutral zoom-button" id="zoom-in" value="+" />
+        <button type="button" class="button-neutral zoom-button" id="zoom-out"
+                title="Zoom Out" i18n:attributes="title">
+          <span class="ui-icon ui-icon-zoomout"></span>
+        </button>
+        <button type="button" class="button-neutral zoom-button" id="zoom-normal"
+                title="Zoom Normal" i18n:attributes="title">
+          <span class="ui-icon ui-icon-search"></span>
+        </button>
+        <button type="button" class="button-neutral zoom-button" id="zoom-in"
+                title="Zoom In" i18n:attributes="title">
+          <span class="ui-icon ui-icon-zoomin"></span>
+        </button>
       </div>
     </div>
   </form>
