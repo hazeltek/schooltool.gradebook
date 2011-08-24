@@ -3,6 +3,8 @@
            xmlns:z3c="http://namespaces.zope.org/z3c"
            xmlns:zope="http://namespaces.zope.org/zope"
            xmlns:flourish="http://schooltool.org/flourish"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:report="http://namespaces.schooltool.org/report"
            i18n_domain="schooltool.gradebook">
 
   <zope:resourceLibrary
@@ -366,5 +368,55 @@
       template="templates/f_request_student_report.pt"
       permission="schooltool.edit"
       />
+
+  <report:reportLink
+       name="group_detail_report"
+       for="schooltool.group.interfaces.IGroup"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="Group"
+       description="A single PDF containing detail reports for all students in the group."
+       title="Student Detail Report"
+       file_type="pdf"
+       link="request_student_detail.html"
+       />
+
+  <report:reportLink
+       name="group_report_card"
+       for="schooltool.group.interfaces.IGroup"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="Group"
+       description="A single PDF containing report cards for all students in the group."
+       title="Student Report Card"
+       file_type="pdf"
+       link="request_report_card.html"
+       />
+
+  <report:reportLink
+       name="failures_by_term"
+       for="schooltool.term.interfaces.ITerm"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="Term"
+       description="Shows all students receiving failing scores in the selected report activity and term."
+       title="Failures"
+       file_type="pdf"
+       link="request_failing_report.html"
+       />
+
+  <configure zcml:condition="have schooltool.lyceum.journal">
+    <report:reportLink
+         name="absences_by_section"
+         for="schooltool.course.interfaces.ISection"
+         layer="schooltool.skin.flourish.IFlourishLayer"
+         permission="schooltool.edit"
+         group="Section"
+         description="Summary of absences and tardies from a single section and term."
+         title="Absences"
+         file_type="pdf"
+         link="section_absences.pdf"
+         />
+  </configure>
 
 </configure>
