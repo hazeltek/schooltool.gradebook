@@ -386,10 +386,28 @@
     <flourish:page
         name="edit.html"
         for="schooltool.gradebook.interfaces.IReportWorksheet"
+        subtitle="Edit"
         class="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
         content_template="templates/z3c-schooltool-form.pt"
         permission="schooltool.edit"
+        />
+
+    <flourish:page
+        name="addReportActivity.html"
+        for="schooltool.gradebook.interfaces.IReportWorksheet"
+        subtitle="New Report Activity"
+        class="schooltool.gradebook.browser.report_card.FlourishReportActivityAddView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        />
+
+    <flourish:page
+        name="edit.html"
+        for="schooltool.gradebook.interfaces.IReportActivity"
         subtitle="Edit"
+        class="schooltool.gradebook.browser.report_card.FlourishReportActivityEditView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
         />
   </configure>
 

@@ -141,6 +141,12 @@ class FlourishTemplatesView(flourish.page.Page):
                 if name in self.request:
                     del self.context[template.__name__]
                     return
+                for activity in template.values():
+                    name = 'delete_activity.%s.%s' % (template.__name__,
+                                                      activity.__name__)
+                    if name in self.request:
+                        del template[activity.__name__]
+                        return
 
 
 class FlourishReportSheetsOverviewLinks(flourish.page.RefineLinksViewlet):
@@ -361,6 +367,27 @@ class ReportActivityAddView(form.AddForm):
         return absoluteURL(self.context, self.request)
 
 
+class FlourishReportActivityAddView(ReportActivityAddView,
+                                    flourish.form.AddForm):
+    """A flourish view for adding a report activity."""
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Report Activity Details'
+    formErrorsMessage = _('Please correct the marked fields below.')
+
+    @button.buttonAndHandler(_('Submit'), name='add')
+    def handleAdd(self, action):
+        super(FlourishReportActivityAddView, self).handleAdd.func(self, action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
+
+
 class ReportActivityEditView(form.EditForm):
     """Edit form for basic person."""
     form.extends(form.EditForm)
@@ -390,6 +417,31 @@ class ReportActivityEditView(form.EditForm):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+
+class FlourishReportActivityEditView(ReportActivityEditView,
+                                     flourish.form.Form):
+    """A flourish view for editing a report activity."""
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Report Activity Details'
+    formErrorsMessage = _('Please correct the marked fields below.')
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishReportActivityEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            self.request.response.redirect(self.nextURL())
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__.__parent__, self.request)
 
 
 ApplyLabel = button.StaticButtonActionAttribute(

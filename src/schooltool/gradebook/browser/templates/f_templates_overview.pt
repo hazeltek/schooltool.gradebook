@@ -45,7 +45,7 @@
           <td>
             <span tal:content="activity/title" />
             <a class="modify" href="" title="Edit"
-               tal:attributes="href string:${actitity/@@absolute_url}/edit.html"
+               tal:attributes="href string:${activity/@@absolute_url}/edit.html"
                i18n:attributes="title"
                i18n:translate="">
               <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
@@ -55,7 +55,7 @@
           </td>
           <td>
             <input type="image" alt="Delete" value="1" title="Delete"
-                   tal:attributes="name string:delete_activity.${activity/__name__};
+                   tal:attributes="name string:delete_activity.${worksheet/__name__}.${activity/__name__};
                                    src context/++resource++schooltool.skin.flourish/remove-icon.png"
                    i18n:attributes="alt title" />
           </td>
