@@ -1,5 +1,21 @@
 <div i18n:domain="schooltool.gradebook">
-  <form method="post" class="standalone"
+  <table>
+    <tbody>
+      <tr>
+        <td i18n:translate="">
+          Description
+        </td>
+        <td tal:content="view/description" />
+      </tr>
+      <tr>
+        <td i18n:translate="">
+          File Type
+        </td>
+        <td tal:content="view/file_type" />
+      </tr>
+    </tbody>
+  </table>
+  <form method="post"
         tal:attributes="action string:${context/@@absolute_url}/${view/action}">
     <input type="hidden" name="form-submitted" value="" />
     <h3 i18n:translate="">Select a year or term</h3>
@@ -10,15 +26,18 @@
 	    <input type="radio" name="selectedTerm"
 		   tal:attributes="value term/value;
 				   checked term/selected" />
-	    <span class="download_link" tal:content="term/title" />
+	    <span tal:content="term/title" />
 	  </td>
 	</tr>
       </tbody>
     </table>
     <div class="buttons controls">
-      <input type="submit" class="submit-widget" name="DOWNLOAD" value="Submit"
-	     i18n:attributes="value" />
-      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+      <input type="submit" class="button-ok" name="DOWNLOAD"
+             onclick="return ST.dialogs.submit(this, this);"
+             value="Submit" i18n:attributes="value" />
+      <input type="submit" class="button-cancel" name="CANCEL"
+             onclick="return ST.dialogs.close(this);"
+             value="Cancel" i18n:attributes="value cancel-button" />
     </div>
   </form>
 </div>
