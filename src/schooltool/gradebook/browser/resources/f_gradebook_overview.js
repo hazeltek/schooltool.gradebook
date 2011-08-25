@@ -188,7 +188,8 @@ function changeBackgroundColor(id, klass) {
 
 function updateWidths() {
     // Used to calculate the margins of the div.grades area and
-    // placeholders (when there are no activity columns)
+    // placeholders (when there are not enough activity columns
+    // to fill the grades space)
     var gradebook_width = $('.gradebook').width();
     var students_width = $('.students').outerWidth();
     var totals_width = $('.totals').outerWidth();
@@ -198,9 +199,17 @@ function updateWidths() {
     if (totals_width) {
         $('.grades').css('marginRight', totals_width + 'px');
     }
-    if ($('.placeholder').length > 0) {
-        var placeholder_width = gradebook_width - (students_width + totals_width);
-        $('.placeholder').css('width', placeholder_width + 'px');
+    activities_width = 0;
+    $('.grades th.activity-title').each(function() {
+        activities_width += $(this).outerWidth();
+    });
+    var grades_width = $('.grades').width();
+    if (grades_width > activities_width) {
+        placeholder_width = grades_width - activities_width;
+        $('.placeholder').css('width', placeholder_width +'px');
+        $('.placeholder').show();
+    } else {
+        $('.placeholder').hide();
     }
 }
 
@@ -230,13 +239,13 @@ $(document).ready(function() {
     $('.grades tbody tr:odd').addClass('odd');
     $('.totals tbody tr:odd').addClass('odd');
     // zoom buttons
-    var factor = 1.05;
-    var min_size = 8;
+    var factor = 1.125;
+    var min_size = 7;
     var max_size = 18;
     var default_size = 10;
     $('.zoom-button').click(function () {
-        var $form = $('.grid-form');
-        var current_size = $form.css('fontSize');
+        var form = $('.grid-form');
+        var current_size = form.css('fontSize');
         var num = parseFloat(current_size, default_size);
         var unit = current_size.slice(-2);
         if (this.id == 'zoom-in') {
@@ -247,7 +256,7 @@ $(document).ready(function() {
             num = default_size;
         }
         if (num >= min_size && num <= max_size) {
-            $form.css('fontSize', num + unit);
+            form.css('fontSize', num + unit);
         }
         updateWidths();
     });
