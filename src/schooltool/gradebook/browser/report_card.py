@@ -37,6 +37,7 @@ from z3c.form import form, field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
+from schooltool.common.inlinept import InheritTemplate
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
@@ -44,9 +45,10 @@ from schooltool.skin import flourish
 from schooltool.term.interfaces import ITerm
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
-from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
-from schooltool.gradebook.interfaces import IActivities, IReportActivity
-from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
+from schooltool.gradebook.interfaces import (IGradebookRoot,
+    IGradebookTemplates, IReportWorksheet, IReportActivity, IActivities)
+from schooltool.gradebook.activity import (Worksheet, Activity, ReportWorksheet,
+    ReportActivity)
 from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
 from schooltool.gradebook.gradebook_init import OutlineActivity
@@ -135,6 +137,66 @@ class FlourishTemplatesView(TemplatesView, flourish.page.Page):
 
 class FlourishReportSheetsOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish report sheet templates overview add links viewlet."""
+
+
+class FlourishReportSheetAddView(flourish.form.AddForm):
+    """flourish view for adding a report sheet template."""
+
+    fields = field.Fields(IReportWorksheet).select('title')
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = 'Report Sheet Template Details'
+
+    @button.buttonAndHandler(_('Submit'), name='add')
+    def handleAdd(self, action):
+        super(FlourishReportSheetAddView, self).handleAdd.func(self, action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def create(self, data):
+        worksheet = ReportWorksheet(data['title'])
+        return worksheet
+
+    def add(self, worksheet):
+        chooser = INameChooser(self.context)
+        name = chooser.chooseName(worksheet.title, worksheet)
+        self.context[name] = worksheet
+        return worksheet
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+
+class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = _('Report Sheet Template Information')
+    fields = field.Fields(IReportWorksheet).select('title')
+
+    @property
+    def title(self):
+        return self.context.title
+
+    def update(self):
+        return form.EditForm.update(self)
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishReportSheetEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            self.request.response.redirect(self.nextURL())
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
 
 
 def ReportScoreSystemsVocabulary(context):

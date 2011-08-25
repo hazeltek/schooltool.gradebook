@@ -1,5 +1,4 @@
 <div>
-  <h3 i18n:translate="">Manage Report Sheet Templates</h3>
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />
@@ -14,7 +13,7 @@
         <td>
           <span tal:content="worksheet/title" />
           <a class="modify" href="" title="Edit"
-             tal:attributes="href worksheet/url"
+             tal:attributes="href string:${worksheet/url}/edit.html"
              i18n:attributes="title"
              i18n:translate="">
             <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"

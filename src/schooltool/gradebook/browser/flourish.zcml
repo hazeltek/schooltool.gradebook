@@ -372,6 +372,27 @@
       permission="schooltool.edit"
       />
 
+  <configure package="schooltool.skin.flourish">
+    <flourish:page
+        name="addReportSheet.html"
+        for="schooltool.gradebook.interfaces.IGradebookTemplates"
+        title="Report Sheet Templates"
+        subtitle="New Template"
+        class="schooltool.gradebook.browser.report_card.FlourishReportSheetAddView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        />
+
+    <flourish:page
+        name="edit.html"
+        for="schooltool.gradebook.interfaces.IReportWorksheet"
+        class="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        subtitle="Edit"
+        />
+  </configure>
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"
