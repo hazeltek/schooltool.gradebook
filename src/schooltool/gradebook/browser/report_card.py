@@ -134,6 +134,14 @@ class FlourishManageReportSheetsOverview(flourish.page.Content):
 class FlourishTemplatesView(TemplatesView, flourish.page.Page):
     """A flourish view for managing report sheet templates"""
 
+    def update(self):
+        if 'form-submitted' in self.request:
+            for template in self.context.values():
+                name = 'delete.%s' % template.__name__
+                if name in self.request:
+                    del self.context[template.__name__]
+                    return
+
 
 class FlourishReportSheetsOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish report sheet templates overview add links viewlet."""
