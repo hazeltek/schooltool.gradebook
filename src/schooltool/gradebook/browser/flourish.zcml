@@ -354,6 +354,24 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="report-sheets_overview"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".report_card.FlourishReportSheetsOverviewLinks"
+      for="..interfaces.IGradebookTemplates"
+      title="Add"
+      permission="schooltool.edit"
+      view=".report_card.FlourishTemplatesView"
+      />
+
+  <flourish:viewlet
+      name="addReportSheet.html"
+      title="Report Sheet Template"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".report_card.FlourishReportSheetsOverviewLinks"
+      permission="schooltool.edit"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"

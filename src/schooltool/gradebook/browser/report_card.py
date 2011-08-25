@@ -133,6 +133,10 @@ class FlourishTemplatesView(TemplatesView, flourish.page.Page):
     """A flourish view for managing report sheet templates"""
 
 
+class FlourishReportSheetsOverviewLinks(flourish.page.RefineLinksViewlet):
+    """flourish report sheet templates overview add links viewlet."""
+
+
 def ReportScoreSystemsVocabulary(context):
     terms = [SimpleVocabulary.createTerm('ranged', 'ranged',
                                          _('-- Use range below --'))]
