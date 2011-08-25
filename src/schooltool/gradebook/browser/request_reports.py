@@ -21,6 +21,7 @@ Request PDF Views
 """
 
 from datetime import datetime
+from urllib import unquote_plus
 
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
@@ -35,7 +36,7 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
-from schooltool.skin import flourish
+from schooltool.skin.flourish.form import Dialog
 
 
 class RequestFailingReportView(BrowserView):
@@ -149,6 +150,7 @@ class RequestAbsencesByDayView(BrowserView):
         day = self.currentDay()
         try:
             year, month, day = [int(part) for part in day.split('-')]
+            datetime(year, month, day)
         except:
             return False
         date = datetime.date(datetime(year, month, day))
@@ -234,8 +236,43 @@ class RequestStudentReportView(BrowserView):
         return absoluteURL(self.context, self.request) + '/reports'
 
 
-class FlourishRequestStudentReportView(flourish.page.Page,
+class RequestReportDownloadDialog(Dialog):
+
+    def updateDialog(self):
+        # XXX: fix the width of dialog content in css
+        if self.ajax_settings['dialog'] != 'close':
+            self.ajax_settings['dialog']['width'] = 544 + 16
+
+    @property
+    def file_type(self):
+        if 'file_type' in self.request:
+            return unquote_plus(self.request['file_type'])
+
+    @property
+    def description(self):
+        if 'description' in self.request:
+            return unquote_plus(self.request['description'])
+
+
+class FlourishRequestStudentReportView(RequestReportDownloadDialog,
                                        RequestStudentReportView):
 
     def update(self):
+        RequestReportDownloadDialog.update(self)
         RequestStudentReportView.update(self)
+
+
+class FlourishRequestFailingReportView(RequestReportDownloadDialog,
+                                       RequestFailingReportView):
+
+    def update(self):
+        RequestReportDownloadDialog.update(self)
+        RequestFailingReportView.update(self)
+
+
+class FlourishRequestAbsencesByDayView(RequestReportDownloadDialog,
+                                       RequestAbsencesByDayView):
+
+    def update(self):
+        RequestReportDownloadDialog.update(self)
+        RequestAbsencesByDayView.update(self)

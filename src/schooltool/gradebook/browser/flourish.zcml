@@ -444,6 +444,14 @@
       permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="request_failing_report.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".request_reports.FlourishRequestFailingReportView"
+      template="templates/f_request_failing_report.pt"
+      permission="schooltool.edit"
+      />
+
   <report:reportLink
        name="group_detail_report"
        for="schooltool.group.interfaces.IGroup"
@@ -481,6 +489,13 @@
        />
 
   <configure zcml:condition="have schooltool.lyceum.journal">
+    <flourish:page
+        name="request_absences_by_day.html"
+        for="schooltool.schoolyear.interfaces.ISchoolYear"
+        class=".request_reports.FlourishRequestAbsencesByDayView"
+        template="templates/f_request_absences_by_day.pt"
+        permission="schooltool.edit"
+        />
     <report:reportLink
          name="absences_by_section"
          for="schooltool.course.interfaces.ISection"
