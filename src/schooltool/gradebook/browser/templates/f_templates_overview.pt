@@ -1,4 +1,4 @@
-<div>
+<div tal:define="worksheets context/values">
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />
@@ -7,27 +7,62 @@
         <tr>
           <th i18n:translate="">Title</th>
           <th i18n:translate="">Delete?</th>
+          <th i18n:translate="">Add Activity</th>
         </tr>
       </thead>
-      <tr tal:repeat="worksheet view/worksheets">
-        <td>
+      <tal:block repeat="worksheet worksheets">
+      <tr>
+        <th>
           <span tal:content="worksheet/title" />
           <a class="modify" href="" title="Edit"
-             tal:attributes="href string:${worksheet/url}/edit.html"
+             tal:attributes="href string:${worksheet/@@absolute_url}/edit.html"
              i18n:attributes="title"
              i18n:translate="">
             <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
                  alt="Edit"
                  i18n:attributes="alt" />
           </a>
-        </td>
-        <td>
+        </th>
+        <th>
           <input type="image" alt="Delete" value="1" title="Delete"
-                 tal:attributes="name string:delete.${worksheet/name};
+                 tal:attributes="name string:delete.${worksheet/__name__};
                                  src context/++resource++schooltool.skin.flourish/remove-icon.png"
                  i18n:attributes="alt title" />
-        </td>
+        </th>
+        <th>
+          <a class="modify" href="" title="Add Report Activity"
+             tal:attributes="href string:${worksheet/@@absolute_url}/addReportActivity.html"
+             i18n:attributes="title"
+             i18n:translate="">
+            <img tal:attributes="src context/++resource++schooltool.skin.flourish/add-icon.png"
+                 alt="Add Report Activity"
+                 i18n:attributes="alt" />
+          </a>
+        </th>
       </tr>
+      <tal:block repeat="activity worksheet/values">
+        <tr>
+          <td>
+            <span tal:content="activity/title" />
+            <a class="modify" href="" title="Edit"
+               tal:attributes="href string:${actitity/@@absolute_url}/edit.html"
+               i18n:attributes="title"
+               i18n:translate="">
+              <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
+                   alt="Edit"
+                   i18n:attributes="alt" />
+            </a>
+          </td>
+          <td>
+            <input type="image" alt="Delete" value="1" title="Delete"
+                   tal:attributes="name string:delete_activity.${activity/__name__};
+                                   src context/++resource++schooltool.skin.flourish/remove-icon.png"
+                   i18n:attributes="alt title" />
+          </td>
+          <td></td>
+        </tr>
+      </tal:block>
+      </tal:block>
     </table>
   </form>
 </div>

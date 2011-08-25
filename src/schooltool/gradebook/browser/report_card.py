@@ -131,7 +131,7 @@ class FlourishManageReportSheetsOverview(flourish.page.Content):
         return IGradebookTemplates(ISchoolToolApplication(None), None)
 
 
-class FlourishTemplatesView(TemplatesView, flourish.page.Page):
+class FlourishTemplatesView(flourish.page.Page):
     """A flourish view for managing report sheet templates"""
 
     def update(self):
