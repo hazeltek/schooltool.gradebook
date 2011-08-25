@@ -336,6 +336,24 @@
       permission="schooltool.edit"
       />
 
+  <!-- Report Sheets -->
+  <flourish:viewlet
+      name="manage-report-sheets-overview"
+      after="manage-resources-overview"
+      view="schooltool.app.browser.app.ManageSchool"
+      permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".report_card.FlourishManageReportSheetsOverview"
+      />
+
+  <flourish:page
+      name="index.html"
+      for="..interfaces.IGradebookTemplates"
+      class=".report_card.FlourishTemplatesView"
+      content_template="templates/f_templates_overview.pt"
+      permission="schooltool.edit"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"

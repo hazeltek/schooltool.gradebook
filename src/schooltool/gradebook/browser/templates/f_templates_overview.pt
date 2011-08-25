@@ -1,0 +1,35 @@
+<div>
+  <h3 i18n:translate="">Manage Report Sheet Templates</h3>
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}">
+    <input type="hidden" name="form-submitted" value="" />
+    <table>
+      <thead>
+        <tr>
+          <th i18n:translate="">Title</th>
+          <th i18n:translate="">Delete?</th>
+        </tr>
+      </thead>
+      <tr tal:repeat="worksheet view/worksheets">
+        <td>
+          <span tal:content="worksheet/title" />
+          <a class="modify" href="" title="Edit"
+             tal:attributes="href worksheet/url"
+             i18n:attributes="title"
+             i18n:translate="">
+            <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
+                 alt="Edit"
+                 i18n:attributes="alt" />
+          </a>
+        </td>
+        <td>
+          <input type="image" alt="Delete" value="1" title="Delete"
+                 tal:attributes="name string:delete.${worksheet/name};
+                                 src context/++resource++schooltool.skin.flourish/remove-icon.png"
+                 i18n:attributes="alt title" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+

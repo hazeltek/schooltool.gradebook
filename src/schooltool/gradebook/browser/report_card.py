@@ -40,10 +40,11 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.skin import flourish
 from schooltool.term.interfaces import ITerm
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
-from schooltool.gradebook.interfaces import IGradebookRoot
+from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
 from schooltool.gradebook.interfaces import IActivities, IReportActivity
 from schooltool.gradebook.activity import Worksheet, Activity, ReportActivity
 from schooltool.gradebook.category import getCategories
@@ -116,6 +117,20 @@ class TemplatesView(object):
                 new_pos = int(self.request['pos.'+name])
                 if new_pos != old_pos:
                     self.context.changePosition(name, new_pos-1)
+
+
+class FlourishManageReportSheetsOverview(flourish.page.Content):
+
+    body_template = ViewPageTemplateFile(
+        'templates/f_manage_report_sheets_overview.pt')
+
+    @property
+    def templates(self):
+        return IGradebookTemplates(ISchoolToolApplication(None), None)
+
+
+class FlourishTemplatesView(TemplatesView, flourish.page.Page):
+    """A flourish view for managing report sheet templates"""
 
 
 def ReportScoreSystemsVocabulary(context):
