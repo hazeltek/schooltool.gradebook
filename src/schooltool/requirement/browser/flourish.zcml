@@ -42,6 +42,14 @@
       permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="delete.html"
+      for="schooltool.requirement.interfaces.ICustomScoreSystem"
+      class=".scoresystem.FlourishCustomScoreSystemDeleteView"
+      template="f_confirm_delete_scoresystem.pt"
+      permission="schooltool.edit"
+      />
+
   <flourish:viewlet
       name="scoresystems"
       after="schoolName.html"
@@ -65,6 +73,23 @@
       manager=".scoresystem.FlourishScoreSystemContainerLinks"
       class="schooltool.skin.flourish.page.LinkViewlet"
       title="Score System"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="scoresystem-actions"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".scoresystem.FlourishCustomScoreSystemActionsLinks"
+      view=".scoresystem.FlourishCustomScoreSystemView"
+      title="Actions"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="delete.html"
+      manager=".scoresystem.FlourishCustomScoreSystemActionsLinks"
+      class=".scoresystem.CustomScoreSystemDeleteLink"
+      title="Delete"
       permission="schooltool.edit"
       />
 
