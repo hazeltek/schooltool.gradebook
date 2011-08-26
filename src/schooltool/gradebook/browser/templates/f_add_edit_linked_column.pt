@@ -76,7 +76,7 @@
           </tr>
         </table>
       </fieldset>
-      <div class="buttons controls">
+      <div class="buttons">
         <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
       </div>
     </div>

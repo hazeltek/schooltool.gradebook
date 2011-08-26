@@ -1,14 +1,6 @@
 <form method="post" class="standalone"
       tal:attributes="action string:${context/@@absolute_url}/weights.html">
   <div class="viewspace">
-    <div class="status"
-         tal:condition="view/message">
-      <div class="summary ui-state-error ui-corner-all">
-        <span class="ui-icon ui-icon-info">icon</span>
-        <tal:block content="view/message" />
-      </div>
-    </div>
-
     <div>
       <p i18n:translate="">
         This form allows you to change the weighting of categories when calculating average scores within a worksheet.
@@ -20,7 +12,13 @@
         For example, to weight exams as 60% of the grade, homework as 20% and quizzes as 20%, enter "60" next to "Exam", "20" next to "Homework" and "20" next to "Quiz".
       </p>
     </div>
-
+    <div class="status"
+         tal:condition="view/message">
+      <div class="summary ui-state-error ui-corner-all">
+        <span class="ui-icon ui-icon-info">icon</span>
+        <tal:block content="view/message" />
+      </div>
+    </div>
     <fieldset>
       <legend>
         <span i18n:translate="">Category Weights</span>
@@ -41,8 +39,8 @@
     </fieldset>
 
     <div>
-      <div class="buttons controls">
-        <input type="submit" class="submit-widget button-cancel" name="UPDATE_SUBMIT"
+      <div class="buttons">
+        <input type="submit" class="button-ok" name="UPDATE_SUBMIT"
                value="Submit" i18n:attributes="value" />
         <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
       </div>

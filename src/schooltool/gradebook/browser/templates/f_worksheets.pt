@@ -1,8 +1,8 @@
 <div>
-  <h3 i18n:translate="">Reorder or Hide Worksheets</h3>
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />
+    <h3 i18n:translate="">Reorder or Hide Worksheets</h3>
     <table>
       <thead>
         <tr>
@@ -57,12 +57,12 @@
     <p i18n:translate="">
       For example, if you have three worksheets in a section, "A," "B," and "C," and click "Create Summary Worksheets," an additional sheet, entitled "Summary" will be created, which includes the average scores from "A," "B" and "C" in the first three columns.
     </p>
-    <div tal:condition="view/summaryFound">
+    <p tal:condition="view/summaryFound">
       <input type="checkbox" name="overwrite">
       <span i18n:translate="">Overwrite existing worksheets titled "Summary".</span>
-    </div>
+    </p>
 
-    <div class="buttons controls">
+    <div class="buttons">
       <input type="submit" class="button-ok" name="ADD_SUMMARY" value="Create summary worksheet"
              i18n:attributes="value" />
     </div>
