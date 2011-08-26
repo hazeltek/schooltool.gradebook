@@ -252,7 +252,7 @@
       name="addLinkedActivity.html"
       for="..interfaces.IWorksheet"
       title="Gradebook"
-      subtitle="New Linked Activity"
+      subtitle="New External Score"
       content_template="templates/f_add_edit_activity.pt"
       class=".activity.FlourishLinkedActivityAddView"
       permission="schooltool.edit"
@@ -278,11 +278,29 @@
       permission="schooltool.edit"
       />
 
+  <zope:adapter
+      for="..interfaces.IActivity"
+      provides=".activity.IActivityForm"
+      factory=".activity.SimpleFormAdapter"
+      />
+
+  <zope:adapter
+      for="..interfaces.ILinkedActivity"
+      provides=".activity.ILinkedActivityExternalActivity"
+      factory=".activity.LinkedActivityFields"
+      />
+
+  <zope:adapter
+      for="..interfaces.ILinkedActivity"
+      provides=".activity.ILinkedActivityForm"
+      factory=".activity.SimpleFormAdapter"
+      />
+
   <flourish:page
       name="edit.html"
       for="..interfaces.ILinkedActivity"
       title="Gradebook"
-      subtitle="Edit Linked Activity"
+      subtitle="Edit External Score"
       content_template="templates/f_add_edit_activity.pt"
       class=".activity.FlourishLinkedActivityEditView"
       permission="schooltool.edit"
@@ -372,6 +390,15 @@
       permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="index.html"
+      for="schooltool.gradebook.interfaces.IReportWorksheet"
+      subtitle="Edit"
+      class="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+      content_template="templates/f_template_manage.pt"
+      permission="schooltool.edit"
+      />
+
   <configure package="schooltool.skin.flourish">
     <flourish:page
         name="addReportSheet.html"
@@ -379,15 +406,6 @@
         title="Report Sheet Templates"
         subtitle="New Template"
         class="schooltool.gradebook.browser.report_card.FlourishReportSheetAddView"
-        content_template="templates/z3c-schooltool-form.pt"
-        permission="schooltool.edit"
-        />
-
-    <flourish:page
-        name="edit.html"
-        for="schooltool.gradebook.interfaces.IReportWorksheet"
-        subtitle="Edit"
-        class="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
         content_template="templates/z3c-schooltool-form.pt"
         permission="schooltool.edit"
         />

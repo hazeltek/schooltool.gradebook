@@ -195,6 +195,12 @@ class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
         return self.context.title
 
     def update(self):
+        if 'form-submitted' in self.request:
+            for activity in self.context.values():
+                name = 'delete.%s' % activity.__name__
+                if name in self.request:
+                    del self.context[activity.__name__]
+                    break
         return form.EditForm.update(self)
 
     @button.buttonAndHandler(_('Submit'), name='apply')
@@ -385,7 +391,7 @@ class FlourishReportActivityAddView(ReportActivityAddView,
         self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__, self.request)
+        return absoluteURL(self.context, self.request)
 
 
 class ReportActivityEditView(form.EditForm):
@@ -441,7 +447,7 @@ class FlourishReportActivityEditView(ReportActivityEditView,
         self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return absoluteURL(self.context.__parent__.__parent__, self.request)
+        return absoluteURL(self.context.__parent__, self.request)
 
 
 ApplyLabel = button.StaticButtonActionAttribute(
