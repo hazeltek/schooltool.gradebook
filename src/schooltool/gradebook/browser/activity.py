@@ -369,12 +369,10 @@ class IActivityForm(interface.Interface):
         default=0)
 
 
-class ActivityFormAdapter(object):
-    implements(IActivityForm)
-    adapts(interfaces.IActivity)
+class SimpleFormAdapter(object):
 
     def __init__(self, context):
-        self.__dict__['context'] = context
+        self.__dict__['context'] = removeSecurityProxy(context)
 
     def __setattr__(self, name, value):
         setattr(self.context, name, value)
@@ -457,12 +455,39 @@ class LinkedActivityAddView(z3cform.AddForm):
         LinkedActivityGradesUpdater().update(linked_activity, self.request)
 
 
+class ILinkedActivityExternalActivity(interface.Interface):
+
+    external_activity = schema.Choice(
+        title=_(u"External Score Source"),
+        description=_("""Use external scores to add data from sources outside
+            the SchoolTool Gradebook.  External scores must be configured by
+            your system administrator"""),
+        vocabulary="schooltool.gradebook.external_activities",
+        required=True)
+
+
+class ILinkedActivityForm(IActivityForm):
+    '''An interface used to build flourish external activity forms'''
+
+    points = zope.schema.Int(
+        title=_(u"Full Credit Score"),
+        description=_("""The point value of this activity will be calculated
+            as the full credit score multiplied by the percentage value of
+            the external score."""),
+        min=0,
+        required=True)
+
+
 class FlourishLinkedActivityAddView(flourish.form.AddForm,
                                     LinkedActivityAddView):
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Linked Activity Details'
+    legend = 'External Score Details'
+
+    fields = field.Fields(ILinkedActivityExternalActivity, ILinkedActivityForm)
+    fields = fields.select("external_activity", "label", "due_date",
+                           "category", "points")
 
     @button.buttonAndHandler(_('Submit'), name='add')
     def handleAdd(self, action):
@@ -567,7 +592,13 @@ class FlourishLinkedActivityEditView(flourish.form.Form,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Linked Activity Details'
+    legend = 'External Score Details'
+
+    fields = field.Fields(ILinkedActivityExternalActivity, mode=DISPLAY_MODE)
+    fields += field.Fields(ILinkedActivityForm)
+    fields = fields.select("external_activity", "title", 'label',
+                           'due_date', "description", "category",
+                           "points")
 
     @button.buttonAndHandler(_('Submit'), name='apply')
     def handleApply(self, action):
@@ -994,7 +1025,7 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
         current = path[path.rfind('/')+1:]
         actions = [
             ('addActivity.html', _('Activity')),
-            ('addLinkedActivity.html', _('Linked Activity')),
+            ('addLinkedActivity.html', _('External Score')),
             ('addLinkedColumn.html', _('Linked Column')),
             ]
         for action, title in actions:
