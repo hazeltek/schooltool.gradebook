@@ -278,6 +278,8 @@
       permission="schooltool.edit"
       />
 
+  <zope:adapter factory=".activity.ActivityFormAdapter" />
+
   <flourish:page
       name="edit.html"
       for="..interfaces.ILinkedActivity"

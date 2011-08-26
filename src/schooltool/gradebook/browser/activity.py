@@ -25,10 +25,12 @@ from decimal import Decimal, InvalidOperation
 import xlwt
 from StringIO import StringIO
 
+from zope.component import adapts
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
+import zope.schema
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
 from zope.traversing.browser.absoluteurl import absoluteURL
@@ -323,11 +325,71 @@ class ActivityAddView(z3cform.AddForm):
         return absoluteURL(self.context, self.request)
 
 
+class IActivityForm(interface.Interface):
+    '''An interface used to build flourish activity forms'''
+
+    title = zope.schema.TextLine(
+        title=_(u"Title"),
+        description=u'',
+        required=True)
+
+    label = zope.schema.TextLine(
+        title=_(u"Column Label"),
+        description=_("Limit to 5 characters or less."),
+        required=False)
+
+    due_date = zope.schema.Date(
+        title=_("Due Date"),
+        required=True)
+
+    description = zope.schema.Text(
+        title=_("Description"),
+        required=False)
+
+    category = zope.schema.Choice(
+        title=_("Category"),
+        description=_("""Categories can be used to weigh different types of
+            activites differently when calculating averages.  The list of
+            categories can be set schoolwide set by your system
+            administrator."""),
+        vocabulary="schooltool.gradebook.categories",
+        required=True)
+
+    max = zope.schema.Int(
+        title=_(u'Full Credit Score'),
+        description=_("""This value must be an integer.  You may award extra
+            credit above this value."""),
+        required=True,
+        default=100)
+
+    min = zope.schema.Int(
+        title=_(u'Minimum Score'),
+        description=_('This value must be an integer.'),
+        required=True,
+        default=0)
+
+
+class ActivityFormAdapter(object):
+    implements(IActivityForm)
+    adapts(interfaces.IActivity)
+
+    def __init__(self, context):
+        self.__dict__['context'] = context
+
+    def __setattr__(self, name, value):
+        setattr(self.context, name, value)
+
+    def __getattr__(self, name):
+        return getattr(self.context, name)
+
+
 class FlourishActivityAddView(flourish.form.AddForm, ActivityAddView):
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
     legend = 'Activity Details'
+
+    fields = field.Fields(IActivityForm)
 
     @button.buttonAndHandler(_('Submit'), name='add')
     def handleAdd(self, action):
@@ -453,6 +515,8 @@ class FlourishActivityEditView(flourish.form.Form,
     template = InheritTemplate(flourish.page.Page.template)
     label = None
     legend = 'Activity Details'
+
+    fields = field.Fields(IActivityForm).omit('max', 'min')
 
     @button.buttonAndHandler(_('Submit'), name='apply')
     def handleApply(self, action):
