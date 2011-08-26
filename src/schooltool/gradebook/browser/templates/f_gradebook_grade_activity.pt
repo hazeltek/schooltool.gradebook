@@ -55,7 +55,7 @@
       </tr>
     </table>
 
-    <div class="buttons controls">
+    <div class="buttons">
       <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save"
              i18n:attributes="value" />
       <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
