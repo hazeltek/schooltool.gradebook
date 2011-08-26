@@ -501,7 +501,7 @@ class CustomScoreSystemDeleteLink(ModalFormLinkViewlet):
 
     @property
     def dialog_title(self):
-        title = _(u'Delete ${scoresystem}',
+        title = _(u'Hide ${scoresystem}',
                   mapping={'scoresystem': self.context.title})
         return translate(title, context=self.request)
 
@@ -512,7 +512,7 @@ class FlourishCustomScoreSystemDeleteView(DialogForm):
     dialog_close_actions = ('cancel',)
     label = None
 
-    @button.buttonAndHandler(_("Delete"), name='delete')
+    @button.buttonAndHandler(_("Hide"), name='delete')
     def handleDelete(self, action):
         self.context.hidden = True
         url = absoluteURL(self.context.__parent__, self.request)
