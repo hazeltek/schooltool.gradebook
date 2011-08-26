@@ -1,0 +1,42 @@
+<div>
+  <div metal:use-macro="macro:form">
+    <metal:block fill-slot="bottom">
+    <input type="hidden" name="form-submitted" value="" />
+    <h3 i18n:translate="">Report Activities</h3>
+    <table>
+      <thead>
+        <tr>
+          <th i18n:translate="">Title</th>
+          <th i18n:translate="">Score System</th>
+          <th i18n:translate="">Delete?</th>
+        </tr>
+      </thead>
+      <tal:block repeat="activity context/values">
+        <tr>
+          <td>
+            <span tal:content="activity/title" />
+            <a class="modify" href="" title="Edit"
+               tal:attributes="href string:${activity/@@absolute_url}/edit.html"
+               i18n:attributes="title"
+               i18n:translate="">
+              <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
+                   alt="Edit"
+                   i18n:attributes="alt" />
+            </a>
+          </td>
+          <td tal:content="activity/scoresystem/title "/>
+          <td>
+            <input type="image" alt="Delete" value="1" title="Delete"
+                   tal:attributes="name string:delete.${activity/__name__};
+                                   src context/++resource++schooltool.skin.flourish/remove-icon.png"
+                   i18n:attributes="alt title" />
+          </td>
+        </tr>
+      </tal:block>
+    </table>
+    <a tal:attributes="href string:${context/@@absolute_url}/addReportActivity.html"
+       i18n:translate="">Add Report Activity</a>
+    </metal:block>
+  </div>
+</div>
+
