@@ -2,7 +2,7 @@
   <div metal:use-macro="macro:form">
     <metal:block fill-slot="bottom">
     <input type="hidden" name="form-submitted" value="" />
-    <h3 i18n:translate="">Report Activities</h3>
+    <h2 i18n:translate="">Report Activities</h2>
     <table>
       <thead>
         <tr>
@@ -34,8 +34,10 @@
         </tr>
       </tal:block>
     </table>
-    <a tal:attributes="href string:${context/@@absolute_url}/addReportActivity.html"
-       i18n:translate="">Add Report Activity</a>
+    <h3>
+      <a tal:attributes="href string:${context/@@absolute_url}/addReportActivity.html"
+         i18n:translate="">Add Report Activity</a>
+    </h3>
     </metal:block>
   </div>
 </div>
