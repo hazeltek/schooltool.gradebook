@@ -254,7 +254,7 @@ class FlourishRequestStudentReportView(RequestReportDownloadDialogBase,
                                        RequestStudentReportView):
 
     def update(self):
-        RequestReportDownloadDialog.update(self)
+        RequestReportDownloadDialogBase.update(self)
         RequestStudentReportView.update(self)
 
 
@@ -262,7 +262,7 @@ class FlourishRequestFailingReportView(RequestReportDownloadDialogBase,
                                        RequestFailingReportView):
 
     def update(self):
-        RequestReportDownloadDialog.update(self)
+        RequestReportDownloadDialogBase.update(self)
         RequestFailingReportView.update(self)
 
 
@@ -270,7 +270,7 @@ class FlourishRequestAbsencesByDayView(RequestReportDownloadDialogBase,
                                        RequestAbsencesByDayView):
 
     def update(self):
-        RequestReportDownloadDialog.update(self)
+        RequestReportDownloadDialogBase.update(self)
         RequestAbsencesByDayView.update(self)
 
 
