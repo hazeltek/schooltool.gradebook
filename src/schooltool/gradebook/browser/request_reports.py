@@ -37,6 +37,7 @@ from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.skin.flourish.form import Dialog
+from schooltool.report.browser.report import RequestReportDownloadDialog
 
 
 class RequestFailingReportView(BrowserView):
@@ -236,12 +237,7 @@ class RequestStudentReportView(BrowserView):
         return absoluteURL(self.context, self.request) + '/reports'
 
 
-class RequestReportDownloadDialog(Dialog):
-
-    def updateDialog(self):
-        # XXX: fix the width of dialog content in css
-        if self.ajax_settings['dialog'] != 'close':
-            self.ajax_settings['dialog']['width'] = 544 + 16
+class RequestReportDownloadDialogBase(Dialog):
 
     @property
     def file_type(self):
@@ -254,7 +250,7 @@ class RequestReportDownloadDialog(Dialog):
             return unquote_plus(self.request['description'])
 
 
-class FlourishRequestStudentReportView(RequestReportDownloadDialog,
+class FlourishRequestStudentReportView(RequestReportDownloadDialogBase,
                                        RequestStudentReportView):
 
     def update(self):
@@ -262,7 +258,7 @@ class FlourishRequestStudentReportView(RequestReportDownloadDialog,
         RequestStudentReportView.update(self)
 
 
-class FlourishRequestFailingReportView(RequestReportDownloadDialog,
+class FlourishRequestFailingReportView(RequestReportDownloadDialogBase,
                                        RequestFailingReportView):
 
     def update(self):
@@ -270,9 +266,15 @@ class FlourishRequestFailingReportView(RequestReportDownloadDialog,
         RequestFailingReportView.update(self)
 
 
-class FlourishRequestAbsencesByDayView(RequestReportDownloadDialog,
+class FlourishRequestAbsencesByDayView(RequestReportDownloadDialogBase,
                                        RequestAbsencesByDayView):
 
     def update(self):
         RequestReportDownloadDialog.update(self)
         RequestAbsencesByDayView.update(self)
+
+
+class FlourishRequestSectionAbsencesView(RequestReportDownloadDialog):
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/section_absences.pdf'
