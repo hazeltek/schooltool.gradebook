@@ -34,7 +34,7 @@
     <div class="buttons">
       <input type="submit" class="button-ok" name="DOWNLOAD"
              onclick="return ST.dialogs.submit(this, this);"
-             value="Submit" i18n:attributes="value" />
+             value="Download" i18n:attributes="value" />
       <input type="submit" class="button-cancel" name="CANCEL"
              onclick="return ST.dialogs.close(this);"
              value="Cancel" i18n:attributes="value cancel-button" />
