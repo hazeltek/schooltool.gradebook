@@ -1,0 +1,25 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      This form allows you to create a customized "score system" or grading scale.
+    </p>
+    <p i18n:translate="">
+      A score system is made up of a sequence of possible scores with decreasing values.
+    </p>
+    <p i18n:translate="">
+      Each score is associated with a numeric point value. For example, in the US, an "A" is usually worth 4 points, a "B," 3 points, etc. This value will be used in any calculations made with the scores, such as finding a grade point average.
+    </p>
+    <p i18n:translate="">
+      Each score is also associated with a minimum percentage necessary to achieve the corresponding grade. For example, 95% and above is an "A," 87% and up is a "B," etc.
+    </p>
+    <p i18n:translate="">
+      Enter an abbreviation for a score only if the score has more than four characters and you wish to create an alternative abbreviation for the gradebook.
+    </p>
+    <p i18n:translate="">
+      Start with the highest score. Click "Add" to add scores until you have created a score with a minimum percentage of 0.
+    </p>
+  </div>
+</metal:block>

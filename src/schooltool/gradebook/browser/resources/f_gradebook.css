@@ -217,18 +217,18 @@ table.scoresystem-scores tbody tr {
 }
 
 table.scoresystem-scores tbody td {
-    width: 125px;
     padding: 0px;
     vertical-align: middle;
+    width: 106px;
 }
 
 table.scoresystem-scores tbody td.buttons {
-    width: 44px;
+    width: 104px;
 }
 
 table.scoresystem-scores tbody td.buttons input[type="submit"] {
-    width: 100%;
     height: 24px;
+    width: 100%;
 }
 
 table.scoresystem-scores tbody input[type="text"] {
@@ -237,10 +237,11 @@ table.scoresystem-scores tbody input[type="text"] {
     color: #333333;
     font-size: 12px;
     height: 20px;
-    width: 123px;
+    width: 106px;
 }
+
 table.scoresystem-scores tbody input[type="text"]:focus {
     border: 2px solid #aa0000;
     height: 18px;
-    width: 121px;
+    width: 104px;
 }

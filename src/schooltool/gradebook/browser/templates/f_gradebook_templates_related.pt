@@ -1,0 +1,14 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Use report sheets to collect data about student performance or
+      behavior in all classes.
+    </p>
+    <p i18n:translate="">
+      The first step in the process is to create a new report sheet template.
+    </p>
+  </div>
+</metal:block>

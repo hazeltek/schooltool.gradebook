@@ -23,6 +23,24 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="f_scoresystems_related.pt"
+      view=".scoresystem.FlourishScoreSystemContainerView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="f_scoresystem_add_related.pt"
+      view=".scoresystem.FlourishCustomScoreSystemAddView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
   <flourish:page
       name="add.html"
       for="schooltool.requirement.interfaces.IScoreSystemContainer"

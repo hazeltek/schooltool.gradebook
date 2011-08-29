@@ -51,12 +51,6 @@
     </table>
 
     <h3 i18n:translate="">Summary Worksheet</h3>
-    <p i18n:translate="">
-      You can add a summary worksheet to each of your gradebooks that automatically includes a column for the average of all existing worksheets.
-    </p>
-    <p i18n:translate="">
-      For example, if you have three worksheets in a section, "A," "B," and "C," and click "Create Summary Worksheets," an additional sheet, entitled "Summary" will be created, which includes the average scores from "A," "B" and "C" in the first three columns.
-    </p>
     <p tal:condition="view/summaryFound">
       <input type="checkbox" name="overwrite">
       <span i18n:translate="">Overwrite existing worksheets titled "Summary".</span>
