@@ -537,6 +537,20 @@
       action="deploy_report_worksheet.html"
       permission="schooltool.edit"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Hide Report Sheet"
+      for="schooltool.term.interfaces.ITerm"
+      action="hide_report_worksheet.html"
+      permission="schooltool.edit"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Unhide Report Sheet"
+      for="schooltool.term.interfaces.ITerm"
+      action="unhide_report_worksheet.html"
+      permission="schooltool.edit"
+      />
 
   <!-- Views for ITerm -->
   <page
@@ -544,6 +558,20 @@
       for="schooltool.term.interfaces.ITerm"
       class=".report_card.DeployReportWorksheetTermView"
       template="templates/deploy_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="hide_report_worksheet.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".report_card.HideReportWorksheetView"
+      template="templates/hide_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="unhide_report_worksheet.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".report_card.UnhideReportWorksheetView"
+      template="templates/unhide_report_worksheet.pt"
       permission="schooltool.edit"
       />
   <page
