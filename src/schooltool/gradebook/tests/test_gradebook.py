@@ -24,8 +24,6 @@ $Id$
 import unittest, doctest
 from pprint import pprint
 
-import z3c.optionstorage
-import zope.annotation.interfaces
 from zope.app.testing import setup
 from zope.component import provideAdapter, provideUtility
 
@@ -34,6 +32,7 @@ from schooltool.relationship.tests import setUpRelationships
 from schooltool.requirement import testing
 from schooltool.term.interfaces import IDateManager
 from schooltool.gradebook import activity, gradebook, interfaces
+from schooltool.gradebook import category
 from schooltool.gradebook.tests import stubs
 
 
@@ -44,15 +43,12 @@ def setUp(test):
     testing.fixDecimal()
 
     provideAdapter(
-        z3c.optionstorage.OptionStorage,
-        (zope.annotation.interfaces.IAnnotatable,),
-        z3c.optionstorage.interfaces.IOptionStorage)
-
-    provideAdapter(
         activity.getSectionActivities,
         (ISection,), interfaces.IActivities)
 
     provideAdapter(gradebook.Gradebook)
+
+    provideAdapter(category.getCategories)
 
     provideAdapter(
         stubs.SomeProductStub,

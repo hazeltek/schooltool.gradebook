@@ -22,14 +22,16 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
+import urllib
+
 import zope.interface
 import zope.schema
 from zope.app.form import utility
 from zope.formlib.interfaces import IInputWidget
 
 from schooltool.gradebook import GradebookMessage as _
-from schooltool.app import app
-from schooltool.gradebook import category
+from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.gradebook.interfaces import ICategoryContainer
 
 
 def getKey(name):
@@ -37,13 +39,14 @@ def getKey(name):
     name = name.lower()
     return name.encode('utf-8').encode('punycode')
 
+
 class ICategoriesForm(zope.interface.Interface):
     """Schema for the form."""
 
     categories = zope.schema.Set(
         title=_('Categories'),
         value_type=zope.schema.Choice(
-            vocabulary="schooltool.gradebook.categories")
+            vocabulary="schooltool.gradebook.category-vocabulary")
         )
 
     newCategory = zope.schema.TextLine(
@@ -52,7 +55,7 @@ class ICategoriesForm(zope.interface.Interface):
 
     defaultCategory = zope.schema.Choice(
         title=_("Default Category"),
-        vocabulary="schooltool.gradebook.categories")
+        vocabulary="schooltool.gradebook.category-vocabulary")
 
 
 class CategoryOverview(object):
@@ -60,13 +63,13 @@ class CategoryOverview(object):
     message = None
 
     def __init__(self, context, request):
-        self.categories = category.getCategories(app.getSchoolToolApplication())
+        self.categories = ICategoryContainer(ISchoolToolApplication(None))
         super(CategoryOverview, self).__init__(context, request)
 
     def getData(self):
         return {'categories': [],
                 'newCategory': '',
-                'defaultCategory': self.categories.getDefaultKey()}
+                'defaultCategory': self.categories.default_key}
 
     def update(self):
         if 'REMOVE' in self.request:
@@ -75,7 +78,7 @@ class CategoryOverview(object):
             if not keys:
                 return
             for key in keys:
-                self.categories.delValue(key, 'en')
+                del self.categories[key]
             self.message = _('Categories successfully deleted.')
 
         elif 'ADD' in self.request:
@@ -83,13 +86,15 @@ class CategoryOverview(object):
                 self, ICategoriesForm, names=['newCategory'])['newCategory']
             if not value:
                 return
-            self.categories.addValue(getKey(value), 'en', value)
+            name = unicode(value).encode('punycode')
+            name = urllib.quote(name)
+            self.categories[name] = value
             self.message = _('Category successfully added.')
 
         elif 'CHANGE' in self.request:
             key = utility.getWidgetsData(self, ICategoriesForm,
                 names=['defaultCategory'])['defaultCategory']
-            self.categories.setDefaultKey(key)
+            self.categories.default_key = key
             self.message = _('Default category successfully changed.')
 
         utility.setUpWidgets(

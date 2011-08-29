@@ -58,7 +58,6 @@ from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
 from schooltool.gradebook.activity import Activities, Worksheet
-from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -352,7 +351,7 @@ class IActivityForm(interface.Interface):
             activites differently when calculating averages.  The list of
             categories can be set schoolwide set by your system
             administrator."""),
-        vocabulary="schooltool.gradebook.categories",
+        vocabulary="schooltool.gradebook.category-vocabulary",
         required=True)
 
     max = zope.schema.Int(
@@ -626,12 +625,12 @@ class WeightCategoriesView(object):
 
     def update(self):
         self.message = ''
-        categories = getCategories(ISchoolToolApplication(None))
+        categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
         newValues = {}
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
         elif 'UPDATE_SUBMIT' in self.request:
-            for category in sorted(categories.getKeys()):
+            for category in sorted(categories.keys()):
                 if category in self.request and self.request[category].strip():
                     value = self.request[category].strip()
                     try:
@@ -662,9 +661,9 @@ class WeightCategoriesView(object):
     def rows(self):
         language = 'en' # XXX this need to be dynamic
         weights = self.context.getCategoryWeights()
-        categories = getCategories(ISchoolToolApplication(None))
+        categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
         result = []
-        for category in sorted(categories.getKeys()):
+        for category in sorted(categories.keys()):
             if category in self.request:
                 weight = self.request[category]
             else:
@@ -678,7 +677,7 @@ class WeightCategoriesView(object):
                             weight = weight[:-1]
             row = {
                 'category': category,
-                'category_value': categories.getValue(category, language),
+                'category_value': categories[category],
                 'weight': weight,
                 }
             result.append(row)
@@ -805,17 +804,17 @@ class LinkedColumnBase(BrowserView):
 
     def getCategories(self):
         language = 'en' # XXX this need to be dynamic
-        categories = getCategories(ISchoolToolApplication(None))
+        categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
 
         results = []
         if self.addForm:
             default_category = defaultCategory(None)
         else:
             default_category = self.context.category
-        for category in sorted(categories.getKeys()):
+        for category in sorted(categories.keys()):
             result = {
                 'name': category,
-                'value': categories.getValue(category, language),
+                'value': categories[category],
                 'selected': category == default_category and 'selected' or None,
                 }
             results.append(result)
@@ -984,8 +983,8 @@ class FlourishEditLinkedColumnView(flourish.page.Page, EditLinkedColumnView):
 
 
 def defaultCategory(adapter):
-    categories = getCategories(ISchoolToolApplication(None))
-    return categories.getDefaultKey()
+    categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
+    return categories.default_key
 
 
 ActivityDefaultCategory = widget.ComputedWidgetAttribute(

@@ -23,13 +23,14 @@
       factory=".gradebook_init.getGradebookTemplates" />
 
   <!-- Category Vocabulary -->
-  <include package="z3c.optionstorage" />
- 
   <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component="schooltool.gradebook.category.CategoryVocabulary"
-      name="schooltool.gradebook.categories"
-      />
+     factory=".category.categoryVocabularyFactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.category-vocabulary"
+     />
+
+  <adapter factory=".category.getCategories" />
+
   <adapter
       factory=".gradebook_init.GradebookInit"
       name="schooltool.gradebook" />

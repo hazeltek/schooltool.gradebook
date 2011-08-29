@@ -22,34 +22,57 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-from zope.interface import classProvides
-from zope.schema.interfaces import IVocabularyFactory
+import z3c.optionstorage.vocabulary
+from zope.interface import implements, implementer
+from zope.component import adapter
+from zope.schema.interfaces import IIterableVocabulary
+from zope.container.btree import BTreeContainer
 
-import z3c.optionstorage
-from z3c.optionstorage import vocabulary, interfaces
-from schooltool.app.app import getSchoolToolApplication
+from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.app.utils import TitledContainerItemVocabulary
+from schooltool.gradebook.interfaces import ICategoryContainer
 
 
-VOCABULARY_NAME = 'schooltool.gradebook.activities'
+CATEGORIES_KEY = 'schooltool.gradebook.category'
 
+
+# BBB: for old data.fs'es
 class CategoryVocabulary(z3c.optionstorage.vocabulary.OptionStorageVocabulary):
-    """Activity Categories Vocabulary"""
-
-    classProvides(IVocabularyFactory)
-
-    def __init__(self, context=None, name=None):
-        st = getSchoolToolApplication()
-        if name is None:
-            name = VOCABULARY_NAME
-        self.dict = z3c.optionstorage.queryOptionStorage(st, name)
-        # TODO: Only support English for now.
-        self.language = 'en'
-        self.defaultlanguage = self.dict.getDefaultLanguage()
+    pass
 
 
+class CategoryContainer(BTreeContainer):
+    implements(ICategoryContainer)
+
+    default_key = None
+
+    @property
+    def default(self):
+        return self.get(self.default_key)
+
+
+class CategoriesVocabulary(TitledContainerItemVocabulary):
+    """Vocabulary of categorys."""
+    implements(IIterableVocabulary)
+
+    def getTitle(self, item):
+        return item
+
+    def __iter__(self):
+        for key in sorted(self.container):
+            yield self.getTerm(self.container[key])
+
+    @property
+    def container(self):
+        app = ISchoolToolApplication(None)
+        return ICategoryContainer(app)
+
+
+def categoryVocabularyFactory():
+    return CategoriesVocabulary
+
+
+@adapter(ISchoolToolApplication)
+@implementer(ICategoryContainer)
 def getCategories(app):
-    """Return the option dictionary for the categories."""
-    storage = z3c.optionstorage.interfaces.IOptionStorage(app)
-    if VOCABULARY_NAME not in storage:
-        storage[VOCABULARY_NAME] = z3c.optionstorage.OptionDict()
-    return storage[VOCABULARY_NAME]
+    return app.get(CATEGORIES_KEY)
