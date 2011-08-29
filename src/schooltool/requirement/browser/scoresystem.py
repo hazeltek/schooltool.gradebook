@@ -29,16 +29,20 @@ import zope.schema
 from zope.app.form import utility
 from zope.browserpage import ViewPageTemplateFile
 from zope.container.interfaces import INameChooser
+from zope.i18n import translate
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.interface import implements, directlyProvides
+from z3c.form import button
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import interfaces, scoresystem
 from schooltool.skin.flourish.page import Page
 from schooltool.skin.flourish.page import RefineLinksViewlet
+from schooltool.skin.flourish.page import ModalFormLinkViewlet
+from schooltool.skin.flourish.form import DialogForm
+from schooltool.gradebook import GradebookMessage as _
 
 
 MISSING_TITLE = _('The Title field must not be empty.')
@@ -462,6 +466,10 @@ class FlourishScoreSystemContainerLinks(RefineLinksViewlet):
     """Score system container links viewlet."""
 
 
+class FlourishCustomScoreSystemActionsLinks(RefineLinksViewlet):
+    """Custom score system actions links viewlet."""
+
+
 class FlourishCustomScoreSystemAddView(Page, CustomScoreSystemAddView):
 
     def update(self):
@@ -487,3 +495,36 @@ class FlourishCustomScoreSystemView(Page, CustomScoreSystemView):
             row = self.buildScoreRow(displayed, abbr, value, percent, passing)
             result.append(row)
         return result
+
+
+class CustomScoreSystemDeleteLink(ModalFormLinkViewlet):
+
+    @property
+    def dialog_title(self):
+        title = _(u'Hide ${scoresystem}',
+                  mapping={'scoresystem': self.context.title})
+        return translate(title, context=self.request)
+
+
+class FlourishCustomScoreSystemDeleteView(DialogForm):
+
+    dialog_submit_actions = ('delete',)
+    dialog_close_actions = ('cancel',)
+    label = None
+
+    @button.buttonAndHandler(_("Hide"), name='delete')
+    def handleDelete(self, action):
+        self.context.hidden = True
+        url = absoluteURL(self.context.__parent__, self.request)
+        self.request.response.redirect(url)
+        # We never have errors, so just close the dialog.
+        self.ajax_settings['dialog'] = 'close'
+
+    @button.buttonAndHandler(_("Cancel"), name='cancel')
+    def handle_cancel_action(self, action):
+        pass
+
+    def updateActions(self):
+        super(FlourishCustomScoreSystemDeleteView, self).updateActions()
+        self.actions['delete'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')

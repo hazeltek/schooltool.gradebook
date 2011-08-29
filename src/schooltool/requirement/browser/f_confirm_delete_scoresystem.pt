@@ -1,0 +1,6 @@
+<h3 i18n:domain="schooltool.gradebook" i18n:translate="">
+  Hiding this score system will make it unavailable for future use but
+  will retain existing scores.  This cannot currently be undone, but a
+  new version of the same score system can be created.
+</h3>
+<div metal:use-macro="macro:form" />

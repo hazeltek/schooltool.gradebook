@@ -540,6 +540,12 @@
         template="templates/f_request_absences_by_day.pt"
         permission="schooltool.edit"
         />
+    <flourish:page
+        name="request_section_absences.html"
+        for="schooltool.course.interfaces.ISection"
+        class=".request_reports.FlourishRequestSectionAbsencesView"
+        permission="schooltool.edit"
+      />
     <report:reportLink
          name="absences_by_section"
          for="schooltool.course.interfaces.ISection"
@@ -549,7 +555,7 @@
          description="Summary of absences and tardies from a single section and term."
          title="Absences"
          file_type="pdf"
-         link="section_absences.pdf"
+         link="request_section_absences.html"
          />
   </configure>
 

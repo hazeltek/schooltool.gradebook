@@ -9,9 +9,6 @@
           <th i18n:translate="">
             Title
           </th>
-          <th i18n:translate="">
-            Delete
-          </th>
         </tr>
       </thead>
       <tbody>
@@ -20,17 +17,15 @@
             <a tal:attributes="href scoresystem/url"
                tal:content="scoresystem/title" />
           </td>
-          <td>
-            <input type="image" alt="Delete" value="1" title="Delete"
-                   tal:attributes="name scoresystem/hide_name;
-                                   src context/++resource++schooltool.skin.flourish/remove-icon.png"
-                   i18n:attributes="alt title" />
-          </td>
         </tr>
       </tbody>
     </table>
   </form>
-  <p tal:condition="not:scoresystems" i18n:translate="">
+  <h3 tal:condition="not:scoresystems" i18n:translate="">
     There are none.
-  </p>
+  </h3>
+  <h3>
+    <a tal:attributes="href  string:${context/schooltool:app/@@absolute_url}/manage"
+       i18n:translate="">Done</a>
+  </h3>
 </div>
