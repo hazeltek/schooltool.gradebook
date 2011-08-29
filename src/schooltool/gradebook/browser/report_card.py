@@ -38,11 +38,13 @@ from z3c.form import form, field, button
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.common.inlinept import InheritTemplate
+from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
+from schooltool.skin.flourish.viewlet import ViewletManager
 from schooltool.term.interfaces import ITerm
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
@@ -122,10 +124,7 @@ class TemplatesView(object):
                     self.context.changePosition(name, new_pos-1)
 
 
-class FlourishManageReportSheetsOverview(flourish.page.Content):
-
-    body_template = ViewPageTemplateFile(
-        'templates/f_manage_report_sheets_overview.pt')
+class FlourishReportSheetsBase(object):
 
     @property
     def has_schoolyear(self):
@@ -142,15 +141,135 @@ class FlourishManageReportSheetsOverview(flourish.page.Content):
 
     def sheets(self):
         if self.has_schoolyear:
-            result = []
             root = IGradebookRoot(ISchoolToolApplication(None))
             schoolyear = self.schoolyear
-            for term in schoolyear.values():
-                deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
-                for sheet in root.deployed.values():
+            templates = {}
+            for sheet in root.deployed.values():
+                template = templates.setdefault(sheet.title, {
+                    'obj': sheet,
+                    'terms': [False] * len(schoolyear),
+                    })
+                for index, term in enumerate(schoolyear.values()):
+                    deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
                     if sheet.__name__.startswith(deployedKey):
-                        result.append(sheet)
-            return result
+                        template['terms'][index] = True
+            return [v for k, v in sorted(templates.items())
+                    if v['terms'] != [False] * len(schoolyear)]
+        else:
+            return []
+
+
+class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
+                                         flourish.page.Content):
+    """A flourish viewlet for showing deployed report sheets in school view"""
+
+    body_template = ViewPageTemplateFile(
+        'templates/f_manage_report_sheets_overview.pt')
+
+
+class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
+    """A flourish view for managing report sheet deployment"""
+
+    @property
+    def terms(self):
+        result = [{
+            'name': '',
+            'title': _('-- Entire year --'),
+            'selected': 'selected',
+            }]
+        for term in self.schoolyear.values():
+            result.append({
+                'name': term.__name__,
+                'title': term.title,
+                'selected': '',
+                })
+        return result
+
+    @property
+    def templates(self):
+        result = [{
+            'name': '',
+            'title': _('-- Select a template --'),
+            'selected': 'selected',
+            }]
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        for template in root.templates.values():
+            result.append({
+                'name': template.__name__,
+                'title': template.title,
+                'selected': '',
+                })
+        return result
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        if 'SUBMIT' in self.request:
+            if self.request.get('template'):
+                root = IGradebookRoot(ISchoolToolApplication(None))
+                template = root.templates[self.request['template']]
+                if self.request.get('term'):
+                    term = self.schoolyear[self.request.get('term')]
+                    self.deploy(term, template)
+                else:
+                    for term in self.schoolyear.values():
+                        self.deploy(term, template)
+
+    def deploy(self, term, template):
+        # copy worksheet template to the term
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        deployedKey = '%s_%s' % (self.schoolyear.__name__, term.__name__)
+        deployedWorksheet = Worksheet(template.title)
+        chooser = INameChooser(root.deployed)
+        name = chooser.chooseName(deployedKey, deployedWorksheet)
+        root.deployed[name] = deployedWorksheet
+        copyActivities(template, deployedWorksheet)
+
+        # now copy the template to all sections in the term
+        sections = ISectionContainer(term)
+        for section in sections.values():
+            activities = IActivities(section)
+            worksheetCopy = Worksheet(deployedWorksheet.title)
+            worksheetCopy.deployed = True
+            activities[deployedWorksheet.__name__] = worksheetCopy
+            copyActivities(deployedWorksheet, worksheetCopy)
+
+    def nextURL(self):
+        url = absoluteURL(ISchoolToolApplication(None), self.request)
+        return url + '/manage'
+
+
+class ReportSheetsTertiaryNavigationManager(ViewletManager):
+
+    template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    list_class = 'third-nav'
+
+    @property
+    def items(self):
+        result = []
+        schoolyears = ISchoolYearContainer(self.context)
+        active = schoolyears.getActiveSchoolYear()
+        if 'schoolyear_id' in self.request:
+            schoolyear_id = self.request['schoolyear_id']
+            active = schoolyears.get(schoolyear_id, active)
+        for schoolyear in schoolyears.values():
+            url = '%s/%s?schoolyear_id=%s' % (
+                absoluteURL(self.context, self.request),
+                'report_sheets',
+                schoolyear.__name__)
+            result.append({
+                'class': schoolyear.first == active.first and 'active' or None,
+                'viewlet': u'<a href="%s">%s</a>' % (url, schoolyear.title),
+                })
+        return result
 
 
 class FlourishTemplatesView(flourish.page.Page):
