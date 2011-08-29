@@ -1,0 +1,25 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Report sheets use the SchoolTool gradebook to collect data and
+      commentary from teachers about students in all sections.
+    </p>
+    <p i18n:translate="">
+      The first step in the process is to
+      <a i18n:translate="" i18n:name="add-sheet"
+         tal:attributes="href string:${context/schooltool:app/@@absolute_url}/gradebook/templates">create a new report sheet template.</a>
+    </p>
+    <p i18n:translate="">
+      Once you have a template, use this form to add the report sheet
+      to the gradebook of every section that meets in the specified
+      term or terms.
+    </p>
+    <p i18n:translate="">
+      Data collected through report sheets can be included in the
+      standard report card or custom reports.
+    </p>
+  </div>
+</metal:block>

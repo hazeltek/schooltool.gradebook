@@ -419,6 +419,16 @@
       permission="schooltool.edit"
       />
 
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_add_linked_activity_related.pt"
+      view=".activity.FlourishLinkedActivityAddView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
   <flourish:viewlet
       name="addReportSheet.html"
       title="Report Sheet Template"
@@ -433,6 +443,32 @@
       subtitle="Edit"
       class="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
       content_template="templates/f_template_manage.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_template_related.pt"
+      view="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="reportsheet-add-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".report_card.ReportSheetAddLinks"
+      view="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+      title="Add"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="addReportActivity.html"
+      title="Report Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".report_card.ReportSheetAddLinks"
       permission="schooltool.edit"
       />
 
@@ -482,6 +518,15 @@
       title="Report Sheet Deployment"
       content_template="templates/f_report_sheets.pt"
       permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_report_sheets_related.pt"
+      view=".report_card.FlourishReportSheetsView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
       />
 
   <flourish:viewletManager

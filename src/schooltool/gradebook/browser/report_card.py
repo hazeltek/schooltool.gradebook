@@ -292,6 +292,10 @@ class FlourishReportSheetsOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish report sheet templates overview add links viewlet."""
 
 
+class ReportSheetAddLinks(flourish.page.RefineLinksViewlet):
+    """Report sheet add links viewlet."""
+
+
 class FlourishReportSheetAddView(flourish.form.AddForm):
     """flourish view for adding a report sheet template."""
 
@@ -306,7 +310,8 @@ class FlourishReportSheetAddView(flourish.form.AddForm):
 
     @button.buttonAndHandler(_("Cancel"))
     def handle_cancel_action(self, action):
-        self.request.response.redirect(self.nextURL())
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
 
     def create(self, data):
         worksheet = ReportWorksheet(data['title'])
@@ -316,10 +321,16 @@ class FlourishReportSheetAddView(flourish.form.AddForm):
         chooser = INameChooser(self.context)
         name = chooser.chooseName(worksheet.title, worksheet)
         self.context[name] = worksheet
+        self._worksheet = worksheet
         return worksheet
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request)
+        return absoluteURL(self._worksheet, self.request)
+
+    def updateActions(self):
+        super(FlourishReportSheetAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
 
 
 class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
@@ -356,6 +367,11 @@ class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+    def updateActions(self):
+        super(FlourishReportSheetEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
 
 
 def ReportScoreSystemsVocabulary(context):
@@ -496,7 +512,7 @@ class ReportActivityAddView(form.AddForm):
                 min=minimum, max=maximum)
         else:
             scoresystem = data['scoresystem']
-        activity = ReportActivity(data['title'], categories.getDefaultKey(), 
+        activity = ReportActivity(data['title'], categories.default, 
                                   scoresystem, data['description'],
                                   data['label'])
         return activity

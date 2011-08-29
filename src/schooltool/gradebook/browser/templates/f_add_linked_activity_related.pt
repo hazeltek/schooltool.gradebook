@@ -1,0 +1,15 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Use external scores to add data from sources outside the
+      SchoolTool Gradebook.
+    </p>
+    <p i18n:translate="">
+      External score sources must be configured by your system
+      administrator
+    </p>
+  </div>
+</metal:block>

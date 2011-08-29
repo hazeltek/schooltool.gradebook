@@ -460,9 +460,6 @@ class ILinkedActivityExternalActivity(interface.Interface):
 
     external_activity = schema.Choice(
         title=_(u"External Score Source"),
-        description=_("""Use external scores to add data from sources outside
-            the SchoolTool Gradebook.  External scores must be configured by
-            your system administrator"""),
         vocabulary="schooltool.gradebook.external_activities",
         required=True)
 
@@ -1024,8 +1021,8 @@ class ActivityAddTertiaryNavigationManager(flourish.page.TertiaryNavigationManag
         current = path[path.rfind('/')+1:]
         actions = [
             ('addActivity.html', _('Activity')),
-            ('addLinkedActivity.html', _('External Score')),
             ('addLinkedColumn.html', _('Linked Column')),
+            ('addLinkedActivity.html', _('External Score')),
             ]
         for action, title in actions:
             url = '%s/%s' % (absoluteURL(self.context, self.request), action)

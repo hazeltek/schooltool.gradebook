@@ -1,0 +1,15 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      A report sheet is a special kind of gradebook worksheet that can
+      be deployed to all teacher gradebooks in the school.
+    </p>
+    <p i18n:translate="">
+      Each deployed worksheet will contain the report activities
+      defined in its template.
+    </p>
+  </div>
+</metal:block>
