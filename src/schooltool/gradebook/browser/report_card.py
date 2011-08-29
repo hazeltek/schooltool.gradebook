@@ -41,6 +41,7 @@ from schooltool.common.inlinept import InheritTemplate
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
 from schooltool.term.interfaces import ITerm
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
@@ -127,8 +128,29 @@ class FlourishManageReportSheetsOverview(flourish.page.Content):
         'templates/f_manage_report_sheets_overview.pt')
 
     @property
-    def templates(self):
-        return IGradebookTemplates(ISchoolToolApplication(None), None)
+    def has_schoolyear(self):
+        return self.schoolyear is not None
+
+    @property
+    def schoolyear(self):
+        schoolyears = ISchoolYearContainer(self.context)
+        result = schoolyears.getActiveSchoolYear()
+        if 'schoolyear_id' in self.request:
+            schoolyear_id = self.request['schoolyear_id']
+            result = schoolyears.get(schoolyear_id, result)
+        return result
+
+    def sheets(self):
+        if self.has_schoolyear:
+            result = []
+            root = IGradebookRoot(ISchoolToolApplication(None))
+            schoolyear = self.schoolyear
+            for term in schoolyear.values():
+                deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
+                for sheet in root.deployed.values():
+                    if sheet.__name__.startswith(deployedKey):
+                        result.append(sheet)
+            return result
 
 
 class FlourishTemplatesView(flourish.page.Page):
