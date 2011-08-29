@@ -1,19 +1,22 @@
 <div class="manage-view" i18n:domain="schooltool"
-     tal:define="templates view/templates">
+     tal:condition="view/has_schoolyear"
+     tal:define="sheets view/sheets">
   <h3>
-    <a title="Manage Report Sheet Templates"
-       tal:attributes="href string:${context/@@absolute_url}/gradebook/templates"
+    <a title="Manage Report Sheets"
+       tal:attributes="href string:${context/@@absolute_url}/report_sheets"
        i18n:attributes="title"
        i18n:translate="">
-      Report Sheet Templates
+      Report Sheets
     </a>
   </h3>
-  <p i18n:translate="" tal:condition="templates">
+  <p i18n:translate="" tal:condition="sheets">
     There are
-    <metal:block tal:replace="python:len(templates)" i18n:name="count"/>
-    report sheet templates defined
+    <metal:block tal:replace="python:len(sheets)" i18n:name="count"/>
+    report sheets deployed in
+    <metal:block tal:replace="view/schoolyear/title" i18n:name="schoolyear"/>
   </p>
-  <p i18n:translate="" tal:condition="not: templates">
-    There are no report sheet templates defined
+  <p i18n:translate="" tal:condition="not: sheets">
+    There are no report sheets deployed in
+    <metal:block tal:replace="view/schoolyear/title" i18n:name="schoolyear"/>
   </p>
 </div>

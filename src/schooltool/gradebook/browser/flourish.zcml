@@ -429,6 +429,32 @@
         />
   </configure>
 
+  <flourish:viewlet
+      name="gradebook/templates"
+      after="scoresystems"
+      title="Report Sheet Templates"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="report_sheets"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".report_card.FlourishReportSheetsView"
+      title="Report Sheet Deployment"
+      content_template="templates/f_report_sheets.pt"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".report_card.ReportSheetsTertiaryNavigationManager"
+      view=".report_card.FlourishReportSheetsView"
+      permission="zope.Public"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"

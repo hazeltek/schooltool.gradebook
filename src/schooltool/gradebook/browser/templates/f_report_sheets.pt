@@ -1,0 +1,78 @@
+<div i18n:domain="schooltool"
+     tal:define="sheets view/sheets; terms view/terms; schoolyear view/schoolyear">
+  <form method="post" class="standalone"
+        tal:condition="view/has_schoolyear"
+        tal:attributes="action request/getURL">
+    <input type="hidden" name="schoolyear_id" 
+           tal:attributes="value request/schoolyear_id|nothing" />
+    <div>
+      <h3 i18n:translate="">Currently Deployed Report Sheets</h3>
+      <table>
+        <thead>
+          <tr>
+            <th i18n:translate="">Report Sheet</th>
+            <tal:block repeat="term schoolyear/values">
+              <th tal:content="term/title" />
+            </tal:block>
+          </tr>
+        </thead>
+        <tr tal:repeat="sheet sheets">
+          <td tal:content="sheet/obj/title" />
+            <tal:block repeat="term sheet/terms">
+              <td tal:condition="term">X</td>
+              <td tal:condition="not: term"></td>
+            </tal:block>
+        </tr>
+        <tr tal:condition="not: sheets">
+          <td colspan="2" i18n:translate="">This year has no report sheets deployed.</td>
+        </tr>
+      </table>
+    </div>
+    <div class="viewspace">
+      <fieldset>
+        <legend>
+          <span i18n:translate="">Select report sheet to deploy</span>
+        </legend>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Term or Year</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Select a term or deploy to the entire year.
+          </p>
+          <div class="widget">
+            <select id="term" name="term">
+              <tal:block repeat="term terms">
+                <option tal:attributes="value term/name; selected term/selected"
+                        tal:content="term/title" />
+              </tal:block>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="template">
+              <span i18n:translate="">Report Sheet Template</span>
+            </label>
+          </div>
+          <div class="widget">
+            <select id="template" name="template">
+              <tal:block repeat="template view/templates">
+                <option tal:attributes="value template/name; selected template/selected"
+                        tal:content="template/title" />
+              </tal:block>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="buttons controls">
+      <input type="submit" class="button-ok" name="SUBMIT" value="Submit"
+             i18n:attributes="value" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+  </form>
+</div>
+
