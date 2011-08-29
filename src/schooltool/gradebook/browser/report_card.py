@@ -44,7 +44,7 @@ from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
-from schooltool.skin.flourish.viewlet import ViewletManager
+from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
@@ -239,7 +239,7 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         return url + '/manage'
 
 
-class ReportSheetsTertiaryNavigationManager(ViewletManager):
+class ReportSheetsTertiaryNavigationManager(TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -249,8 +249,6 @@ class ReportSheetsTertiaryNavigationManager(ViewletManager):
           </li>
         </ul>
     """)
-
-    list_class = 'third-nav'
 
     @property
     def items(self):

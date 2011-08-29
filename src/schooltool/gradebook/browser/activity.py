@@ -1006,7 +1006,7 @@ ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
     )
 
 
-class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+class ActivityAddTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -1016,8 +1016,6 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
           </li>
         </ul>
     """)
-
-    list_class = 'third-nav'
 
     @property
     def items(self):
