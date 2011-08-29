@@ -442,7 +442,6 @@
       name="report_sheets"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".report_card.FlourishReportSheetsView"
-      title="Report Sheet Deployment"
       content_template="templates/f_report_sheets.pt"
       permission="schooltool.view"
       />

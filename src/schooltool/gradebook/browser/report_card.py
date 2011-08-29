@@ -32,6 +32,7 @@ from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.i18n import translate
 
 from z3c.form import form, field, button
 
@@ -169,6 +170,12 @@ class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
 
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
     """A flourish view for managing report sheet deployment"""
+
+    @property
+    def title(self):
+        title = _(u'Report Sheets for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
 
     @property
     def terms(self):
