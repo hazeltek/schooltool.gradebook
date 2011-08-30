@@ -32,6 +32,7 @@ from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.i18n import translate
 
 from z3c.form import form, field, button
 
@@ -124,7 +125,8 @@ class TemplatesView(object):
                     self.context.changePosition(name, new_pos-1)
 
 
-class FlourishReportSheetsBase(object):
+class FlourishSchooYearMixin(object):
+    """A flourish mixin class for any view with schooyear tab"""
 
     @property
     def has_schoolyear(self):
@@ -138,6 +140,9 @@ class FlourishReportSheetsBase(object):
             schoolyear_id = self.request['schoolyear_id']
             result = schoolyears.get(schoolyear_id, result)
         return result
+
+
+class FlourishReportSheetsBase(FlourishSchooYearMixin):
 
     def sheets(self):
         if self.has_schoolyear:
@@ -169,6 +174,12 @@ class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
 
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
     """A flourish view for managing report sheet deployment"""
+
+    @property
+    def title(self):
+        title = _(u'Report Sheets for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
 
     @property
     def terms(self):
@@ -239,7 +250,8 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         return url + '/manage'
 
 
-class ReportSheetsTertiaryNavigationManager(TertiaryNavigationManager):
+class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,
+                                            TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -253,15 +265,10 @@ class ReportSheetsTertiaryNavigationManager(TertiaryNavigationManager):
     @property
     def items(self):
         result = []
-        schoolyears = ISchoolYearContainer(self.context)
-        active = schoolyears.getActiveSchoolYear()
-        if 'schoolyear_id' in self.request:
-            schoolyear_id = self.request['schoolyear_id']
-            active = schoolyears.get(schoolyear_id, active)
-        for schoolyear in schoolyears.values():
-            url = '%s/%s?schoolyear_id=%s' % (
+        active = self.schoolyear
+        for schoolyear in ISchoolYearContainer(self.context).values():
+            url = '%s/report_sheets?schoolyear_id=%s' % (
                 absoluteURL(self.context, self.request),
-                'report_sheets',
                 schoolyear.__name__)
             result.append({
                 'class': schoolyear.first == active.first and 'active' or None,
@@ -290,6 +297,10 @@ class FlourishTemplatesView(flourish.page.Page):
 
 class FlourishReportSheetsOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish report sheet templates overview add links viewlet."""
+
+
+class FlourishReportCardLayoutOverviewLinks(flourish.page.RefineLinksViewlet):
+    """flourish report card layouts overview add links viewlet."""
 
 
 class ReportSheetAddLinks(flourish.page.RefineLinksViewlet):
@@ -779,6 +790,12 @@ class LayoutReportCardView(object):
                 'heading_value': column.heading,
                 }
             results.append(result)
+        results.append({
+                'source_name': 'Column1',
+                'source_value': 'Absent',
+                'heading_name': 'Column2',
+                'heading_value': 'Tardy',
+                })
         return results
 
     @property
@@ -799,6 +816,12 @@ class LayoutReportCardView(object):
                 'heading_value': activity.heading,
                 }
             results.append(result)
+        results.append({
+                'source_name': 'Activity1',
+                'source_value': 'Absent',
+                'heading_name': 'Activity2',
+                'heading_value': 'Tardy',
+                })
         return results
 
     @property
@@ -904,6 +927,115 @@ class LayoutReportCardView(object):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
+
+
+class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
+    """A flourish view for laying out the columns of the report card"""
+
+    @property
+    def title(self):
+        title = _(u'Report Card Layout for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
+
+    @property
+    def columns(self):
+        """Get  a list of the existing layout columns."""
+        results = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyearKey = self.context.__name__
+        if schoolyearKey in root.layouts:
+            current_columns = root.layouts[schoolyearKey].columns
+        else:
+            current_columns  = []
+        for index, column in enumerate(current_columns):
+            result = {
+                'source_name': 'Column%s' % (index + 1),
+                'source_value': column.source,
+                'source_edit': '',
+                'heading_value': column.heading,
+                }
+            results.append(result)
+        results.append({
+                'source_name': 'Column1',
+                'source_value': 'Tardy',
+                'source_edit': '',
+                'heading_value': 'Out',
+                })
+        return results
+
+    @property
+    def outline_activities(self):
+        """Get  a list of the existing layout outline activities."""
+        results = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyearKey = self.context.__name__
+        if schoolyearKey in root.layouts:
+            current_activities = root.layouts[schoolyearKey].outline_activities
+        else:
+            current_activities  = []
+        for index, activity in enumerate(current_activities):
+            result = {
+                'source_name': 'Activity%s' % (index + 1),
+                'source_value': activity.source,
+                'source_edit': '',
+                'heading_value': activity.heading,
+                }
+            results.append(result)
+        results.append({
+                'source_name': 'Activity1',
+                'source_value': 'Absent',
+                'source_edit': '',
+                'heading_value': 'Abs.',
+                })
+        return results
+
+
+class LayoutReportCardTertiaryNavigationManager(FlourishSchooYearMixin,
+    flourish.viewlet.ViewletManager):
+
+    template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    list_class = 'third-nav'
+
+    @property
+    def items(self):
+        result = []
+        active = self.schoolyear
+        for schoolyear in ISchoolYearContainer(self.context).values():
+            url = '%s/report_card_layout?schoolyear_id=%s' % (
+                absoluteURL(self.context, self.request),
+                schoolyear.__name__)
+            result.append({
+                'class': schoolyear.first == active.first and 'active' or None,
+                'viewlet': u'<a href="%s">%s</a>' % (url, schoolyear.title),
+                })
+        return result
+
+
+class ReportCardColumnLinkViewlet(FlourishSchooYearMixin,
+                                  flourish.page.LinkViewlet):
+
+    @property
+    def link(self):
+        return 'addReportCardColumn.html?schoolyear_id=%s' % (
+            self.schoolyear.__name__)
+
+
+class ReportCardActivityLinkViewlet(FlourishSchooYearMixin,
+                                    flourish.page.LinkViewlet):
+
+    @property
+    def link(self):
+        return 'addReportCardActivity.html?schoolyear_id=%s' % (
+            self.schoolyear.__name__)
 
 
 class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
