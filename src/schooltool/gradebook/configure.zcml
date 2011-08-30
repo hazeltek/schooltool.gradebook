@@ -210,6 +210,12 @@
       name="schooltool.gradebook.external_activities"
       />
 
+  <!-- Score adapters -->
+
+  <adapter factory=".gradebook.getActivityScore" />
+  <adapter factory=".gradebook.getLinkedActivityScore" />
+  <adapter factory=".gradebook.getWorksheetAverageScore" />
+
   <!-- Gradebook Adapter -->
   <class class=".gradebook.Gradebook">
     <require
