@@ -22,14 +22,16 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
+import urllib
+
 import z3c.optionstorage.vocabulary
+import zope.schema.vocabulary
 from zope.interface import implements, implementer
 from zope.component import adapter
-from zope.schema.interfaces import IIterableVocabulary
+from zope.schema.interfaces import IIterableVocabulary, IVocabularyTokenized
 from zope.container.btree import BTreeContainer
 
 from schooltool.app.interfaces import ISchoolToolApplication
-from schooltool.app.utils import TitledContainerItemVocabulary
 from schooltool.gradebook.interfaces import ICategoryContainer
 
 
@@ -51,16 +53,35 @@ class CategoryContainer(BTreeContainer):
         return self.get(self.default_key)
 
 
-class CategoriesVocabulary(TitledContainerItemVocabulary):
-    """Vocabulary of categorys."""
-    implements(IIterableVocabulary)
+class CategoriesVocabulary(object):
+    """Vocabulary of categories."""
+    implements(IIterableVocabulary, IVocabularyTokenized)
 
-    def getTitle(self, item):
-        return item
+    def __init__(self, context):
+        self.context = context
+
+    def __len__(self):
+        return len(self.container)
+
+    def __contains__(self, key):
+        return key in self.container
+
+    def getTermByToken(self, token):
+        terms = [self.getTerm(key) for key in self.container]
+        by_token = dict([(term.token, term) for term in terms])
+        if token not in by_token:
+            raise LookupError(token)
+        return by_token[token]
+
+    def getTerm(self, key):
+        return zope.schema.vocabulary.SimpleTerm(
+            key,
+            token=urllib.quote(unicode(key).encode('punycode')),
+            title=self.container[key])
 
     def __iter__(self):
         for key in sorted(self.container):
-            yield self.getTerm(self.container[key])
+            yield self.getTerm(key)
 
     @property
     def container(self):

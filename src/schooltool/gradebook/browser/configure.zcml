@@ -720,6 +720,10 @@
       name="default" />
 
   <zope:adapter
+      factory=".activity.ActivityFormDefaultCategory"
+      name="default" />
+
+  <zope:adapter
       factory=".activity.ActivityDefaultDueDate"
       name="default" />
 

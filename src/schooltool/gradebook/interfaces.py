@@ -147,7 +147,7 @@ class IActivity(interfaces.IRequirement):
     category = zope.schema.Choice(
         title=_("Category"),
         description=_("The activity category"),
-        vocabulary="schooltool.gradebook.categories",
+        vocabulary="schooltool.gradebook.category-vocabulary",
         required=True)
 
     scoresystem = scoresystem.ScoreSystemField(

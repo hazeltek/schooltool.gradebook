@@ -22,7 +22,22 @@
       provides=".interfaces.IGradebookTemplates"
       factory=".gradebook_init.getGradebookTemplates" />
 
-  <!-- Category Vocabulary -->
+  <!-- Activity categories -->
+
+  <interface
+      interface=".interfaces.ICategoryContainer"
+      type="zope.app.content.interfaces.IContentType"
+      />
+
+  <class class=".category.CategoryContainer">
+    <allow interface="zope.container.interfaces.ISimpleReadContainer" />
+    <require permission="schooltool.view"
+             attributes="default_key default keys values items __iter__ __len__" />
+    <require permission="schooltool.edit"
+             interface="zope.container.interfaces.IWriteContainer"
+             set_attributes="default_key" />
+  </class>
+
   <utility
      factory=".category.categoryVocabularyFactory"
      provides="zope.schema.interfaces.IVocabularyFactory"
