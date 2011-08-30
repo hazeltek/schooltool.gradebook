@@ -73,7 +73,7 @@ vocabulary can be easily initiated.
 
 There is also a vocabulary for the brower views:
 
-    >>> vocabulary = category.CategoryVocabulary(categories)
+    >>> vocabulary = category.CategoriesVocabulary(categories)
 
     >>> sorted([term.title for term in vocabulary])
     [u'Assignment', u'Essay', u'Exam', u'Homework', u'Journal', u'Lab',

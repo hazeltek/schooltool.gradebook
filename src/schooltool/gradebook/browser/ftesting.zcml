@@ -46,6 +46,10 @@
 
   <browser:defaultSkin name="BasicPerson" />
 
+  <!-- XXX: include zc.datetimewidget for old skin tests to work -->
+  <include package="zc.datetimewidget" file="configure.zcml" />
+  <includeOverrides package="zc.datetimewidget" file="overrides.zcml" />
+
   <!-- Override rml views so that they return the template instead of pdf -->
   <browser:page
       name="gradebook.pdf"

@@ -239,6 +239,7 @@ def setupSections(app):
     calendar = ISchoolToolCalendar(section1)
     meeting = MeetingStub()
     meeting.unique_id = "unique-id-2009-01-01"
+    meeting.meeting_id = "unique-id-2009-01-01"
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
     meeting.period_id = "10:30-11:30"
     calendar.addEvent(meeting)
@@ -512,6 +513,7 @@ def doctest_GradebookPDFView():
           'average': u'14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
+          'raw_average': Decimal('14...'),
           'student': {'gradeurl': '...',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',

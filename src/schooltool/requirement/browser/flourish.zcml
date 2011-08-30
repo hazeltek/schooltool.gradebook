@@ -5,6 +5,8 @@
            xmlns:flourish="http://schooltool.org/flourish"
            i18n_domain="schooltool.gradebook">
 
+  <include package="schooltool.skin.flourish" file="meta.zcml" />
+
   <flourish:breadcrumb
       for="schooltool.requirement.interfaces.IScoreSystemContainer"
       title="Score Systems"
