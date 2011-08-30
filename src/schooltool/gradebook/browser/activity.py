@@ -659,7 +659,6 @@ class WeightCategoriesView(object):
                     self.request.response.redirect(self.nextURL())
 
     def rows(self):
-        language = 'en' # XXX this need to be dynamic
         weights = self.context.getCategoryWeights()
         categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
         result = []
@@ -803,7 +802,6 @@ class LinkedColumnBase(BrowserView):
             return self.context.label
 
     def getCategories(self):
-        language = 'en' # XXX this need to be dynamic
         categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
 
         results = []
@@ -990,6 +988,12 @@ def defaultCategory(adapter):
 ActivityDefaultCategory = widget.ComputedWidgetAttribute(
     defaultCategory,
     field=interfaces.IActivity['category']
+    )
+
+
+ActivityFormDefaultCategory = widget.ComputedWidgetAttribute(
+    defaultCategory,
+    field=IActivityForm['category']
     )
 
 
