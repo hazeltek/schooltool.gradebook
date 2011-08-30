@@ -1,0 +1,24 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      This form allows you to change the weighting of categories when
+      calculating average scores within a worksheet.
+    </p>
+    <p i18n:translate="">
+      Enter numeric values for each relevant category. The total of
+      all values must be exactly 100.
+    </p>
+    <p i18n:translate="">
+      For example, to weight exams as 60% of the grade, homework as
+      20% and quizzes as 20%, enter "60" next to "Exam", "20" next to
+      "Homework" and "20" next to "Quiz".
+    </p>
+    <p i18n:translate="">
+      The list of categories can be customized for your school by your
+      system administrator.
+    </p>
+  </div>
+</metal:block>

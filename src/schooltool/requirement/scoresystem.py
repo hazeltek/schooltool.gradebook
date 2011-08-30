@@ -109,6 +109,9 @@ class UNSCORED(object):
     def __repr__(self):
         return 'UNSCORED'
 
+    def __nonzero__(self):
+        return False
+
 
 zope.security.checker.BasicTypes[UNSCORED] = zope.security.checker.NoProxy
 UNSCORED = UNSCORED()
@@ -221,8 +224,9 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
 
     def isValidScore(self, score):
         """See interfaces.IScoreSystem"""
-        scores = self.scoresDict().keys()
-        return score in scores + [UNSCORED]
+        if score is UNSCORED:
+            return True
+        return score in self.scoresDict().keys()
 
     def getBestScore(self):
         """See interfaces.IScoreSystem"""

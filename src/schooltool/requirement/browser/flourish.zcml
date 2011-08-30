@@ -5,6 +5,8 @@
            xmlns:flourish="http://schooltool.org/flourish"
            i18n_domain="schooltool.gradebook">
 
+  <include package="schooltool.skin.flourish" file="meta.zcml" />
+
   <flourish:breadcrumb
       for="schooltool.requirement.interfaces.IScoreSystemContainer"
       title="Score Systems"
@@ -20,6 +22,24 @@
       class=".scoresystem.FlourishScoreSystemContainerView"
       title="Score Systems"
       content_template="f_scoresystems_overview.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="f_scoresystems_related.pt"
+      view=".scoresystem.FlourishScoreSystemContainerView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="f_scoresystem_add_related.pt"
+      view=".scoresystem.FlourishCustomScoreSystemAddView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
       permission="schooltool.edit"
       />
 

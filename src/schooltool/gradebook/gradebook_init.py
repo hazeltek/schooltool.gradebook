@@ -32,7 +32,7 @@ from schooltool.gradebook.interfaces import IGradebookRoot, IGradebookTemplates
 from schooltool.gradebook.interfaces import IGradebookDeployed
 from schooltool.gradebook.interfaces import IGradebookLayouts, IReportLayout
 from schooltool.gradebook.interfaces import IReportColumn, IOutlineActivity
-from schooltool.gradebook.category import getCategories
+from schooltool.gradebook.category import CategoryContainer, CATEGORIES_KEY
 from schooltool.requirement.requirement import Requirement
 
 from schooltool.gradebook import GradebookMessage as _
@@ -112,32 +112,35 @@ def setUpGradebookRoot(app):
         app[GRADEBOOK_ROOT_KEY] = GradebookRoot()
 
 
-def setUpDefaultCategories(dict):
-    dict.addValue('assignment', 'en', _('Assignment'))
-    dict.addValue('essay', 'en', _('Essay'))
-    dict.addValue('exam', 'en', _('Exam'))
-    dict.addValue('homework', 'en', _('Homework'))
-    dict.addValue('journal', 'en', _('Journal'))
-    dict.addValue('lab', 'en', _('Lab'))
-    dict.addValue('presentation', 'en', _('Presentation'))
-    dict.addValue('project', 'en', _('Project'))
-    dict.setDefaultLanguage('en')
-    dict.setDefaultKey('assignment')
+def setUpDefaultCategories(categories):
+    # XXX: We werestoring zope.i18nmessageid.message.Message in ZODB...
+    #      I'm not changing the behaviour at this point, but I wonder
+    #      if it will bite us or become a common thing in ST.
+    categories[u'assignment'] = _('Assignment')
+    categories[u'essay'] = _('Essay')
+    categories[u'exam'] = _('Exam')
+    categories[u'homework'] = _('Homework')
+    categories[u'journal'] = _('Journal')
+    categories[u'lab'] = _('Lab')
+    categories[u'presentation'] = _('Presentation')
+    categories[u'project'] = _('Project')
+    categories.default_key = u'assignment'
 
 
 class GradebookAppStartup(StartUpBase):
     def __call__(self):
         setUpGradebookRoot(self.app)
-        dict = getCategories(self.app)
-        if not dict.getKeys():
-            setUpDefaultCategories(dict)
+
+        if CATEGORIES_KEY not in self.app:
+            categories = self.app[CATEGORIES_KEY] = CategoryContainer()
+            setUpDefaultCategories(categories)
 
 
 class GradebookInit(InitBase):
     def __call__(self):
         setUpGradebookRoot(self.app)
-        dict = getCategories(self.app)
-        setUpDefaultCategories(dict)
+        categories = self.app[CATEGORIES_KEY] = CategoryContainer()
+        setUpDefaultCategories(categories)
 
 
 def getGradebookRoot(app):

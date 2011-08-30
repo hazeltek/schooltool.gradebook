@@ -2,15 +2,6 @@
       tal:attributes="action string:${context/@@absolute_url}/weights.html">
   <div class="viewspace">
     <div>
-      <p i18n:translate="">
-        This form allows you to change the weighting of categories when calculating average scores within a worksheet.
-      </p>
-      <p i18n:translate="">
-        Enter numeric values for each relevant category. The total of all values must be exactly 100.
-      </p>
-      <p i18n:translate="">
-        For example, to weight exams as 60% of the grade, homework as 20% and quizzes as 20%, enter "60" next to "Exam", "20" next to "Homework" and "20" next to "Quiz".
-      </p>
     </div>
     <div class="status"
          tal:condition="view/message">

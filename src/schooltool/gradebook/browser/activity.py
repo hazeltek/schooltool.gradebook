@@ -58,12 +58,10 @@ from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
 from schooltool.gradebook.activity import Activities, Worksheet
-from schooltool.gradebook.category import getCategories
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
-from schooltool.requirement.scoresystem import UNSCORED
 from schooltool.term.interfaces import ITerm, IDateManager
 from schooltool.skin import flourish
 
@@ -270,6 +268,8 @@ class UnhideWorksheetsView(object):
                 worksheet = removeSecurityProxy(self.context[name])
                 worksheet.hidden = False
             self.request.response.redirect(self.nextURL())
+        elif 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
@@ -352,7 +352,7 @@ class IActivityForm(interface.Interface):
             activites differently when calculating averages.  The list of
             categories can be set schoolwide set by your system
             administrator."""),
-        vocabulary="schooltool.gradebook.categories",
+        vocabulary="schooltool.gradebook.category-vocabulary",
         required=True)
 
     max = zope.schema.Int(
@@ -459,9 +459,6 @@ class ILinkedActivityExternalActivity(interface.Interface):
 
     external_activity = schema.Choice(
         title=_(u"External Score Source"),
-        description=_("""Use external scores to add data from sources outside
-            the SchoolTool Gradebook.  External scores must be configured by
-            your system administrator"""),
         vocabulary="schooltool.gradebook.external_activities",
         required=True)
 
@@ -626,12 +623,12 @@ class WeightCategoriesView(object):
 
     def update(self):
         self.message = ''
-        categories = getCategories(ISchoolToolApplication(None))
+        categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
         newValues = {}
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
         elif 'UPDATE_SUBMIT' in self.request:
-            for category in sorted(categories.getKeys()):
+            for category in sorted(categories.keys()):
                 if category in self.request and self.request[category].strip():
                     value = self.request[category].strip()
                     try:
@@ -660,11 +657,10 @@ class WeightCategoriesView(object):
                     self.request.response.redirect(self.nextURL())
 
     def rows(self):
-        language = 'en' # XXX this need to be dynamic
         weights = self.context.getCategoryWeights()
-        categories = getCategories(ISchoolToolApplication(None))
+        categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
         result = []
-        for category in sorted(categories.getKeys()):
+        for category in sorted(categories.keys()):
             if category in self.request:
                 weight = self.request[category]
             else:
@@ -678,7 +674,7 @@ class WeightCategoriesView(object):
                             weight = weight[:-1]
             row = {
                 'category': category,
-                'category_value': categories.getValue(category, language),
+                'category_value': categories[category],
                 'weight': weight,
                 }
             result.append(row)
@@ -756,9 +752,11 @@ class WorksheetsExportView(export.ExcelExportView):
                      export.Text(student.first_name),
                      export.Text(student.last_name)]
             for activity in activities:
-                value, ss = gradebook.getEvaluation(student, activity)
-                if value is None or value is UNSCORED:
+                score = gradebook.getScore(student, activity)
+                if not score:
                     value = ''
+                else:
+                    value = score.value
                 cells.append(export.Text(value))
             for col, cell in enumerate(cells):
                 self.write(ws, starting_row+row, col, cell.data, **cell.style) 
@@ -804,18 +802,17 @@ class LinkedColumnBase(BrowserView):
             return self.context.label
 
     def getCategories(self):
-        language = 'en' # XXX this need to be dynamic
-        categories = getCategories(ISchoolToolApplication(None))
+        categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
 
         results = []
         if self.addForm:
             default_category = defaultCategory(None)
         else:
             default_category = self.context.category
-        for category in sorted(categories.getKeys()):
+        for category in sorted(categories.keys()):
             result = {
                 'name': category,
-                'value': categories.getValue(category, language),
+                'value': categories[category],
                 'selected': category == default_category and 'selected' or None,
                 }
             results.append(result)
@@ -984,13 +981,19 @@ class FlourishEditLinkedColumnView(flourish.page.Page, EditLinkedColumnView):
 
 
 def defaultCategory(adapter):
-    categories = getCategories(ISchoolToolApplication(None))
-    return categories.getDefaultKey()
+    categories = interfaces.ICategoryContainer(ISchoolToolApplication(None))
+    return categories.default_key
 
 
 ActivityDefaultCategory = widget.ComputedWidgetAttribute(
     defaultCategory,
     field=interfaces.IActivity['category']
+    )
+
+
+ActivityFormDefaultCategory = widget.ComputedWidgetAttribute(
+    defaultCategory,
+    field=IActivityForm['category']
     )
 
 
@@ -1005,7 +1008,7 @@ ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
     )
 
 
-class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+class ActivityAddTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -1016,8 +1019,6 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
         </ul>
     """)
 
-    list_class = 'third-nav'
-
     @property
     def items(self):
         result = []
@@ -1025,8 +1026,8 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
         current = path[path.rfind('/')+1:]
         actions = [
             ('addActivity.html', _('Activity')),
-            ('addLinkedActivity.html', _('External Score')),
             ('addLinkedColumn.html', _('Linked Column')),
+            ('addLinkedActivity.html', _('External Score')),
             ]
         for action, title in actions:
             url = '%s/%s' % (absoluteURL(self.context, self.request), action)

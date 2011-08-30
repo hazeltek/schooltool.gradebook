@@ -1,0 +1,10 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      A score system is a scale used for assessment, such as a grading scale or rubric scale.
+    </p>
+  </div>
+</metal:block>

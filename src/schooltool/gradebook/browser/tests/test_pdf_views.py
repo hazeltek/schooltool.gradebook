@@ -33,7 +33,7 @@ from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
 from zope.component import adapter
 from zope.container import btree
-from zope.interface import implements, alsoProvides
+from zope.interface import implements, alsoProvides, classImplements
 from zope.location.interfaces import ILocation
 from zope.location.location import locate
 from zope.publisher.browser import TestRequest
@@ -70,6 +70,11 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
+from schooltool.gradebook.gradebook import (
+    getActivityScore,
+    getLinkedActivityScore,
+    getWorksheetAverageScore,
+    )
 from schooltool.gradebook.gradebook import (Gradebook, getWorksheetSection,
     getGradebookSection)
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
@@ -83,7 +88,7 @@ from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     GradebookPDFView)
 from schooltool.requirement.evaluation import Evaluation, getEvaluations
 from schooltool.requirement.interfaces import (IScoreSystemContainer,
-    IEvaluations)
+    IEvaluations, IHaveEvaluations)
 from schooltool.requirement.scoresystem import (AmericanLetterScoreSystem,
     DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem,
     getScoreSystemContainer, ScoreSystemAppStartup)
@@ -234,6 +239,7 @@ def setupSections(app):
     calendar = ISchoolToolCalendar(section1)
     meeting = MeetingStub()
     meeting.unique_id = "unique-id-2009-01-01"
+    meeting.meeting_id = "unique-id-2009-01-01"
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
     meeting.period_id = "10:30-11:30"
     calendar.addEvent(meeting)
@@ -507,6 +513,7 @@ def doctest_GradebookPDFView():
           'average': u'14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
+          'raw_average': Decimal('14...'),
           'student': {'gradeurl': '...',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
@@ -527,6 +534,7 @@ def pdfSetUp(test=None):
     provideAdapter(getGroupContainer, [ISchoolYear], provides=IGroupContainer)
 
     provideAdapter(PersonLearnerAdapter, [IBasicPerson], provides=ILearner)
+    classImplements(BasicPerson, IHaveEvaluations)
     provideAdapter(getEvaluations, [IBasicPerson], provides=IEvaluations)
 
     provideAdapter(getTermForSectionContainer, [ISectionContainer],
@@ -554,6 +562,10 @@ def pdfSetUp(test=None):
     provideAdapter(getGradebookSection, [IGradebook], provides=ISection)
     provideAdapter(getSchoolYearContainer, [ISchoolToolApplication], 
                    provides=ISchoolYearContainer)
+
+    provideAdapter(getActivityScore)
+    provideAdapter(getLinkedActivityScore)
+    provideAdapter(getWorksheetAverageScore)
 
     provideAdapter(getScoreSystemContainer, [ISchoolToolApplication],
                    provides=IScoreSystemContainer)

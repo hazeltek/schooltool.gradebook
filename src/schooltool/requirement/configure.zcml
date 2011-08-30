@@ -57,6 +57,16 @@
         interface=".interfaces.IEvaluations"
         />
   </class>
+  <class class=".evaluation.Score">
+    <require
+       permission="schooltool.view"
+       interface=".interfaces.IScore"
+       />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IScore"
+        />
+  </class>
   <class class=".evaluation.Evaluation">
     <require
 	permission="schooltool.view"

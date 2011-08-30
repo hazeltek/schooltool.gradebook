@@ -1,0 +1,12 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Use worksheets in your gradebook the same way you do in a
+      spreadsheet, to organize large numbers of activities.  You can
+      link columns from one worksheet to another.
+    </p>
+  </div>
+</metal:block>

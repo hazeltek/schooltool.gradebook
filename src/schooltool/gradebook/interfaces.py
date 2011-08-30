@@ -24,6 +24,7 @@ __docformat__ = 'reStructuredText'
 
 from zope.interface import Interface, Attribute
 import zope.schema
+from zope.container.interfaces import IContainer
 from zope.container.constraints import containers, contains
 from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
@@ -56,6 +57,17 @@ class IGradebookLayouts(interfaces.IRequirement):
     """Container of Report Card Layouts (by schoolyear)"""
 
     contains('.IReportLayout')
+
+
+class ICategoryContainer(IContainer):
+
+    default_key = zope.schema.TextLine(
+        title=u"The category key.",
+        required=False)
+
+    default = zope.schema.TextLine(
+        title=u"The default category.",
+        required=False)
 
 
 class IActivities(interfaces.IRequirement):
@@ -96,7 +108,7 @@ class IWorksheet(interfaces.IRequirement):
            a Decimal object."""
 
     def setCategoryWeight(category, weight):
-        """Set the weight for the given category.  Any numeric type is 
+        """Set the weight for the given category.  Any numeric type is
            acceptable"""
 
     containers(IActivities)
@@ -108,6 +120,10 @@ class IReportWorksheet(interfaces.IRequirement):
 
     containers(IGradebookTemplates, IGradebookDeployed)
     contains('.IReportActivity')
+
+    title = zope.schema.TextLine(
+        title=_(u'Title'),
+        description=_(u'Identifies the report sheet in teacher gradebooks.'))
 
 
 class IActivity(interfaces.IRequirement):
@@ -131,7 +147,7 @@ class IActivity(interfaces.IRequirement):
     category = zope.schema.Choice(
         title=_("Category"),
         description=_("The activity category"),
-        vocabulary="schooltool.gradebook.categories",
+        vocabulary="schooltool.gradebook.category-vocabulary",
         required=True)
 
     scoresystem = scoresystem.ScoreSystemField(
@@ -190,7 +206,7 @@ class IEditGradebook(Interface):
 
     def removeEvaluation(student, activity):
         """Remove evaluation."""
-    
+
 
 class IReadGradebook(Interface):
 
@@ -209,8 +225,8 @@ class IReadGradebook(Interface):
     def hasEvaluation(student, activity):
         """Check whether an evaluation exists for a student-activity pair."""
 
-    def getEvaluation(student, activity):
-        """Get the evaluation of a student for a given activity."""
+    def getScore(student, activity):
+        """Get the score of a student for a given activity."""
 
     def getCurrentEvaluationsForStudent(student):
         """Get the evaluations of the curretn worksheet for this student.
@@ -303,8 +319,8 @@ class IMyGrades(Interface):
         title=_('Worksheets'),
         description=_('Worksheets in this gradebook.'))
 
-    def getEvaluation(student, activity):
-        """Get the evaluation of a student for a given activity."""
+    def getScore(student, activity):
+        """Get the score of a student for a given activity."""
 
     def getCurrentWorksheet():
         """Get the currently active worksheet."""
@@ -323,7 +339,7 @@ class ILinkedActivity(IActivity):
         title=_(u"External Activity Source"),
         description=_(u"The registration name of the source"),
         required=True)
-        
+
     external_activity_id = zope.schema.TextLine(
         title=_(u"External Activity ID"),
         description=_(u"A unique identifier for the external activity"),
@@ -349,7 +365,7 @@ class IExternalActivitiesSource(IIterableSource):
 
 class IExternalActivities(zope.interface.Interface):
     """External activities of a section"""
- 
+
     source = zope.schema.TextLine(
         title=_(u"External Activity Source"),
         description=_(u"Name of the external activities source"),
@@ -377,12 +393,12 @@ class IExternalActivity(zope.interface.Interface):
         title=_(u"External Activity Source"),
         description=_(u"The registration name of the source"),
         required=True)
-        
+
     external_activity_id = zope.schema.TextLine(
         title=_(u"External Activity ID"),
         description=_(u"A unique identifier for the external activity"),
         required=True)
-    
+
     title = zope.schema.TextLine(
         title=_(u"Title"),
         description=_(u"A brief title of the external activity."),

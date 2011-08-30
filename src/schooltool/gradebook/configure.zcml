@@ -22,14 +22,30 @@
       provides=".interfaces.IGradebookTemplates"
       factory=".gradebook_init.getGradebookTemplates" />
 
-  <!-- Category Vocabulary -->
-  <include package="z3c.optionstorage" />
- 
-  <utility
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component="schooltool.gradebook.category.CategoryVocabulary"
-      name="schooltool.gradebook.categories"
+  <!-- Activity categories -->
+
+  <interface
+      interface=".interfaces.ICategoryContainer"
+      type="zope.app.content.interfaces.IContentType"
       />
+
+  <class class=".category.CategoryContainer">
+    <allow interface="zope.container.interfaces.ISimpleReadContainer" />
+    <require permission="schooltool.view"
+             attributes="default_key default keys values items __iter__ __len__" />
+    <require permission="schooltool.edit"
+             interface="zope.container.interfaces.IWriteContainer"
+             set_attributes="default_key" />
+  </class>
+
+  <utility
+     factory=".category.categoryVocabularyFactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.category-vocabulary"
+     />
+
+  <adapter factory=".category.getCategories" />
+
   <adapter
       factory=".gradebook_init.GradebookInit"
       name="schooltool.gradebook" />
@@ -193,6 +209,12 @@
       factory="schooltool.gradebook.activity.ExternalActivitiesVocabulary"
       name="schooltool.gradebook.external_activities"
       />
+
+  <!-- Score adapters -->
+
+  <adapter factory=".gradebook.getActivityScore" />
+  <adapter factory=".gradebook.getLinkedActivityScore" />
+  <adapter factory=".gradebook.getWorksheetAverageScore" />
 
   <!-- Gradebook Adapter -->
   <class class=".gradebook.Gradebook">

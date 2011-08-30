@@ -1,0 +1,21 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Report sheets use the SchoolTool gradebook to collect data and
+      commentary from teachers about students in all sections.
+    </p>
+    <p i18n:translate="">
+      The first step in the process is to create a new report sheet template.
+    </p>
+    <p i18n:translate="">
+      After you create a template, the next step is to
+      <a i18n:translate="" i18n:name="deploy-sheet"
+         tal:attributes="href string:${context/schooltool:app/@@absolute_url}/report_sheets">
+        deploy it to teacher gradebooks.
+      </a>
+    </p>
+  </div>
+</metal:block>

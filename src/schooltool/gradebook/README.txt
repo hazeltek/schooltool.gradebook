@@ -62,59 +62,53 @@ administations job to setup activity categories. Activity categories can be
 "homework", "paper", "test", "final exam", etc.  By default, some categories
 are already available in the vocabulary.
 
-The categories are managed by a special option storage vocabulary. As soon as
-the SchoolTool application is registered as a site, the vocabulary can be
-easily initiated.
+The categories are stored in a container in school tool application.
+As soon as the SchoolTool application is registered as a site, the
+vocabulary can be easily initiated.
 
     >>> from schooltool.gradebook import category
-    >>> categories = category.CategoryVocabulary()
+    >>> from schooltool.gradebook.interfaces import ICategoryContainer
 
-We can now see the default categories:
+    >>> categories = ICategoryContainer(ISchoolToolApplication(None))
 
-    >>> sorted([term.title for term in categories])
+There is also a vocabulary for the brower views:
+
+    >>> vocabulary = category.CategoriesVocabulary(categories)
+
+    >>> sorted([term.title for term in vocabulary])
     [u'Assignment', u'Essay', u'Exam', u'Homework', u'Journal', u'Lab',
      u'Presentation', u'Project']
 
-The actual categories, however, are not managed by the vocabulary directly,
-but by an option storage dictionary. The category module provides a high-level
-function to get the dictionary:
+We can add,
 
-    >>> dict = category.getCategories(school)
-
-Now we can add,
-
-    >>> dict.addValue('quiz', 'en', u'Quiz')
-    >>> sorted([term.title for term in categories])
+    >>> categories['quiz'] = u'Quiz'
+    >>> sorted([term.title for term in vocabulary])
     [u'Assignment', u'Essay', u'Exam', u'Homework', u'Journal', u'Lab',
      u'Presentation', u'Project', u'Quiz']
 
 delete,
 
-    >>> dict.delValue('quiz', 'en')
-    >>> sorted([term.title for term in categories])
+    >>> del categories['quiz']
+    >>> sorted([term.title for term in vocabulary])
     [u'Assignment', u'Essay', u'Exam', u'Homework', u'Journal', u'Lab',
      u'Presentation', u'Project']
 
 and query values:
 
-    >>> dict.getValue('assignment','en')
+    >>> categories.get('assignment')
     u'Assignment'
 
-    >>> dict.getValue('faux','en')
+    >>> print categories['faux']
     Traceback (most recent call last):
     ...
-    KeyError: 'Invalid row/column pair'
+    KeyError: 'faux'
 
-    >>> dict.queryValue('faux','en', default=u'default')
+    >>> categories.get('faux', default=u'default')
     u'default'
 
-    >>> sorted(dict.getKeys())
-    ['assignment', 'essay', 'exam', 'homework', 'journal', 'lab',
-     'presentation', 'project']
-
-As you can see, the option storage also supports multiple languages, though
-only English is currently supported. (Of course, administrators can delete all
-default categories and register new ones in their favorite language.)
+    >>> sorted(categories.keys())
+    [u'assignment', u'essay', u'exam', u'homework', u'journal', u'lab',
+     u'presentation', u'project']
 
 
 Activities
@@ -165,14 +159,14 @@ We'll create two worksheets, while adding them to the section activities.
     >>> week2 = sectionA_act['week2']
     >>> list(sectionA_act.items())
     [('week1', Worksheet(u'Week 1')), ('week2', Worksheet(u'Week 2'))]
-    
+
 Both worksheets start out empty.
 
     >>> list(week1.items())
     []
     >>> list(week2.items())
     []
-    
+
 We will add three activities to each worksheet, a homework assignment, a project
 with a letter-grade score system, and a test.
 
@@ -218,7 +212,7 @@ Besides the title and description, one must also specify the category and the
 score system. The category is used to group similar activities together and
 later facilitate in computing the final grade. The score system is an object
 describing the type of score that can be associated with the activity.
-    
+
 Now we note that both worksheets have the activities in them.
 
     >>> list(week1.items())
@@ -237,7 +231,7 @@ grades using the gradebook.
 
     >>> from schooltool.gradebook import interfaces
     >>> gradebook = interfaces.IGradebook(week1)
-    
+
 Already the gradebook has worksheets which it got from the section.
 
     >>> gradebook.worksheets
@@ -257,7 +251,7 @@ one.
     Worksheet(u'Week 1')
     >>> gradebook.getCurrentActivities(stephan)
     [<Activity u'HW 1'>, <Activity u'Project 1'>, <Activity u'Quiz'>]
-    
+
 We can change it to be the second worksheet.
 
     >>> gradebook.setCurrentWorksheet(stephan, week2)
@@ -325,7 +319,7 @@ Of course there are some safety precautions:
 4. In the case of score systems providing IRangedValuesScoreSystem, a score
    greater than the max is allowed in order to give the teacher the chance
    to award extra credit.
-   
+
     >>> gradebook.evaluate(student=claudia, activity=hw2, score=16)
     >>> gradebook.evaluate(student=claudia, activity=hw2, score=14)
 
@@ -373,10 +367,11 @@ activity.  This represents a column of the worksheet
     [(<...Person ...>, <Evaluation for <Activity u'HW 1'>, value=7>),
      (<...Person ...>, <Evaluation for <Activity u'HW 1'>, value=10>)]
 
-We can get an evaluation for a student, activity pair, which represents 
+We can get an evaluation for a student, activity pair, which represents
 a cell in the worksheet.
 
-    >>> gradebook.getEvaluation(paul, hw1)
+    >>> score = gradebook.getScore(paul, hw1)
+    >>> (score.value, score.scoreSystem)
     (10, <RangedValuesScoreSystem None>)
 
 We can get the total of points and the average in a worksheet for a
@@ -625,7 +620,7 @@ which it is linked:
     <ExternalActivity u'Some1'>
 
 If the method cannot find a match, it returns None:
-   
+
     >>> week1["non_existent"] = activity.LinkedActivity(
     ...     external_activity=some1,
     ...     category=u"assignment",

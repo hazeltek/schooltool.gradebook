@@ -22,34 +22,78 @@ $Id$
 """
 __docformat__ = 'reStructuredText'
 
-from zope.interface import classProvides
-from zope.schema.interfaces import IVocabularyFactory
+import urllib
 
-import z3c.optionstorage
-from z3c.optionstorage import vocabulary, interfaces
-from schooltool.app.app import getSchoolToolApplication
+import z3c.optionstorage.vocabulary
+import zope.schema.vocabulary
+from zope.interface import implements, implementer
+from zope.component import adapter
+from zope.schema.interfaces import IIterableVocabulary, IVocabularyTokenized
+from zope.container.btree import BTreeContainer
+
+from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.gradebook.interfaces import ICategoryContainer
 
 
-VOCABULARY_NAME = 'schooltool.gradebook.activities'
+CATEGORIES_KEY = 'schooltool.gradebook.category'
 
+
+# BBB: for old data.fs'es
 class CategoryVocabulary(z3c.optionstorage.vocabulary.OptionStorageVocabulary):
-    """Activity Categories Vocabulary"""
-
-    classProvides(IVocabularyFactory)
-
-    def __init__(self, context=None, name=None):
-        st = getSchoolToolApplication()
-        if name is None:
-            name = VOCABULARY_NAME
-        self.dict = z3c.optionstorage.queryOptionStorage(st, name)
-        # TODO: Only support English for now.
-        self.language = 'en'
-        self.defaultlanguage = self.dict.getDefaultLanguage()
+    pass
 
 
+class CategoryContainer(BTreeContainer):
+    implements(ICategoryContainer)
+
+    default_key = None
+
+    @property
+    def default(self):
+        return self.get(self.default_key)
+
+
+class CategoriesVocabulary(object):
+    """Vocabulary of categories."""
+    implements(IIterableVocabulary, IVocabularyTokenized)
+
+    def __init__(self, context):
+        self.context = context
+
+    def __len__(self):
+        return len(self.container)
+
+    def __contains__(self, key):
+        return key in self.container
+
+    def getTermByToken(self, token):
+        terms = [self.getTerm(key) for key in self.container]
+        by_token = dict([(term.token, term) for term in terms])
+        if token not in by_token:
+            raise LookupError(token)
+        return by_token[token]
+
+    def getTerm(self, key):
+        return zope.schema.vocabulary.SimpleTerm(
+            key,
+            token=urllib.quote(unicode(key).encode('punycode')),
+            title=self.container[key])
+
+    def __iter__(self):
+        for key in sorted(self.container):
+            yield self.getTerm(key)
+
+    @property
+    def container(self):
+        app = ISchoolToolApplication(None)
+        return ICategoryContainer(app)
+
+
+def categoryVocabularyFactory():
+    return CategoriesVocabulary
+
+
+@adapter(ISchoolToolApplication)
+@implementer(ICategoryContainer)
 def getCategories(app):
-    """Return the option dictionary for the categories."""
-    storage = z3c.optionstorage.interfaces.IOptionStorage(app)
-    if VOCABULARY_NAME not in storage:
-        storage[VOCABULARY_NAME] = z3c.optionstorage.OptionDict()
-    return storage[VOCABULARY_NAME]
+    return app.get(CATEGORIES_KEY)

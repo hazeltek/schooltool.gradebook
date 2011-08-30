@@ -10,14 +10,14 @@ Administrator defines activity categories available for teachers:
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Activity Categories').click()
     >>> manager.printQuery('id("field.categories")/option/@value')
-    essay
-    exam
-    assignment
-    journal
-    lab
-    project
-    presentation
-    homework
+    assignment-
+    essay-
+    exam-
+    homework-
+    journal-
+    lab-
+    presentation-
+    project-
 
 As you can see, there are already several categories pre-defined. Often,
 those categories do not work for a school. Either you do not need some and/or

@@ -484,28 +484,34 @@ class GradebookOverview(SectionFinder):
                 act_hash = activity.__name__
                 cell_name = '%s_%s' % (act_hash, student.username)
                 if cell_name in self.request:
+                    # XXX: TODO: clean up this mess.
+                    #      The details of when to remove the evaluation, etc.
+                    #      do not belong in the view anyway.
+                    #      The code could also make use of something's
+                    #      ScoreValidationError (StudentGradebookFormAdapter?)
+
                     # If a value is present, create an evaluation, if the
                     # score is different
                     try:
-                        score = activity.scoresystem.fromUnicode(
+                        cell_score_value = activity.scoresystem.fromUnicode(
                             self.request[cell_name])
                     except (ValidationError, ValueError):
                         self.message = _(
                             'Invalid scores (highlighted in red) were not saved.')
                         continue
-                    value, ss = gradebook.getEvaluation(student, activity)
+                    score = gradebook.getScore(student, activity)
                     # Delete the score
-                    if value is not None and score is UNSCORED:
+                    if score and cell_score_value is UNSCORED:
                         self.context.removeEvaluation(student, activity)
                         self.changed = True
                     # Do nothing
-                    elif value is None and score is UNSCORED:
+                    elif not score and cell_score_value is UNSCORED:
                         continue
-                    # Replace the score or add new one/
-                    elif value is None or score != value:
+                    # Replace the score or add new one
+                    elif not score or cell_score_value != score.value:
                         self.changed = True
                         self.context.evaluate(
-                            student, activity, score, evaluator)
+                            student, activity, cell_score_value, evaluator)
 
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
@@ -592,10 +598,11 @@ class GradebookOverview(SectionFinder):
 
     def getStudentActivityValue(self, student, activity):
         gradebook = proxy.removeSecurityProxy(self.context)
-        value, ss = gradebook.getEvaluation(student, activity)
-        if value is None or value is UNSCORED:
+        score = gradebook.getScore(student, activity)
+        if not score:
             value = ''
-
+        else:
+            value = score.value
         act_hash = activity.__name__
         cell_name = '%s_%s' % (act_hash, student.username)
         if cell_name in self.request:
@@ -959,7 +966,7 @@ class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Settings links viewlet."""
 
 
-class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -969,8 +976,6 @@ class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
           </li>
         </ul>
     """)
-
-    list_class = 'third-nav'
 
     @property
     def items(self):
@@ -1004,11 +1009,11 @@ class GradeActivity(object):
         gradebook = proxy.removeSecurityProxy(self.context)
         for student in self.context.students:
             reqValue = self.request.get(student.username)
-            value, ss = gradebook.getEvaluation(student, self.activity['obj'])
-            if value is None or value is UNSCORED:
+            score = gradebook.getScore(student, self.activity['obj'])
+            if not score:
                 value = reqValue or ''
             else:
-                value = reqValue or value
+                value = reqValue or score.value
 
             yield {'student': {'title': student.title, 'id': student.username},
                    'value': value}
@@ -1027,10 +1032,12 @@ class GradeActivity(object):
                 id = student.username
                 if id in self.request:
 
+                    # XXX: heavy code duplication with GradebookOverview
+
                     # If a value is present, create an evaluation, if the
                     # score is different
                     try:
-                        score = activity.scoresystem.fromUnicode(
+                        request_score_value = activity.scoresystem.fromUnicode(
                             self.request[id])
                     except (ValidationError, ValueError):
                         message = _(
@@ -1039,17 +1046,17 @@ class GradeActivity(object):
                                      'name': student.title})
                         self.messages.append(message)
                         continue
-                    value, ss = gradebook.getEvaluation(student, activity)
+                    score = gradebook.getScore(student, activity)
                     # Delete the score
-                    if value is not None and score is UNSCORED:
+                    if score and request_score_value is UNSCORED:
                         self.context.removeEvaluation(student, activity)
                     # Do nothing
-                    elif value is None and score is UNSCORED:
+                    elif not score and request_score_value is UNSCORED:
                         continue
-                    # Replace the score or add new one/
-                    elif value is None or score != value:
+                    # Replace the score or add new one
+                    elif not score or request_score_value != score.value:
                         self.context.evaluate(
-                            student, activity, score, evaluator)
+                            student, activity, request_score_value, evaluator)
 
             if not len(self.messages):
                 self.request.response.redirect('index.html')
@@ -1089,31 +1096,31 @@ class MyGradesView(SectionFinder):
         count = 0
         for activity in self.context.getCurrentActivities(self.person):
             activity = proxy.removeSecurityProxy(activity)
-            value, ss = self.context.getEvaluation(self.person, activity)
+            score = self.context.getScore(self.person, activity)
 
-            if value is not None and value is not UNSCORED:
-                if ICommentScoreSystem.providedBy(ss):
+            if score:
+                if ICommentScoreSystem.providedBy(score.scoreSystem):
                     grade = {
                         'comment': True,
-                        'paragraphs': buildHTMLParagraphs(value),
+                        'paragraphs': buildHTMLParagraphs(score.value),
                         }
-
-                elif IValuesScoreSystem.providedBy(ss):
-                    s_min, s_max = getScoreSystemDiscreteValues(ss)
-                    if IDiscreteValuesScoreSystem.providedBy(ss):
-                        value = ss.getNumericalValue(value)
+                elif IValuesScoreSystem.providedBy(score.scoreSystem):
+                    s_min, s_max = getScoreSystemDiscreteValues(score.scoreSystem)
+                    value = score.value
+                    if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
+                        value = score.scoreSystem.getNumericalValue(score.value)
                         if value is None:
                             value = 0
                     count += s_max - s_min
                     grade = {
                         'comment': False,
-                        'value': '%s / %s' % (value, ss.getBestScore()),
+                        'value': '%s / %s' % (value, score.scoreSystem.getBestScore()),
                         }
 
                 else:
                     grade = {
                         'comment': False,
-                        'value': value,
+                        'value': score.value,
                         }
 
             else:
@@ -1536,9 +1543,11 @@ class StudentGradebookView(object):
         activities = [activity for activity in gradebook.context.values()
                       if not self.isFiltered(activity)]
         for activity in activities:
-            value, ss = gradebook.getEvaluation(self.context.student, activity)
-            if value is None or value is UNSCORED:
+            score = gradebook.getScore(self.context.student, activity)
+            if not score:
                 value = ''
+            else:
+                value = score.value
             if ICommentScoreSystem.providedBy(activity.scoresystem):
                 block = {
                     'comment': True,
@@ -1582,10 +1591,10 @@ class GradebookCSVView(BrowserView):
             gb = interfaces.IGradebook(worksheet)
             for student in gb.students:
                 for activity in gb.activities:
-                    value, ss = gb.getEvaluation(student, activity)
-                    if value is None:
+                    score = gb.getScore(student, activity)
+                    if not score:
                         continue
-                    value = unicode(value).replace('\n', '\\n')
+                    value = unicode(score.value).replace('\n', '\\n')
                     value = value.replace('\r', '\\r')
                     row = [year.__name__, term.__name__, section.__name__,
                            worksheet.__name__, activity.__name__,

@@ -383,6 +383,53 @@
       />
 
   <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_gradebook_templates_related.pt"
+      view=".report_card.FlourishTemplatesView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_worksheets_related.pt"
+      view=".activity.FlourishWorksheetsView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="summary-worksheet"
+      after="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_worksheets_summary_related.pt"
+      view=".activity.FlourishWorksheetsView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_weight_categories_related.pt"
+      view=".activity.FlourishWeightCategoriesView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_add_linked_activity_related.pt"
+      view=".activity.FlourishLinkedActivityAddView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="addReportSheet.html"
       title="Report Sheet Template"
       class="schooltool.skin.flourish.page.LinkViewlet"
@@ -396,6 +443,32 @@
       subtitle="Edit"
       class="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
       content_template="templates/f_template_manage.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_template_related.pt"
+      view="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="reportsheet-add-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".report_card.ReportSheetAddLinks"
+      view="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+      title="Add"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="addReportActivity.html"
+      title="Report Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".report_card.ReportSheetAddLinks"
       permission="schooltool.edit"
       />
 
@@ -444,6 +517,15 @@
       class=".report_card.FlourishReportSheetsView"
       content_template="templates/f_report_sheets.pt"
       permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_report_sheets_related.pt"
+      view=".report_card.FlourishReportSheetsView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
       />
 
   <flourish:viewletManager
@@ -609,6 +691,102 @@
          file_type="pdf"
          link="request_section_absences.html"
          />
+  </configure>
+
+  <zope:adapterTraverserPlugin
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      layer="zope.publisher.interfaces.browser.IBrowserRequest"
+      name="activity_categories"
+      adapter="schooltool.gradebook.interfaces.ICategoryContainer"
+      />
+
+  <zope:adapter
+      factory=".category.CategoryContainerAbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL" />
+
+  <zope:adapter
+      factory=".category.CategoryContainerAbsoluteURL"
+      provides="zope.interface.Interface"
+      name="absolute_url"/>
+
+  <flourish:activeViewlet
+      name="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      />
+
+  <flourish:breadcrumb
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      title="Activity Categories"
+      />
+
+  <flourish:page_breadcrumbs
+      show_page_title="false"
+      title="Activity Categories"
+      view=".category.FlourishCategoriesView"
+      />
+
+  <flourish:contentFactory
+      factory=".category.appTitleContentFactory"
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      name="title" />
+
+  <flourish:viewlet
+      name="activity_categories"
+      after="gradebook/templates"
+      title="Activity Categories"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+     name="index.html"
+     for="schooltool.gradebook.interfaces.ICategoryContainer"
+     class=".category.FlourishCategoriesView"
+     content_template="templates/f_categories.pt"
+     permission="schooltool.edit"
+     subtitle="Activity Categories"
+     />
+
+  <flourish:viewlet
+      name="categories-add-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".category.CategoriesAddLinks"
+      title="Add"
+      permission="schooltool.edit"
+      view=".category.FlourishCategoriesView"
+      />
+
+  <flourish:viewlet
+      name="category-add"
+      link="add.html"
+      title="New Category"
+      view=".category.FlourishCategoriesView"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".category.CategoriesAddLinks"
+      permission="schooltool.edit"
+      />
+
+  <configure package="schooltool.skin.flourish">
+    <flourish:page
+        name="add.html"
+        title="Activity Categories"
+        subtitle="Add"
+        for="schooltool.gradebook.interfaces.ICategoryContainer"
+        class="schooltool.gradebook.browser.category.FlourishCategoryAddView"
+        permission="schooltool.edit"
+        content_template="templates/z3c-schooltool-form.pt"
+        />
+    <flourish:page
+        name="edit.html"
+        title="Activity Categories"
+        subtitle="Edit"
+        for="schooltool.gradebook.interfaces.ICategoryContainer"
+        class="schooltool.gradebook.browser.category.FlourishCategoryEditView"
+        permission="schooltool.edit"
+        content_template="templates/z3c-schooltool-form.pt"
+        />
   </configure>
 
 </configure>

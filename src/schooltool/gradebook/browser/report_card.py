@@ -45,7 +45,7 @@ from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
-from schooltool.skin.flourish.viewlet import ViewletManager
+from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
@@ -251,7 +251,7 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
 
 
 class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,
-                                            ViewletManager):
+                                            TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -261,8 +261,6 @@ class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,
           </li>
         </ul>
     """)
-
-    list_class = 'third-nav'
 
     @property
     def items(self):
@@ -305,6 +303,10 @@ class FlourishReportCardLayoutOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish report card layouts overview add links viewlet."""
 
 
+class ReportSheetAddLinks(flourish.page.RefineLinksViewlet):
+    """Report sheet add links viewlet."""
+
+
 class FlourishReportSheetAddView(flourish.form.AddForm):
     """flourish view for adding a report sheet template."""
 
@@ -319,7 +321,8 @@ class FlourishReportSheetAddView(flourish.form.AddForm):
 
     @button.buttonAndHandler(_("Cancel"))
     def handle_cancel_action(self, action):
-        self.request.response.redirect(self.nextURL())
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
 
     def create(self, data):
         worksheet = ReportWorksheet(data['title'])
@@ -329,10 +332,16 @@ class FlourishReportSheetAddView(flourish.form.AddForm):
         chooser = INameChooser(self.context)
         name = chooser.chooseName(worksheet.title, worksheet)
         self.context[name] = worksheet
+        self._worksheet = worksheet
         return worksheet
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request)
+        return absoluteURL(self._worksheet, self.request)
+
+    def updateActions(self):
+        super(FlourishReportSheetAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
 
 
 class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
@@ -369,6 +378,11 @@ class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
 
     def nextURL(self):
         return absoluteURL(self.context.__parent__, self.request)
+
+    def updateActions(self):
+        super(FlourishReportSheetEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
 
 
 def ReportScoreSystemsVocabulary(context):
@@ -509,7 +523,7 @@ class ReportActivityAddView(form.AddForm):
                 min=minimum, max=maximum)
         else:
             scoresystem = data['scoresystem']
-        activity = ReportActivity(data['title'], categories.getDefaultKey(), 
+        activity = ReportActivity(data['title'], categories.default, 
                                   scoresystem, data['description'],
                                   data['label'])
         return activity
@@ -669,6 +683,90 @@ class DeployReportWorksheetTermView(DeployReportWorksheetBaseView):
 
     def deploy(self):
         self.deployTerm(self.context)
+
+
+class HideReportWorksheetView(object):
+    """A view for hiding a report sheet that is deployed in a term"""
+
+    @property
+    def worksheets(self):
+        """Get a list of all deployed report worksheets that are not hidden."""
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyear = ISchoolYear(self.context)
+        deployedKey = '%s_%s' % (schoolyear.__name__, self.context.__name__)
+        for key, worksheet in sorted(root.deployed.items()):
+            if worksheet.hidden:
+                continue
+            if key.startswith(deployedKey):
+                yield {
+                    'name': key,
+                    'title': worksheet.title
+                    }
+
+    def update(self):
+        self.available = bool(list(self.worksheets))
+        self.confirm = self.request.get('confirm')
+        self.confirm_title = ''
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'HIDE' in self.request:
+            if not self.confirm:
+                self.confirm = self.request['reportWorksheet']
+                self.confirm_title = root.deployed[self.confirm].title
+            else:
+                worksheet = root.deployed[self.confirm]
+                worksheet.hidden = True
+                sections = ISectionContainer(self.context)
+                for section in sections.values():
+                    activities = IActivities(section)
+                    activities[worksheet.__name__].hidden = True
+                self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+
+class UnhideReportWorksheetView(object):
+    """A view for unhiding a deployed report sheet that is hidden"""
+
+    @property
+    def worksheets(self):
+        """Get a list of all deployed report worksheets that are hidden."""
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyear = ISchoolYear(self.context)
+        deployedKey = '%s_%s' % (schoolyear.__name__, self.context.__name__)
+        for key, worksheet in sorted(root.deployed.items()):
+            if not worksheet.hidden:
+                continue
+            if key.startswith(deployedKey):
+                yield {
+                    'name': key,
+                    'title': worksheet.title
+                    }
+
+    def update(self):
+        self.available = bool(list(self.worksheets))
+        self.confirm = self.request.get('confirm')
+        self.confirm_title = ''
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'UNHIDE' in self.request:
+            if not self.confirm:
+                self.confirm = self.request['reportWorksheet']
+                self.confirm_title = root.deployed[self.confirm].title
+            else:
+                worksheet = root.deployed[self.confirm]
+                worksheet.hidden = False
+                sections = ISectionContainer(self.context)
+                for section in sections.values():
+                    activities = IActivities(section)
+                    activities[worksheet.__name__].hidden = False
+                self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
 
 
 class LayoutReportCardView(object):
