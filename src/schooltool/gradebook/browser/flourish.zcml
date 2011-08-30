@@ -454,6 +454,59 @@
       permission="zope.Public"
       />
 
+  <!-- Report Card Layouts -->
+  <flourish:viewlet
+      name="report_card_layout"
+      after="gradebook/templates"
+      title="Report Card Layout"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="report_card_layout"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".report_card.FlourishLayoutReportCardView"
+      content_template="templates/f_report_card_layout.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".report_card.LayoutReportCardTertiaryNavigationManager"
+      view=".report_card.FlourishLayoutReportCardView"
+      permission="zope.Public"
+      />
+
+  <flourish:viewlet
+      name="report_card_layout_overview"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".report_card.FlourishReportCardLayoutOverviewLinks"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      title="Add"
+      permission="schooltool.edit"
+      view=".report_card.FlourishLayoutReportCardView"
+      />
+
+  <flourish:viewlet
+      name="addReportCardColumn.html"
+      title="Column"
+      class=".report_card.ReportCardColumnLinkViewlet"
+      manager=".report_card.FlourishReportCardLayoutOverviewLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="addReportCardActivity.html"
+      after="addReportCardColumn.html"
+      title="Outline Activity"
+      class=".report_card.ReportCardActivityLinkViewlet"
+      manager=".report_card.FlourishReportCardLayoutOverviewLinks"
+      permission="schooltool.edit"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"
