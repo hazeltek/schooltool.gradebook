@@ -679,6 +679,15 @@
       for="schooltool.gradebook.interfaces.ICategoryContainer"
       name="title" />
 
+  <flourish:viewlet
+      name="activity_categories"
+      after="gradebook/templates"
+      title="Activity Categories"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      permission="schooltool.view"
+      />
+
   <flourish:page
      name="index.html"
      for="schooltool.gradebook.interfaces.ICategoryContainer"
