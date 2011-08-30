@@ -959,7 +959,7 @@ class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Settings links viewlet."""
 
 
-class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -969,8 +969,6 @@ class GradebookTertiaryNavigationManager(flourish.viewlet.ViewletManager):
           </li>
         </ul>
     """)
-
-    list_class = 'third-nav'
 
     @property
     def items(self):

@@ -121,6 +121,10 @@ class IReportWorksheet(interfaces.IRequirement):
     containers(IGradebookTemplates, IGradebookDeployed)
     contains('.IReportActivity')
 
+    title = zope.schema.TextLine(
+        title=_(u'Title'),
+        description=_(u'Identifies the report sheet in teacher gradebooks.'))
+
 
 class IActivity(interfaces.IRequirement):
     '''An activity to be graded'''

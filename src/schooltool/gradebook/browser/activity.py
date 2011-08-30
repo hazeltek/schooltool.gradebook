@@ -269,6 +269,8 @@ class UnhideWorksheetsView(object):
                 worksheet = removeSecurityProxy(self.context[name])
                 worksheet.hidden = False
             self.request.response.redirect(self.nextURL())
+        elif 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
@@ -458,9 +460,6 @@ class ILinkedActivityExternalActivity(interface.Interface):
 
     external_activity = schema.Choice(
         title=_(u"External Score Source"),
-        description=_("""Use external scores to add data from sources outside
-            the SchoolTool Gradebook.  External scores must be configured by
-            your system administrator"""),
         vocabulary="schooltool.gradebook.external_activities",
         required=True)
 
@@ -1008,7 +1007,7 @@ ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
     )
 
 
-class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
+class ActivityAddTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -1019,8 +1018,6 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
         </ul>
     """)
 
-    list_class = 'third-nav'
-
     @property
     def items(self):
         result = []
@@ -1028,8 +1025,8 @@ class ActivityAddTertiaryNavigationManager(flourish.viewlet.ViewletManager):
         current = path[path.rfind('/')+1:]
         actions = [
             ('addActivity.html', _('Activity')),
-            ('addLinkedActivity.html', _('External Score')),
             ('addLinkedColumn.html', _('Linked Column')),
+            ('addLinkedActivity.html', _('External Score')),
             ]
         for action, title in actions:
             url = '%s/%s' % (absoluteURL(self.context, self.request), action)
