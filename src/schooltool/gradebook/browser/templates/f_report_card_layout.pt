@@ -36,7 +36,7 @@
           </td>
         </tr>
         <tr tal:condition="not: columns">
-          <td colspan="2" i18n:translate="">This year has no grid columns in the report card layout.</td>
+          <td colspan="2" i18n:translate="">This report has no grid columns.</td>
         </tr>
       </table>
     </div>
@@ -71,7 +71,7 @@
           </td>
         </tr>
         <tr tal:condition="not: activities">
-          <td colspan="2" i18n:translate="">This year has no outline itmes in the report card layout.</td>
+          <td colspan="2" i18n:translate="">This report has no outline itmes.</td>
         </tr>
       </table>
     </div>
