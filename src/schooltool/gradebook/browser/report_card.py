@@ -790,12 +790,6 @@ class LayoutReportCardView(object):
                 'heading_value': column.heading,
                 }
             results.append(result)
-        results.append({
-                'source_name': 'Column1',
-                'source_value': 'Absent',
-                'heading_name': 'Column2',
-                'heading_value': 'Tardy',
-                })
         return results
 
     @property
@@ -816,12 +810,6 @@ class LayoutReportCardView(object):
                 'heading_value': activity.heading,
                 }
             results.append(result)
-        results.append({
-                'source_name': 'Activity1',
-                'source_value': 'Absent',
-                'heading_name': 'Activity2',
-                'heading_value': 'Tardy',
-                })
         return results
 
     @property
@@ -956,7 +944,8 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
                 'heading_value': column.heading,
                 }
             results.append(result)
-        results.append({
+        if '2010' in self.schoolyear.title:
+            results.append({
                 'source_name': 'Column1',
                 'source_value': 'Tardy',
                 'source_edit': '',
@@ -982,7 +971,8 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
                 'heading_value': activity.heading,
                 }
             results.append(result)
-        results.append({
+        if '2010' in self.schoolyear.title:
+            results.append({
                 'source_name': 'Activity1',
                 'source_value': 'Absent',
                 'source_edit': '',
@@ -1095,15 +1085,15 @@ class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
 
     @property
     def legend(self):
-        return _('Column Details')
+        return _('Grid Column Details')
 
     @property
     def source_label(self):
-        return _('Column source')
+        return _('Grid column source')
 
     @property
     def heading_label(self):
-        return _('Optional alternative column heading')
+        return _('Grid column heading')
 
     @property
     def source_choices(self):
@@ -1115,15 +1105,15 @@ class FlourishReportCardActivityBase(FlourishReportCardLayoutMixin):
 
     @property
     def legend(self):
-        return _('Outline Activity Details')
+        return _('Outline Item Details')
 
     @property
     def source_label(self):
-        return _('Activity source')
+        return _('Outline item source')
 
     @property
     def heading_label(self):
-        return _('Optional alternative outline heading')
+        return _('Outline item heading')
 
     @property
     def source_choices(self):

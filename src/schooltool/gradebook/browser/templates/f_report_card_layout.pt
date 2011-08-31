@@ -6,11 +6,11 @@
     <input type="hidden" name="schoolyear_id" 
            tal:attributes="value request/schoolyear_id|nothing" />
     <div>
-      <h3 i18n:translate="">Columns</h3>
+      <h3 i18n:translate="">Grid Columns</h3>
       <table>
         <thead>
           <tr>
-            <th i18n:translate="">Column</th>
+            <th i18n:translate="">Grid Column</th>
             <th i18n:translate="">Heading</th>
             <th i18n:translate="">Delete?</th>
           </tr>
@@ -36,16 +36,16 @@
           </td>
         </tr>
         <tr tal:condition="not: columns">
-          <td colspan="2" i18n:translate="">This year has no columns in the report card layout.</td>
+          <td colspan="2" i18n:translate="">This year has no grid columns in the report card layout.</td>
         </tr>
       </table>
     </div>
     <div>
-      <h3 i18n:translate="">Outline Activities</h3>
+      <h3 i18n:translate="">Outline Items</h3>
       <table>
         <thead>
           <tr>
-            <th i18n:translate="">Activity</th>
+            <th i18n:translate="">Outline Item</th>
             <th i18n:translate="">Heading</th>
             <th i18n:translate="">Delete?</th>
           </tr>
@@ -71,7 +71,7 @@
           </td>
         </tr>
         <tr tal:condition="not: activities">
-          <td colspan="2" i18n:translate="">This year has no activities in the report card layout.</td>
+          <td colspan="2" i18n:translate="">This year has no outline itmes in the report card layout.</td>
         </tr>
       </table>
     </div>
