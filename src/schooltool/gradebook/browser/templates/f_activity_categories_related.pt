@@ -1,0 +1,12 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      The activity categories used in section gradebooks throughout the school
+      are managed from this page.  Please edit them to suit the types of
+      assignments and assessements used in your school.
+    </p>
+  </div>
+</metal:block>

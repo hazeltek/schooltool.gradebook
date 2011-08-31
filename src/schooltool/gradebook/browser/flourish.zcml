@@ -769,13 +769,23 @@
       />
 
   <flourish:page
-     name="index.html"
-     for="schooltool.gradebook.interfaces.ICategoryContainer"
-     class=".category.FlourishCategoriesView"
-     content_template="templates/f_categories.pt"
-     permission="schooltool.edit"
-     subtitle="Activity Categories"
-     />
+      name="index.html"
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      class=".category.FlourishCategoriesView"
+      content_template="templates/f_categories.pt"
+      permission="schooltool.edit"
+      subtitle="Activity Categories"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_activity_categories_related.pt"
+      view=".category.FlourishCategoriesView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.view"
+      />
 
   <flourish:viewlet
       name="categories-add-links"
