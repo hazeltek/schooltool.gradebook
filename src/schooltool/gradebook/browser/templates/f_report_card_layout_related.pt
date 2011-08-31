@@ -4,15 +4,21 @@
   </div>
   <div class="body">
     <p i18n:translate="">
-      Use this page to layout a standard report card, pulling data from report
-      sheets and the attendance journal.  The standard report card contains
-      grid where each row corresponds to a section and the columns as defined
-      on this page.
+      Use this page to lay out a standard report card, pulling data from
+      <a i18n:translate="" i18n:name="report-sheets"
+         tal:attributes="href string:${context/schooltool:app/@@absolute_url}/report_sheets">report sheets</a>
+      and the attendance journal.
+    </p>
+    <p i18n:translate="">
+      The standard report card contains a grid where each row corresponds to a
+      section and the columns as defined on this page.
     </p>
     <p i18n:translate="">
       Below the grid is an outline which loops through each section and the
       defined outline items laid out like a text outline.  This is necessary
-      for comments or other scores that will not fit in a traditional grid.
+      for comments or other scores that will not fit in a  traditional grid.
+    </p>
+    <p i18n:translate="">
       Both the grid and outline layouts are optional; if no columns or items
       are defined, the whole layout is skipped.
     </p>
