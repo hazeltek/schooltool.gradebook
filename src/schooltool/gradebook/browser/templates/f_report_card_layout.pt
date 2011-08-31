@@ -71,7 +71,7 @@
           </td>
         </tr>
         <tr tal:condition="not: activities">
-          <td colspan="2" i18n:translate="">This report has no outline itmes.</td>
+          <td colspan="2" i18n:translate="">This report has no outline items.</td>
         </tr>
       </table>
     </div>
