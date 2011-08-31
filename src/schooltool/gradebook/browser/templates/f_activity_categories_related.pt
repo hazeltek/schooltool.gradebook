@@ -5,7 +5,10 @@
   <div class="body">
     <p i18n:translate="">
       The activity categories used in section gradebooks throughout the school
-      are managed from this page.  Please edit them to suit the types of
+      are managed from this page.
+    </p>
+    <p i18n:translate="">
+      Please edit them to suit the types of
       assignments and assessements used in your school.
     </p>
   </div>
