@@ -25,7 +25,7 @@
       </td>
       <td>
         <span tal:condition="python:row['key'] == context.default_key"
-              i18n:translate="">Yes</span>
+              class="ui-icon ui-icon-check"></span>
       </td>
       <td tal:condition="context/schooltool:can_edit">
           <input type="image" alt="Delete" value="1" title="Delete"
