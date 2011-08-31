@@ -19,7 +19,9 @@
     </p>
     <p i18n:translate="">
       Data collected through report sheets can be included in the
-      standard report card or custom reports.
+      <a i18n:translate="" i18n:name="report-card-layout"
+         tal:attributes="href string:${context/schooltool:app/@@absolute_url}/report_card_layout">standard report card </a>
+      or custom reports.
     </p>
   </div>
 </metal:block>

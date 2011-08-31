@@ -1,0 +1,30 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Use this page to lay out a standard report card, pulling data from
+      <a i18n:translate="" i18n:name="report-sheets"
+         tal:attributes="href string:${context/schooltool:app/@@absolute_url}/report_sheets">report sheets</a>
+      and the attendance journal.
+    </p>
+    <p i18n:translate="">
+      The standard report card contains a grid where each row corresponds to a
+      section and the columns as defined on this page.
+    </p>
+    <p i18n:translate="">
+      Below the grid is an outline which loops through each section and the
+      defined outline items laid out like a text outline.  This is necessary
+      for comments or other scores that will not fit in a  traditional grid.
+    </p>
+    <p i18n:translate="">
+      Both the grid and outline layouts are optional; if no columns or items
+      are defined, the whole layout is skipped.
+    </p>
+    <p i18n:translate="">
+      The report cards can be generated for an individual person or all the
+      people in a group.
+    </p>
+  </div>
+</metal:block>

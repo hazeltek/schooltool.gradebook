@@ -563,6 +563,16 @@
       />
 
   <flourish:viewlet
+      name="what-is-this"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_report_card_layout_related.pt"
+      view=".report_card.FlourishLayoutReportCardView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
       name="report_card_layout_overview"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".report_card.FlourishReportCardLayoutOverviewLinks"
@@ -574,7 +584,7 @@
 
   <flourish:viewlet
       name="addReportCardColumn.html"
-      title="Column"
+      title="Grid Column"
       class=".report_card.ReportCardColumnLinkViewlet"
       manager=".report_card.FlourishReportCardLayoutOverviewLinks"
       permission="schooltool.edit"
@@ -583,9 +593,27 @@
   <flourish:viewlet
       name="addReportCardActivity.html"
       after="addReportCardColumn.html"
-      title="Outline Activity"
+      title="Outline Item"
       class=".report_card.ReportCardActivityLinkViewlet"
       manager=".report_card.FlourishReportCardLayoutOverviewLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="addReportCardColumn.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      subtitle="New Grid Column"
+      class=".report_card.FlourishReportCardColumnAddView"
+      content_template="templates/f_add_edit_report_card_source.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="addReportCardActivity.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      subtitle="New Outline Item"
+      class=".report_card.FlourishReportCardActivityAddView"
+      content_template="templates/f_add_edit_report_card_source.pt"
       permission="schooltool.edit"
       />
 
@@ -741,13 +769,23 @@
       />
 
   <flourish:page
-     name="index.html"
-     for="schooltool.gradebook.interfaces.ICategoryContainer"
-     class=".category.FlourishCategoriesView"
-     content_template="templates/f_categories.pt"
-     permission="schooltool.edit"
-     subtitle="Activity Categories"
-     />
+      name="index.html"
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      class=".category.FlourishCategoriesView"
+      content_template="templates/f_categories.pt"
+      permission="schooltool.edit"
+      subtitle="Activity Categories"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      for="schooltool.gradebook.interfaces.ICategoryContainer"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_activity_categories_related.pt"
+      view=".category.FlourishCategoriesView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.view"
+      />
 
   <flourish:viewlet
       name="categories-add-links"
