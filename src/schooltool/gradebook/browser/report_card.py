@@ -1038,6 +1038,128 @@ class ReportCardActivityLinkViewlet(FlourishSchooYearMixin,
             self.schoolyear.__name__)
 
 
+class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
+    """A flourish mixin class for column or activity add/edit views"""
+
+    @property
+    def title(self):
+        title = _(u'Report Card Layout for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
+
+    def choices(self, no_comment=True, no_journal=True):
+        """Get  a list of the possible choices for layout activities."""
+        results = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        for term in self.schoolyear.values():
+            deployedKey = '%s_%s' % (self.context.__name__, term.__name__)
+            for key in root.deployed:
+                if key.startswith(deployedKey):
+                    deployedWorksheet = root.deployed[key]
+                    for activity in deployedWorksheet.values():
+                        if ICommentScoreSystem.providedBy(activity.scoresystem):
+                            if no_comment: 
+                                continue
+                        name = '%s - %s - %s' % (term.title,
+                            deployedWorksheet.title, activity.title)
+                        value = '%s|%s|%s' % (term.__name__,
+                            deployedWorksheet.__name__, activity.__name__)
+                        result = {
+                            'name': name,
+                            'value': value,
+                            'selected': False and 'selected' or None,
+                            }
+                        results.append(result)
+        if not no_journal:
+            result = {
+                'name': ABSENT_HEADING,
+                'value': ABSENT_KEY,
+                'selected': False and 'selected' or None,
+                }
+            results.append(result)
+            result = {
+                'name': TARDY_HEADING,
+                'value': TARDY_KEY,
+                'selected': False and 'selected' or None,
+                }
+            results.append(result)
+        return results
+
+    def nextURL(self):
+        app = ISchoolToolApplication(None)
+        return absoluteURL(app, self.request) + '/report_card_layout'
+
+
+class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
+    """A flourish base class for column add/edit views"""
+
+    @property
+    def legend(self):
+        return _('Column Details')
+
+    @property
+    def source_label(self):
+        return _('Column source')
+
+    @property
+    def heading_label(self):
+        return _('Optional alternative column heading')
+
+    @property
+    def source_choices(self):
+        return self.choices(no_journal=False)
+
+
+class FlourishReportCardActivityBase(FlourishReportCardLayoutMixin):
+    """A flourish base class for outline activity add/edit views"""
+
+    @property
+    def legend(self):
+        return _('Outline Activity Details')
+
+    @property
+    def source_label(self):
+        return _('Activity source')
+
+    @property
+    def heading_label(self):
+        return _('Optional alternative outline heading')
+
+    @property
+    def source_choices(self):
+        return self.choices(no_comment=False)
+
+
+class FlourishReportCardColumnAddView(FlourishReportCardColumnBase,
+                                        flourish.page.Page):
+    """A flourish view for adding a column to the report card layout"""
+
+    @property
+    def heading(self):
+        return ''
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        if 'UPDATE_SUBMIT' in self.request:
+            self.request.response.redirect(self.nextURL())
+
+
+class FlourishReportCardActivityAddView(FlourishReportCardActivityBase,
+                                        flourish.page.Page):
+    """A flourish view for adding an activity to  the report card layout"""
+
+    @property
+    def heading(self):
+        return ''
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        if 'UPDATE_SUBMIT' in self.request:
+            self.request.response.redirect(self.nextURL())
+
+
 class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
     """Make sure the same worksheets are deployed to newly added
     sections."""

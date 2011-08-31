@@ -589,6 +589,24 @@
       permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="addReportCardColumn.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      subtitle="New Column"
+      class=".report_card.FlourishReportCardColumnAddView"
+      content_template="templates/f_add_edit_report_card_source.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="addReportCardActivity.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      subtitle="New Activity"
+      class=".report_card.FlourishReportCardActivityAddView"
+      content_template="templates/f_add_edit_report_card_source.pt"
+      permission="schooltool.edit"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"
