@@ -30,7 +30,7 @@
           <td tal:content="column/heading_value" />
           <td>
             <input type="image" alt="Delete" value="1" title="Delete"
-                   tal:attributes="name string:delete_column.${column/source_name};
+                   tal:attributes="name string:delete_column.${column/source_index};
                                    src context/++resource++schooltool.skin.flourish/remove-icon.png"
                    i18n:attributes="alt title" />
           </td>
@@ -65,7 +65,7 @@
           <td tal:content="activity/heading_value" />
           <td>
             <input type="image" alt="Delete" value="1" title="Delete"
-                   tal:attributes="name string:delete_activity.${activity/source_name};
+                   tal:attributes="name string:delete_activity.${activity/source_index};
                                    src context/++resource++schooltool.skin.flourish/remove-icon.png"
                    i18n:attributes="alt title" />
           </td>

@@ -931,26 +931,19 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
         """Get  a list of the existing layout columns."""
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
-        schoolyearKey = self.context.__name__
+        schoolyearKey = self.schoolyear.__name__
         if schoolyearKey in root.layouts:
             current_columns = root.layouts[schoolyearKey].columns
         else:
             current_columns  = []
         for index, column in enumerate(current_columns):
             result = {
-                'source_name': 'Column%s' % (index + 1),
+                'source_index': index + 1,
                 'source_value': column.source,
                 'source_edit': '',
                 'heading_value': column.heading,
                 }
             results.append(result)
-        if '2010' in self.schoolyear.title:
-            results.append({
-                'source_name': 'Column1',
-                'source_value': 'Tardy',
-                'source_edit': '',
-                'heading_value': 'Out',
-                })
         return results
 
     @property
@@ -965,19 +958,12 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
             current_activities  = []
         for index, activity in enumerate(current_activities):
             result = {
-                'source_name': 'Activity%s' % (index + 1),
+                'source_index': index + 1,
                 'source_value': activity.source,
                 'source_edit': '',
                 'heading_value': activity.heading,
                 }
             results.append(result)
-        if '2010' in self.schoolyear.title:
-            results.append({
-                'source_name': 'Activity1',
-                'source_value': 'Absent',
-                'source_edit': '',
-                'heading_value': 'Abs.',
-                })
         return results
 
 
@@ -1075,6 +1061,44 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
             results.append(result)
         return results
 
+    def update(self):
+        # this method handles add/edit of grid columns and outline items
+        if 'CANCEL' in self.request or not self.has_schoolyear:
+            self.request.response.redirect(self.nextURL())
+        if 'UPDATE_SUBMIT' in self.request:
+            if not self.request.get('source'):
+                self.request.response.redirect(self.nextURL())
+                return
+
+            root = IGradebookRoot(ISchoolToolApplication(None))
+            year_id = self.schoolyear.__name__
+            if year_id not in root.layouts:
+                root.layouts[year_id] = ReportLayout()
+            layout = root.layouts[year_id]
+
+            source_index = int(self.request.get('source_index', '0'))
+            if self.source_type == 'grid':
+                columns = layout.columns
+                column = ReportColumn(self.request['source'], 
+                                      self.request['heading'])
+                if source_index and source_index - 1 < len(layout.columns):
+                    columns[source_index - 1] = column
+                else:
+                    columns.append(column)
+                layout.columns = columns
+            else:
+                activities = layout.outline_activities
+                activity = OutlineActivity(self.request['source'], 
+                                           self.request['heading'])
+                if (source_index and
+                    source_index - 1 < len(layout.outline_activities)):
+                    activities[source_index - 1] = activity
+                else:
+                    activities.append(activity)
+                layout.outline_activities = activities
+
+            self.request.response.redirect(self.nextURL())
+
     def nextURL(self):
         app = ISchoolToolApplication(None)
         return absoluteURL(app, self.request) + '/report_card_layout'
@@ -1082,6 +1106,8 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
 
 class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
     """A flourish base class for column add/edit views"""
+
+    source_type = 'grid'
 
     @property
     def legend(self):
@@ -1102,6 +1128,8 @@ class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
 
 class FlourishReportCardActivityBase(FlourishReportCardLayoutMixin):
     """A flourish base class for outline activity add/edit views"""
+
+    source_type = 'outline'
 
     @property
     def legend(self):
@@ -1128,12 +1156,6 @@ class FlourishReportCardColumnAddView(FlourishReportCardColumnBase,
     def heading(self):
         return ''
 
-    def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect(self.nextURL())
-        if 'UPDATE_SUBMIT' in self.request:
-            self.request.response.redirect(self.nextURL())
-
 
 class FlourishReportCardActivityAddView(FlourishReportCardActivityBase,
                                         flourish.page.Page):
@@ -1142,12 +1164,6 @@ class FlourishReportCardActivityAddView(FlourishReportCardActivityBase,
     @property
     def heading(self):
         return ''
-
-    def update(self):
-        if 'CANCEL' in self.request:
-            self.request.response.redirect(self.nextURL())
-        if 'UPDATE_SUBMIT' in self.request:
-            self.request.response.redirect(self.nextURL())
 
 
 class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
