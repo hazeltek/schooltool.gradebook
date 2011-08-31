@@ -385,7 +385,7 @@ class FlourishActivityAddView(flourish.form.AddForm, ActivityAddView):
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Activity Details'
+    legend = _('Activity Details')
 
     fields = field.Fields(IActivityForm)
 
@@ -480,7 +480,7 @@ class FlourishLinkedActivityAddView(flourish.form.AddForm,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'External Score Details'
+    legend = _('External Score Details')
 
     fields = field.Fields(ILinkedActivityExternalActivity, ILinkedActivityForm)
     fields = fields.select("external_activity", "label", "due_date",
@@ -536,7 +536,7 @@ class FlourishActivityEditView(flourish.form.Form,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Activity Details'
+    legend = _('Activity Details')
 
     fields = field.Fields(IActivityForm).omit('max', 'min')
 
@@ -589,7 +589,7 @@ class FlourishLinkedActivityEditView(flourish.form.Form,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'External Score Details'
+    legend = _('External Score Details')
 
     fields = field.Fields(ILinkedActivityExternalActivity, mode=DISPLAY_MODE)
     fields += field.Fields(ILinkedActivityForm)

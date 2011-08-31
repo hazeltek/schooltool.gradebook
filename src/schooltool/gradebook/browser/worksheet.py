@@ -121,7 +121,7 @@ class FlourishWorksheetAddView(flourish.form.AddForm):
     fields = field.Fields(interfaces.IWorksheet).select('title')
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Worksheet Details'
+    legend = _('Worksheet Details')
 
     @button.buttonAndHandler(_('Submit'), name='add')
     def handleAdd(self, action):
