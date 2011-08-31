@@ -1008,6 +1008,12 @@ ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
     )
 
 
+ActivityFormDefaultDueDate = widget.ComputedWidgetAttribute(
+    defaultDueDate,
+    field=IActivityForm['due_date']
+    )
+
+
 class ActivityAddTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""

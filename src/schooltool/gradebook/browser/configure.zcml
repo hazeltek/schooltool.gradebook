@@ -727,6 +727,10 @@
       factory=".activity.ActivityDefaultDueDate"
       name="default" />
 
+  <zope:adapter
+      factory=".activity.ActivityFormDefaultDueDate"
+      name="default" />
+
   <include file="report.zcml" />
 
   <include file="flourish.zcml" />
