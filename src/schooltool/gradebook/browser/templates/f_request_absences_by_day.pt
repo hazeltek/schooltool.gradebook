@@ -43,7 +43,7 @@
              value="Download" i18n:attributes="value" />
       <input type="submit" class="button-cancel" name="CANCEL"
              onclick="return ST.dialogs.close(this);"
-             value="Cancel" i18n:attributes="value cancel-button" />
+             value="Cancel" i18n:attributes="value" />
     </div>
   </form>
 </div>

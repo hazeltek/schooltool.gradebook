@@ -9,12 +9,11 @@
 
   <zope:resourceLibrary
       name="schooltool.gradebook.flourish"
-      require=""
+      require="schooltool.skin.flourish-gradebook"
       layer="schooltool.skin.flourish.IFlourishLayer">
     <directory
           source="resources"
-          include="f_gradebook_overview.js
-                   f_gradebook.css"
+          include="f_gradebook.css"
           />
   </zope:resourceLibrary>
 

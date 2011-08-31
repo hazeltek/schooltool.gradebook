@@ -1,6 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           i18n_domain="zope">
+           xmlns:browser="http://namespaces.zope.org/browser">
 
   <include package="schooltool.common" />
 
@@ -11,9 +10,7 @@
   <include package="schooltool.requirement" />
   <include package="schooltool.gradebook" />
 
-  <configure
-      package="schooltool.skin"
-      i18n_domain="schooltool.gradebook">
+  <configure package="schooltool.skin">
 
     <browser:addform
         label="Add a Requirement"
