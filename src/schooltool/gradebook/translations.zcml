@@ -3,8 +3,6 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            i18n_domain="schooltool.gradebook">
 
-  <include package="schooltool.help" file="meta.zcml" />
-
   <include package="schooltool.common" />
 
   <include package="schooltool.gradebook" />

@@ -313,7 +313,7 @@ class FlourishReportSheetAddView(flourish.form.AddForm):
     fields = field.Fields(IReportWorksheet).select('title')
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Report Sheet Template Details'
+    legend = _('Report Sheet Template Details')
 
     @button.buttonAndHandler(_('Submit'), name='add')
     def handleAdd(self, action):
@@ -545,7 +545,7 @@ class FlourishReportActivityAddView(ReportActivityAddView,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Report Activity Details'
+    legend = _('Report Activity Details')
     formErrorsMessage = _('Please correct the marked fields below.')
 
     @button.buttonAndHandler(_('Submit'), name='add')
@@ -597,7 +597,7 @@ class FlourishReportActivityEditView(ReportActivityEditView,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Report Activity Details'
+    legend = _('Report Activity Details')
     formErrorsMessage = _('Please correct the marked fields below.')
 
     @button.buttonAndHandler(_('Submit'), name='apply')

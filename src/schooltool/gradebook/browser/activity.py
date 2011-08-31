@@ -17,15 +17,12 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 """Activity Views.
-
-$Id$
 """
 from decimal import Decimal, InvalidOperation
 
 import xlwt
 from StringIO import StringIO
 
-from zope.component import adapts
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.interface import implements
@@ -57,7 +54,7 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
-from schooltool.gradebook.activity import Activities, Worksheet
+from schooltool.gradebook.activity import Worksheet
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -348,17 +345,17 @@ class IActivityForm(interface.Interface):
 
     category = zope.schema.Choice(
         title=_("Category"),
-        description=_("""Categories can be used to weigh different types of
-            activites differently when calculating averages.  The list of
-            categories can be set schoolwide set by your system
-            administrator."""),
+        description=_("Categories can be used to weigh different types of "
+                      "activites differently when calculating averages.  The "
+                      "list of categories can be set schoolwide set by your "
+                      "system administrator."),
         vocabulary="schooltool.gradebook.category-vocabulary",
         required=True)
 
     max = zope.schema.Int(
         title=_(u'Full Credit Score'),
-        description=_("""This value must be an integer.  You may award extra
-            credit above this value."""),
+        description=_("This value must be an integer.  You may award extra "
+                      "credit above this value."),
         required=True,
         default=100)
 
@@ -385,7 +382,7 @@ class FlourishActivityAddView(flourish.form.AddForm, ActivityAddView):
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Activity Details'
+    legend = _('Activity Details')
 
     fields = field.Fields(IActivityForm)
 
@@ -468,9 +465,9 @@ class ILinkedActivityForm(IActivityForm):
 
     points = zope.schema.Int(
         title=_(u"Full Credit Score"),
-        description=_("""The point value of this activity will be calculated
-            as the full credit score multiplied by the percentage value of
-            the external score."""),
+        description=_("The point value of this activity will be calculated as "
+                      "the full credit score multiplied by the percentage "
+                      "value of the external score."),
         min=0,
         required=True)
 
@@ -480,7 +477,7 @@ class FlourishLinkedActivityAddView(flourish.form.AddForm,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'External Score Details'
+    legend = _('External Score Details')
 
     fields = field.Fields(ILinkedActivityExternalActivity, ILinkedActivityForm)
     fields = fields.select("external_activity", "label", "due_date",
@@ -536,7 +533,7 @@ class FlourishActivityEditView(flourish.form.Form,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'Activity Details'
+    legend = _('Activity Details')
 
     fields = field.Fields(IActivityForm).omit('max', 'min')
 
@@ -589,7 +586,7 @@ class FlourishLinkedActivityEditView(flourish.form.Form,
 
     template = InheritTemplate(flourish.page.Page.template)
     label = None
-    legend = 'External Score Details'
+    legend = _('External Score Details')
 
     fields = field.Fields(ILinkedActivityExternalActivity, mode=DISPLAY_MODE)
     fields += field.Fields(ILinkedActivityForm)
@@ -1005,6 +1002,12 @@ def defaultDueDate(adapter):
 ActivityDefaultDueDate = widget.ComputedWidgetAttribute(
     defaultDueDate,
     field=interfaces.IActivity['due_date']
+    )
+
+
+ActivityFormDefaultDueDate = widget.ComputedWidgetAttribute(
+    defaultDueDate,
+    field=IActivityForm['due_date']
     )
 
 
