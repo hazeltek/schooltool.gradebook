@@ -19,11 +19,17 @@
 
 from zope.interface import implements
 
-from schooltool.course.interfaces import ISection
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
-
 from schooltool.gradebook import interfaces
 from schooltool.gradebook import GradebookMessage as _
+
+try:
+    from schooltool.lyceum.journal.interfaces import ISectionJournalData
+    from schooltool.lyceum.journal.journal import ABSENT, TARDY
+except ImportError:
+    def ISectionJournalData(section):
+        return None
+    ABSENT = 'n'
+    TARDY = 'p'
 
 
 # adapt section to gradebook's ISectionJournalData interface, returning
@@ -49,9 +55,6 @@ class JournalSource(object):
 
     def getExternalActivity(self, external_activity_id):
         return self.activities[0]
-
-    def __repr__(self):
-        return '<JournalSource...>'
 
 
 class JournalExternalActivity(object):
@@ -85,7 +88,3 @@ class JournalExternalActivity(object):
         return interfaces.IExternalActivity.providedBy(other) and \
                self.source == other.source and \
                self.external_activity_id == other.external_activity_id
-
-    def __repr__(self):
-        return '<ExternalActivity %r>' % (self.title)
-
