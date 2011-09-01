@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-03-02 22:21+0200\n"
-"PO-Revision-Date: 2010-10-04 17:43+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"POT-Creation-Date: 2011-07-02 16:32+0300\n"
+"PO-Revision-Date: 2011-07-07 01:10+0000\n"
+"Last-Translator: Benny <benonsoftware@gmail.com>\n"
 "Language-Team: English (Australia) <en_AU@li.org>\n"
-"Language: en_AU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-04 05:01+0000\n"
-"X-Generator: Launchpad (build 12351)\n"
+"X-Launchpad-Export-Date: 2011-07-08 04:52+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
+"Language: en_AU\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -79,7 +79,7 @@ msgstr "Edit External Activity"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:340
 msgid "Category weights for worksheet ${worksheet}"
-msgstr ""
+msgstr "Category weights for worksheet ${worksheet}"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:362
@@ -156,15 +156,15 @@ msgid "Add a Report Sheet"
 msgstr "Add a Report Sheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:158
+msgid "Edit Worksheet"
+msgstr "Edit Worksheet"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:158
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 #: /src/schooltool/gradebook/browser/configure.zcml:218
 #: /src/schooltool/gradebook/browser/configure.zcml:241
 msgid "Edit"
 msgstr "Edit"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:158
-msgid "Edit Worksheet"
-msgstr "Edit Worksheet"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 msgid "Edit Report Sheet"
@@ -261,16 +261,16 @@ msgstr "Update Grades"
 msgid "Deploy Report Sheet"
 msgstr "Deploy Report Sheet"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:531
-#: /src/schooltool/gradebook/browser/configure.zcml:582
-#: /src/schooltool/gradebook/browser/configure.zcml:626
-#: /src/schooltool/gradebook/browser/configure.zcml:669
-#: /src/schooltool/gradebook/browser/configure.zcml:712
-msgid "Reports"
-msgstr "Reports"
+#: /src/schooltool/gradebook/browser/configure.zcml:539
+msgid "Hide Report Sheet"
+msgstr "Hide Report Sheet"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:575
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:13
+#: /src/schooltool/gradebook/browser/configure.zcml:546
+msgid "Unhide Report Sheet"
+msgstr "Unhide Report Sheet"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:598
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr "Report Card Layout"
 
@@ -288,7 +288,15 @@ msgstr "Ave."
 msgid "Total"
 msgstr "Total"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:210
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Abs."
+msgstr "Abs."
+
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Trd."
+msgstr "Trd."
+
+#: /src/schooltool/gradebook/browser/gradebook.py:195
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
@@ -458,6 +466,77 @@ msgstr "Section"
 msgid "Worksheet"
 msgstr "Worksheet"
 
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Contains scores from report sheets.  Formatted to be sent to parents."
+msgstr "Contains scores from report sheets.  Formatted to be sent to parents."
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Student Report Card"
+msgstr "Student Report Card"
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid ""
+"Contains scores from report sheets and attendance.  For use by school staff."
+msgstr ""
+"Contains scores from report sheets and attendance.  For use by school staff."
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid "Student Detail Report"
+msgstr "Student Detail Report"
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "A single PDF containing report cards for all students in the group."
+msgstr "A single PDF containing report cards for all students in the group."
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "Student Report Card by Group"
+msgstr "Student Report Card by Group"
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Group"
+msgstr "Group"
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "A single PDF containing detail reports for all students in the group."
+msgstr "A single PDF containing detail reports for all students in the group."
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Student Detail Report by Group"
+msgstr "Student Detail Report by Group"
+
+#: /src/schooltool/gradebook/browser/report.zcml:45
+msgid "Failures by Term"
+msgstr "Failures by Term"
+
+#: /src/schooltool/gradebook/browser/report.zcml:53
+msgid ""
+"Shows all students receiving failing scores in the selected report activity "
+"and term."
+msgstr ""
+"Shows all students receiving failing scores in the selected report activity "
+"and term."
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "Absences By Day"
+msgstr "Absences By Day"
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "Lists students absent on a given day."
+msgstr "Lists students absent on a given day."
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "School Year"
+msgstr "School Year"
+
+#: /src/schooltool/gradebook/browser/report.zcml:66
+msgid "Absences by Section"
+msgstr "Absences by Section"
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Summary of absences and tardies from a single section and term."
+msgstr "Summary of absences and tardies from a single section and term."
+
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "Absent"
 msgstr "Absent"
@@ -517,51 +596,7 @@ msgstr "Add new report activity"
 msgid "Apply"
 msgstr "Apply"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:52
-msgid "Student Reports"
-msgstr "Student Reports"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:59
-#: /src/schooltool/gradebook/browser/request_reports.py:79
-#: /src/schooltool/gradebook/browser/request_reports.py:299
-msgid "Request Report Card"
-msgstr "Request Report Card"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:63
-#: /src/schooltool/gradebook/browser/request_reports.py:83
-#: /src/schooltool/gradebook/browser/request_reports.py:301
-msgid "Request Detailed Student Report"
-msgstr "Request Detailed Student Report"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:72
-msgid "Group Reports"
-msgstr "Group Reports"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:92
-msgid "Term Reports"
-msgstr "Term Reports"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:99
-msgid "Failures by Term"
-msgstr "Failures by Term"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:108
-msgid "School Year Reports"
-msgstr "School Year Reports"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:115
-msgid "Absences By Day"
-msgstr "Absences By Day"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:124
-msgid "Section Reports"
-msgstr "Section Reports"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:131
-msgid "Download Absences by Section Report"
-msgstr "Download Absences by Section Report"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
+#: /src/schooltool/gradebook/browser/request_reports.py:42
 msgid "Request Failures by Term Report"
 msgstr "Request Failures by Term Report"
 
@@ -571,7 +606,7 @@ msgstr "Choose a report activity"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:189
 msgid "Maximum Passing Score"
-msgstr ""
+msgstr "Maximum Passing Score"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:191
 msgid "Minimum Passing Score"
@@ -588,6 +623,14 @@ msgstr "Request Absences By Day Report"
 #: /src/schooltool/gradebook/browser/request_reports.py:254
 msgid "You must specify a valid date within the school year."
 msgstr "You must specify a valid date within the school year."
+
+#: /src/schooltool/gradebook/browser/request_reports.py:201
+msgid "Request Report Card"
+msgstr "Request Report Card"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:203
+msgid "Request Detailed Student Report"
+msgstr "Request Detailed Student Report"
 
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 msgid "Hide"
@@ -791,7 +834,17 @@ msgstr "Classes you teach"
 msgid "Classes you attend"
 msgstr "Classes you attend"
 
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:8
+msgid "Hide Deployed Report Sheet"
+msgstr "Hide Deployed Report Sheet"
+
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
+msgid "Report Sheet"
+msgstr "Report Sheet"
+
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
 msgstr "Layout Report Card"
 
@@ -863,6 +916,10 @@ msgid ""
 "administration access set up at least one report sheet and try the operation "
 "again."
 msgstr ""
+"The operation you attempted cannot be completed because there are currently "
+"no report sheets set up in your SchoolTool instance. Please have a user with "
+"administration access set up at least one report sheet and try the operation "
+"again."
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:4
 msgid "Report Worksheet"
@@ -932,7 +989,13 @@ msgstr "Term or Year"
 msgid "Section Worksheet Summary"
 msgstr "Section Worksheet Summary"
 
-#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:28
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:8
+msgid "Unhide Deployed Report Sheet"
+msgstr "Unhide Deployed Report Sheet"
+
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
+#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
 msgid "Unhide"
 msgstr "Unhide"
 
@@ -985,10 +1048,6 @@ msgstr "Delete"
 #: /src/schooltool/gradebook/browser/worksheet.py:100
 msgid "This worksheet has no activities."
 msgstr "This worksheet has no activities."
-
-#: /src/schooltool/gradebook/configure.zcml:302
-msgid "Gradebook API"
-msgstr "Gradebook API"
 
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
@@ -1149,6 +1208,14 @@ msgstr "Linked Column Activity Source"
 msgid "A text string that specifies the source of the column"
 msgstr "A text string that specifies the source of the column"
 
+#: /src/schooltool/gradebook/journal.py:46
+msgid "Journal Source"
+msgstr "Journal Source"
+
+#: /src/schooltool/gradebook/journal.py:64
+msgid "Journal Average"
+msgstr "Journal Average"
+
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
 msgstr "Create, edit and deploy report sheet templates."
@@ -1175,13 +1242,15 @@ msgstr "View gradebook data for a section."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Only the instructor of a section can edit its gradebook."
-msgstr ""
+msgstr "Only the instructor of a section can edit its gradebook."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid ""
 "The instructor of a section and school administration can edit a section's "
 "gradebook."
 msgstr ""
+"The instructor of a section and school administration can edit a section's "
+"gradebook."
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
@@ -1381,10 +1450,13 @@ msgid ""
 "the value below to say 'Maximum' passing score. Otherwise leave it a "
 "'Minimum' passing score."
 msgstr ""
+"If the values in the score system descend, e.g., 1 is the best score, set "
+"the value below to say 'Maximum' passing score. Otherwise leave it a "
+"'Minimum' passing score."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:98
 msgid "passing score:"
-msgstr ""
+msgstr "passing score:"
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"

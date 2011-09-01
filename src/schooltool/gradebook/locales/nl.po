@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-03-02 22:21+0200\n"
-"PO-Revision-Date: 2011-03-20 09:48+0000\n"
+"POT-Creation-Date: 2011-07-02 16:32+0300\n"
+"PO-Revision-Date: 2011-07-15 08:51+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
-"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-21 04:57+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2011-07-16 05:08+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
+"Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -158,15 +158,15 @@ msgid "Add a Report Sheet"
 msgstr "Een rapportblad toevoegen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:158
+msgid "Edit Worksheet"
+msgstr "Werkblad bewerken"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:158
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 #: /src/schooltool/gradebook/browser/configure.zcml:218
 #: /src/schooltool/gradebook/browser/configure.zcml:241
 msgid "Edit"
 msgstr "Bewerken"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:158
-msgid "Edit Worksheet"
-msgstr "Werkblad bewerken"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 msgid "Edit Report Sheet"
@@ -263,16 +263,16 @@ msgstr "Cijfers bijwerken"
 msgid "Deploy Report Sheet"
 msgstr "Rapportblad gebruiken"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:531
-#: /src/schooltool/gradebook/browser/configure.zcml:582
-#: /src/schooltool/gradebook/browser/configure.zcml:626
-#: /src/schooltool/gradebook/browser/configure.zcml:669
-#: /src/schooltool/gradebook/browser/configure.zcml:712
-msgid "Reports"
-msgstr "Rapporten"
+#: /src/schooltool/gradebook/browser/configure.zcml:539
+msgid "Hide Report Sheet"
+msgstr "Rapportblad verbergen"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:575
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:13
+#: /src/schooltool/gradebook/browser/configure.zcml:546
+msgid "Unhide Report Sheet"
+msgstr "Toon rapportblad"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:598
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr "Rapportkaartindeling"
 
@@ -290,7 +290,15 @@ msgstr "Gem."
 msgid "Total"
 msgstr "Totaal"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:210
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Abs."
+msgstr "Absent"
+
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Trd."
+msgstr "Te laat"
+
+#: /src/schooltool/gradebook/browser/gradebook.py:195
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
@@ -461,9 +469,85 @@ msgstr "Sectie"
 msgid "Worksheet"
 msgstr "Werkblad"
 
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Contains scores from report sheets.  Formatted to be sent to parents."
+msgstr ""
+"Bevat scores van rapportbladen. Geformatteerd om naar de ouders verstuurd te "
+"worden."
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Student Report Card"
+msgstr "Leerlingrapportkaart"
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid ""
+"Contains scores from report sheets and attendance.  For use by school staff."
+msgstr ""
+"Bevat scores van rapportbladen en aanwezigheid. Voor gebruik door schoolstaf."
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid "Student Detail Report"
+msgstr "Leerlingrapportdetail"
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "A single PDF containing report cards for all students in the group."
+msgstr ""
+"Eén enkel PDF-bestand met de rapportkaarten van alle leerlingen in de groep."
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "Student Report Card by Group"
+msgstr "Leerlingrapportkaart per groep"
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Group"
+msgstr "Groep"
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "A single PDF containing detail reports for all students in the group."
+msgstr ""
+"Eén enkel PDF-bestand met de rapportdetails van alle leerlingen in de groep."
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Student Detail Report by Group"
+msgstr "Leerlingrapportdetail van leerling per groep"
+
+#: /src/schooltool/gradebook/browser/report.zcml:45
+msgid "Failures by Term"
+msgstr "Gezakten per periode"
+
+#: /src/schooltool/gradebook/browser/report.zcml:53
+msgid ""
+"Shows all students receiving failing scores in the selected report activity "
+"and term."
+msgstr ""
+"Toont alle leerlingen met een onvoldoende in de geselecteerde "
+"rapportactiviteit en periode."
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "Absences By Day"
+msgstr "Absenties per dag"
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "Lists students absent on a given day."
+msgstr "Toont afwezigheid van leerling op een bepaalde datum."
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "School Year"
+msgstr "Schooljaar"
+
+#: /src/schooltool/gradebook/browser/report.zcml:66
+msgid "Absences by Section"
+msgstr "Absenties per sectie"
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Summary of absences and tardies from a single section and term."
+msgstr ""
+"Samenvatting van absenties en te laat komen van één enkele sectie en periode."
+
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "Absent"
-msgstr "Afwezig"
+msgstr "Absent"
 
 #: /src/schooltool/gradebook/browser/report_card.py:59
 msgid "Tardy"
@@ -520,51 +604,7 @@ msgstr "Nieuwe rapportactiviteit toevoegen."
 msgid "Apply"
 msgstr "Toepassen"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:52
-msgid "Student Reports"
-msgstr "Leerlingenrapporten"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:59
-#: /src/schooltool/gradebook/browser/request_reports.py:79
-#: /src/schooltool/gradebook/browser/request_reports.py:299
-msgid "Request Report Card"
-msgstr "Rapportkaart opvragen"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:63
-#: /src/schooltool/gradebook/browser/request_reports.py:83
-#: /src/schooltool/gradebook/browser/request_reports.py:301
-msgid "Request Detailed Student Report"
-msgstr "Gedetailleerd leerlingenrapport ophalen"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:72
-msgid "Group Reports"
-msgstr "Groepsrapporten"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:92
-msgid "Term Reports"
-msgstr "Perioderapporten"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:99
-msgid "Failures by Term"
-msgstr "Gezakten per periode"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:108
-msgid "School Year Reports"
-msgstr "Schooljaarrapporten"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:115
-msgid "Absences By Day"
-msgstr "Absenties per dag"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:124
-msgid "Section Reports"
-msgstr "Sectierapporten"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:131
-msgid "Download Absences by Section Report"
-msgstr "Absenties per sectierapport downloaden"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
+#: /src/schooltool/gradebook/browser/request_reports.py:42
 msgid "Request Failures by Term Report"
 msgstr "Gezakten per perioderapport opvragen"
 
@@ -592,6 +632,14 @@ msgstr "Absenties per dagrapport opvragen"
 #: /src/schooltool/gradebook/browser/request_reports.py:254
 msgid "You must specify a valid date within the school year."
 msgstr "U dient een geldige datum uit het schooljaar te kiezen."
+
+#: /src/schooltool/gradebook/browser/request_reports.py:201
+msgid "Request Report Card"
+msgstr "Rapportkaart opvragen"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:203
+msgid "Request Detailed Student Report"
+msgstr "Gedetailleerd leerlingenrapport ophalen"
 
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 msgid "Hide"
@@ -799,7 +847,17 @@ msgstr "Klassen waar u les geeft"
 msgid "Classes you attend"
 msgstr "Klassen die u bezoekt"
 
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:8
+msgid "Hide Deployed Report Sheet"
+msgstr "Gebruikte rapportblad verbergen"
+
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
+msgid "Report Sheet"
+msgstr "Rapportblad"
+
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
 msgstr "Rapportkaartindeling"
 
@@ -944,7 +1002,13 @@ msgstr "Periode of jaar"
 msgid "Section Worksheet Summary"
 msgstr "Sectie werkbladsamenvatting"
 
-#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:28
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:8
+msgid "Unhide Deployed Report Sheet"
+msgstr "Toon gebruikte rapportblad"
+
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
+#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
 msgid "Unhide"
 msgstr "Toon"
 
@@ -997,10 +1061,6 @@ msgstr "Verwijderen"
 msgid "This worksheet has no activities."
 msgstr "Dit werkblad bevat geen activiteiten."
 
-#: /src/schooltool/gradebook/configure.zcml:302
-msgid "Gradebook API"
-msgstr "Cijferlijst-API"
-
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
 msgstr "Gebruikte rapportbladen"
@@ -1027,7 +1087,7 @@ msgstr "Huiswerk"
 
 #: /src/schooltool/gradebook/gradebook_init.py:113
 msgid "Journal"
-msgstr "Agenda"
+msgstr "Logboek"
 
 #: /src/schooltool/gradebook/gradebook_init.py:114
 msgid "Lab"
@@ -1159,6 +1219,14 @@ msgstr "Gekoppelde kolom activiteitenbron"
 #: /src/schooltool/gradebook/interfaces.py:415
 msgid "A text string that specifies the source of the column"
 msgstr "Tekst die de bron van de kolom aangeeft"
+
+#: /src/schooltool/gradebook/journal.py:46
+msgid "Journal Source"
+msgstr "Logboekbron"
+
+#: /src/schooltool/gradebook/journal.py:64
+msgid "Journal Average"
+msgstr "Logboekgemiddelde"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
@@ -1412,33 +1480,3 @@ msgstr "Scoresysteem tonen"
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
 msgstr "Verwijderen?"
-
-#~ msgid "Manage Activities"
-#~ msgstr "Activiteiten beheren"
-
-#~ msgid "Detailed Student Report"
-#~ msgstr "Gedetailleerd leerlingenrapport"
-
-#~ msgid "Failures by Term Report"
-#~ msgstr "Gezakten per perioderapport"
-
-#~ msgid "Download Student Detail Report"
-#~ msgstr "Detailrapport leerling downloaden"
-
-#~ msgid "Download Detailed Student Report"
-#~ msgstr "Gedetailleerd leerlingenrapport downloaden"
-
-#~ msgid "Download Report Card"
-#~ msgstr "Rapportkaart downloaden"
-
-#~ msgid "Report Card"
-#~ msgstr "Rapportkaart"
-
-#~ msgid "Modification Date"
-#~ msgstr "Wijzigingsdatum"
-
-#~ msgid "Activity Name"
-#~ msgstr "Naam activiteit"
-
-#~ msgid "Print Report Card"
-#~ msgstr "Print rapport"
