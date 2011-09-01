@@ -926,6 +926,18 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
                   mapping={'year': self.schoolyear.title})
         return translate(title, context=self.request)
 
+    def getSourceName(self, source):
+        if source == ABSENT_KEY:
+            return ABSENT_HEADING
+        if source == TARDY_KEY:
+            return TARDY_HEADING
+        termName, worksheetName, activityName = source.split('|')
+        term = self.schoolyear[termName]
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        worksheet = root.deployed[worksheetName]
+        activity = worksheet[activityName]
+        return '%s - %s - %s' % (term.title, worksheet.title, activity.title)
+ 
     @property
     def columns(self):
         """Get  a list of the existing layout columns."""
@@ -939,7 +951,7 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
         for index, column in enumerate(current_columns):
             result = {
                 'source_index': index + 1,
-                'source_value': column.source,
+                'source_value': self.getSourceName(column.source),
                 'source_edit': '',
                 'heading_value': column.heading,
                 }
@@ -959,7 +971,7 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
         for index, activity in enumerate(current_activities):
             result = {
                 'source_index': index + 1,
-                'source_value': activity.source,
+                'source_value': self.getSourceName(activity.source),
                 'source_edit': '',
                 'heading_value': activity.heading,
                 }
@@ -1054,7 +1066,7 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
         for term in self.schoolyear.values():
-            deployedKey = '%s_%s' % (self.context.__name__, term.__name__)
+            deployedKey = '%s_%s' % (self.schoolyear.__name__, term.__name__)
             for key in root.deployed:
                 if key.startswith(deployedKey):
                     deployedWorksheet = root.deployed[key]
