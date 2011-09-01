@@ -2,17 +2,31 @@
 CHANGES
 =======
 
-0.9.1 (unreleased)
+0.10 (unreleased)
+-----------------
+
+New UI for SchoolTool flourish and many other changes...
+
+
+0.9.1 (2011-07-04)
 ------------------
+
+New features
+++++++++++++
+
+- External activity source for journal average.
+- Absences and tardies columns in the gradebook (hidden by default).
+- Hide/Unhide deployed report sheets (https://launchpad.net/bugs/788323).
+
+Bugfixes
+++++++++
 
 - Move custom score systems to a new container. Fixes crash on startup
   if gradebook has been disabled after use (https://lauchpad.net/bugs/717277).
-- Created external activity and source for journal average
-- Created absences and tardies columns in the gradebook (hidden by default)
 - Run functional tests without journal, add separate tests that need journal to
-  another layer (https://launchpad.net/bugs/783540)
-- Hide/Unhide deployed report sheets (https://launchpad.net/bugs/788323)
-- Fixed divide by zero bug (https://launchpad.net/bugs/801121)
+  another layer (https://launchpad.net/bugs/783540).
+- Fixed crash when there were scores only for non-weighted activities (https://launchpad.net/bugs/801121).
+- Fixed unhide worksheets when all the worksheets are hidden (https://launchpad.net/bugs/788307).
 
 
 0.9.0 (2011-04-25)
@@ -214,7 +228,7 @@ Tweaks and fixes
 0.4.9 (2009-07-07)
 ------------------
 
-New features 
+New features
 ++++++++++++
 
 - There is a new gradebook view for grading a single student.  Please follow ">"

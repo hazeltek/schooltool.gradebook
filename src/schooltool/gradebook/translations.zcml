@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           i18n_domain="schooltool.gradebook">
+           xmlns:meta="http://namespaces.zope.org/meta">
 
   <include package="schooltool.common" />
+
+  <!-- Extract journal strings -->
+  <meta:provides feature="schooltool.lyceum.journal" />
 
   <include package="schooltool.gradebook" />
   <include package="schooltool.requirement" />

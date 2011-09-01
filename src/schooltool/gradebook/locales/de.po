@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-03-02 22:21+0200\n"
+"POT-Creation-Date: 2011-07-02 16:32+0300\n"
 "PO-Revision-Date: 2010-10-04 17:43+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: German <de@li.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-03-04 05:00+0000\n"
-"X-Generator: Launchpad (build 12351)\n"
+"X-Launchpad-Export-Date: 2011-07-04 04:56+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
+"Language: de\n"
 "X-Rosetta-Version: 0.1\n"
 "X-Poedit-Bookmarks: 326,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
@@ -160,15 +160,15 @@ msgid "Add a Report Sheet"
 msgstr "Berichtblatt hinzufügen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:158
+msgid "Edit Worksheet"
+msgstr "Arbeitsblatt bearbeiten"
+
+#: /src/schooltool/gradebook/browser/configure.zcml:158
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 #: /src/schooltool/gradebook/browser/configure.zcml:218
 #: /src/schooltool/gradebook/browser/configure.zcml:241
 msgid "Edit"
 msgstr "Bearbeiten"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:158
-msgid "Edit Worksheet"
-msgstr "Arbeitsblatt bearbeiten"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:170
 msgid "Edit Report Sheet"
@@ -265,16 +265,16 @@ msgstr "Noten aktualisieren"
 msgid "Deploy Report Sheet"
 msgstr "Berichtsblatt anwenden"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:531
-#: /src/schooltool/gradebook/browser/configure.zcml:582
-#: /src/schooltool/gradebook/browser/configure.zcml:626
-#: /src/schooltool/gradebook/browser/configure.zcml:669
-#: /src/schooltool/gradebook/browser/configure.zcml:712
-msgid "Reports"
-msgstr "Berichte"
+#: /src/schooltool/gradebook/browser/configure.zcml:539
+msgid "Hide Report Sheet"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:575
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:13
+#: /src/schooltool/gradebook/browser/configure.zcml:546
+msgid "Unhide Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/configure.zcml:598
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr "Zeugnis-Layout"
 
@@ -292,7 +292,15 @@ msgstr "Ave."
 msgid "Total"
 msgstr "Gesamt"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:210
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Abs."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Trd."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:195
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
@@ -463,6 +471,74 @@ msgstr "Sektion"
 msgid "Worksheet"
 msgstr "Arbeitsblatt"
 
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Contains scores from report sheets.  Formatted to be sent to parents."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
+msgid "Student Report Card"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid ""
+"Contains scores from report sheets and attendance.  For use by school staff."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:17
+msgid "Student Detail Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "A single PDF containing report cards for all students in the group."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+msgid "Student Report Card by Group"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Group"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "A single PDF containing detail reports for all students in the group."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:35
+msgid "Student Detail Report by Group"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:45
+msgid "Failures by Term"
+msgstr "Schüler, die das Kursziehl nicht erreicht haben"
+
+#: /src/schooltool/gradebook/browser/report.zcml:45
+msgid ""
+"Shows all students receiving failing scores in the selected report activity "
+"and term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "Absences By Day"
+msgstr "Abwesenheit pro Tag"
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "Lists students absent on a given day."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
+msgid "School Year"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:66
+msgid "Absences by Section"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:62
+msgid "Summary of absences and tardies from a single section and term."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "Absent"
 msgstr "Abwesend"
@@ -523,51 +599,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Ausführen"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:52
-msgid "Student Reports"
-msgstr "Zeugnisbericht"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:59
-#: /src/schooltool/gradebook/browser/request_reports.py:79
-#: /src/schooltool/gradebook/browser/request_reports.py:299
-msgid "Request Report Card"
-msgstr "Zeugnisbericht nachfragen"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:63
-#: /src/schooltool/gradebook/browser/request_reports.py:83
-#: /src/schooltool/gradebook/browser/request_reports.py:301
-msgid "Request Detailed Student Report"
-msgstr "detailierten Zeugnisbericht nachfragen"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:72
-msgid "Group Reports"
-msgstr "Gruppenberichte"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:92
-msgid "Term Reports"
-msgstr "Semesterberichte"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:99
-msgid "Failures by Term"
-msgstr "Schüler, die das Kursziehl nicht erreicht haben"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:108
-msgid "School Year Reports"
-msgstr "Jahresschulbericht"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:115
-msgid "Absences By Day"
-msgstr "Abwesenheit pro Tag"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:124
-msgid "Section Reports"
-msgstr "Bereichsberichte"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:131
-msgid "Download Absences by Section Report"
-msgstr "Herunterladen der Abwesenheiten pro Bereichsberichte"
-
-#: /src/schooltool/gradebook/browser/request_reports.py:140
+#: /src/schooltool/gradebook/browser/request_reports.py:42
 msgid "Request Failures by Term Report"
 msgstr "Abwesenheiten nach Semesterberichte nachfragen"
 
@@ -596,6 +628,14 @@ msgstr "Abwesnheiten pro Tagesbericht wählen"
 #: /src/schooltool/gradebook/browser/request_reports.py:254
 msgid "You must specify a valid date within the school year."
 msgstr "Sie müssen ein gültiges Datum des Schuljahres definieren"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:201
+msgid "Request Report Card"
+msgstr "Zeugnisbericht nachfragen"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:203
+msgid "Request Detailed Student Report"
+msgstr "detailierten Zeugnisbericht nachfragen"
 
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 msgid "Hide"
@@ -802,7 +842,17 @@ msgstr "Unterrichtete Klassen"
 msgid "Classes you attend"
 msgstr "Klassen die Sie beaufsichtigen"
 
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:8
+msgid "Hide Deployed Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
+msgid "Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
 msgstr "Leistungsbericht-Formular gestalten"
 
@@ -947,7 +997,13 @@ msgstr "Semester oder Jahr"
 msgid "Section Worksheet Summary"
 msgstr "Bereichsübersicht Arbeitsblätter"
 
-#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:28
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:8
+msgid "Unhide Deployed Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
+#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
 msgid "Unhide"
 msgstr "Hervorheben"
 
@@ -1000,10 +1056,6 @@ msgstr "Entfernen"
 #: /src/schooltool/gradebook/browser/worksheet.py:100
 msgid "This worksheet has no activities."
 msgstr "Dieses Arbeitsblatt enthält keine Aktivitäten."
-
-#: /src/schooltool/gradebook/configure.zcml:302
-msgid "Gradebook API"
-msgstr "Klassenbuch API"
 
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
@@ -1163,6 +1215,14 @@ msgstr "verknüpfte Spalten der externen Aktivität."
 #: /src/schooltool/gradebook/interfaces.py:415
 msgid "A text string that specifies the source of the column"
 msgstr "Ein Textfolge, die eine genaue Quelle für die Spalte definieren."
+
+#: /src/schooltool/gradebook/journal.py:46
+msgid "Journal Source"
+msgstr ""
+
+#: /src/schooltool/gradebook/journal.py:64
+msgid "Journal Average"
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
@@ -1391,24 +1451,3 @@ msgstr "Punkte-System anzeigen."
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
 msgstr ""
-
-#~ msgid "Failures by Term Report"
-#~ msgstr "Fehlzeiten im Semesterbericht"
-
-#~ msgid "Detailed Student Report"
-#~ msgstr "detailierter Schülerbericht"
-
-#~ msgid "Remove?"
-#~ msgstr "Entfernen?"
-
-#~ msgid "(Due) Date"
-#~ msgstr "(Genaues) Datum"
-
-#~ msgid "Modification Date"
-#~ msgstr "Änderungsdatum"
-
-#~ msgid "Activity Name"
-#~ msgstr "Name der Aktivität"
-
-#~ msgid "Manage Activities"
-#~ msgstr "Aktivitäten verwalten"

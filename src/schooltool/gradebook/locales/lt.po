@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 01:51+0300\n"
-"PO-Revision-Date: 2010-05-20 20:32+0000\n"
+"POT-Creation-Date: 2011-07-02 16:32+0300\n"
+"PO-Revision-Date: 2011-06-29 15:49+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
-"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-10 04:55+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-07-04 04:57+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
+"Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -264,7 +264,15 @@ msgstr "Atnaujinti pažymius"
 msgid "Deploy Report Sheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:569
+#: /src/schooltool/gradebook/browser/configure.zcml:539
+msgid "Hide Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/configure.zcml:546
+msgid "Unhide Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/configure.zcml:598
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr "Ataskaitos kortelės išdėstymas"
@@ -283,7 +291,15 @@ msgstr "Vid."
 msgid "Total"
 msgstr "Iš viso"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:210
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Abs."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:83
+msgid "Trd."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:195
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
@@ -493,7 +509,17 @@ msgstr "Vienas PDF kuriame yra visų mokinių grupėje išsamios ataskaitos."
 msgid "Student Detail Report by Group"
 msgstr "Mokinių grupės išsamios ataskaitos"
 
-#: /src/schooltool/gradebook/browser/report.zcml:44
+#: /src/schooltool/gradebook/browser/report.zcml:45
+msgid "Failures by Term"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:45
+msgid ""
+"Shows all students receiving failing scores in the selected report activity "
+"and term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:57
 msgid "Absences By Day"
 msgstr "Dienos lankomumas"
 
@@ -505,17 +531,7 @@ msgstr "Sąrašas mokinių, praleidusių pamokas nurodytą dieną."
 msgid "School Year"
 msgstr "Mokslo metai"
 
-#: /src/schooltool/gradebook/browser/report.zcml:53
-msgid "Failures by Term"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/report.zcml:53
-msgid ""
-"Shows all students receiving failing scores in the selected report activity "
-"and term."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/report.zcml:62
+#: /src/schooltool/gradebook/browser/report.zcml:66
 msgid "Absences by Section"
 msgstr "Kurso lankomumas"
 
@@ -812,7 +828,17 @@ msgstr "Jūsų dėstomos pamokos"
 msgid "Classes you attend"
 msgstr "Jūsų lankomos pamokos"
 
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:8
+msgid "Hide Deployed Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
+msgid "Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
 msgstr "Keisti ataskaitos kortelės išdėstymą"
 
@@ -940,7 +966,13 @@ msgstr "Semestras arba metai"
 msgid "Section Worksheet Summary"
 msgstr "Kurso lentelės santrauka"
 
-#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:28
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:4
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:8
+msgid "Unhide Deployed Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
+#: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
 msgid "Unhide"
 msgstr ""
 
@@ -984,10 +1016,6 @@ msgstr "Šalinti"
 #: /src/schooltool/gradebook/browser/worksheet.py:100
 msgid "This worksheet has no activities."
 msgstr "Šioje lentelėje nėra nei vienos veiklos."
-
-#: /src/schooltool/gradebook/configure.zcml:302
-msgid "Gradebook API"
-msgstr "Gradebook API"
 
 #: /src/schooltool/gradebook/gradebook_init.py:49
 msgid "Deployed Report Sheets"
@@ -1146,6 +1174,14 @@ msgstr "Susieto stulpelio veiklos šaltinis"
 
 #: /src/schooltool/gradebook/interfaces.py:415
 msgid "A text string that specifies the source of the column"
+msgstr ""
+
+#: /src/schooltool/gradebook/journal.py:46
+msgid "Journal Source"
+msgstr ""
+
+#: /src/schooltool/gradebook/journal.py:64
+msgid "Journal Average"
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
@@ -1374,18 +1410,3 @@ msgstr "Rodyti vertinimo sistemą"
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
 msgstr "Pašalinti?"
-
-#~ msgid "Reports"
-#~ msgstr "Ataskaitos"
-
-#~ msgid "Report Card"
-#~ msgstr "Ataskaitos kortelė"
-
-#~ msgid "Group Reports"
-#~ msgstr "Grupės ataskaitos"
-
-#~ msgid "Term Reports"
-#~ msgstr "Semestro ataskaitos"
-
-#~ msgid "Section Reports"
-#~ msgstr "Kurso ataskaitos"
