@@ -66,6 +66,13 @@ class BasePDFView(ReportPDFView):
         else:
             self.term = None
 
+    def guessPeriodGroup(self, meeting):
+        # XXX: this is a quick fix, evil in it's own way
+        if meeting.period is not None:
+            return meeting.period.title
+        return meeting.dtstart.time().isoformat()[:5]
+
+
 
 class BaseStudentPDFView(BasePDFView):
     """A base class for all student PDF views"""
@@ -358,7 +365,7 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
             if jd is None:
                 continue
             for meeting in jd.recordedMeetings(student):
-                period = meeting.period_id[:5]
+                period = self.guessPeriodGroup(meeting)
                 day = meeting.dtstart
                 grade = jd.getGrade(student, meeting)
                 result = ''
@@ -588,7 +595,7 @@ class AbsencesByDayPDFView(BasePDFView):
                 for meeting in jd.recordedMeetings(student):
                     if not self.compareDates(meeting.dtstart, day):
                         continue
-                    period = meeting.period_id[:5]
+                    period = self.guessPeriodGroup(meeting)
                     grade = jd.getGrade(student, meeting)
                     result = ''
                     if grade == 'n':
