@@ -72,7 +72,11 @@ def getSourceObj(source):
     if source is None:
         return None
 
-    scid, sid, ws_hash, act_hash = source.split('_')
+    items = source.split('_')
+    scid = items[0]
+    ws_hash = items[-2]
+    act_hash = items[-1]
+    sid = '_'.join(items[1:-2])
 
     app = ISchoolToolApplication(None)
     sectionContainer = app['schooltool.course.section'].get(scid, None)
