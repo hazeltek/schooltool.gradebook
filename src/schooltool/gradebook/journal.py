@@ -62,7 +62,7 @@ class JournalExternalActivity(object):
     implements(interfaces.IExternalActivity)
 
     title = _('Journal Average')
-    description = _('External Activity for Section Journal Average')
+    description = None
     external_activity_id = 'journal_average'
 
     def __init__(self, context):
