@@ -2,7 +2,13 @@
 CHANGES
 =======
 
-0.9.1 (unreleased)
+0.10 (unreleased)
+-----------------
+
+New UI for SchoolTool flourish and many other changes...
+
+
+0.9.1 (2011-07-04)
 ------------------
 
 New features
