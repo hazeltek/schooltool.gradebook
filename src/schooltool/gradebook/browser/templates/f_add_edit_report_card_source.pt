@@ -1,5 +1,9 @@
 <form method="post" class="standalone"
       tal:attributes="action request/getURL">
+  <input type="hidden" name="schoolyear_id" 
+         tal:attributes="value request/schoolyear_id|nothing" />
+  <input type="hidden" name="source_index" 
+         tal:attributes="value request/source_index|nothing" />
   <div class="viewspace">
     <fieldset>
       <legend>

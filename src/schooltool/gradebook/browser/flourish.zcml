@@ -616,6 +616,24 @@
       permission="schooltool.edit"
       />
 
+  <flourish:page
+      name="editReportCardColumn.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      subtitle="Edit Grid Column"
+      class=".report_card.FlourishReportCardColumnEditView"
+      content_template="templates/f_add_edit_report_card_source.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="editReportCardActivity.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      subtitle="Edit Outline Item"
+      class=".report_card.FlourishReportCardActivityEditView"
+      content_template="templates/f_add_edit_report_card_source.pt"
+      permission="schooltool.edit"
+      />
+
   <!-- Reports -->
   <flourish:page
       name="request_report_card.html"
