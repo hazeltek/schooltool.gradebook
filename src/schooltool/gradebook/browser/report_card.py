@@ -937,6 +937,11 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
         worksheet = root.deployed[worksheetName]
         activity = worksheet[activityName]
         return '%s - %s - %s' % (term.title, worksheet.title, activity.title)
+
+    def getEditURL(self, source_type, index):
+        return '%s/editReportCard%s.html?schoolyear_id=%s&source_index=%s' % (
+            absoluteURL(self.context, self.request), source_type,
+            self.schoolyear.__name__, index + 1)
  
     @property
     def columns(self):
@@ -952,7 +957,7 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
             result = {
                 'source_index': index + 1,
                 'source_value': self.getSourceName(column.source),
-                'source_edit': '',
+                'source_edit': self.getEditURL('Column', index),
                 'heading_value': column.heading,
                 }
             results.append(result)
@@ -963,7 +968,7 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
         """Get  a list of the existing layout outline activities."""
         results = []
         root = IGradebookRoot(ISchoolToolApplication(None))
-        schoolyearKey = self.context.__name__
+        schoolyearKey = self.schoolyear.__name__
         if schoolyearKey in root.layouts:
             current_activities = root.layouts[schoolyearKey].outline_activities
         else:
@@ -972,7 +977,7 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
             result = {
                 'source_index': index + 1,
                 'source_value': self.getSourceName(activity.source),
-                'source_edit': '',
+                'source_edit': self.getEditURL('Activity', index),
                 'heading_value': activity.heading,
                 }
             results.append(result)
@@ -1001,7 +1006,7 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
             delete_key = 'delete_activity.%s' % (index + 1)
             if delete_key in self.request:
                 activities.pop(index)
-                layout.columns = activities
+                layout.outline_activities = activities
                 return
 
 
@@ -1061,9 +1066,37 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
                   mapping={'year': self.schoolyear.title})
         return translate(title, context=self.request)
 
+    @property
+    def heading(self):
+        source_obj = self.getSourceObj()
+        return source_obj and source_obj.heading or ''
+
+    def getSourceObj(self):
+        source_index = int(self.request.get('source_index', '0'))
+        if not source_index:
+            return None
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        year_id = self.schoolyear.__name__
+        if year_id not in root.layouts:
+            return None
+        layout = root.layouts[year_id]
+        if self.source_type == 'grid':
+            sources = layout.columns
+        else:
+            sources = layout.outline_activities
+        if source_index - 1 < len(sources):
+            return sources[source_index - 1]
+        else:
+            return None
+
     def choices(self, no_comment=True, no_journal=True):
         """Get  a list of the possible choices for layout activities."""
         results = []
+        source_obj = self.getSourceObj()
+        if source_obj is None:
+            source = ''
+        else:
+            source = source_obj.source
         root = IGradebookRoot(ISchoolToolApplication(None))
         for term in self.schoolyear.values():
             deployedKey = '%s_%s' % (self.schoolyear.__name__, term.__name__)
@@ -1081,20 +1114,20 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
                         result = {
                             'name': name,
                             'value': value,
-                            'selected': False and 'selected' or None,
+                            'selected': value == source and 'selected' or None,
                             }
                         results.append(result)
         if not no_journal:
             result = {
                 'name': ABSENT_HEADING,
                 'value': ABSENT_KEY,
-                'selected': False and 'selected' or None,
+                'selected': source == ABSENT_KEY and 'selected' or None,
                 }
             results.append(result)
             result = {
                 'name': TARDY_HEADING,
                 'value': TARDY_KEY,
-                'selected': False and 'selected' or None,
+                'selected': source == TARDY_KEY and 'selected' or None,
                 }
             results.append(result)
         return results
@@ -1114,7 +1147,11 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
                 root.layouts[year_id] = ReportLayout()
             layout = root.layouts[year_id]
 
-            source_index = int(self.request.get('source_index', '0'))
+            source_index = self.request.get('source_index')
+            if source_index:
+                source_index = int(source_index)
+            else:
+                source_index = 0
             if self.source_type == 'grid':
                 columns = layout.columns
                 column = ReportColumn(self.request['source'], 
@@ -1138,8 +1175,9 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
             self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        app = ISchoolToolApplication(None)
-        return absoluteURL(app, self.request) + '/report_card_layout'
+        return '%s/report_card_layout?schoolyear_id=%s' % (
+            absoluteURL(ISchoolToolApplication(None), self.request),
+            self.schoolyear.__name__)
 
 
 class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
@@ -1187,21 +1225,23 @@ class FlourishReportCardActivityBase(FlourishReportCardLayoutMixin):
 
 
 class FlourishReportCardColumnAddView(FlourishReportCardColumnBase,
-                                        flourish.page.Page):
+                                      flourish.page.Page):
     """A flourish view for adding a column to the report card layout"""
 
-    @property
-    def heading(self):
-        return ''
+
+class FlourishReportCardActivityEditView(FlourishReportCardActivityBase,
+                                         flourish.page.Page):
+    """A flourish view for adding an activity to  the report card layout"""
+
+
+class FlourishReportCardColumnEditView(FlourishReportCardColumnBase,
+                                       flourish.page.Page):
+    """A flourish view for adding a column to the report card layout"""
 
 
 class FlourishReportCardActivityAddView(FlourishReportCardActivityBase,
                                         flourish.page.Page):
     """A flourish view for adding an activity to  the report card layout"""
-
-    @property
-    def heading(self):
-        return ''
 
 
 class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
