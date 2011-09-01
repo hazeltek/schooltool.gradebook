@@ -966,6 +966,32 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
             results.append(result)
         return results
 
+    def update(self):
+        if not self.has_schoolyear:
+            return
+
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        year_id = self.schoolyear.__name__
+        if year_id not in root.layouts:
+            root.layouts[year_id] = ReportLayout()
+        layout = root.layouts[year_id]
+
+        columns = layout.columns
+        for index in range(len(columns)):
+            delete_key = 'delete_column.%s' % (index + 1)
+            if delete_key in self.request:
+                columns.pop(index)
+                layout.columns = columns
+                return
+
+        activities = layout.outline_activities
+        for index in range(len(activities)):
+            delete_key = 'delete_activity.%s' % (index + 1)
+            if delete_key in self.request:
+                activities.pop(index)
+                layout.columns = activities
+                return
+
 
 class LayoutReportCardTertiaryNavigationManager(FlourishSchooYearMixin,
     flourish.viewlet.ViewletManager):
