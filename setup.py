@@ -35,7 +35,7 @@ def read(*rnames):
 
 setup(
     name="schooltool.gradebook",
-    description="A gradebook component for SchoolTool",
+    description="Gradebook component for SchoolTool",
     long_description=(
         read('README.txt')
         + '\n\n' +
@@ -53,19 +53,20 @@ setup(
     "License :: OSI Approved :: GNU General Public License (GPL)",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 2.5",
+    "Programming Language :: Python :: 2.6",
+    "Programming Language :: Python :: 2.7",
     "Programming Language :: Zope",
-    "Topic :: Education",
-    "Topic :: Office/Business :: Scheduling"],
+    "Topic :: Education"],
     package_dir={'': 'src'},
-    namespace_packages=["schooltool"],
     packages=find_packages('src'),
+    namespace_packages=["schooltool"],
     install_requires=['schooltool>=1.6.0b1',
-                      'schooltool.lyceum.journal',
                       'rwproperty',
                       'setuptools',
                       'xlwt',
                       'z3c.form',
-                      'z3c.optionstorage',
+                      'z3c.optionstorage', # TODO: rewrite to not use optionstorage
                       'ZODB3',
                       'zope.annotation',
                       'zope.app.form',
@@ -94,7 +95,10 @@ setup(
                              'zope.intid',
                              'zope.site',
                              'zope.testbrowser',
-                             'zope.testing']},
+                             'zope.ucol',
+                             'schooltool.lyceum.journal'],
+                    'journal': ['schooltool.lyceum.journal'],
+                    },
     include_package_data=True,
     zip_safe=False,
     entry_points="""

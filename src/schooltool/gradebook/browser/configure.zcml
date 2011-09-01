@@ -2,6 +2,7 @@
 <configure
     xmlns="http://namespaces.zope.org/browser"
     xmlns:zope="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="schooltool.gradebook">
 
   <!-- Gradebook Root Traverser -->
@@ -535,6 +536,20 @@
       action="deploy_report_worksheet.html"
       permission="schooltool.edit"
       />
+  <menuItem
+      menu="schooltool_actions"
+      title="Hide Report Sheet"
+      for="schooltool.term.interfaces.ITerm"
+      action="hide_report_worksheet.html"
+      permission="schooltool.edit"
+      />
+  <menuItem
+      menu="schooltool_actions"
+      title="Unhide Report Sheet"
+      for="schooltool.term.interfaces.ITerm"
+      action="unhide_report_worksheet.html"
+      permission="schooltool.edit"
+      />
 
   <!-- Views for ITerm -->
   <page
@@ -542,6 +557,20 @@
       for="schooltool.term.interfaces.ITerm"
       class=".report_card.DeployReportWorksheetTermView"
       template="templates/deploy_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="hide_report_worksheet.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".report_card.HideReportWorksheetView"
+      template="templates/hide_report_worksheet.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="unhide_report_worksheet.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".report_card.UnhideReportWorksheetView"
+      template="templates/unhide_report_worksheet.pt"
       permission="schooltool.edit"
       />
   <page
@@ -587,19 +616,6 @@
       for="schooltool.schoolyear.interfaces.ISchoolYear"
       class=".report_card.LayoutReportCardView"
       template="templates/layout_report_card.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="request_absences_by_day.html"
-      for="schooltool.schoolyear.interfaces.ISchoolYear"
-      class=".request_reports.RequestAbsencesByDayView"
-      template="templates/request_absences_by_day.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="absences_by_day.pdf"
-      for="schooltool.schoolyear.interfaces.ISchoolYear"
-      class=".pdf_views.AbsencesByDayPDFView"
       permission="schooltool.edit"
       />
 
@@ -659,15 +675,9 @@
       permission="schooltool.edit"
       />
 
-  <!-- Views for ISection -->
-  <page
-      name="section_absences.pdf"
-      for="schooltool.course.interfaces.ISection"
-      class=".pdf_views.SectionAbsencesPDFView"
-      permission="schooltool.edit"
-      />
-
   <!-- Views for ISchoolToolApplication -->
+
+  <!-- BBB: schooltool.intervention (< 0.5) uses no_current_term page -->
   <page
       name="no_current_term.html"
       for="schooltool.app.interfaces.ISchoolToolApplication"
@@ -687,6 +697,9 @@
       class=".gradebook.GradebookCSVView"
       permission="schooltool.edit"
       />
+
+  <include zcml:condition="have schooltool.lyceum.journal"
+           file="journal.zcml" />
 
   <zope:adapter
       factory=".report_card.ReportScoresSystem" />

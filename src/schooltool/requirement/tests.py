@@ -34,6 +34,7 @@ from schooltool.requirement import testing
 def setUp(test):
     setup.placefulSetUp()
     testing.setUpRequirement()
+    testing.setUpScoreSystem()
     testing.setUpEvaluation()
     testing.fixDecimal()
 

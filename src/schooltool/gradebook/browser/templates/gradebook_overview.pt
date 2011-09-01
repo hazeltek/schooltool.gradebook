@@ -130,7 +130,7 @@
   </table>
 
   <table class="schooltool_gradebook">
-    <tr tal:condition="python:len(view.descriptions) > 0">
+    <tr>
       <td id="description" class="gradebook_description"
           tal:attributes="colspan python:len(view.descriptions) + view.apply_all_colspan" />
     </tr>
@@ -139,6 +139,12 @@
      <th class="cell header">
        <div i18n:translate="">Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
+     </th>
+     <th tal:condition="not: view/absences_hide" class="cell padded header">
+       <div tal:content="view/absences_label" />
+     </th>
+     <th tal:condition="not: view/tardies_hide" class="cell padded header">
+       <div tal:content="view/tardies_label" />
      </th>
      <th tal:condition="not: view/total_hide" class="cell padded header">
        <div tal:content="view/total_label" />
@@ -204,6 +210,18 @@
              tal:attributes="href row/student/gradeurl">
             &gt;
           </a>
+        </td>
+        <td tal:condition="not: view/absences_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
+	      <tal:if condition="row/absences|nothing">
+	        <b><span tal:replace="row/absences" /></b>
+	      </tal:if>
+        </td>
+        <td tal:condition="not: view/tardies_hide"
+	    tal:attributes="class string:cell padded ${css_class}">
+	      <tal:if condition="row/tardies|nothing">
+	        <b><span tal:replace="row/tardies" /></b>
+	      </tal:if>
         </td>
         <td tal:condition="not: view/total_hide"
 	    tal:attributes="class string:cell padded ${css_class}">

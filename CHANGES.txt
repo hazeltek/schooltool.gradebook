@@ -2,21 +2,48 @@
 CHANGES
 =======
 
-0.9.0 (unreleased)
+0.9.1 (unreleased)
 ------------------
 
+New features
+++++++++++++
+
+- External activity source for journal average.
+- Absences and tardies columns in the gradebook (hidden by default).
+- Hide/Unhide deployed report sheets (https://launchpad.net/bugs/788323).
+
+Bugfixes
+++++++++
+
+- Move custom score systems to a new container. Fixes crash on startup
+  if gradebook has been disabled after use (https://lauchpad.net/bugs/717277).
+- Run functional tests without journal, add separate tests that need journal to
+  another layer (https://launchpad.net/bugs/783540).
+- Fixed crash when there were scores only for non-weighted activities (https://launchpad.net/bugs/801121).
+- Fixed unhide worksheets when all the worksheets are hidden (https://launchpad.net/bugs/788307).
+
+
+0.9.0 (2011-04-25)
+------------------
+
+Improvements
+++++++++++++
+
+- Make gradebook.js static thus greatly improving Gradebook performance.
 - Reports action menus were moved to schooltool 1.6.0b1. Register our reports
-  using the new reportLink directive.
+  using the new ``reportLink`` directive.
+- Add meta.zcml to support making this plugin optional.
+- Added ``printGradebook`` helper to print the gradebook in ftests.
+- Make dependency on schooltool.lyceum.journal optional (https://launchpad.net/bugs/768885).
 
-
-0.9.0b1 (2011-04-17)
---------------------
+Bug fixes
++++++++++
 
 - Removed width restriction on names in layout report card view (https://launchpad.net/bugs/643700)
 - Fixed linked column forms to use activity categories properly (https://launchpad.net/bugs/703078)
 - Fixed the Detailed Student Report to show data only from the selected term and not the whole school year
 - Save due_date attribute in New Activity form (https://launchpad.net/bugs/700520)
-- Make gradebook.js static thus greatly improving Gradebook performance.
+
 - Update translations.
 
 
@@ -195,7 +222,7 @@ Tweaks and fixes
 0.4.9 (2009-07-07)
 ------------------
 
-New features 
+New features
 ++++++++++++
 
 - There is a new gradebook view for grading a single student.  Please follow ">"

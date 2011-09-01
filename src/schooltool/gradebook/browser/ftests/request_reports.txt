@@ -59,7 +59,7 @@ discrete, one custom discrete maximum passing, and one ranged values.
     >>> manager.getLink('Test').click()
     >>> manager.getLink('New Report Activity').click()
     >>> manager.getControl('Title').value = 'Activity 1'
-    >>> manager.getControl('Score System').value = ['Letter Grade-']
+    >>> manager.getControl('Score System').value = ['letter-grade-']
     >>> manager.getControl('Add').click()
 
     >>> manager.getLink('New Report Activity').click()

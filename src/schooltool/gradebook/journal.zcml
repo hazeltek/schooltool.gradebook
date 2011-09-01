@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="schooltool.intervention">
+
+  <!-- bridge adapter to get to schooltool.lyceum.journal package -->
+  <adapter
+      for="schooltool.course.interfaces.ISection"
+      provides="schooltool.gradebook.interfaces.ISectionJournalData"
+      factory=".journal.getSectionJournalData"
+      />
+
+  <!-- external activities source adapter for journal data -->
+  <adapter
+      for="schooltool.course.interfaces.ISection"
+      provides="schooltool.gradebook.interfaces.IExternalActivities"
+      factory=".journal.JournalSource"
+      name="journalsource"
+      />
+  <class class=".journal.JournalExternalActivity">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.IExternalActivity"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IExternalActivity"
+        />
+  </class>
+</configure>
+

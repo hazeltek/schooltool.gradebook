@@ -18,11 +18,11 @@
         />
   </configure>
 
-  <!-- Menu items for IScoreSystemsProxy -->
+  <!-- Menu items -->
   <menuItem
       menu="schooltool_actions"
       title="Add Score System"
-      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
       action="add.html"
       permission="schooltool.edit"
       />
@@ -30,22 +30,22 @@
   <!-- Score System Views -->
   <page
       name="index.html"
-      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
-      class=".scoresystem.ScoreSystemsView"
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
+      class=".scoresystem.ScoreSystemContainerView"
       template="scoresystems_overview.pt"
       permission="schooltool.edit"
       />
   <page
       name="add.html"
-      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
-      class=".scoresystem.ScoreSystemAddView"
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
+      class=".scoresystem.CustomScoreSystemAddView"
       template="scoresystem_add.pt"
       permission="schooltool.edit"
       />
   <page
-      name="view.html"
-      for="schooltool.requirement.interfaces.IScoreSystemsProxy"
-      class=".scoresystem.ScoreSystemViewView"
+      name="index.html"
+      for="schooltool.requirement.interfaces.ICustomScoreSystem"
+      class=".scoresystem.CustomScoreSystemView"
       template="scoresystem_view.pt"
       permission="schooltool.edit"
       />

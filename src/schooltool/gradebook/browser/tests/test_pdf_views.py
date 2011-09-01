@@ -32,7 +32,7 @@ from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
 from zope.container import btree
-from zope.interface import implements, alsoProvides
+from zope.interface import implements, alsoProvides, classImplements
 from zope.location.interfaces import ILocation
 from zope.location.location import locate
 from zope.publisher.browser import TestRequest
@@ -69,22 +69,28 @@ from schooltool.term.term import Term, getSchoolYearForTerm
 
 from schooltool.gradebook.activity import (Worksheet, Activity,
     getSectionActivities)
-from schooltool.gradebook.gradebook import Gradebook, getWorksheetSection 
+from schooltool.gradebook.gradebook import (
+    getActivityScore,
+    getLinkedActivityScore,
+    getWorksheetAverageScore,
+    )
+from schooltool.gradebook.gradebook import (Gradebook, getWorksheetSection,
+    getGradebookSection)
 from schooltool.gradebook.gradebook_init import (setUpGradebookRoot, 
     getGradebookRoot, ReportLayout, ReportColumn, OutlineActivity)
 from schooltool.gradebook.interfaces import (IGradebookRoot, IGradebook,
-    IActivities, IWorksheet)
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
-from schooltool.lyceum.journal.journal import (LyceumJournalContainer,
-    getSectionJournalData, getSectionForSectionJournalData)
+    IActivities, IWorksheet, ISectionJournalData)
+from schooltool.lyceum.journal.journal import LyceumJournalContainer
 from schooltool.gradebook.browser.pdf_views import (StudentReportCardPDFView,
     GroupReportCardPDFView, StudentDetailPDFView, GroupDetailPDFView,
     FailingReportPDFView, AbsencesByDayPDFView, SectionAbsencesPDFView,
     GradebookPDFView)
 from schooltool.requirement.evaluation import Evaluation, getEvaluations
-from schooltool.requirement.interfaces import IEvaluations
+from schooltool.requirement.interfaces import (IScoreSystemContainer,
+    IEvaluations, IHaveEvaluations)
 from schooltool.requirement.scoresystem import (AmericanLetterScoreSystem,
-    DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem)
+    DiscreteScoreSystemsVocabulary, DiscreteValuesScoreSystem,
+    getScoreSystemContainer, ScoreSystemAppStartup)
 
 
 BEGIN_2009 = datetime.date(datetime(2009, 1, 1))
@@ -176,6 +182,7 @@ class ApplicationStub(btree.BTreeContainer):
         int_ids.register(self.term)
 
         setUpGradebookRoot(self)
+        ScoreSystemAppStartup(self)()
 
 
 class DateManagerStub(object):
@@ -234,8 +241,8 @@ def setupSections(app):
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
     meeting.period_id = "10:30-11:30"
     calendar.addEvent(meeting)
-    jd.setGrade(aelkner, meeting, 'n')
-    jd.setAbsence(aelkner, meeting, 'n')
+    if jd:
+        jd.setGrade(aelkner, meeting, 'n')
 
 
 def setupGradebook(app):
@@ -500,14 +507,16 @@ def doctest_GradebookPDFView():
           'shortTitle': 'Activ'}]
 
         >>> pprint(view.table())
-        [{'average': u'14.3%',
+        [{'absences': '',
+          'average': '14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
           'student': {'gradeurl': '...',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
-          'total': u'1.0'}]
+          'tardies': '',
+          'total': '1.0'}]
     """
 
 
@@ -522,12 +531,22 @@ def pdfSetUp(test=None):
     provideAdapter(getGroupContainer, [ISchoolYear], provides=IGroupContainer)
 
     provideAdapter(PersonLearnerAdapter, [IBasicPerson], provides=ILearner)
+    classImplements(BasicPerson, IHaveEvaluations)
     provideAdapter(getEvaluations, [IBasicPerson], provides=IEvaluations)
 
     provideAdapter(getTermForSectionContainer, [ISectionContainer],
                    provides=ITerm)
     provideAdapter(getSectionActivities, [ISection], provides=IActivities)
     provideAdapter(getTermForSection, [ISection], provides=ITerm)
+
+    from schooltool.gradebook.interfaces import ISectionJournalData
+    from schooltool.gradebook.journal import getSectionJournalData
+    provideAdapter(getSectionJournalData, [ISection],
+                   provides=ISectionJournalData)
+
+    from schooltool.lyceum.journal.interfaces import ISectionJournalData
+    from schooltool.lyceum.journal.journal import getSectionJournalData
+    from schooltool.lyceum.journal.journal import getSectionForSectionJournalData
     provideAdapter(getSectionJournalData, [ISection],
                    provides=ISectionJournalData)
     provideAdapter(getSectionForSectionJournalData, [ISectionJournalData],
@@ -537,8 +556,16 @@ def pdfSetUp(test=None):
                    provides=IGradebookRoot)
     provideAdapter(Gradebook, [IWorksheet], provides=IGradebook)
     provideAdapter(getWorksheetSection, [IWorksheet], provides=ISection)
+    provideAdapter(getGradebookSection, [IGradebook], provides=ISection)
     provideAdapter(getSchoolYearContainer, [ISchoolToolApplication], 
                    provides=ISchoolYearContainer)
+
+    provideAdapter(getActivityScore)
+    provideAdapter(getLinkedActivityScore)
+    provideAdapter(getWorksheetAverageScore)
+
+    provideAdapter(getScoreSystemContainer, [ISchoolToolApplication],
+                   provides=IScoreSystemContainer)
 
     provideAdapter(StupidKeyReference, [object], IKeyReference)
     provideAdapter(FakeURL, [ISchoolToolApplication, IBrowserRequest],

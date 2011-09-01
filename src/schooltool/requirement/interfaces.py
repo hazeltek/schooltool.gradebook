@@ -24,7 +24,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 import zope.schema
-from zope.container.interfaces import IOrderedContainer
+from zope.container.interfaces import IOrderedContainer, IContainer
 from zope.container.constraints import contains, containers
 from zope.location.interfaces import IContained
 from zope.location.interfaces import ILocation
@@ -55,6 +55,12 @@ class IRequirement(IOrderedContainer, IContained):
 
 class IHaveRequirement(zope.interface.Interface):
     """Marker interface for objects having requirements"""
+
+
+class IScoreSystemContainer(IContainer):
+    """A Container for Score Systems"""
+
+    contains('.ICustomScoreSystem')
 
 
 class IScoreSystem(zope.interface.Interface):
@@ -158,20 +164,13 @@ class IHaveEvaluations(zope.interface.Interface):
     """A marker interface for objects that can have evaluations"""
 
 
-class IEvaluation(IContained):
-    """An Evaluation"""
-
-    containers(".IEvaluations")
+class IScore(zope.interface.Interface):
+    """A score valid in a score system."""
 
     scoreSystem = zope.schema.Object(
         title=_(u'Score System'),
         description=u'The score system used for grading.',
         schema=IScoreSystem)
-
-    requirement = zope.schema.Object(
-        title=u'Requirement',
-        description=u'The requirement being evaluated.',
-        schema=IRequirement)
 
     value = zope.schema.Object(
         title=u'Value',
@@ -181,7 +180,18 @@ class IEvaluation(IContained):
 
     time = zope.schema.Datetime(
         title=u'Time',
-        description=u'The time the evaluation was made')
+        description=u'The time when value was set.')
+
+
+class IEvaluation(IScore, IContained):
+    """An Evaluation"""
+
+    containers(".IEvaluations")
+
+    requirement = zope.schema.Object(
+        title=u'Requirement',
+        description=u'The requirement being evaluated.',
+        schema=IRequirement)
 
     evaluatee = zope.schema.Object(
         title=u'Evaluatee',
@@ -246,17 +256,3 @@ class IEvaluationsQuery(zope.interface.Interface):
         The returned ``IEvaluations`` object *must* have the same parent and
         name that the original ``IEvaluations`` object had.
         """
-
-
-class IScoreSystemsProxy(ILocation):
-    """The Proxy class for adding/editing score systems"""
-
-    def getScoreSystems():
-        """Return list of tuples (name, scoresystem)"""
-
-    def addScoreSystem(scoresystem):
-        """Add scoresystem to app utilitiles"""
-
-    def getScoreSystem(name):
-        """Get scoresystem from app utilitiles by the given name"""
-

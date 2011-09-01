@@ -1,0 +1,191 @@
+Absences and Tardies Gradebook Columns
+--------------------------------------
+
+If the journal plug-in is installed, we will provide the user with the option
+of including the absences and/or tardies for the students as columns next to
+total and average.  By default they will be hidden but can be easily
+enabled in the column preferences view.
+
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
+Log in as manager:
+
+    >>> manager = Browser('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> from schooltool.app.browser.ftests import setup
+    >>> setup.setUpBasicSchool()
+
+Set up one course:
+
+    >>> setup.addCourse('Physics I', '2005-2006')
+
+Set up persons:
+
+    >>> from schooltool.basicperson.browser.ftests.setup import addPerson
+    >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
+    >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
+
+Set up a section with instructor and students for the Fall:
+
+    >>> setup.addSection('Physics I', '2005-2006', 'Fall',
+    ...                  instructors=['Stephan'],
+    ...                  members=['Claudia'])
+
+Set up a timetable:
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('School Timetables').click()
+    >>> manager.getLink('New Timetable').click()
+    >>> manager.getLink('simple weekly timetable schema').click()
+    >>> manager.getControl(name='field.period_name_1').value = 'First period'
+    >>> manager.getControl(name='field.period_name_2').value = 'Second period'
+    >>> manager.getControl(name='field.period_name_3').value = 'Third period'
+    >>> manager.getControl(name='field.period_start_1').value = '8:00'
+    >>> manager.getControl(name='field.period_start_2').value = '9:00'
+    >>> manager.getControl(name='field.period_start_3').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_1').value = '9:00'
+    >>> manager.getControl(name='field.period_finish_2').value = '10:00'
+    >>> manager.getControl(name='field.period_finish_3').value = '11:00'
+    >>> manager.getControl('Create').click()
+
+Define a schedule for our section:
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Fall').click()
+    >>> manager.getLink('Sections').click()
+    >>> manager.getLink('Physics I (1)').click()
+    >>> manager.getLink('Schedule').click()
+    >>> manager.getLink('Add Timetable').click()
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('First period', index=0).click()
+    >>> manager.getControl('First period', index=1).click()
+    >>> manager.getControl('First period', index=2).click()
+    >>> manager.getControl('First period', index=3).click()
+    >>> manager.getControl('First period', index=4).click()
+    >>> manager.getControl('Save').click()
+
+Log in as teacher:
+
+    >>> stephan = Browser('stephan', 'pwd')
+
+By default the absences and tardies coluns are hidden:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    +------------------+-------+------+
+    | Richter, Claudia | 0.0   | N/A  |
+    +------------------+-------+------+
+
+We'll go unhide the columns in the prefernces view.
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='hide_absences').value = False
+    >>> stephan.getControl(name='hide_tardies').value = False
+    >>> stephan.getControl('Update').click()
+
+Now the columns appear in the gradebook.  There is no attendence data yet, so
+the values are empty:
+
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+------+------+-------+------+
+    | Name             | Abs. | Trd. | Total | Ave. |
+    +------------------+------+------+-------+------+
+    | Richter, Claudia |      |      | 0.0   | N/A  |
+    +------------------+------+------+-------+------+
+
+Let's add some attendance data for the student.  This will include some
+absences and tardies as well as present grades:
+
+    >>> stephan.getLink('Journal').click()
+    >>> stephan.getLink('Physics I (1)').click()
+    >>> stephan.getLink('Claudia').click()
+    >>> input_names = stephan.queryHTML('//input[@type="text"]/@name')
+    >>> stephan.getControl(name=input_names[0]).value = '9'
+    >>> stephan.getControl(name=input_names[1]).value = '8'
+    >>> stephan.getControl(name=input_names[2]).value = 't'
+    >>> stephan.getControl(name=input_names[3]).value = 'a'
+    >>> stephan.getControl(name=input_names[4]).value = 'a'
+    >>> stephan.getControl('Update').click()
+
+Now the gradebook shows the absences and tardies, the present grades being
+left out of the calculation:
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+------+------+-------+------+
+    | Name             | Abs. | Trd. | Total | Ave. |
+    +------------------+------+------+-------+------+
+    | Richter, Claudia | 2    | 1    | 0.0   | N/A  |
+    +------------------+------+------+-------+------+
+
+As with the total and average columns, we can change the label.
+
+    >>> stephan.getLink('Preferences').click()
+    >>> stephan.getControl(name='label_absences').value = 'Absences'
+    >>> stephan.getControl(name='label_tardies').value = 'Tardies'
+    >>> stephan.getControl('Update').click()
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+----------+---------+-------+------+
+    | Name             | Absences | Tardies | Total | Ave. |
+    +------------------+----------+---------+-------+------+
+    | Richter, Claudia | 2        | 1       | 0.0   | N/A  |
+    +------------------+----------+---------+-------+------+
+
+To make sure the gradebook pdf works with the new columns, we will need the
+special xml browser class.
+
+    >>> from schooltool.testing.analyze import etree, to_string
+    >>> class XMLBrowser(Browser):
+    ...     def queryXML(self, xpath):
+    ...         doc = etree.XML(self.contents)
+    ...         result = [to_string(node) for node in doc.xpath(xpath)]
+    ...         return result
+    ...     def printXMLQuery(self, xpath):
+    ...         for result in self.queryXML(xpath):
+    ...             print result
+
+    >>> stephan = XMLBrowser('stephan', 'pwd')
+
+We'll download the pdf and test its data.
+
+    >>> stephan.getLink('Gradebook').click()
+    >>> stephan.getLink('Download PDF').click()
+    >>> stephan.printXMLQuery('//blockTable[2]/tr/td[1]/para/text()')
+    Student
+    Richter, Claudia
+
+    >>> stephan.printXMLQuery('//blockTable[2]/tr/td[2]/para')
+    <para style="grid_heading">Absences</para>
+    <para style="cell">2</para>
+
+    >>> stephan.printXMLQuery('//blockTable[2]/tr/td[3]/para')
+    <para style="grid_heading">Tardies</para>
+    <para style="cell">1</para>
+
+    >>> stephan.printXMLQuery('//blockTable[2]/tr/td[4]/para')
+    <para style="grid_heading">Total</para>
+    <para style="cell">0.0</para>
+
+    >>> stephan.printXMLQuery('//blockTable[2]/tr/td[5]/para')
+    <para style="grid_heading">Ave.</para>
+    <para style="cell">N/A</para>
+

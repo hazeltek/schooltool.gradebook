@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<configure
+    xmlns="http://namespaces.zope.org/browser"
+    i18n_domain="schooltool.gradebook">
+
+  <!-- Attendance reports -->
+  <page
+      name="request_absences_by_day.html"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".request_reports.RequestAbsencesByDayView"
+      template="templates/request_absences_by_day.pt"
+      permission="schooltool.edit"
+      />
+  <page
+      name="absences_by_day.pdf"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".pdf_views.AbsencesByDayPDFView"
+      permission="schooltool.edit"
+      />
+  <page
+      name="section_absences.pdf"
+      for="schooltool.course.interfaces.ISection"
+      class=".pdf_views.SectionAbsencesPDFView"
+      permission="schooltool.edit"
+      />
+
+</configure>

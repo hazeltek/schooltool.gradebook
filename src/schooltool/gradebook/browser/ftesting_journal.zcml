@@ -1,0 +1,7 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="schooltool.lyceum.journal" file="meta.zcml" />
+  <include file="ftesting.zcml" />
+  <include package="schooltool.lyceum.journal" />
+
+</configure>

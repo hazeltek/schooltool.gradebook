@@ -45,7 +45,7 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
-from schooltool.lyceum.journal.interfaces import ISectionJournalData
+from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.scoresystem import UNSCORED
@@ -66,14 +66,6 @@ class BasePDFView(ReportPDFView):
         else:
             self.term = None
 
-    def noCurrentTerm(self):
-        if self.current_term is None:
-            next_url = absoluteURL(ISchoolToolApplication(None), self.request)
-            next_url += '/no_current_term.html'
-            self.request.response.redirect(next_url)
-            return True
-        return False
-
 
 class BaseStudentPDFView(BasePDFView):
     """A base class for all student PDF views"""
@@ -82,7 +74,9 @@ class BaseStudentPDFView(BasePDFView):
         return layout.source in [ABSENT_KEY, TARDY_KEY]
 
     def getJournalScore(self, student, section, layout):
-        jd = ISectionJournalData(section)
+        jd = ISectionJournalData(section, None)
+        if jd is None:
+            return None
         result = 0
         for meeting in jd.recordedMeetings(student):
             grade = jd.getGrade(student, meeting)
@@ -156,7 +150,7 @@ class BaseStudentPDFView(BasePDFView):
                     if activity is None:
                         continue
                     score = evaluations.get(activity, None)
-                    if score is not None and score.value is not UNSCORED:
+                    if score:
                         byCourse[course] = unicode(score.value)
             if len(byCourse):
                 scores[layout.source] = byCourse
@@ -195,8 +189,9 @@ class BaseReportCardPDFView(BaseStudentPDFView):
 
     def __call__(self):
         """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
+        if self.current_term is None:
+            template = ViewPageTemplateFile('templates/no_current_term.pt')
+            return template(self)
         return super(BaseReportCardPDFView, self).__call__()
 
     def title(self):
@@ -255,7 +250,7 @@ class BaseReportCardPDFView(BaseStudentPDFView):
                 activity = activities[worksheetName][activityName]
 
                 score = evaluations.get(activity, None)
-                if score is None or score.value is UNSCORED:
+                if not score:
                     continue
 
                 for worksheet in worksheets:
@@ -308,8 +303,9 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
 
     def __call__(self):
         """Make sure there is a current term."""
-        if self.noCurrentTerm():
-            return
+        if self.current_term is None:
+            template = ViewPageTemplateFile('templates/no_current_term.pt')
+            return template(self)
         return super(BaseStudentDetailPDFView, self).__call__()
 
     def title(self):
@@ -358,7 +354,9 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
                 continue
             sections.append(section)
         for section in sections:
-            jd = ISectionJournalData(section)
+            jd = ISectionJournalData(section, None)
+            if jd is None:
+                continue
             for meeting in jd.recordedMeetings(student):
                 period = meeting.period_id[:5]
                 day = meeting.dtstart
@@ -490,27 +488,28 @@ class FailingReportPDFView(BasePDFView):
         else:
             return []
         for student in gb.students:
-            value, ss = gb.getEvaluation(student, activity)
+            score = gb.getScore(student, activity)
+            if not score:
+                continue
             failure = False
-            if value is not None:
-                if IDiscreteValuesScoreSystem.providedBy(ss):
-                    for score in ss.scores:
-                        if score[0] == self.score:
-                            passing_value = score[2]
-                        if score[0] == value:
-                            this_value = score[2]
-                    if ss._isMaxPassingScore:
-                        if this_value > passing_value:
-                            failure = True
-                    elif this_value < passing_value:
+            if IDiscreteValuesScoreSystem.providedBy(score.scoreSystem):
+                for definition in score.scoreSystem.scores:
+                    if definition[0] == self.score:
+                        passing_value = definition[2]
+                    if definition[0] == score.value:
+                        this_value = definition[2]
+                if score.scoreSystem._isMaxPassingScore:
+                    if this_value > passing_value:
                         failure = True
-                else:
-                    passing_value = Decimal(self.score)
-                    this_value = value
-                    if this_value < passing_value:
-                        failure = True
+                elif this_value < passing_value:
+                    failure = True
+            else:
+                passing_value = Decimal(self.score)
+                this_value = score.value
+                if this_value < passing_value:
+                    failure = True
             if failure:
-                data.append([student, value])
+                data.append([student, score.value])
         return data
 
     def students(self):
@@ -582,7 +581,9 @@ class AbsencesByDayPDFView(BasePDFView):
 
         data = {}
         for section in ISectionContainer(term).values():
-            jd = ISectionJournalData(section)
+            jd = ISectionJournalData(section, None)
+            if jd is None:
+                continue
             for student in section.members:
                 for meeting in jd.recordedMeetings(student):
                     if not self.compareDates(meeting.dtstart, day):
@@ -682,21 +683,26 @@ class SectionAbsencesPDFView(BasePDFView):
     def total_heading(self):
         return _('Total')
 
+    def getStudentData(self, jd, student):
+        student_data = {}
+        student_data['absences'] = 0
+        student_data['tardies'] = 0
+        for meeting in jd.recordedMeetings(student):
+            grade = jd.getGrade(student, meeting)
+            if grade == 'n':
+                student_data['absences'] += 1
+            if grade == 'p':
+                student_data['tardies'] += 1
+        return student_data
+
     def students(self):
         data = {}
-        jd = ISectionJournalData(self.section)
-        for student in self.section.members:
-            student_data = {}
-            student_data['absences'] = 0
-            student_data['tardies'] = 0
-            for meeting in jd.recordedMeetings(student):
-                grade = jd.getGrade(student, meeting)
-                if grade == 'n':
-                    student_data['absences'] += 1
-                if grade == 'p':
-                    student_data['tardies'] += 1
-            if student_data['absences'] + student_data['tardies'] > 0:
-                data[student] = student_data
+        jd = ISectionJournalData(self.section, None)
+        if jd is not None:
+            for student in self.section.members:
+                student_data = self.getStudentData(jd, student)
+                if student_data['absences'] + student_data['tardies'] > 0:
+                    data[student] = student_data
 
         rows = []
         for student in sorted(data, key=lambda s: s.title):
@@ -735,6 +741,10 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
         num_cols = len(self.activities())
         start_row, start_col = 0, 0
         max_rows, max_cols = 34, 8
+        if not self.absences_hide:
+            max_cols -= 1
+        if not self.tardies_hide:
+            max_cols -= 1
         if not self.total_hide:
             max_cols -= 1
         if not self.average_hide:
@@ -789,6 +799,10 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
 
     def widths(self, start_col, end_col):
         num_cols = end_col - start_col
+        if not self.absences_hide:
+            num_cols += 1
+        if not self.tardies_hide:
+            num_cols += 1
         if not self.total_hide:
             num_cols += 1
         if not self.average_hide:

@@ -2,11 +2,15 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="schooltool.gradebook">
 
   <include package="schooltool.requirement" />
 
   <include file="security.zcml" />
+
+  <include zcml:condition="have schooltool.lyceum.journal"
+           file="journal.zcml" />
 
   <!-- Gradebook Root adapters -->
   <adapter
@@ -189,6 +193,12 @@
       factory="schooltool.gradebook.activity.ExternalActivitiesVocabulary"
       name="schooltool.gradebook.external_activities"
       />
+
+  <!-- Score adapters -->
+
+  <adapter factory=".gradebook.getActivityScore" />
+  <adapter factory=".gradebook.getLinkedActivityScore" />
+  <adapter factory=".gradebook.getWorksheetAverageScore" />
 
   <!-- Gradebook Adapter -->
   <class class=".gradebook.Gradebook">

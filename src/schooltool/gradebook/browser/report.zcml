@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <configure xmlns="http://namespaces.zope.org/browser"
            xmlns:zope="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
            xmlns:report="http://namespaces.schooltool.org/report"
            i18n_domain="schooltool.gradebook">
 
@@ -42,15 +43,6 @@
        link="request_student_detail.html"
        />
   <report:reportLink
-       name="absences_by_day"
-       for="schooltool.schoolyear.interfaces.ISchoolYear"
-       permission="schooltool.edit"
-       group="School Year"
-       description="Lists students absent on a given day."
-       title="Absences By Day"
-       link="request_absences_by_day.html"
-       />
-  <report:reportLink
        name="failures_by_term"
        for="schooltool.term.interfaces.ITerm"
        permission="schooltool.edit"
@@ -59,15 +51,28 @@
        title="Failures by Term"
        link="request_failing_report.html"
        />
-  <report:reportLink
-       name="absences_by_section"
-       for="schooltool.course.interfaces.ISection"
-       permission="schooltool.edit"
-       group="Section"
-       description="Summary of absences and tardies from a single section and term."
-       title="Absences by Section"
-       link="section_absences.pdf"
-       />
+
+  <!-- Attendance reports -->
+  <configure zcml:condition="have schooltool.lyceum.journal">
+    <report:reportLink
+         name="absences_by_day"
+         for="schooltool.schoolyear.interfaces.ISchoolYear"
+         permission="schooltool.edit"
+         group="School Year"
+         description="Lists students absent on a given day."
+         title="Absences By Day"
+         link="request_absences_by_day.html"
+         />
+    <report:reportLink
+         name="absences_by_section"
+         for="schooltool.course.interfaces.ISection"
+         permission="schooltool.edit"
+         group="Section"
+         description="Summary of absences and tardies from a single section and term."
+         title="Absences by Section"
+         link="section_absences.pdf"
+         />
+  </configure>
 
 </configure>
 

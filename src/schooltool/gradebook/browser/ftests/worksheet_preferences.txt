@@ -6,6 +6,10 @@ the case of the average column, they may want to choose a score system to
 be used in converting the average to a discrete value.  To support this, we
 provide the column preferences view.
 
+Import helper to print the gradebook:
+
+    >>> from schooltool.gradebook.browser.ftests import printGradebook
+
 Log in as manager:
 
     >>> manager = Browser('manager', 'schooltool')
@@ -85,18 +89,20 @@ Add some grades:
 
     >>> stephan.getControl('Save').click()
 
-Check the worksheet headers:
+Check the worksheet. By default the Total and Average columns are
+calculated normally:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Total</div>
-    <div>Ave.</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-------+---------+---------+
+    | Name             | Total | Ave.  | HW1     | Quiz    |
+    +------------------+-------+-------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
+    +------------------+-------+-------+---------+---------+
 
 Check the due date filter:
 
@@ -110,23 +116,8 @@ Check the due date filter:
     </select>
     weeks
 
-By default the Total and Average columns are calculated normally:
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    90.7%
-    49.3%
-
-We'll call up the current column preferences and note that there are
-none set yet.
+We'll call up the current column preferences and note that they are all
+set to their defaults.
 
     >>> stephan.getLink('Preferences').click()
     >>> stephan.printQuery('id("content-body")/form//table//input')
@@ -137,15 +128,15 @@ none set yet.
 
     >>> stephan.printQuery("id('content-body')/form//table//option")
     <option selected="selected" value="">-- No score system --</option>
-    <option value="extended-letter-grade">Extended Letter Grade</option>
-    <option value="goodbad">Good/Bad</option>
-    <option value="letter-grade">Letter Grade</option>
-    <option value="passfail">Pass/Fail</option>
+    <option value="extended-letter-grade-">Extended Letter Grade</option>
+    <option value="goodbad-">Good/Bad</option>
+    <option value="letter-grade-">Letter Grade</option>
+    <option value="passfail-">Pass/Fail</option>
 
     >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
     <input type="checkbox" name="hide_due_date" />
 
-Let's change all preferences
+Let's change all preferences:
 
     >>> stephan.getControl(name='hide_total').value = ['on']
     >>> stephan.getControl(name='label_total').value = 'Summe'
@@ -157,14 +148,17 @@ Let's change all preferences
 
 Total and average columns were hidden:
 
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+---------+---------+
+    | Name             | HW1     | Quiz    |
+    +------------------+---------+---------+
+    | Cardune, Paul    | [40___] | [90___] |
+    | Hoffman, Tom     | [48___] | [88___] |
+    | Richter, Claudia | [45___] | [29___] |
+    +------------------+---------+---------+
 
 Due date filter was also hidden:
 
@@ -175,7 +169,7 @@ Due date filter was also hidden:
     >>> stephan.queryHTML('//select[@name="num_weeks"]')
     []
 
-Look that all the preferences were saved
+Look that all the preferences were saved:
 
     >>> stephan.getLink('Preferences').click()
     >>> stephan.printQuery("id('content-body')/form//table//input")
@@ -186,10 +180,10 @@ Look that all the preferences were saved
 
     >>> stephan.printQuery("id('content-body')/form//table//option")
     <option value="">-- No score system --</option>
-    <option value="extended-letter-grade">Extended Letter Grade</option>
-    <option selected="selected" value="goodbad">Good/Bad</option>
-    <option value="letter-grade">Letter Grade</option>
-    <option value="passfail">Pass/Fail</option>
+    <option value="extended-letter-grade-">Extended Letter Grade</option>
+    <option selected="selected" value="goodbad-">Good/Bad</option>
+    <option value="letter-grade-">Letter Grade</option>
+    <option value="passfail-">Pass/Fail</option>
 
     >>> stephan.printQuery("id('content-body')/form//input[@name='hide_due_date']")
     <input type="checkbox" name="hide_due_date" checked="checked" />
@@ -199,49 +193,34 @@ Show the total and average columns, and test that Average is converted to Good/B
     >>> stephan.getControl(name='hide_total').value = False
     >>> stephan.getControl(name='hide_average').value = False
     >>> stephan.getControl('Update').click()
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr[2]/th/div[1]')
-    <div>Name</div>
-    <div>Summe</div>
-    <div>Durchschnitt</div>
-    <div class="padded">
-      <a ...>HW1</a>
-    </div>
-    <div class="padded">
-      <a ...>Quiz</a>
-    </div>
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    Good
-    Good
-    Bad
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------------+---------+---------+
+    | Name             | Summe | Durchschnitt | HW1     | Quiz    |
+    +------------------+-------+--------------+---------+---------+
+    | Cardune, Paul    | 130.0 | Good         | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | Good         | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | Bad          | [45___] | [29___] |
+    +------------------+-------+--------------+---------+---------+
 
 Check with extended letter grade scoresystem:
 
     >>> stephan.getLink('Preferences').click()
     >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
     >>> stephan.getControl('Update').click()
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    B
-    A-
-    F
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------------+---------+---------+
+    | Name             | Summe | Durchschnitt | HW1     | Quiz    |
+    +------------------+-------+--------------+---------+---------+
+    | Cardune, Paul    | 130.0 | B            | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | A-           | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | F            | [45___] | [29___] |
+    +------------------+-------+--------------+---------+---------+
 
 Now, let's test a corner case. The Gradebook allows extra credits in
 scores, and because of the way the average is calculated, there's a
@@ -253,38 +232,34 @@ scoresystem for the average:
     >>> stephan.getLink('Preferences').click()
     >>> stephan.getControl(name='scoresystem_average').displayValue = ['-- No score system --']
     >>> stephan.getControl('Update').click()
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    74.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    90.7%
-    49.3%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------------+---------+---------+
+    | Name             | Summe | Durchschnitt | HW1     | Quiz    |
+    +------------------+-------+--------------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7%        | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7%        | [48___] | [88___] |
+    | Richter, Claudia | 74.0  | 49.3%        | [45___] | [29___] |
+    +------------------+-------+--------------+---------+---------+
 
 Let's grade Claudia so we get an average higher than 100%:
 
     >>> stephan.getControl(name='Activity_claudia').value = '51'
     >>> stephan.getControl(name='Activity-2_claudia').value = '101'
     >>> stephan.getControl('Save').click()
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    152.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    86.7%
-    90.7%
-    101.3%
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------------+---------+---------+
+    | Name             | Summe | Durchschnitt | HW1     | Quiz    |
+    +------------------+-------+--------------+---------+---------+
+    | Cardune, Paul    | 130.0 | 86.7%        | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | 90.7%        | [48___] | [88___] |
+    | Richter, Claudia | 152.0 | 101.3%       | [51___] | [101__] |
+    +------------------+-------+--------------+---------+---------+
 
 Even though this average is higher than 100%, if we convert it back to
 the extended letter grade scoresystem, we should get an A+:
@@ -292,35 +267,31 @@ the extended letter grade scoresystem, we should get an A+:
     >>> stephan.getLink('Preferences').click()
     >>> stephan.getControl(name='scoresystem_average').displayValue = ['Extended Letter Grade']
     >>> stephan.getControl('Update').click()
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    152.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    B
-    A-
-    A+
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------------+---------+---------+
+    | Name             | Summe | Durchschnitt | HW1     | Quiz    |
+    +------------------+-------+--------------+---------+---------+
+    | Cardune, Paul    | 130.0 | B            | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | A-           | [48___] | [88___] |
+    | Richter, Claudia | 152.0 | A+           | [51___] | [101__] |
+    +------------------+-------+--------------+---------+---------+
 
 And if we change to the Good/Bad scoresystem, we should get Good:
 
     >>> stephan.getLink('Preferences').click()
     >>> stephan.getControl(name='scoresystem_average').displayValue = ['Good/Bad']
     >>> stephan.getControl('Update').click()
-
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[1]/a[1]/text()')
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[2]/b/text()')
-    130.0
-    136.0
-    152.0
-    >>> stephan.printQuery('//table[@class="schooltool_gradebook"][2]/tr/td[3]/b/text()')
-    Good
-    Good
-    Good
+    >>> printGradebook(stephan.contents)
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+--------------+---------+---------+
+    | Name             | Summe | Durchschnitt | HW1     | Quiz    |
+    +------------------+-------+--------------+---------+---------+
+    | Cardune, Paul    | 130.0 | Good         | [40___] | [90___] |
+    | Hoffman, Tom     | 136.0 | Good         | [48___] | [88___] |
+    | Richter, Claudia | 152.0 | Good         | [51___] | [101__] |
+    +------------------+-------+--------------+---------+---------+

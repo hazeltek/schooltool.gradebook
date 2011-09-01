@@ -129,6 +129,12 @@
                 tal:attributes="colWidths page/widths">
       <tr>
         <td><para style="grid_heading" tal:content="view/student_heading" /></td>
+        <td tal:condition="not: view/absences_hide">
+          <para style="grid_heading" tal:content="view/absences_label" />
+        </td>
+        <td tal:condition="not: view/tardies_hide">
+          <para style="grid_heading" tal:content="view/tardies_label" />
+        </td>
         <td tal:condition="not: view/total_hide">
           <para style="grid_heading" tal:content="view/total_label" />
         </td>
@@ -142,6 +148,12 @@
 
       <tr tal:repeat="row page/rows">
         <td><para style="cell" tal:content="row/student/title" /></td>
+        <td tal:condition="not: view/absences_hide">
+          <para style="cell" tal:content="row/absences" />
+        </td>
+        <td tal:condition="not: view/tardies_hide">
+          <para style="cell" tal:content="row/tardies" />
+        </td>
         <td tal:condition="not: view/total_hide">
           <para style="cell" tal:content="row/total" />
         </td>

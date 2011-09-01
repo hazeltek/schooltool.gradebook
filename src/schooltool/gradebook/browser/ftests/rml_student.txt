@@ -441,12 +441,13 @@ Now, let's add some grades to the Second Term sections:
     >>> teacher.getControl('Report Activity 2.4').value = 'Fail'
     >>> teacher.getControl('Apply').click()
 
-Let's add some attendance data. First let's define some helper
-functions:
+TODO: Split this test to show that reports work without journal.
+Let's add some attendance data. First let's define some helper functions:
 
     >>> def baseHelper(student, month, day, browser, value):
-    ...     browser.getLink('Term Grading').click()
-    ...     browser.getLink(month).click()
+    ...     months = browser.queryHTML('//span[@class="inactive_tab"]/a/text()')
+    ...     if month in months:
+    ...         browser.getLink(month).click()
     ...     browser.getLink(student).click()
     ...     dates = browser.queryHTML('//table[@class="data"]/thead/tr[1]//a/text()[1]')
     ...     assert day in dates, (student, month, day, dates)
