@@ -18,7 +18,7 @@
         />
   </configure>
 
-  <!-- Menu items for IScoreSystemsProxy -->
+  <!-- Menu items -->
   <menuItem
       menu="schooltool_actions"
       title="Add Score System"

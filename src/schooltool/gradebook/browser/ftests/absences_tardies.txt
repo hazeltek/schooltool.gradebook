@@ -94,7 +94,7 @@ We'll go unhide the columns in the prefernces view.
     >>> stephan.getControl('Update').click()
 
 Now the columns appear in the gradebook.  There is no attendence data yet, so
-the values are both 0.
+the values are empty:
 
     >>> printGradebook(stephan.contents)
     +----------+
@@ -103,7 +103,7 @@ the values are both 0.
     +------------------+------+------+-------+------+
     | Name             | Abs. | Trd. | Total | Ave. |
     +------------------+------+------+-------+------+
-    | Richter, Claudia | 0    | 0    | 0.0   | N/A  |
+    | Richter, Claudia |      |      | 0.0   | N/A  |
     +------------------+------+------+-------+------+
 
 Let's add some attendance data for the student.  This will include some
