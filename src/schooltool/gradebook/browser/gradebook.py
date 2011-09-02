@@ -157,6 +157,14 @@ class GradebookStartupNavLink(flourish.page.LinkViewlet):
         person = IPerson(self.request.principal, None)
         if person is None:
             return ''
+
+        sectionsTaught = list(IInstructor(person).sections())
+        sectionsAttended = list(ILearner(person).sections())
+
+        if (not sectionsTaught and
+            not sectionsAttended):
+            return ''
+
         return _('Gradebook')
 
     @property
