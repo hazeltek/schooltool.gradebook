@@ -122,6 +122,11 @@ class StupidKeyReference(object):
         return cmp(hash(self), hash(other))
 
 
+class PeriodStub(object):
+    def __init__(self, title):
+        self.title = title
+
+
 class MeetingStub(object):
     implements(ISchoolToolCalendarEvent)
 
@@ -240,7 +245,7 @@ def setupSections(app):
     meeting.unique_id = "unique-id-2009-01-01"
     meeting.meeting_id = "unique-id-2009-01-01"
     meeting.dtstart = datetime(2009, 1, 1, 10, 15)
-    meeting.period_id = "10:30-11:30"
+    meeting.period = PeriodStub("Period A")
     calendar.addEvent(meeting)
     if jd:
         jd.setGrade(aelkner, meeting, 'n')
@@ -343,7 +348,7 @@ def doctest_StudentDetailPDFView():
     The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
-        [{'attendance': {'headings': ['10:30'],
+        [{'attendance': {'headings': ['Period A'],
                          'rows': [{'scores': [u'A'], 'title': '01/01/09'}],
                          'widths': '4cm,1cm'},
           'grades': {'headings': ['Activ'],
@@ -371,7 +376,7 @@ def doctest_GroupDetailPDFView():
     The data used by the template is returned by the students() method:
 
         >>> pprint(view.students())
-        [{'attendance': {'headings': ['10:30'],
+        [{'attendance': {'headings': ['Period A'],
                          'rows': [{'scores': [u'A'], 'title': '01/01/09'}],
                          'widths': '4cm,1cm'},
           'grades': {'headings': ['Activ'],

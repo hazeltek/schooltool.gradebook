@@ -157,6 +157,14 @@ class GradebookStartupNavLink(flourish.page.LinkViewlet):
         person = IPerson(self.request.principal, None)
         if person is None:
             return ''
+
+        sectionsTaught = list(IInstructor(person).sections())
+        sectionsAttended = list(ILearner(person).sections())
+
+        if (not sectionsTaught and
+            not sectionsAttended):
+            return ''
+
         return _('Gradebook')
 
     @property
@@ -668,8 +676,8 @@ class GradebookOverview(SectionFinder):
                                     ('/%s' % student.username),
                             },
                  'grades': grades,
-                 'absences': absences or '',
-                 'tardies': tardies or '',
+                 'absences': unicode(absences),
+                 'tardies': unicode(tardies),
                  'total': total,
                  'average': average,
                  'raw_average': raw_average,
