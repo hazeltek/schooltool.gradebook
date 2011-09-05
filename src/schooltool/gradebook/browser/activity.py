@@ -827,7 +827,7 @@ class LinkedColumnBase(BrowserView):
         for term in sorted(term_dict.keys(), key=lambda t: t.first):
             term_disp = term.title
             for section_index, section in enumerate(term_dict[term]):
-                section_disp = list(section.courses)[0].title
+                section_disp = section.title
                 worksheets = interfaces.IActivities(section).values()
                 worksheets = [worksheet for worksheet in worksheets
                               if not worksheet.deployed
@@ -861,10 +861,11 @@ class LinkedColumnBase(BrowserView):
     def getRequestSource(self):
         for key in self.request:
             parts = key.split('_')
-            if len(parts) == 4:
+            if len(parts) > 3:
                 try:
-                    int(parts[2])
-                    return key
+                    sourceObj = getSourceObj(key)
+                    if sourceObj is not None:
+                        return key
                 except:
                     pass
         return None

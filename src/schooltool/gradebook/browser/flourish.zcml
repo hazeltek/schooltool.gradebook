@@ -335,6 +335,14 @@
       />
 
   <flourish:page
+      name="view.html"
+      for="..interfaces.IStudentGradebook"
+      content_template="templates/f_student_gradebook.pt"
+      class=".gradebook.FlourishStudentGradebookView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
       name="weights.html"
       for="..interfaces.IWorksheet"
       title="Gradebook"

@@ -1572,6 +1572,53 @@ class StudentGradebookView(object):
         return activity.due_date < cutoff
 
 
+class FlourishStudentGradebookView(flourish.page.Page):
+    """A flourish view of the student gradebook."""
+
+    @property
+    def title(self):
+        return self.context.student.title
+
+    @property
+    def subtitle(self):
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        return _(u'${section} grades for ${worksheet}',
+                 mapping={'section': ISection(gradebook).title,
+                          'worksheet': gradebook.context.title})
+
+    @property
+    def blocks(self):
+        blocks = []
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            return blocks
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        flag, weeks = gradebook.getDueDateFilter(person)
+        today = queryUtility(IDateManager).today
+        cutoff = today - datetime.timedelta(7 * int(weeks))
+        for activity in gradebook.context.values():
+            if flag and activity.due_date < cutoff:
+                continue
+            score = gradebook.getScore(self.context.student, activity)
+            if not score:
+                value = ''
+            else:
+                value = score.value
+            if ICommentScoreSystem.providedBy(activity.scoresystem):
+                block = {
+                    'comment': True,
+                    'paragraphs': buildHTMLParagraphs(value),
+                    }
+            else:
+                block = {
+                    'comment': False,
+                    'content': value,
+                    }
+            block['label'] = activity.title
+            blocks.append(block)
+        return blocks
+
+
 class GradebookCSVView(BrowserView):
 
     def __call__(self):
