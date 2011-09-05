@@ -1,0 +1,12 @@
+<div>
+  <div tal:repeat="block view/blocks">
+    <h3 tal:content="block/label" />
+    <p tal:condition="not: block/comment"
+       tal:content="block/content" />
+    <tal:block condition="block/comment"
+               repeat="paragraph block/paragraphs">
+      <p tal:content="structure paragraph"/>
+    </tal:block>
+  </div>
+</div>
+
