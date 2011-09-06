@@ -552,6 +552,7 @@ class GradebookOverview(SectionFinder):
         """Get  a list of all activities."""
         self.person = IPerson(self.request.principal)
         results = []
+        deployed = proxy.removeSecurityProxy(self.context).context.deployed
         for activity in self.getFilteredActivities():
             if interfaces.ILinkedColumnActivity.providedBy(activity):
                 scorable = False
@@ -579,8 +580,14 @@ class GradebookOverview(SectionFinder):
                 'longTitle': longTitle,
                 'max': bestScore,
                 'hash': activity.__name__,
+                'canDelete': not deployed,
+                'moveLeft': not deployed,
+                'moveRight': not deployed,
                 }
             results.append(result)
+        if results:
+            results[0]['moveLeft'] = False
+            results[-1]['moveRight'] = False
         return results
 
     def scorableActivities(self):
@@ -789,6 +796,22 @@ class FlourishGradebookOverview(GradebookOverview,
             columnPreferences.get('average', {})['scoresystem'] = name
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
+    def handleMoveActivity(self):
+        if not self.isTeacher:
+            return
+        if 'move_left' in self.request:
+            name, change = self.request['move_left'], -1
+        elif 'move_right' in self.request:
+            name, change = self.request['move_right'], 1
+        else:
+            return
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        keys = worksheet.keys()
+        if name in keys:
+            new_pos = keys.index(name) + change
+            if new_pos >= 0 and new_pos < len(keys):
+                worksheet.changePosition(name, new_pos)
+
     @property
     def scoresystems(self):
         gradebook = proxy.removeSecurityProxy(self.context)
@@ -817,6 +840,9 @@ class FlourishGradebookOverview(GradebookOverview,
 
         """Handle change of column preferences."""
         self.handlePreferencesChange()
+
+        """Handle change of column order."""
+        self.handleMoveActivity()
 
         """Everything else handled by old skin method."""
         GradebookOverview.update(self)
@@ -962,6 +988,16 @@ class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
 
 class FlourishGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Overview add links viewlet."""
+
+
+class ActivityAddLink(flourish.page.LinkViewlet):
+
+    @property
+    def title(self):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        if worksheet.deployed:
+            return ''
+        return _("Activity")
 
 
 class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
@@ -1382,10 +1418,12 @@ class GradeStudent(z3cform.EditForm):
                     field_cls = TextLine
                     bestScore = activity.scoresystem.getBestScore()
                     title = "%s (%s)" % (activity.title, bestScore)
+                readonly = interfaces.ILinkedActivity.providedBy(activity)
                 newSchemaFld = field_cls(
                     title=title,
                     description=activity.description,
                     constraint=activity.scoresystem.fromUnicode,
+                    readonly=readonly,
                     required=False)
             newSchemaFld.__name__ = str(activity.__name__)
             newSchemaFld.interface = interfaces.IStudentGradebookForm

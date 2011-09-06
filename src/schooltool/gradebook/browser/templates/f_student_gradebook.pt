@@ -1,12 +1,22 @@
 <div>
-  <div tal:repeat="block view/blocks">
-    <h3 tal:content="block/label" />
-    <p tal:condition="not: block/comment"
-       tal:content="block/content" />
-    <tal:block condition="block/comment"
-               repeat="paragraph block/paragraphs">
-      <p tal:content="structure paragraph"/>
-    </tal:block>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th i18n:translate="">Activity</th>
+        <th i18n:translate="">Score</th>
+      </tr>
+    </thead>
+    <tr tal:repeat="block view/blocks">
+      <td tal:content="block/label" />
+      <td>
+        <p tal:condition="not: block/comment"
+           tal:content="block/content" />
+        <tal:block condition="block/comment"
+                   repeat="paragraph block/paragraphs">
+          <p tal:content="structure paragraph"/>
+        </tal:block>
+      </td>
+    </tr>
+  </table>
 </div>
 
