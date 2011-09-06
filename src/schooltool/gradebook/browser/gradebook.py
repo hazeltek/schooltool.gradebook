@@ -990,6 +990,16 @@ class FlourishGradebookOverviewLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Overview add links viewlet."""
 
 
+class ActivityAddLink(flourish.page.LinkViewlet):
+
+    @property
+    def title(self):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        if worksheet.deployed:
+            return ''
+        return _("Activity")
+
+
 class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Settings links viewlet."""
 

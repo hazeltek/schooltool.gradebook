@@ -110,7 +110,7 @@
                   <li>
                     <span tal:content="activity/longTitle" />
                   </li>
-                  <li>
+                  <li tal:condition="activity/canDelete">
                     <a tal:attributes="href string:../${activity/hash}/edit.html?nexturl=${request/URL};"
                        i18n:translate="">Edit</a>
                   </li>

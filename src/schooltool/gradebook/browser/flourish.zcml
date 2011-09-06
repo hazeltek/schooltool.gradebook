@@ -152,8 +152,7 @@
 
   <flourish:viewlet
       name="../addActivity.html"
-      title="Activity"
-      class="schooltool.skin.flourish.page.LinkViewlet"
+      class=".gradebook.ActivityAddLink"
       manager=".gradebook.FlourishGradebookOverviewLinks"
       permission="schooltool.edit"
       />
