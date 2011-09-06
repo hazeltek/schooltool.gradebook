@@ -1382,10 +1382,12 @@ class GradeStudent(z3cform.EditForm):
                     field_cls = TextLine
                     bestScore = activity.scoresystem.getBestScore()
                     title = "%s (%s)" % (activity.title, bestScore)
+                readonly = interfaces.ILinkedActivity.providedBy(activity)
                 newSchemaFld = field_cls(
                     title=title,
                     description=activity.description,
                     constraint=activity.scoresystem.fromUnicode,
+                    readonly=readonly,
                     required=False)
             newSchemaFld.__name__ = str(activity.__name__)
             newSchemaFld.interface = interfaces.IStudentGradebookForm
