@@ -122,6 +122,18 @@
                     <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
                        i18n:translate="">Sort by</a>
                   </li>
+                  <li tal:condition="activity/canDelete">
+                    <a tal:attributes="href string:${request/URL}?delete=${activity/hash}"
+                       i18n:translate="">Delete</a>
+                  </li>
+                  <li tal:condition="activity/moveLeft">
+                    <a tal:attributes="href string:${request/URL}?move_left=${activity/hash}"
+                       i18n:translate="">Move left</a>
+                  </li>
+                  <li tal:condition="activity/moveRight">
+                    <a tal:attributes="href string:${request/URL}?move_right=${activity/hash}"
+                       i18n:translate="">Move right</a>
+                  </li>
                 </ul>
                 <div>
                   <a class="popup_link"
