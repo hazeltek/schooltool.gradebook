@@ -732,6 +732,11 @@ class GradebookOverview(SectionFinder):
             results.append(result)
         return results
 
+    @property
+    def deployed(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        return gradebook.context.deployed
+
 
 class FlourishGradebookOverview(GradebookOverview,
                                 flourish.page.WideContainerPage):
