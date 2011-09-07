@@ -802,7 +802,7 @@ class FlourishGradebookOverview(GradebookOverview,
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
     def handleMoveActivity(self):
-        if not self.isTeacher:
+        if not self.isTeacher or self.deployed:
             return
         if 'move_left' in self.request:
             name, change = self.request['move_left'], -1
@@ -816,6 +816,15 @@ class FlourishGradebookOverview(GradebookOverview,
             new_pos = keys.index(name) + change
             if new_pos >= 0 and new_pos < len(keys):
                 worksheet.changePosition(name, new_pos)
+
+    def handleDeleteActivity(self):
+        if not self.isTeacher or self.deployed:
+            return
+        if 'delete' in self.request:
+            name = self.request['delete']
+            worksheet = proxy.removeSecurityProxy(self.context).context
+            if name in worksheet.keys():
+                del worksheet[name]
 
     @property
     def scoresystems(self):
@@ -848,6 +857,9 @@ class FlourishGradebookOverview(GradebookOverview,
 
         """Handle change of column order."""
         self.handleMoveActivity()
+
+        """Handle removal of column."""
+        self.handleDeleteActivity()
 
         """Everything else handled by old skin method."""
         GradebookOverview.update(self)
