@@ -542,6 +542,60 @@
       permission="zope.Public"
       />
 
+  <!-- Student views -->
+  <flourish:page
+      name="index.html"
+      for="..interfaces.IMyGrades"
+      title="My Grades"
+      class=".gradebook.FlourishMyGradesView"
+      content_template="templates/f_mygrades.pt"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="mygrades_section_navigation"
+      before="mygrades_term_navigation"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishMyGradesSectionNavigation"
+      for="..interfaces.IMyGrades"
+      title="Section"
+      permission="schooltool.view"
+      view=".gradebook.FlourishMyGradesView"
+      />
+
+  <flourish:viewlet
+      name="mygrades_term_navigation"
+      before="mygrades_year_navigation"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishMyGradesTermNavigation"
+      for="..interfaces.IMyGrades"
+      title="Term"
+      permission="schooltool.view"
+      view=".gradebook.FlourishMyGradesView"
+      />
+
+  <flourish:viewlet
+      name="select_term"
+      class=".gradebook.FlourishMyGradesTermNavigationViewlet"
+      manager=".gradebook.FlourishMyGradesTermNavigation"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="select_section"
+      class=".gradebook.FlourishMyGradesSectionNavigationViewlet"
+      manager=".gradebook.FlourishMyGradesSectionNavigation"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".gradebook.MyGradesTertiaryNavigationManager"
+      view=".gradebook.FlourishMyGradesView"
+      permission="zope.Public"
+      />
+
   <!-- Report Card Layouts -->
   <flourish:viewlet
       name="report_card_layout"
