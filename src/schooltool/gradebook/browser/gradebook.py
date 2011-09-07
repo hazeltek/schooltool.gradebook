@@ -1212,6 +1212,61 @@ class MyGradesView(SectionFinder):
         return self.context.getCurrentWorksheet(self.person)
 
 
+class FlourishMyGradesView(MyGradesView, flourish.page.Page):
+    """Flourish student view of own grades."""
+
+    has_header = False
+
+    def update(self):
+        """Everything else handled by old skin method."""
+        MyGradesView.update(self)
+
+
+class FlourishMyGradesTermNavigation(flourish.page.RefineLinksViewlet):
+    """flourish MyGrades Overview term navigation viewlet."""
+
+
+class FlourishMyGradesTermNavigationViewlet(
+    FlourishGradebookTermNavigationViewlet):
+
+    isTeacher = False
+
+
+class FlourishMyGradesSectionNavigation(flourish.page.RefineLinksViewlet):
+    """flourish MyGrades Overview section navigation viewlet."""
+
+
+class FlourishMyGradesSectionNavigationViewlet(
+    FlourishGradebookSectionNavigationViewlet):
+
+    isTeacher = False
+
+
+class MyGradesTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
+
+    template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    @property
+    def items(self):
+        result = []
+        gradebook = proxy.removeSecurityProxy(self.context)
+        current = gradebook.context.__name__
+        for worksheet in gradebook.worksheets:
+            url = '%s/mygrades' % absoluteURL(worksheet, self.request)
+            result.append({
+                'class': worksheet.__name__ == current and 'active' or None,
+                'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
+                })
+        return result
+
+
 class LinkedActivityGradesUpdater(object):
     """Functionality to update grades from a linked activity"""
 
