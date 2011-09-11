@@ -1509,31 +1509,21 @@ class GradeStudent(z3cform.EditForm):
         self.person = IPerson(self.request.principal)
         for index, activity in enumerate(self.getFilteredActivities()):
             if interfaces.ILinkedColumnActivity.providedBy(activity):
-                obj = getSourceObj(activity.source)
-                if interfaces.IWorksheet.providedBy(obj):
-                    bestScore = '100'
-                else:
-                    bestScore = obj.scoresystem.getBestScore()
-                title = '%s (%s)' % (obj.title, bestScore)
-                newSchemaFld = TextLine(
-                    title=title,
-                    readonly = True,
-                    required=False)
+                continue
+            elif interfaces.ILinkedActivity.providedBy(activity):
+                continue
+            if ICommentScoreSystem.providedBy(activity.scoresystem):
+                field_cls = HtmlFragment
+                title = activity.title
             else:
-                if ICommentScoreSystem.providedBy(activity.scoresystem):
-                    field_cls = HtmlFragment
-                    title = activity.title
-                else:
-                    field_cls = TextLine
-                    bestScore = activity.scoresystem.getBestScore()
-                    title = "%s (%s)" % (activity.title, bestScore)
-                readonly = interfaces.ILinkedActivity.providedBy(activity)
-                newSchemaFld = field_cls(
-                    title=title,
-                    description=activity.description,
-                    constraint=activity.scoresystem.fromUnicode,
-                    readonly=readonly,
-                    required=False)
+                field_cls = TextLine
+                bestScore = activity.scoresystem.getBestScore()
+                title = "%s (%s)" % (activity.title, bestScore)
+            newSchemaFld = field_cls(
+                title=title,
+                description=activity.description,
+                constraint=activity.scoresystem.fromUnicode,
+                required=False)
             newSchemaFld.__name__ = str(activity.__name__)
             newSchemaFld.interface = interfaces.IStudentGradebookForm
             newFormFld = field.Field(newSchemaFld)
