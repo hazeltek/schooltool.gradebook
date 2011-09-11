@@ -575,6 +575,23 @@
       />
 
   <flourish:viewlet
+      name="mygrades_year_navigation"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishMyGradesYearNavigation"
+      for="..interfaces.IMyGrades"
+      title="Year"
+      permission="schooltool.view"
+      view=".gradebook.FlourishMyGradesView"
+      />
+
+  <flourish:viewlet
+      name="select_year"
+      class=".gradebook.FlourishMyGradesYearNavigationViewlet"
+      manager=".gradebook.FlourishMyGradesYearNavigation"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
       name="select_term"
       class=".gradebook.FlourishMyGradesTermNavigationViewlet"
       manager=".gradebook.FlourishMyGradesTermNavigation"

@@ -1217,9 +1217,46 @@ class FlourishMyGradesView(MyGradesView, flourish.page.Page):
 
     has_header = False
 
+    def handleYearChange(self):
+        if 'currentYear' in self.request:
+            currentSection = ISection(proxy.removeSecurityProxy(self.context))
+            currentYear = ISchoolYear(ITerm(currentSection))
+            requestYearId = self.request['currentYear']
+            if requestYearId != currentYear.__name__:
+                for section in self.getUserSections():
+                    year = ISchoolYear(ITerm(section))
+                    if year.__name__ == requestYearId:
+                        newSection = section
+                        break
+                else:
+                    return False
+                url = absoluteURL(newSection, self.request)
+                if self.isTeacher:
+                    url += '/gradebook'
+                else:
+                    url += '/mygrades'
+                self.request.response.redirect(url)
+                return True
+        return False
+
     def update(self):
+        """Handle change of year."""
+        self.person = IPerson(self.request.principal)
+        if self.handleYearChange():
+            return
+
         """Everything else handled by old skin method."""
         MyGradesView.update(self)
+
+
+class FlourishMyGradesYearNavigation(flourish.page.RefineLinksViewlet):
+    """flourish MyGrades Overview year navigation viewlet."""
+
+
+class FlourishMyGradesYearNavigationViewlet(
+    FlourishGradebookYearNavigationViewlet):
+
+    isTeacher = False
 
 
 class FlourishMyGradesTermNavigation(flourish.page.RefineLinksViewlet):
