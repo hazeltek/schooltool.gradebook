@@ -501,28 +501,36 @@ def doctest_GradebookPDFView():
     The data used by the template is returned by the table() method:
 
         >>> pprint(view.activities())
-        [{'hash': 'Activity',
+        [{'canDelete': True,
+          'hash': 'Activity',
           'longTitle': 'Activity',
           'max': 'A',
+          'moveLeft': False,
+          'moveRight': True,
           'scorable': True,
-          'shortTitle': 'Activ'},
-         {'hash': 'Activity-2',
+          'shortTitle': 'Activ',
+          'updateGrades': ''},
+         {'canDelete': True,
+          'hash': 'Activity-2',
           'longTitle': 'Activity 2',
           'max': 'A',
+          'moveLeft': True,
+          'moveRight': False,
           'scorable': True,
-          'shortTitle': 'Activ'}]
+          'shortTitle': 'Activ',
+          'updateGrades': ''}]
 
         >>> pprint(view.table())
-        [{'absences': '',
+        [{'absences': u'0',
           'average': '14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
-          'raw_average': Decimal('14...'),
-          'student': {'gradeurl': '...',
+          'raw_average': Decimal('14.28571428571428571428571429'),
+          'student': {'gradeurl': 'http://localhost/schooltool.course.section/.../1/activities/Worksheet/gradebook/aelkner',
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
-          'tardies': '',
+          'tardies': u'0',
           'total': '1.0'}]
     """
 
