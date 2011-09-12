@@ -554,6 +554,7 @@ class GradebookOverview(SectionFinder):
         results = []
         deployed = proxy.removeSecurityProxy(self.context).context.deployed
         for activity in self.getFilteredActivities():
+            updateGrades = ''
             if interfaces.ILinkedColumnActivity.providedBy(activity):
                 scorable = False
                 source = getSourceObj(activity.source)
@@ -574,6 +575,9 @@ class GradebookOverview(SectionFinder):
                     interfaces.ILinkedActivity.providedBy(activity))
                 shortTitle, longTitle, bestScore = \
                     self.getActivityAttrs(activity)
+                if interfaces.ILinkedActivity.providedBy(activity):
+                    updateGrades = '%s/updateGrades.html' % (
+                        absoluteURL(activity, self.request))
             result = {
                 'scorable': scorable,
                 'shortTitle': shortTitle,
@@ -583,6 +587,7 @@ class GradebookOverview(SectionFinder):
                 'canDelete': not deployed,
                 'moveLeft': not deployed,
                 'moveRight': not deployed,
+                'updateGrades': updateGrades,
                 }
             results.append(result)
         if results:
