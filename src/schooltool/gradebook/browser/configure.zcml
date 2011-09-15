@@ -733,6 +733,8 @@
 
   <include file="report.zcml" />
 
-  <include file="flourish.zcml" />
+  <configure zcml:condition="have schooltool.skin.flourish">
+    <include file="flourish.zcml" />
+  </configure>
 
 </configure>
