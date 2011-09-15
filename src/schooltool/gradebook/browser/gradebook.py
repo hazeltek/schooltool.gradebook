@@ -108,6 +108,7 @@ class GradebookStartup(object):
             url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
             self.request.response.redirect(url)
             return ''
+        self.template = ViewPageTemplateFile('templates/gradebook_startup.pt')
         return self.template()
 
     def update(self):
