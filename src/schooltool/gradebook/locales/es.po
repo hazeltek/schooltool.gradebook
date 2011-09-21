@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-02 16:32+0300\n"
-"PO-Revision-Date: 2011-07-04 07:47+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2011-09-05 15:07+0000\n"
+"Last-Translator: Hector A. Mantellini <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-05 04:37+0000\n"
-"X-Generator: Launchpad (build 13168)\n"
+"X-Launchpad-Export-Date: 2011-09-06 04:49+0000\n"
+"X-Generator: Launchpad (build 13861)\n"
 "Language: es\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -266,11 +266,11 @@ msgstr "Utilizar hoja de informe"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:539
 msgid "Hide Report Sheet"
-msgstr ""
+msgstr "Ocultar Hoja de Informe"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:546
 msgid "Unhide Report Sheet"
-msgstr ""
+msgstr "Mostrar Hoja de Informe"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:598
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
@@ -495,6 +495,8 @@ msgstr "Informe detallado del estudiante"
 #: /src/schooltool/gradebook/browser/report.zcml:26
 msgid "A single PDF containing report cards for all students in the group."
 msgstr ""
+"Unico archivo PDF que contienen las boletas de calificaciones para todos los "
+"estudiantes en el grupo."
 
 #: /src/schooltool/gradebook/browser/report.zcml:26
 msgid "Student Report Card by Group"
@@ -508,6 +510,8 @@ msgstr "Grupo"
 #: /src/schooltool/gradebook/browser/report.zcml:35
 msgid "A single PDF containing detail reports for all students in the group."
 msgstr ""
+"Unico archivo PDF que contienen las boletas de calificaciones para todos los "
+"estudiantes en el grupo."
 
 #: /src/schooltool/gradebook/browser/report.zcml:35
 msgid "Student Detail Report by Group"
@@ -529,7 +533,7 @@ msgstr "Ausencias por día"
 
 #: /src/schooltool/gradebook/browser/report.zcml:44
 msgid "Lists students absent on a given day."
-msgstr ""
+msgstr "Las listas de estudiantes ausentes en un día dado."
 
 #: /src/schooltool/gradebook/browser/report.zcml:44
 msgid "School Year"
@@ -537,7 +541,7 @@ msgstr "Año Escolar"
 
 #: /src/schooltool/gradebook/browser/report.zcml:66
 msgid "Absences by Section"
-msgstr ""
+msgstr "Ausencias por Sección"
 
 #: /src/schooltool/gradebook/browser/report.zcml:62
 msgid "Summary of absences and tardies from a single section and term."
@@ -856,7 +860,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
 msgid "Report Sheet"
-msgstr ""
+msgstr "Hoja de informe"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
@@ -1265,6 +1269,8 @@ msgid ""
 "The instructor of a section and school administration can edit a section's "
 "gradebook."
 msgstr ""
+"El instructor de la sección y la administración escolar puede editar el "
+"libro de calificaciones de una sección."
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
