@@ -61,12 +61,12 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     namespace_packages=["schooltool"],
-    install_requires=['schooltool>=1.6.0b1',
+    install_requires=['schooltool>=1.9',
                       'rwproperty',
                       'setuptools',
                       'xlwt',
                       'z3c.form',
-                      'z3c.optionstorage', # TODO: rewrite to not use optionstorage
+                      'z3c.optionstorage', # BBB
                       'ZODB3',
                       'zope.annotation',
                       'zope.app.form',
