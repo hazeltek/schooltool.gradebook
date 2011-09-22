@@ -31,6 +31,7 @@ from zope.intid.interfaces import IIntIds
 from zope.keyreference.interfaces import IKeyReference
 from zope.app.testing import setup
 from zope.component import getUtility, provideAdapter, provideUtility
+from zope.component import adapter
 from zope.container import btree
 from zope.interface import implements, alsoProvides
 from zope.location.interfaces import ILocation
@@ -499,7 +500,7 @@ def doctest_GradebookPDFView():
           'shortTitle': 'Activ'}]
 
         >>> pprint(view.table())
-        [{'absences': '',
+        [{'absences': u'0',
           'average': '14.3%',
           'grades': [{'activity': 'Activity', 'editable': True, 'value': 'F'},
                      {'activity': 'Activity-2', 'editable': True, 'value': 'C'}],
@@ -507,7 +508,7 @@ def doctest_GradebookPDFView():
                       'id': 'aelkner',
                       'title': 'Elkner, Alan',
                       'url': 'http://localhost/persons/aelkner'},
-          'tardies': '',
+          'tardies': u'0',
           'total': '1.0'}]
     """
 

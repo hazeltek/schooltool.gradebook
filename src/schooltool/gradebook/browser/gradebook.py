@@ -633,8 +633,8 @@ class GradebookOverview(SectionFinder):
                                     ('/%s' % student.username),
                             },
                  'grades': grades,
-                 'absences': absences or '',
-                 'tardies': tardies or '',
+                 'absences': unicode(absences),
+                 'tardies': unicode(tardies),
                  'total': total,
                  'average': average,
                 })
