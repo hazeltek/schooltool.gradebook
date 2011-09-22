@@ -5,7 +5,18 @@ CHANGES
 1.9.0 (unreleased)
 ------------------
 
-New skin for SchoolTool 1.9 (flourish) and many other changes...
+New skin for SchoolTool 1.9 (flourish) and many other changes.
+
+Cleanup
++++++++
+
+- Move categories from z3c.optionstorage to a simple container.
+
+
+0.9.2 (2011-09-22)
+------------------
+
+- Updated translations.
 
 
 0.9.1 (2011-07-04)
