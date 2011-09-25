@@ -13,8 +13,9 @@
     <tr tal:repeat="sheet sheets">
       <td tal:content="sheet/obj/title" />
       <tal:block repeat="term sheet/terms">
-        <td tal:condition="term">X</td>
-        <td tal:condition="not: term"></td>
+        <td>
+          <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
+        </td>
       </tal:block>
     </tr>
     <tr tal:condition="not: sheets">
