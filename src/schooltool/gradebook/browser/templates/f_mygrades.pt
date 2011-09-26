@@ -1,4 +1,4 @@
-<div>
+<div i18n:domain="schooltool.gradebook">
   <tal:block condition="not: view/average_hide">
     <h3 tal:condition="view/average"
         tal:content="string: ${view/average_label}: ${view/average}" />

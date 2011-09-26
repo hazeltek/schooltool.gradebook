@@ -1,4 +1,4 @@
-<div>
+<div i18n:domain="schooltool.gradebook">
   <div metal:use-macro="macro:form">
     <metal:block fill-slot="bottom">
     <input type="hidden" name="form-submitted" value="" />
@@ -17,8 +17,7 @@
             <span tal:content="activity/title" />
             <a class="modify" href="" title="Edit"
                tal:attributes="href string:${activity/@@absolute_url}/edit.html"
-               i18n:attributes="title"
-               i18n:translate="">
+               i18n:attributes="title">
               <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
                    alt="Edit"
                    i18n:attributes="alt" />
@@ -29,7 +28,7 @@
             <input type="image" alt="Delete" value="1" title="Delete"
                    tal:attributes="name string:delete.${activity/__name__};
                                    src context/++resource++schooltool.skin.flourish/remove-icon.png"
-                   i18n:attributes="alt title" />
+                   i18n:attributes="alt; title" />
           </td>
         </tr>
       </tal:block>

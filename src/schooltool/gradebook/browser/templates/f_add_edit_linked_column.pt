@@ -1,4 +1,4 @@
-<div>
+<div i18n:domain="schooltool.gradebook">
   <form method="post" id="form" class="standalone"
         tal:attributes="action view/actionURL">
     <input type="hidden" name="form-submitted" value="" />

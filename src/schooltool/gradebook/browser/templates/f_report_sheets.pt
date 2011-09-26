@@ -1,4 +1,4 @@
-<div i18n:domain="schooltool"
+<div i18n:domain="schooltool.gradebook"
      tal:define="sheets view/sheets; terms view/terms; schoolyear view/schoolyear">
   <h3 i18n:translate="">Currently Deployed Report Sheets</h3>
   <table>

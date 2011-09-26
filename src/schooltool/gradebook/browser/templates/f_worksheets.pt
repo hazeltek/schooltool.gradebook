@@ -1,4 +1,4 @@
-<div>
+<div i18n:domain="schooltool.gradebook">
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
     <input type="hidden" name="form-submitted" value="" />
@@ -33,8 +33,7 @@
           <span tal:content="worksheet/title" />
           <a class="modify" href="" title="Edit"
              tal:attributes="href worksheet/url"
-             i18n:attributes="title"
-             i18n:translate="">
+             i18n:attributes="title">
             <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
                  alt="Edit"
                  i18n:attributes="alt" />

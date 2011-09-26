@@ -7,6 +7,10 @@
   <!-- Extract journal strings -->
   <meta:provides feature="schooltool.lyceum.journal" />
 
+  <!-- Extract flourish strings -->
+  <include package="schooltool.skin.flourish" file="meta.zcml" />
+  <meta:provides feature="schooltool.skin.flourish" />
+
   <include package="schooltool.gradebook" />
   <include package="schooltool.requirement" />
 
