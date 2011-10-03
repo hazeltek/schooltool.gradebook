@@ -153,6 +153,11 @@ class FlourishWorksheetAddView(flourish.form.AddForm):
     def nextURL(self):
         return absoluteURL(self.worksheet, self.request)
 
+    def updateActions(self):
+        super(FlourishWorksheetAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
 
 class BaseEditView(EditView):
     """A base class for edit views that need special redirect."""
@@ -202,3 +207,7 @@ class FlourishWorksheetEditView(flourish.form.Form, form.EditForm):
         url = absoluteURL(self.context.__parent__, self.request)
         self.request.response.redirect(url)
 
+    def updateActions(self):
+        super(FlourishWorksheetEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
