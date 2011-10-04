@@ -102,13 +102,14 @@ def convertAverage(average, scoresystem):
 class GradebookStartup(object):
     """A view for entry into into the gradebook or mygrades views."""
 
+    template = ViewPageTemplateFile('templates/gradebook_startup.pt')
+
     def __call__(self):
         if IPerson(self.request.principal, None) is None:
             url = absoluteURL(ISchoolToolApplication(None), self.request)
             url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
             self.request.response.redirect(url)
             return ''
-        self.template = ViewPageTemplateFile('templates/gradebook_startup.pt')
         return self.template()
 
     def update(self):
