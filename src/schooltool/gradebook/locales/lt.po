@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-07-02 16:32+0300\n"
-"PO-Revision-Date: 2011-06-29 15:49+0000\n"
+"PO-Revision-Date: 2011-09-27 12:17+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-04 04:57+0000\n"
-"X-Generator: Launchpad (build 13168)\n"
+"X-Launchpad-Export-Date: 2011-10-04 05:05+0000\n"
+"X-Generator: Launchpad (build 14071)\n"
 "Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -82,7 +82,7 @@ msgstr "Keisti išorinę veiklą"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:340
 msgid "Category weights for worksheet ${worksheet}"
-msgstr ""
+msgstr "Kategorijų svoriai lentelėje ${worksheet}"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/activity.py:362
@@ -293,11 +293,11 @@ msgstr "Iš viso"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:83
 msgid "Abs."
-msgstr ""
+msgstr "Pral."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:83
 msgid "Trd."
-msgstr ""
+msgstr "Vėl."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:195
 msgid ""
@@ -355,7 +355,7 @@ msgstr "Dalykai"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:214
 msgid "Student: ${student}"
-msgstr ""
+msgstr "Mokinys: ${student}"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:316
@@ -401,7 +401,7 @@ msgstr "Patenkinamas pažymys:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:469
 msgid "The following students are at risk of failing the following courses:"
-msgstr ""
+msgstr "Išvardintiems mokiniams gresia neišlaikyti šių dalykų:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:472
 #: /src/schooltool/gradebook/browser/pdf_views.py:619
@@ -518,6 +518,8 @@ msgid ""
 "Shows all students receiving failing scores in the selected report activity "
 "and term."
 msgstr ""
+"Rodo visus mokinius, gavusius nepatenkinamus pažymius pasirinktoje veikloje "
+"ar semestre."
 
 #: /src/schooltool/gradebook/browser/report.zcml:57
 msgid "Absences By Day"
@@ -616,7 +618,8 @@ msgstr "Mažiausias patenkinamas įvertis"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:209
 msgid "You must specify both a report activity and a minimum passing score."
-msgstr "Turite nurodyti ir ataskaitos veiklą, ir mažiausią patenkinamą įvertį."
+msgstr ""
+"Turite nurodyti ir ataskaitos veiklą, ir mažiausią patenkinamą įvertį."
 
 #: /src/schooltool/gradebook/browser/request_reports.py:234
 msgid "Request Absences By Day Report"
@@ -1178,11 +1181,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/journal.py:46
 msgid "Journal Source"
-msgstr ""
+msgstr "Dienyno šaltinis"
 
 #: /src/schooltool/gradebook/journal.py:64
 msgid "Journal Average"
-msgstr ""
+msgstr "Dienyno vidurkis"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
@@ -1210,13 +1213,14 @@ msgstr "Matyti kurso pažymių knygelės duomenis."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Only the instructor of a section can edit its gradebook."
-msgstr ""
+msgstr "Tik kurso mokytojas gali keisti jo pažymių knygelę"
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid ""
 "The instructor of a section and school administration can edit a section's "
 "gradebook."
 msgstr ""
+"Kurso mokytojas bei mokyklos administracija gali keisti pažymių knygelę"
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:4
@@ -1304,11 +1308,11 @@ msgstr "Pasikartojančios santrumpos negalimos."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:257
 msgid "Yes"
-msgstr ""
+msgstr "Taip"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:259
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:294
 msgid "Existing Score System"
@@ -1370,9 +1374,10 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
 msgid "New Score System"
-msgstr ""
+msgstr "Nauja vertinimo sistema"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
+#: /src/schooltool/requirement/browser/scoresystem_view.pt:14
 msgid "Score"
 msgstr "Įvertinimas"
 
