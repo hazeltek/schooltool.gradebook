@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-07-02 16:32+0300\n"
-"PO-Revision-Date: 2011-07-15 08:51+0000\n"
+"PO-Revision-Date: 2011-10-02 18:29+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-16 05:08+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2011-10-04 05:04+0000\n"
+"X-Generator: Launchpad (build 14071)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -96,18 +96,18 @@ msgstr "Wegingscategorieën moeten samen opgeteld 100 zijn."
 msgid "The external activity couldn't be found"
 msgstr "De externe activiteit werd niet gevonden"
 
-#: /src/schooltool/gradebook/browser/activity.py:554
-#: /src/schooltool/gradebook/browser/activity.py:622
+#: /src/schooltool/gradebook/browser/activity.py:578
+#: /src/schooltool/gradebook/browser/activity.py:646
 msgid "Average"
-msgstr "Gemiddeld"
+msgstr "Gemiddelde"
 
-#: /src/schooltool/gradebook/browser/activity.py:592
+#: /src/schooltool/gradebook/browser/activity.py:616
 msgid "Add Linked Column"
-msgstr "Gekoppeld kolom toevoegen"
+msgstr "Gekoppelde kolom toevoegen"
 
-#: /src/schooltool/gradebook/browser/activity.py:631
+#: /src/schooltool/gradebook/browser/activity.py:655
 msgid "Edit Linked Column"
-msgstr "Gekoppeld kolom bewerken"
+msgstr "Gekoppelde kolom bewerken"
 
 #: /src/schooltool/gradebook/browser/category.py:44
 msgid "Categories"
@@ -133,14 +133,14 @@ msgstr "Categorie met succes toegevoegd."
 msgid "Default category successfully changed."
 msgstr "Standaardcategorie met succes gewijzigd."
 
-#: /src/schooltool/gradebook/browser/configure.zcml:56
-#: /src/schooltool/gradebook/browser/configure.zcml:90
+#: /src/schooltool/gradebook/browser/configure.zcml:52
+#: /src/schooltool/gradebook/browser/configure.zcml:86
 msgid "Activity Categories"
-msgstr "Activiteitcategorieën"
+msgstr "Activiteitscategorieën"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:79
-#: /src/schooltool/gradebook/browser/templates_overview.pt:4
-#: /src/schooltool/gradebook/browser/templates_overview.pt:8
+#: /src/schooltool/gradebook/browser/configure.zcml:75
+#: /src/schooltool/gradebook/browser/templates/templates_overview.pt:4
+#: /src/schooltool/gradebook/browser/templates/templates_overview.pt:8
 #: /src/schooltool/gradebook/gradebook_init.py:48
 msgid "Report Sheet Templates"
 msgstr "Rapportbladsjablonen"
@@ -292,11 +292,11 @@ msgstr "Totaal"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:83
 msgid "Abs."
-msgstr "Absent"
+msgstr "Abs."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:83
 msgid "Trd."
-msgstr "Te laat"
+msgstr "Laatkomers"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:195
 msgid ""
@@ -384,7 +384,7 @@ msgstr "Gebruikers-ID"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:447
 msgid "Failures by Term Report: ${term}"
-msgstr "Gezakten per perioderapport: ${term}"
+msgstr "Gezakten per termijnrapport: ${term}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:451
 msgid "Report Sheet:"
@@ -456,7 +456,7 @@ msgstr "Cijferlijstrapport"
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:63
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:19
 msgid "Term"
-msgstr "Periode"
+msgstr "Termijn"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:782
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:81
@@ -472,7 +472,7 @@ msgstr "Werkblad"
 #: /src/schooltool/gradebook/browser/report.zcml:8
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
-"Bevat scores van rapportbladen. Geformatteerd om naar de ouders verstuurd te "
+"Bevat scores van rapportbladen. Geformatteerd om naar de ouders verzonden te "
 "worden."
 
 #: /src/schooltool/gradebook/browser/report.zcml:8
@@ -514,15 +514,15 @@ msgstr "Leerlingrapportdetail van leerling per groep"
 
 #: /src/schooltool/gradebook/browser/report.zcml:45
 msgid "Failures by Term"
-msgstr "Gezakten per periode"
+msgstr "Gezakten per termijn"
 
-#: /src/schooltool/gradebook/browser/report.zcml:53
+#: /src/schooltool/gradebook/browser/report.zcml:45
 msgid ""
 "Shows all students receiving failing scores in the selected report activity "
 "and term."
 msgstr ""
 "Toont alle leerlingen met een onvoldoende in de geselecteerde "
-"rapportactiviteit en periode."
+"rapportactiviteit en termijn."
 
 #: /src/schooltool/gradebook/browser/report.zcml:57
 msgid "Absences By Day"
@@ -543,7 +543,7 @@ msgstr "Absenties per sectie"
 #: /src/schooltool/gradebook/browser/report.zcml:62
 msgid "Summary of absences and tardies from a single section and term."
 msgstr ""
-"Samenvatting van absenties en te laat komen van één enkele sectie en periode."
+"Samenvatting van absenties en te laat komen van één enkele sectie en termijn."
 
 #: /src/schooltool/gradebook/browser/report_card.py:58
 msgid "Absent"
@@ -606,7 +606,7 @@ msgstr "Toepassen"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:42
 msgid "Request Failures by Term Report"
-msgstr "Gezakten per perioderapport opvragen"
+msgstr "Gezakten per termijnrapport opvragen"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:155
 msgid "Choose a report activity"
@@ -668,7 +668,7 @@ msgstr "Categorie"
 #: /src/schooltool/gradebook/browser/templates/categories.pt:4
 #: /src/schooltool/gradebook/browser/templates/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr "Activiteitcategorieën bewerken"
+msgstr "Activiteitscategorieën bewerken"
 
 #: /src/schooltool/gradebook/browser/templates/categories.pt:19
 msgid ""
@@ -679,9 +679,9 @@ msgid ""
 msgstr ""
 "Wegingscategorieën in SchoolTool's cijferlijst worden gebruikt om "
 "activiteiten te organiseren, waardoor leraren de mogelijkheid hebben om de "
-"verschillende soorten activiteiten anders te beoordelen voor het bepalen van "
-"de cijfers. Bijvoorbeeld, het cijfer in een sectie kan bepaald worden door "
-"60% toetsen, 20% huiswerk en 20% klassedeelname."
+"verschillende soorten activiteiten verschillend te beoordelen voor het "
+"bepalen van de cijfers. Bijvoorbeeld, het cijfer in een sectie kan bepaald "
+"worden door 60% toetsen, 20% huiswerk en 20% klassedeelname."
 
 #: /src/schooltool/gradebook/browser/templates/categories.pt:22
 msgid ""
@@ -775,7 +775,7 @@ msgstr "Overschrijf het bestaande werkblad met de naam \"Samenvatting\"."
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:92
 msgid "Create Summary Worksheets"
-msgstr "Werkbladsamenvatting aanmaken"
+msgstr "Werkbladsamenvattingen aanmaken"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
@@ -807,10 +807,10 @@ msgstr ""
 "Javascript is <b>nodig</b> voor de cijferlijsten. Schakel Javascript in of "
 "gebruik een browser met Javascript."
 
-#: /src/schooltool/gradebook/browser/gradebook_overview.pt:30
-#: /src/schooltool/gradebook/browser/mygrades.pt:15
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:58
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:15
 msgid "Term:"
-msgstr "Periode:"
+msgstr "Termijn:"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:77
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:33
@@ -861,12 +861,12 @@ msgstr "Rapportblad"
 msgid "Layout Report Card"
 msgstr "Rapportkaartindeling"
 
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:16
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
 msgid "Grid Columns"
-msgstr "Kolommenraster"
+msgstr "Rasterkolommen"
 
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:20
-#: /src/schooltool/gradebook/browser/layout_report_card.pt:82
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:20
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:82
 msgid "Source"
 msgstr "Bron"
 
@@ -906,19 +906,19 @@ msgstr "Activiteit"
 
 #: /src/schooltool/gradebook/browser/templates/no_current_term.pt:5
 msgid "No Current Term"
-msgstr "Geen huidige periode"
+msgstr "Geen huidige termijn"
 
-#: /src/schooltool/gradebook/browser/no_current_term.pt:11
+#: /src/schooltool/gradebook/browser/templates/no_current_term.pt:11
 msgid ""
 "The operation you attempted cannot be completed because there are currently "
 "no terms set up in your SchoolTool instance. Please have a user with "
 "administration access set up at least one term and try the operation again."
 msgstr ""
-"Deze actie kan niet uitgevoerd worden omdat er momenteel geen periode "
-"ingesteld is in SchoolTool. Vraag een gebruiker met beheerdersrechten om "
-"tenminste één periode in te stellen en probeer het dan opnieuw."
+"Deze actie kan niet uitgevoerd worden omdat er momenteel geen termijn "
+"ingesteld is in SchoolTool. Vraag een gebruiker met beheerdersrechten om ten "
+"minste één termijn in te stellen en probeer het dan opnieuw."
 
-#: /src/schooltool/gradebook/browser/no_report_sheets.pt:4
+#: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:4
 msgid "No Report Sheets"
 msgstr "Geen rapportbladen"
 
@@ -930,8 +930,8 @@ msgid ""
 "again."
 msgstr ""
 "Deze actie kan niet uitgevoerd worden omdat er momenteel geen rapportblad "
-"ingesteld is in SchoolTool. Vraag een gebruiker met beheerdersrechten om "
-"tenminste één rapportblad in te stellen en probeer het dan opnieuw."
+"ingesteld is in SchoolTool. Vraag een gebruiker met beheerdersrechten om ten "
+"minste één rapportblad in te stellen en probeer het dan opnieuw."
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:4
 msgid "Report Worksheet"
@@ -948,10 +948,10 @@ msgid ""
 "sheet deployed to each section in a term or year."
 msgstr ""
 "Een rapportbladsjabloon geeft de activiteiten aan in een rapportblad, dat "
-"gebruikt wordt voor elke sectie in een periode van het jaar."
+"gebruikt wordt voor elke sectie in een termijn of jaar."
 
-#: /src/schooltool/gradebook/browser/request_absences_by_day.pt:26
-#: /src/schooltool/gradebook/interfaces.py:146
+#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
+#: /src/schooltool/gradebook/interfaces.py:143
 msgid "Date"
 msgstr "Datum"
 
@@ -978,12 +978,12 @@ msgid ""
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
 msgstr ""
-"Stel dat de periode bijvoorbeeld \"Herfst 2011\" is en u een rapportblad "
+"Stel dat de termijn bijvoorbeeld \"Herfst 2011\" is en u een rapportblad "
 "gebruikt met de naam \"Semester-cijfers\", dat een activiteit \"Eerste "
 "kwartaal\" bevat waar een \"3\" of hoger geslaagd betekent. Om dan een "
 "rapport aan te maken van leerlingen die een onvoldoende hebben voor het "
-"eerste kwartaal, dan zou u het activiteitenrapport selecteren \"Herfst 2011 "
-"- Semester-cijfers - Eerste kwartaal\" en \"3\" als het minimum "
+"eerste kwartaal, dan zou u het activiteitenrapport selecteren \"Herfst 2011 -"
+" Semester-cijfers - Eerste kwartaal\" en \"3\" als het minimum "
 "slagingscijfer en daarna op \"Downloaden\" klikken."
 
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:38
@@ -996,7 +996,7 @@ msgstr "Rapportactiviteit"
 
 #: /src/schooltool/gradebook/browser/templates/request_student_report.pt:22
 msgid "Term or Year"
-msgstr "Periode of jaar"
+msgstr "Termijn of jaar"
 
 #: /src/schooltool/gradebook/browser/templates/summary.pt:10
 msgid "Section Worksheet Summary"
@@ -1142,9 +1142,9 @@ msgstr "De datum waarop de activiteit werd aangemaakt."
 msgid "Columns"
 msgstr "Kolommen"
 
-#: /src/schooltool/gradebook/interfaces.py:164
+#: /src/schooltool/gradebook/interfaces.py:161
 msgid "Columns to be printed in the report card."
-msgstr "Kolommen om af te drukken op de rapportkaart."
+msgstr "Kolommen om te tonen op de rapportkaart."
 
 #: /src/schooltool/gradebook/interfaces.py:165
 msgid "Activities to be printed in the outline section."
@@ -1412,8 +1412,8 @@ msgid ""
 "is a \"B,\" etc."
 msgstr ""
 "Elke score wordt geassocieerd met een minimum percentage dat nodig is om de "
-"corresponderende score te bereiken. Bijvoorbeeld, 95% en daarboven is een \"A"
-"\", 87% en daarboven is een \"B\", enz."
+"corresponderende score te bereiken. Bijvoorbeeld, 95% en daarboven is een "
+"\"A\", 87% en daarboven is een \"B\", enz."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:35
 msgid ""
