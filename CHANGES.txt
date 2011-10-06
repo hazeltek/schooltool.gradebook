@@ -2,10 +2,11 @@
 CHANGES
 =======
 
-1.9.1 (unreleased)
+1.9.1 (2011-10-06)
 ------------------
 
-Work continues in flourish branch.
+- Fully translatable
+- Updated translations
 
 
 1.9.0 (2011-09-22)
