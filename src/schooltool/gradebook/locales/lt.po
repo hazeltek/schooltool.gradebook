@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-10-02 01:45-0600\n"
-"PO-Revision-Date: 2011-09-27 12:17+0000\n"
+"PO-Revision-Date: 2011-10-03 15:20+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
-"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-09-27 12:20+0000\n"
-"X-Generator: Launchpad (build 14041)\n"
+"X-Launchpad-Export-Date: 2011-10-06 05:07+0000\n"
+"X-Generator: Launchpad (build 14085)\n"
+"Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -1029,7 +1029,8 @@ msgstr "Mažiausias patenkinamas įvertis"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:115
 msgid "You must specify both a report activity and a minimum passing score."
-msgstr "Turite nurodyti ir ataskaitos veiklą, ir mažiausią patenkinamą įvertį."
+msgstr ""
+"Turite nurodyti ir ataskaitos veiklą, ir mažiausią patenkinamą įvertį."
 
 #: /src/schooltool/gradebook/browser/request_reports.py:140
 msgid "Request Absences By Day Report"
@@ -1160,7 +1161,8 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:10
-msgid "External score sources must be configured by your system administrator"
+msgid ""
+"External score sources must be configured by your system administrator"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
@@ -1313,7 +1315,8 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:10
-msgid "The first step in the process is to create a new report sheet template."
+msgid ""
+"The first step in the process is to create a new report sheet template."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
@@ -2200,6 +2203,3 @@ msgstr "patenkinamas pažymys:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Rodyti vertinimo sistemą"
-
-#~ msgid "pdf"
-#~ msgstr "pdf"

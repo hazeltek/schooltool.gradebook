@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-02 01:45-0600\n"
-"PO-Revision-Date: 2011-09-28 09:06+0000\n"
+"PO-Revision-Date: 2011-10-03 15:52+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-10-02 07:40+0000\n"
-"X-Generator: Launchpad (build 14071)\n"
+"X-Launchpad-Export-Date: 2011-10-06 05:08+0000\n"
+"X-Generator: Launchpad (build 14085)\n"
+"Language: \n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -1183,7 +1183,8 @@ msgstr ""
 "de Notas de SchoolTool."
 
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:10
-msgid "External score sources must be configured by your system administrator"
+msgid ""
+"External score sources must be configured by your system administrator"
 msgstr ""
 "Las fuentes de puntajes externos deben ser configurados por su administrador "
 "de sistemas."
@@ -1341,7 +1342,8 @@ msgstr ""
 "secciones."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:10
-msgid "The first step in the process is to create a new report sheet template."
+msgid ""
+"The first step in the process is to create a new report sheet template."
 msgstr ""
 "El primer paso en el proceso es crear una nueva plantilla de hoja de reporte."
 
@@ -1500,8 +1502,8 @@ msgstr ""
 "implementado una hoja de reporte titulada \"Notas de Semestre\" que incluye "
 "una actividad \"Primer Cuarto\" usando una escala donde se aprueba con \"3\" "
 "o más. Para crear un report de los estudiantes que reprueban la nota del "
-"primer cuarto, necesitaría seleccionar la actividad de reporte \"Otoño 2011 "
-"- Notas de Semestre - Primer Cuarto\" y escoger \"3\" como la nota mínima de "
+"primer cuarto, necesitaría seleccionar la actividad de reporte \"Otoño 2011 -"
+" Notas de Semestre - Primer Cuarto\" y escoger \"3\" como la nota mínima de "
 "aprobación. Y hacer click en \"Enviar\"."
 
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:35
@@ -2163,8 +2165,8 @@ msgid ""
 "is a \"B,\" etc."
 msgstr ""
 "Cada puntaje también está asociado con un porcentaje mínimo necesario para "
-"alcanzar la nota correspondiente. Por ejemplo, 95% y más representan una \"A"
-"\", 87% y más una \"B\", etc."
+"alcanzar la nota correspondiente. Por ejemplo, 95% y más representan una "
+"\"A\", 87% y más una \"B\", etc."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:18
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:35
@@ -2312,9 +2314,9 @@ msgid ""
 "Start with the highest score. Click \"Add a lower score\" to add scores "
 "until you have created a score with a minimum percentage of 0."
 msgstr ""
-"Inicie con el puntaje más alto. Haga click en \"Añadir un puntaje menor"
-"\"para añadir puntajes hasta que haya creado un puntaje con un porcentaje "
-"mínimo de 0."
+"Inicie con el puntaje más alto. Haga click en \"Añadir un puntaje "
+"menor\"para añadir puntajes hasta que haya creado un puntaje con un "
+"porcentaje mínimo de 0."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:80
 msgid "Add a lower score"
@@ -2337,6 +2339,3 @@ msgstr "puntaje de aprobación:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Ver sistema de puntuación"
-
-#~ msgid "pdf"
-#~ msgstr "pdf"
