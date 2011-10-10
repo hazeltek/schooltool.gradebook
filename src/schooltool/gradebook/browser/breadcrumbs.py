@@ -29,5 +29,5 @@ class ActivitiesBreadcrumbs(Breadcrumbs):
 
     @property
     def link(self):
-        return absoluteURL(self.context.__parent__, self.request) + '/gradebook'
+        return '../gradebook'
 
