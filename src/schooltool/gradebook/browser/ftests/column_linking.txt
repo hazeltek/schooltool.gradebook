@@ -284,8 +284,8 @@ activities and worksheet averages that can be chosen as the link:
     Spring
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[2]/text()')
     Section
-    Math I
-    Physics I
+    Math I (1)
+    Physics I (1)
     >>> stephan.printQuery('//table[@class="schooltool_gradebook"]/tr/*[3]/text()')
     Worksheet
     Second Sheet

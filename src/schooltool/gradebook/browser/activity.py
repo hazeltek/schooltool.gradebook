@@ -25,6 +25,7 @@ from StringIO import StringIO
 
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from zope.i18n import translate
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
 import zope.schema
@@ -1035,6 +1036,7 @@ class ActivityAddTertiaryNavigationManager(flourish.page.TertiaryNavigationManag
             ]
         for action, title in actions:
             url = '%s/%s' % (absoluteURL(self.context, self.request), action)
+            title = translate(title, context=self.request)
             result.append({
                 'class': action == current and 'active' or None,
                 'viewlet': u'<a href="%s">%s</a>' % (url, title),

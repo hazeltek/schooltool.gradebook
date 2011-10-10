@@ -1,4 +1,4 @@
-<div tal:define="activity view/activity">
+<div tal:define="activity view/activity" i18n:domain="schooltool.gradebook">
   <div class="gradebook-message"
        tal:repeat="message view/messages"
        tal:content="message">

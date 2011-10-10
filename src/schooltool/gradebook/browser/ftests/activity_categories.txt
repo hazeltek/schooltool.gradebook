@@ -29,10 +29,10 @@ others are missing. So let's start by deleting a couple of categories:
     >>> manager.printQuery('//div[@class="info"]/text()')
     Categories successfully deleted.
     >>> manager.printQuery('id("field.categories")/option/@value')
-    exam
-    assignment
-    lab
-    project
+    assignment-
+    exam-
+    lab-
+    project-
 
 Next, we add a new category:
 
@@ -41,11 +41,11 @@ Next, we add a new category:
     >>> manager.printQuery('//div[@class="info"]/text()')
     Category successfully added.
     >>> manager.printQuery('id("field.categories")/option/@value')
-    exam
-    assignment
-    lab
-    project
+    assignment-
+    exam-
+    lab-
     labreport-
+    project-
 
 We can also add categories with non ASCII characters:
 
@@ -55,12 +55,12 @@ We can also add categories with non ASCII characters:
     >>> manager.printQuery('//div[@class="info"]/text()')
     Category successfully added.
     >>> manager.printQuery('id("field.categories")/option/@value')
-    exam
-    assignment
+    assignment-
     calificacin-1ra1s
-    lab
-    project
+    exam-
+    lab-
     labreport-
+    project-
 
 If we click on Add without entering a new category, nothing happens:
 

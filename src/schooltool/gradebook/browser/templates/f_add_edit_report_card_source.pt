@@ -1,5 +1,6 @@
 <form method="post" class="standalone"
-      tal:attributes="action request/getURL">
+      tal:attributes="action request/getURL"
+      i18n:domain="schooltool.gradebook">
   <input type="hidden" name="schoolyear_id" 
          tal:attributes="value request/schoolyear_id|nothing" />
   <input type="hidden" name="source_index" 

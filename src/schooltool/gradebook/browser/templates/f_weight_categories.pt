@@ -1,5 +1,6 @@
 <form method="post" class="standalone"
-      tal:attributes="action string:${context/@@absolute_url}/weights.html">
+      tal:attributes="action string:${context/@@absolute_url}/weights.html"
+      i18n:domain="schooltool.gradebook">
   <div class="viewspace">
     <div>
     </div>
