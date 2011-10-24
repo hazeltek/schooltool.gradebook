@@ -31,6 +31,7 @@ import urllib
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
+from zope.cachedescriptors.property import Lazy
 from zope.html.field import HtmlFragment
 from zope.publisher.browser import BrowserView
 from zope.schema import ValidationError, TextLine
@@ -1795,3 +1796,37 @@ class GradebookCSVView(BrowserView):
                     row = [item.encode('utf-8') for item in row]
                     writer.writerow(row)
 
+
+class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
+
+    @Lazy
+    def activities(self):
+        return interfaces.IActivities(self.context)
+
+    @Lazy
+    def gradebook(self):
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            return None
+        activities = self.activities
+        if flourish.canEdit(activities):
+            ensureAtLeastOneWorksheet(activities)
+        if not len(activities):
+            return None
+        current_worksheet = activities.getCurrentWorksheet(person)
+        return interfaces.IGradebook(current_worksheet)
+
+    @property
+    def url(self):
+        if self.gradebook is None:
+            return None
+        return absoluteURL(self.gradebook, self.request)
+
+    @property
+    def enabled(self):
+        if not super(SectionGradebookLinkViewlet, self).enabled:
+            return False
+        if self.gradebook is None:
+            return None
+        can_view = flourish.canView(self.gradebook)
+        return can_view

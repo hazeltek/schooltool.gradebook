@@ -52,6 +52,16 @@
       for="schooltool.gradebook.interfaces.IActivities"
       />
 
+  <flourish:viewlet
+      name="gradebook"
+      after="calendar schedule"
+      title="Gradebook"
+      for="schooltool.course.interfaces.ISection"
+      manager="schooltool.course.browser.section.SectionLinks"
+      class=".gradebook.SectionGradebookLinkViewlet"
+      permission="schooltool.view"
+      />
+
   <flourish:activeViewlet
       name="gradebook"
       manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
