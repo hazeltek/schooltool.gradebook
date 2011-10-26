@@ -41,8 +41,11 @@ def removeUtils(site_manager, provided):
     for key, util in utilities:
         site_manager.unregisterUtility(util, provided, key)
 
+    n_provided = site_manager.utilities._provided.get(provided)
+    if not n_provided:
+        return
+
     n_utils = len(utilities)
-    n_provided = site_manager.utilities._provided[provided]
     assert n_provided == n_utils
     del site_manager.utilities._provided[provided]
     site_manager.utilities._v_lookup.remove_extendor(provided)
