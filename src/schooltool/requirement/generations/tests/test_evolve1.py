@@ -170,6 +170,48 @@ def doctest_ZopeHasABug():
     """
 
 
+def doctest_removeUtils_one():
+    """This test demonstrates that removeUtils (hack) works when there is
+    only one utility.
+
+        >>> context = ContextStub()
+        >>> root = getRootFolder(context)
+        >>> sm = LocalSiteManager(root)
+        >>> root.setSiteManager(sm)
+
+        >>> sm.utilities.__class__
+        <class 'zope.site.site._LocalAdapterRegistry'>
+
+        >>> foo = StubUtil()
+        >>> sm.registerUtility(foo, IStubUtil, name='foo')
+
+        >>> ho = SubclassUtil()
+        >>> sm.registerUtility(ho, IOtherStubUtil, name='ho')
+
+        >>> from schooltool.requirement.generations.evolve1 import removeUtils
+        >>> removeUtils(sm, IStubUtil)
+
+        >>> print sm.utilities._provided.get(IStubUtil)
+        None
+
+        >>> print sm.utilities._provided.get(IOtherStubUtil)
+        2
+
+        >>> pprint(sm.utilities._v_lookup._extendors)
+        {<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IOtherStubUtil>:
+            [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IOtherStubUtil>],
+         <InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IStubUtil>:
+            [],
+         <InterfaceClass zope.interface.Interface>:
+            [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IOtherStubUtil>]}
+
+        >>> pickle = cPickle.dumps(sm)
+        >>> 'IStubUtil' in pickle
+        False
+
+    """
+
+
 def doctest_removeUtils():
     """This test demonstrates that removeUtils (hack) can clean the persisted
     LocalAdapterRegistry from references to "provided" interface.  Other utilities
@@ -238,13 +280,6 @@ def doctest_removeUtils_subclass():
              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IStubUtil>],
          <InterfaceClass zope.interface.Interface>:
              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IStubUtil>]}
-
-        {<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IStubUtil>:
-              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>],
-         <InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>:
-              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>],
-         <InterfaceClass zope.interface.Interface>:
-              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>]}
 
         >>> hey = SubclassUtil()
         >>> sm.registerUtility(hey, ISubclassUtil, name='hey')
