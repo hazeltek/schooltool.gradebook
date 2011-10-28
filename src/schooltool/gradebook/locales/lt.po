@@ -2123,7 +2123,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/flourish.zcml:99
 msgid "Actions"
-msgstr ""
+msgstr "Veiksmai"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"

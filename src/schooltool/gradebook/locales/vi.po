@@ -454,11 +454,11 @@ msgstr "Học kỳ"
 #: /src/schooltool/gradebook/browser/flourish.zcml:101
 #: /src/schooltool/gradebook/browser/flourish.zcml:577
 msgid "Year"
-msgstr ""
+msgstr "Năm"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:122
 msgid "Settings"
-msgstr ""
+msgstr "Cài đặt"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:160
 #: /src/schooltool/gradebook/browser/pdf_views.py:802
@@ -552,7 +552,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report.zcml:30
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Group"
-msgstr ""
+msgstr "Nhóm"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:20
@@ -809,11 +809,11 @@ msgstr "Ngày vắng mặt"
 msgid "Lists students absent on a given day."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report.zcml:57
+#: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "School Year"
-msgstr ""
+msgstr "Năm học"
 
-#: /src/schooltool/gradebook/browser/report.zcml:66
+#: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Absences by Section"
 msgstr ""
 
@@ -1107,7 +1107,7 @@ msgstr ""
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
 msgid "Done"
-msgstr ""
+msgstr "Xong"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:37
@@ -1512,7 +1512,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:68
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
 msgid "Update"
-msgstr ""
+msgstr "Cập nhật"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:92
 msgid "Create Summary Worksheets"
@@ -1949,7 +1949,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:80
 msgid "Type"
-msgstr ""
+msgstr "Kiểu"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:83
 msgid ""
@@ -2004,7 +2004,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:24
 msgid "There are none."
-msgstr ""
+msgstr "Không có gì."
 
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:6
 msgid ""
@@ -2014,7 +2014,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/flourish.zcml:99
 msgid "Actions"
-msgstr ""
+msgstr "Hành động"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
@@ -2088,15 +2088,15 @@ msgstr "Điểm không được phép trùng lặp"
 msgid "Duplicate abbreviations are not allowed."
 msgstr "Từ viết tắt không được trùng lặp"
 
-#: /src/schooltool/requirement/browser/scoresystem.py:257
+#: /src/schooltool/requirement/browser/scoresystem.py:265
 msgid "Yes"
-msgstr ""
+msgstr "Có"
 
-#: /src/schooltool/requirement/browser/scoresystem.py:259
+#: /src/schooltool/requirement/browser/scoresystem.py:267
 msgid "No"
-msgstr ""
+msgstr "Không"
 
-#: /src/schooltool/requirement/browser/scoresystem.py:294
+#: /src/schooltool/requirement/browser/scoresystem.py:291
 msgid "Existing Score System"
 msgstr "Hệ thống điểm đang tồn tại"
 
