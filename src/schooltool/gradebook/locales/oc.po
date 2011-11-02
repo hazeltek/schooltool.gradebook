@@ -454,7 +454,7 @@ msgstr "Tèrme"
 #: /src/schooltool/gradebook/browser/flourish.zcml:101
 #: /src/schooltool/gradebook/browser/flourish.zcml:577
 msgid "Year"
-msgstr ""
+msgstr "Annada"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:122
 msgid "Settings"
@@ -552,7 +552,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report.zcml:30
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Group"
-msgstr ""
+msgstr "Grop"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:20
@@ -1972,7 +1972,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/flourish.zcml:99
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"

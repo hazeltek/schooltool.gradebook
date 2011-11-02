@@ -5,7 +5,10 @@ CHANGES
 1.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed the overzealous security checks to improve performance (https://lauchpad.net/bugs/561217)
+- Add a link from Section to Gradebook (https://lauchpad.net/bugs/868426)
+- Fix Gradebook breadcrumb (https://lauchpad.net/bugs/868431)
+- Updated translations
 
 
 1.9.1 (2011-10-06)
