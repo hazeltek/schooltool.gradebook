@@ -504,19 +504,23 @@ def doctest_GradebookPDFView():
         >>> pprint(view.activities())
         [{'canDelete': True,
           'hash': 'Activity',
+          'linked_source': None,
           'longTitle': 'Activity',
           'max': 'A',
           'moveLeft': False,
           'moveRight': True,
+          'object': <Activity 'Activity'>,
           'scorable': True,
           'shortTitle': 'Activ',
           'updateGrades': ''},
          {'canDelete': True,
           'hash': 'Activity-2',
+          'linked_source': None,
           'longTitle': 'Activity 2',
           'max': 'A',
           'moveLeft': True,
           'moveRight': False,
+          'object': <Activity 'Activity 2'>,
           'scorable': True,
           'shortTitle': 'Activ',
           'updateGrades': ''}]
@@ -529,10 +533,13 @@ def doctest_GradebookPDFView():
           'raw_average': Decimal('14.28571428571428571428571429'),
           'student': {'gradeurl': 'http://localhost/schooltool.course.section/.../1/activities/Worksheet/gradebook/aelkner',
                       'id': 'aelkner',
+                      'object': <schooltool.basicperson.person.BasicPerson object ...>,
                       'title': 'Elkner, Alan',
-                      'url': 'http://localhost/persons/aelkner'},
+                      'url': 'http://localhost/persons/aelkner',
+                      'username': 'aelkner'},
           'tardies': u'0',
           'total': '1.0'}]
+
     """
 
 

@@ -31,6 +31,7 @@ import urllib
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
+from zope.cachedescriptors.property import Lazy
 from zope.html.field import HtmlFragment
 from zope.publisher.browser import BrowserView
 from zope.schema import ValidationError, TextLine
@@ -445,6 +446,23 @@ class GradebookOverview(SectionFinder):
 
     isTeacher = True
 
+    @Lazy
+    def students_info(self):
+        result = []
+        for student in self.context.students:
+            insecure_student = proxy.removeSecurityProxy(student)
+            result.append({
+                    'title': student.title,
+                    'username': insecure_student.username,
+                    'id': insecure_student.username,
+                    'url': absoluteURL(student, self.request),
+                    'gradeurl': '%s/%s' % (
+                        absoluteURL(self.context, self.request),
+                        insecure_student.username),
+                    'object': student,
+                    })
+        return result
+
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
@@ -489,11 +507,11 @@ class GradebookOverview(SectionFinder):
 
         """Handle changes to scores."""
         evaluator = getName(IPerson(self.request.principal))
-        for student in self.context.students:
+        for student in self.students_info:
             for activity in gradebook.activities:
                 # Create a hash and see whether it is in the request
                 act_hash = activity.__name__
-                cell_name = '%s_%s' % (act_hash, student.username)
+                cell_name = '%s_%s' % (act_hash, student['username'])
                 if cell_name in self.request:
                     # XXX: TODO: clean up this mess.
                     #      The details of when to remove the evaluation, etc.
@@ -510,10 +528,10 @@ class GradebookOverview(SectionFinder):
                         self.message = _(
                             'Invalid scores (highlighted in red) were not saved.')
                         continue
-                    score = gradebook.getScore(student, activity)
+                    score = gradebook.getScore(student['object'], activity)
                     # Delete the score
                     if score and cell_score_value is UNSCORED:
-                        self.context.removeEvaluation(student, activity)
+                        self.context.removeEvaluation(student['object'], activity)
                         self.changed = True
                     # Do nothing
                     elif not score and cell_score_value is UNSCORED:
@@ -522,7 +540,7 @@ class GradebookOverview(SectionFinder):
                     elif not score or cell_score_value != score.value:
                         self.changed = True
                         self.context.evaluate(
-                            student, activity, cell_score_value, evaluator)
+                            student['object'], activity, cell_score_value, evaluator)
 
     def getCurrentWorksheet(self):
         return self.context.getCurrentWorksheet(self.person)
@@ -538,16 +556,81 @@ class GradebookOverview(SectionFinder):
         flag, weeks = self.context.getDueDateFilter(self.person)
         return weeks
 
+    def getLinkedActivityInfo(self, activity):
+        source = getSourceObj(activity.source)
+        insecure_activity = proxy.removeSecurityProxy(activity)
+        insecure_source = proxy.removeSecurityProxy(source)
+
+        if interfaces.IActivity.providedBy(insecure_source):
+            short, long, best_score = self.getActivityAttrs(source)
+        elif interfaces.IWorksheet.providedBy(insecure_source):
+            long = source.title
+            short = activity.label or long
+            if len(short) > 5:
+                short = short[:5].strip()
+            best_score = '100'
+        else:
+            short = long = best_score = ''
+
+        return {
+            'linked_source': source,
+            'scorable': False,
+            'shortTitle': short,
+            'longTitle': long,
+            'max': best_score,
+            'hash': insecure_activity.__name__,
+            'object': activity,
+            'updateGrades': '',
+            }
+
+    def getActivityInfo(self, activity):
+        insecure_activity = proxy.removeSecurityProxy(activity)
+
+        if interfaces.ILinkedColumnActivity.providedBy(insecure_activity):
+            return self.getLinkedActivityInfo(activity)
+
+        short, long, best_score = self.getActivityAttrs(activity)
+
+        scorable = not (
+            ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
+            interfaces.ILinkedActivity.providedBy(insecure_activity))
+
+        if interfaces.ILinkedActivity.providedBy(insecure_activity):
+            updateGrades = '%s/updateGrades.html' % (
+                absoluteURL(insecure_activity, self.request))
+        else:
+            updateGrades = ''
+
+        return {
+            'linked_source': None,
+            'scorable': scorable,
+            'shortTitle': short,
+            'longTitle': long,
+            'max': best_score,
+            'hash': insecure_activity.__name__,
+            'object': activity,
+            'updateGrades': updateGrades,
+            }
+
+    @Lazy
+    def filtered_activity_info(self):
+        result = []
+        for activity in self.getFilteredActivities():
+            info = self.getActivityInfo(activity)
+            result.append(info)
+        return result
+
     def getActivityAttrs(self, activity):
-        shortTitle = activity.label or activity.title
+        longTitle = activity.title
+        shortTitle = activity.label or longTitle
         shortTitle = shortTitle.replace(' ', '')
         if len(shortTitle) > 5:
             shortTitle = shortTitle[:5].strip()
-        longTitle = activity.title
-        if ICommentScoreSystem.providedBy(activity.scoresystem):
+        ss = proxy.removeSecurityProxy(activity.scoresystem)
+        if ICommentScoreSystem.providedBy(ss):
             bestScore = ''
         else:
-            bestScore = activity.scoresystem.getBestScore()
+            bestScore = ss.getBestScore()
         return shortTitle, longTitle, bestScore
 
     def activities(self):
@@ -555,42 +638,13 @@ class GradebookOverview(SectionFinder):
         self.person = IPerson(self.request.principal)
         results = []
         deployed = proxy.removeSecurityProxy(self.context).context.deployed
-        for activity in self.getFilteredActivities():
-            updateGrades = ''
-            if interfaces.ILinkedColumnActivity.providedBy(activity):
-                scorable = False
-                source = getSourceObj(activity.source)
-                if interfaces.IActivity.providedBy(source):
-                    shortTitle, longTitle, bestScore = \
-                        self.getActivityAttrs(source)
-                elif interfaces.IWorksheet.providedBy(source):
-                    shortTitle = activity.label or source.title
-                    if len(shortTitle) > 5:
-                        shortTitle = shortTitle[:5].strip()
-                    longTitle = source.title
-                    bestScore = '100'
-                else:
-                    shortTitle = longTitle = bestScore = ''
-            else:
-                scorable = not (
-                    ICommentScoreSystem.providedBy(activity.scoresystem) or
-                    interfaces.ILinkedActivity.providedBy(activity))
-                shortTitle, longTitle, bestScore = \
-                    self.getActivityAttrs(activity)
-                if interfaces.ILinkedActivity.providedBy(activity):
-                    updateGrades = '%s/updateGrades.html' % (
-                        absoluteURL(activity, self.request))
-            result = {
-                'scorable': scorable,
-                'shortTitle': shortTitle,
-                'longTitle': longTitle,
-                'max': bestScore,
-                'hash': activity.__name__,
+        for activity_info in self.filtered_activity_info:
+            result = dict(activity_info)
+            result.update({
                 'canDelete': not deployed,
                 'moveLeft': not deployed,
                 'moveRight': not deployed,
-                'updateGrades': updateGrades,
-                }
+                })
             results.append(result)
         if results:
             results[0]['moveLeft'] = False
@@ -616,15 +670,15 @@ class GradebookOverview(SectionFinder):
         return[activity for activity in activities
                if not self.isFiltered(activity)]
 
-    def getStudentActivityValue(self, student, activity):
+    def getStudentActivityValue(self, student_info, activity):
         gradebook = proxy.removeSecurityProxy(self.context)
-        score = gradebook.getScore(student, activity)
+        score = gradebook.getScore(student_info['object'], activity)
         if not score:
             value = ''
         else:
             value = score.value
         act_hash = activity.__name__
-        cell_name = '%s_%s' % (act_hash, student.username)
+        cell_name = '%s_%s' % (act_hash, student_info['username'])
         if cell_name in self.request:
             value = self.request[cell_name]
 
@@ -638,33 +692,27 @@ class GradebookOverview(SectionFinder):
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
         section = ISection(worksheet)
-        activities = [(activity.__name__, activity)
-            for activity in self.getFilteredActivities()]
+
         journal_data = interfaces.ISectionJournalData(section, None)
         rows = []
-        for student in self.context.students:
+        for student_info in self.students_info:
             grades = []
-            for act_hash, activity in activities:
-                value = self.getStudentActivityValue(student, activity)
-                if interfaces.ILinkedColumnActivity.providedBy(activity):
-                    editable = False
-                    sourceObj = getSourceObj(activity.source)
-                    if value and interfaces.IWorksheet.providedBy(sourceObj):
+            for activity_info in self.filtered_activity_info:
+                activity = activity_info['object']
+                value = self.getStudentActivityValue(student_info, activity)
+                source = activity_info['linked_source']
+                if source is not None:
+                    if value and interfaces.IWorksheet.providedBy(source):
                         value = '%.1f' % value
-                else:
-                    editable = not (
-                        ICommentScoreSystem.providedBy(activity.scoresystem) or
-                        interfaces.ILinkedActivity.providedBy(activity))
-
                 grade = {
-                    'activity': act_hash,
-                    'editable': editable,
+                    'activity': activity_info['hash'],
+                    'editable': activity_info['scorable'],
                     'value': value
                     }
                 grades.append(grade)
 
-            total, raw_average = gradebook.getWorksheetTotalAverage(worksheet,
-                student)
+            total, raw_average = gradebook.getWorksheetTotalAverage(
+                worksheet, student_info['object'])
 
             total = "%.1f" % total
 
@@ -675,20 +723,18 @@ class GradebookOverview(SectionFinder):
 
             absences = tardies = 0
             if (journal_data and not (self.absences_hide and self.tardies_hide)):
-                for meeting in journal_data.recordedMeetings(student):
-                    grade = journal_data.getGrade(student, meeting)
+                # XXX: opt: perm checks may breed here
+                meetings = journal_data.recordedMeetings(student_info['object'])
+                for meeting in meetings:
+                    grade = journal_data.getGrade(
+                        student_info['object'], meeting)
                     if grade == ABSENT:
                         absences += 1
                     elif grade == TARDY:
                         tardies += 1
 
             rows.append(
-                {'student': {'title': student.title,
-                             'id': student.username,
-                             'url': absoluteURL(student, self.request),
-                             'gradeurl': absoluteURL(self.context, self.request) +
-                                    ('/%s' % student.username),
-                            },
+                {'student': student_info,
                  'grades': grades,
                  'absences': unicode(absences),
                  'tardies': unicode(tardies),
@@ -1795,3 +1841,37 @@ class GradebookCSVView(BrowserView):
                     row = [item.encode('utf-8') for item in row]
                     writer.writerow(row)
 
+
+class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
+
+    @Lazy
+    def activities(self):
+        return interfaces.IActivities(self.context)
+
+    @Lazy
+    def gradebook(self):
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            return None
+        activities = self.activities
+        if flourish.canEdit(activities):
+            ensureAtLeastOneWorksheet(activities)
+        if not len(activities):
+            return None
+        current_worksheet = activities.getCurrentWorksheet(person)
+        return interfaces.IGradebook(current_worksheet)
+
+    @property
+    def url(self):
+        if self.gradebook is None:
+            return None
+        return absoluteURL(self.gradebook, self.request)
+
+    @property
+    def enabled(self):
+        if not super(SectionGradebookLinkViewlet, self).enabled:
+            return False
+        if self.gradebook is None:
+            return None
+        can_view = flourish.canView(self.gradebook)
+        return can_view

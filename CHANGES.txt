@@ -2,10 +2,26 @@
 CHANGES
 =======
 
-1.9.1 (unreleased)
+1.9.3 (unreleased)
 ------------------
 
-Work continues in flourish branch.
+- Nothing changed yet.
+
+
+1.9.2 (2011-11-02)
+------------------
+
+- Fixed the overzealous security checks to improve performance (https://lauchpad.net/bugs/561217)
+- Add a link from Section to Gradebook (https://lauchpad.net/bugs/868426)
+- Fix Gradebook breadcrumb (https://lauchpad.net/bugs/868431)
+- Updated translations
+
+
+1.9.1 (2011-10-06)
+------------------
+
+- Fully translatable
+- Updated translations
 
 
 1.9.0 (2011-09-22)
