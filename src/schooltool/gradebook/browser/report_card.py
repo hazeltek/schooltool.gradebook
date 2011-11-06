@@ -148,18 +148,20 @@ class FlourishReportSheetsBase(FlourishSchooYearMixin):
         if self.has_schoolyear:
             root = IGradebookRoot(ISchoolToolApplication(None))
             schoolyear = self.schoolyear
-            templates = {}
+            deployments = {}
             for sheet in root.deployed.values():
-                template = templates.setdefault(sheet.title, {
+                if not sheet.__name__.startswith(schoolyear.__name__):
+                    continue
+                index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
+                deployment = deployments.setdefault(index, {
                     'obj': sheet,
                     'terms': [False] * len(schoolyear),
                     })
                 for index, term in enumerate(schoolyear.values()):
                     deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
                     if sheet.__name__.startswith(deployedKey):
-                        template['terms'][index] = True
-            return [v for k, v in sorted(templates.items())
-                    if v['terms'] != [False] * len(schoolyear)]
+                        deployment['terms'][index] = True
+            return [v for k, v in sorted(deployments.items())]
         else:
             return []
 
@@ -219,31 +221,55 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
             if self.request.get('template'):
                 root = IGradebookRoot(ISchoolToolApplication(None))
                 template = root.templates[self.request['template']]
-                if self.request.get('term'):
-                    term = self.schoolyear[self.request.get('term')]
-                    self.deploy(term, template)
-                else:
-                    for term in self.schoolyear.values():
-                        self.deploy(term, template)
+                term = self.request.get('term')
+                if term:
+                    term = self.schoolyear[term]
+                self.deploy(term, template)
 
     def deploy(self, term, template):
-        # copy worksheet template to the term
+        # get the next index and title
         root = IGradebookRoot(ISchoolToolApplication(None))
-        deployedKey = '%s_%s' % (self.schoolyear.__name__, term.__name__)
-        deployedWorksheet = Worksheet(template.title)
-        chooser = INameChooser(root.deployed)
-        name = chooser.chooseName(deployedKey, deployedWorksheet)
-        root.deployed[name] = deployedWorksheet
-        copyActivities(template, deployedWorksheet)
+        schoolyear, highest, title_index = self.schoolyear, 0, 0
+        for sheet in root.deployed.values():
+            if not sheet.__name__.startswith(schoolyear.__name__):
+                continue
+            index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
+            if index > highest:
+                highest = index
+            if sheet.title.startswith(template.title):
+                rest = sheet.title[len(template.title):]
+                if not rest:
+                    new_index = 1
+                elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
+                    new_index = int(rest[1:])
+            else:
+                new_index = 0
+            if new_index > title_index:
+                title_index = new_index
 
-        # now copy the template to all sections in the term
-        sections = ISectionContainer(term)
-        for section in sections.values():
-            activities = IActivities(section)
-            worksheetCopy = Worksheet(deployedWorksheet.title)
-            worksheetCopy.deployed = True
-            activities[deployedWorksheet.__name__] = worksheetCopy
-            copyActivities(deployedWorksheet, worksheetCopy)
+        # copy worksheet template to the term or whole year
+        if term:
+            terms = [term]
+        else:
+            terms = schoolyear.values()
+        for term in terms:
+            deployedKey = '%s_%s_%s' % (schoolyear.__name__, term.__name__,
+                                        highest + 1)
+            title = template.title
+            if title_index:
+                title += '-%s' % (title_index + 1)
+            deployedWorksheet = Worksheet(title)
+            root.deployed[deployedKey] = deployedWorksheet
+            copyActivities(template, deployedWorksheet)
+
+            # now copy the template to all sections in the term
+            sections = ISectionContainer(term)
+            for section in sections.values():
+                activities = IActivities(section)
+                worksheetCopy = Worksheet(deployedWorksheet.title)
+                worksheetCopy.deployed = True
+                activities[deployedWorksheet.__name__] = worksheetCopy
+                copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
         url = absoluteURL(ISchoolToolApplication(None), self.request)
