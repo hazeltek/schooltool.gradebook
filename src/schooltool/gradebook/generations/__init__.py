@@ -23,6 +23,6 @@ Generations for database version upgrades.
 from zope.app.generations.generations import SchemaManager
 
 schemaManager = SchemaManager(
-    minimum_generation=4,
-    generation=4,
+    minimum_generation=5,
+    generation=5,
     package_name='schooltool.gradebook.generations')
