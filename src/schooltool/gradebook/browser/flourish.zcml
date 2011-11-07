@@ -536,6 +536,32 @@
       />
 
   <flourish:viewlet
+      name="report_sheet_actions"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".report_card.FlourishReportSheetActionLinks"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      title="Action"
+      permission="schooltool.edit"
+      view=".report_card.FlourishReportSheetsView"
+      />
+
+  <flourish:viewlet
+      name="hide_unhide_report_sheets.html"
+      title="Hide/unhide Sheets"
+      class=".report_card.HideUnhideReportSheetsLink"
+      manager=".report_card.FlourishReportSheetActionLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="hide_unhide_report_sheets.html"
+      for="schooltool.app.interfaces.ISchoolToolApplication"
+      class=".report_card.FlourishHideUnhideReportSheetsView"
+      content_template="templates/f_hide_unhide_report_sheets.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="what-is-this"
       class="schooltool.skin.flourish.page.Related"
       template="templates/f_report_sheets_related.pt"

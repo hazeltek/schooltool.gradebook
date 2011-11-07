@@ -125,6 +125,10 @@ class TemplatesView(object):
                     self.context.changePosition(name, new_pos-1)
 
 
+class FlourishReportSheetActionLinks(flourish.page.RefineLinksViewlet):
+    """flourish Report Sheet Action links viewlet."""
+
+
 class FlourishSchooYearMixin(object):
     """A flourish mixin class for any view with schooyear tab"""
 
@@ -142,9 +146,23 @@ class FlourishSchooYearMixin(object):
         return result
 
 
+class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
+                                 FlourishSchooYearMixin):
+
+    @property
+    def url(self):
+        url = '%s/hide_unhide_report_sheets.html?schoolyear_id=%s' % (
+            absoluteURL(ISchoolToolApplication(None), self.request),
+            self.schoolyear.__name__)
+        return url
+
+
 class FlourishReportSheetsBase(FlourishSchooYearMixin):
 
     def sheets(self):
+        return [sheet for sheet in self.all_sheets() if not sheet['checked']]
+
+    def all_sheets(self):
         if self.has_schoolyear:
             root = IGradebookRoot(ISchoolToolApplication(None))
             schoolyear = self.schoolyear
@@ -155,13 +173,17 @@ class FlourishReportSheetsBase(FlourishSchooYearMixin):
                 index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
                 deployment = deployments.setdefault(index, {
                     'obj': sheet,
+                    'index': str(index),
+                    'checked': sheet.hidden,
                     'terms': [False] * len(schoolyear),
                     })
                 for index, term in enumerate(schoolyear.values()):
                     deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
                     if sheet.__name__.startswith(deployedKey):
                         deployment['terms'][index] = True
-            return [v for k, v in sorted(deployments.items())]
+            sheets = [v for k, v in sorted(deployments.items())]
+            return ([sheet for sheet in sheets if not sheet['checked']] +
+                    [sheet for sheet in sheets if sheet['checked']])
         else:
             return []
 
@@ -301,6 +323,51 @@ class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,
                 'viewlet': u'<a href="%s">%s</a>' % (url, schoolyear.title),
                 })
         return result
+
+
+class FlourishHideUnhideReportSheetsView(FlourishReportSheetsBase,
+                                         flourish.page.Page):
+    """A flourish view for hiding/unhiding report sheet deployments"""
+
+    @property
+    def title(self):
+        title = _(u'Hide/unhide Report Sheets for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'SUBMIT' in self.request:
+            hidden = self.request.get('hidden', [])
+            root = IGradebookRoot(ISchoolToolApplication(None))
+            schoolyear = self.schoolyear
+            for sheet in root.deployed.values():
+                if not sheet.__name__.startswith(schoolyear.__name__):
+                    continue
+                index = sheet.__name__[sheet.__name__.rfind('_') + 1:]
+                self.handleSheet(sheet, index, hidden)
+            self.request.response.redirect(self.nextURL())
+
+    def handleSheet(self, sheet, index, hidden):
+        if index in hidden and not sheet.hidden:
+            sheet.hidden = True
+        elif index not in hidden and sheet.hidden:
+            sheet.hidden = False
+        else:
+            return
+        schoolyear = self.schoolyear
+        for term in schoolyear.values():
+            deployedKey = '%s_%s_%s' % (schoolyear.__name__, term.__name__,
+                                        index)
+            if sheet.__name__ == deployedKey:
+                for section in ISectionContainer(term).values():
+                    activities = IActivities(section)
+                    activities[deployedKey].hidden = sheet.hidden
+                return
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/report_sheets'
 
 
 class FlourishTemplatesView(flourish.page.Page):

@@ -161,7 +161,8 @@ class FlourishWorksheetsView(flourish.page.Page):
                'deployed': worksheet.deployed,
                }
             if worksheet.hidden:
-                hidden.append(result)
+                if not worksheet.deployed:
+                    hidden.append(result)
             else:
                 not_hidden.append(result)
                 pos += 1
