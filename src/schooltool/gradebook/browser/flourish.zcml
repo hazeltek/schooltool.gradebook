@@ -532,7 +532,7 @@
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".report_card.FlourishReportSheetsView"
       content_template="templates/f_report_sheets.pt"
-      permission="schooltool.view"
+      permission="schooltool.edit"
       />
 
   <flourish:viewlet
