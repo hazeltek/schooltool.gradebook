@@ -67,6 +67,20 @@
             </select>
           </div>
         </div>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Alternate Title</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Optionally choose a different title for the report sheet.
+          </p>
+          <div class="widget">
+            <input type="text" name="alternate_title" id="alternate_title"
+                   tal:attributes="value view/alternate_title" />
+          </div>
+        </div>
       </fieldset>
     </div>
     <div class="buttons controls">

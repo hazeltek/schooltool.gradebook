@@ -199,6 +199,10 @@ class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
     """A flourish view for managing report sheet deployment"""
 
+    def __init__(self, context, request):
+        super(FlourishReportSheetsView, self).__init__(context, request)
+        self.alternate_title = self.request.get('alternate_title')
+
     @property
     def title(self):
         title = _(u'Report Sheets for ${year}',
@@ -247,19 +251,23 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
                 if term:
                     term = self.schoolyear[term]
                 self.deploy(term, template)
+                self.alternate_title = ''
 
     def deploy(self, term, template):
         # get the next index and title
         root = IGradebookRoot(ISchoolToolApplication(None))
         schoolyear, highest, title_index = self.schoolyear, 0, 0
+        template_title = self.alternate_title
+        if not template_title:
+            template_title = template.title
         for sheet in root.deployed.values():
             if not sheet.__name__.startswith(schoolyear.__name__):
                 continue
             index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
             if index > highest:
                 highest = index
-            if sheet.title.startswith(template.title):
-                rest = sheet.title[len(template.title):]
+            if sheet.title.startswith(template_title):
+                rest = sheet.title[len(template_title):]
                 if not rest:
                     new_index = 1
                 elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
@@ -277,7 +285,7 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         for term in terms:
             deployedKey = '%s_%s_%s' % (schoolyear.__name__, term.__name__,
                                         highest + 1)
-            title = template.title
+            title = template_title
             if title_index:
                 title += '-%s' % (title_index + 1)
             deployedWorksheet = Worksheet(title)
