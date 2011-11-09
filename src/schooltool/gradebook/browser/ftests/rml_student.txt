@@ -203,17 +203,20 @@ Set up a timetable:
     >>> manager.getLink('2010').click()
     >>> manager.getLink('School Timetables').click()
     >>> manager.getLink('New Timetable').click()
-    >>> manager.getLink('simple weekly timetable schema').click()
-    >>> manager.getControl(name='field.period_name_1').value = 'First period'
-    >>> manager.getControl(name='field.period_name_2').value = 'Second period'
-    >>> manager.getControl(name='field.period_name_3').value = 'Third period'
-    >>> manager.getControl(name='field.period_start_1').value = '8:00'
-    >>> manager.getControl(name='field.period_start_2').value = '9:00'
-    >>> manager.getControl(name='field.period_start_3').value = '10:00'
-    >>> manager.getControl(name='field.period_finish_1').value = '9:00'
-    >>> manager.getControl(name='field.period_finish_2').value = '10:00'
-    >>> manager.getControl(name='field.period_finish_3').value = '11:00'
-    >>> manager.getControl('Create').click()
+
+    >>> manager.getControl('Next').click()
+    >>> manager.getControl('Days of the week').click()
+    >>> manager.getControl('Same time each day').click()
+    >>> manager.getControl(name='field.times').value = \
+    ...     '8:00-9:00 \n 9:00-10:00 \n 10:00-11:00'
+    >>> manager.getControl('Next').click()
+    >>> manager.getControl('Have names').click()
+    >>> manager.getControl(name='field.periods').value = \
+    ...     'First period \n Second period \n Third period'
+    >>> manager.getControl('Next').click()
+    >>> manager.getControl('Same').click()
+    >>> manager.getControl('Next').click()
+    >>> manager.getControl('No').click()
 
 Define a schedule for each section:
 
@@ -1334,8 +1337,9 @@ Attendance detail:
     11/16/10
     11/25/10
     12/10/10
+
     >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para/text()')
-    First
+    First period
     A
     T
     A
@@ -1420,7 +1424,7 @@ Attendance detail:
     11/25/10
     12/10/10
     >>> manager.printXMLQuery('//story/blockTable[3]/tr/td[2]/para/text()')
-    First
+    First period
     A
     T
     T
@@ -1527,7 +1531,7 @@ Attendance detail:
     11/25/10
     12/10/10
     >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/tr/td[2]/para/text()')
-    First
+    First period
     A
     T
     A
@@ -1620,7 +1624,7 @@ Attendance detail:
     11/08/10
     11/09/10
     >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/tr/td[2]/para/text()')
-    First
+    First period
     A
     T
     A
@@ -1709,7 +1713,7 @@ Attendance detail:
     11/22/10
     12/02/10
     >>> manager.printXMLQuery('//story/blockTable[@style="grid"][6]/tr/td[2]/para/text()')
-    First
+    First period
     A
     T
     T
@@ -1793,7 +1797,7 @@ Attendance detail:
     11/25/10
     12/10/10
     >>> manager.printXMLQuery('//story/blockTable[@style="grid"][2]/tr/td[2]/para/text()')
-    First
+    First period
     A
     T
     T
@@ -1862,7 +1866,7 @@ Attendance detail:
     11/08/10
     11/09/10
     >>> manager.printXMLQuery('//story/blockTable[@style="grid"][4]/tr/td[2]/para/text()')
-    First
+    First period
     A
     A
     A
@@ -1930,7 +1934,7 @@ Attendance detail:
     11/22/10
     12/02/10
     >>> manager.printXMLQuery('//story/blockTable[@style="grid"][6]/tr/td[2]/para/text()')
-    First
+    First period
     T
     T
     A
@@ -2069,7 +2073,7 @@ Students:
 Attendance details:
 
     >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
-    First
+    First period
     A
     A
 
@@ -2096,7 +2100,7 @@ Students:
 Attendance details:
 
     >>> manager.printXMLQuery('//story/blockTable[position()>1]/tr/td[2]/para/text()')
-    First
+    First period
     A
     A
 
