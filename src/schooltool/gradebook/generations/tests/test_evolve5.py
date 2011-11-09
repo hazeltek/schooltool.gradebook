@@ -23,6 +23,7 @@ import unittest, doctest
 import datetime
 
 from zope.app.generations.utility import getRootFolder
+from zope.app.testing import setup
 from zope.component import provideHandler
 from zope.interface import implements
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
@@ -35,6 +36,7 @@ from schooltool.term.term import Term
 
 from schooltool.gradebook.activity import Worksheet
 from schooltool.gradebook.generations.tests import ContextStub
+from schooltool.gradebook.generations.tests import provideAdapters
 from schooltool.gradebook.generations.evolve5 import evolve
 from schooltool.gradebook.gradebook_init import GRADEBOOK_ROOT_KEY
 from schooltool.gradebook.gradebook_init import GradebookRoot
@@ -48,37 +50,23 @@ def doctest_evolve5():
 
     First, we'll set up the app object:
 
+        >>> provideAdapters()
         >>> context = ContextStub()
         >>> app = getRootFolder(context)
         >>> app.setSiteManager(LocalSiteManager(app))
-        Moved <zope.site.site.SiteManagementFolder object at ...>
-          __parent__: <LocalSiteManager ++etc++site>
-          __name__: default
 
     Next, we'll set up the year object with a couple terms:
 
         >>> years = app[SCHOOLYEAR_CONTAINER_KEY] = SchoolYearContainer()
-        Moved <schooltool.schoolyear.schoolyear.SchoolYearContainer object at ...>
-          __parent__: <schooltool.app.app.SchoolToolApplication object at ...>
-          __name__: schooltool.schoolyear
         >>> year = years['2011'] = SchoolYear('2011',
         ...                                   datetime.date(2011, 1, 1),
         ...                                   datetime.date(2011, 12, 31))
-        Moved <schooltool.schoolyear.schoolyear.SchoolYear object at ...>
-          __parent__: <schooltool.schoolyear.schoolyear.SchoolYearContainer object at ...>
-          __name__: 2011
         >>> term1 = year['term1'] = Term('Term1',
         ...                              datetime.date(2011, 1, 1),
         ...                              datetime.date(2011, 6, 30))
-        Moved <schooltool.term.term.Term object at ...>
-          __parent__: <schooltool.schoolyear.schoolyear.SchoolYear object at ...>
-          __name__: term1
         >>> term2 = year['term2'] = Term('Term2',
         ...                              datetime.date(2011, 7, 1),
         ...                              datetime.date(2011, 12, 31))
-        Moved <schooltool.term.term.Term object at ...>
-          __parent__: <schooltool.schoolyear.schoolyear.SchoolYear object at ...>
-          __name__: term2
 
     Add some sections to each term.
 
@@ -86,36 +74,17 @@ def doctest_evolve5():
         >>> section2 = Section('Section2')
         >>> sections = {'1': section1, '2': section2}
         >>> app['schooltool.course.section'] = {'2011': sections}
-        Moved {'2011': {'1': <schooltool.course.section.Section object at ...>,
-                        '2': <schooltool.course.section.Section object at ...>}}
-          __parent__: <schooltool.app.app.SchoolToolApplication object at ...>
-          __name__: schooltool.course.section
 
     And add the gradebook root.
 
         >>> root = app[GRADEBOOK_ROOT_KEY] = GradebookRoot()
-        Moved <schooltool.gradebook.gradebook_init.GradebookRoot object at ...>
-          __parent__: <schooltool.app.app.SchoolToolApplication object at ...>
-          __name__: schooltool.gradebook
 
     Deploy some report sheets.
 
         >>> root.deployed[u'2011_term1'] = Worksheet('Sheet1')
-        Moved Worksheet('Sheet1')
-          __parent__: GradebookDeployed(u'Deployed Report Sheets')
-          __name__: 2011_term1
         >>> root.deployed[u'2011_term1-2'] = Worksheet('Sheet2')
-        Moved Worksheet('Sheet2')
-          __parent__: GradebookDeployed(u'Deployed Report Sheets')
-          __name__: 2011_term1-2
         >>> IActivities(section1)[u'2011_term1'] = Worksheet('Sheet1')
-        Moved Worksheet('Sheet1')
-          __parent__: Activities(u'Activities')
-          __name__: 2011_term1
         >>> IActivities(section2)[u'2011_term1-2'] = Worksheet('Sheet2')
-        Moved Worksheet('Sheet2')
-          __parent__: Activities(u'Activities')
-          __name__: 2011_term1-2
 
     This evolution script changes the keys of the deployed report sheets.
 
@@ -138,9 +107,18 @@ def doctest_evolve5():
     """
 
 
+def setUp(test):
+    setup.placelessSetUp()
+    setup.setUpTraversal()
+
+def tearDown(test):
+    setup.placelessTearDown()
+
+
 def test_suite():
     return unittest.TestSuite([
-        doctest.DocTestSuite(optionflags=doctest.ELLIPSIS
+        doctest.DocTestSuite(setUp=setUp, tearDown=tearDown,
+                             optionflags=doctest.ELLIPSIS
                                          | doctest.NORMALIZE_WHITESPACE
                                          | doctest.REPORT_NDIFF
                                          | doctest.REPORT_ONLY_FIRST_FAILURE),
