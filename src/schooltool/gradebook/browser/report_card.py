@@ -247,7 +247,7 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
         if 'SUBMIT' in self.request:
-            if self.request.get('template'):
+            if self.request.get('template') and self.alternate_title:
                 root = IGradebookRoot(ISchoolToolApplication(None))
                 template = root.templates[self.request['template']]
                 term = self.request.get('term')
@@ -261,8 +261,6 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         root = IGradebookRoot(ISchoolToolApplication(None))
         schoolyear, highest, title_index = self.schoolyear, 0, 0
         template_title = self.alternate_title
-        if not template_title:
-            template_title = template.title
         for sheet in root.deployed.values():
             if not sheet.__name__.startswith(schoolyear.__name__):
                 continue

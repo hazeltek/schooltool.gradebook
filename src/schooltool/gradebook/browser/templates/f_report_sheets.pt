@@ -1,5 +1,12 @@
 <div i18n:domain="schooltool.gradebook"
      tal:define="sheets view/sheets; terms view/terms; schoolyear view/schoolyear">
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#template').change(function(e) {
+            $('#alternate_title').val(e.target.value);
+        });
+    });
+  </script>
   <h3 i18n:translate="">Currently Deployed Report Sheets</h3>
   <table>
     <thead>
@@ -70,11 +77,12 @@
         <div class="row">
           <div class="label">
             <label for="term">
-              <span i18n:translate="">Alternate Title</span>
+              <span i18n:translate="">Title</span>
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            Optionally choose a different title for the report sheet.
+            If you deploy the same template multiple times, give each deployment
+            an easily distinguishable name.
           </p>
           <div class="widget">
             <input type="text" name="alternate_title" id="alternate_title"
