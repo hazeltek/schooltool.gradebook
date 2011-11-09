@@ -151,10 +151,13 @@ class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
 
     @property
     def url(self):
-        url = '%s/hide_unhide_report_sheets.html?schoolyear_id=%s' % (
-            absoluteURL(ISchoolToolApplication(None), self.request),
-            self.schoolyear.__name__)
-        return url
+        if self.view.all_sheets():
+            url = '%s/hide_unhide_report_sheets.html?schoolyear_id=%s' % (
+                absoluteURL(ISchoolToolApplication(None), self.request),
+                self.schoolyear.__name__)
+            return url
+        else:
+            return ''
 
 
 class FlourishReportSheetsBase(FlourishSchooYearMixin):
