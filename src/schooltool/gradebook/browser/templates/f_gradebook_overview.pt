@@ -248,7 +248,7 @@
                     <a href="?sort_by=average" i18n:translate="">Sort by</a>
                   </li>
                   <li>
-                    <a class="hover_link" href="#" i18n:translate="">Score System</a>
+                    <span class="hover_link" i18n:translate="">Score System</span>
                     <div class="hover_menu">
                       <ul>
                         <li tal:repeat="scoresystem view/scoresystems">
