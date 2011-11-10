@@ -14,14 +14,14 @@ Administrator checks activity categories available for teachers:
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Activity Categories').click()
     >>> manager.printQuery('id("field.categories")/option/@value')
-    assignment-
-    essay-
-    exam-
-    homework-
-    journal-
-    lab-
-    presentation-
-    project-
+    assignment
+    essay
+    exam
+    homework
+    journal
+    lab
+    presentation
+    project
 
 Now, set up a school year (2005-2006) with two terms (Fall and
 Spring):
