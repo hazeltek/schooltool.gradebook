@@ -3,7 +3,8 @@
   <script type="text/javascript">
     $(document).ready(function() {
         $('#template').change(function(e) {
-            $('#alternate_title').val(e.target.value);
+            index = e.target.selectedIndex
+            $('#alternate_title').val(e.target.options[index].text);
         });
     });
   </script>
