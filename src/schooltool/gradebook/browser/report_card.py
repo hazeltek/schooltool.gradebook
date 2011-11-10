@@ -128,6 +128,33 @@ class TemplatesView(object):
 class FlourishReportSheetActionLinks(flourish.page.RefineLinksViewlet):
     """flourish Report Sheet Action links viewlet."""
 
+    body_template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/renderable_items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    # We don't want this manager rendered at all
+    # if there are no renderable viewlets
+    @property
+    def renderable_items(self):
+        result = []
+        for item in self.items:
+            render_result = item['viewlet']()
+            if render_result and render_result.strip():
+                result.append({
+                        'class': item['class'],
+                        'viewlet': render_result,
+                        })
+        return result
+
+    def render(self):
+        if self.renderable_items:
+            return super(FlourishReportSheetActionLinks, self).render()
+
 
 class FlourishSchooYearMixin(object):
     """A flourish mixin class for any view with schooyear tab"""
@@ -150,14 +177,17 @@ class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
                                  FlourishSchooYearMixin):
 
     @property
+    def enabled(self):
+        if not self.view.all_sheets():
+            return False
+        return super(HideUnhideReportSheetsLink, self).enabled
+
+    @property
     def url(self):
-        if self.view.all_sheets():
-            url = '%s/hide_unhide_report_sheets.html?schoolyear_id=%s' % (
-                absoluteURL(ISchoolToolApplication(None), self.request),
-                self.schoolyear.__name__)
-            return url
-        else:
-            return ''
+        url = '%s/hide_unhide_report_sheets.html?schoolyear_id=%s' % (
+            absoluteURL(ISchoolToolApplication(None), self.request),
+            self.schoolyear.__name__)
+        return url
 
 
 class FlourishReportSheetsBase(FlourishSchooYearMixin):
