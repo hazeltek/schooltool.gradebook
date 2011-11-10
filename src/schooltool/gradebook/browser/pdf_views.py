@@ -742,6 +742,7 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
     def pages(self):
         results = []
         activities = list(self.activities())
+
         table = self.table()
 
         num_rows = len(table)
@@ -771,14 +772,14 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
             else:
                 end_col = next_col
 
-            rows = deepcopy(table)[start_row:end_row]
+            rows = [dict(r) for r in table[start_row:end_row]]
             for row in rows:
                 row['grades'] = row['grades'][start_col:end_col]
 
             page = {
                 'widths': self.widths(start_col, end_col),
                 'rows': rows,
-                'cols': deepcopy(activities)[start_col:end_col],
+                'cols': activities[start_col:end_col],
                 }
             results.append(page)
 
