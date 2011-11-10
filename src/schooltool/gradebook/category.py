@@ -76,7 +76,7 @@ class CategoriesVocabulary(object):
     def getTerm(self, key):
         return zope.schema.vocabulary.SimpleTerm(
             key,
-            token=urllib.quote(unicode(key).encode('punycode')),
+            token=urllib.quote(unicode(key)),
             title=self.container[key])
 
     def __iter__(self):
