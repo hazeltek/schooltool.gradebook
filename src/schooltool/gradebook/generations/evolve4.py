@@ -56,6 +56,8 @@ def evolve(context):
         ann = IAnnotations(app)
         if 'optionstorage' in ann:
             copyCategories(app, ann['optionstorage'])
-            del ann['optionstorage']
+            del ann['optionstorage'][VOCABULARY_NAME]
+            if not ann['optionstorage']:
+                del ann['optionstorage']
 
     setSite(old_site)
