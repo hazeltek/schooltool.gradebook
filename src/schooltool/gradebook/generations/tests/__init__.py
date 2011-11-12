@@ -20,6 +20,8 @@ from schooltool.requirement.evaluation import getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IHaveEvaluations
 from schooltool.term.interfaces import IDateManager
+from schooltool.schoolyear.interfaces import ISchoolYearContainer
+from schooltool.schoolyear.schoolyear import getSchoolYearContainer
 from schooltool.gradebook.tests import stubs
 
 
@@ -69,6 +71,8 @@ def provideAdapters():
                                          provides=IActivities)
     provideAdapter(getEvaluations, adapts=(IHaveEvaluations,), 
                                    provides=IEvaluations)
+    provideAdapter(getSchoolYearContainer, adapts=(ISchoolToolApplication,), 
+                                           provides=ISchoolYearContainer)
 
 
 def provideUtilities():

@@ -22,6 +22,7 @@ Unit tests for schooltool.gradebook.generations.evolve1
 import unittest, doctest
 
 from zope.app.generations.utility import getRootFolder
+from zope.app.testing import setup
 from zope.component import provideHandler
 from zope.interface import implements
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
@@ -84,9 +85,18 @@ def doctest_evolve3():
     """
 
 
+def setUp(test):
+    setup.placelessSetUp()
+    setup.setUpTraversal()
+
+def tearDown(test):
+    setup.placelessTearDown()
+
+
 def test_suite():
     return unittest.TestSuite([
-        doctest.DocTestSuite(optionflags=doctest.ELLIPSIS
+        doctest.DocTestSuite(setUp=setUp, tearDown=tearDown,
+                             optionflags=doctest.ELLIPSIS
                                          | doctest.NORMALIZE_WHITESPACE
                                          | doctest.REPORT_NDIFF
                                          | doctest.REPORT_ONLY_FIRST_FAILURE),

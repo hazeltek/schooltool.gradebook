@@ -125,6 +125,37 @@ class TemplatesView(object):
                     self.context.changePosition(name, new_pos-1)
 
 
+class FlourishReportSheetActionLinks(flourish.page.RefineLinksViewlet):
+    """flourish Report Sheet Action links viewlet."""
+
+    body_template = InlineViewPageTemplate("""
+        <ul tal:attributes="class view/list_class">
+          <li tal:repeat="item view/renderable_items"
+              tal:attributes="class item/class"
+              tal:content="structure item/viewlet">
+          </li>
+        </ul>
+    """)
+
+    # We don't want this manager rendered at all
+    # if there are no renderable viewlets
+    @property
+    def renderable_items(self):
+        result = []
+        for item in self.items:
+            render_result = item['viewlet']()
+            if render_result and render_result.strip():
+                result.append({
+                        'class': item['class'],
+                        'viewlet': render_result,
+                        })
+        return result
+
+    def render(self):
+        if self.renderable_items:
+            return super(FlourishReportSheetActionLinks, self).render()
+
+
 class FlourishSchooYearMixin(object):
     """A flourish mixin class for any view with schooyear tab"""
 
@@ -142,24 +173,50 @@ class FlourishSchooYearMixin(object):
         return result
 
 
+class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
+                                 FlourishSchooYearMixin):
+
+    @property
+    def enabled(self):
+        if not self.view.all_sheets():
+            return False
+        return super(HideUnhideReportSheetsLink, self).enabled
+
+    @property
+    def url(self):
+        url = '%s/hide_unhide_report_sheets.html?schoolyear_id=%s' % (
+            absoluteURL(ISchoolToolApplication(None), self.request),
+            self.schoolyear.__name__)
+        return url
+
+
 class FlourishReportSheetsBase(FlourishSchooYearMixin):
 
     def sheets(self):
+        return [sheet for sheet in self.all_sheets() if not sheet['checked']]
+
+    def all_sheets(self):
         if self.has_schoolyear:
             root = IGradebookRoot(ISchoolToolApplication(None))
             schoolyear = self.schoolyear
-            templates = {}
+            deployments = {}
             for sheet in root.deployed.values():
-                template = templates.setdefault(sheet.title, {
+                if not sheet.__name__.startswith(schoolyear.__name__):
+                    continue
+                index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
+                deployment = deployments.setdefault(index, {
                     'obj': sheet,
+                    'index': str(index),
+                    'checked': sheet.hidden,
                     'terms': [False] * len(schoolyear),
                     })
                 for index, term in enumerate(schoolyear.values()):
                     deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
                     if sheet.__name__.startswith(deployedKey):
-                        template['terms'][index] = True
-            return [v for k, v in sorted(templates.items())
-                    if v['terms'] != [False] * len(schoolyear)]
+                        deployment['terms'][index] = True
+            sheets = [v for k, v in sorted(deployments.items())]
+            return ([sheet for sheet in sheets if not sheet['checked']] +
+                    [sheet for sheet in sheets if sheet['checked']])
         else:
             return []
 
@@ -175,11 +232,28 @@ class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
     """A flourish view for managing report sheet deployment"""
 
+    def __init__(self, context, request):
+        super(FlourishReportSheetsView, self).__init__(context, request)
+        self.alternate_title = self.request.get('alternate_title')
+
     @property
     def title(self):
         title = _(u'Report Sheets for ${year}',
                   mapping={'year': self.schoolyear.title})
         return translate(title, context=self.request)
+
+    @property
+    def has_error(self):
+        return self.no_template or self.no_title
+
+    @property
+    def no_template(self):
+        return 'SUBMIT' in self.request and not self.request.get('template')
+
+    @property
+    def no_title(self):
+        return ('SUBMIT' in self.request and
+                not self.request.get('alternate_title'))
 
     @property
     def terms(self):
@@ -216,34 +290,60 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
         if 'SUBMIT' in self.request:
-            if self.request.get('template'):
+            if self.request.get('template') and self.alternate_title:
                 root = IGradebookRoot(ISchoolToolApplication(None))
                 template = root.templates[self.request['template']]
-                if self.request.get('term'):
-                    term = self.schoolyear[self.request.get('term')]
-                    self.deploy(term, template)
-                else:
-                    for term in self.schoolyear.values():
-                        self.deploy(term, template)
+                term = self.request.get('term')
+                if term:
+                    term = self.schoolyear[term]
+                self.deploy(term, template)
+                self.alternate_title = ''
 
     def deploy(self, term, template):
-        # copy worksheet template to the term
+        # get the next index and title
         root = IGradebookRoot(ISchoolToolApplication(None))
-        deployedKey = '%s_%s' % (self.schoolyear.__name__, term.__name__)
-        deployedWorksheet = Worksheet(template.title)
-        chooser = INameChooser(root.deployed)
-        name = chooser.chooseName(deployedKey, deployedWorksheet)
-        root.deployed[name] = deployedWorksheet
-        copyActivities(template, deployedWorksheet)
+        schoolyear, highest, title_index = self.schoolyear, 0, 0
+        template_title = self.alternate_title
+        for sheet in root.deployed.values():
+            if not sheet.__name__.startswith(schoolyear.__name__):
+                continue
+            index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
+            if index > highest:
+                highest = index
+            if sheet.title.startswith(template_title):
+                rest = sheet.title[len(template_title):]
+                if not rest:
+                    new_index = 1
+                elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
+                    new_index = int(rest[1:])
+            else:
+                new_index = 0
+            if new_index > title_index:
+                title_index = new_index
 
-        # now copy the template to all sections in the term
-        sections = ISectionContainer(term)
-        for section in sections.values():
-            activities = IActivities(section)
-            worksheetCopy = Worksheet(deployedWorksheet.title)
-            worksheetCopy.deployed = True
-            activities[deployedWorksheet.__name__] = worksheetCopy
-            copyActivities(deployedWorksheet, worksheetCopy)
+        # copy worksheet template to the term or whole year
+        if term:
+            terms = [term]
+        else:
+            terms = schoolyear.values()
+        for term in terms:
+            deployedKey = '%s_%s_%s' % (schoolyear.__name__, term.__name__,
+                                        highest + 1)
+            title = template_title
+            if title_index:
+                title += '-%s' % (title_index + 1)
+            deployedWorksheet = Worksheet(title)
+            root.deployed[deployedKey] = deployedWorksheet
+            copyActivities(template, deployedWorksheet)
+
+            # now copy the template to all sections in the term
+            sections = ISectionContainer(term)
+            for section in sections.values():
+                activities = IActivities(section)
+                worksheetCopy = Worksheet(deployedWorksheet.title)
+                worksheetCopy.deployed = True
+                activities[deployedWorksheet.__name__] = worksheetCopy
+                copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
         url = absoluteURL(ISchoolToolApplication(None), self.request)
@@ -275,6 +375,51 @@ class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,
                 'viewlet': u'<a href="%s">%s</a>' % (url, schoolyear.title),
                 })
         return result
+
+
+class FlourishHideUnhideReportSheetsView(FlourishReportSheetsBase,
+                                         flourish.page.Page):
+    """A flourish view for hiding/unhiding report sheet deployments"""
+
+    @property
+    def title(self):
+        title = _(u'Hide/unhide Report Sheets for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'SUBMIT' in self.request:
+            hidden = self.request.get('hidden', [])
+            root = IGradebookRoot(ISchoolToolApplication(None))
+            schoolyear = self.schoolyear
+            for sheet in root.deployed.values():
+                if not sheet.__name__.startswith(schoolyear.__name__):
+                    continue
+                index = sheet.__name__[sheet.__name__.rfind('_') + 1:]
+                self.handleSheet(sheet, index, hidden)
+            self.request.response.redirect(self.nextURL())
+
+    def handleSheet(self, sheet, index, hidden):
+        if index in hidden and not sheet.hidden:
+            sheet.hidden = True
+        elif index not in hidden and sheet.hidden:
+            sheet.hidden = False
+        else:
+            return
+        schoolyear = self.schoolyear
+        for term in schoolyear.values():
+            deployedKey = '%s_%s_%s' % (schoolyear.__name__, term.__name__,
+                                        index)
+            if sheet.__name__ == deployedKey:
+                for section in ISectionContainer(term).values():
+                    activities = IActivities(section)
+                    activities[deployedKey].hidden = sheet.hidden
+                return
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/report_sheets'
 
 
 class FlourishTemplatesView(flourish.page.Page):

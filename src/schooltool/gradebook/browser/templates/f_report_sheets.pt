@@ -1,5 +1,13 @@
 <div i18n:domain="schooltool.gradebook"
      tal:define="sheets view/sheets; terms view/terms; schoolyear view/schoolyear">
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#template').change(function(e) {
+            index = e.target.selectedIndex
+            $('#alternate_title').val(e.target.options[index].text);
+        });
+    });
+  </script>
   <h3 i18n:translate="">Currently Deployed Report Sheets</h3>
   <table>
     <thead>
@@ -30,6 +38,12 @@
     <input type="hidden" name="schoolyear_id" 
            tal:attributes="value request/schoolyear_id|nothing" />
     <div class="viewspace">
+        <div class="status" tal:condition="view/has_error">
+          <div class="summary ui-state-error ui-corner-all" i18n:translate="">
+            <span class="ui-icon ui-icon-alert">icon</span>
+            Please correct the marked fields below.
+          </div>
+        </div>
       <fieldset>
         <legend>
           <span i18n:translate="">Select report sheet to deploy</span>
@@ -58,6 +72,9 @@
               <span i18n:translate="">Report Sheet Template</span>
             </label>
           </div>
+          <div class="error" tal:condition="view/no_template">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
           <div class="widget">
             <select id="template" name="template">
               <tal:block repeat="template view/templates">
@@ -65,6 +82,24 @@
                         tal:content="template/title" />
               </tal:block>
             </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Title</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            If you deploy the same template multiple times, give each deployment
+            an easily distinguishable name.
+          </p>
+          <div class="error" tal:condition="view/no_title">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
+          <div class="widget">
+            <input type="text" name="alternate_title" id="alternate_title"
+                   tal:attributes="value view/alternate_title" />
           </div>
         </div>
       </fieldset>
