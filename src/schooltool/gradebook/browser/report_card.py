@@ -243,6 +243,19 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
         return translate(title, context=self.request)
 
     @property
+    def has_error(self):
+        return self.no_template or self.no_title
+
+    @property
+    def no_template(self):
+        return 'SUBMIT' in self.request and not self.request.get('template')
+
+    @property
+    def no_title(self):
+        return ('SUBMIT' in self.request and
+                not self.request.get('alternate_title'))
+
+    @property
     def terms(self):
         result = [{
             'name': '',
