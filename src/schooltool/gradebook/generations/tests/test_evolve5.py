@@ -68,6 +68,13 @@ def doctest_evolve5():
         ...                              datetime.date(2011, 7, 1),
         ...                              datetime.date(2011, 12, 31))
 
+    We'll set up a second year for which there is no other data to test
+    that the evolve script can handle that.
+
+        >>> years['2012'] = SchoolYear('2012',
+        ...                            datetime.date(2012, 1, 1),
+        ...                            datetime.date(2012, 12, 31))
+
     Add some sections to each term.
 
         >>> section1 = Section('Section1')
