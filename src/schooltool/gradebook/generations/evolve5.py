@@ -50,7 +50,7 @@ def fixYear(year, app):
         new_key = '%s_%s' % (key, index)
         year_dict[sheet.__name__] = new_key
 
-    layout = root.layouts[year.__name__]
+    layout = root.layouts.get(year.__name__)
     for key, new_key in year_dict.items():
         sheet = root.deployed[key]
         sheet.__name__ = new_key
@@ -66,14 +66,15 @@ def fixYear(year, app):
                     activities[new_key] = sheet
                     del activities[key]
 
-        for column in layout.columns:
-            term, sheet, act = column.source.split('|')
-            if sheet == key:
-                column.source = '%s|%s|%s' % (term, new_key, act)
-        for activity in layout.outline_activities:
-            term, sheet, act = activity.source.split('|')
-            if sheet == key:
-                activity.source = '%s|%s|%s' % (term, new_key, act)
+        if layout is not None:
+            for column in layout.columns:
+                term, sheet, act = column.source.split('|')
+                if sheet == key:
+                    column.source = '%s|%s|%s' % (term, new_key, act)
+            for activity in layout.outline_activities:
+                term, sheet, act = activity.source.split('|')
+                if sheet == key:
+                    activity.source = '%s|%s|%s' % (term, new_key, act)
 
 
 def evolve(context):
