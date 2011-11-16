@@ -6,7 +6,8 @@ CHANGES
 ------------------
 
 - added Hide/unhide Report Sheets feature, including evolve5.py script.
-
+- Teachers should be able to "see" the gradebook view the student sees.
+  (https://lauchpad.net/bugs/887122)
 
 1.9.2 (2011-11-02)
 ------------------

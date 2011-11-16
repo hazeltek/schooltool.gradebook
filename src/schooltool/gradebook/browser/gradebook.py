@@ -1776,37 +1776,81 @@ class FlourishStudentGradebookView(flourish.page.Page):
                  mapping={'section': ISection(gradebook).title,
                           'worksheet': gradebook.context.title})
 
-    @property
-    def blocks(self):
-        blocks = []
+    def update(self):
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        worksheet = proxy.removeSecurityProxy(gradebook.context)
+        student = self.context.student
+        column_keys_dict = dict(getColumnKeys(gradebook))
+
         person = IPerson(self.request.principal, None)
         if person is None:
-            return blocks
-        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
-        flag, weeks = gradebook.getDueDateFilter(person)
-        today = queryUtility(IDateManager).today
-        cutoff = today - datetime.timedelta(7 * int(weeks))
-        for activity in gradebook.context.values():
-            if flag and activity.due_date < cutoff:
-                continue
-            score = gradebook.getScore(self.context.student, activity)
-            if not score:
-                value = ''
+            columnPreferences = {}
+        else:
+            columnPreferences = gradebook.getColumnPreferences(person)
+
+        prefs = columnPreferences.get('average', {})
+        self.average_hide = prefs.get('hide', False)
+        self.average_label = prefs.get('label', '')
+        if len(self.average_label) == 0:
+            self.average_label = column_keys_dict['average']
+        scoresystems = IScoreSystemContainer(ISchoolToolApplication(None))
+        self.average_scoresystem = scoresystems.get(
+            prefs.get('scoresystem', ''))
+
+        self.table = []
+        count = 0
+        for activity in gradebook.getWorksheetActivities(worksheet):
+            activity = proxy.removeSecurityProxy(activity)
+            score = gradebook.getScore(student, activity)
+
+            if score:
+                ss = score.scoreSystem
+                if ICommentScoreSystem.providedBy(ss):
+                    grade = {
+                        'comment': True,
+                        'paragraphs': buildHTMLParagraphs(score.value),
+                        }
+                elif IValuesScoreSystem.providedBy(ss):
+                    s_min, s_max = getScoreSystemDiscreteValues(ss)
+                    value = score.value
+                    if IDiscreteValuesScoreSystem.providedBy(ss):
+                        value = score.scoreSystem.getNumericalValue(score.value)
+                        if value is None:
+                            value = 0
+                    count += s_max - s_min
+                    grade = {
+                        'comment': False,
+                        'value': '%s / %s' % (value, ss.getBestScore()),
+                        }
+
+                else:
+                    grade = {
+                        'comment': False,
+                        'value': score.value,
+                        }
+
             else:
-                value = score.value
-            if ICommentScoreSystem.providedBy(activity.scoresystem):
-                block = {
-                    'comment': True,
-                    'paragraphs': buildHTMLParagraphs(value),
-                    }
-            else:
-                block = {
+                grade = {
                     'comment': False,
-                    'content': value,
+                    'value': '',
                     }
-            block['label'] = activity.title
-            blocks.append(block)
-        return blocks
+
+            title = activity.title
+            if activity.description:
+                title += ' - %s' % activity.description
+
+            row = {
+                'activity': title,
+                'grade': grade,
+                }
+            self.table.append(row)
+
+        if count:
+            total, average = gradebook.getWorksheetTotalAverage(worksheet,
+                student)
+            self.average = convertAverage(average, self.average_scoresystem)
+        else:
+            self.average = None
 
 
 class GradebookCSVView(BrowserView):
