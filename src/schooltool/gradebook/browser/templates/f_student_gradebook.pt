@@ -1,22 +1,32 @@
 <div i18n:domain="schooltool.gradebook">
+  <tal:block condition="not: view/average_hide">
+    <h3 tal:condition="view/average"
+        tal:content="string: ${view/average_label}: ${view/average}" />
+    <h3 tal:condition="not: view/average" i18n:translate="">Nothing Graded</h3>
+  </tal:block>
   <table>
-    <thead>
-      <tr>
+    <tr>
+      <thead>
         <th i18n:translate="">Activity</th>
         <th i18n:translate="">Score</th>
-      </tr>
-    </thead>
-    <tr tal:repeat="block view/blocks">
-      <td tal:content="block/label" />
-      <td>
-        <p tal:condition="not: block/comment"
-           tal:content="block/content" />
-        <tal:block condition="block/comment"
-                   repeat="paragraph block/paragraphs">
+      </thead>
+    </tr>
+    <tr tal:repeat="row view/table">
+      <td tal:content="row/activity" />
+      <td tal:condition="row/grade/comment">
+        <tal:block repeat="paragraph row/grade/paragraphs">
           <p tal:content="structure paragraph"/>
         </tal:block>
       </td>
+      <td tal:condition="not: row/grade/comment">
+        <div tal:content="row/grade/value" />
+      </td>
     </tr>
   </table>
+
+  <h3>
+    <a tal:attributes="href string:${context/__parent__/@@absolute_url}"
+       i18n:translate="">Done</a>
+  </h3>
 </div>
 

@@ -91,6 +91,12 @@
                       Score
                     </a>
                   </li>
+                  <li>
+                    <a href="" i18n:translate=""
+                       tal:attributes="href string: ${row/student/gradeurl}/view.html">
+                      Report
+                    </a>
+                  </li>
                 </ul>
                 <div>
                   <a class="popup_link"
