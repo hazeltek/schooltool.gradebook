@@ -8,6 +8,7 @@ CHANGES
 - added Hide/unhide Report Sheets feature, including evolve5.py script.
 - Teachers should be able to "see" the gradebook view the student sees.
   (https://lauchpad.net/bugs/887122)
+- Selecting score system for average column does nothing (https://lauchpad.net/bugs/882061)
 
 1.9.2 (2011-11-02)
 ------------------
