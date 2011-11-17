@@ -841,7 +841,7 @@ class FlourishGradebookOverview(GradebookOverview,
                 name = vocab.getTermByToken(scoresystem).value.__name__
             else:
                 name = scoresystem
-            columnPreferences.get('average', {})['scoresystem'] = name
+            columnPreferences.setdefault('average', {})['scoresystem'] = name
             gradebook.setColumnPreferences(self.person, columnPreferences)
 
     def handleMoveActivity(self):
