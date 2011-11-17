@@ -37,6 +37,7 @@ from zope.publisher.browser import BrowserView
 from zope.schema import ValidationError, TextLine
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
+from zope.security.interfaces import Unauthorized
 from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.viewlet import viewlet
@@ -134,23 +135,12 @@ class GradebookStartup(object):
                 self.request.response.redirect(self.mygradesURL)
 
 
-class FlourishGradebookStartup(GradebookStartup, flourish.page.Page):
+class FlourishGradebookStartup(flourish.page.Page, GradebookStartup):
 
-    def render(self, *args, **kw):
+    def update(self):
         if IPerson(self.request.principal, None) is None:
-            url = absoluteURL(ISchoolToolApplication(None), self.request)
-            url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
-            self.request.response.redirect(url)
-            return ''
-        return flourish.page.Page.render(self, *args, **kw)
-
-    def __call__(self, *args, **kw):
-        if IPerson(self.request.principal, None) is None:
-            url = absoluteURL(ISchoolToolApplication(None), self.request)
-            url = '%s/auth/@@login.html?nexturl=%s' % (url, self.request.URL)
-            self.request.response.redirect(url)
-            return ''
-        return flourish.page.Page.__call__(self, *args, **kw)
+            raise Unauthorized("user not logged in")
+        GradebookStartup.update(self)
 
 
 class GradebookStartupNavLink(flourish.page.LinkViewlet):
