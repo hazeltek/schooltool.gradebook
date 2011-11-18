@@ -16,6 +16,7 @@ New features
 
 - Hide/Unhide deployed Report Sheets
 - Set title before deploying a report sheet.
+- Too easy to deploy duplicate report sheets (https://launchpad.net/bugs/836732)
 - "Report" in student pop up menu that brings up the same view as student sees
   (https://lauchpad.net/bugs/887122)
 
@@ -24,6 +25,7 @@ Bugfixes
 ++++++++
 
 - Selecting score system for average column does nothing (https://lauchpad.net/bugs/882061)
+- Gradebook menuitem fails when person teaches and attends sections (https://launchpad.net/bugs/885823)
 - All tests fixed
 
 
