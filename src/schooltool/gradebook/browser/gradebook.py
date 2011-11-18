@@ -242,12 +242,9 @@ class SectionFinder(GradebookBase):
             title = '%s - %s' % (", ".join([course.title
                                             for course in section.courses]),
                                  section.title)
-            css = 'inactive-menu-item'
-            if section == currentSection:
-                css = 'active-menu-item'
-            yield {'obj': section, 'url': url, 'title': title, 'css': css,
+            yield {'obj': section, 'url': url, 'title': title,
                    'form_id': self.getSectionId(section),
-                   'selected': title==self.getCurrentSection() and 'selected' or None}
+                   'selected': section == currentSection and 'selected' or None}
 
     @property
     def worksheets(self):
