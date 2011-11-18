@@ -39,9 +39,9 @@
            tal:attributes="value request/schoolyear_id|nothing" />
     <div class="viewspace">
         <div class="status" tal:condition="view/has_error">
-          <div class="summary ui-state-error ui-corner-all" i18n:translate="">
+          <div class="summary ui-state-error ui-corner-all">
             <span class="ui-icon ui-icon-alert">icon</span>
-            Please correct the marked fields below.
+            <span i18n:domain="schooltool" i18n:translate="">Please correct the marked fields below.</span>
           </div>
         </div>
       <fieldset>
