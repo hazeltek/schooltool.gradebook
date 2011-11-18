@@ -2,13 +2,24 @@
 CHANGES
 =======
 
-1.9.3 (unreleased)
+1.9.3 (2011-11-18)
 ------------------
 
-- added Hide/unhide Report Sheets feature, including evolve5.py script.
-- Teachers should be able to "see" the gradebook view the student sees.
+New features
+++++++++++++
+
+- Hide/Unhide deployed Report Sheets
+- Set title before deploying a report sheet.
+- "Report" in student pop up menu that brings up the same view as student sees
   (https://lauchpad.net/bugs/887122)
+
+
+Bugfixes
+++++++++
+
 - Selecting score system for average column does nothing (https://lauchpad.net/bugs/882061)
+- All tests fixed
+
 
 1.9.2 (2011-11-02)
 ------------------
