@@ -136,7 +136,7 @@ update-translations:
 .PHONY: release
 release: compile-translations
 	grep -qv 'dev' version.txt.in || echo -n `cat version.txt.in`-r`bzr revno` > version.txt
-	python setup.py sdist
+	$(PYTHON) setup.py sdist
 	rm -f version.txt
 
 .PHONY: move-release

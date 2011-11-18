@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2011-10-02 01:45-0600\n"
+"POT-Creation-Date: 2011-11-18 04:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -1509,11 +1509,7 @@ msgstr ""
 msgid "Apply a grade for all students:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:44
-msgid "Your browser either has Javascript turned off, or it is not supported. Javascript is <b>required</b> for the gradebook. Please enable Javascript or use a browser with Javascript."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:58
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:48
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:15
 msgid "Term:"
 msgstr ""
