@@ -5,7 +5,8 @@ CHANGES
 2.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Column header in the Detailed Student Report spans beyond column borders.
+  (https://lauchpad.net/bugs/837156)
 
 
 1.9.3 (2011-11-18)
