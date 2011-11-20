@@ -382,7 +382,13 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
                 periods[period] = 0
         periods = list(periods.keys())
 
-        widths = '4cm' + ',1cm' * len(periods)
+        widths = '4cm'
+        for period in periods:
+            width = 1
+            if len(period) > 4:
+                width = float(len(period)) / 4.5
+            widths += ',%fcm' % width
+
         rows = []
         for day in sorted(data):
             scores = [''] * len(periods)
