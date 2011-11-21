@@ -8,6 +8,8 @@ CHANGES
 - Column header in the Detailed Student Report spans beyond column borders.
   (https://launchpad.net/bugs/837156)
 - absences by day report dialog should have a proper date widget (https://launchpad.net/bugs/876800)
+- PDF file names should include student username (https://launchpad.net/bugs/893019)
+- Flourish request failing report modal submits too soon (https://launchpad.net/bugs/893240)
 
 
 1.9.3 (2011-11-18)
