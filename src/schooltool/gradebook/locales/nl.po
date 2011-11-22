@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-10-02 01:45-0600\n"
-"PO-Revision-Date: 2011-11-01 17:59+0000\n"
+"POT-Creation-Date: 2011-11-18 04:23+0200\n"
+"PO-Revision-Date: 2011-11-03 10:48+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-02 05:26+0000\n"
-"X-Generator: Launchpad (build 14214)\n"
+"X-Launchpad-Export-Date: 2011-11-19 05:56+0000\n"
+"X-Generator: Launchpad (build 14299)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -585,7 +585,15 @@ msgstr "Rapportactiviteit"
 msgid "New Template"
 msgstr "Nieuwe sjabloon"
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:546
+#: /src/schooltool/gradebook/browser/flourish.zcml:538
+msgid "Action"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:548
+msgid "Hide/unhide Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:582
 msgid "My Grades"
 msgstr "Mijn cijfers"
 
@@ -927,7 +935,12 @@ msgstr "-- Hele jaar --"
 msgid "-- Select a template --"
 msgstr "-- Selecteer een sjabloon --"
 
-#: /src/schooltool/gradebook/browser/report_card.py:316
+#. Default: ""
+#: /src/schooltool/gradebook/browser/report_card.py:386
+msgid "Hide/unhide Report Sheets for ${year}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report_card.py:461
 msgid "Report Sheet Template Details"
 msgstr "Details rapportbladsjabloon"
 
@@ -1272,7 +1285,11 @@ msgstr "Laatkomers verbergen"
 msgid "Points"
 msgstr "Punten"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:120
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
+msgid "Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Score this"
 msgstr "Geef een score"
 
@@ -1350,7 +1367,34 @@ msgstr ""
 msgid "deploy it to teacher gradebooks."
 msgstr "het toe te passen in cijferlijsten van leraar."
 
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:11
+msgid "Currently Deployed Report Sheets"
+msgstr "Huidige toegepaste rapportbladen"
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:12
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:15
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
+msgid "Report Sheet"
+msgstr "Rapportblad"
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
+msgid "Index"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
+msgid "Hidden?"
+msgstr "Verborgen?"
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:35
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:30
+msgid "This year has no report sheets deployed."
+msgstr "Dit jaar heeft geen toegepaste rapportbladen."
+
 #: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
 msgstr "Geen cijfers gegeven"
@@ -1381,6 +1425,9 @@ msgid ""
 "defined outline items laid out like a text outline. This is necessary for "
 "comments or other scores that will not fit in a traditional grid."
 msgstr ""
+"Onder het raster is een overzicht voor elke sectie, waar de ingestelde "
+"overzichtsitems ingedeeld zijn als bij een tekstoverzicht. Dit wordt "
+"gebruikt voor commentaren en andere scores die niet passen in het raster."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:21
 msgid ""
@@ -1399,21 +1446,7 @@ msgstr ""
 "De rapportkaarten kunnen gegenereerd worden voor een individueel persoon of "
 "alle mensen in een groep."
 
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:3
-msgid "Currently Deployed Report Sheets"
-msgstr "Huidige toegepaste rapportbladen"
-
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:7
-#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
-#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
-msgid "Report Sheet"
-msgstr "Rapportblad"
-
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:22
-msgid "This year has no report sheets deployed."
-msgstr "Dit jaar heeft geen toegepaste rapportbladen."
-
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:35
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:49
 msgid "Select report sheet to deploy"
 msgstr "Selecteer rapportblad om toe te passen"
 
@@ -1425,6 +1458,18 @@ msgstr "Termijn of jaar"
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:43
 msgid "Select a term or deploy to the entire year."
 msgstr "Selecteer een termijn of pas het toe voor het hele jaar."
+
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:76
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:98
+#: /src/schooltool/requirement/browser/scoresystem.py:407
+msgid "Required input is missing."
+msgstr "Verplichte invoer ontbreekt."
+
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:93
+msgid ""
+"If you deploy the same template multiple times, give each deployment an "
+"easily distinguishable name."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "The first step in the process is to ${add-sheet}"
@@ -1578,10 +1623,6 @@ msgstr "Werkbladen herschikken of verbergen"
 msgid "Order"
 msgstr "Volgorde"
 
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Hidden?"
-msgstr "Verborgen?"
-
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2
 msgid "Summary Worksheet"
@@ -1665,17 +1706,7 @@ msgstr "Cijfer ${name}"
 msgid "Apply a grade for all students:"
 msgstr "Een cijfer geven aan alle leerlingen:"
 
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:44
-msgid ""
-"Your browser either has Javascript turned off, or it is not supported. "
-"Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
-"use a browser with Javascript."
-msgstr ""
-"In uw browser staat Javascript uitgeschakeld of wordt niet ondersteund. "
-"Javascript is <b>nodig</b> voor de cijferlijsten. Schakel Javascript in of "
-"gebruik een browser met Javascript."
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:58
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:48
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:15
 msgid "Term:"
 msgstr "Termijn:"
@@ -2278,10 +2309,6 @@ msgstr "Bestaand scoresysteem"
 #: /src/schooltool/requirement/browser/scoresystem.py:296
 msgid "Custom score system"
 msgstr "Aangepast scoresysteem"
-
-#: /src/schooltool/requirement/browser/scoresystem.py:407
-msgid "Required input is missing."
-msgstr "Verplichte invoer ontbreekt."
 
 #. Default: ""
 #: /src/schooltool/requirement/browser/scoresystem.py:504
