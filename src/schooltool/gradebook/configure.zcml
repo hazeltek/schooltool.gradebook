@@ -304,18 +304,6 @@
       provides="zope.publisher.interfaces.IPublishTraverse"
       factory=".gradebook.StudentGradebookTraverser" />
 
-  <!-- apidoc help setup -->
-  <configure
-      xmlns:zcml="http://namespaces.zope.org/zcml"
-      xmlns:apidoc="http://namespaces.zope.org/apidoc"
-      zcml:condition="have apidoc">
-    <apidoc:bookchapter
-        id="gradebook"
-        title="Gradebook API"
-        parent="schooltool"
-        doc_path="README.txt" />
-  </configure>
-
   <include package=".browser" />
 
   <adapter
