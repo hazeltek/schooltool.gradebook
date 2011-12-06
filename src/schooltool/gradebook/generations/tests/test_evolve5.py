@@ -98,7 +98,9 @@ def doctest_evolve5():
         >>> layout = root.layouts[u'2011'] = ReportLayout()
         >>> layout.columns = [
         ...     ReportColumn('term1|2011_term1|1', ''),
-        ...     ReportColumn('term1|2011_term1-2|1', '')]
+        ...     ReportColumn('term1|2011_term1-2|1', ''),
+        ...     ReportColumn('absent', ''),
+        ...     ReportColumn('tardy', '')]
         >>> layout.outline_activities = [
         ...     OutlineActivity('term1|2011_term1|1', ''),
         ...     OutlineActivity('term1|2011_term1-2|1', '')]
@@ -112,7 +114,7 @@ def doctest_evolve5():
         >>> sorted([key for key in IActivities(section2)])
         [u'2011_term1-2']
         >>> [column.source for column in layout.columns]
-        ['term1|2011_term1|1', 'term1|2011_term1-2|1']
+        ['term1|2011_term1|1', 'term1|2011_term1-2|1', 'absent', 'tardy']
         >>> [activity.source for activity in layout.outline_activities]
         ['term1|2011_term1|1', 'term1|2011_term1-2|1']
 
@@ -126,7 +128,7 @@ def doctest_evolve5():
         >>> sorted([key for key in IActivities(section2)])
         [u'2011_term1_2']
         >>> [column.source for column in layout.columns]
-        [u'term1|2011_term1_1|1', u'term1|2011_term1_2|1']
+        [u'term1|2011_term1_1|1', u'term1|2011_term1_2|1', 'absent', 'tardy']
         >>> [activity.source for activity in layout.outline_activities]
         [u'term1|2011_term1_1|1', u'term1|2011_term1_2|1']
 

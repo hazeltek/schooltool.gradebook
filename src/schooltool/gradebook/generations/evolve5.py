@@ -21,7 +21,6 @@ Evolve database to generation 5.
 
 Fix deployed report sheet keys to allow for hide/unhide feature.
 """
-from zope.annotation.interfaces import IAnnotations
 from zope.app.generations.utility import findObjectsProviding
 from zope.app.publication.zopepublication import ZopePublication
 from zope.component.hooks import getSite, setSite
@@ -30,6 +29,7 @@ from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
+from schooltool.gradebook.browser.report_card import ABSENT_KEY, TARDY_KEY
 
 
 def fixYear(year, app):
@@ -68,6 +68,8 @@ def fixYear(year, app):
 
         if layout is not None:
             for column in layout.columns:
+                if column.source in (ABSENT_KEY, TARDY_KEY):
+                    continue
                 term, sheet, act = column.source.split('|')
                 if sheet == key:
                     column.source = '%s|%s|%s' % (term, new_key, act)
