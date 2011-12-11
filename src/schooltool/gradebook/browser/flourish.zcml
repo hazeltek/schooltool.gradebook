@@ -967,6 +967,7 @@
       manager="schooltool.course.browser.course.CourseActionsLinks"
       permission="schooltool.edit"
       />
+
   <flourish:viewlet
       name="manage-course-workssheets"
       view="schooltool.course.browser.course.FlourishCourseView"

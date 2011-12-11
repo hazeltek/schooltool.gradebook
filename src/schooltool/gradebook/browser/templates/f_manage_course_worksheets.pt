@@ -1,5 +1,4 @@
 <div class="manage-view" i18n:domain="schooltool"
-     tal:condition="view/has_schoolyear"
      tal:define="sheets view/sheets">
   <h3>
     <a title="Manage Deployed Worksheets"

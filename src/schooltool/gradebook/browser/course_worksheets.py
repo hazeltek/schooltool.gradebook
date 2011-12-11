@@ -53,10 +53,6 @@ class FlourishManageCourseSheetsOverview(flourish.page.Content):
         'templates/f_manage_course_worksheets.pt')
 
     @property
-    def has_schoolyear(self):
-        return self.schoolyear is not None
-
-    @property
     def schoolyear(self):
         return ISchoolYear(self.context)
 
