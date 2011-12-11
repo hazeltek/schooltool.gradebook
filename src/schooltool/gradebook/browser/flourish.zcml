@@ -958,4 +958,21 @@
         />
   </configure>
 
+  <!-- Course Worksheets -->
+  <flourish:viewlet
+      name="worksheet_templates.html"
+      view="schooltool.course.browser.course.FlourishCourseView"
+      title="Customize Worksheet Templates"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager="schooltool.course.browser.course.CourseActionsLinks"
+      permission="schooltool.edit"
+      />
+  <flourish:viewlet
+      name="manage-course-workssheets"
+      view="schooltool.course.browser.course.FlourishCourseView"
+      permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".course_worksheets.FlourishManageCourseSheetsOverview"
+      />
+
 </configure>

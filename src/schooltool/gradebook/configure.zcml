@@ -57,6 +57,18 @@
       factory=".activity.getSectionActivities"
       trusted="true"
       />
+  <adapter
+      for="schooltool.course.interfaces.ICourse"
+      provides=".interfaces.IActivities"
+      factory=".activity.getCourseActivities"
+      trusted="true"
+      />
+  <adapter
+      for="schooltool.course.interfaces.ICourse"
+      provides=".interfaces.ICourseDeployedWorksheets"
+      factory=".activity.getCourseDeployedWorksheets"
+      trusted="true"
+      />
 
   <!-- Activity Content and Security -->
   <class class=".gradebook_init.GradebookRoot">

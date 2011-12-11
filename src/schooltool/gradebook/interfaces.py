@@ -89,6 +89,10 @@ class IActivities(interfaces.IRequirement):
     contains('.IWorksheet')
 
 
+class ICourseDeployedWorksheets(IActivities):
+    """Container of Deployed Course Worksheets (by term)"""
+
+
 class IWorksheet(interfaces.IRequirement):
     '''A list of activities that must be fulfilled in a course or section.'''
 

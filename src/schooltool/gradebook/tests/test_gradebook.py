@@ -28,7 +28,7 @@ from zope.app.testing import setup
 from zope.component import provideAdapter, provideUtility
 from zope.interface import classImplements
 
-from schooltool.course.interfaces import ISection
+from schooltool.course.interfaces import ICourse, ISection
 from schooltool.relationship.tests import setUpRelationships
 from schooltool.person.person import Person
 from schooltool.requirement import testing
@@ -48,6 +48,12 @@ def setUp(test):
     provideAdapter(
         activity.getSectionActivities,
         (ISection,), interfaces.IActivities)
+    provideAdapter(
+        activity.getCourseActivities,
+        (ICourse,), interfaces.IActivities)
+    provideAdapter(
+        activity.getCourseDeployedWorksheets,
+        (ICourse,), interfaces.ICourseDeployedWorksheets)
 
     provideAdapter(gradebook.Gradebook)
 

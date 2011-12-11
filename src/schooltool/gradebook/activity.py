@@ -44,6 +44,8 @@ from schooltool.course.interfaces import ISection
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
+COURSE_ACTIVITIES_KEY = 'schooltool.gradebook.course_activities'
+COURSE_DEPLOYED_WORKSHEETS_KEY = 'schooltool.gradebook.course_deployed'
 
 
 def ensureAtLeastOneWorksheet(activities):
@@ -237,8 +239,6 @@ def getSectionActivities(context):
         return annotations[ACTIVITIES_KEY]
     except KeyError:
         activities = Activities(_('Activities'))
-        # Make sure that the sections activities include all the activities of
-        # the courses as well
         annotations[ACTIVITIES_KEY] = activities
         zope.container.contained.contained(
             activities, context, 'activities')
@@ -246,6 +246,38 @@ def getSectionActivities(context):
 
 # Convention to make adapter introspectable
 getSectionActivities.factory = Activities
+
+
+def getCourseActivities(context):
+    '''IAttributeAnnotatable object to IActivities adapter.'''
+    annotations = annotation.interfaces.IAnnotations(context)
+    try:
+        return annotations[COURSE_ACTIVITIES_KEY]
+    except KeyError:
+        activities = Activities(_('Activities'))
+        annotations[COURSE_ACTIVITIES_KEY] = activities
+        zope.container.contained.contained(
+            activities, context, 'activities')
+        return activities
+
+# Convention to make adapter introspectable
+getCourseActivities.factory = Activities
+
+
+def getCourseDeployedWorksheets(context):
+    '''IAttributeAnnotatable object to ICourseDeployedWorksheets adapter.'''
+    annotations = annotation.interfaces.IAnnotations(context)
+    try:
+        return annotations[COURSE_DEPLOYED_WORKSHEETS_KEY]
+    except KeyError:
+        activities = Activities(_('Deployed Worksheets'))
+        annotations[COURSE_DEPLOYED_WORKSHEETS_KEY] = activities
+        zope.container.contained.contained(
+            activities, context, 'deployed_worksheets')
+        return activities
+
+# Convention to make adapter introspectable
+getCourseDeployedWorksheets.factory = Activities
 
 
 class LinkedActivity(Activity):
