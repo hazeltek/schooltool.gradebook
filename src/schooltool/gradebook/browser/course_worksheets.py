@@ -42,7 +42,7 @@ from schooltool.skin import flourish
 from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
 
-from schooltool.gradebook.interfaces import IActivities
+from schooltool.gradebook.interfaces import IActivities, IWorksheet
 from schooltool.gradebook.activity import Worksheet, Activity
 
 
@@ -58,4 +58,55 @@ class FlourishManageCourseSheetsOverview(flourish.page.Content):
 
     def sheets(self):
         return []
+
+
+class FlourishCourseTemplatesView(flourish.page.Page):
+    """A flourish view for managing course worksheet templates"""
+
+    @property
+    def worksheets(self):
+        return IActivities(self.context).values()
+
+
+class FlourishCourseWorksheetsLinks(flourish.page.RefineLinksViewlet):
+    """flourish course worksheet templates add links viewlet."""
+
+
+class FlourishCourseWorksheetAddView(flourish.form.AddForm):
+    """flourish view for adding a course worksheet."""
+
+    fields = field.Fields(IWorksheet).select('title')
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = _('Course Worksheet Details')
+
+    @button.buttonAndHandler(_('Submit'), name='add')
+    def handleAdd(self, action):
+        super(FlourishCourseWorksheetAddView, self).handleAdd.func(self, action)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
+
+    def create(self, data):
+        worksheet = Worksheet(data['title'])
+        return worksheet
+
+    def add(self, worksheet):
+        activities = IActivities(self.context)
+        chooser = INameChooser(activities)
+        name = chooser.chooseName(worksheet.title, worksheet)
+        activities[name] = worksheet
+        self._worksheet = worksheet
+        return worksheet
+
+    def nextURL(self):
+        url = absoluteURL(self.context, self.request)
+        return url + '/worksheet_templates.html'
+
+    def updateActions(self):
+        super(FlourishCourseWorksheetAddView, self).updateActions()
+        self.actions['add'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
 

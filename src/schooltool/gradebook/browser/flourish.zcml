@@ -976,4 +976,43 @@
       class=".course_worksheets.FlourishManageCourseSheetsOverview"
       />
 
+  <flourish:page
+      name="worksheet_templates.html"
+      for="schooltool.course.interfaces.ICourse"
+      class=".course_worksheets.FlourishCourseTemplatesView"
+      content_template="templates/f_course_worksheet_templates.pt"
+      permission="schooltool.edit"
+      subtitle="Worksheet Templates"
+      />
+
+  <flourish:viewlet
+      name="course-worksheets"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".course_worksheets.FlourishCourseWorksheetsLinks"
+      for="schooltool.course.interfaces.ICourse"
+      title="Add"
+      permission="schooltool.edit"
+      view=".course_worksheets.FlourishCourseTemplatesView"
+      />
+
+  <flourish:viewlet
+      name="addCourseWorksheet.html"
+      title="Course Worksheet"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".course_worksheets.FlourishCourseWorksheetsLinks"
+      permission="schooltool.edit"
+      />
+
+  <configure package="schooltool.skin.flourish">
+    <flourish:page
+        name="addCourseWorksheet.html"
+        for="schooltool.course.interfaces.ICourse"
+        subtitle="New Course Worksheet"
+        class="schooltool.gradebook.browser.course_worksheets.FlourishCourseWorksheetAddView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        />
+  </configure>
+
 </configure>
+
