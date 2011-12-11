@@ -1,0 +1,26 @@
+<div tal:define="worksheets view/worksheets" i18n:domain="schooltool.gradebook">
+  <form method="post"
+        tal:attributes="action string:${context/@@absolute_url}/worksheet_templates.html">
+    <input type="hidden" name="form-submitted" value="" />
+    <table>
+      <thead>
+        <tr>
+          <th i18n:translate="">Title</th>
+        </tr>
+      </thead>
+      <tr tal:repeat="worksheet worksheets">
+        <td>
+          <tal:block replace="structure worksheet/@@link" />
+        </td>
+      </tr>
+      <tr tal:condition="python: len(worksheets) == 0">
+        <td i18n:translate="">There are no course worksheets set up.</td>
+      </tr>
+    </table>
+  </form>
+  <h3>
+    <a tal:attributes="href string:${context/@@absolute_url}"
+       i18n:translate="">Done</a>
+  </h3>
+</div>
+
