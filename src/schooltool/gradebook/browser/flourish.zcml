@@ -1014,5 +1014,13 @@
         />
   </configure>
 
+  <flourish:page
+      name="deployed_worksheets.html"
+      for="schooltool.course.interfaces.ICourse"
+      class=".course_worksheets.FlourishCourseWorksheetsView"
+      content_template="templates/f_course_worksheets.pt"
+      permission="schooltool.edit"
+      />
+
 </configure>
 
