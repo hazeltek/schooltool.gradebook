@@ -46,7 +46,8 @@ from schooltool.term.interfaces import ITerm
 from schooltool.gradebook.interfaces import (IActivities, ICourseWorksheet,
     ICourseDeployedWorksheets)
 from schooltool.gradebook.activity import CourseWorksheet, Activity
-from schooltool.gradebook.browser.activity import FlourishActivityAddView
+from schooltool.gradebook.browser.activity import (FlourishActivityAddView,
+    FlourishActivityEditView)
 
 
 class FlourishCourseSchooYearMixin(object):
@@ -178,6 +179,13 @@ class CourseActivityAddTertiaryNavigationManager(
     flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("")
+
+
+class FlourishCourseActivityEditView(FlourishActivityEditView):
+    legend = _('Course Activity Details')
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
 
 
 class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):

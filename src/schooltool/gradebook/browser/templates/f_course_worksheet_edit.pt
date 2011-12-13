@@ -16,7 +16,7 @@
           <td>
             <span tal:content="activity/title" />
             <a class="modify" href="" title="Edit"
-               tal:attributes="href string:${activity/@@absolute_url}/edit.html"
+               tal:attributes="href string:${activity/@@absolute_url}/editCourseActivity.html"
                i18n:attributes="title">
               <img tal:attributes="src context/++resource++schooltool.skin.flourish/edit-icon.png"
                    alt="Edit"

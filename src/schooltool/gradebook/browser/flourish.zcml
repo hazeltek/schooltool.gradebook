@@ -1058,6 +1058,15 @@
       />
 
   <flourish:page
+      name="editCourseActivity.html"
+      for="..interfaces.IActivity"
+      subtitle="Edit"
+      content_template="templates/f_add_edit_activity.pt"
+      class=".course_worksheets.FlourishCourseActivityEditView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
       name="deployed_worksheets.html"
       for="schooltool.course.interfaces.ICourse"
       class=".course_worksheets.FlourishCourseWorksheetsView"
