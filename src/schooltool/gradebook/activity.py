@@ -211,6 +211,12 @@ class ReportWorksheet(requirement.Requirement):
     deployed = False
 
 
+class CourseWorksheet(requirement.Requirement):
+    zope.interface.implements(interfaces.ICourseWorksheet)
+
+    deployed = False
+
+
 class Activity(requirement.Requirement):
     zope.interface.implements(interfaces.IActivity)
 
@@ -234,6 +240,10 @@ class Activity(requirement.Requirement):
 
 class ReportActivity(Activity):
     zope.interface.implements(interfaces.IReportActivity)
+
+
+class CourseActivity(Activity):
+    zope.interface.implements(interfaces.ICourseActivity)
 
 
 def getSectionActivities(context):

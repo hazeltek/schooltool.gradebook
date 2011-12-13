@@ -45,7 +45,7 @@ from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook.interfaces import (IActivities, IWorksheet,
     ICourseDeployedWorksheets)
-from schooltool.gradebook.activity import Worksheet, Activity
+from schooltool.gradebook.activity import CourseWorksheet, CourseActivity
 
 
 class FlourishCourseSchooYearMixin(object):
@@ -91,6 +91,10 @@ class FlourishCourseWorksheetAddView(flourish.form.AddForm):
     label = None
     legend = _('Course Worksheet Details')
 
+    @property
+    def title(self):
+        return self.context.__parent__.title
+
     @button.buttonAndHandler(_('Submit'), name='add')
     def handleAdd(self, action):
         super(FlourishCourseWorksheetAddView, self).handleAdd.func(self, action)
@@ -101,20 +105,18 @@ class FlourishCourseWorksheetAddView(flourish.form.AddForm):
         self.request.response.redirect(url)
 
     def create(self, data):
-        worksheet = Worksheet(data['title'])
+        worksheet = CourseWorksheet(data['title'])
         return worksheet
 
     def add(self, worksheet):
-        activities = IActivities(self.context)
-        chooser = INameChooser(activities)
+        chooser = INameChooser(self.context)
         name = chooser.chooseName(worksheet.title, worksheet)
-        activities[name] = worksheet
+        self.context[name] = worksheet
         self._worksheet = worksheet
         return worksheet
 
     def nextURL(self):
-        url = absoluteURL(self.context, self.request)
-        return url + '/worksheet_templates.html'
+        return absoluteURL(self.context, self.request)
 
     def updateActions(self):
         super(FlourishCourseWorksheetAddView, self).updateActions()

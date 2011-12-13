@@ -121,6 +121,16 @@
         set_schema=".interfaces.IActivities"
         />
   </class>
+  <class class=".activity.CourseActivities">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.ICourseActivities"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.ICourseActivities"
+        />
+  </class>
   <class class=".activity.Worksheet">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
@@ -148,6 +158,19 @@
         attributes="changePosition"
         />
   </class>
+  <class class=".activity.CourseWorksheet">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__ title deployed"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.ICourseWorksheet"
+        attributes="changePosition"
+        />
+  </class>
   <class class=".activity.Activity">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
@@ -172,6 +195,19 @@
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
         set_schema=".interfaces.IReportActivity"
+        />
+  </class>
+  <class class=".activity.CourseActivity">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__
+                    title label due_date description category scoresystem date"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.ICourseActivity"
         />
   </class>
   <class class=".gradebook_init.ReportLayout">

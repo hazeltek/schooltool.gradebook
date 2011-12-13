@@ -92,7 +92,7 @@ class IActivities(interfaces.IRequirement):
 class ICourseActivities(interfaces.IRequirement):
     """Container of Course Worksheet Templates that can be deployed"""
 
-    contains('.IWorksheet')
+    contains('.ICourseWorksheet')
 
 
 class ICourseDeployedWorksheets(IActivities):
@@ -126,10 +126,20 @@ class IWorksheet(interfaces.IRequirement):
 
 
 class IReportWorksheet(interfaces.IRequirement):
-    '''A list of report card activities that get copied into sections.'''
+    '''A worksheet template to get copied into section gradebooks.'''
 
     containers(IGradebookTemplates, IGradebookDeployed)
     contains('.IReportActivity')
+
+    title = zope.schema.TextLine(
+        title=_(u'Title'),
+        description=_(u'Identifies the report sheet in teacher gradebooks.'))
+
+
+class ICourseWorksheet(interfaces.IRequirement):
+    '''A worksheet template to get copied into section gradebooks.'''
+
+    contains('.ICourseActivity')
 
     title = zope.schema.TextLine(
         title=_(u'Title'),
@@ -174,9 +184,15 @@ class IActivity(interfaces.IRequirement):
 
 
 class IReportActivity(IActivity):
-    '''An activity to be deployed to section activities'''
+    '''A report card activity to be deployed to section activities'''
 
     containers(IReportWorksheet)
+
+
+class ICourseActivity(IActivity):
+    '''A course activity to be deployed to section activities'''
+
+    containers(ICourseWorksheet)
 
 
 class IReportLayout(Interface):
