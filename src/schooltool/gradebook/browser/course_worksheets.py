@@ -45,7 +45,8 @@ from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook.interfaces import (IActivities, ICourseWorksheet,
     ICourseDeployedWorksheets)
-from schooltool.gradebook.activity import CourseWorksheet, CourseActivity
+from schooltool.gradebook.activity import CourseWorksheet, Activity
+from schooltool.gradebook.browser.activity import FlourishActivityAddView
 
 
 class FlourishCourseSchooYearMixin(object):
@@ -167,6 +168,16 @@ class FlourishCourseWorksheetEditView(flourish.form.Form, form.EditForm):
 
 class CourseWorksheetAddLinks(flourish.page.RefineLinksViewlet):
     """Course worksheet add links viewlet."""
+
+
+class FlourishCourseActivityAddView(FlourishActivityAddView):
+    legend = _('Course Activity Details')
+
+
+class CourseActivityAddTertiaryNavigationManager(
+    flourish.page.TertiaryNavigationManager):
+
+    template = InlineViewPageTemplate("")
 
 
 class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):

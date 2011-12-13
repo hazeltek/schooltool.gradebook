@@ -1012,6 +1012,15 @@
         content_template="templates/z3c-schooltool-form.pt"
         permission="schooltool.edit"
         />
+
+    <flourish:page
+        name="addCourseActivity.html"
+        for="schooltool.gradebook.interfaces.ICourseWorksheet"
+        subtitle="New Course Activity"
+        class="schooltool.gradebook.browser.course_worksheets.FlourishCourseActivityAddView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        />
   </configure>
 
   <flourish:page
@@ -1038,6 +1047,14 @@
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager=".course_worksheets.CourseWorksheetAddLinks"
       permission="schooltool.edit"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".course_worksheets.CourseActivityAddTertiaryNavigationManager"
+      view=".course_worksheets.FlourishCourseActivityAddView"
+      permission="zope.Public"
       />
 
   <flourish:page

@@ -197,19 +197,6 @@
         set_schema=".interfaces.IReportActivity"
         />
   </class>
-  <class class=".activity.CourseActivity">
-    <allow interface="zope.interface.common.mapping.IReadMapping" />
-    <require
-        permission="schooltool.view"
-        attributes="keys __iter__ values items __len__
-                    title label due_date description category scoresystem date"
-        />
-    <require
-        permission="schooltool.edit"
-        interface="zope.interface.common.mapping.IWriteMapping"
-        set_schema=".interfaces.ICourseActivity"
-        />
-  </class>
   <class class=".gradebook_init.ReportLayout">
     <require
         permission="schooltool.view"

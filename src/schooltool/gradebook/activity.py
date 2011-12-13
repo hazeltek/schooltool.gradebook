@@ -242,10 +242,6 @@ class ReportActivity(Activity):
     zope.interface.implements(interfaces.IReportActivity)
 
 
-class CourseActivity(Activity):
-    zope.interface.implements(interfaces.ICourseActivity)
-
-
 def getSectionActivities(context):
     '''IAttributeAnnotatable object to IActivities adapter.'''
     annotations = annotation.interfaces.IAnnotations(context)

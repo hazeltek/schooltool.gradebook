@@ -139,7 +139,7 @@ class IReportWorksheet(interfaces.IRequirement):
 class ICourseWorksheet(interfaces.IRequirement):
     '''A worksheet template to get copied into section gradebooks.'''
 
-    contains('.ICourseActivity')
+    contains('.IActivity')
 
     title = zope.schema.TextLine(
         title=_(u'Title'),
@@ -187,12 +187,6 @@ class IReportActivity(IActivity):
     '''A report card activity to be deployed to section activities'''
 
     containers(IReportWorksheet)
-
-
-class ICourseActivity(IActivity):
-    '''A course activity to be deployed to section activities'''
-
-    containers(ICourseWorksheet)
 
 
 class IReportLayout(Interface):
