@@ -1015,6 +1015,32 @@
   </configure>
 
   <flourish:page
+      name="index.html"
+      for="schooltool.gradebook.interfaces.ICourseWorksheet"
+      subtitle="Edit"
+      class=".course_worksheets.FlourishCourseWorksheetEditView"
+      content_template="templates/f_course_worksheet_edit.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="course-worksheet-add-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".course_worksheets.CourseWorksheetAddLinks"
+      view=".course_worksheets.FlourishCourseWorksheetEditView"
+      title="Add"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="addCourseActivity.html"
+      title="Course Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".course_worksheets.CourseWorksheetAddLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
       name="deployed_worksheets.html"
       for="schooltool.course.interfaces.ICourse"
       class=".course_worksheets.FlourishCourseWorksheetsView"

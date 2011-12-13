@@ -43,7 +43,7 @@ from schooltool.skin import flourish
 from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
 
-from schooltool.gradebook.interfaces import (IActivities, IWorksheet,
+from schooltool.gradebook.interfaces import (IActivities, ICourseWorksheet,
     ICourseDeployedWorksheets)
 from schooltool.gradebook.activity import CourseWorksheet, CourseActivity
 
@@ -86,7 +86,7 @@ class FlourishCourseWorksheetsLinks(flourish.page.RefineLinksViewlet):
 class FlourishCourseWorksheetAddView(flourish.form.AddForm):
     """flourish view for adding a course worksheet."""
 
-    fields = field.Fields(IWorksheet).select('title')
+    fields = field.Fields(ICourseWorksheet).select('title')
     template = InheritTemplate(flourish.page.Page.template)
     label = None
     legend = _('Course Worksheet Details')
@@ -122,6 +122,51 @@ class FlourishCourseWorksheetAddView(flourish.form.AddForm):
         super(FlourishCourseWorksheetAddView, self).updateActions()
         self.actions['add'].addClass('button-ok')
         self.actions['cancel'].addClass('button-cancel')
+
+
+class FlourishCourseWorksheetEditView(flourish.form.Form, form.EditForm):
+
+    template = InheritTemplate(flourish.page.Page.template)
+    label = None
+    legend = _('Course Worksheet Template Information')
+    fields = field.Fields(ICourseWorksheet).select('title')
+
+    @property
+    def title(self):
+        return self.context.title
+
+    def update(self):
+        if 'form-submitted' in self.request:
+            for activity in self.context.values():
+                name = 'delete.%s' % activity.__name__
+                if name in self.request:
+                    del self.context[activity.__name__]
+                    break
+        return form.EditForm.update(self)
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishCourseWorksheetEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            self.request.response.redirect(self.nextURL())
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        self.request.response.redirect(self.nextURL())
+
+    def nextURL(self):
+        return absoluteURL(self.context.__parent__, self.request)
+
+    def updateActions(self):
+        super(FlourishCourseWorksheetEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+
+class CourseWorksheetAddLinks(flourish.page.RefineLinksViewlet):
+    """Course worksheet add links viewlet."""
 
 
 class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):
