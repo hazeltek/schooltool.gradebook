@@ -59,7 +59,7 @@
       />
   <adapter
       for="schooltool.course.interfaces.ICourse"
-      provides=".interfaces.IActivities"
+      provides=".interfaces.ICourseActivities"
       factory=".activity.getCourseActivities"
       trusted="true"
       />
@@ -315,6 +315,12 @@
       layer="zope.publisher.interfaces.http.IHTTPRequest"
       name="activities"
       adapter="schooltool.gradebook.interfaces.IActivities"
+      />
+  <adapterTraverserPlugin
+      for="schooltool.course.interfaces.ICourse"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="activities"
+      adapter="schooltool.gradebook.interfaces.ICourseActivities"
       />
 
   <!-- special traversal adapter for traversing from worksheet to gradebook -->

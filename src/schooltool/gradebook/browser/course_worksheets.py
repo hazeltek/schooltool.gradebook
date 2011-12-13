@@ -71,8 +71,12 @@ class FlourishCourseTemplatesView(flourish.page.Page):
     """A flourish view for managing course worksheet templates"""
 
     @property
+    def title(self):
+        return self.context.__parent__.title
+
+    @property
     def worksheets(self):
-        return IActivities(self.context).values()
+        return tuple(removeSecurityProxy(self.context).values())
 
 
 class FlourishCourseWorksheetsLinks(flourish.page.RefineLinksViewlet):

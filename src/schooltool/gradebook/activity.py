@@ -172,6 +172,10 @@ class Activities(requirement.Requirement):
             return []
 
 
+class CourseActivities(requirement.Requirement):
+    zope.interface.implements(interfaces.ICourseActivities)
+
+
 class Worksheet(requirement.Requirement):
     zope.interface.implements(interfaces.IWorksheet, 
                               annotation.interfaces.IAttributeAnnotatable)
@@ -249,12 +253,12 @@ getSectionActivities.factory = Activities
 
 
 def getCourseActivities(context):
-    '''IAttributeAnnotatable object to IActivities adapter.'''
+    '''IAttributeAnnotatable object to ICourseActivities adapter.'''
     annotations = annotation.interfaces.IAnnotations(context)
     try:
         return annotations[COURSE_ACTIVITIES_KEY]
     except KeyError:
-        activities = Activities(_('Activities'))
+        activities = CourseActivities(_('Course Activities'))
         annotations[COURSE_ACTIVITIES_KEY] = activities
         zope.container.contained.contained(
             activities, context, 'activities')

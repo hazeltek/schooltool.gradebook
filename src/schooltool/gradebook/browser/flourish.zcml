@@ -960,7 +960,7 @@
 
   <!-- Course Worksheets -->
   <flourish:viewlet
-      name="worksheet_templates.html"
+      name="activities"
       view="schooltool.course.browser.course.FlourishCourseView"
       title="Customize Worksheet Templates"
       class="schooltool.skin.flourish.page.LinkViewlet"
@@ -977,8 +977,8 @@
       />
 
   <flourish:page
-      name="worksheet_templates.html"
-      for="schooltool.course.interfaces.ICourse"
+      name="index.html"
+      for="schooltool.gradebook.interfaces.ICourseActivities"
       class=".course_worksheets.FlourishCourseTemplatesView"
       content_template="templates/f_course_worksheet_templates.pt"
       permission="schooltool.edit"
@@ -989,7 +989,7 @@
       name="course-worksheets"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".course_worksheets.FlourishCourseWorksheetsLinks"
-      for="schooltool.course.interfaces.ICourse"
+      for="schooltool.gradebook.interfaces.ICourseActivities"
       title="Add"
       permission="schooltool.edit"
       view=".course_worksheets.FlourishCourseTemplatesView"
@@ -1006,7 +1006,7 @@
   <configure package="schooltool.skin.flourish">
     <flourish:page
         name="addCourseWorksheet.html"
-        for="schooltool.course.interfaces.ICourse"
+        for="schooltool.gradebook.interfaces.ICourseActivities"
         subtitle="New Course Worksheet"
         class="schooltool.gradebook.browser.course_worksheets.FlourishCourseWorksheetAddView"
         content_template="templates/z3c-schooltool-form.pt"
