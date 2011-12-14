@@ -43,11 +43,12 @@ from schooltool.skin import flourish
 from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
 
-from schooltool.gradebook.interfaces import (IActivities, ICourseWorksheet,
-    ICourseDeployedWorksheets)
-from schooltool.gradebook.activity import CourseWorksheet, Activity
+from schooltool.gradebook.interfaces import (IActivities, ICourseActivities,
+     ICourseWorksheet, ICourseDeployedWorksheets)
+from schooltool.gradebook.activity import CourseWorksheet, Activity, Worksheet
 from schooltool.gradebook.browser.activity import (FlourishActivityAddView,
     FlourishActivityEditView)
+from schooltool.gradebook.browser.report_card import copyActivities
 
 
 class FlourishCourseSchooYearMixin(object):
@@ -196,7 +197,7 @@ class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):
 
     @property
     def activities(self):
-        return IActivities(self.context)
+        return ICourseActivities(self.context)
 
     def sheets(self):
         return [sheet for sheet in self.all_sheets() if not sheet['checked']]
@@ -214,7 +215,8 @@ class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):
                 'terms': [False] * len(schoolyear),
                 })
             for index, term in enumerate(schoolyear.values()):
-                if sheet.__name__.startswith(term.__name__):
+                prefix = 'course_%s_%s' % (self.context.__name__, term.__name__)
+                if sheet.__name__.startswith(prefix):
                     deployment['terms'][index] = True
         sheets = [v for k, v in sorted(deployments.items())]
         return ([sheet for sheet in sheets if not sheet['checked']] +
@@ -315,24 +317,25 @@ class FlourishCourseWorksheetsView(FlourishCourseWorksheetsBase,
         else:
             terms = self.schoolyear.values()
         for term in terms:
-            deployedKey = '%s_%s' % (term.__name__, highest + 1)
+            deployedKey = 'course_%s_%s_%s' % (self.context.__name__,
+                                               term.__name__, highest + 1)
             title = template_title
             if title_index:
                 title += '-%s' % (title_index + 1)
             deployedWorksheet = Worksheet(title)
             self.deployed[deployedKey] = deployedWorksheet
-            continue
-            copyActivities(template, deployedWorksheet)
+            copyActivities(removeSecurityProxy(template), deployedWorksheet)
 
             # now copy the template to all sections in the term
             sections = ISectionContainer(term)
             for section in sections.values():
+                if self.context not in section.courses:
+                    continue
                 worksheetCopy = Worksheet(deployedWorksheet.title)
                 worksheetCopy.deployed = True
-                self.activities[deployedWorksheet.__name__] = worksheetCopy
+                IActivities(section)[deployedWorksheet.__name__] = worksheetCopy
                 copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
-        url = absoluteURL(ISchoolToolApplication(None), self.request)
-        return url + '/manage'
+        return absoluteURL(self.context, self.request)
 

@@ -19,7 +19,7 @@
     </table>
   </form>
   <h3>
-    <a tal:attributes="href string:${context/@@absolute_url}"
+    <a tal:attributes="href string:${context/__parent__/@@absolute_url}"
        i18n:translate="">Done</a>
   </h3>
 </div>
