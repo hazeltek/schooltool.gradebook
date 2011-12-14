@@ -192,6 +192,10 @@ class FlourishCourseActivityEditView(FlourishActivityEditView):
 class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):
 
     @property
+    def schoolyear(self):
+        return ISchoolYear(self.context)
+
+    @property
     def deployed(self):
         return ICourseDeployedWorksheets(self.context)
 
@@ -205,7 +209,7 @@ class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):
     def all_sheets(self):
         schoolyear = self.schoolyear
         deployments = {}
-        for sheet in self.deployed.values():
+        for nm, sheet in self.deployed.items():
             sheet = removeSecurityProxy(sheet)
             index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
             deployment = deployments.setdefault(index, {
@@ -338,4 +342,54 @@ class FlourishCourseWorksheetsView(FlourishCourseWorksheetsBase,
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
+
+
+class CourseWorksheetsActionLinks(flourish.page.RefineLinksViewlet):
+    """Course worksheets view action links viewlet."""
+
+
+class FlourishHideUnhideCourseWorkheetsView(FlourishCourseWorksheetsBase,
+                                            flourish.page.Page):
+    """A flourish view for hiding/unhiding course worksheet deployments"""
+
+    @property
+    def subtitle(self):
+        title = _(u'Hide/unhide Deployed Worksheets for ${year}',
+                  mapping={'year': self.schoolyear.title})
+        return translate(title, context=self.request)
+
+    def update(self):
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.nextURL())
+        elif 'SUBMIT' in self.request:
+            hidden = self.request.get('hidden', [])
+            schoolyear = self.schoolyear
+            for nm, sheet in self.deployed.items():
+                sheet = removeSecurityProxy(sheet)
+                index = sheet.__name__[sheet.__name__.rfind('_') + 1:]
+                self.handleSheet(sheet, index, hidden)
+            self.request.response.redirect(self.nextURL())
+
+    def handleSheet(self, sheet, index, hidden):
+        if index in hidden and not sheet.hidden:
+            sheet.hidden = True
+        elif index not in hidden and sheet.hidden:
+            sheet.hidden = False
+        else:
+            return
+        schoolyear = self.schoolyear
+        for term in schoolyear.values():
+            deployedKey = 'course_%s_%s_%s' % (self.context.__name__,
+                                               term.__name__, index)
+            if sheet.__name__ == deployedKey:
+                for section in ISectionContainer(term).values():
+                    if self.context not in section.courses:
+                        continue
+                    activities = IActivities(section)
+                    activities[deployedKey].hidden = sheet.hidden
+                return
+
+    def nextURL(self):
+        url = absoluteURL(self.context, self.request)
+        return url + '/deployed_worksheets.html'
 

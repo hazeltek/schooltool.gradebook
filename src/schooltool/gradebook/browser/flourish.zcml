@@ -1074,5 +1074,30 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="course-worksheets-action-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".course_worksheets.CourseWorksheetsActionLinks"
+      view=".course_worksheets.FlourishCourseWorksheetsView"
+      title="Action"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="hide_unhide_worksheets.html"
+      title="Hide/unhide Worksheets"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".course_worksheets.CourseWorksheetsActionLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="hide_unhide_worksheets.html"
+      for="schooltool.course.interfaces.ICourse"
+      class=".course_worksheets.FlourishHideUnhideCourseWorkheetsView"
+      content_template="templates/f_hide_unhide_course_worksheets.pt"
+      permission="schooltool.edit"
+      />
+
 </configure>
 

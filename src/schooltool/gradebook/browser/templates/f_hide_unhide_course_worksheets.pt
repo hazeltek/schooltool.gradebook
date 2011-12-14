@@ -1,0 +1,44 @@
+<div i18n:domain="schooltool.gradebook"
+     tal:define="sheets view/all_sheets; schoolyear view/schoolyear">
+  <h3 i18n:translate="">Currently Deployed WorkSheets</h3>
+  <form method="post" class="standalone"
+        tal:attributes="action request/getURL">
+    <table>
+      <thead>
+        <tr>
+          <th i18n:translate="">Deployed Worksheet</th>
+          <th i18n:translate="">Index</th>
+          <tal:block repeat="term schoolyear/values">
+            <th tal:content="term/title" />
+          </tal:block>
+          <th i18n:translate="">Hidden?</th>
+        </tr>
+      </thead>
+      <tr tal:repeat="sheet sheets">
+        <td tal:content="sheet/obj/title" />
+        <td tal:content="sheet/index" />
+        <tal:block repeat="term sheet/terms">
+          <td>
+            <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
+          </td>
+        </tal:block>
+        <td>
+          <input type="checkbox" name="hidden:list"
+                 tal:attributes="value sheet/index;
+                                 checked sheet/checked" />
+        </td>
+      </tr>
+      <tr tal:condition="not: sheets">
+        <td tal:attributes="colspan python:len(schoolyear)+3" i18n:translate="">
+          This year has no report sheets deployed.
+        </td>
+      </tr>
+    </table>
+    <div class="buttons controls">
+      <input type="submit" class="button-ok" name="SUBMIT" value="Submit"
+             i18n:attributes="value" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+  </form>
+</div>
+
