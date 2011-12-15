@@ -59,17 +59,6 @@ class FlourishCourseSchooYearMixin(object):
         return ISchoolYear(self.context)
 
 
-class FlourishManageCourseSheetsOverview(FlourishCourseSchooYearMixin,
-                                         flourish.page.Content):
-    """A flourish viewlet for showing deployed worksheets in course view"""
-
-    body_template = ViewPageTemplateFile(
-        'templates/f_manage_course_worksheets.pt')
-
-    def sheets(self):
-        return []
-
-
 class FlourishCourseTemplatesView(flourish.page.Page):
     """A flourish view for managing course worksheet templates"""
 
@@ -225,6 +214,21 @@ class FlourishCourseWorksheetsBase(FlourishCourseSchooYearMixin):
         sheets = [v for k, v in sorted(deployments.items())]
         return ([sheet for sheet in sheets if not sheet['checked']] +
                 [sheet for sheet in sheets if sheet['checked']])
+
+
+class FlourishManageCourseWorksheetTemplatesOverview(flourish.page.Content):
+    """A flourish viewlet for showing worksheet templates in course view"""
+
+    body_template = ViewPageTemplateFile(
+        'templates/f_manage_course_worksheet_templates.pt')
+
+
+class FlourishManageCourseSheetsOverview(FlourishCourseWorksheetsBase,
+                                         flourish.page.Content):
+    """A flourish viewlet for showing deployed worksheets in course view"""
+
+    body_template = ViewPageTemplateFile(
+        'templates/f_manage_course_worksheets.pt')
 
 
 class FlourishCourseWorksheetsView(FlourishCourseWorksheetsBase,

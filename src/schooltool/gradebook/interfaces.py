@@ -152,7 +152,7 @@ class IActivity(interfaces.IRequirement):
     due_date = zope.schema.Date(
         title=_("Due Date"),
         description=_("The date the activity is due to be graded."),
-        required=True)
+        required=False)
 
     label = zope.schema.TextLine(
         title=_(u"Label"),

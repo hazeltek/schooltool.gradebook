@@ -30,7 +30,7 @@
       </tr>
       <tr tal:condition="not: sheets">
         <td tal:attributes="colspan python:len(schoolyear)+3" i18n:translate="">
-          This year has no report sheets deployed.
+          This year has no worksheets deployed.
         </td>
       </tr>
     </table>

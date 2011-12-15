@@ -960,16 +960,16 @@
 
   <!-- Course Worksheets -->
   <flourish:viewlet
-      name="activities"
+      name="manage-course-worksheet-templates"
+      before="manage-course-worksheets"
       view="schooltool.course.browser.course.FlourishCourseView"
-      title="Customize Worksheet Templates"
-      class="schooltool.skin.flourish.page.LinkViewlet"
-      manager="schooltool.course.browser.course.CourseActionsLinks"
       permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".course_worksheets.FlourishManageCourseWorksheetTemplatesOverview"
       />
 
   <flourish:viewlet
-      name="manage-course-workssheets"
+      name="manage-course-worksheets"
       view="schooltool.course.browser.course.FlourishCourseView"
       permission="schooltool.edit"
       manager="schooltool.skin.flourish.page.IPageContentManager"
