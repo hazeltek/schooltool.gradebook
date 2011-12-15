@@ -5,7 +5,7 @@ CHANGES
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow scoresystem point value be equal to the previous grade (https://launchpad.net/bugs/899228)
 
 
 2.0.0 (2011-11-22)
