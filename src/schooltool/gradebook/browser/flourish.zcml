@@ -372,8 +372,17 @@
 
   <!-- Report Sheets -->
   <flourish:viewlet
-      name="manage-report-sheets-overview"
+      name="manage-report-sheet-templates-overview"
       after="manage-resources-overview"
+      view="schooltool.app.browser.app.ManageSchool"
+      permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".report_card.FlourishManageReportSheetTemplatesOverview"
+      />
+
+  <flourish:viewlet
+      name="manage-report-sheets-overview"
+      after="manage-report-sheet-templates-overview"
       view="schooltool.app.browser.app.ManageSchool"
       permission="schooltool.edit"
       manager="schooltool.skin.flourish.page.IPageContentManager"
@@ -517,15 +526,6 @@
         permission="schooltool.edit"
         />
   </configure>
-
-  <flourish:viewlet
-      name="gradebook/templates"
-      before="report_card_layout"
-      title="Report Sheet Templates"
-      class="schooltool.skin.flourish.page.LinkViewlet"
-      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
-      permission="schooltool.edit"
-      />
 
   <flourish:page
       name="report_sheets"

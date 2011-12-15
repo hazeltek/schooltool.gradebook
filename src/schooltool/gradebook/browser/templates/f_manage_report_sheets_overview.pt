@@ -2,11 +2,11 @@
      tal:condition="view/has_schoolyear"
      tal:define="sheets view/sheets">
   <h3>
-    <a title="Manage Report Sheets"
+    <a title="Manage Deployed Report Sheets"
        tal:attributes="href string:${context/@@absolute_url}/report_sheets"
        i18n:attributes="title"
        i18n:translate="">
-      Report Sheets
+      Deployed Report Sheets
     </a>
   </h3>
   <p i18n:translate="" tal:condition="sheets">
