@@ -184,7 +184,7 @@ class CustomScoreSystemAddView(BrowserView):
         disp_list, abbr_list = [], []
         for displayed, abbr, value, percent in self.validScores:
             if last_value is not None:
-                if value >= last_value:
+                if value > last_value:
                     return self.setMessage(VALUES_MUST_DESCEND)
             if last_percent is not None:
                 if percent >= last_percent:
