@@ -1057,6 +1057,10 @@ class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Settings links viewlet."""
 
 
+class FlourishGradebookActionsLinks(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Actions links viewlet."""
+
+
 class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
@@ -1902,3 +1906,4 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
             return None
         can_view = flourish.canView(self.gradebook)
         return can_view
+

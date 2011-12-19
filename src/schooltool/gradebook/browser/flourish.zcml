@@ -140,6 +140,17 @@
       />
 
   <flourish:viewlet
+      name="gradebook_actions"
+      after="gradebook_settings"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishGradebookActionsLinks"
+      for="..interfaces.IGradebook"
+      title="Actions"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
       name="select_year"
       class=".gradebook.FlourishGradebookYearNavigationViewlet"
       manager=".gradebook.FlourishGradebookYearNavigation"
@@ -1096,6 +1107,30 @@
       for="schooltool.course.interfaces.ICourse"
       class=".course_worksheets.FlourishHideUnhideCourseWorkheetsView"
       content_template="templates/f_hide_unhide_course_worksheets.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="../deploy_as_course_worksheet.html"
+      title="Deploy as Course Worksheet"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishGradebookActionsLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="deploy_as_course_worksheet.html"
+      for="..interfaces.IWorksheet"
+      subtitle="Deploy as Course Worksheet"
+      class=".course_worksheets.FlourishDeployAsCourseWorksheetView"
+      content_template="templates/f_deploy_as_course_worksheet.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="deploy_course_worksheet.html"
+      for="..interfaces.IActivities"
+      class=".course_worksheets.FlourishDeployCourseWorksheetView"
       permission="schooltool.edit"
       />
 

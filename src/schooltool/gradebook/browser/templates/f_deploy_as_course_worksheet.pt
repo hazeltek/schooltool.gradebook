@@ -1,0 +1,61 @@
+<div i18n:domain="schooltool.gradebook"
+     tal:define="terms view/terms">
+  <form method="post" class="standalone"
+        tal:attributes="action request/getURL">
+    <div class="viewspace">
+        <div class="status" tal:condition="view/has_error">
+          <div class="summary ui-state-error ui-corner-all">
+            <span class="ui-icon ui-icon-alert">icon</span>
+            <span i18n:domain="schooltool" i18n:translate="">Please correct the marked fields below.</span>
+          </div>
+        </div>
+      <fieldset>
+        <legend>
+          <span i18n:translate="">Select term or whole year to deploy</span>
+        </legend>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Term or Year</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Select a term or deploy to the entire year.
+          </p>
+          <div class="widget">
+            <select id="term" name="term">
+              <tal:block repeat="term terms">
+                <option tal:attributes="value term/name; selected term/selected"
+                        tal:content="term/title" />
+              </tal:block>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Title</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            If you deploy the same template multiple times, give each deployment
+            an easily distinguishable name.
+          </p>
+          <div class="error" tal:condition="view/no_title">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
+          <div class="widget">
+            <input type="text" name="alternate_title" id="alternate_title"
+                   tal:attributes="value view/alternate_title" />
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="buttons controls">
+      <input type="submit" class="button-ok" name="SUBMIT" value="Submit"
+             i18n:attributes="value" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+  </form>
+</div>
+
