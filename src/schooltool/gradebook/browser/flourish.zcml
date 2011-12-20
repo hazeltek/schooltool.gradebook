@@ -1127,12 +1127,5 @@
       permission="schooltool.edit"
       />
 
-  <flourish:page
-      name="deploy_course_worksheet.html"
-      for="..interfaces.IActivities"
-      class=".course_worksheets.FlourishDeployCourseWorksheetView"
-      permission="schooltool.edit"
-      />
-
 </configure>
 
