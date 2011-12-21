@@ -1612,8 +1612,8 @@ class GradeStudent(z3cform.EditForm):
     def updateActions(self):
         super(GradeStudent, self).updateActions()
         self.actions['apply'].addClass('button-ok')
-        self.actions['previous'].addClass('button-ok')
-        self.actions['next'].addClass('button-ok')
+        self.actions['previous'].addClass('button-neutral')
+        self.actions['next'].addClass('button-neutral')
         self.actions['cancel'].addClass('button-cancel')
 
         prev, next = self.prevNextStudent()
