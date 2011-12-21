@@ -44,7 +44,7 @@ from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook.interfaces import (IActivities, ICourseActivities,
-     ICourseWorksheet, ICourseDeployedWorksheets)
+     ICourseWorksheet, ICourseDeployedWorksheets, IGradebookRoot)
 from schooltool.gradebook.activity import CourseWorksheet, Activity, Worksheet
 from schooltool.gradebook.browser.activity import (FlourishActivityAddView,
     FlourishActivityEditView)
@@ -226,6 +226,15 @@ class FlourishCourseWorksheetsBase(object):
                 })
         return result
 
+    def getNewIndex(self, sheet, template_title):
+        if sheet.title.startswith(template_title):
+            rest = sheet.title[len(template_title):]
+            if not rest:
+                return 1
+            elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
+                return int(rest[1:])
+        return 0
+
     def deploy(self, term, template):
         # get the next index and title
         highest, title_index = 0, 0
@@ -234,16 +243,16 @@ class FlourishCourseWorksheetsBase(object):
             index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
             if index > highest:
                 highest = index
-            if sheet.title.startswith(template_title):
-                rest = sheet.title[len(template_title):]
-                if not rest:
-                    new_index = 1
-                elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
-                    new_index = int(rest[1:])
-            else:
-                new_index = 0
+            new_index = self.getNewIndex(sheet, template_title)
             if new_index > title_index:
                 title_index = new_index
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        prefix = self.schoolyear.__name__ + '_'
+        for sheet in root.deployed.values():
+            if sheet.__name__.startswith(prefix):
+                new_index = self.getNewIndex(sheet, template_title)
+                if new_index > title_index:
+                    title_index = new_index
         title = template_title
         if title_index:
             title += '-%s' % (title_index + 1)
