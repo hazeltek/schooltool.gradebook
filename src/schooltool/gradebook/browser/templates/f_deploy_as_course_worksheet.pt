@@ -11,7 +11,7 @@
         </div>
       <fieldset>
         <legend>
-          <span i18n:translate="">Select term or whole year to deploy</span>
+          <span i18n:translate="">Select term or year to deploy</span>
         </legend>
         <div class="row">
           <div class="label">
