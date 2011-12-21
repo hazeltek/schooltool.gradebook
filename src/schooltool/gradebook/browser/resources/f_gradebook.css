@@ -33,3 +33,8 @@ table.scoresystem-scores tbody input[type="text"]:focus {
     height: 18px;
     width: 104px;
 }
+
+li.deployed a {
+    font-style: italic;
+}
+

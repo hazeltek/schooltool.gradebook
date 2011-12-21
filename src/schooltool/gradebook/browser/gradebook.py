@@ -1079,8 +1079,11 @@ class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager
         current = gradebook.context.__name__
         for worksheet in gradebook.worksheets:
             url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+            classes = worksheet.__name__ == current and ['active'] or []
+            if worksheet.deployed:
+                classes.append('deployed')
             result.append({
-                'class': worksheet.__name__ == current and 'active' or None,
+                'class': classes and ' '.join(classes) or None,
                 'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
                 })
         return result
