@@ -121,6 +121,9 @@ class IWorksheet(interfaces.IRequirement):
         """Set the weight for the given category.  Any numeric type is
            acceptable"""
 
+    def canAverage():
+        """return True if activities have scoresystems that can be averaged"""
+
     containers(IActivities)
     contains('.IActivity')
 

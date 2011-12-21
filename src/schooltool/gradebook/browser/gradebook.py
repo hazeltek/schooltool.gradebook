@@ -415,7 +415,7 @@ class SectionFinder(GradebookBase):
         self.due_date_hide = prefs.get('hide', False)
 
         self.apply_all_colspan = 1
-        if gradebook.context.deployed:
+        if not gradebook.context.canAverage():
             self.total_hide = True
             self.average_hide = True
         if not self.absences_hide:

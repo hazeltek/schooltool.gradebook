@@ -37,6 +37,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement import requirement, scoresystem
+from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.gradebook import interfaces
 from schooltool.term.interfaces import IDateManager
 from schooltool.course.interfaces import ISection
@@ -203,6 +204,12 @@ class Worksheet(requirement.Requirement):
         if CATEGORY_WEIGHTS_KEY not in ann:
             ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
         ann[CATEGORY_WEIGHTS_KEY][category] = weight
+
+    def canAverage(self):
+        for activity in self.values():
+            if IRangedValuesScoreSystem(activity.scoresystem, None) is None:
+                return False
+        return True
 
 
 class ReportWorksheet(requirement.Requirement):
