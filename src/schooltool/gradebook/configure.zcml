@@ -131,6 +131,16 @@
         set_schema=".interfaces.ICourseActivities"
         />
   </class>
+  <class class=".activity.CourseDeployedWorksheets">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.ICourseDeployedWorksheets"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.ICourseDeployedWorksheets"
+        />
+  </class>
   <class class=".activity.Worksheet">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require

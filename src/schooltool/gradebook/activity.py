@@ -177,6 +177,10 @@ class CourseActivities(requirement.Requirement):
     zope.interface.implements(interfaces.ICourseActivities)
 
 
+class CourseDeployedWorksheets(requirement.Requirement):
+    zope.interface.implements(interfaces.ICourseDeployedWorksheets)
+
+
 class Worksheet(requirement.Requirement):
     zope.interface.implements(interfaces.IWorksheet, 
                               annotation.interfaces.IAttributeAnnotatable)
@@ -278,7 +282,7 @@ def getCourseActivities(context):
         return activities
 
 # Convention to make adapter introspectable
-getCourseActivities.factory = Activities
+getCourseActivities.factory = CourseActivities
 
 
 def getCourseDeployedWorksheets(context):
@@ -287,14 +291,14 @@ def getCourseDeployedWorksheets(context):
     try:
         return annotations[COURSE_DEPLOYED_WORKSHEETS_KEY]
     except KeyError:
-        activities = Activities(_('Deployed Worksheets'))
-        annotations[COURSE_DEPLOYED_WORKSHEETS_KEY] = activities
+        worksheets = CourseDeployedWorksheets(_('Deployed Worksheets'))
+        annotations[COURSE_DEPLOYED_WORKSHEETS_KEY] = worksheets
         zope.container.contained.contained(
-            activities, context, 'deployed_worksheets')
-        return activities
+            worksheets, context, 'deployed_worksheets')
+        return worksheets
 
 # Convention to make adapter introspectable
-getCourseDeployedWorksheets.factory = Activities
+getCourseDeployedWorksheets.factory = CourseDeployedWorksheets
 
 
 class LinkedActivity(Activity):

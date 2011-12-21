@@ -95,8 +95,10 @@ class ICourseActivities(interfaces.IRequirement):
     contains('.ICourseWorksheet')
 
 
-class ICourseDeployedWorksheets(IActivities):
+class ICourseDeployedWorksheets(interfaces.IRequirement):
     """Container of Deployed Course Worksheets (by term)"""
+
+    contains('.IWorksheet')
 
 
 class IWorksheet(interfaces.IRequirement):
@@ -146,7 +148,7 @@ class ICourseWorksheet(interfaces.IRequirement):
 
     title = zope.schema.TextLine(
         title=_(u'Title'),
-        description=_(u'Identifies the report sheet in teacher gradebooks.'))
+        description=_(u'Identifies the course worksheet in gradebooks.'))
 
 
 class IActivity(interfaces.IRequirement):
