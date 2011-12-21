@@ -50,7 +50,7 @@ def setUp(test):
         (ISection,), interfaces.IActivities)
     provideAdapter(
         activity.getCourseActivities,
-        (ICourse,), interfaces.IActivities)
+        (ICourse,), interfaces.ICourseActivities)
     provideAdapter(
         activity.getCourseDeployedWorksheets,
         (ICourse,), interfaces.ICourseDeployedWorksheets)

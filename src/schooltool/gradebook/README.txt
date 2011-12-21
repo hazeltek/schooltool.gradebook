@@ -669,14 +669,14 @@ deploy to all the sections of that course for specific terms or the whole
 school year.  There is an adapter that returns this set, which it locates
 in the course's annotations.
 
-    >>> alg1_act = interfaces.IActivities(alg1)
+    >>> alg1_act = interfaces.ICourseActivities(alg1)
     >>> alg1_act
-    Activities(u'Activities')
+    CourseActivities(u'Course Activities')
 
 There is also an adapter that returns the deployed worksheets for the course,
 also stored as annotations.
 
     >>> alg1_deployed = interfaces.ICourseDeployedWorksheets(alg1)
     >>> alg1_deployed
-    Activities(u'Deployed Worksheets')
+    CourseDeployedWorksheets(u'Deployed Worksheets')
 
