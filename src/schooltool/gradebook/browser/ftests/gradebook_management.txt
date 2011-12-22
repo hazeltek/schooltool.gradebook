@@ -678,7 +678,7 @@ of students, there will be no 'Previous' button.
     Quiz (100)
     >>> stephan.printQuery("id('form')/div[2]//input")
     <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
-    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-neutral" value="Next" type="submit" />
     <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 When we click on the 'Next' button it takes us to the middle student, Tom.
@@ -692,8 +692,8 @@ Here we will see both a 'Previous' and a 'Next' button.
     Quiz (100)
     >>> stephan.printQuery("id('form')/div[2]//input")
     <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
-    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
-    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-ok" value="Next" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-neutral" value="Previous" type="submit" />
+    <input id="form-buttons-next" name="form.buttons.next" class="submit-widget button-field button-neutral" value="Next" type="submit" />
     <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 When we click on the 'Next' button it takes us to the last student, Claudia.
@@ -707,7 +707,7 @@ Here we will see no 'Next' button.
     Quiz (100)
     >>> stephan.printQuery("id('form')/div[2]//input")
     <input id="form-buttons-apply" name="form.buttons.apply" class="submit-widget button-field button-ok" value="Apply" type="submit" />
-    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-ok" value="Previous" type="submit" />
+    <input id="form-buttons-previous" name="form.buttons.previous" class="submit-widget button-field button-neutral" value="Previous" type="submit" />
     <input id="form-buttons-cancel" name="form.buttons.cancel" class="submit-widget button-field button-cancel" value="Cancel" type="submit" />
 
 Hitting the 'Cancel' button takes the user back to the gradebook.
