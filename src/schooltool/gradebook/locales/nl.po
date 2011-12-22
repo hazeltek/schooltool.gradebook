@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-11-18 04:23+0200\n"
-"PO-Revision-Date: 2011-11-03 10:48+0000\n"
+"PO-Revision-Date: 2011-11-25 16:03+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-19 05:56+0000\n"
-"X-Generator: Launchpad (build 14299)\n"
+"X-Launchpad-Export-Date: 2011-11-26 06:15+0000\n"
+"X-Generator: Launchpad (build 14381)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -587,11 +587,11 @@ msgstr "Nieuwe sjabloon"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:538
 msgid "Action"
-msgstr ""
+msgstr "Actie"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:548
 msgid "Hide/unhide Sheets"
-msgstr ""
+msgstr "Bladen tonen/verbergen"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:582
 msgid "My Grades"
@@ -938,7 +938,7 @@ msgstr "-- Selecteer een sjabloon --"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/report_card.py:386
 msgid "Hide/unhide Report Sheets for ${year}"
-msgstr ""
+msgstr "Rapportbladen tonen/verbergen voor ${year}"
 
 #: /src/schooltool/gradebook/browser/report_card.py:461
 msgid "Report Sheet Template Details"
@@ -1287,7 +1287,7 @@ msgstr "Punten"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
 msgid "Report"
-msgstr ""
+msgstr "Rapport"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Score this"
@@ -1381,7 +1381,7 @@ msgstr "Rapportblad"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
 msgid "Index"
-msgstr ""
+msgstr "Index"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
@@ -1470,6 +1470,8 @@ msgid ""
 "If you deploy the same template multiple times, give each deployment an "
 "easily distinguishable name."
 msgstr ""
+"Wanneer u hetzelfde sjabloon meerdere malen toepast, zorg er dan voor dat u "
+"elke toepassing van dit sjabloon een makkelijk herkenbare naam geeft."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "The first step in the process is to ${add-sheet}"
@@ -2354,3 +2356,12 @@ msgstr "slagingsscore:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Scoresysteem tonen"
+
+#~ msgid ""
+#~ "Your browser either has Javascript turned off, or it is not supported. "
+#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
+#~ "use a browser with Javascript."
+#~ msgstr ""
+#~ "In uw browser staat Javascript uitgeschakeld of wordt niet ondersteund. "
+#~ "Javascript is <b>nodig</b> voor de cijferlijsten. Schakel Javascript in of "
+#~ "gebruik een browser met Javascript."

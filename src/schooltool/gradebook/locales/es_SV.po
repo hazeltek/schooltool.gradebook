@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-18 04:23+0200\n"
-"PO-Revision-Date: 2011-11-18 17:38+0000\n"
+"PO-Revision-Date: 2011-12-20 04:11+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-19 05:57+0000\n"
-"X-Generator: Launchpad (build 14299)\n"
+"X-Launchpad-Export-Date: 2011-12-21 05:42+0000\n"
+"X-Generator: Launchpad (build 14538)\n"
 "Language: \n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -839,7 +839,7 @@ msgstr "Curso"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:483
 msgid "Teacher(s)"
-msgstr "Profesor(es)"
+msgstr "Maestro(s)"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:486
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
@@ -860,7 +860,7 @@ msgstr "Reporte de Ausencias por Sección"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:675
 msgid "Teacher"
-msgstr "Profesor"
+msgstr "Maestro"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:688
 msgid "Tardies"
@@ -1355,7 +1355,7 @@ msgid ""
 "from teachers about students in all sections."
 msgstr ""
 "Las hojas de reporte usan el cuadro de notas de SchoolTool para recolectar "
-"datos y comentarios de los profesores acerca de los alumnos en todas las "
+"datos y comentarios de los maestros acerca de los estudiantes en todas las "
 "secciones."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:10
@@ -1370,7 +1370,7 @@ msgstr "Luego de crear un plantilla, el siguiente paso es ${deploy-sheet}"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
 msgid "deploy it to teacher gradebooks."
-msgstr "implementarla en los cuadros de notas de los profesores."
+msgstr "implementarla en los cuadros de notas de los maestros."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:11
@@ -1574,7 +1574,7 @@ msgid ""
 "to all teacher gradebooks in the school."
 msgstr ""
 "Una hoja de reporte es una hoja de cuadro de notas especial que puede ser "
-"implementada a todos los cuadros de notas de los profesores de la escuela."
+"implementada a todos los cuadros de notas de los maestros de la escuela."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:10
 msgid ""
@@ -1930,7 +1930,7 @@ msgstr "Proyecto"
 #: /src/schooltool/gradebook/interfaces.py:126
 msgid "Identifies the report sheet in teacher gradebooks."
 msgstr ""
-"Identifica la hoja de reporte en los cuadros de notas de los profesores"
+"Identifica la hoja de reporte en los cuadros de notas de los maestros."
 
 #: /src/schooltool/gradebook/interfaces.py:134
 msgid "The date the activity is due to be graded."
@@ -2072,15 +2072,15 @@ msgstr "Ver datos del cuadro de notas de una sección."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Only the instructor of a section can edit its gradebook."
-msgstr "Sólo el instructor de una sección puede editar su cuadro de notas."
+msgstr "Sólo el maestro de una sección puede editar su cuadro de notas."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid ""
 "The instructor of a section and school administration can edit a section's "
 "gradebook."
 msgstr ""
-"El instructor de una sección y los administradores pueden editar el cuadro "
-"de notas de una sección."
+"El maestro de una sección y los administradores pueden editar el cuadro de "
+"notas de una sección."
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/flourish.zcml:10
@@ -2365,3 +2365,12 @@ msgstr "puntaje de aprobación:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Ver sistema de puntuación"
+
+#~ msgid ""
+#~ "Your browser either has Javascript turned off, or it is not supported. "
+#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
+#~ "use a browser with Javascript."
+#~ msgstr ""
+#~ "Su navegador tiene Javascript desactivado, o no es compatible. Javascript es "
+#~ "<b>requerido</b> para el cuadro de notas. Por favor, active Javascript o "
+#~ "utilice un navegador con JavaScript."
