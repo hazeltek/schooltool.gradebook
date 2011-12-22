@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - Allow scoresystem point value be equal to the previous grade (https://launchpad.net/bugs/899228)
+- Added course worksheets feature
 
 
 2.0.0 (2011-11-22)
