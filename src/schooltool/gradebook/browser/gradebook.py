@@ -678,9 +678,10 @@ class GradebookOverview(SectionFinder):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
-        section = ISection(worksheet)
 
+        section = ISection(worksheet, None)
         journal_data = interfaces.ISectionJournalData(section, None)
+
         rows = []
         for student_info in self.students_info:
             grades = []
@@ -1886,7 +1887,7 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
         if not len(activities):
             return None
         current_worksheet = activities.getCurrentWorksheet(person)
-        return interfaces.IGradebook(current_worksheet)
+        return interfaces.IGradebook(current_worksheet, None)
 
     @property
     def url(self):
