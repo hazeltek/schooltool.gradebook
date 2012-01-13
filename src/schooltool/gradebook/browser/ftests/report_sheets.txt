@@ -416,10 +416,11 @@ same report sheets and activities deployed:
     >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Baseball - Baseball (2)
 
+    >>> teacher.getLink('Report Sheet 1').click()
     >>> printGradebook(teacher.contents)
-    +------------------+----------------+
-    | *Report Sheet 1* | Report Sheet 2 |
-    +------------------+----------------+
+    +------------------+----------------+--------+
+    | *Report Sheet 1* | Report Sheet 2 | Sheet1 |
+    +------------------+----------------+--------+
     +----------------+---------+-------+---------+
     | Name           | Repor   | RA1.1 | RA1.4   |
     +----------------+---------+-------+---------+
@@ -430,9 +431,9 @@ same report sheets and activities deployed:
 
     >>> teacher.getLink('Report Sheet 2').click()
     >>> printGradebook(teacher.contents)
-    +----------------+------------------+
-    | Report Sheet 1 | *Report Sheet 2* |
-    +----------------+------------------+
+    +----------------+------------------+--------+
+    | Report Sheet 1 | *Report Sheet 2* | Sheet1 |
+    +----------------+------------------+--------+
     +----------------+---------+---------+
     | Name           | Repor   | Repor   |
     +----------------+---------+---------+
@@ -453,10 +454,11 @@ the other 'Report Sheet 3' deployed only for that term:
     >>> teacher.printQuery('//select[@name="currentSection"]/option[@selected="selected"]/text()')
     Swimming - Swimming (1)
 
+    >>> teacher.getLink('Report Sheet 1').click()
     >>> printGradebook(teacher.contents)
-    +------------------+----------------+
-    | *Report Sheet 1* | Report Sheet 3 |
-    +------------------+----------------+
+    +------------------+----------------+--------+
+    | *Report Sheet 1* | Report Sheet 3 | Sheet1 |
+    +------------------+----------------+--------+
     +----------------+---------+-------+---------+
     | Name           | Repor   | RA1.1 | RA1.4   |
     +----------------+---------+-------+---------+
@@ -467,9 +469,9 @@ the other 'Report Sheet 3' deployed only for that term:
 
     >>> teacher.getLink('Report Sheet 3').click()
     >>> printGradebook(teacher.contents)
-    +----------------+------------------+
-    | Report Sheet 1 | *Report Sheet 3* |
-    +----------------+------------------+
+    +----------------+------------------+--------+
+    | Report Sheet 1 | *Report Sheet 3* | Sheet1 |
+    +----------------+------------------+--------+
     +----------------+---------+
     | Name           | REPAC   |
     +----------------+---------+

@@ -316,6 +316,7 @@ Now, let's add some grades to the First Term sections:
 
     >>> teacher.getControl(name='currentSection').displayValue = ['Chemistry - Chemistry (2)']
     >>> teacher.getForm().submit()
+    >>> teacher.getLink('Report Sheet On').click()
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.getControl('Report Activity 1.1').value = '85'
@@ -337,6 +338,7 @@ Now, let's add some grades to the First Term sections:
 
     >>> teacher.getControl(name='currentSection').displayValue = ['Math - Math (1)']
     >>> teacher.getForm().submit()
+    >>> teacher.getLink('Report Sheet On').click()
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.getControl('Report Activity 1.1').value = '70'
@@ -357,6 +359,7 @@ Now, let's add some grades to the First Term sections:
 
     >>> teacher.getControl(name='currentSection').displayValue = ['Physics - Physics (3)']
     >>> teacher.getForm().submit()
+    >>> teacher.getLink('Report Sheet On').click()
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.getControl('Report Activity 1.1').value = '60'
@@ -384,6 +387,7 @@ Now, let's add some grades to the Second Term sections:
 
     >>> teacher.getControl(name='currentSection').displayValue = ['Chemistry - Chemistry (2)']
     >>> teacher.getForm().submit()
+    >>> teacher.getLink('Report Sheet Tw').click()
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.getControl('Report Activity 2.1').value = '63'
@@ -404,6 +408,7 @@ Now, let's add some grades to the Second Term sections:
 
     >>> teacher.getControl(name='currentSection').displayValue = ['Math - Math (1)']
     >>> teacher.getForm().submit()
+    >>> teacher.getLink('Report Sheet Tw').click()
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.getControl('Report Activity 2.2').value = '<p>Another different <strong>comment</strong> for:</p><p>&nbsp;</p><p><em>Paul</em></p>'
@@ -425,6 +430,7 @@ Now, let's add some grades to the Second Term sections:
 
     >>> teacher.getControl(name='currentSection').displayValue = ['Physics - Physics (3)']
     >>> teacher.getForm().submit()
+    >>> teacher.getLink('Report Sheet Tw').click()
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.getControl('Report Activity 2.1').value = '81'
