@@ -47,8 +47,10 @@ CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
 
 
 def ensureAtLeastOneWorksheet(activities):
-    if len(activities): # has worksheets already
-        return
+    # only create Sheet1 if no personal worksheet (hidden or not) is found
+    for key, worksheet in activities.items():
+        if not worksheet.deployed:
+            return
     sheet1 = Worksheet(_('Sheet1'))
     chooser = INameChooser(activities)
     name = chooser.chooseName('', sheet1)
