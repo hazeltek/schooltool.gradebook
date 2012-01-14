@@ -48,7 +48,7 @@ CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
 
 def ensureAtLeastOneWorksheet(activities):
     # only create Sheet1 if no personal worksheet (hidden or not) is found
-    for key, worksheet in activities.items():
+    for worksheet in activities.all_worksheets:
         if not worksheet.deployed:
             return
     sheet1 = Worksheet(_('Sheet1'))
@@ -123,16 +123,31 @@ class Activities(requirement.Requirement):
     zope.interface.implements(interfaces.IActivities)
 
     def _getDefaultWorksheet(self):
-        for worksheet in self.worksheets:
-            if not worksheet.deployed:
+        # order of preference is:
+        # 1) first non-hidden personal sheet
+        # 2) first non-hidden deployed sheet
+        # 3) first sheet outright if all are hidden
+        # 4) None if there are no worksheets at all
+        firstDeployed, firstAbsolute = None, None
+        for worksheet in self.all_worksheets:
+            if firstAbsolute is None:
+                firstAbsolute = worksheet
+            if worksheet.deployed:
+                if firstDeployed is None and not worksheet.hidden:
+                    firstDeployed = worksheet
+            elif not worksheet.hidden:
                 return worksheet
-        if len(self.worksheets):
-            return self.worksheets[0]
-        return None
+        if firstDeployed is not None:
+            return firstDeployed
+        return firstAbsolute
 
     @property
     def worksheets(self):
         return self.values()
+
+    @property
+    def all_worksheets(self):
+        return [w for k, w in self.items()]
 
     def values(self):
         worksheets = super(Activities, self).values()

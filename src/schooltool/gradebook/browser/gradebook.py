@@ -204,6 +204,11 @@ class GradebookBase(BrowserView):
         return self.context.students
 
     @property
+    def all_hidden(self):
+        activities = self.context.__parent__.__parent__
+        return not activities.worksheets
+
+    @property
     def scores(self):
         results = {}
         person = IPerson(self.request.principal)

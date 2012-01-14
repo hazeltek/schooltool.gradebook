@@ -74,6 +74,10 @@ class IActivities(interfaces.IRequirement):
     '''A list of worksheets containing activities that must be fulfilled in a
        course or section.'''
 
+    worksheets = Attribute("""all non-hidden worksheets""")
+
+    all_worksheets = Attribute("""all worksheets hidden or not""")
+
     def resetCurrentWorksheet():
         """Reset the currently active worksheet to first or None."""
 

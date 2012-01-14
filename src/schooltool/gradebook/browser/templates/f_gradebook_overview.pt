@@ -26,7 +26,20 @@
   <metal:block tal:replace="structure string:&lt;/script&gt;" />
   <form method="post" class="grid-form"
         tal:attributes="action string:${context/@@absolute_url}">
-    <div class="gradebook">
+    <div class="empty_message"
+         tal:condition="view/all_hidden">
+      <p i18n:translate="">
+        This section contains only worksheets that are hidden.
+        You can unhide a worksheet using the following link:
+      </p>
+      <a href="../.." i18n:translate="">Worksheets</a>
+      <p>&nbsp;</p>
+      <p i18n:translate="">You can also add a new worksheet using this link:</p>
+      <a href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
+      <p>&nbsp;</p>
+    </div>
+    <div class="gradebook"
+         tal:condition="not: view/all_hidden">
       <div class="students gradebook-part">
         <table>
           <thead>
@@ -305,7 +318,8 @@
         </table>
       </div>
     </div>
-    <div class="gradebook-controls">
+    <div class="gradebook-controls"
+         tal:condition="not: view/all_hidden">
       <div class="buttons">
         <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save"
                onclick="setNotEdited()"
