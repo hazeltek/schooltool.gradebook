@@ -57,6 +57,18 @@
       factory=".activity.getSectionActivities"
       trusted="true"
       />
+  <adapter
+      for="schooltool.course.interfaces.ICourse"
+      provides=".interfaces.ICourseActivities"
+      factory=".activity.getCourseActivities"
+      trusted="true"
+      />
+  <adapter
+      for="schooltool.course.interfaces.ICourse"
+      provides=".interfaces.ICourseDeployedWorksheets"
+      factory=".activity.getCourseDeployedWorksheets"
+      trusted="true"
+      />
 
   <!-- Activity Content and Security -->
   <class class=".gradebook_init.GradebookRoot">
@@ -109,6 +121,26 @@
         set_schema=".interfaces.IActivities"
         />
   </class>
+  <class class=".activity.CourseActivities">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.ICourseActivities"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.ICourseActivities"
+        />
+  </class>
+  <class class=".activity.CourseDeployedWorksheets">
+    <require
+        permission="schooltool.view"
+        interface=".interfaces.ICourseDeployedWorksheets"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.ICourseDeployedWorksheets"
+        />
+  </class>
   <class class=".activity.Worksheet">
     <allow interface="zope.interface.common.mapping.IReadMapping" />
     <require
@@ -133,6 +165,19 @@
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
         set_schema=".interfaces.IReportWorksheet"
+        attributes="changePosition"
+        />
+  </class>
+  <class class=".activity.CourseWorksheet">
+    <allow interface="zope.interface.common.mapping.IReadMapping" />
+    <require
+        permission="schooltool.view"
+        attributes="keys __iter__ values items __len__ title deployed"
+        />
+    <require
+        permission="schooltool.edit"
+        interface="zope.interface.common.mapping.IWriteMapping"
+        set_schema=".interfaces.ICourseWorksheet"
         attributes="changePosition"
         />
   </class>
@@ -303,6 +348,12 @@
       layer="zope.publisher.interfaces.http.IHTTPRequest"
       name="activities"
       adapter="schooltool.gradebook.interfaces.IActivities"
+      />
+  <adapterTraverserPlugin
+      for="schooltool.course.interfaces.ICourse"
+      layer="zope.publisher.interfaces.http.IHTTPRequest"
+      name="activities"
+      adapter="schooltool.gradebook.interfaces.ICourseActivities"
       />
 
   <!-- special traversal adapter for traversing from worksheet to gradebook -->

@@ -8,6 +8,10 @@ CHANGES
 - Sheet1 created as first personal Worksheet (https://launchpad.net/bugs/915745)
 - Crash viewing a Section, when all sheets are hidden
   (https://launchpad.net/bugs/913055)
+- Course leaders may deploy course worksheets (https://launchpad.net/bugs/916678)
+- We need css for deployed worksheet tabs (https://launchpad.net/bugs/916674)
+- Min/max should show while editing report sheet template
+  (https://launchpad.net/bugs/916675)
 
 
 2.0.1 (2011-12-22)

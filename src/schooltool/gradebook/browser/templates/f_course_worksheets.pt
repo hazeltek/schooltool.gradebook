@@ -1,0 +1,111 @@
+<div i18n:domain="schooltool.gradebook"
+     tal:define="sheets view/sheets; terms view/terms; schoolyear view/schoolyear">
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#template').change(function(e) {
+            index = e.target.selectedIndex
+            $('#alternate_title').val(e.target.options[index].text);
+        });
+    });
+  </script>
+  <h3 i18n:translate="">Currently Deployed Worksheets</h3>
+  <table>
+    <thead>
+      <tr>
+        <th i18n:translate="">Workheet</th>
+        <tal:block repeat="term schoolyear/values">
+          <th tal:content="term/title" />
+        </tal:block>
+      </tr>
+    </thead>
+    <tr tal:repeat="sheet sheets">
+      <td tal:content="sheet/obj/title" />
+      <tal:block repeat="term sheet/terms">
+        <td>
+          <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
+        </td>
+      </tal:block>
+    </tr>
+    <tr tal:condition="not: sheets">
+      <td tal:attributes="colspan python:len(schoolyear)+1" i18n:translate="">
+        This year has no worksheets deployed.
+      </td>
+        </tr>
+  </table>
+  <form method="post" class="standalone"
+        tal:attributes="action request/getURL">
+    <div class="viewspace">
+        <div class="status" tal:condition="view/has_error">
+          <div class="summary ui-state-error ui-corner-all">
+            <span class="ui-icon ui-icon-alert">icon</span>
+            <span i18n:domain="schooltool" i18n:translate="">Please correct the marked fields below.</span>
+          </div>
+        </div>
+      <fieldset>
+        <legend>
+          <span i18n:translate="">Select worksheet to deploy</span>
+        </legend>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Term or Year</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Select a term or deploy to the entire year.
+          </p>
+          <div class="widget">
+            <select id="term" name="term">
+              <tal:block repeat="term terms">
+                <option tal:attributes="value term/name; selected term/selected"
+                        tal:content="term/title" />
+              </tal:block>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="template">
+              <span i18n:translate="">Worksheet Template</span>
+            </label>
+          </div>
+          <div class="error" tal:condition="view/no_template">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
+          <div class="widget">
+            <select id="template" name="template">
+              <tal:block repeat="template view/templates">
+                <option tal:attributes="value template/name; selected template/selected"
+                        tal:content="template/title" />
+              </tal:block>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">
+            <label for="term">
+              <span i18n:translate="">Title</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            If you deploy the same template multiple times, give each deployment
+            an easily distinguishable name.
+          </p>
+          <div class="error" tal:condition="view/no_title">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
+          <div class="widget">
+            <input type="text" name="alternate_title" id="alternate_title"
+                   tal:attributes="value view/alternate_title" />
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="buttons controls">
+      <input type="submit" class="button-ok" name="SUBMIT" value="Submit"
+             i18n:attributes="value" />
+      <tal:block metal:use-macro="view/@@standard_macros/cancel-button" />
+    </div>
+  </form>
+</div>
+
