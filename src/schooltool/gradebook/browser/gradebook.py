@@ -789,7 +789,13 @@ class FlourishGradebookOverview(GradebookOverview,
     """flourish Gradebook Overview/Table"""
 
     has_header = False
-    page_class = 'page grid'
+
+    @property
+    def page_class(self):
+        if self.all_hidden:
+            return 'page'
+        else:
+            return 'page grid'
 
     @property
     def journal_present(self):
