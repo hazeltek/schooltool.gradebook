@@ -12,6 +12,7 @@ CHANGES
 - We need css for deployed worksheet tabs (https://launchpad.net/bugs/916674)
 - Min/max should show while editing report sheet template
   (https://launchpad.net/bugs/916675)
+- Unhiding personal sheet unhides deployed sheets (https://launchpad.net/bugs/917294)
 
 
 2.0.1 (2011-12-22)
