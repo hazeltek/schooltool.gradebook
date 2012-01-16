@@ -28,12 +28,11 @@
     <p class="empty_message" i18n:translate="">
       This section contains only worksheets that are hidden.
       You can unhide a worksheet using the following link:
+      <a class="empty_message" href="../.." i18n:translate="">Worksheets</a>
     </p>
-    <a class="empty_message" href="../.." i18n:translate="">Worksheets</a>
-    <p>&nbsp;</p>
-    <p class="empty_message" i18n:translate="">You can also add a new worksheet using this link:</p>
-    <a class="empty_message" href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
-    <p>&nbsp;</p>
+    <p class="empty_message" i18n:translate="">You can also add a new worksheet using this link:
+      <a class="empty_message" href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
+    </p>
   </div>
   <form method="post" class="grid-form"
         tal:condition="not: view/all_hidden"
