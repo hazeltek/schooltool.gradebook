@@ -80,7 +80,6 @@
   <flourish:page
       name="index.html"
       for="..interfaces.IGradebook"
-      title="Enter Grades"
       content_template="templates/f_gradebook_overview.pt"
       class=".gradebook.FlourishGradebookOverview"
       permission="schooltool.view"

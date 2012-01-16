@@ -788,8 +788,23 @@ class FlourishGradebookOverview(GradebookOverview,
                                 flourish.page.WideContainerPage):
     """flourish Gradebook Overview/Table"""
 
-    has_header = False
-    page_class = 'page grid'
+    @property
+    def page_class(self):
+        if self.all_hidden:
+            return 'page'
+        else:
+            return 'page grid'
+
+    @property
+    def title(self):
+        if self.all_hidden:
+            return _('No Visible Worksheets')
+        else:
+            return _('Enter Grades')
+
+    @property
+    def has_header(self):
+        return self.all_hidden
 
     @property
     def journal_present(self):

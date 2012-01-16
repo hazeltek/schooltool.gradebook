@@ -1,3 +1,13 @@
+<tal:block condition="view/all_hidden">
+  <p i18n:translate="">
+    This section contains only worksheets that are hidden.
+    You can unhide a worksheet using the following link:
+    <a href="../.." i18n:translate="">Worksheets</a>
+  </p>
+  <p i18n:translate="">You can also add a new worksheet using this link:
+    <a href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
+  </p>
+</tal:block>
 <div i18n:domain="schooltool.gradebook"
      tal:define="table view/table;
                  activities view/activities">
@@ -24,17 +34,6 @@
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
   <metal:block tal:replace="structure string:&lt;/script&gt;" />
-  <div tal:condition="view/all_hidden">
-    <p class="empty_message" i18n:translate="">
-      This section contains only worksheets that are hidden.
-      You can unhide a worksheet using the following link:
-    </p>
-    <a class="empty_message" href="../.." i18n:translate="">Worksheets</a>
-    <p>&nbsp;</p>
-    <p class="empty_message" i18n:translate="">You can also add a new worksheet using this link:</p>
-    <a class="empty_message" href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
-    <p>&nbsp;</p>
-  </div>
   <form method="post" class="grid-form"
         tal:condition="not: view/all_hidden"
         tal:attributes="action string:${context/@@absolute_url}">
