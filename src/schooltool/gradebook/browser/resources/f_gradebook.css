@@ -34,9 +34,6 @@ table.scoresystem-scores tbody input[type="text"]:focus {
     width: 104px;
 }
 
-.empty_message {
-}
-
 li.deployed a {
     font-style: italic;
 }
