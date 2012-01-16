@@ -1,0 +1,12 @@
+<div class="manage-view" i18n:domain="schooltool"
+     tal:condition="view/has_schoolyear"
+     tal:define="sheets view/sheets">
+  <h3>
+    <a title="Manage Report Sheet Templates"
+       tal:attributes="href string:${context/@@absolute_url}/gradebook/templates"
+       i18n:attributes="title"
+       i18n:translate="">
+      Report Sheet Templates
+    </a>
+  </h3>
+</div>

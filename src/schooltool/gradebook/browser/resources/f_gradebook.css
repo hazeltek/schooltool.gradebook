@@ -40,3 +40,7 @@ table.scoresystem-scores tbody input[type="text"]:focus {
     line-height: 20px;
 }
 
+li.deployed a {
+    font-style: italic;
+}
+

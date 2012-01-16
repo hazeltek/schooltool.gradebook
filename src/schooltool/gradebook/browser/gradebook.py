@@ -420,7 +420,7 @@ class SectionFinder(GradebookBase):
         self.due_date_hide = prefs.get('hide', False)
 
         self.apply_all_colspan = 1
-        if gradebook.context.deployed:
+        if not gradebook.context.canAverage():
             self.total_hide = True
             self.average_hide = True
         if not self.absences_hide:
@@ -1063,6 +1063,10 @@ class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Settings links viewlet."""
 
 
+class FlourishGradebookActionsLinks(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Actions links viewlet."""
+
+
 class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
@@ -1081,8 +1085,11 @@ class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager
         current = gradebook.context.__name__
         for worksheet in gradebook.worksheets:
             url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+            classes = worksheet.__name__ == current and ['active'] or []
+            if worksheet.deployed:
+                classes.append('deployed')
             result.append({
-                'class': worksheet.__name__ == current and 'active' or None,
+                'class': classes and ' '.join(classes) or None,
                 'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
                 })
         return result
@@ -1908,3 +1915,4 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
             return None
         can_view = flourish.canView(self.gradebook)
         return can_view
+
