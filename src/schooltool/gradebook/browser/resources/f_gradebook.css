@@ -33,3 +33,10 @@ table.scoresystem-scores tbody input[type="text"]:focus {
     height: 18px;
     width: 104px;
 }
+
+.empty_message {
+    padding: 10px;
+    font-size: 14pt;
+    line-height: 20px;
+}
+

@@ -5,7 +5,9 @@ CHANGES
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Sheet1 created as first personal Worksheet (https://launchpad.net/bugs/915745)
+- Crash viewing a Section, when all sheets are hidden
+  (https://launchpad.net/bugs/913055)
 
 
 2.0.1 (2011-12-22)

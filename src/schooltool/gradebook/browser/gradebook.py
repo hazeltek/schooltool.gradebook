@@ -204,6 +204,11 @@ class GradebookBase(BrowserView):
         return self.context.students
 
     @property
+    def all_hidden(self):
+        activities = self.context.__parent__.__parent__
+        return not activities.worksheets
+
+    @property
     def scores(self):
         results = {}
         person = IPerson(self.request.principal)
@@ -678,9 +683,10 @@ class GradebookOverview(SectionFinder):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
-        section = ISection(worksheet)
 
+        section = ISection(worksheet, None)
         journal_data = interfaces.ISectionJournalData(section, None)
+
         rows = []
         for student_info in self.students_info:
             grades = []
@@ -1886,7 +1892,7 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
         if not len(activities):
             return None
         current_worksheet = activities.getCurrentWorksheet(person)
-        return interfaces.IGradebook(current_worksheet)
+        return interfaces.IGradebook(current_worksheet, None)
 
     @property
     def url(self):
