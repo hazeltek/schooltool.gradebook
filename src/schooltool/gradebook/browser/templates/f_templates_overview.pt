@@ -13,6 +13,9 @@
           <tal:block replace="structure worksheet/@@link" />
         </td>
       </tr>
+      <tr tal:condition="not: worksheets">
+        <td i18n:translate="">There are no report sheet templates set up.</td>
+      </tr>
     </table>
   </form>
   <h3>

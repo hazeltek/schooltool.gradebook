@@ -228,6 +228,11 @@ class FlourishManageReportSheetTemplatesOverview(FlourishReportSheetsBase,
     body_template = ViewPageTemplateFile(
         'templates/f_manage_report_sheet_templates_overview.pt')
 
+    @property
+    def templates(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        return list(root.templates.values())
+
 
 class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
                                          flourish.page.Content):
