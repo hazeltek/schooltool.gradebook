@@ -14,6 +14,8 @@ CHANGES
   (https://launchpad.net/bugs/916675)
 - Unhiding personal sheet unhides deployed sheets (https://launchpad.net/bugs/917294)
 - need a Done on report_sheets (https://launchpad.net/bugs/907998)
+- report sheet templates index needs a "There are no..." message
+  (https://launchpad.net/bugs/907988)
 
 
 2.0.1 (2011-12-22)
