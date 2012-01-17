@@ -32,6 +32,10 @@
       </td>
         </tr>
   </table>
+  <h3>
+    <a tal:attributes="href string:${context/schooltool:app/@@absolute_url}/manage"
+       i18n:translate="">Done</a>
+  </h3>
   <form method="post" class="standalone"
         tal:condition="view/has_schoolyear"
         tal:attributes="action request/getURL">
