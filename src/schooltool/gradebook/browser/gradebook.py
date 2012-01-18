@@ -475,7 +475,7 @@ class GradebookOverview(SectionFinder):
             if sort_by == key:
                 reverse = not reverse
             else:
-                reverse = False
+                reverse = (sort_by != 'student')
             gradebook.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = gradebook.getSortKey(self.person)
 
@@ -757,12 +757,15 @@ class GradebookOverview(SectionFinder):
                 else:
                     return (int(row[key]), generateStudentKey(row))
             else: # sorting by activity
-                grades = dict([(unicode(grade['activity']), grade['value'])
-                               for grade in row['grades']])
-                if not grades.get(key, ''):
-                    return (1, generateStudentKey(row))
-                else:
-                    return (0, grades.get(key), generateStudentKey(row))
+                value = -9999999.9
+                for grade in row['grades']:
+                    if key == unicode(grade['activity']):
+                        try:
+                            value = float(grade['value'])
+                        except:
+                            pass
+                        break
+                return (value, generateStudentKey(row))
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property
