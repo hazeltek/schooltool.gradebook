@@ -278,3 +278,16 @@ class FlourishRequestSectionAbsencesView(RequestReportDownloadDialog):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request) + '/section_absences.pdf'
+
+class FlourishRequestPrintableWorksheetView(RequestReportDownloadDialog):
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request) + '/gradebook.pdf'
+
+
+class FlourishRequestGradebookExportView(RequestReportDownloadDialog):
+
+    def nextURL(self):
+        worksheet = self.context.__parent__
+        activities = worksheet.__parent__
+        return absoluteURL(activities, self.request) + '/export.xls'

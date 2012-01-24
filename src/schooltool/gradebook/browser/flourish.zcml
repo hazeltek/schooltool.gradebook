@@ -1126,5 +1126,53 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="gradebook-reports-links"
+      after="gradebook_actions"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class="schooltool.report.browser.report.ReportsLinks"
+      title="Reports"
+      view=".gradebook.FlourishGradebookOverview"
+      permission="schooltool.edit"
+      />
+
+  <report:reportLink
+      name="printable_worksheet"
+      view=".gradebook.FlourishGradebookOverview"
+      layer="schooltool.skin.flourish.IFlourishLayer"
+      permission="schooltool.edit"
+      group="Section"
+      description="The current worksheet formatted for printing."
+      title="Printable Worksheet"
+      file_type="pdf"
+      link="request_printable_worksheet.html"
+      />
+
+  <report:reportLink
+      name="gradebook_export"
+      view=".gradebook.FlourishGradebookOverview"
+      layer="schooltool.skin.flourish.IFlourishLayer"
+      permission="schooltool.edit"
+      group="Section"
+      description="A single Excel-formatted spreadsheet containing all the worksheets for this gradebook."
+      title="Gradebook Export"
+      file_type="xls"
+      link="request_gradebook_export.html"
+      />
+
+  <flourish:page
+      name="request_printable_worksheet.html"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".request_reports.FlourishRequestPrintableWorksheetView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="request_gradebook_export.html"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".request_reports.FlourishRequestGradebookExportView"
+      permission="schooltool.edit"
+      />
+
 </configure>
 
