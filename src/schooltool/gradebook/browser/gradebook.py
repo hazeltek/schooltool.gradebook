@@ -1283,6 +1283,7 @@ class FlourishMyGradesView(MyGradesView, flourish.page.Page):
     """Flourish student view of own grades."""
 
     has_header = False
+    page_class = 'page grid'
 
     def handleYearChange(self):
         if 'currentYear' in self.request:
