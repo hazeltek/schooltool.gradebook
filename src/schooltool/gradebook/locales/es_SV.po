@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-18 04:23+0200\n"
-"PO-Revision-Date: 2011-12-20 04:11+0000\n"
+"PO-Revision-Date: 2011-12-28 20:23+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-21 05:42+0000\n"
-"X-Generator: Launchpad (build 14538)\n"
+"X-Launchpad-Export-Date: 2011-12-29 05:02+0000\n"
 "Language: \n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -310,7 +309,7 @@ msgstr "La categoría por defecto fue modificada con éxito."
 
 #: /src/schooltool/gradebook/browser/category.py:206
 msgid "Make Default"
-msgstr "Establecer como Predeterminado"
+msgstr "Establecer como Predeterminada"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:53
 #: /src/schooltool/gradebook/browser/configure.zcml:87

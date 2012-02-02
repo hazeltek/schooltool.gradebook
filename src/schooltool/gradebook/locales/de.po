@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-11-18 04:23+0200\n"
-"PO-Revision-Date: 2011-10-28 17:31+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"PO-Revision-Date: 2012-01-25 14:03+0000\n"
+"Last-Translator: Gregor S. <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-11-19 05:56+0000\n"
-"X-Generator: Launchpad (build 14299)\n"
+"X-Launchpad-Export-Date: 2012-01-26 05:43+0000\n"
+"X-Generator: Launchpad (build 14719)\n"
 "Language: de\n"
 "X-Rosetta-Version: 0.1\n"
 "X-Poedit-Bookmarks: 326,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
@@ -118,11 +118,11 @@ msgstr "Überschrift"
 
 #: /src/schooltool/gradebook/browser/activity.py:334
 msgid "Column Label"
-msgstr ""
+msgstr "Spaltenname"
 
 #: /src/schooltool/gradebook/browser/activity.py:335
 msgid "Limit to 5 characters or less."
-msgstr ""
+msgstr "Maximal 5 oder weniger Zeichen"
 
 #: /src/schooltool/gradebook/browser/activity.py:339
 #: /src/schooltool/gradebook/interfaces.py:133
@@ -154,6 +154,9 @@ msgid ""
 "when calculating averages.  The list of categories can be set schoolwide set "
 "by your system administrator."
 msgstr ""
+"Kategorien können verwendet werden um Arbeiten unterschiedlich stark in den "
+"Durchschnitt einfließen zu lassen. Der Administator kann die Liste der "
+"Kategorien ändern."
 
 #: /src/schooltool/gradebook/browser/activity.py:356
 #: /src/schooltool/gradebook/browser/activity.py:467
@@ -171,7 +174,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "This value must be an integer."
-msgstr ""
+msgstr "Dieser Wert muss ein Integer sein."
 
 #: /src/schooltool/gradebook/browser/activity.py:385
 #: /src/schooltool/gradebook/browser/activity.py:536
@@ -194,7 +197,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet.py:126
 #: /src/schooltool/gradebook/browser/worksheet.py:191
 msgid "Submit"
-msgstr ""
+msgstr "Senden"
 
 #: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
@@ -302,7 +305,7 @@ msgstr "Standard-Kategorie erfolgreich geändert."
 
 #: /src/schooltool/gradebook/browser/category.py:206
 msgid "Make Default"
-msgstr ""
+msgstr "Als Standard festlegen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:53
 #: /src/schooltool/gradebook/browser/configure.zcml:87
@@ -327,7 +330,7 @@ msgstr "Zeugnisformular-Vorlagen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:98
 msgid "Download Gradebook CSV"
-msgstr ""
+msgstr "Gradebook CSV herunterladen"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:135
 msgid "Add a Worksheet"
@@ -446,7 +449,7 @@ msgstr "Arbeitsblätter"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:398
 msgid "Manage Worksheet"
-msgstr ""
+msgstr "Arbeitsblatt verwalten"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:405
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:5
@@ -473,11 +476,11 @@ msgstr "Berichtsblatt anwenden"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:540
 msgid "Hide Report Sheet"
-msgstr ""
+msgstr "Berichtsblatt ausblenden"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:547
 msgid "Unhide Report Sheet"
-msgstr ""
+msgstr "Berichtsblatt einblenden"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:599
 #: /src/schooltool/gradebook/browser/flourish.zcml:617
@@ -487,7 +490,7 @@ msgstr "Zeugnis-Layout"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:70
 msgid "Enter Grades"
-msgstr ""
+msgstr "Noten eingeben"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:79
 #: /src/schooltool/gradebook/browser/flourish.zcml:555
@@ -539,7 +542,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:269
 msgid "Edit Activity"
-msgstr ""
+msgstr "Aktivität anpassen"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:297
 msgid "Edit External Score"
@@ -558,7 +561,7 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:14
 msgid "Score"
-msgstr ""
+msgstr "Punkte"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:344
 msgid "Edit Category Weights"
@@ -577,11 +580,11 @@ msgstr "Berichtaktivität"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:482
 msgid "New Template"
-msgstr ""
+msgstr "Neue Vorlage"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:538
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:548
 msgid "Hide/unhide Sheets"
@@ -589,7 +592,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:582
 msgid "My Grades"
-msgstr ""
+msgstr "Meine Noten"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:662
 msgid "Grid Column"
@@ -625,17 +628,18 @@ msgstr "Gruppe"
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student Detail Report"
-msgstr ""
+msgstr "Schülerdetailbericht"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "A single PDF containing detail reports for all students in the group."
 msgstr ""
+"Eine einzelne PDF mit detaillierten Berichten aller Schüler dieser Gruppe."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
 #: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Student Report Card"
-msgstr ""
+msgstr "Schülerberichtskarte"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
 #: /src/schooltool/gradebook/browser/report.zcml:30
@@ -644,7 +648,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:780
 msgid "Failures"
-msgstr ""
+msgstr "Fehler"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:780
 #: /src/schooltool/gradebook/browser/report.zcml:50
@@ -680,7 +684,7 @@ msgstr "Ave."
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:191
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:201
 msgid "Abs."
-msgstr ""
+msgstr "Abs."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:88
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:208
@@ -735,7 +739,7 @@ msgstr "Noten für ${fullname} eingeben"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1641
 msgid "Enter grade details below"
-msgstr ""
+msgstr "Noten Details unten angeben"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1685
@@ -745,7 +749,7 @@ msgstr "$worksheet für $student in $section"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/gradebook.py:1728
 msgid "${section} grades for ${worksheet}"
-msgstr ""
+msgstr "${section} Noten für ${worksheet}"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:205
@@ -866,11 +870,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "Student Report Card by Group"
-msgstr ""
+msgstr "Schülerberichtskarte nach Gruppe"
 
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Student Detail Report by Group"
-msgstr ""
+msgstr "Schülerdetailbericht nach Gruppe"
 
 #: /src/schooltool/gradebook/browser/report.zcml:50
 msgid "Failures by Term"
@@ -882,7 +886,7 @@ msgstr "Abwesenheit pro Tag"
 
 #: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "Lists students absent on a given day."
-msgstr ""
+msgstr "Zeigt fehlende Schüler eines Tages an."
 
 #: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "School Year"
@@ -911,28 +915,28 @@ msgstr "T"
 #. Default: ""
 #: /src/schooltool/gradebook/browser/report_card.py:180
 msgid "Report Sheets for ${year}"
-msgstr ""
+msgstr "Berichtsblatt für ${year}"
 
 #: /src/schooltool/gradebook/browser/report_card.py:188
 msgid "-- Entire year --"
-msgstr ""
+msgstr "-- Vollständiges Jahr --"
 
 #: /src/schooltool/gradebook/browser/report_card.py:203
 msgid "-- Select a template --"
-msgstr ""
+msgstr "-- Wählen Sie eine Vorlage --"
 
 #. Default: ""
 #: /src/schooltool/gradebook/browser/report_card.py:386
 msgid "Hide/unhide Report Sheets for ${year}"
-msgstr ""
+msgstr "Einblenden/ausblenden des Berichtsblatts für ${year}"
 
 #: /src/schooltool/gradebook/browser/report_card.py:461
 msgid "Report Sheet Template Details"
-msgstr ""
+msgstr "Berichtsblatt-Vorlagendetails"
 
 #: /src/schooltool/gradebook/browser/report_card.py:351
 msgid "Report Sheet Template Information"
-msgstr ""
+msgstr "Berichtsblatt-Vorlageninformation"
 
 #: /src/schooltool/gradebook/browser/report_card.py:390
 msgid "-- Use range below --"
@@ -975,12 +979,12 @@ msgstr "höchster Ganzahl Punktwert möglich"
 
 #: /src/schooltool/gradebook/browser/report_card.py:485
 msgid "Add new report activity"
-msgstr ""
+msgstr "Neue Berichtsaktivität hinzufügen"
 
 #: /src/schooltool/gradebook/browser/report_card.py:548
 #: /src/schooltool/gradebook/browser/report_card.py:600
 msgid "Report Activity Details"
-msgstr ""
+msgstr "Berichtsaktivität Details"
 
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
@@ -1148,7 +1152,7 @@ msgstr "Anwenden"
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:2
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:2
 msgid "What is This?"
-msgstr ""
+msgstr "Was ist das?"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:6
 msgid ""
@@ -1179,7 +1183,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:30
@@ -1193,7 +1197,7 @@ msgstr "Entfernen"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:15
 msgid "Edit this category"
-msgstr ""
+msgstr "Diese Kategorie bearbeiten"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
@@ -1227,7 +1231,7 @@ msgstr "Sichern"
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:231
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:248
 msgid "Sort by"
-msgstr ""
+msgstr "Sortieren nach"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:44
 msgid "Show Total"
@@ -1239,27 +1243,27 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:50
 msgid "Show Ave."
-msgstr ""
+msgstr "Zeige Ave."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:53
 msgid "Hide Ave."
-msgstr ""
+msgstr "Verstecke Ave."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:58
 msgid "Show Abs."
-msgstr ""
+msgstr "Zeige Abs."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:61
 msgid "Hide Abs."
-msgstr ""
+msgstr "Verstecke Abs."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:64
 msgid "Show Trd."
-msgstr ""
+msgstr "Zeige Trd."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:67
 msgid "Hide Trd."
-msgstr ""
+msgstr "Verstecke Trd."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:78
 #: /src/schooltool/gradebook/interfaces.py:349
@@ -1268,7 +1272,7 @@ msgstr "Punkte"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
 msgid "Report"
-msgstr ""
+msgstr "Bericht"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Score this"
@@ -1276,37 +1280,37 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
 msgid "Move left"
-msgstr ""
+msgstr "Nach links verschieben"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:136
 msgid "Move right"
-msgstr ""
+msgstr "Nach rechts verschieben"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:140
 msgid "Update grades"
-msgstr ""
+msgstr "Noten aktualisieren"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:257
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:257
 msgid "Shortcut: Alt-S"
-msgstr ""
+msgstr "Tastenkombination: Alt-S"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:310
 msgid "Zoom Out"
-msgstr ""
+msgstr "Ansicht verkleinern"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:314
 msgid "Zoom Normal"
-msgstr ""
+msgstr "Ansicht normal"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:318
 msgid "Zoom In"
-msgstr ""
+msgstr "Ansicht vergrößern"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_startup.pt:3
 #: /src/schooltool/gradebook/browser/templates/gradebook_startup.pt:13
@@ -1353,21 +1357,21 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
 msgid "Report Sheet"
-msgstr ""
+msgstr "Berichtsblatt"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
 msgid "Index"
-msgstr ""
+msgstr "Index"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Hidden?"
-msgstr ""
+msgstr "Versteckt?"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:35
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:30
 msgid "This year has no report sheets deployed."
-msgstr ""
+msgstr "Dieses Jahr hat keine Berichtsblätter eingesetzt."
 
 #: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
@@ -1383,7 +1387,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid "report sheets"
-msgstr ""
+msgstr "Berichtsblätter"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:12
 msgid ""
@@ -1441,7 +1445,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "create a new report sheet template."
-msgstr ""
+msgstr "Eine neue Zeugnisvorlage erstellen."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:15
 msgid ""
@@ -1462,11 +1466,11 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:11
 msgid "File Type"
-msgstr ""
+msgstr "Dateityp"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
 msgid "Date (yyyy-mm-dd)"
-msgstr ""
+msgstr "Datum (yyyy-mm-dd)"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:41
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:73
@@ -1503,16 +1507,16 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
 msgid "Select a year or term"
-msgstr ""
+msgstr "Jahr oder Semester auswählen"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:5
 msgid "Report Activities"
-msgstr ""
+msgstr "Berichtsaktivitäten"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
-msgstr ""
+msgstr "Löschen?"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
@@ -1728,7 +1732,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:4
 msgid "No Report Sheets"
-msgstr ""
+msgstr "Keine Berichtsblätter"
 
 #: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:10
 msgid ""
@@ -1740,11 +1744,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:4
 msgid "Report Worksheet"
-msgstr ""
+msgstr "Arbeitsblätter berichten"
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:9
 msgid "Activities of ${title}"
-msgstr ""
+msgstr "Aktivitäten von ${title}"
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:14
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:14
@@ -1811,11 +1815,11 @@ msgstr "Dieses Arbeitsblatt enthält keine Aktivitäten."
 
 #: /src/schooltool/gradebook/browser/worksheet.py:124
 msgid "Worksheet Details"
-msgstr ""
+msgstr "Arbeitsblätter Details"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:181
 msgid "Worksheet Information"
-msgstr ""
+msgstr "Arbeitsblätter Information"
 
 #: /src/schooltool/gradebook/generations/tests/test_evolve3.py:48
 #: /src/schooltool/gradebook/gradebook_init.py:53
@@ -1983,7 +1987,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
-msgstr ""
+msgstr "Vorlagen bearbeiten"
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
@@ -1991,11 +1995,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Edit Gradebook"
-msgstr ""
+msgstr "Notenbuch bearbeiten"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View Gradebook"
-msgstr ""
+msgstr "Notenbuch anzeigen"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
@@ -2039,28 +2043,28 @@ msgstr ""
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:14
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
 msgid "New Score System"
-msgstr ""
+msgstr "Neues Punktesystem"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:34
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:6
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:51
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:15
 msgid "Abbreviation"
-msgstr ""
+msgstr "Abkürzung"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:35
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:7
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:16
 msgid "Point Value"
-msgstr ""
+msgstr "Punkte Wert"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:36
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:8
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:53
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:17
 msgid "Low Percentage"
-msgstr ""
+msgstr "Wenig Prozent"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:75
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:102

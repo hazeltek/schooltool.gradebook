@@ -17,6 +17,7 @@ CHANGES
 - report sheet templates index needs a "There are no..." message
   (https://launchpad.net/bugs/907988)
 - in sorts, no value should be less than zero (https://launchpad.net/bugs/907895)
+- Updated translations (de, fr)
 
 
 2.0.1 (2011-12-22)
