@@ -12,7 +12,7 @@
   <table>
     <thead>
       <tr>
-        <th i18n:translate="">Workheet</th>
+        <th i18n:translate="">Worksheet</th>
         <tal:block repeat="term schoolyear/values">
           <th tal:content="term/title" />
         </tal:block>
@@ -30,8 +30,12 @@
       <td tal:attributes="colspan python:len(schoolyear)+1" i18n:translate="">
         This year has no worksheets deployed.
       </td>
-        </tr>
+    </tr>
   </table>
+  <h3>
+    <a tal:attributes="href view/nextURL"
+       i18n:translate="">Done</a>
+  </h3>
   <form method="post" class="standalone"
         tal:attributes="action request/getURL">
     <div class="viewspace">
