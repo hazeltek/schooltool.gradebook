@@ -38,7 +38,7 @@
         <tr>
           <td i18n:translate="">Report Activity</td>
           <td>
-            <select id="source" name="source" onchange="this.form.submit()">
+            <select id="source" name="source">
               <tal:block repeat="choice view/choices">
                 <option tal:condition="python: choice['value'] == view.current_source()"
                         selected="selected"

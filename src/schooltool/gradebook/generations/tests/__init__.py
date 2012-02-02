@@ -12,6 +12,7 @@ from zope.interface import implements
 
 from schooltool.app.app import SchoolToolApplication
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.common import IDateRange
 from schooltool.course.interfaces import ISection
 from schooltool.gradebook.activity import getSectionActivities
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
@@ -20,6 +21,10 @@ from schooltool.requirement.evaluation import getEvaluations
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IHaveEvaluations
 from schooltool.term.interfaces import IDateManager
+from schooltool.schoolyear.interfaces import ISchoolYearContainer
+from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.schoolyear.schoolyear import getSchoolYearContainer
+from schooltool.schoolyear.schoolyear import SchoolYearDateRangeAdapter
 from schooltool.gradebook.tests import stubs
 
 
@@ -69,6 +74,10 @@ def provideAdapters():
                                          provides=IActivities)
     provideAdapter(getEvaluations, adapts=(IHaveEvaluations,), 
                                    provides=IEvaluations)
+    provideAdapter(getSchoolYearContainer, adapts=(ISchoolToolApplication,), 
+                                           provides=ISchoolYearContainer)
+    provideAdapter(SchoolYearDateRangeAdapter, adapts=(ISchoolYear,), 
+                                               provides=IDateRange)
 
 
 def provideUtilities():

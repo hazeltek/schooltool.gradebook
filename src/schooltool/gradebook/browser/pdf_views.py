@@ -72,6 +72,10 @@ class BasePDFView(ReportPDFView):
             return meeting.period.title
         return meeting.dtstart.time().isoformat()[:5]
 
+    def makeFileName(self, basename):
+        timestamp = datetime.now().strftime('%y%m%d%H%M')
+        return '%s_%s.pdf' % (basename, timestamp)
+
 
 
 class BaseStudentPDFView(BasePDFView):
@@ -295,12 +299,20 @@ class StudentReportCardPDFView(BaseReportCardPDFView):
     def collectStudents(self):
         return [self.context]
 
+    @property
+    def filename(self):
+        return self.makeFileName('report_card_%s' % self.context.username)
+
 
 class GroupReportCardPDFView(BaseReportCardPDFView):
     """A view for printing a report card for each person in a group"""
 
     def collectStudents(self):
         return list(self.context.members)
+
+    @property
+    def filename(self):
+        return self.makeFileName('report_card_%s' % self.context.__name__)
 
 
 class BaseStudentDetailPDFView(BaseStudentPDFView):
@@ -382,7 +394,13 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
                 periods[period] = 0
         periods = list(periods.keys())
 
-        widths = '4cm' + ',1cm' * len(periods)
+        widths = '4cm'
+        for period in periods:
+            width = 1
+            if len(period) > 4:
+                width = float(len(period)) / 4.5
+            widths += ',%fcm' % width
+
         rows = []
         for day in sorted(data):
             scores = [''] * len(periods)
@@ -421,12 +439,20 @@ class StudentDetailPDFView(BaseStudentDetailPDFView):
     def collectStudents(self):
         return [self.context]
 
+    @property
+    def filename(self):
+        return self.makeFileName('student_detail_%s' % self.context.username)
+
 
 class GroupDetailPDFView(BaseStudentDetailPDFView):
     """A view for printing a report card for each person in a group"""
 
     def collectStudents(self):
         return list(self.context.members)
+
+    @property
+    def filename(self):
+        return self.makeFileName('student_detail_%s' % self.context.__name__)
 
 
 class FailingReportPDFView(BasePDFView):
@@ -451,6 +477,10 @@ class FailingReportPDFView(BasePDFView):
     def title(self):
         return _('Failures by Term Report: ${term}',
                  mapping={'term': self.term.title})
+
+    @property
+    def filename(self):
+        return self.makeFileName('fail_%s' % self.term.__name__)
 
     def worksheet_heading(self):
         return _('Report Sheet:')
@@ -562,6 +592,10 @@ class AbsencesByDayPDFView(BasePDFView):
     def title(self):
         return _('Absences By Day Report')
 
+    @property
+    def filename(self):
+        return self.makeFileName('abs_day_%s' % self.context.__name__)
+
     def getDay(self):
         day = self.request.get('day', None)
         if day is None:
@@ -665,6 +699,11 @@ class SectionAbsencesPDFView(BasePDFView):
     def title(self):
         return _('Absences by Section Report')
 
+    @property
+    def filename(self):
+        courses = [c.__name__ for c in self.context.courses]
+        return self.makeFileName('abs_section_%s' % '_'.join(courses))
+
     def course_heading(self):
         return _('Course')
 
@@ -742,6 +781,7 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
     def pages(self):
         results = []
         activities = list(self.activities())
+
         table = self.table()
 
         num_rows = len(table)
@@ -771,14 +811,14 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
             else:
                 end_col = next_col
 
-            rows = deepcopy(table)[start_row:end_row]
+            rows = [dict(r) for r in table[start_row:end_row]]
             for row in rows:
                 row['grades'] = row['grades'][start_col:end_col]
 
             page = {
                 'widths': self.widths(start_col, end_col),
                 'rows': rows,
-                'cols': deepcopy(activities)[start_col:end_col],
+                'cols': activities[start_col:end_col],
                 }
             results.append(page)
 

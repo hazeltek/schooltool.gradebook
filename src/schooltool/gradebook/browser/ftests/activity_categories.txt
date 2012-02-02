@@ -10,14 +10,14 @@ Administrator defines activity categories available for teachers:
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Activity Categories').click()
     >>> manager.printQuery('id("field.categories")/option/@value')
-    assignment-
-    essay-
-    exam-
-    homework-
-    journal-
-    lab-
-    presentation-
-    project-
+    assignment
+    essay
+    exam
+    homework
+    journal
+    lab
+    presentation
+    project
 
 As you can see, there are already several categories pre-defined. Often,
 those categories do not work for a school. Either you do not need some and/or
@@ -29,10 +29,10 @@ others are missing. So let's start by deleting a couple of categories:
     >>> manager.printQuery('//div[@class="info"]/text()')
     Categories successfully deleted.
     >>> manager.printQuery('id("field.categories")/option/@value')
-    assignment-
-    exam-
-    lab-
-    project-
+    assignment
+    exam
+    lab
+    project
 
 Next, we add a new category:
 
@@ -40,12 +40,13 @@ Next, we add a new category:
     >>> manager.getControl('Add').click()
     >>> manager.printQuery('//div[@class="info"]/text()')
     Category successfully added.
+
     >>> manager.printQuery('id("field.categories")/option/@value')
-    assignment-
-    exam-
-    lab-
-    labreport-
-    project-
+    Lab%20Report-
+    assignment
+    exam
+    lab
+    project
 
 We can also add categories with non ASCII characters:
 
@@ -55,12 +56,12 @@ We can also add categories with non ASCII characters:
     >>> manager.printQuery('//div[@class="info"]/text()')
     Category successfully added.
     >>> manager.printQuery('id("field.categories")/option/@value')
-    assignment-
-    calificacin-1ra1s
-    exam-
-    lab-
-    labreport-
-    project-
+    Calificacin-zeb
+    Lab%20Report-
+    assignment
+    exam
+    lab
+    project
 
 If we click on Add without entering a new category, nothing happens:
 
@@ -123,12 +124,12 @@ Let's add an activity to the default worksheet:
 Check the categories available:
 
     >>> stephan.printQuery('id("form-widgets-category")/option/text()')
-    Exam
-    Assignment
     Calificaci...n
+    Lab Report
+    Assignment
+    Exam
     Lab
     Project
-    Lab Report
 
 Check the default category is selected:
 
@@ -143,12 +144,12 @@ Now, let's add an external activity:
 And check the categories available:
 
     >>> stephan.printQuery('id("form-widgets-category")/option/text()')
-    Exam
-    Assignment
     Calificaci...n
+    Lab Report
+    Assignment
+    Exam
     Lab
     Project
-    Lab Report
 
 And check the default category is selected:
 
@@ -164,7 +165,7 @@ Let's change the default category:
     >>> manager.getControl('Default Category').displayValue = ['Lab Report']
     >>> manager.getControl('Change').click()
     >>> manager.getControl('Default Category').value
-    ['labreport-']
+    ['Lab%20Report-']
 
 Let's try adding a new activity:
 

@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2011-10-02 01:45-0600\n"
+"POT-Creation-Date: 2011-11-18 04:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -579,7 +579,15 @@ msgstr ""
 msgid "New Template"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:546
+#: /src/schooltool/gradebook/browser/flourish.zcml:538
+msgid "Action"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:548
+msgid "Hide/unhide Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:582
 msgid "My Grades"
 msgstr ""
 
@@ -905,7 +913,12 @@ msgstr ""
 msgid "-- Select a template --"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:316
+#: /src/schooltool/gradebook/browser/report_card.py:386
+#. Default: ""
+msgid "Hide/unhide Report Sheets for ${year}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report_card.py:461
 msgid "Report Sheet Template Details"
 msgstr ""
 
@@ -1216,7 +1229,11 @@ msgstr ""
 msgid "Points"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:120
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
+msgid "Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Score this"
 msgstr ""
 
@@ -1286,7 +1303,34 @@ msgstr ""
 msgid "deploy it to teacher gradebooks."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:11
+msgid "Currently Deployed Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:12
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:15
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
+#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
+msgid "Report Sheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
+msgid "Index"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
+msgid "Hidden?"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:35
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:30
+msgid "This year has no report sheets deployed."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
 msgstr ""
@@ -1315,21 +1359,7 @@ msgstr ""
 msgid "The report cards can be generated for an individual person or all the people in a group."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:3
-msgid "Currently Deployed Report Sheets"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:7
-#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
-#: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
-msgid "Report Sheet"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:22
-msgid "This year has no report sheets deployed."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:35
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:49
 msgid "Select report sheet to deploy"
 msgstr ""
 
@@ -1340,6 +1370,16 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:43
 msgid "Select a term or deploy to the entire year."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:76
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:98
+#: /src/schooltool/requirement/browser/scoresystem.py:407
+msgid "Required input is missing."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:93
+msgid "If you deploy the same template multiple times, give each deployment an easily distinguishable name."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
@@ -1442,10 +1482,6 @@ msgstr ""
 msgid "Order"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Hidden?"
-msgstr ""
-
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2
 msgid "Summary Worksheet"
@@ -1509,11 +1545,7 @@ msgstr ""
 msgid "Apply a grade for all students:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:44
-msgid "Your browser either has Javascript turned off, or it is not supported. Javascript is <b>required</b> for the gradebook. Please enable Javascript or use a browser with Javascript."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:58
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:48
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:15
 msgid "Term:"
 msgstr ""
@@ -2030,10 +2062,6 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:296
 msgid "Custom score system"
-msgstr ""
-
-#: /src/schooltool/requirement/browser/scoresystem.py:407
-msgid "Required input is missing."
 msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem.py:504

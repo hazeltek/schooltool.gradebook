@@ -31,7 +31,7 @@
         <tr>
           <td i18n:translate="">Date (yyyy-mm-dd)</td>
           <td>
-            <input type="text" id="day" name="day"
+            <input type="text" id="day" name="day" class="text-widget date-field"
                    tal:attributes="value view/currentDay" />
           </td>
         </tr>

@@ -392,22 +392,19 @@ The linked columns should also change:
     | Richter, Claudia | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
     +------------------+-------+-------+---------+---------+-------+-------+
 
-If we grade student by student, we'll see that linked columns are read
-only there too:
+We can grade student by student, we'll see no linked columns there.
 
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.printQuery('//h3/text()')
     Enter grades for Cardune, Paul
+
     >>> stephan.printQuery('//label/span/text()')
     HW 1 (50)
     Quiz (100)
-    Second Presentation (100)
-    Sheet1 (100)
+
     >>> stephan.printQuery('//div[@class="widget"]/*')
     <input id="form-widgets-Activity"... value="40" type="text" />
     <input id="form-widgets-Activity-2"... value="90" type="text" />
-    <span id="form-widgets-LinkedColumnActivity" ...>99</span>
-    <span id="form-widgets-LinkedColumnActivity-2" ...>94.5</span>
 
 Now, let's go back to the Physics I section of the Spring and delete
 all grades for Paul, so he will have no average for that worksheet:
@@ -431,13 +428,10 @@ Let's go back to the Math I section of the Fall and check the grades for Paul:
     >>> stephan.printQuery('//label/span/text()')
     HW 1 (50)
     Quiz (100)
-    Second Presentation (100)
-    Sheet1 (100)
+
     >>> stephan.printQuery('//div[@class="widget"]/*')
     <input id="form-widgets-Activity"... value="40" type="text" />
     <input id="form-widgets-Activity-2"... value="90" type="text" />
-    <span id="form-widgets-LinkedColumnActivity" ...>99</span>
-    <span id="form-widgets-LinkedColumnActivity-2" ...></span>
 
 Now, we're going to delete the source of a linked column. Let's delete
 the 2nd Presentation activity of the Second Sheet worksheet, leaving
@@ -485,11 +479,10 @@ Same if we grade a student:
     >>> stephan.printQuery('//label/span/text()')
     HW 1 (50)
     Quiz (100)
-    Sheet1 (100)
+
     >>> stephan.printQuery('//div[@class="widget"]/*')
     <input id="form-widgets-Activity"... value="40" type="text" />
     <input id="form-widgets-Activity-2"... value="90" type="text" />
-    <span id="form-widgets-LinkedColumnActivity-2" ...></span>
 
 Deletion should also work with columns linked to the average of a
 worksheet. It's not possible to delete worksheets, but we can hide

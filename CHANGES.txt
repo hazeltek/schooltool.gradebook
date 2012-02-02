@@ -2,18 +2,56 @@
 CHANGES
 =======
 
-1.9.3 (unreleased)
+2.0.2 (unreleased)
 ------------------
 
 - Nothing changed yet.
 
 
+2.0.1 (2011-12-22)
+------------------
+
+- Allow scoresystem point value be equal to the previous grade (https://launchpad.net/bugs/899228)
+- Updated translations
+
+
+2.0.0 (2011-11-22)
+------------------
+
+- Column header in the Detailed Student Report spans beyond column borders.
+  (https://launchpad.net/bugs/837156)
+- Absences by day report dialog should have a proper date widget (https://launchpad.net/bugs/876800)
+- PDF file names should include student username (https://launchpad.net/bugs/893019)
+- Flourish request failing report modal submits too soon (https://launchpad.net/bugs/893240)
+
+
+1.9.3 (2011-11-18)
+------------------
+
+New features
+++++++++++++
+
+- Hide/Unhide deployed Report Sheets
+- Set title before deploying a report sheet.
+- Too easy to deploy duplicate report sheets (https://launchpad.net/bugs/836732)
+- "Report" in student pop up menu that brings up the same view as student sees
+  (https://launchpad.net/bugs/887122)
+
+
+Bugfixes
+++++++++
+
+- Selecting score system for average column does nothing (https://launchpad.net/bugs/882061)
+- Gradebook menuitem fails when person teaches and attends sections (https://launchpad.net/bugs/885823)
+- All tests fixed
+
+
 1.9.2 (2011-11-02)
 ------------------
 
-- Fixed the overzealous security checks to improve performance (https://lauchpad.net/bugs/561217)
-- Add a link from Section to Gradebook (https://lauchpad.net/bugs/868426)
-- Fix Gradebook breadcrumb (https://lauchpad.net/bugs/868431)
+- Fixed the overzealous security checks to improve performance (https://launchpad.net/bugs/561217)
+- Add a link from Section to Gradebook (https://launchpad.net/bugs/868426)
+- Fix Gradebook breadcrumb (https://launchpad.net/bugs/868431)
 - Updated translations
 
 
@@ -55,7 +93,7 @@ Bugfixes
 ++++++++
 
 - Move custom score systems to a new container. Fixes crash on startup
-  if gradebook has been disabled after use (https://lauchpad.net/bugs/717277).
+  if gradebook has been disabled after use (https://launchpad.net/bugs/717277).
 - Run functional tests without journal, add separate tests that need journal to
   another layer (https://launchpad.net/bugs/783540).
 - Fixed crash when there were scores only for non-weighted activities (https://launchpad.net/bugs/801121).
