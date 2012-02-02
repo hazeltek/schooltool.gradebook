@@ -221,6 +221,19 @@ class FlourishReportSheetsBase(FlourishSchooYearMixin):
             return []
 
 
+class FlourishManageReportSheetTemplatesOverview(FlourishReportSheetsBase,
+                                                 flourish.page.Content):
+    """A flourish viewlet for showing report sheet templates in school view"""
+
+    body_template = ViewPageTemplateFile(
+        'templates/f_manage_report_sheet_templates_overview.pt')
+
+    @property
+    def templates(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        return list(root.templates.values())
+
+
 class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
                                          flourish.page.Content):
     """A flourish viewlet for showing deployed report sheets in school view"""
@@ -499,6 +512,12 @@ class FlourishReportSheetEditView(flourish.form.Form, form.EditForm):
     @property
     def title(self):
         return self.context.title
+
+    def display_scoresystem(self, activity):
+        ss = activity.scoresystem
+        if IRangedValuesScoreSystem.providedBy(ss):
+            return '%s - %s' % (ss.min, ss.max)
+        return ss.title
 
     def update(self):
         if 'form-submitted' in self.request:

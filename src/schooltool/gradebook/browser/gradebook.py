@@ -204,6 +204,11 @@ class GradebookBase(BrowserView):
         return self.context.students
 
     @property
+    def all_hidden(self):
+        activities = self.context.__parent__.__parent__
+        return not activities.worksheets
+
+    @property
     def scores(self):
         results = {}
         person = IPerson(self.request.principal)
@@ -415,7 +420,7 @@ class SectionFinder(GradebookBase):
         self.due_date_hide = prefs.get('hide', False)
 
         self.apply_all_colspan = 1
-        if gradebook.context.deployed:
+        if not gradebook.context.canAverage():
             self.total_hide = True
             self.average_hide = True
         if not self.absences_hide:
@@ -470,7 +475,7 @@ class GradebookOverview(SectionFinder):
             if sort_by == key:
                 reverse = not reverse
             else:
-                reverse = False
+                reverse = (sort_by != 'student')
             gradebook.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = gradebook.getSortKey(self.person)
 
@@ -678,9 +683,10 @@ class GradebookOverview(SectionFinder):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
         worksheet = gradebook.getCurrentWorksheet(self.person)
-        section = ISection(worksheet)
 
+        section = ISection(worksheet, None)
         journal_data = interfaces.ISectionJournalData(section, None)
+
         rows = []
         for student_info in self.students_info:
             grades = []
@@ -751,12 +757,15 @@ class GradebookOverview(SectionFinder):
                 else:
                     return (int(row[key]), generateStudentKey(row))
             else: # sorting by activity
-                grades = dict([(unicode(grade['activity']), grade['value'])
-                               for grade in row['grades']])
-                if not grades.get(key, ''):
-                    return (1, generateStudentKey(row))
-                else:
-                    return (0, grades.get(key), generateStudentKey(row))
+                value = -9999999.9
+                for grade in row['grades']:
+                    if key == unicode(grade['activity']):
+                        try:
+                            value = float(grade['value'])
+                        except:
+                            pass
+                        break
+                return (value, generateStudentKey(row))
         return sorted(rows, key=generateKey, reverse=reverse)
 
     @property
@@ -782,8 +791,23 @@ class FlourishGradebookOverview(GradebookOverview,
                                 flourish.page.WideContainerPage):
     """flourish Gradebook Overview/Table"""
 
-    has_header = False
-    page_class = 'page grid'
+    @property
+    def page_class(self):
+        if self.all_hidden:
+            return 'page'
+        else:
+            return 'page grid'
+
+    @property
+    def title(self):
+        if self.all_hidden:
+            return _('No Visible Worksheets')
+        else:
+            return _('Enter Grades')
+
+    @property
+    def has_header(self):
+        return self.all_hidden
 
     @property
     def journal_present(self):
@@ -1057,6 +1081,10 @@ class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
     """flourish Gradebook Settings links viewlet."""
 
 
+class FlourishGradebookActionsLinks(flourish.page.RefineLinksViewlet):
+    """flourish Gradebook Actions links viewlet."""
+
+
 class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
@@ -1075,8 +1103,11 @@ class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager
         current = gradebook.context.__name__
         for worksheet in gradebook.worksheets:
             url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+            classes = worksheet.__name__ == current and ['active'] or []
+            if worksheet.deployed:
+                classes.append('deployed')
             result.append({
-                'class': worksheet.__name__ == current and 'active' or None,
+                'class': classes and ' '.join(classes) or None,
                 'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
                 })
         return result
@@ -1252,6 +1283,7 @@ class FlourishMyGradesView(MyGradesView, flourish.page.Page):
     """Flourish student view of own grades."""
 
     has_header = False
+    page_class = 'page grid'
 
     def handleYearChange(self):
         if 'currentYear' in self.request:
@@ -1886,7 +1918,7 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
         if not len(activities):
             return None
         current_worksheet = activities.getCurrentWorksheet(person)
-        return interfaces.IGradebook(current_worksheet)
+        return interfaces.IGradebook(current_worksheet, None)
 
     @property
     def url(self):
@@ -1902,3 +1934,4 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
             return None
         can_view = flourish.canView(self.gradebook)
         return can_view
+

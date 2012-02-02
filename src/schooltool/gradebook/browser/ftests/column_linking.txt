@@ -529,6 +529,7 @@ If we unhide the worksheet:
     >>> #      have been hidden in a gradebook
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
+    >>> stephan.getLink('Worksheets').click()
     >>> stephan.getLink('Unhide Worksheets').click()
     >>> url = stephan.url
     >>> stephan.open(url + '?UNHIDE=True&unhide:list=Worksheet')

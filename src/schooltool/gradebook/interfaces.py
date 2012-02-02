@@ -74,6 +74,10 @@ class IActivities(interfaces.IRequirement):
     '''A list of worksheets containing activities that must be fulfilled in a
        course or section.'''
 
+    worksheets = Attribute("""all non-hidden worksheets""")
+
+    all_worksheets = Attribute("""all worksheets hidden or not""")
+
     def resetCurrentWorksheet():
         """Reset the currently active worksheet to first or None."""
 
@@ -85,6 +89,18 @@ class IActivities(interfaces.IRequirement):
 
     def getCurrentActivities():
         """Get the activities for the currently active worksheet."""
+
+    contains('.IWorksheet')
+
+
+class ICourseActivities(interfaces.IRequirement):
+    """Container of Course Worksheet Templates that can be deployed"""
+
+    contains('.ICourseWorksheet')
+
+
+class ICourseDeployedWorksheets(interfaces.IRequirement):
+    """Container of Deployed Course Worksheets (by term)"""
 
     contains('.IWorksheet')
 
@@ -111,12 +127,18 @@ class IWorksheet(interfaces.IRequirement):
         """Set the weight for the given category.  Any numeric type is
            acceptable"""
 
+    def isCourseWorksheet():
+        """return True if worksheet was deployed as course worksheet"""
+
+    def canAverage():
+        """return True if activities have scoresystems that can be averaged"""
+
     containers(IActivities)
     contains('.IActivity')
 
 
 class IReportWorksheet(interfaces.IRequirement):
-    '''A list of report card activities that get copied into sections.'''
+    '''A worksheet template to get copied into section gradebooks.'''
 
     containers(IGradebookTemplates, IGradebookDeployed)
     contains('.IReportActivity')
@@ -126,13 +148,23 @@ class IReportWorksheet(interfaces.IRequirement):
         description=_(u'Identifies the report sheet in teacher gradebooks.'))
 
 
+class ICourseWorksheet(interfaces.IRequirement):
+    '''A worksheet template to get copied into section gradebooks.'''
+
+    contains('.IActivity')
+
+    title = zope.schema.TextLine(
+        title=_(u'Title'),
+        description=_(u'Identifies the course worksheet in gradebooks.'))
+
+
 class IActivity(interfaces.IRequirement):
     '''An activity to be graded'''
 
     due_date = zope.schema.Date(
         title=_("Due Date"),
         description=_("The date the activity is due to be graded."),
-        required=True)
+        required=False)
 
     label = zope.schema.TextLine(
         title=_(u"Label"),
@@ -164,7 +196,7 @@ class IActivity(interfaces.IRequirement):
 
 
 class IReportActivity(IActivity):
-    '''An activity to be deployed to section activities'''
+    '''A report card activity to be deployed to section activities'''
 
     containers(IReportWorksheet)
 

@@ -903,7 +903,7 @@ Let's add more grades for Homework 1:
     | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
     +--------------------+-------+--------+---------+---------+
 
-Then we want to sort by grade in Homework 1:
+Then we want to sort by grade in Homework 1 (default is reverse order):
 
     >>> stephan.open(url + '?sort_by=Activity')
     >>> printGradebook(stephan.contents)
@@ -913,16 +913,16 @@ Then we want to sort by grade in Homework 1:
     +--------------------+-------+--------+---------+---------+
     | Name               | Total | Ave.   | HW1     | Quiz    |
     +--------------------+-------+--------+---------+---------+
-    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
-    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
-    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
-    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
-    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
     | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
-    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
+    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
+    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
+    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
     | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
+    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
     +--------------------+-------+--------+---------+---------+
 
 Note that after sorting by the selected activity, rows are also sorted
@@ -938,14 +938,15 @@ Clicking it again, reverses the order:
     +--------------------+-------+--------+---------+---------+
     | Name               | Total | Ave.   | HW1     | Quiz    |
     +--------------------+-------+--------+---------+---------+
-    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
     | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
-    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
-    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
-    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
-    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
-    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
     | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
+    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
+    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
+    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
+    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
+    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
     +--------------------+-------+--------+---------+---------+
+

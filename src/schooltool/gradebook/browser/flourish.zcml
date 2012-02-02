@@ -80,7 +80,6 @@
   <flourish:page
       name="index.html"
       for="..interfaces.IGradebook"
-      title="Enter Grades"
       content_template="templates/f_gradebook_overview.pt"
       class=".gradebook.FlourishGradebookOverview"
       permission="schooltool.view"
@@ -135,6 +134,17 @@
       class=".gradebook.FlourishGradebookSettingsLinks"
       for="..interfaces.IGradebook"
       title="Settings"
+      permission="schooltool.edit"
+      view=".gradebook.FlourishGradebookOverview"
+      />
+
+  <flourish:viewlet
+      name="gradebook_actions"
+      after="gradebook_settings"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.FlourishGradebookActionsLinks"
+      for="..interfaces.IGradebook"
+      title="Actions"
       permission="schooltool.edit"
       view=".gradebook.FlourishGradebookOverview"
       />
@@ -372,8 +382,17 @@
 
   <!-- Report Sheets -->
   <flourish:viewlet
-      name="manage-report-sheets-overview"
+      name="manage-report-sheet-templates-overview"
       after="manage-resources-overview"
+      view="schooltool.app.browser.app.ManageSchool"
+      permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".report_card.FlourishManageReportSheetTemplatesOverview"
+      />
+
+  <flourish:viewlet
+      name="manage-report-sheets-overview"
+      after="manage-report-sheet-templates-overview"
       view="schooltool.app.browser.app.ManageSchool"
       permission="schooltool.edit"
       manager="schooltool.skin.flourish.page.IPageContentManager"
@@ -517,15 +536,6 @@
         permission="schooltool.edit"
         />
   </configure>
-
-  <flourish:viewlet
-      name="gradebook/templates"
-      before="report_card_layout"
-      title="Report Sheet Templates"
-      class="schooltool.skin.flourish.page.LinkViewlet"
-      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
-      permission="schooltool.edit"
-      />
 
   <flourish:page
       name="report_sheets"
@@ -958,4 +968,211 @@
         />
   </configure>
 
+  <!-- Course Worksheets -->
+  <flourish:viewlet
+      name="manage-course-worksheet-templates"
+      before="manage-course-worksheets"
+      view="schooltool.course.browser.course.FlourishCourseView"
+      permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".course_worksheets.FlourishManageCourseWorksheetTemplatesOverview"
+      />
+
+  <flourish:viewlet
+      name="manage-course-worksheets"
+      view="schooltool.course.browser.course.FlourishCourseView"
+      permission="schooltool.edit"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".course_worksheets.FlourishManageCourseSheetsOverview"
+      />
+
+  <flourish:page
+      name="index.html"
+      for="schooltool.gradebook.interfaces.ICourseActivities"
+      class=".course_worksheets.FlourishCourseTemplatesView"
+      content_template="templates/f_course_worksheet_templates.pt"
+      permission="schooltool.edit"
+      subtitle="Worksheet Templates"
+      />
+
+  <flourish:viewlet
+      name="course-worksheets"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".course_worksheets.FlourishCourseWorksheetsLinks"
+      for="schooltool.gradebook.interfaces.ICourseActivities"
+      title="Add"
+      permission="schooltool.edit"
+      view=".course_worksheets.FlourishCourseTemplatesView"
+      />
+
+  <flourish:viewlet
+      name="addCourseWorksheet.html"
+      title="Course Worksheet"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".course_worksheets.FlourishCourseWorksheetsLinks"
+      permission="schooltool.edit"
+      />
+
+  <configure package="schooltool.skin.flourish">
+    <flourish:page
+        name="addCourseWorksheet.html"
+        for="schooltool.gradebook.interfaces.ICourseActivities"
+        subtitle="New Course Worksheet"
+        class="schooltool.gradebook.browser.course_worksheets.FlourishCourseWorksheetAddView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        />
+
+    <flourish:page
+        name="addCourseActivity.html"
+        for="schooltool.gradebook.interfaces.ICourseWorksheet"
+        subtitle="New Course Activity"
+        class="schooltool.gradebook.browser.course_worksheets.FlourishCourseActivityAddView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        />
+  </configure>
+
+  <flourish:page
+      name="index.html"
+      for="schooltool.gradebook.interfaces.ICourseWorksheet"
+      subtitle="Edit"
+      class=".course_worksheets.FlourishCourseWorksheetEditView"
+      content_template="templates/f_course_worksheet_edit.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="course-worksheet-add-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".course_worksheets.CourseWorksheetAddLinks"
+      view=".course_worksheets.FlourishCourseWorksheetEditView"
+      title="Add"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="addCourseActivity.html"
+      title="Course Activity"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".course_worksheets.CourseWorksheetAddLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewletManager
+      name="tertiary_navigation"
+      provides="schooltool.skin.flourish.page.ITertiaryNavigationManager"
+      class=".course_worksheets.CourseActivityAddTertiaryNavigationManager"
+      view=".course_worksheets.FlourishCourseActivityAddView"
+      permission="zope.Public"
+      />
+
+  <flourish:page
+      name="editCourseActivity.html"
+      for="..interfaces.IActivity"
+      subtitle="Edit"
+      content_template="templates/f_add_edit_activity.pt"
+      class=".course_worksheets.FlourishCourseActivityEditView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="deployed_worksheets.html"
+      for="schooltool.course.interfaces.ICourse"
+      class=".course_worksheets.FlourishCourseWorksheetsView"
+      content_template="templates/f_course_worksheets.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="course-worksheets-action-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".course_worksheets.CourseWorksheetsActionLinks"
+      view=".course_worksheets.FlourishCourseWorksheetsView"
+      title="Action"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="hide_unhide_worksheets.html"
+      title="Hide/unhide Worksheets"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".course_worksheets.CourseWorksheetsActionLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="hide_unhide_worksheets.html"
+      for="schooltool.course.interfaces.ICourse"
+      class=".course_worksheets.FlourishHideUnhideCourseWorkheetsView"
+      content_template="templates/f_hide_unhide_course_worksheets.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="../deploy_as_course_worksheet.html"
+      title="Deploy as Course Worksheet"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".gradebook.FlourishGradebookActionsLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="deploy_as_course_worksheet.html"
+      for="..interfaces.IWorksheet"
+      subtitle="Deploy as Course Worksheet"
+      class=".course_worksheets.FlourishDeployAsCourseWorksheetView"
+      content_template="templates/f_deploy_as_course_worksheet.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="gradebook-reports-links"
+      after="gradebook_actions"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class="schooltool.report.browser.report.ReportsLinks"
+      title="Reports"
+      view=".gradebook.FlourishGradebookOverview"
+      permission="schooltool.edit"
+      />
+
+  <report:reportLink
+      name="printable_worksheet"
+      view=".gradebook.FlourishGradebookOverview"
+      layer="schooltool.skin.flourish.IFlourishLayer"
+      permission="schooltool.edit"
+      group="Section"
+      description="The current worksheet formatted for printing."
+      title="Printable Worksheet"
+      file_type="pdf"
+      link="request_printable_worksheet.html"
+      />
+
+  <report:reportLink
+      name="gradebook_export"
+      view=".gradebook.FlourishGradebookOverview"
+      layer="schooltool.skin.flourish.IFlourishLayer"
+      permission="schooltool.edit"
+      group="Section"
+      description="A single Excel-formatted spreadsheet containing all the worksheets for this gradebook."
+      title="Gradebook Export"
+      file_type="xls"
+      link="request_gradebook_export.html"
+      />
+
+  <flourish:page
+      name="request_printable_worksheet.html"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".request_reports.FlourishRequestPrintableWorksheetView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="request_gradebook_export.html"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".request_reports.FlourishRequestGradebookExportView"
+      permission="schooltool.edit"
+      />
+
 </configure>
+

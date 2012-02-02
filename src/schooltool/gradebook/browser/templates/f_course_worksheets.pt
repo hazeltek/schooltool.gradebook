@@ -8,11 +8,11 @@
         });
     });
   </script>
-  <h3 i18n:translate="">Currently Deployed Report Sheets</h3>
+  <h3 i18n:translate="">Currently Deployed Worksheets</h3>
   <table>
     <thead>
       <tr>
-        <th i18n:translate="">Report Sheet</th>
+        <th i18n:translate="">Worksheet</th>
         <tal:block repeat="term schoolyear/values">
           <th tal:content="term/title" />
         </tal:block>
@@ -28,7 +28,7 @@
     </tr>
     <tr tal:condition="not: sheets">
       <td tal:attributes="colspan python:len(schoolyear)+1" i18n:translate="">
-        This year has no report sheets deployed.
+        This year has no worksheets deployed.
       </td>
     </tr>
   </table>
@@ -37,10 +37,7 @@
        i18n:translate="">Done</a>
   </h3>
   <form method="post" class="standalone"
-        tal:condition="view/has_schoolyear"
         tal:attributes="action request/getURL">
-    <input type="hidden" name="schoolyear_id" 
-           tal:attributes="value request/schoolyear_id|nothing" />
     <div class="viewspace">
         <div class="status" tal:condition="view/has_error">
           <div class="summary ui-state-error ui-corner-all">
@@ -50,7 +47,7 @@
         </div>
       <fieldset>
         <legend>
-          <span i18n:translate="">Select report sheet to deploy</span>
+          <span i18n:translate="">Select worksheet to deploy</span>
         </legend>
         <div class="row">
           <div class="label">
@@ -73,7 +70,7 @@
         <div class="row">
           <div class="label">
             <label for="template">
-              <span i18n:translate="">Report Sheet Template</span>
+              <span i18n:translate="">Worksheet Template</span>
             </label>
           </div>
           <div class="error" tal:condition="view/no_template">

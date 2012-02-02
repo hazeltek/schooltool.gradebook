@@ -224,6 +224,12 @@ class FlourishCategoryEditView(flourish.form.Form, form.EditForm):
         if self.data['category']:
             self.data['title'] = removeSecurityProxy(
                 self.context.get(self.data['category']))
+            # XXX: ContainedProxy fails on unicode(title)
+            #      when there are non-ascii characters
+            #      so we get a real unicode object here
+            if self.data['title'] is not None:
+                title = self.data['title']
+                self.data['title'] = title.encode('utf-8').decode('utf-8')
             if self.context.default_key == self.data['category']:
                 self.data['default'] = True
         else:

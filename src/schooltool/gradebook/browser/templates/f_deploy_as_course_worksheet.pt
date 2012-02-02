@@ -1,46 +1,7 @@
 <div i18n:domain="schooltool.gradebook"
-     tal:define="sheets view/sheets; terms view/terms; schoolyear view/schoolyear">
-  <script type="text/javascript">
-    $(document).ready(function() {
-        $('#template').change(function(e) {
-            index = e.target.selectedIndex
-            $('#alternate_title').val(e.target.options[index].text);
-        });
-    });
-  </script>
-  <h3 i18n:translate="">Currently Deployed Report Sheets</h3>
-  <table>
-    <thead>
-      <tr>
-        <th i18n:translate="">Report Sheet</th>
-        <tal:block repeat="term schoolyear/values">
-          <th tal:content="term/title" />
-        </tal:block>
-      </tr>
-    </thead>
-    <tr tal:repeat="sheet sheets">
-      <td tal:content="sheet/obj/title" />
-      <tal:block repeat="term sheet/terms">
-        <td>
-          <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
-        </td>
-      </tal:block>
-    </tr>
-    <tr tal:condition="not: sheets">
-      <td tal:attributes="colspan python:len(schoolyear)+1" i18n:translate="">
-        This year has no report sheets deployed.
-      </td>
-    </tr>
-  </table>
-  <h3>
-    <a tal:attributes="href view/nextURL"
-       i18n:translate="">Done</a>
-  </h3>
+     tal:define="terms view/terms">
   <form method="post" class="standalone"
-        tal:condition="view/has_schoolyear"
         tal:attributes="action request/getURL">
-    <input type="hidden" name="schoolyear_id" 
-           tal:attributes="value request/schoolyear_id|nothing" />
     <div class="viewspace">
         <div class="status" tal:condition="view/has_error">
           <div class="summary ui-state-error ui-corner-all">
@@ -50,7 +11,7 @@
         </div>
       <fieldset>
         <legend>
-          <span i18n:translate="">Select report sheet to deploy</span>
+          <span i18n:translate="">Select term or year to deploy</span>
         </legend>
         <div class="row">
           <div class="label">
@@ -66,24 +27,6 @@
               <tal:block repeat="term terms">
                 <option tal:attributes="value term/name; selected term/selected"
                         tal:content="term/title" />
-              </tal:block>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="label">
-            <label for="template">
-              <span i18n:translate="">Report Sheet Template</span>
-            </label>
-          </div>
-          <div class="error" tal:condition="view/no_template">
-            <div class="error" i18n:translate="">Required input is missing.</div>
-          </div>
-          <div class="widget">
-            <select id="template" name="template">
-              <tal:block repeat="template view/templates">
-                <option tal:attributes="value template/name; selected template/selected"
-                        tal:content="template/title" />
               </tal:block>
             </select>
           </div>

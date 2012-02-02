@@ -44,11 +44,15 @@ from schooltool.course.interfaces import ISection
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
 CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
+COURSE_ACTIVITIES_KEY = 'schooltool.gradebook.course_activities'
+COURSE_DEPLOYED_WORKSHEETS_KEY = 'schooltool.gradebook.course_deployed'
 
 
 def ensureAtLeastOneWorksheet(activities):
-    if len(activities): # has worksheets already
-        return
+    # only create Sheet1 if no personal worksheet (hidden or not) is found
+    for worksheet in activities.all_worksheets:
+        if not worksheet.deployed:
+            return
     sheet1 = Worksheet(_('Sheet1'))
     chooser = INameChooser(activities)
     name = chooser.chooseName('', sheet1)
@@ -121,16 +125,31 @@ class Activities(requirement.Requirement):
     zope.interface.implements(interfaces.IActivities)
 
     def _getDefaultWorksheet(self):
-        for worksheet in self.worksheets:
-            if not worksheet.deployed:
+        # order of preference is:
+        # 1) first non-hidden personal sheet
+        # 2) first non-hidden deployed sheet
+        # 3) first sheet outright if all are hidden
+        # 4) None if there are no worksheets at all
+        firstDeployed, firstAbsolute = None, None
+        for worksheet in self.all_worksheets:
+            if firstAbsolute is None:
+                firstAbsolute = worksheet
+            if worksheet.deployed:
+                if firstDeployed is None and not worksheet.hidden:
+                    firstDeployed = worksheet
+            elif not worksheet.hidden:
                 return worksheet
-        if len(self.worksheets):
-            return self.worksheets[0]
-        return None
+        if firstDeployed is not None:
+            return firstDeployed
+        return firstAbsolute
 
     @property
     def worksheets(self):
         return self.values()
+
+    @property
+    def all_worksheets(self):
+        return [w for k, w in self.items()]
 
     def values(self):
         worksheets = super(Activities, self).values()
@@ -170,6 +189,14 @@ class Activities(requirement.Requirement):
             return []
 
 
+class CourseActivities(requirement.Requirement):
+    zope.interface.implements(interfaces.ICourseActivities)
+
+
+class CourseDeployedWorksheets(requirement.Requirement):
+    zope.interface.implements(interfaces.ICourseDeployedWorksheets)
+
+
 class Worksheet(requirement.Requirement):
     zope.interface.implements(interfaces.IWorksheet, 
                               annotation.interfaces.IAttributeAnnotatable)
@@ -198,9 +225,28 @@ class Worksheet(requirement.Requirement):
             ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
         ann[CATEGORY_WEIGHTS_KEY][category] = weight
 
+    def isCourseWorksheet(self):
+        section = ISection(self, None)
+        if section is None:
+            return False
+        courses = list(section.courses)
+        if not courses:
+            return False
+        sheets = interfaces.ICourseDeployedWorksheets(courses[0])
+        return self.__name__ in sheets
+
+    def canAverage(self):
+        return not self.deployed or self.isCourseWorksheet()
+
 
 class ReportWorksheet(requirement.Requirement):
     zope.interface.implements(interfaces.IReportWorksheet)
+
+    deployed = False
+
+
+class CourseWorksheet(requirement.Requirement):
+    zope.interface.implements(interfaces.ICourseWorksheet)
 
     deployed = False
 
@@ -237,8 +283,6 @@ def getSectionActivities(context):
         return annotations[ACTIVITIES_KEY]
     except KeyError:
         activities = Activities(_('Activities'))
-        # Make sure that the sections activities include all the activities of
-        # the courses as well
         annotations[ACTIVITIES_KEY] = activities
         zope.container.contained.contained(
             activities, context, 'activities')
@@ -246,6 +290,38 @@ def getSectionActivities(context):
 
 # Convention to make adapter introspectable
 getSectionActivities.factory = Activities
+
+
+def getCourseActivities(context):
+    '''IAttributeAnnotatable object to ICourseActivities adapter.'''
+    annotations = annotation.interfaces.IAnnotations(context)
+    try:
+        return annotations[COURSE_ACTIVITIES_KEY]
+    except KeyError:
+        activities = CourseActivities(_('Course Activities'))
+        annotations[COURSE_ACTIVITIES_KEY] = activities
+        zope.container.contained.contained(
+            activities, context, 'activities')
+        return activities
+
+# Convention to make adapter introspectable
+getCourseActivities.factory = CourseActivities
+
+
+def getCourseDeployedWorksheets(context):
+    '''IAttributeAnnotatable object to ICourseDeployedWorksheets adapter.'''
+    annotations = annotation.interfaces.IAnnotations(context)
+    try:
+        return annotations[COURSE_DEPLOYED_WORKSHEETS_KEY]
+    except KeyError:
+        worksheets = CourseDeployedWorksheets(_('Deployed Worksheets'))
+        annotations[COURSE_DEPLOYED_WORKSHEETS_KEY] = worksheets
+        zope.container.contained.contained(
+            worksheets, context, 'deployed_worksheets')
+        return worksheets
+
+# Convention to make adapter introspectable
+getCourseDeployedWorksheets.factory = CourseDeployedWorksheets
 
 
 class LinkedActivity(Activity):

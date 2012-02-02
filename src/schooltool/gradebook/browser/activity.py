@@ -234,6 +234,8 @@ class FlourishWorksheetsView(flourish.page.Page):
             hidden = self.request.get('hidden', [])
             activities = removeSecurityProxy(self.context)
             for worksheet in super(Activities, activities).values():
+                if worksheet.deployed:
+                    continue
                 if worksheet.hidden and not worksheet.__name__ in hidden:
                     worksheet.hidden = False
                 if not worksheet.hidden and worksheet.__name__ in hidden:
