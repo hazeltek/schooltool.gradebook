@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-2.0.2 (unreleased)
+2.0.2 (2012-02-02)
 ------------------
 
 New features
@@ -13,8 +13,10 @@ New features
 Bugfixes
 ++++++++
 
+- Error editing Activity category with unicode characters (https://launchpad.net/bugs/913581)
 - Crash viewing a Section, when all sheets are hidden
   (https://launchpad.net/bugs/913055)
+- Missing XLS and PDF export (https://launchpad.net/bugs/916674)
 - Different style for deployed worksheet tabs (https://launchpad.net/bugs/916674)
 - Min/max should show while editing report sheet template
   (https://launchpad.net/bugs/916675)
