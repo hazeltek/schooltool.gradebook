@@ -72,7 +72,7 @@
 
   <flourish:viewlet
       name="scoresystems"
-      after="schoolName.html"
+      after="activity_categories"
       title="Score Systems"
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager="schooltool.app.browser.app.CustomizeSchoolLinks"
