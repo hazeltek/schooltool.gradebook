@@ -10,13 +10,26 @@
 </tal:block>
 <div style="display:none" id="filldown-dialog-container">
   <form class="filldown-dialog-form">
-    <h1>Hello World!</h1>
-    <input type="text" name="filldown_value" value="" size="4" />
-    <div class="buttons">
-      <input type="submit" class="button-ok" name="SUBMIT"
-             value="Submit" i18n:attributes="value" />
-      <input type="submit" id="" class="button-cancel" name="CANCEL"
-             value="Cancel" i18n:attributes="value" />
+    <div class="viewspace">
+      <div class="row">
+        <div class="label">
+          <label for="filldown_value">
+            <span i18n:translate="">Grade</span>
+          </label>
+        </div>
+        <p class="hint" i18n:translate="">
+          Choose a grade to apply to all the students in the gradebook column.
+        </p>
+        <div class="widget">
+          <input type="text" name="filldown_value" value="" size="4" />
+        </div>
+      </div>
+      <div class="buttons">
+        <input type="submit" class="button-ok" name="SUBMIT"
+               value="Submit" i18n:attributes="value" />
+        <input type="submit" id="" class="button-cancel" name="CANCEL"
+               value="Cancel" i18n:attributes="value" />
+      </div>
     </div>
   </form>
 </div>
@@ -62,7 +75,8 @@
                   cells.push(cell);
               });
               container.data('schooltool.gradebook-filldown-dialog-cells', cells);
-              container.dialog({'title':'hello'});
+              var filldown_title = '<tal:block i18n:translate="">Fill the column with a grade</tal:block>'
+              container.dialog({'title':filldown_title});
           });
           cancel_button.click(function(e) {
               $(container).find('input[name="filldown_value"]').val("")
