@@ -5,7 +5,7 @@ CHANGES
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- get fill down back in the contextual menu (https://launchpad.net/bugs/907907)
 
 
 2.0.2 (2012-02-02)

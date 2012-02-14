@@ -8,6 +8,31 @@
     <a href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
   </p>
 </tal:block>
+<div style="display:none" id="filldown-dialog-container">
+  <form class="filldown-dialog-form">
+    <div class="viewspace">
+      <div class="row">
+        <div class="label">
+          <label for="filldown_value">
+            <span i18n:translate="">Grade</span>
+          </label>
+        </div>
+        <p class="hint" i18n:translate="">
+          Choose a grade to apply to all the students in the gradebook column.
+        </p>
+        <div class="widget">
+          <input type="text" name="filldown_value" value="" size="4" />
+        </div>
+      </div>
+      <div class="buttons">
+        <input type="submit" class="button-ok" name="SUBMIT"
+               value="Submit" i18n:attributes="value" />
+        <input type="submit" id="" class="button-cancel" name="CANCEL"
+               value="Cancel" i18n:attributes="value" />
+      </div>
+    </div>
+  </form>
+</div>
 <div i18n:domain="schooltool.gradebook"
      tal:define="table view/table;
                  activities view/activities">
@@ -33,6 +58,44 @@
       window.onload = onLoadHandler;
       window.onunload = checkChanges;
       warningText = '<tal:block replace="view/warningText" />';
+
+      $(document).ready(function() {
+          var container = $('#filldown-dialog-container');
+          var cancel_button = container.find('input[name="CANCEL"]');
+          var submit_button = container.find('input[name="SUBMIT"]');
+          $('.filldown').click(function(e) {
+              var cell = $(this).closest('th');
+              var idx = cell.parent().children().index(cell);
+              container.data('schooltool.gradebook-filldown-dialog', idx);
+              var rows = $(cell.closest('table').find('tbody tr'));
+              var cells = [];
+              rows.each(function(i, e){
+                  var cell_parent = $(e).children()[idx];
+                  var cell = $(cell_parent).find('input');
+                  cells.push(cell);
+              });
+              container.data('schooltool.gradebook-filldown-dialog-cells', cells);
+              var filldown_title = '<tal:block i18n:translate="">Fill the column with a grade</tal:block>'
+              container.dialog({'title':filldown_title});
+          });
+          cancel_button.click(function(e) {
+              $(container).find('input[name="filldown_value"]').val("")
+              container.dialog('close');
+              return false;
+          });
+          submit_button.click(function(e) {
+              var fillval = $(container).find('input[name="filldown_value"]').val()
+              $(container).find('input[name="filldown_value"]').val("")
+              if (fillval) {
+                  var cells = container.data('schooltool.gradebook-filldown-dialog-cells');
+                  $(cells).each(function(i, cell) {
+                      $(cell).val(fillval);
+                  });
+              }
+              container.dialog('close');
+              return false;
+          });
+      });
   <metal:block tal:replace="structure string:&lt;/script&gt;" />
   <form method="post" class="grid-form"
         tal:condition="not: view/all_hidden"
@@ -136,6 +199,10 @@
                   <li tal:condition="activity/scorable">
                     <a tal:attributes="href string:gradeActivity.html?activity=${activity/hash};"
                        i18n:translate="">Score this</a>
+                  </li>
+                  <li tal:condition="activity/scorable">
+                    <a class="filldown" href="#"
+                       i18n:translate="">Fill grades</a>
                   </li>
                   <li>
                     <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
