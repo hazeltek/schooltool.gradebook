@@ -8,22 +8,24 @@
     <a href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
   </p>
 </tal:block>
-<div style="display:none" id="filldown-dialog-container">
-  <form class="filldown-dialog-form">
+<div class="hidden-dialog" id="filldown-dialog-container">
+  <form>
     <div class="viewspace">
-      <div class="row">
-        <div class="label">
-          <label for="filldown_value">
-            <span i18n:translate="">Grade</span>
-          </label>
+      <fieldset>
+        <div class="row">
+          <div class="label">
+            <label for="filldown_value">
+              <span i18n:translate="">Grade</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Choose a grade to apply to all the students in the gradebook column.
+          </p>
+          <div class="widget">
+            <input type="text" name="filldown_value" value="" size="4" />
+          </div>
         </div>
-        <p class="hint" i18n:translate="">
-          Choose a grade to apply to all the students in the gradebook column.
-        </p>
-        <div class="widget">
-          <input type="text" name="filldown_value" value="" size="4" />
-        </div>
-      </div>
+      </fieldset>
       <div class="buttons">
         <input type="submit" class="button-ok" name="SUBMIT"
                value="Submit" i18n:attributes="value" />
@@ -64,6 +66,7 @@
           var cancel_button = container.find('input[name="CANCEL"]');
           var submit_button = container.find('input[name="SUBMIT"]');
           $('.filldown').click(function(e) {
+              $('.popup_active').hide().removeClass('popup_active');
               var cell = $(this).closest('th');
               var idx = cell.parent().children().index(cell);
               container.data('schooltool.gradebook-filldown-dialog', idx);
@@ -77,6 +80,7 @@
               container.data('schooltool.gradebook-filldown-dialog-cells', cells);
               var filldown_title = '<tal:block i18n:translate="">Fill the column with a grade</tal:block>'
               container.dialog({'title':filldown_title});
+              return false;
           });
           cancel_button.click(function(e) {
               $(container).find('input[name="filldown_value"]').val("")
