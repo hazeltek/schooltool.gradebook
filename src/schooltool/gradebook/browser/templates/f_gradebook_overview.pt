@@ -69,11 +69,10 @@
               $('.popup_active').hide().removeClass('popup_active');
               var cell = $(this).closest('th');
               var idx = cell.parent().children().index(cell);
-              container.data('schooltool.gradebook-filldown-dialog', idx);
               var rows = $(cell.closest('table').find('tbody tr'));
               var cells = [];
-              rows.each(function(i, e){
-                  var cell_parent = $(e).children()[idx];
+              rows.each(function(i, row){
+                  var cell_parent = $(row).children()[idx];
                   var cell = $(cell_parent).find('input');
                   cells.push(cell);
               });
@@ -93,7 +92,14 @@
               if (fillval) {
                   var cells = container.data('schooltool.gradebook-filldown-dialog-cells');
                   $(cells).each(function(i, cell) {
-                      $(cell).val(fillval);
+                      current_value = $(cell).val();
+                      if (!current_value){
+                          $(cell).val(fillval);
+                          var activity_name = cell[0]['name']
+                          var activity = activity_name.split('_')[0];
+                          setBackgroundColor(activity_name, activity, fillval, false);
+                          setEdited();
+                      }
                   });
               }
               container.dialog('close');
@@ -206,7 +212,7 @@
                   </li>
                   <li tal:condition="activity/scorable">
                     <a class="filldown" href="#"
-                       i18n:translate="">Fill grades</a>
+                       i18n:translate="">Fill down</a>
                   </li>
                   <li>
                     <a tal:attributes="href string:${request/URL}?sort_by=${activity/hash}"
