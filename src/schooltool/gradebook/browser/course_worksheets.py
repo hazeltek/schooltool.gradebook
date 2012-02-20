@@ -180,13 +180,11 @@ class FlourishCourseWorksheetsBase(object):
     def schoolyear(self):
         return ISchoolYear(self.course)
 
-    @property
-    def deployed(self):
-        return ICourseDeployedWorksheets(self.course)
+    def deployed(self, course):
+        return ICourseDeployedWorksheets(course)
 
-    @property
-    def activities(self):
-        return ICourseActivities(self.course)
+    def activities(self, course):
+        return ICourseActivities(course)
 
     def sheets(self):
         return [sheet for sheet in self.all_sheets() if not sheet['checked']]
@@ -194,7 +192,7 @@ class FlourishCourseWorksheetsBase(object):
     def all_sheets(self):
         schoolyear = self.schoolyear
         deployments = {}
-        for nm, sheet in self.deployed.items():
+        for nm, sheet in self.deployed(self.course).items():
             sheet = removeSecurityProxy(sheet)
             index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
             deployment = deployments.setdefault(index, {
@@ -235,11 +233,11 @@ class FlourishCourseWorksheetsBase(object):
                 return int(rest[1:])
         return 0
 
-    def deploy(self, term, template):
+    def deploy(self, course, term, template):
         # get the next index and title
         highest, title_index = 0, 0
         template_title = self.alternate_title
-        for sheet in self.deployed.values():
+        for sheet in self.deployed(course).values():
             index = int(sheet.__name__[sheet.__name__.rfind('_') + 1:])
             if index > highest:
                 highest = index
@@ -263,16 +261,16 @@ class FlourishCourseWorksheetsBase(object):
         else:
             terms = self.schoolyear.values()
         for term in terms:
-            deployedKey = 'course_%s_%s_%s' % (self.course.__name__,
+            deployedKey = 'course_%s_%s_%s' % (course.__name__,
                                                term.__name__, highest + 1)
             deployedWorksheet = Worksheet(title)
-            self.deployed[deployedKey] = deployedWorksheet
+            self.deployed(course)[deployedKey] = deployedWorksheet
             copyActivities(removeSecurityProxy(template), deployedWorksheet)
 
             # now copy the template to all sections in the term
             sections = ISectionContainer(term)
             for section in sections.values():
-                if self.course not in section.courses:
+                if course not in section.courses:
                     continue
                 worksheetCopy = Worksheet(deployedWorksheet.title)
                 worksheetCopy.deployed = True
@@ -329,7 +327,7 @@ class FlourishCourseWorksheetsView(FlourishCourseWorksheetsBase,
             'title': _('-- Select a template --'),
             'selected': 'selected',
             }]
-        for template in self.activities.values():
+        for template in self.activities(self.course).values():
             result.append({
                 'name': template.__name__,
                 'title': template.title,
@@ -342,11 +340,12 @@ class FlourishCourseWorksheetsView(FlourishCourseWorksheetsBase,
             self.request.response.redirect(self.nextURL())
         if 'SUBMIT' in self.request:
             if self.request.get('template') and self.alternate_title:
-                template = self.activities[self.request['template']]
+                activities = self.activities(self.course)
+                template = activities[self.request['template']]
                 term = self.request.get('term')
                 if term:
                     term = self.schoolyear[term]
-                self.deploy(term, template)
+                self.deploy(self.course, term, template)
                 self.alternate_title = ''
 
     def nextURL(self):
@@ -373,7 +372,7 @@ class FlourishHideUnhideCourseWorkheetsView(FlourishCourseWorksheetsBase,
         elif 'SUBMIT' in self.request:
             hidden = self.request.get('hidden', [])
             schoolyear = self.schoolyear
-            for nm, sheet in self.deployed.items():
+            for nm, sheet in self.deployed(self.course).items():
                 sheet = removeSecurityProxy(sheet)
                 index = sheet.__name__[sheet.__name__.rfind('_') + 1:]
                 self.handleSheet(sheet, index, hidden)
@@ -403,6 +402,20 @@ class FlourishHideUnhideCourseWorkheetsView(FlourishCourseWorksheetsBase,
         return url + '/deployed_worksheets.html'
 
 
+class DeployAsCourseWorksheetLinkViewlet(flourish.page.LinkViewlet):
+
+    @property
+    def enabled(self):
+        gradebook = removeSecurityProxy(self.context)
+        courses = list(ISection(gradebook).courses)
+        if not courses:
+            return False
+        for course in courses:
+            if not flourish.canEdit(course):
+                return False
+        return super(DeployAsCourseWorksheetLinkViewlet, self).enabled
+
+
 class FlourishDeployAsCourseWorksheetView(FlourishCourseWorksheetsBase,
                                           flourish.page.Page):
     """A flourish view for deploying current gradebook worksheet as a
@@ -416,6 +429,17 @@ class FlourishDeployAsCourseWorksheetView(FlourishCourseWorksheetsBase,
         if not courses:
             return None
         return courses[0]
+
+    @property
+    def courses(self):
+        courses = []
+        for course in ISection(self.context).courses:
+            courses.append({
+                'name': course.__name__,
+                'title': course.title,
+                'obj': course,
+                })
+        return courses
 
     @property
     def has_error(self):
@@ -436,15 +460,27 @@ class FlourishDeployAsCourseWorksheetView(FlourishCourseWorksheetsBase,
             self.request.response.redirect(self.nextURL())
         if 'SUBMIT' in self.request:
             if not self.has_error:
-                template = Worksheet(self.alternate_title)
-                chooser = INameChooser(self.activities)
-                name = chooser.chooseName(template.title, template)
-                self.activities[name] = template
-                copyActivities(removeSecurityProxy(self.context), template)
+                courses = self.courses
+                if not courses:
+                    request_courses = []
+                elif len(courses) < 2:
+                    request_courses = [self.course.__name__]
+                else:
+                    request_courses = self.request['courses']
                 term = self.request.get('term')
                 if term:
                     term = self.schoolyear[term]
-                self.deploy(term, template)
+                for course_dict in courses:
+                    course = course_dict['obj']
+                    if course.__name__ not in request_courses:
+                        continue
+                    template = Worksheet(self.alternate_title)
+                    activities = self.activities(course)
+                    chooser = INameChooser(activities)
+                    name = chooser.chooseName(template.title, template)
+                    activities[name] = template
+                    copyActivities(removeSecurityProxy(self.context), template)
+                    self.deploy(course, term, template)
                 self.request.response.redirect(self.nextURL())
 
     def nextURL(self):

@@ -1,5 +1,5 @@
 <div i18n:domain="schooltool.gradebook"
-     tal:define="terms view/terms">
+     tal:define="terms view/terms; courses view/courses">
   <form method="post" class="standalone"
         tal:attributes="action request/getURL">
     <div class="viewspace">
@@ -29,6 +29,28 @@
                         tal:content="term/title" />
               </tal:block>
             </select>
+          </div>
+        </div>
+        <div class="row" tal:condition="python: len(courses) > 1">
+          <div class="label">
+            <label>
+              <span i18n:translate="">Courses</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            This section has more than one course.  You may choose not to deploy
+            the worksheet to a course by unchecking the box next to the course title.
+          </p>
+          <div class="widget">
+            <div class="option" 
+                 tal:repeat="course courses">
+              <input type="checkbox" name="courses:list" checked="checked"
+                     tal:attributes="id course/name;
+                                     value course/name;" />
+              <label tal:attributes="for course/name">
+                <span class="label" tal:content="course/title" />
+              </label>
+            </div>
           </div>
         </div>
         <div class="row">
