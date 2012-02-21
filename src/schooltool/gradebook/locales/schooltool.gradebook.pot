@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2012-02-02 19:42+0200\n"
+"POT-Creation-Date: 2012-02-16 19:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -1321,12 +1321,16 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:40
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:124
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:197
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:214
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:231
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:248
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:78
+msgid "Fill the column with a grade"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:114
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:208
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:281
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:298
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:315
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:332
 msgid "Sort by"
 msgstr ""
 
@@ -1375,7 +1379,11 @@ msgstr ""
 msgid "Score this"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:204
+msgid "Fill grades"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:216
 msgid "Move left"
 msgstr ""
 
