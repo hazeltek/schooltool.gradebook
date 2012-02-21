@@ -37,12 +37,16 @@
               <span i18n:translate="">Courses</span>
             </label>
           </div>
+          <div class="error" tal:condition="view/no_course">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
           <div class="widget">
             <div class="option" 
                  tal:repeat="course courses">
-              <input type="checkbox" name="courses:list" checked="checked"
+              <input type="checkbox" name="courses:list"
                      tal:attributes="id course/name;
-                                     value course/name;" />
+                                     value course/name;
+                                     checked course/checked;" />
               <label tal:attributes="for course/name">
                 <span class="label" tal:content="course/title" />
               </label>

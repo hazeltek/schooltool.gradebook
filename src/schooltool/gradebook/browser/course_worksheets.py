@@ -424,26 +424,42 @@ class FlourishDeployAsCourseWorksheetView(FlourishCourseWorksheetsBase,
        to the course for the given term.."""
 
     @property
-    def course(self):
-        courses = list(ISection(self.context).courses)
-        if not courses:
-            return None
-        return courses[0]
+    def schoolyear(self):
+        return ISchoolYear(ISection(self.context))
 
     @property
     def courses(self):
         courses = []
+        request_courses = self.request.get('courses', [])
         for course in ISection(self.context).courses:
+            if not flourish.canEdit(course):
+                continue
+            checked = ('SUBMIT' not in self.request or
+                       course.__name__ in request_courses)
             courses.append({
                 'name': course.__name__,
                 'title': course.title,
+                'checked':  checked and 'checked' or '',
                 'obj': course,
                 })
         return courses
 
     @property
+    def request_courses(self):
+        course_names = [course['name'] for course in self.courses]
+        if len(course_names) < 2:
+            return course_names
+        return [course for course in self.request.get('courses', [])
+                if course in course_names]
+
+    @property
     def has_error(self):
-        return self.no_title
+        return self.no_course or self.no_title
+
+    @property
+    def no_course(self):
+        return ('SUBMIT' in self.request and self.courses
+                and not self.request_courses)
 
     @property
     def no_title(self):
@@ -460,17 +476,11 @@ class FlourishDeployAsCourseWorksheetView(FlourishCourseWorksheetsBase,
             self.request.response.redirect(self.nextURL())
         if 'SUBMIT' in self.request:
             if not self.has_error:
-                courses = self.courses
-                if not courses:
-                    request_courses = []
-                elif len(courses) < 2:
-                    request_courses = [self.course.__name__]
-                else:
-                    request_courses = self.request['courses']
+                request_courses = self.request_courses
                 term = self.request.get('term')
                 if term:
                     term = self.schoolyear[term]
-                for course_dict in courses:
+                for course_dict in self.courses:
                     course = course_dict['obj']
                     if course.__name__ not in request_courses:
                         continue
