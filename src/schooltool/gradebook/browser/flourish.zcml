@@ -1111,7 +1111,7 @@
 
   <flourish:viewlet
       name="../deploy_as_course_worksheet.html"
-      title="Deploy as Course Worksheet"
+      title="Add to Course Worksheets"
       class=".course_worksheets.DeployAsCourseWorksheetLinkViewlet"
       manager=".gradebook.FlourishGradebookActionsLinks"
       permission="schooltool.edit"
@@ -1120,7 +1120,7 @@
   <flourish:page
       name="deploy_as_course_worksheet.html"
       for="..interfaces.IWorksheet"
-      subtitle="Deploy as Course Worksheet"
+      subtitle="Add as Course Worksheet"
       class=".course_worksheets.FlourishDeployAsCourseWorksheetView"
       content_template="templates/f_deploy_as_course_worksheet.pt"
       permission="schooltool.edit"

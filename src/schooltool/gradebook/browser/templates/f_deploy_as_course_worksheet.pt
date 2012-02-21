@@ -11,7 +11,7 @@
         </div>
       <fieldset>
         <legend>
-          <span i18n:translate="">Select term or year to deploy</span>
+          <span i18n:translate="">Course Worksheet Details</span>
         </legend>
         <div class="row">
           <div class="label">
@@ -20,7 +20,7 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            Select a term or deploy to the entire year.
+            Add the worksheet to a specific term or the entire year.
           </p>
           <div class="widget">
             <select id="term" name="term">
@@ -37,10 +37,6 @@
               <span i18n:translate="">Courses</span>
             </label>
           </div>
-          <p class="hint" i18n:translate="">
-            This section has more than one course.  You may choose not to deploy
-            the worksheet to a course by unchecking the box next to the course title.
-          </p>
           <div class="widget">
             <div class="option" 
                  tal:repeat="course courses">
@@ -60,7 +56,7 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            If you deploy the same template multiple times, give each deployment
+            If you add the same worksheet multiple times, give each version
             an easily distinguishable name.
           </p>
           <div class="error" tal:condition="view/no_title">
