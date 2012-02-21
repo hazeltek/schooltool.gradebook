@@ -22,7 +22,7 @@
             Choose a grade to apply to all the students in the gradebook column.
           </p>
           <div class="widget">
-            <input type="text" name="filldown_value" value="" size="4" />
+            <input type="text" id="filldown_value" name="filldown_value" value="" size="4" />
           </div>
         </div>
       </fieldset>
@@ -68,6 +68,10 @@
           $('.filldown').click(function(e) {
               $('.popup_active').hide().removeClass('popup_active');
               var cell = $(this).closest('th');
+              var popup_link = cell.find('.popup_link');
+              var description = cell.find('.activity_description');
+              $('#filldown-dialog-container fieldset label span').html(popup_link.attr('title'));
+              $('#filldown-dialog-container fieldset p.hint').html(description.html());
               var idx = cell.parent().children().index(cell);
               var rows = $(cell.closest('table').find('tbody tr'));
               var cells = [];
@@ -77,8 +81,8 @@
                   cells.push(cell);
               });
               container.data('schooltool.gradebook-filldown-dialog-cells', cells);
-              var filldown_title = '<tal:block i18n:translate="">Fill the column with a grade</tal:block>'
-              container.dialog({'title':filldown_title});
+              var filldown_title = '<tal:block i18n:translate="">Fill empty cells</tal:block>'
+              container.dialog({'title': filldown_title, 'resizable': false, 'width': 306, 'minHeight': 105, 'dialogClass': 'narrow-dialog'});
               return false;
           });
           cancel_button.click(function(e) {
@@ -241,6 +245,10 @@
                      tal:attributes="title activity/longTitle;
                                        href string:gradeActivity.html?activity=${activity/hash};"
                      tal:content="activity/shortTitle" />
+                  <span class="activity_description"
+                        tal:define="description activity/object/description|nothing"
+                        tal:condition="description"
+                        tal:content="description">description</span>
                 </div>
               </th>
               <th class="placeholder">&nbsp;</th>
