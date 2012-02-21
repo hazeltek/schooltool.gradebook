@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - get fill down back in the contextual menu (https://launchpad.net/bugs/907907)
+- Course worksheet outstanding issues (https://launchpad.net/bugs/927862)
 
 
 2.0.2 (2012-02-02)
