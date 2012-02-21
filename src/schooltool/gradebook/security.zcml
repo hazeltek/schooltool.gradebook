@@ -52,4 +52,10 @@
       permission="schooltool.edit"
       crowds="section_instructors grade_editors" />
 
+  <describe_action
+      group="schooltool.course-courses" name="course_worksheet" title="Add Course Worksheet"
+      order="50"
+      interface="schooltool.course.interfaces.ICourse"
+      permission="schooltool.edit"  />
+
 </configure>
