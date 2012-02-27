@@ -41,6 +41,7 @@
   <flourish:viewlet
       name="gradebook"
       after="manage_school"
+      title="Gradebook"
       manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
       class="schooltool.gradebook.browser.gradebook.GradebookStartupNavLink"
       permission="schooltool.view"
