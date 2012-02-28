@@ -80,5 +80,9 @@
       </table>
     </div>
   </form>
+  <h3>
+    <a tal:attributes="href string:${context/schooltool:app/@@absolute_url}/manage"
+       i18n:translate="">Done</a>
+  </h3>
 </div>
 

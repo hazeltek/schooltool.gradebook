@@ -538,12 +538,24 @@
         />
   </configure>
 
+  <flourish:activeViewlet
+      name="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      for="schooltool.gradebook.interfaces.IGradebookTemplates"
+      />
+
   <flourish:page
       name="report_sheets"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       class=".report_card.FlourishReportSheetsView"
       content_template="templates/f_report_sheets.pt"
       permission="schooltool.edit"
+      />
+
+  <flourish:activeViewlet
+      name="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      view=".report_card.FlourishReportSheetsView"
       />
 
   <flourish:viewlet
@@ -570,6 +582,12 @@
       class=".report_card.FlourishHideUnhideReportSheetsView"
       content_template="templates/f_hide_unhide_report_sheets.pt"
       permission="schooltool.edit"
+      />
+
+  <flourish:activeViewlet
+      name="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      view=".report_card.FlourishHideUnhideReportSheetsView"
       />
 
   <flourish:viewlet
@@ -668,6 +686,12 @@
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager="schooltool.app.browser.app.CustomizeSchoolLinks"
       permission="schooltool.edit"
+      />
+
+  <flourish:activeViewlet
+      name="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      view=".report_card.FlourishLayoutReportCardView"
       />
 
   <flourish:page
