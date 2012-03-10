@@ -100,7 +100,7 @@ class FlourishCourseWorksheetAddView(flourish.form.AddForm):
         return worksheet
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request)
+        return absoluteURL(self._worksheet, self.request)
 
     def updateActions(self):
         super(FlourishCourseWorksheetAddView, self).updateActions()
