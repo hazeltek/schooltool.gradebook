@@ -1,6 +1,7 @@
-<div i18n:domain="schooltool.gradebook">
+<div i18n:domain="schooltool.gradebook"
+     tal:define="rows view/table">
   <form>
-  <table class="highlight-rows">
+  <table class="highlight-rows" tal:condition="rows">
     <thead>
       <tr>
         <th i18n:translate="">Title</th>
@@ -9,7 +10,7 @@
             i18n:translate="">Delete</th>
       </tr>
     </thead>
-    <tr tal:repeat="row view/table">
+    <tr tal:repeat="row rows">
       <td>
         <span tal:content="row/title" />
         <a class="modify" href=""
@@ -37,6 +38,8 @@
     </tr>
   </table>
   </form>
+  <h3 i18n:translate=""
+      tal:condition="not:rows">There are no activity categories.</h3>
   <h3>
     <a tal:attributes="href string:${context/schooltool:app/@@absolute_url}/manage"
        i18n:translate="">Done</a>

@@ -1,9 +1,10 @@
-<div i18n:domain="schooltool.gradebook">
+<div i18n:domain="schooltool.gradebook"
+     tal:define="activities context/values">
   <div metal:use-macro="macro:form">
     <metal:block fill-slot="bottom">
     <input type="hidden" name="form-submitted" value="" />
     <h2 i18n:translate="">Report Activities</h2>
-    <table>
+    <table tal:condition="activities">
       <thead>
         <tr>
           <th i18n:translate="">Title</th>
@@ -11,7 +12,7 @@
           <th i18n:translate="">Delete?</th>
         </tr>
       </thead>
-      <tal:block repeat="activity context/values">
+      <tal:block repeat="activity activities">
         <tr>
           <td>
             <span tal:content="activity/title" />
@@ -35,6 +36,8 @@
         </tr>
       </tal:block>
     </table>
+    <h3 i18n:translate=""
+        tal:condition="not:activities">There are no report activities.</h3>
     <h3>
       <a tal:attributes="href view/nextURL"
          i18n:translate="">Done</a>
