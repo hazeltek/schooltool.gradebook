@@ -16,6 +16,24 @@
       for="schooltool.requirement.interfaces.ICustomScoreSystem"
       />
 
+  <flourish:page_breadcrumbs
+      show_page_title="false"
+      title="Score Systems"
+      view=".scoresystem.FlourishScoreSystemContainerView"
+      />
+
+  <flourish:page_breadcrumbs
+      show_page_title="false"
+      for="schooltool.requirement.interfaces.ICustomScoreSystem"
+      view=".scoresystem.FlourishCustomScoreSystemView"
+      />
+
+  <flourish:activeViewlet
+      name="manage_school"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      for="schooltool.requirement.interfaces.IScoreSystemContainer"
+      />
+
   <flourish:page
       name="index.html"
       for="schooltool.requirement.interfaces.IScoreSystemContainer"
