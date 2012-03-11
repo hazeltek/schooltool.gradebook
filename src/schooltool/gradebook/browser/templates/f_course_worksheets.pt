@@ -22,7 +22,7 @@
       <td tal:content="sheet/obj/title" />
       <tal:block repeat="term sheet/terms">
         <td>
-          <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
+          <span tal:condition="term" class="ui-icon ui-icon-check"></span>
         </td>
       </tal:block>
     </tr>
