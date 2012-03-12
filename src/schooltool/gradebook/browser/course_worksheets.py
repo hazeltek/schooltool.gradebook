@@ -187,7 +187,7 @@ class FlourishCourseWorksheetsBase(object):
         return ICourseActivities(course)
 
     def sheets(self):
-        return [sheet for sheet in self.all_sheets() if not sheet['checked']]
+        return [sheet for sheet in self.all_sheets() if sheet['checked']]
 
     def all_sheets(self):
         schoolyear = self.schoolyear
@@ -198,7 +198,7 @@ class FlourishCourseWorksheetsBase(object):
             deployment = deployments.setdefault(index, {
                 'obj': sheet,
                 'index': str(index),
-                'checked': sheet.hidden,
+                'checked': not sheet.hidden,
                 'terms': [False] * len(schoolyear),
                 })
             for index, term in enumerate(schoolyear.values()):
@@ -206,8 +206,8 @@ class FlourishCourseWorksheetsBase(object):
                 if sheet.__name__.startswith(prefix):
                     deployment['terms'][index] = True
         sheets = [v for k, v in sorted(deployments.items())]
-        return ([sheet for sheet in sheets if not sheet['checked']] +
-                [sheet for sheet in sheets if sheet['checked']])
+        return ([sheet for sheet in sheets if sheet['checked']] +
+                [sheet for sheet in sheets if not sheet['checked']])
 
     @property
     def terms(self):
@@ -370,18 +370,18 @@ class FlourishHideUnhideCourseWorkheetsView(FlourishCourseWorksheetsBase,
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
         elif 'SUBMIT' in self.request:
-            hidden = self.request.get('hidden', [])
+            visible = self.request.get('visible', [])
             schoolyear = self.schoolyear
             for nm, sheet in self.deployed(self.course).items():
                 sheet = removeSecurityProxy(sheet)
                 index = sheet.__name__[sheet.__name__.rfind('_') + 1:]
-                self.handleSheet(sheet, index, hidden)
+                self.handleSheet(sheet, index, visible)
             self.request.response.redirect(self.nextURL())
 
-    def handleSheet(self, sheet, index, hidden):
-        if index in hidden and not sheet.hidden:
+    def handleSheet(self, sheet, index, visible):
+        if index not in visible and not sheet.hidden:
             sheet.hidden = True
-        elif index not in hidden and sheet.hidden:
+        elif index in visible and sheet.hidden:
             sheet.hidden = False
         else:
             return
