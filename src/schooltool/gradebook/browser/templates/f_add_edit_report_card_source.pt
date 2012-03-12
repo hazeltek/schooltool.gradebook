@@ -18,7 +18,7 @@
           </label>
         </div>
         <div class="widget">
-          <select id="source" name="source">
+          <select id="source" name="source" class="select-widget">
             <tal:block repeat="choice view/source_choices">
             <option tal:attributes="value choice/value; selected choice/selected"
                     tal:content="choice/name" />

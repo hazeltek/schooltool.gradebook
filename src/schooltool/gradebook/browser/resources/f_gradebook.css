@@ -14,7 +14,8 @@ table.scoresystem-scores tbody td.buttons {
     width: 104px;
 }
 
-table.scoresystem-scores tbody td.buttons input[type="submit"] {
+table.scoresystem-scores tbody td.buttons input[type="submit"],
+table.linked-column-sources tbody td.buttons input[type="submit"] {
     height: 24px;
     width: 100%;
 }

@@ -22,7 +22,7 @@
       <td tal:content="sheet/obj/title" />
       <tal:block repeat="term sheet/terms">
         <td>
-          <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
+          <span tal:condition="term" class="ui-icon ui-icon-check"></span>
         </td>
       </tal:block>
     </tr>
@@ -59,7 +59,7 @@
             Add the worksheet to a specific term or the entire year.
           </p>
           <div class="widget">
-            <select id="term" name="term">
+            <select id="term" name="term" class="select-widget">
               <tal:block repeat="term terms">
                 <option tal:attributes="value term/name; selected term/selected"
                         tal:content="term/title" />
@@ -77,7 +77,7 @@
             <div class="error" i18n:translate="">Required input is missing.</div>
           </div>
           <div class="widget">
-            <select id="template" name="template">
+            <select id="template" name="template" class="select-widget">
               <tal:block repeat="template view/templates">
                 <option tal:attributes="value template/name; selected template/selected"
                         tal:content="template/title" />
