@@ -1,5 +1,5 @@
 <div i18n:domain="schooltool.gradebook"
-     tal:define="terms view/terms">
+     tal:define="terms view/terms; courses view/courses">
   <form method="post" class="standalone"
         tal:attributes="action request/getURL">
     <div class="viewspace">
@@ -11,7 +11,7 @@
         </div>
       <fieldset>
         <legend>
-          <span i18n:translate="">Select term or year to deploy</span>
+          <span i18n:translate="">Course Worksheet Details</span>
         </legend>
         <div class="row">
           <div class="label">
@@ -20,7 +20,7 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            Select a term or deploy to the entire year.
+            Add the worksheet to a specific term or the entire year.
           </p>
           <div class="widget">
             <select id="term" name="term">
@@ -31,6 +31,28 @@
             </select>
           </div>
         </div>
+        <div class="row" tal:condition="python: len(courses) > 1">
+          <div class="label">
+            <label>
+              <span i18n:translate="">Courses</span>
+            </label>
+          </div>
+          <div class="error" tal:condition="view/no_course">
+            <div class="error" i18n:translate="">Required input is missing.</div>
+          </div>
+          <div class="widget">
+            <div class="option" 
+                 tal:repeat="course courses">
+              <input type="checkbox" name="courses:list"
+                     tal:attributes="id course/name;
+                                     value course/name;
+                                     checked course/checked;" />
+              <label tal:attributes="for course/name">
+                <span class="label" tal:content="course/title" />
+              </label>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="label">
             <label for="term">
@@ -38,7 +60,7 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            If you deploy the same template multiple times, give each deployment
+            If you add the same worksheet multiple times, give each version
             an easily distinguishable name.
           </p>
           <div class="error" tal:condition="view/no_title">

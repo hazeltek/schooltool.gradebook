@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2012-02-02 19:42+0200\n"
+"POT-Creation-Date: 2012-03-15 18:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -726,12 +726,15 @@ msgstr ""
 msgid "Hide/unhide Worksheets"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1112
-#: /src/schooltool/gradebook/browser/flourish.zcml:1120
-msgid "Deploy as Course Worksheet"
+#: /src/schooltool/gradebook/browser/flourish.zcml:1137
+msgid "Add to Course Worksheets"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1129
+#: /src/schooltool/gradebook/browser/flourish.zcml:1145
+msgid "Add as Course Worksheet"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
 msgstr ""
 
@@ -1238,7 +1241,17 @@ msgid "Edit this category"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
+msgid "There are no activity categories."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
@@ -1251,21 +1264,24 @@ msgstr ""
 msgid "Delete?"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
+msgid "There are no course activities."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
-msgid "This year has no course worksheets set up."
+msgid "This course has no course worksheet templates."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
-msgid "Currently Deployed Worksheets"
+msgid "Current Course Worksheets"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:30
-#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
-msgid "This year has no worksheets deployed."
+msgid "This year has no course worksheets."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:50
-msgid "Select worksheet to deploy"
+msgid "Select worksheet to add"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:55
@@ -1277,8 +1293,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:58
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:61
-msgid "Select a term or deploy to the entire year."
+msgid "Add the worksheet to a specific term or the entire year."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:73
@@ -1295,13 +1310,11 @@ msgid "Required input is missing."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:94
-#: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:40
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
-msgid "If you deploy the same template multiple times, give each deployment an easily distinguishable name."
+msgid "If you add the same template multiple times, give each version an easily distinguishable name."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:14
-msgid "Select term or year to deploy"
+#: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:62
+msgid "If you add the same worksheet multiple times, give each version an easily distinguishable name."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
@@ -1321,12 +1334,16 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:40
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:124
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:197
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:214
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:231
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:248
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
+msgid "Fill empty cells"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:128
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:222
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:299
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:316
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:333
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:350
 msgid "Sort by"
 msgstr ""
 
@@ -1375,7 +1392,11 @@ msgstr ""
 msgid "Score this"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
+msgid "Fill down"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:230
 msgid "Move left"
 msgstr ""
 
@@ -1454,9 +1475,14 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:14
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Hidden?"
+msgid "Visible"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
+msgid "This year has no worksheets deployed."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
@@ -1508,6 +1534,14 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:49
 msgid "Select report sheet to deploy"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:61
+msgid "Select a term or deploy to the entire year."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
+msgid "If you deploy the same template multiple times, give each deployment an easily distinguishable name."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
@@ -1568,6 +1602,10 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:5
 msgid "Report Activities"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
+msgid "There are no report activities."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
@@ -2002,6 +2040,10 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "The instructor of a section and school administration can edit a section's gradebook."
+msgstr ""
+
+#: /src/schooltool/gradebook/security.zcml:55
+msgid "Add Course Worksheet"
 msgstr ""
 
 #: /src/schooltool/requirement/browser/configure.zcml:8

@@ -149,7 +149,7 @@ class FlourishWorksheetsView(flourish.page.Page):
     @property
     def worksheets(self):
         """Get  a list of all worksheets."""
-        pos, hidden, not_hidden = 1, [], []
+        pos, visible, hidden = 1, [], []
         activities = removeSecurityProxy(self.context)
         for worksheet in super(Activities, activities).values():
             result = {
@@ -157,16 +157,16 @@ class FlourishWorksheetsView(flourish.page.Page):
                'title': worksheet.title,
                'url': absoluteURL(worksheet, self.request) + '/edit.html',
                'pos': pos,
-               'checked': worksheet.hidden and 'checked' or '',
+               'checked': not worksheet.hidden and 'checked' or '',
                'deployed': worksheet.deployed,
                }
             if worksheet.hidden:
                 if not worksheet.deployed:
                     hidden.append(result)
             else:
-                not_hidden.append(result)
+                visible.append(result)
                 pos += 1
-        return not_hidden + hidden
+        return visible + hidden
 
     def nextSummaryTitle(self):
         index = 1
@@ -231,14 +231,14 @@ class FlourishWorksheetsView(flourish.page.Page):
                 if new_pos != old_pos:
                     self.context.changePosition(name, new_pos-1)
 
-            hidden = self.request.get('hidden', [])
+            visible = self.request.get('visible', [])
             activities = removeSecurityProxy(self.context)
             for worksheet in super(Activities, activities).values():
                 if worksheet.deployed:
                     continue
-                if worksheet.hidden and not worksheet.__name__ in hidden:
+                if worksheet.hidden and worksheet.__name__ in visible:
                     worksheet.hidden = False
-                if not worksheet.hidden and worksheet.__name__ in hidden:
+                elif not worksheet.hidden and worksheet.__name__ not in visible:
                     worksheet.hidden = True
 
 

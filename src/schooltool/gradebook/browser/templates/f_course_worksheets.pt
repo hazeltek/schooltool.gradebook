@@ -8,7 +8,7 @@
         });
     });
   </script>
-  <h3 i18n:translate="">Currently Deployed Worksheets</h3>
+  <h3 i18n:translate="">Current Course Worksheets</h3>
   <table>
     <thead>
       <tr>
@@ -22,13 +22,13 @@
       <td tal:content="sheet/obj/title" />
       <tal:block repeat="term sheet/terms">
         <td>
-          <span tal:condition="term" class="ui-icon ui-icon-check ui-icon-center"></span>
+          <span tal:condition="term" class="ui-icon ui-icon-check"></span>
         </td>
       </tal:block>
     </tr>
     <tr tal:condition="not: sheets">
       <td tal:attributes="colspan python:len(schoolyear)+1" i18n:translate="">
-        This year has no worksheets deployed.
+        This year has no course worksheets.
       </td>
     </tr>
   </table>
@@ -47,7 +47,7 @@
         </div>
       <fieldset>
         <legend>
-          <span i18n:translate="">Select worksheet to deploy</span>
+          <span i18n:translate="">Select worksheet to add</span>
         </legend>
         <div class="row">
           <div class="label">
@@ -56,10 +56,10 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            Select a term or deploy to the entire year.
+            Add the worksheet to a specific term or the entire year.
           </p>
           <div class="widget">
-            <select id="term" name="term">
+            <select id="term" name="term" class="select-widget">
               <tal:block repeat="term terms">
                 <option tal:attributes="value term/name; selected term/selected"
                         tal:content="term/title" />
@@ -77,7 +77,7 @@
             <div class="error" i18n:translate="">Required input is missing.</div>
           </div>
           <div class="widget">
-            <select id="template" name="template">
+            <select id="template" name="template" class="select-widget">
               <tal:block repeat="template view/templates">
                 <option tal:attributes="value template/name; selected template/selected"
                         tal:content="template/title" />
@@ -92,7 +92,7 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            If you deploy the same template multiple times, give each deployment
+            If you add the same template multiple times, give each version
             an easily distinguishable name.
           </p>
           <div class="error" tal:condition="view/no_title">

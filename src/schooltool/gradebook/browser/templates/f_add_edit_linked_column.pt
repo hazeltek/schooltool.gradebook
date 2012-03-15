@@ -1,3 +1,4 @@
+<tal:block replace="resource_library:schooltool.gradebook.flourish" />
 <div i18n:domain="schooltool.gradebook">
   <form method="post" id="form" class="standalone"
         tal:attributes="action view/actionURL">
@@ -36,7 +37,7 @@
             </label>
           </div>
           <div class="widget">
-            <select id="category" name="category" id="category">
+            <select id="category" name="category" class="select-widget">
               <tal:block repeat="category view/getCategories">
                 <option tal:attributes="value category/name;
 		        		selected category/selected"
@@ -45,7 +46,7 @@
             </select>
           </div>
         </div>
-        <table>
+        <table class="linked-column-sources">
           <thead>
             <tr>
               <th i18n:translate="">Term</th>
@@ -54,26 +55,28 @@
               <th i18n:translate="">Activity</th>
             </tr>
           </thead>
-          <tr tal:repeat="row view/getRows">
-            <tal:if condition="repeat/row/odd">
-              <td tal:content="row/term" />
-              <td tal:content="row/section" />
-              <td tal:content="row/worksheet" />
-              <td>
-                <input type="submit"
-                       tal:attributes="name row/activity_name;value row/activity_value" />
-              </td>
-            </tal:if>
-            <tal:if condition="repeat/row/even">
-              <td tal:content="row/term" />
-              <td tal:content="row/section" />
-              <td tal:content="row/worksheet" />
-              <td>
-                <input type="submit"
-                       tal:attributes="name row/activity_name;value row/activity_value" />
-              </td>
-            </tal:if>
-          </tr>
+          <tbody>
+            <tr tal:repeat="row view/getRows">
+              <tal:if condition="repeat/row/odd">
+                <td tal:content="row/term" />
+                <td tal:content="row/section" />
+                <td tal:content="row/worksheet" />
+                <td class="buttons">
+                  <input type="submit" class="button-ok"
+                         tal:attributes="name row/activity_name;value row/activity_value" />
+                </td>
+              </tal:if>
+              <tal:if condition="repeat/row/even">
+                <td tal:content="row/term" />
+                <td tal:content="row/section" />
+                <td tal:content="row/worksheet" />
+                <td class="buttons">
+                  <input type="submit" class="button-ok"
+                         tal:attributes="name row/activity_name;value row/activity_value" />
+                </td>
+              </tal:if>
+            </tr>
+          </tbody>
         </table>
       </fieldset>
       <div class="buttons">

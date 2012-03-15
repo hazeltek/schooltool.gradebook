@@ -14,7 +14,7 @@
         </td>
       </tr>
       <tr tal:condition="python: len(worksheets) == 0">
-        <td i18n:translate="">This year has no course worksheets set up.</td>
+        <td i18n:translate="">This course has no course worksheet templates.</td>
       </tr>
     </table>
   </form>

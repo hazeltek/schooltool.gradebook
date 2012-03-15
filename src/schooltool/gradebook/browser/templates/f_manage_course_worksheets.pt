@@ -1,21 +1,21 @@
 <div class="manage-view" i18n:domain="schooltool"
      tal:define="sheets view/sheets">
   <h3>
-    <a title="Manage Deployed Worksheets"
+    <a title="Manage Course Worksheets"
        tal:attributes="href string:${context/@@absolute_url}/deployed_worksheets.html"
        i18n:attributes="title"
        i18n:translate="">
-      Deployed Worksheets
+      Course Worksheets
     </a>
   </h3>
   <p i18n:translate="" tal:condition="sheets">
     There are
     <metal:block tal:replace="python:len(sheets)" i18n:name="count"/>
-    worksheets deployed in
+    course worksheets for
     <metal:block tal:replace="view/schoolyear/title" i18n:name="schoolyear"/>
   </p>
   <p i18n:translate="" tal:condition="not: sheets">
-    There are no worksheets deployed in
+    There are no course worksheets for
     <metal:block tal:replace="view/schoolyear/title" i18n:name="schoolyear"/>
   </p>
 </div>
