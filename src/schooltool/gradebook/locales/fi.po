@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-01 19:21+0200\n"
+"POT-Creation-Date: 2012-03-15 18:58+0200\n"
 "PO-Revision-Date: 2012-02-16 14:09+0000\n"
 "Last-Translator: Aleksi Kinnunen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-03-02 05:20+0000\n"
 "X-Generator: Launchpad (build 14886)\n"
-"Language: fi\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -1270,7 +1270,17 @@ msgid "Edit this category"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
+msgid "There are no activity categories."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
@@ -1281,6 +1291,10 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
+msgid "There are no course activities."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
@@ -1497,9 +1511,10 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:14
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Hidden?"
+msgid "Visible"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
@@ -1650,6 +1665,10 @@ msgstr ""
 msgid "Report Activities"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
+msgid "There are no report activities."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
 "A report sheet is a special kind of gradebook worksheet that can be deployed "
@@ -1700,10 +1719,6 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Visible"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52

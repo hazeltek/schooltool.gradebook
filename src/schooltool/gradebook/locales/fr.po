@@ -7,25 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-01 19:21+0200\n"
+"POT-Creation-Date: 2012-03-15 18:58+0200\n"
 "PO-Revision-Date: 2012-02-08 22:46+0000\n"
 "Last-Translator: Jean Migisha <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-03-02 05:20+0000\n"
 "X-Generator: Launchpad (build 14886)\n"
-"Language: fr\n"
 "X-Rosetta-Version: 0.1\n"
-
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
-#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
-#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
-msgid "Done"
-msgstr "Terminé"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -1314,11 +1306,33 @@ msgstr "Supprimer"
 msgid "Edit this category"
 msgstr "Modofier cette catégorie"
 
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
+msgid "There are no activity categories."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
+#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
+#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
+#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
+#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
+msgid "Done"
+msgstr "Terminé"
+
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:11
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
 msgstr "Supprimer ?"
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
+msgid "There are no course activities."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
@@ -1540,10 +1554,11 @@ msgstr "Feuilles de Travail Déployées"
 msgid "Index"
 msgstr "Index"
 
+#: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:14
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Hidden?"
-msgstr "Invisible ?"
+msgid "Visible"
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
@@ -1722,6 +1737,10 @@ msgstr "Sélectionner une année ou une période"
 msgid "Report Activities"
 msgstr "Rapport d'Activités"
 
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
+msgid "There are no report activities."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
 "A report sheet is a special kind of gradebook worksheet that can be deployed "
@@ -1786,10 +1805,6 @@ msgstr "Agencer ou Masquer les Feuilles de Travail"
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
 msgstr "Ordre"
-
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
-msgid "Visible"
-msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2
