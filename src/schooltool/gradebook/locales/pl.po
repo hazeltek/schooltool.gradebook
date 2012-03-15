@@ -737,7 +737,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Raporty"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -1230,7 +1230,7 @@ msgstr "Umieszczenie"
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:2
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:2
 msgid "What is This?"
-msgstr ""
+msgstr "Co to jest?"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:6
 msgid ""

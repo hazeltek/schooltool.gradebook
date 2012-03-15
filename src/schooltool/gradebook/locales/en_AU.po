@@ -201,7 +201,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet.py:126
 #: /src/schooltool/gradebook/browser/worksheet.py:191
 msgid "Submit"
-msgstr ""
+msgstr "Submit"
 
 #: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
@@ -739,7 +739,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Reports"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"

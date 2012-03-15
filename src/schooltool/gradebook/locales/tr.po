@@ -203,7 +203,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet.py:126
 #: /src/schooltool/gradebook/browser/worksheet.py:191
 msgid "Submit"
-msgstr ""
+msgstr "Gönder"
 
 #: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
@@ -308,7 +308,7 @@ msgstr "Varsayılan kategori başarıyla değiştirildi."
 
 #: /src/schooltool/gradebook/browser/category.py:206
 msgid "Make Default"
-msgstr ""
+msgstr "Varsayılan Yap"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:53
 #: /src/schooltool/gradebook/browser/configure.zcml:87
@@ -462,7 +462,7 @@ msgstr "Ağırlık Kategorileri"
 #: /src/schooltool/gradebook/browser/configure.zcml:412
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:16
 msgid "Preferences"
-msgstr ""
+msgstr "Ayarlar"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:426
 msgid "Download PDF"
@@ -738,7 +738,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Raporlar"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -763,7 +763,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:242
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:252
 msgid "Total"
-msgstr ""
+msgstr "Toplam"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:87
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:259
@@ -907,7 +907,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report.zcml:10
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student"
-msgstr ""
+msgstr "Öğrenci"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:480
 #: /src/schooltool/gradebook/browser/pdf_views.py:669
@@ -937,7 +937,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:675
 msgid "Teacher"
-msgstr ""
+msgstr "Öğretmen"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:688
 msgid "Tardies"
@@ -994,7 +994,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
@@ -1066,7 +1066,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
 msgid "Please correct the marked fields below."
-msgstr ""
+msgstr "Lütfen aşağıda işaretli alanları düzeltin."
 
 #: /src/schooltool/gradebook/browser/report_card.py:620
 msgid "Apply"
@@ -1216,7 +1216,7 @@ msgstr ""
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:2
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:2
 msgid "What is This?"
-msgstr ""
+msgstr "Bu Nedir?"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:6
 msgid ""
@@ -1509,7 +1509,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Visible"
-msgstr ""
+msgstr "Görünür"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
@@ -1614,7 +1614,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:11
 msgid "File Type"
-msgstr ""
+msgstr "Dosya Tipi"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
 msgid "Date (yyyy-mm-dd)"
@@ -1627,7 +1627,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:80
 #: /src/schooltool/gradebook/browser/templates/request_student_report.pt:35
 msgid "Download"
-msgstr ""
+msgstr "İndir"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:16
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
@@ -1713,7 +1713,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
-msgstr ""
+msgstr "Sıra"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2
@@ -1968,7 +1968,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:123
 msgid "Journal"
-msgstr ""
+msgstr "Bülten"
 
 #: /src/schooltool/gradebook/gradebook_init.py:124
 msgid "Lab"

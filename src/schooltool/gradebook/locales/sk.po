@@ -992,7 +992,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
@@ -2199,7 +2199,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:80
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:83
 msgid ""

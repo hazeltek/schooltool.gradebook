@@ -742,7 +742,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Berichte"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -1742,7 +1742,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
-msgstr ""
+msgstr "Reihenfolge"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2

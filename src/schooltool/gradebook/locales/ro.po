@@ -737,7 +737,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Rapoarte"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -995,7 +995,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"

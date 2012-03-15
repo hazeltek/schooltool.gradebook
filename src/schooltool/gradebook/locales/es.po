@@ -743,7 +743,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Informes"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -1079,7 +1079,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
 msgid "Please correct the marked fields below."
-msgstr ""
+msgstr "Corrija los campos marcados abajo."
 
 #: /src/schooltool/gradebook/browser/report_card.py:620
 msgid "Apply"
@@ -1240,7 +1240,7 @@ msgstr "Implementar"
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:2
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:2
 msgid "What is This?"
-msgstr ""
+msgstr "¿Qué es esto?"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:6
 msgid ""

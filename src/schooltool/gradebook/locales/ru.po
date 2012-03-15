@@ -737,7 +737,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Отчёты"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -993,7 +993,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
@@ -2255,7 +2255,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:24
 msgid "There are none."
-msgstr ""
+msgstr "нет"
 
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:6
 msgid ""

@@ -202,7 +202,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet.py:126
 #: /src/schooltool/gradebook/browser/worksheet.py:191
 msgid "Submit"
-msgstr ""
+msgstr "Kirim"
 
 #: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
@@ -993,7 +993,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
@@ -1065,7 +1065,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
 msgid "Please correct the marked fields below."
-msgstr ""
+msgstr "Mohon perbaiki bidang yang ditandai berikut."
 
 #: /src/schooltool/gradebook/browser/report_card.py:620
 msgid "Apply"
@@ -1215,7 +1215,7 @@ msgstr ""
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:2
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:2
 msgid "What is This?"
-msgstr ""
+msgstr "Apakah Ini?"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:6
 msgid ""

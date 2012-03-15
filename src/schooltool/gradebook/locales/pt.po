@@ -393,7 +393,7 @@ msgstr "Relatório de Nova Actividade"
 #: /src/schooltool/gradebook/browser/templates/summary.pt:4
 #: /src/schooltool/gradebook/security.zcml:7
 msgid "Gradebook"
-msgstr ""
+msgstr "Livro de Notas"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:296
 msgid "New Report Sheet"
@@ -737,7 +737,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
-msgstr ""
+msgstr "Relatórios"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
@@ -995,7 +995,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
@@ -1969,7 +1969,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:123
 msgid "Journal"
-msgstr ""
+msgstr "Diário"
 
 #: /src/schooltool/gradebook/gradebook_init.py:124
 msgid "Lab"
