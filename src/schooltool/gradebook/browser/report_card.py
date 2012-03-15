@@ -193,7 +193,7 @@ class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
 class FlourishReportSheetsBase(FlourishSchooYearMixin):
 
     def sheets(self):
-        return [sheet for sheet in self.all_sheets() if not sheet['checked']]
+        return [sheet for sheet in self.all_sheets() if sheet['checked']]
 
     def all_sheets(self):
         if self.has_schoolyear:
@@ -207,7 +207,7 @@ class FlourishReportSheetsBase(FlourishSchooYearMixin):
                 deployment = deployments.setdefault(index, {
                     'obj': sheet,
                     'index': str(index),
-                    'checked': sheet.hidden,
+                    'checked': not sheet.hidden,
                     'terms': [False] * len(schoolyear),
                     })
                 for index, term in enumerate(schoolyear.values()):
@@ -215,8 +215,8 @@ class FlourishReportSheetsBase(FlourishSchooYearMixin):
                     if sheet.__name__.startswith(deployedKey):
                         deployment['terms'][index] = True
             sheets = [v for k, v in sorted(deployments.items())]
-            return ([sheet for sheet in sheets if not sheet['checked']] +
-                    [sheet for sheet in sheets if sheet['checked']])
+            return ([sheet for sheet in sheets if sheet['checked']] +
+                    [sheet for sheet in sheets if not sheet['checked']])
         else:
             return []
 
@@ -404,20 +404,20 @@ class FlourishHideUnhideReportSheetsView(FlourishReportSheetsBase,
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
         elif 'SUBMIT' in self.request:
-            hidden = self.request.get('hidden', [])
+            visible = self.request.get('visible', [])
             root = IGradebookRoot(ISchoolToolApplication(None))
             schoolyear = self.schoolyear
             for sheet in root.deployed.values():
                 if not sheet.__name__.startswith(schoolyear.__name__):
                     continue
                 index = sheet.__name__[sheet.__name__.rfind('_') + 1:]
-                self.handleSheet(sheet, index, hidden)
+                self.handleSheet(sheet, index, visible)
             self.request.response.redirect(self.nextURL())
 
-    def handleSheet(self, sheet, index, hidden):
-        if index in hidden and not sheet.hidden:
+    def handleSheet(self, sheet, index, visible):
+        if index not in visible and not sheet.hidden:
             sheet.hidden = True
-        elif index not in hidden and sheet.hidden:
+        elif index in visible and sheet.hidden:
             sheet.hidden = False
         else:
             return
