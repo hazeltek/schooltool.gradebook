@@ -39,3 +39,10 @@ li.deployed a {
     font-style: italic;
 }
 
+.hidden-dialog {
+    display: none;
+}
+
+.activity_description {
+    display: none;
+}
