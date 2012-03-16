@@ -1,4 +1,4 @@
-<div class="manage-view" i18n:domain="schooltool"
+<div class="manage-view" i18n:domain="schooltool.gradebook"
      tal:condition="view/has_schoolyear"
      tal:define="sheets view/sheets">
   <h3>

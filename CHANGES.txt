@@ -2,13 +2,20 @@
 CHANGES
 =======
 
-2.0.3 (unreleased)
+2.0.4 (unreleased)
 ------------------
 
-- get fill down back in the contextual menu (https://launchpad.net/bugs/907907)
-- Course worksheet outstanding issues (https://launchpad.net/bugs/927862)
-- tab hiding (https://launchpad.net/bugs/938810)
+- Nothing changed yet.
 
+
+2.0.3 (2012-03-16)
+------------------
+
+- Fill down is back in the contextual menu (https://launchpad.net/bugs/907907)
+- Course worksheet outstanding issues (https://launchpad.net/bugs/927862)
+- Tab hiding (https://launchpad.net/bugs/938810)
+- Fixes to navigation, style, i18n, tables, etc.
+- Updated translations
 
 2.0.2 (2012-02-02)
 ------------------

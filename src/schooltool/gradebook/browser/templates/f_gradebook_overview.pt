@@ -1,13 +1,14 @@
+<tal:block i18n:domain="schooltool.gradebook">
+
 <tal:block condition="view/all_hidden">
   <p i18n:translate="">
     This section contains only worksheets that are hidden.
-    You can unhide a worksheet using the following link:
-    <a href="../.." i18n:translate="">Worksheets</a>
   </p>
-  <p i18n:translate="">You can also add a new worksheet using this link:
-    <a href="../../addWorksheet.html" i18n:translate="">Add a New Worksheet</a>
+  <p i18n:translate="">You can <a href="../.." i18n:name="unhide_worksheets" i18n:translate="">Unhide Worksheets</a>,
+    or <a href="../../addWorksheet.html" i18n:name="add_worksheet" i18n:translate="">Add a Worksheet</a>.
   </p>
 </tal:block>
+
 <div class="hidden-dialog" id="filldown-dialog-container">
   <form>
     <div class="viewspace">
@@ -35,8 +36,8 @@
     </div>
   </form>
 </div>
-<div i18n:domain="schooltool.gradebook"
-     tal:define="table view/table;
+
+<div tal:define="table view/table;
                  activities view/activities">
   <tal:block replace="resource_library:schooltool.gradebook.flourish" />
   <metal:block tal:replace="structure string:&lt;script type=&quot;text/javascript&quot;&gt;" />
@@ -427,3 +428,4 @@
 
 </div>
 
+</tal:block>

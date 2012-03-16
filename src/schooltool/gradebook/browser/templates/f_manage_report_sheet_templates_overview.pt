@@ -1,4 +1,4 @@
-<div class="manage-view" i18n:domain="schooltool"
+<div class="manage-view" i18n:domain="schooltool.gradebook"
      tal:condition="view/has_schoolyear"
      tal:define="templates view/templates">
   <h3>
@@ -11,10 +11,10 @@
   </h3>
   <p i18n:translate="" tal:condition="templates">
     There are
-    <metal:block tal:replace="python:len(templates)" i18n:name="count"/>
+    <tal:block replace="python:len(templates)" i18n:name="count" />
     report sheet templates set up.
   </p>
   <p i18n:translate="" tal:condition="not: templates">
-    There are no report sheets templates set up.
+    There are no report sheet templates set up.
   </p>
 </div>

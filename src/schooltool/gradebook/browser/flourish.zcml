@@ -403,6 +403,7 @@
   <flourish:page
       name="index.html"
       for="..interfaces.IGradebookTemplates"
+      title="Report Sheet Templates"
       class=".report_card.FlourishTemplatesView"
       content_template="templates/f_templates_overview.pt"
       permission="schooltool.edit"
@@ -936,11 +937,11 @@
 
   <flourish:page
       name="index.html"
+      title="Activity Categories"
       for="schooltool.gradebook.interfaces.ICategoryContainer"
       class=".category.FlourishCategoriesView"
       content_template="templates/f_categories.pt"
       permission="schooltool.edit"
-      subtitle="Activity Categories"
       />
 
   <flourish:viewlet
