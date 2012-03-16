@@ -403,6 +403,7 @@
   <flourish:page
       name="index.html"
       for="..interfaces.IGradebookTemplates"
+      title="Report Sheet Templates"
       class=".report_card.FlourishTemplatesView"
       content_template="templates/f_templates_overview.pt"
       permission="schooltool.edit"
