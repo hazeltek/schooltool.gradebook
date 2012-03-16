@@ -1611,7 +1611,7 @@ msgid "Select a term or deploy to the entire year."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
-msgid "If you deploy the same template multiple times, give each deployment an easily distinguishable name."
+msgid "If you deploy the same template multiple times in the same term, give each deployment an easily distinguishable name."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
