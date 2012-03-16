@@ -147,17 +147,17 @@ class ICustomScoreSystem(IDiscreteValuesScoreSystem):
 class IRangedValuesScoreSystem(IValuesScoreSystem):
     """A score system that allows for a randge of values."""
 
-    min = zope.schema.Int(
-        title=_(u'Minimum'),
-        description=u'Minimum value in the score system',
-        required=True,
-        default=0)
-
     max = zope.schema.Int(
         title=_(u'Maximum'),
         description=u'Maximum value in the score system',
         required=True,
         default=100)
+
+    min = zope.schema.Int(
+        title=_(u'Minimum'),
+        description=u'Minimum value in the score system',
+        required=True,
+        default=0)
 
 
 class IHaveEvaluations(zope.interface.Interface):
