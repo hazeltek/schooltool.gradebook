@@ -9,7 +9,7 @@ CHANGES
 - Course worksheet outstanding issues (https://launchpad.net/bugs/927862)
 - Tab hiding (https://launchpad.net/bugs/938810)
 - Updated translations
-
+- /server: top nav not highlighted, no breadcrumbs (https://launchpad.net/bugs/868435)
 
 2.0.2 (2012-02-02)
 ------------------
