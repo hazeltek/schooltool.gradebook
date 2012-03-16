@@ -5,11 +5,11 @@ CHANGES
 2.0.3 (unreleased)
 ------------------
 
-- get fill down back in the contextual menu (https://launchpad.net/bugs/907907)
+- Fill down is back in the contextual menu (https://launchpad.net/bugs/907907)
 - Course worksheet outstanding issues (https://launchpad.net/bugs/927862)
-- tab hiding (https://launchpad.net/bugs/938810)
+- Tab hiding (https://launchpad.net/bugs/938810)
+- Updated translations
 - /server: top nav not highlighted, no breadcrumbs (https://launchpad.net/bugs/868435)
-
 
 2.0.2 (2012-02-02)
 ------------------
