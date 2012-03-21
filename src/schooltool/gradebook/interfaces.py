@@ -70,8 +70,8 @@ class ICategoryContainer(IContainer):
         required=False)
 
 
-class IActivities(interfaces.IRequirement):
-    '''A list of worksheets containing activities that must be fulfilled in a
+class IWorksheets(interfaces.IRequirement):
+    '''A list of worksheets containing requirements that must be fulfilled in a
        course or section.'''
 
     worksheets = Attribute("""all non-hidden worksheets""")
@@ -93,6 +93,13 @@ class IActivities(interfaces.IRequirement):
     contains('.IWorksheet')
 
 
+class IActivities(IWorksheets):
+    '''A list of worksheets containing activities that must be fulfilled in a
+       course or section.'''
+
+    contains('.IActivityWorksheet')
+
+
 class ICourseActivities(interfaces.IRequirement):
     """Container of Course Worksheet Templates that can be deployed"""
 
@@ -102,11 +109,11 @@ class ICourseActivities(interfaces.IRequirement):
 class ICourseDeployedWorksheets(interfaces.IRequirement):
     """Container of Deployed Course Worksheets (by term)"""
 
-    contains('.IWorksheet')
+    contains('.IActivityWorksheet')
 
 
 class IWorksheet(interfaces.IRequirement):
-    '''A list of activities that must be fulfilled in a course or section.'''
+    '''A list of requirements that must be fulfilled in a course or section.'''
 
     deployed = zope.schema.Bool(
         title=u"Deployed Worksheet",
@@ -118,6 +125,16 @@ class IWorksheet(interfaces.IRequirement):
         required=False
         )
 
+    def isCourseWorksheet():
+        """return True if worksheet was deployed as course worksheet"""
+
+    containers(IWorksheets)
+    contains('interfaces.IRequirement')
+
+
+class IActivityWorksheet(IWorksheet):
+    '''A list of activities that must be fulfilled in a course or section.'''
+
     def getCategoryWeights():
         """Get the category weights for the worksheet.  This method will
            return a list of (category, weight) tuples, the weight being
@@ -126,9 +143,6 @@ class IWorksheet(interfaces.IRequirement):
     def setCategoryWeight(category, weight):
         """Set the weight for the given category.  Any numeric type is
            acceptable"""
-
-    def isCourseWorksheet():
-        """return True if worksheet was deployed as course worksheet"""
 
     def canAverage():
         """return True if activities have scoresystems that can be averaged"""
@@ -191,7 +205,7 @@ class IActivity(interfaces.IRequirement):
         description=_("The date the activity was created."),
         required=True)
 
-    containers(IWorksheet)
+    containers(IActivityWorksheet)
 
 
 class IReportActivity(IActivity):

@@ -109,7 +109,7 @@ def isHiddenSource(source):
     obj = getSourceObj(source)
     if obj is None:
         return True
-    if interfaces.IWorksheet.providedBy(obj):
+    if interfaces.IActivityWorksheet.providedBy(obj):
         worksheet = obj
     else:
         worksheet = obj.__parent__
@@ -198,7 +198,7 @@ class CourseDeployedWorksheets(requirement.Requirement):
 
 
 class Worksheet(requirement.Requirement):
-    zope.interface.implements(interfaces.IWorksheet, 
+    zope.interface.implements(interfaces.IActivityWorksheet,
                               annotation.interfaces.IAttributeAnnotatable)
 
     deployed = False
@@ -372,7 +372,7 @@ class ExternalActivitiesSource(object):
 
     def sortByTitles(self):
         return lambda x:(x[0].title, x[1].title)
-    
+
     def __iter__(self):
         return iter(self.activities())
 

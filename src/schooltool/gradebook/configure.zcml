@@ -151,7 +151,7 @@
     <require
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
-        set_schema=".interfaces.IWorksheet"
+        set_schema=".interfaces.IActivityWorksheet"
         attributes="changePosition setCategoryWeight"
         />
   </class>
@@ -273,7 +273,7 @@
 
   <!-- This adapter locates itself. -->
   <adapter
-      for=".interfaces.IWorksheet"
+      for=".interfaces.IActivityWorksheet"
       provides=".interfaces.IGradebook"
       factory=".gradebook.Gradebook"
       trusted="true"
@@ -305,7 +305,7 @@
 
   <!-- This adapter locates itself. -->
   <adapter
-      for=".interfaces.IWorksheet"
+      for=".interfaces.IActivityWorksheet"
       provides=".interfaces.IMyGrades"
       factory=".gradebook.MyGrades"
       trusted="true"
@@ -323,7 +323,7 @@
       factory=".gradebook.getMyGradesSection"
       />
   <adapter
-      for=".interfaces.IWorksheet"
+      for=".interfaces.IActivityWorksheet"
       provides="schooltool.course.interfaces.ISection"
       factory=".gradebook.getWorksheetSection"
       />
@@ -358,7 +358,7 @@
 
   <!-- special traversal adapter for traversing from worksheet to gradebook -->
   <adapter
-      for=".interfaces.IWorksheet
+      for=".interfaces.IActivityWorksheet
            zope.publisher.interfaces.http.IHTTPRequest"
       provides="zope.publisher.interfaces.IPublishTraverse"
       factory=".gradebook.WorksheetGradebookTraverser" />

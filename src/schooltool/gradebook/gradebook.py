@@ -179,7 +179,7 @@ def getLinkedActivityScore(evaluatee, activity):
 
 
 @adapter(requirement.interfaces.IHaveEvaluations,
-         interfaces.IWorksheet)
+         interfaces.IActivityWorksheet)
 @implementer(requirement.interfaces.IScore)
 def getWorksheetAverageScore(evaluatee, worksheet):
     gradebook = interfaces.IGradebook(worksheet)
@@ -441,7 +441,7 @@ class GradebookBase(object):
 
 class Gradebook(GradebookBase):
     implements(interfaces.IGradebook)
-    adapts(interfaces.IWorksheet)
+    adapts(interfaces.IActivityWorksheet)
 
     def __init__(self, context):
         super(Gradebook, self).__init__(context)
@@ -451,7 +451,7 @@ class Gradebook(GradebookBase):
 
 class MyGrades(GradebookBase):
     implements(interfaces.IMyGrades)
-    adapts(interfaces.IWorksheet)
+    adapts(interfaces.IActivityWorksheet)
 
     def __init__(self, context):
         super(MyGrades, self).__init__(context)
@@ -505,13 +505,13 @@ class StudentGradebookFormAdapter(object):
             return ''
         elif interfaces.ILinkedColumnActivity.providedBy(activity):
             sourceObj = getSourceObj(activity.source)
-            if interfaces.IWorksheet.providedBy(sourceObj):
+            if interfaces.IActivityWorksheet.providedBy(sourceObj):
                 return '%.1f' % score.value
         return score.value
 
 
 def getWorksheetSection(worksheet):
-    """Adapt IWorksheet to ISection."""
+    """Adapt IActivityWorksheet to ISection."""
     return worksheet.__parent__.__parent__
 
 

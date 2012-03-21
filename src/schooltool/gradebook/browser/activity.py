@@ -282,7 +282,7 @@ class ActivityAddView(z3cform.AddForm):
     template = ViewPageTemplateFile('templates/add_edit_activity.pt')
 
     fields = field.Fields(interfaces.IActivity)
-    fields = fields.select('title', 'label', 'due_date', 'description', 
+    fields = fields.select('title', 'label', 'due_date', 'description',
                            'category')
     fields += field.Fields(IRangedValuesScoreSystem).select('min', 'max')
 
@@ -740,7 +740,7 @@ class WorksheetsExportView(export.ExcelExportView):
         header_labels.extend([activity.title for activity in activities])
         headers = [export.Header(label) for label in header_labels]
         for col, header in enumerate(headers):
-            self.write(ws, 0, col, header.data, **header.style) 
+            self.write(ws, 0, col, header.data, **header.style)
 
     def print_grades(self, ws, worksheet):
         gradebook = interfaces.IGradebook(worksheet)
@@ -760,7 +760,7 @@ class WorksheetsExportView(export.ExcelExportView):
                     value = score.value
                 cells.append(export.Text(value))
             for col, cell in enumerate(cells):
-                self.write(ws, starting_row+row, col, cell.data, **cell.style) 
+                self.write(ws, starting_row+row, col, cell.data, **cell.style)
 
     def export_worksheets(self, wb):
         for worksheet in self.context.values():
@@ -783,7 +783,7 @@ class LinkedColumnBase(BrowserView):
     def __init__(self, context, request):
         super(LinkedColumnBase, self).__init__(context, request)
         self.addForm = True
-        if interfaces.IWorksheet.providedBy(self.context):
+        if interfaces.IActivityWorksheet.providedBy(self.context):
             self.currentWorksheet = self.context
         else:
             self.currentWorksheet = self.context.__parent__
@@ -791,13 +791,13 @@ class LinkedColumnBase(BrowserView):
         self.person = IPerson(self.request.principal)
 
     def title(self):
-        if interfaces.IWorksheet.providedBy(self.context):
+        if interfaces.IActivityWorksheet.providedBy(self.context):
             return ''
         else:
             return self.context.title
 
     def label(self):
-        if interfaces.IWorksheet.providedBy(self.context):
+        if interfaces.IActivityWorksheet.providedBy(self.context):
             return ''
         else:
             return self.context.label
@@ -938,7 +938,7 @@ class EditLinkedColumnView(LinkedColumnBase):
         if sourceObj is None:
             details = ''
         else:
-            if interfaces.IWorksheet.providedBy(sourceObj):
+            if interfaces.IActivityWorksheet.providedBy(sourceObj):
                 act_disp = _('Average')
                 worksheet = sourceObj
             else:
@@ -946,7 +946,7 @@ class EditLinkedColumnView(LinkedColumnBase):
                 worksheet = sourceObj.__parent__
             section = ISection(worksheet)
             term = ITerm(section)
-        details = ' (%s - %s - %s - %s)' % (term.title, 
+        details = ' (%s - %s - %s - %s)' % (term.title,
             list(section.courses)[0].title, worksheet.title, act_disp)
         return _('Edit Linked Column') + details
 
