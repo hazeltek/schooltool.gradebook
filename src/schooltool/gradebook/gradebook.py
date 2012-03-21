@@ -52,7 +52,6 @@ from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 GRADEBOOK_SORTING_KEY = 'schooltool.gradebook.sorting'
 CURRENT_SECTION_TAUGHT_KEY = 'schooltool.gradebook.currentsectiontaught'
 CURRENT_SECTION_ATTENDED_KEY = 'schooltool.gradebook.currentsectionattended'
-CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
 COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
 
@@ -346,28 +345,16 @@ class GradebookBase(object):
                 return 0, UNSCORED
 
     def getCurrentWorksheet(self, person):
-        person = proxy.removeSecurityProxy(person)
-        ann = annotation.interfaces.IAnnotations(person)
-        if CURRENT_WORKSHEET_KEY not in ann:
-            ann[CURRENT_WORKSHEET_KEY] = PersistentDict()
-        if self.worksheets:
-            default = self.worksheets[0]
-        else:
-            default = None
-        section_id = hash(IKeyReference(self.section))
-        worksheet = ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
-        if worksheet is not None and worksheet.hidden:
-            return default
-        return worksheet
+        section = self.section
+        activities = interfaces.IActivities(section)
+        current = activities.getCurrentWorksheet(person)
+        return current
 
     def setCurrentWorksheet(self, person, worksheet):
-        person = proxy.removeSecurityProxy(person)
+        section = self.section
+        activities = interfaces.IActivities(section)
         worksheet = proxy.removeSecurityProxy(worksheet)
-        ann = annotation.interfaces.IAnnotations(person)
-        if CURRENT_WORKSHEET_KEY not in ann:
-            ann[CURRENT_WORKSHEET_KEY] = PersistentDict()
-        section_id = hash(IKeyReference(self.section))
-        ann[CURRENT_WORKSHEET_KEY][section_id] = worksheet
+        activities.setCurrentWorksheet(person, worksheet)
 
     def getDueDateFilter(self, person):
         person = proxy.removeSecurityProxy(person)

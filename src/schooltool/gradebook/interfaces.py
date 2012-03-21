@@ -81,6 +81,9 @@ class IWorksheets(interfaces.IRequirement):
     def resetCurrentWorksheet():
         """Reset the currently active worksheet to first or None."""
 
+    def getDefaultWorksheet():
+        """Get the default worksheet."""
+
     def getCurrentWorksheet():
         """Get the currently active worksheet."""
 
