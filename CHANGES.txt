@@ -10,6 +10,7 @@ CHANGES
 - Tab hiding (https://launchpad.net/bugs/938810)
 - Updated translations
 - /server: top nav not highlighted, no breadcrumbs (https://launchpad.net/bugs/868435)
+- Period order on report incorrect (https://launchpad.net/bugs/932508)
 
 2.0.2 (2012-02-02)
 ------------------
