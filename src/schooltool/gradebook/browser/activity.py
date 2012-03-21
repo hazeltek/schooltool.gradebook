@@ -151,7 +151,7 @@ class FlourishWorksheetsView(flourish.page.Page):
         """Get  a list of all worksheets."""
         pos, visible, hidden = 1, [], []
         activities = removeSecurityProxy(self.context)
-        for worksheet in super(Activities, activities).values():
+        for worksheet in activities.all_worksheets:
             result = {
                'name': getName(worksheet),
                'title': worksheet.title,
@@ -233,7 +233,7 @@ class FlourishWorksheetsView(flourish.page.Page):
 
             visible = self.request.get('visible', [])
             activities = removeSecurityProxy(self.context)
-            for worksheet in super(Activities, activities).values():
+            for worksheet in activities.all_worksheets:
                 if worksheet.deployed:
                     continue
                 if worksheet.hidden and worksheet.__name__ in visible:
@@ -251,7 +251,7 @@ class UnhideWorksheetsView(object):
     def worksheets(self):
         """Get  a list of all worksheets."""
         activities = removeSecurityProxy(self.context)
-        for worksheet in super(Activities, activities).values():
+        for worksheet in activities.all_worksheets:
             if worksheet.hidden:
                 yield {'name': getName(worksheet),
                        'title': worksheet.title}
