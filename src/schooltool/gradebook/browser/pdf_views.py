@@ -645,7 +645,7 @@ class AbsencesByDayPDFView(BasePDFView):
         for student in data:
             for period in data[student]:
                 periods[period] = 0
-        return list(periods.keys())
+        return sorted(periods.keys())
 
     def date_heading(self):
         day = self.getDay()
