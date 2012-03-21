@@ -95,8 +95,8 @@
             </label>
           </div>
           <p class="hint" i18n:translate="">
-            If you deploy the same template multiple times, give each deployment
-            an easily distinguishable name.
+            If you deploy the same template multiple times in the same term,
+            give each deployment an easily distinguishable name.
           </p>
           <div class="error" tal:condition="view/no_title">
             <div class="error" i18n:translate="">Required input is missing.</div>

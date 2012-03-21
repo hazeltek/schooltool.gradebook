@@ -2,12 +2,19 @@
 CHANGES
 =======
 
-2.0.3 (unreleased)
+2.0.4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.0.3 (2012-03-16)
 ------------------
 
 - Fill down is back in the contextual menu (https://launchpad.net/bugs/907907)
 - Course worksheet outstanding issues (https://launchpad.net/bugs/927862)
 - Tab hiding (https://launchpad.net/bugs/938810)
+- Fixes to navigation, style, i18n, tables, etc.
 - Updated translations
 - /server: top nav not highlighted, no breadcrumbs (https://launchpad.net/bugs/868435)
 - Period order on report incorrect (https://launchpad.net/bugs/932508)

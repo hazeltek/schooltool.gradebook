@@ -36,8 +36,6 @@ from schooltool.gradebook.gradebook_init import GradebookTemplates
 from schooltool.gradebook.gradebook_init import GradebookDeployed
 from schooltool.gradebook.gradebook_init import GradebookLayouts
 
-from schooltool.gradebook import GradebookMessage as _
-
 
 class GradebookRoot_gen2(object):
     """Root of gradebook data"""
@@ -45,9 +43,9 @@ class GradebookRoot_gen2(object):
     implements(IGradebookRoot)
 
     def __init__(self):
-        self.templates = GradebookTemplates(_('Report Sheet Templates'))
-        self.deployed = GradebookDeployed(_('Deployed Report Sheets'))
-        self.layouts = GradebookLayouts(_('Report Card Layouts'))
+        self.templates = GradebookTemplates(u'Report Sheet Templates')
+        self.deployed = GradebookDeployed(u'Deployed Report Sheets')
+        self.layouts = GradebookLayouts(u'Report Card Layouts')
 
 
 def doctest_evolve3():

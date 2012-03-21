@@ -173,7 +173,6 @@ class IActivity(interfaces.IRequirement):
 
     description = zope.schema.Text(
         title=_("Description"),
-        description=_("A detailed description of the activity."),
         required=False)
 
     category = zope.schema.Choice(
@@ -438,7 +437,6 @@ class IExternalActivity(zope.interface.Interface):
 
     description = zope.schema.Text(
         title=_("Description"),
-        description=_("A detailed description of the external activity."),
         required=False)
 
     def getGrade(student):

@@ -1,4 +1,4 @@
-<div class="manage-view" i18n:domain="schooltool">
+<div class="manage-view" i18n:domain="schooltool.gradebook">
   <h3>
     <a title="Manage Worksheet Templates"
        tal:attributes="href string:${context/@@absolute_url}/activities"

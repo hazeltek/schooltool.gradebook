@@ -570,15 +570,15 @@ class IReportScoreSystem(Interface):
         vocabulary='schooltool.gradebook.reportscoresystems',
         required=True)
 
-    min = Int(
-        title=_("Minimum"),
-        description=_("Lowest integer score value possible"),
-        min=0,
-        required=False)
-
     max = Int(
         title=_("Maximum"),
         description=_("Highest integer score value possible"),
+        min=0,
+        required=False)
+
+    min = Int(
+        title=_("Minimum"),
+        description=_("Lowest integer score value possible"),
         min=0,
         required=False)
 

@@ -937,11 +937,11 @@
 
   <flourish:page
       name="index.html"
+      title="Activity Categories"
       for="schooltool.gradebook.interfaces.ICategoryContainer"
       class=".category.FlourishCategoriesView"
       content_template="templates/f_categories.pt"
       permission="schooltool.edit"
-      subtitle="Activity Categories"
       />
 
   <flourish:viewlet
