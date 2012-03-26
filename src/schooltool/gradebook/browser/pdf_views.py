@@ -392,7 +392,7 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
         for day in data:
             for period in data[day]:
                 periods[period] = 0
-        periods = list(periods.keys())
+        periods = sorted(periods.keys())
 
         widths = '4cm'
         for period in periods:
