@@ -135,7 +135,7 @@
     <addform
         label="Add a Worksheet"
         name="addWorksheet.html"
-        schema="schooltool.gradebook.interfaces.IWorksheet"
+        schema="schooltool.gradebook.interfaces.IActivityWorksheet"
         fields="title"
         arguments="title"
         content_factory="schooltool.gradebook.activity.Worksheet"
@@ -159,8 +159,8 @@
     <editform
         label="Edit Worksheet"
         name="edit.html"
-        for="schooltool.gradebook.interfaces.IWorksheet"
-        schema="schooltool.gradebook.interfaces.IWorksheet"
+        for="schooltool.gradebook.interfaces.IActivityWorksheet"
+        schema="schooltool.gradebook.interfaces.IActivityWorksheet"
         fields="title"
         permission="schooltool.edit"
         template="templates/simple_edit.pt"
@@ -183,13 +183,13 @@
   </configure>
   <page
       name="index.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       class=".worksheet.WorksheetGradebookView"
       permission="schooltool.view"
       />
   <page
       name="manage.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       class=".worksheet.WorksheetManageView"
       template="templates/worksheet_overview.pt"
       permission="schooltool.view"
@@ -203,7 +203,7 @@
       />
   <page
       name="weights.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       class=".activity.WeightCategoriesView"
       template="templates/weight_categories.pt"
       permission="schooltool.edit"
@@ -212,7 +212,7 @@
   <!-- Activities -->
   <page
      name="addActivity.html"
-     for="schooltool.gradebook.interfaces.IWorksheet"
+     for="schooltool.gradebook.interfaces.IActivityWorksheet"
      class=".activity.ActivityAddView"
      permission="schooltool.edit"
      />
@@ -249,7 +249,7 @@
       />
   <page
       name="addLinkedActivity.html"
-      for="schooltool.gradebook.interfaces.IWorksheet"
+      for="schooltool.gradebook.interfaces.IActivityWorksheet"
       class="schooltool.gradebook.browser.activity.LinkedActivityAddView"
       permission="schooltool.edit"
       />
@@ -270,7 +270,7 @@
       />
   <page
      name="addLinkedColumn.html"
-     for="schooltool.gradebook.interfaces.IWorksheet"
+     for="schooltool.gradebook.interfaces.IActivityWorksheet"
      class=".activity.AddLinkedColumnView"
      template="templates/add_edit_linked_column.pt"
      permission="schooltool.edit"
@@ -329,39 +329,39 @@
       permission="schooltool.view"
       />
 
-  <!-- Menu items for IWorksheet -->
+  <!-- Menu items for IActivityWorksheet -->
   <menuItem
       menu="schooltool_actions"
       title="New Activity"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       action="addActivity.html"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
       title="New External Activity"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       action="addLinkedActivity.html"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
       title="New Linked Column"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       action="addLinkedColumn.html"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
       title="Return to Gradebook"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       action="gradebook"
       permission="schooltool.view"
       />
   <menuItem
       menu="schooltool_actions"
       title="Worksheets"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       action="../index.html"
       permission="schooltool.view"
       />

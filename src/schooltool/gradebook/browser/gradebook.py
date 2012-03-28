@@ -550,7 +550,7 @@ class GradebookOverview(SectionFinder):
 
         if interfaces.IActivity.providedBy(insecure_source):
             short, long, best_score = self.getActivityAttrs(source)
-        elif interfaces.IWorksheet.providedBy(insecure_source):
+        elif interfaces.IActivityWorksheet.providedBy(insecure_source):
             long = source.title
             short = activity.label or long
             if len(short) > 5:
@@ -690,7 +690,7 @@ class GradebookOverview(SectionFinder):
                 value = self.getStudentActivityValue(student_info, activity)
                 source = activity_info['linked_source']
                 if source is not None:
-                    if value and interfaces.IWorksheet.providedBy(source):
+                    if value and interfaces.IActivityWorksheet.providedBy(source):
                         value = '%.1f' % value
                 grade = {
                     'activity': activity_info['hash'],
