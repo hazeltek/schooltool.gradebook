@@ -128,9 +128,6 @@ class IWorksheet(interfaces.IRequirement):
         required=False
         )
 
-    def isCourseWorksheet():
-        """return True if worksheet was deployed as course worksheet"""
-
     containers(IWorksheets)
     contains('interfaces.IRequirement')
 

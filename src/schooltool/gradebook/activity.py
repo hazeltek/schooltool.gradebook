@@ -209,12 +209,17 @@ class CourseDeployedWorksheets(requirement.Requirement):
     zope.interface.implements(interfaces.ICourseDeployedWorksheets)
 
 
-class Worksheet(requirement.Requirement):
-    zope.interface.implements(interfaces.IActivityWorksheet,
+class GenericWorksheet(requirement.Requirement):
+    zope.interface.implements(interfaces.IWorksheet,
                               annotation.interfaces.IAttributeAnnotatable)
 
     deployed = False
     hidden = False
+
+
+class Worksheet(GenericWorksheet):
+    zope.interface.implements(interfaces.IActivityWorksheet,
+                              annotation.interfaces.IAttributeAnnotatable)
 
     def values(self):
         activities = []
@@ -237,7 +242,10 @@ class Worksheet(requirement.Requirement):
             ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
         ann[CATEGORY_WEIGHTS_KEY][category] = weight
 
-    def isCourseWorksheet(self):
+    def canAverage(self):
+        if not self.deployed:
+            return True
+
         section = ISection(self, None)
         if section is None:
             return False
@@ -246,9 +254,6 @@ class Worksheet(requirement.Requirement):
             return False
         sheets = interfaces.ICourseDeployedWorksheets(courses[0])
         return self.__name__ in sheets
-
-    def canAverage(self):
-        return not self.deployed or self.isCourseWorksheet()
 
 
 class ReportWorksheet(requirement.Requirement):
