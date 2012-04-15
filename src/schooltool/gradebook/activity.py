@@ -42,7 +42,6 @@ from schooltool.term.interfaces import IDateManager
 from schooltool.course.interfaces import ISection
 
 ACTIVITIES_KEY = 'schooltool.gradebook.activities'
-CURRENT_WORKSHEET_KEY = 'schooltool.gradebook.currentworksheet'
 CATEGORY_WEIGHTS_KEY = 'schooltool.gradebook.categoryweights'
 COURSE_ACTIVITIES_KEY = 'schooltool.gradebook.course_activities'
 COURSE_DEPLOYED_WORKSHEETS_KEY = 'schooltool.gradebook.course_deployed'
@@ -109,7 +108,7 @@ def isHiddenSource(source):
     obj = getSourceObj(source)
     if obj is None:
         return True
-    if interfaces.IWorksheet.providedBy(obj):
+    if interfaces.IActivityWorksheet.providedBy(obj):
         worksheet = obj
     else:
         worksheet = obj.__parent__
@@ -121,10 +120,12 @@ def today():
     return today
 
 
-class Activities(requirement.Requirement):
-    zope.interface.implements(interfaces.IActivities)
+class Worksheets(requirement.Requirement):
+    zope.interface.implements(interfaces.IWorksheets)
 
-    def _getDefaultWorksheet(self):
+    annotations_current_worksheet_key = None
+
+    def getDefaultWorksheet(self):
         # order of preference is:
         # 1) first non-hidden personal sheet
         # 2) first non-hidden deployed sheet
@@ -143,6 +144,15 @@ class Activities(requirement.Requirement):
             return firstDeployed
         return firstAbsolute
 
+    def getCurrentSectionWorksheets(self, person):
+        if self.annotations_current_worksheet_key is None:
+            return None
+        person = proxy.removeSecurityProxy(person)
+        ann = annotation.interfaces.IAnnotations(person)
+        if self.annotations_current_worksheet_key not in ann:
+            ann[self.annotations_current_worksheet_key] = persistent.dict.PersistentDict()
+        return ann[self.annotations_current_worksheet_key]
+
     @property
     def worksheets(self):
         return self.values()
@@ -152,34 +162,30 @@ class Activities(requirement.Requirement):
         return [w for k, w in self.items()]
 
     def values(self):
-        worksheets = super(Activities, self).values()
+        worksheets = super(Worksheets, self).values()
         return [w for w in worksheets if not w.hidden]
 
     def resetCurrentWorksheet(self, person):
         person = proxy.removeSecurityProxy(person)
-        default = self._getDefaultWorksheet()
+        default = self.getDefaultWorksheet()
         self.setCurrentWorksheet(person, default)
 
     def getCurrentWorksheet(self, person):
-        person = proxy.removeSecurityProxy(person)
-        ann = annotation.interfaces.IAnnotations(person)
-        if CURRENT_WORKSHEET_KEY not in ann:
-            ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
-        default = self._getDefaultWorksheet()
+        default = self.getDefaultWorksheet()
+        current = self.getCurrentSectionWorksheets(person)
+        if current is None:
+            return default
         section_id = hash(IKeyReference(self.__parent__))
-        worksheet = ann[CURRENT_WORKSHEET_KEY].get(section_id, default)
+        worksheet = current.get(section_id, default)
         if worksheet is not None and worksheet.hidden:
             return default
         return worksheet
 
     def setCurrentWorksheet(self, person, worksheet):
-        person = proxy.removeSecurityProxy(person)
+        current = self.getCurrentSectionWorksheets(person)
         worksheet = proxy.removeSecurityProxy(worksheet)
-        ann = annotation.interfaces.IAnnotations(person)
-        if CURRENT_WORKSHEET_KEY not in ann:
-            ann[CURRENT_WORKSHEET_KEY] = persistent.dict.PersistentDict()
         section_id = hash(IKeyReference(self.__parent__))
-        ann[CURRENT_WORKSHEET_KEY][section_id] = worksheet
+        current[section_id] = worksheet
 
     def getCurrentActivities(self, person):
         worksheet = self.getCurrentWorksheet(person)
@@ -187,6 +193,12 @@ class Activities(requirement.Requirement):
             return list(worksheet.values())
         else:
             return []
+
+
+class Activities(Worksheets):
+    zope.interface.implements(interfaces.IActivities)
+
+    annotations_current_worksheet_key = 'schooltool.gradebook.currentworksheet'
 
 
 class CourseActivities(requirement.Requirement):
@@ -197,12 +209,17 @@ class CourseDeployedWorksheets(requirement.Requirement):
     zope.interface.implements(interfaces.ICourseDeployedWorksheets)
 
 
-class Worksheet(requirement.Requirement):
-    zope.interface.implements(interfaces.IWorksheet, 
+class GenericWorksheet(requirement.Requirement):
+    zope.interface.implements(interfaces.IWorksheet,
                               annotation.interfaces.IAttributeAnnotatable)
 
     deployed = False
     hidden = False
+
+
+class Worksheet(GenericWorksheet):
+    zope.interface.implements(interfaces.IActivityWorksheet,
+                              annotation.interfaces.IAttributeAnnotatable)
 
     def values(self):
         activities = []
@@ -225,7 +242,10 @@ class Worksheet(requirement.Requirement):
             ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
         ann[CATEGORY_WEIGHTS_KEY][category] = weight
 
-    def isCourseWorksheet(self):
+    def canAverage(self):
+        if not self.deployed:
+            return True
+
         section = ISection(self, None)
         if section is None:
             return False
@@ -234,9 +254,6 @@ class Worksheet(requirement.Requirement):
             return False
         sheets = interfaces.ICourseDeployedWorksheets(courses[0])
         return self.__name__ in sheets
-
-    def canAverage(self):
-        return not self.deployed or self.isCourseWorksheet()
 
 
 class ReportWorksheet(requirement.Requirement):
@@ -372,7 +389,7 @@ class ExternalActivitiesSource(object):
 
     def sortByTitles(self):
         return lambda x:(x[0].title, x[1].title)
-    
+
     def __iter__(self):
         return iter(self.activities())
 

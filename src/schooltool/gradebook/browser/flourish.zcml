@@ -24,7 +24,7 @@
       />
 
   <flourish:breadcrumb
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title=""
       />
 
@@ -249,7 +249,7 @@
 
     <flourish:page
         name="edit.html"
-        for="schooltool.gradebook.interfaces.IWorksheet"
+        for="schooltool.gradebook.interfaces.IActivityWorksheet"
         class="schooltool.gradebook.browser.worksheet.FlourishWorksheetEditView"
         content_template="templates/z3c-schooltool-form.pt"
         permission="schooltool.edit"
@@ -259,7 +259,7 @@
 
   <flourish:page
       name="addActivity.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="New Activity"
       content_template="templates/f_add_edit_activity.pt"
@@ -269,7 +269,7 @@
 
   <flourish:page
       name="addLinkedActivity.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="New External Score"
       content_template="templates/f_add_edit_activity.pt"
@@ -279,7 +279,7 @@
 
   <flourish:page
       name="addLinkedColumn.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="New Linked Column"
       content_template="templates/f_add_edit_linked_column.pt"
@@ -364,7 +364,7 @@
 
   <flourish:page
       name="weights.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="Edit Category Weights"
       content_template="templates/f_weight_categories.pt"
@@ -1145,7 +1145,7 @@
 
   <flourish:page
       name="deploy_as_course_worksheet.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       subtitle="Add as Course Worksheet"
       class=".course_worksheets.FlourishDeployAsCourseWorksheetView"
       content_template="templates/f_deploy_as_course_worksheet.pt"

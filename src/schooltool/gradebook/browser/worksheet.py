@@ -55,8 +55,8 @@ class WorksheetGradebookView(BrowserView):
 class WorksheetManageView(object):
     """A Worksheet view."""
 
-    __used_for__ = interfaces.IWorksheet
-    
+    __used_for__ = interfaces.IActivityWorksheet
+
     def activities(self):
         pos = 0
         for activity in list(self.context.values()):
@@ -118,7 +118,7 @@ class WorksheetAddView(app.BaseAddView):
 class FlourishWorksheetAddView(flourish.form.AddForm):
     """flourish view for adding a worksheet."""
 
-    fields = field.Fields(interfaces.IWorksheet).select('title')
+    fields = field.Fields(interfaces.IActivityWorksheet).select('title')
     template = InheritTemplate(flourish.page.Page.template)
     label = None
     legend = _('Worksheet Details')
@@ -184,7 +184,7 @@ class FlourishWorksheetEditView(flourish.form.Form, form.EditForm):
     template = InheritTemplate(flourish.page.Page.template)
     label = None
     legend = _('Worksheet Information')
-    fields = field.Fields(interfaces.IWorksheet).select('title')
+    fields = field.Fields(interfaces.IActivityWorksheet).select('title')
 
     @property
     def title(self):
