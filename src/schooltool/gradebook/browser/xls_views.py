@@ -46,7 +46,8 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
         for index, header in enumerate(headers):
             self.write_header(ws, 0, index, header)
 
-    def print_student(self, ws, row, jd, activities, student):
+    def print_student(self, ws, row, section, jd, activities, student):
+        self.write(ws, row, 0, section.__name__)
         self.write(ws, row, 1, student.username)
 
         if jd is not None:
@@ -77,12 +78,13 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
             activities = IActivities(section)
             students = sorted(section.members, key=lambda s: s.username)
 
-            self.write(ws, row, 0, section.__name__)
             if not students:
+                self.write(ws, row, 0, section.__name__)
                 row += 1
             else:
                 for student in students:
-                    self.print_student(ws, row, jd, activities, student)
+                    self.print_student(ws, row, section, jd, activities,
+                                       student)
                     row += 1
 
     def export_term(self, wb):
