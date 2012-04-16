@@ -861,6 +861,59 @@
        link="request_failing_report.html"
        />
 
+  <report:reportLink
+       name="report_sheets_export"
+       for="schooltool.term.interfaces.ITerm"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="Term"
+       description="Export report card data for every student in every section for the term."
+       title="Report Sheets"
+       file_type="xls"
+       link="request_report_sheets_export.html"
+       />
+
+  <flourish:page
+       name="request_report_sheets_export.html"
+       for="schooltool.term.interfaces.ITerm"
+       class=".request_reports.FlourishRequestReportSheetsExportView"
+       permission="schooltool.edit"
+       />
+
+  <flourish:page
+       name="export_report_sheets.xls"
+       for="schooltool.term.interfaces.ITerm"
+       class=".xls_views.FlourishReportSheetsExportTermView"
+       permission="schooltool.edit"
+       />
+
+  <report:reportLink
+       name="report_sheets_export"
+       for="schooltool.schoolyear.interfaces.ISchoolYear"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="School Year"
+       description="Export report card data for every student in every section for the school .
+                    There will be one worksheet for each term in the year."
+       title="Report Sheets"
+       file_type="xls"
+       link="request_report_sheets_export.html"
+       />
+
+  <flourish:page
+       name="request_report_sheets_export.html"
+       for="schooltool.schoolyear.interfaces.ISchoolYear"
+       class=".request_reports.FlourishRequestReportSheetsExportView"
+       permission="schooltool.edit"
+       />
+
+  <flourish:page
+       name="export_report_sheets.xls"
+       for="schooltool.schoolyear.interfaces.ISchoolYear"
+       class=".xls_views.FlourishReportSheetsExportSchoolYearView"
+       permission="schooltool.edit"
+       />
+
   <configure zcml:condition="have schooltool.lyceum.journal">
     <flourish:page
         name="request_absences_by_day.html"
@@ -885,29 +938,6 @@
          title="Absences"
          file_type="pdf"
          link="request_section_absences.html"
-         />
-    <report:reportLink
-         name="report_sheets_export"
-         for="schooltool.term.interfaces.ITerm"
-         layer="schooltool.skin.flourish.IFlourishLayer"
-         permission="schooltool.edit"
-         group="Term"
-         description="Export report card data for every student in every section for the term."
-         title="Report Sheets"
-         file_type="xls"
-         link="request_report_sheets_export.html"
-         />
-    <flourish:page
-         name="request_report_sheets_export.html"
-         for="schooltool.term.interfaces.ITerm"
-         class=".request_reports.FlourishRequestReportSheetsExportView"
-         permission="schooltool.edit"
-         />
-    <flourish:page
-         name="export_report_sheets.xls"
-         for="schooltool.term.interfaces.ITerm"
-         class=".xls_views.FlourishReportSheetsExportView"
-         permission="schooltool.edit"
          />
   </configure>
 

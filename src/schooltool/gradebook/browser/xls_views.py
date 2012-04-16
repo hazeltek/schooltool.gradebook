@@ -34,8 +34,8 @@ from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 
 
-class FlourishReportSheetsExportView(export.ExcelExportView,
-                                     flourish.page.Page):
+class FlourishReportSheetsExportTermView(export.ExcelExportView,
+                                         flourish.page.Page):
     """A view for exporting report sheets to an XLS file"""
 
     def print_headers(self, ws):
@@ -46,7 +46,8 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
         for index, header in enumerate(headers):
             self.write_header(ws, 0, index, header)
 
-    def print_student(self, ws, row, jd, activities, student):
+    def print_student(self, ws, row, section, jd, activities, student):
+        self.write(ws, row, 0, section.__name__)
         self.write(ws, row, 1, student.username)
 
         if jd is not None:
@@ -77,34 +78,61 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
             activities = IActivities(section)
             students = sorted(section.members, key=lambda s: s.username)
 
-            self.write(ws, row, 0, section.__name__)
             if not students:
+                self.write(ws, row, 0, section.__name__)
                 row += 1
             else:
                 for student in students:
-                    self.print_student(ws, row, jd, activities, student)
+                    self.print_student(ws, row, section, jd, activities,
+                                       student)
                     row += 1
 
     def export_term(self, wb):
-        ws = wb.add_sheet(self.term.title)
+        ws = wb.add_sheet(self.term.__name__)
         self.print_headers(ws)
         self.print_grades(ws)
 
-    def __call__(self):
-        self.term = self.context
-        self.schoolyear = ISchoolYear(self.term)
-        self.activities = []
-        root = IGradebookRoot(ISchoolToolApplication(None))
-        for key, sheet in root.deployed.items():
-            year, term, index = key.split('_')
-            if year == self.schoolyear.__name__ and term == self.term.__name__:
-                self.activities.extend(sheet.values())
+    def getFileName(self):
+        return 'report_sheets_%s_%s.xls' % (self.schoolyear.__name__,
+                                            self.term.__name__)
 
+    def getTerms(self):
+        return [self.context]
+
+    def getActivities(self):
+        activities = []
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        prefix = '%s_%s_' % (self.schoolyear.__name__, self.term.__name__)
+        for key, sheet in root.deployed.items():
+            if key.startswith(prefix) and key[len(prefix):].isdigit():
+                activities.extend(sheet.values())
+        return activities
+
+    def __call__(self):
         wb = xlwt.Workbook()
-        self.export_term(wb)
+
+        for self.term in self.getTerms():
+            self.schoolyear = ISchoolYear(self.term)
+            self.activities = self.getActivities()
+            self.export_term(wb)
+
         datafile = StringIO()
         wb.save(datafile)
         data = datafile.getvalue()
         self.setUpHeaders(data)
+        disposition = 'filename="%s"' % self.getFileName()
+        self.request.response.setHeader('Content-Disposition', disposition)
         return data
+
+
+class FlourishReportSheetsExportSchoolYearView(
+    FlourishReportSheetsExportTermView):
+    """A view for exporting report sheets to an XLS file,
+       one sheet for each term of the school year."""
+
+    def getFileName(self):
+        return 'report_sheets_%s.xls' % self.schoolyear.__name__
+
+    def getTerms(self):
+        return self.context.values()
 
