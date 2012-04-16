@@ -95,9 +95,9 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
         self.schoolyear = ISchoolYear(self.term)
         self.activities = []
         root = IGradebookRoot(ISchoolToolApplication(None))
+        prefix = '%s_%s_' % (self.schoolyear.__name__, self.term.__name__)
         for key, sheet in root.deployed.items():
-            year, term, index = key.split('_')
-            if year == self.schoolyear.__name__ and term == self.term.__name__:
+            if key.startswith(prefix) and key[len(prefix):].isdigit():
                 self.activities.extend(sheet.values())
 
         wb = xlwt.Workbook()
