@@ -94,18 +94,26 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
         return 'report_sheets_%s_%s.xls' % (self.schoolyear.__name__,
                                             self.term.__name__)
 
-    def __call__(self):
-        self.term = self.context
-        self.schoolyear = ISchoolYear(self.term)
-        self.activities = []
+    def getTerms(self):
+        return [self.context]
+
+    def getActivities(self):
+        activities = []
         root = IGradebookRoot(ISchoolToolApplication(None))
         prefix = '%s_%s_' % (self.schoolyear.__name__, self.term.__name__)
         for key, sheet in root.deployed.items():
             if key.startswith(prefix) and key[len(prefix):].isdigit():
-                self.activities.extend(sheet.values())
+                activities.extend(sheet.values())
+        return activities
 
+    def __call__(self):
         wb = xlwt.Workbook()
-        self.export_term(wb)
+
+        for self.term in self.getTerms():
+            self.schoolyear = ISchoolYear(self.term)
+            self.activities = self.getActivities()
+            self.export_term(wb)
+
         datafile = StringIO()
         wb.save(datafile)
         data = datafile.getvalue()
