@@ -90,6 +90,10 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
         self.print_headers(ws)
         self.print_grades(ws)
 
+    def getFileName(self):
+        return 'report_sheets_%s_%s.xls' % (self.schoolyear.__name__,
+                                            self.term.__name__)
+
     def __call__(self):
         self.term = self.context
         self.schoolyear = ISchoolYear(self.term)
@@ -106,5 +110,7 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
         wb.save(datafile)
         data = datafile.getvalue()
         self.setUpHeaders(data)
+        disposition = 'filename="%s"' % self.getFileName()
+        self.request.response.setHeader('Content-Disposition', disposition)
         return data
 
