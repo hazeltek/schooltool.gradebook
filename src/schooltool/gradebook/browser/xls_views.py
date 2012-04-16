@@ -86,7 +86,7 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
                     row += 1
 
     def export_term(self, wb):
-        ws = wb.add_sheet(self.term.title)
+        ws = wb.add_sheet(self.term.__name__)
         self.print_headers(ws)
         self.print_grades(ws)
 
