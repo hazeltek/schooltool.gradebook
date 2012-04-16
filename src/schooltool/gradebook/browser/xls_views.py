@@ -34,8 +34,8 @@ from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 
 
-class FlourishReportSheetsExportView(export.ExcelExportView,
-                                     flourish.page.Page):
+class FlourishReportSheetsExportTermView(export.ExcelExportView,
+                                         flourish.page.Page):
     """A view for exporting report sheets to an XLS file"""
 
     def print_headers(self, ws):
@@ -121,4 +121,16 @@ class FlourishReportSheetsExportView(export.ExcelExportView,
         disposition = 'filename="%s"' % self.getFileName()
         self.request.response.setHeader('Content-Disposition', disposition)
         return data
+
+
+class FlourishReportSheetsExportSchoolYearView(
+    FlourishReportSheetsExportTermView):
+    """A view for exporting report sheets to an XLS file,
+       one sheet for each term of the school year."""
+
+    def getFileName(self):
+        return 'report_sheets_%s.xls' % self.schoolyear.__name__
+
+    def getTerms(self):
+        return self.context.values()
 
