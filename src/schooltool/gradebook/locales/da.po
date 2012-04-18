@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-15 18:58+0200\n"
-"PO-Revision-Date: 2011-10-28 17:33+0000\n"
-"Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
+"POT-Creation-Date: 2012-03-16 18:31+0200\n"
+"PO-Revision-Date: 2012-03-20 18:12+0000\n"
+"Last-Translator: Ole Guldberg <olegb@omgwtf.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
-"Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-02 05:20+0000\n"
-"X-Generator: Launchpad (build 14886)\n"
+"X-Launchpad-Export-Date: 2012-03-21 05:58+0000\n"
+"X-Generator: Launchpad (build 14981)\n"
+"Language: da\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -31,11 +31,11 @@ msgstr "Aktiviteter"
 #: /src/schooltool/gradebook/activity.py:301
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:5
 msgid "Course Activities"
-msgstr ""
+msgstr "Kursusaktiviteter"
 
 #: /src/schooltool/gradebook/activity.py:317
 msgid "Deployed Worksheets"
-msgstr ""
+msgstr "Igangsatte arbejdsark"
 
 #: /src/schooltool/gradebook/browser/activity.py:66
 #: /src/schooltool/gradebook/browser/gradebook.py:83
@@ -125,11 +125,11 @@ msgstr "Titel"
 
 #: /src/schooltool/gradebook/browser/activity.py:334
 msgid "Column Label"
-msgstr ""
+msgstr "Søjleetikette"
 
 #: /src/schooltool/gradebook/browser/activity.py:335
 msgid "Limit to 5 characters or less."
-msgstr ""
+msgstr "Begræns til 5 karakterer eller mindre."
 
 #: /src/schooltool/gradebook/browser/activity.py:339
 #: /src/schooltool/gradebook/interfaces.py:133
@@ -161,29 +161,34 @@ msgid ""
 "when calculating averages.  The list of categories can be set schoolwide set "
 "by your system administrator."
 msgstr ""
+"Katagorierne kan bruges til at vægte forskellige typer af aktiviteter "
+"forskelligt når gennemsnittet udregnes. Listen af katagorier kan indstilles "
+"på hele skolen af skolens administrator."
 
 #: /src/schooltool/gradebook/browser/activity.py:356
 #: /src/schooltool/gradebook/browser/activity.py:467
 msgid "Full Credit Score"
-msgstr ""
+msgstr "Fuld pointantal"
 
 #: /src/schooltool/gradebook/browser/activity.py:357
 msgid ""
 "This value must be an integer.  You may award extra credit above this value."
 msgstr ""
+"Denne værdi skal være et heltal. Du kan måske få ekstra point over denne "
+"værdi."
 
 #: /src/schooltool/gradebook/browser/activity.py:363
 msgid "Minimum Score"
-msgstr ""
+msgstr "Minimumsscore"
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "This value must be an integer."
-msgstr ""
+msgstr "Denne værdi skal være et heltal"
 
 #: /src/schooltool/gradebook/browser/activity.py:385
 #: /src/schooltool/gradebook/browser/activity.py:536
 msgid "Activity Details"
-msgstr ""
+msgstr "Aktivitetsdetajler"
 
 #: /src/schooltool/gradebook/browser/activity.py:389
 #: /src/schooltool/gradebook/browser/activity.py:486
@@ -209,18 +214,20 @@ msgstr "Tilføj en ekstern aktivitet"
 
 #: /src/schooltool/gradebook/browser/activity.py:458
 msgid "External Score Source"
-msgstr ""
+msgstr "Ekstern pointkilde"
 
 #: /src/schooltool/gradebook/browser/activity.py:468
 msgid ""
 "The point value of this activity will be calculated as the full credit score "
 "multiplied by the percentage value of the external score."
 msgstr ""
+"Pointværdien af denne aktivitet vil blive udregnes som den fulde pointværdi "
+"multipliceret med procentværdien af den eksterne pointscore."
 
 #: /src/schooltool/gradebook/browser/activity.py:480
 #: /src/schooltool/gradebook/browser/activity.py:589
 msgid "External Score Details"
-msgstr ""
+msgstr "Ekstern pointdetaljer"
 
 #: /src/schooltool/gradebook/browser/activity.py:524
 #: /src/schooltool/gradebook/browser/report_card.py:751
@@ -233,7 +240,7 @@ msgstr "Rediger ekstern aktivitet"
 
 #: /src/schooltool/gradebook/browser/activity.py:618
 msgid "Category weights for worksheet ${worksheet}"
-msgstr ""
+msgstr "Kategorivægte for atbejdsark ${worksheet}"
 
 #: /src/schooltool/gradebook/browser/activity.py:640
 msgid "$value is not a valid weight."
@@ -254,12 +261,12 @@ msgstr "Gennemsnit"
 
 #: /src/schooltool/gradebook/browser/activity.py:895
 msgid "Add Linked Column"
-msgstr ""
+msgstr "Tilføj henvisningssøjle"
 
 #: /src/schooltool/gradebook/browser/activity.py:947
 #: /src/schooltool/gradebook/browser/flourish.zcml:307
 msgid "Edit Linked Column"
-msgstr ""
+msgstr "Rediger henvisningssøjle"
 
 #: /src/schooltool/gradebook/browser/activity.py:1032
 #: /src/schooltool/gradebook/browser/gradebook.py:1023
@@ -273,11 +280,11 @@ msgstr "Aktivitet"
 
 #: /src/schooltool/gradebook/browser/activity.py:1033
 msgid "Linked Column"
-msgstr ""
+msgstr "Henvisningssøjle"
 
 #: /src/schooltool/gradebook/browser/activity.py:1034
 msgid "External Score"
-msgstr ""
+msgstr "Externe point"
 
 #: /src/schooltool/gradebook/browser/category.py:57
 msgid "Categories"
@@ -306,7 +313,7 @@ msgstr "Standard kategorier ændret."
 
 #: /src/schooltool/gradebook/browser/category.py:206
 msgid "Make Default"
-msgstr ""
+msgstr "Gør til standard"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:53
 #: /src/schooltool/gradebook/browser/configure.zcml:87
@@ -327,11 +334,11 @@ msgstr "Aktivitets kategorier"
 #: /src/schooltool/gradebook/generations/tests/test_evolve3.py:47
 #: /src/schooltool/gradebook/gradebook_init.py:50
 msgid "Report Sheet Templates"
-msgstr ""
+msgstr "Rapportarksskabeloner"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:98
 msgid "Download Gradebook CSV"
-msgstr ""
+msgstr "Hent Gradebook CSV"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:135
 msgid "Add a Worksheet"
@@ -339,7 +346,7 @@ msgstr "Tilføj et regneark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:147
 msgid "Add a Report Sheet"
-msgstr ""
+msgstr "Tilføj et rapportark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:159
 msgid "Edit Worksheet"
@@ -364,7 +371,7 @@ msgstr "Redigér"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:171
 msgid "Edit Report Sheet"
-msgstr ""
+msgstr "Redigere rapportark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:235
 #: /src/schooltool/gradebook/browser/flourish.zcml:492
@@ -396,7 +403,7 @@ msgstr "Karakterbog"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:296
 msgid "New Report Sheet"
-msgstr ""
+msgstr "Nyt rapportark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:303
 #: /src/schooltool/gradebook/browser/flourish.zcml:219
@@ -417,7 +424,7 @@ msgstr "Retur til karakterbog"
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:4
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:8
 msgid "Unhide Worksheets"
-msgstr ""
+msgstr "Vis arbejdsark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:333
 #: /src/schooltool/gradebook/browser/configure.zcml:377
@@ -435,7 +442,7 @@ msgstr "Ny ekstern aktivitet"
 #: /src/schooltool/gradebook/browser/configure.zcml:391
 #: /src/schooltool/gradebook/browser/flourish.zcml:259
 msgid "New Linked Column"
-msgstr ""
+msgstr "Ny henvisningssøjle"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:361
 #: /src/schooltool/gradebook/browser/configure.zcml:370
@@ -450,7 +457,7 @@ msgstr "Regneark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:398
 msgid "Manage Worksheet"
-msgstr ""
+msgstr "Administre arbejdsark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:405
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:5
@@ -473,52 +480,52 @@ msgstr "Opdater karakterer"
 #: /src/schooltool/gradebook/browser/configure.zcml:533
 #: /src/schooltool/gradebook/browser/configure.zcml:592
 msgid "Deploy Report Sheet"
-msgstr ""
+msgstr "Brug rapportark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:540
 msgid "Hide Report Sheet"
-msgstr ""
+msgstr "Gem rapportark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:547
 msgid "Unhide Report Sheet"
-msgstr ""
+msgstr "Vis rapportark"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:599
 #: /src/schooltool/gradebook/browser/flourish.zcml:617
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
-msgstr ""
+msgstr "Rapportkort layout"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:76
 msgid "Course Worksheet Details"
-msgstr ""
+msgstr "Kursus arbejdsarkdetaljer"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:115
 msgid "Course Worksheet Template Information"
-msgstr ""
+msgstr "Kursus arbejdsarksskabelon information"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:157
 #: /src/schooltool/gradebook/browser/course_worksheets.py:167
 msgid "Course Activity Details"
-msgstr ""
+msgstr "Kursus aktivitetsdetaljer"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:218
 #: /src/schooltool/gradebook/browser/report_card.py:275
 msgid "-- Entire year --"
-msgstr ""
+msgstr "-- Hele året --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:308
 msgid "Worksheets for ${year}"
-msgstr ""
+msgstr "Arbejdsark for ${year}"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:329
 #: /src/schooltool/gradebook/browser/report_card.py:290
 msgid "-- Select a template --"
-msgstr ""
+msgstr "-- Vælg skabelon --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:366
 msgid "Hide/unhide Deployed Worksheets for ${year}"
-msgstr ""
+msgstr "Gem/vis brugte arbejdsark for ${year}"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:88
 #: /src/schooltool/gradebook/browser/flourish.zcml:601
@@ -564,29 +571,29 @@ msgstr "Handlinger"
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:15
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:4
 msgid "Worksheet"
-msgstr ""
+msgstr "Arbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:178
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories.pt:16
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:30
 msgid "Category Weights"
-msgstr ""
+msgstr "Kategoriens vægt"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:249
 msgid "New External Score"
-msgstr ""
+msgstr "Ny eksterne point"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:269
 msgid "Edit Activity"
-msgstr ""
+msgstr "Redigere aktivitet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:297
 msgid "Edit External Score"
-msgstr ""
+msgstr "Rediger eksterne point"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:317
 msgid "Grade Activity"
-msgstr ""
+msgstr "Karakteraktivitet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:327
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:89
@@ -597,16 +604,16 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:14
 msgid "Score"
-msgstr ""
+msgstr "Point"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:344
 msgid "Edit Category Weights"
-msgstr ""
+msgstr "Rediger kategorivægte"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:438
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:58
 msgid "Report Sheet Template"
-msgstr ""
+msgstr "Rapportarksskabelon"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:473
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:39
@@ -616,43 +623,43 @@ msgstr "Rapporter aktivitet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:482
 msgid "New Template"
-msgstr ""
+msgstr "Ny skabelon"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:538
 msgid "Action"
-msgstr ""
+msgstr "Hændelse"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:548
 msgid "Hide/unhide Sheets"
-msgstr ""
+msgstr "Vis/gem ark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:582
 msgid "My Grades"
-msgstr ""
+msgstr "Mine karakterer"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:662
 msgid "Grid Column"
-msgstr ""
+msgstr "Søjlegitter"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:670
 msgid "Outline Item"
-msgstr ""
+msgstr "Skitse element"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:679
 msgid "New Grid Column"
-msgstr ""
+msgstr "Nyt søjlegitter"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:688
 msgid "New Outline Item"
-msgstr ""
+msgstr "Nyt skitse element"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:697
 msgid "Edit Grid Column"
-msgstr ""
+msgstr "Rediger søjlegitter"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:706
 msgid "Edit Outline Item"
-msgstr ""
+msgstr "Regiger skitseelement"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
@@ -664,26 +671,29 @@ msgstr "Gruppe"
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student Detail Report"
-msgstr ""
+msgstr "Studerende detaljerapport"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "A single PDF containing detail reports for all students in the group."
 msgstr ""
+"En enkelt PDF som indeholder detajlerapporter for alle de studerende i denne "
+"grouppe."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
 #: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Student Report Card"
-msgstr ""
+msgstr "Studerende rapportkort"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
 #: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "A single PDF containing report cards for all students in the group."
 msgstr ""
+"En enkelt PDF som indeholder rapportkort for alle de studerende i gruppen."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:780
 msgid "Failures"
-msgstr ""
+msgstr "Dumpede"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:780
 #: /src/schooltool/gradebook/browser/report.zcml:50
@@ -691,6 +701,8 @@ msgid ""
 "Shows all students receiving failing scores in the selected report activity "
 "and term."
 msgstr ""
+"Vis alle studerende som har modtaget dumpekaraktere i den valgte "
+"rapportaktivitet og termin."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:806
 #: /src/schooltool/gradebook/browser/pdf_views.py:685
@@ -701,38 +713,39 @@ msgstr "Fravær"
 #: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Summary of absences and tardies from a single section and term."
 msgstr ""
+"Opsumering af fravær og sent fremmøde fra en enkelt sektion eller termin."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:989
 msgid "Worksheet Templates"
-msgstr ""
+msgstr "Arbejdsarkskabeloner"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1008
 msgid "Course Worksheet"
-msgstr ""
+msgstr "Kursusarbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1017
 msgid "New Course Worksheet"
-msgstr ""
+msgstr "Nyt kursusarbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1026
 msgid "New Course Activity"
-msgstr ""
+msgstr "Ny kursusaktivitet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1054
 msgid "Course Activity"
-msgstr ""
+msgstr "Kursusaktivitet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1096
 msgid "Hide/unhide Worksheets"
-msgstr ""
+msgstr "Vis/gem arbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1137
 msgid "Add to Course Worksheets"
-msgstr ""
+msgstr "Tilføj til kursusarbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1145
 msgid "Add as Course Worksheet"
-msgstr ""
+msgstr "Tilføj som kursusarbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
@@ -740,21 +753,23 @@ msgstr "Rapporter"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
-msgstr ""
+msgstr "Udskrivbart arbejdsark"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "The current worksheet formatted for printing."
-msgstr ""
+msgstr "Det nuværende arbejdsark formateret til udskrift."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1151
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
 msgstr ""
+"Et enkelt Excel-formatteret regneark indeholdende alle arbejdsark for denne "
+"gradebook."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1151
 msgid "Gradebook Export"
-msgstr ""
+msgstr "Gradebook export"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:87
 #: /src/schooltool/gradebook/browser/pdf_views.py:730
@@ -767,29 +782,31 @@ msgstr "I alt"
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:259
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:285
 msgid "Ave."
-msgstr ""
+msgstr "Gennemsnit"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:90
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:208
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
 msgid "Abs."
-msgstr ""
+msgstr "Fravær"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:90
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:225
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:235
 msgid "Trd."
-msgstr ""
+msgstr "For sent"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:246
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
 msgstr ""
+"Du har ændringer der ikke er gemte. Klik OK for at gemme nu eller Fortryd "
+"for at forsætte uden at gemme."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:509
 msgid "Invalid scores (highlighted in red) were not saved."
-msgstr ""
+msgstr "Ugyldige pointscore (vist med rødt) blev ikke gemt."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:671
 msgid "N/A"
@@ -797,15 +814,15 @@ msgstr "Ikke tilgængelig"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:804
 msgid "No Visible Worksheets"
-msgstr ""
+msgstr "Ingen synlige arbejdsark"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:806
 msgid "Enter Grades"
-msgstr ""
+msgstr "Indtast karakterer"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:901
 msgid "No score system"
-msgstr ""
+msgstr "Ingen pointsystem"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1165
 msgid "The grade $value for $name is not valid."
@@ -813,7 +830,7 @@ msgstr "Karakteren $value for $name er ikke gyldig."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1481
 msgid "-- No score system --"
-msgstr ""
+msgstr "-- Ingen pointsystem --"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1539
 #: /src/schooltool/gradebook/browser/gradebook.py:1651
@@ -831,19 +848,19 @@ msgstr "Angiv karakter for ${fullname}"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1641
 msgid "Enter grade details below"
-msgstr ""
+msgstr "Indtast karakterdetaljer herunder"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1747
 msgid "$worksheet for $student in $section"
-msgstr ""
+msgstr "$worksheet for $student i $section"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1790
 msgid "${section} grades for ${worksheet}"
-msgstr ""
+msgstr "${section} karakterer for ${worksheet}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:209
 msgid "Report Card: ${schoolyear}"
-msgstr ""
+msgstr "Rapportkort: ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:209
 #: /src/schooltool/gradebook/browser/pdf_views.py:326
@@ -852,19 +869,19 @@ msgstr "Kurser"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:220
 msgid "Student: ${student}"
-msgstr ""
+msgstr "Studerende: ${student}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:331
 msgid "Detailed Student Report: ${schoolyear}"
-msgstr ""
+msgstr "Detajleret rapport over studerende: ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:323
 msgid "Grade Detail"
-msgstr ""
+msgstr "Karakterdetaljer"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:329
 msgid "Attendance Detail"
-msgstr ""
+msgstr "Fraværsdetaljer"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:332
 msgid "Dates"
@@ -880,11 +897,11 @@ msgstr "Bruger ID"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:478
 msgid "Failures by Term Report: ${term}"
-msgstr ""
+msgstr "Dumpede efter terminsrapport: ${term}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:456
 msgid "Report Sheet:"
-msgstr ""
+msgstr "Rapportark:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:462
 msgid "Activity:"
@@ -892,11 +909,11 @@ msgstr "Aktivitet:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:468
 msgid "Passing Score:"
-msgstr ""
+msgstr "Point for at bestå:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:474
 msgid "The following students are at risk of failing the following courses:"
-msgstr ""
+msgstr "De følgende studerende er i risiko for at dumpe de følgende kurser:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:477
 #: /src/schooltool/gradebook/browser/pdf_views.py:627
@@ -931,7 +948,7 @@ msgstr "Periodenummer"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:666
 msgid "Absences by Section Report"
-msgstr ""
+msgstr "Fraværrapport efter sektion"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:675
 msgid "Teacher"
@@ -948,23 +965,27 @@ msgstr "Karakterbogsrapport"
 #: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
+"Indeholder pointscore efter rapportark. Formaterende til at blive sendt til "
+"forældrene."
 
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid ""
 "Contains scores from report sheets and attendance.  For use by school staff."
 msgstr ""
+"Indeholder pointscorene fra rapportark og fravær. Til brug for skolens "
+"personale."
 
 #: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "Student Report Card by Group"
-msgstr ""
+msgstr "Studerende rapportkort efter gruppe"
 
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Student Detail Report by Group"
-msgstr ""
+msgstr "Studerende detaljeraport efter gruppe"
 
 #: /src/schooltool/gradebook/browser/report.zcml:50
 msgid "Failures by Term"
-msgstr ""
+msgstr "Dumpende efter termin"
 
 #: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "Absences By Day"
@@ -972,7 +993,7 @@ msgstr "Fravær pr. dag"
 
 #: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "Lists students absent on a given day."
-msgstr ""
+msgstr "List over studerende der var fraværende på en given dag."
 
 #: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "School Year"
@@ -980,7 +1001,7 @@ msgstr "Skoleår"
 
 #: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Absences by Section"
-msgstr ""
+msgstr "Fravær efter sektion"
 
 #: /src/schooltool/gradebook/browser/report_card.py:66
 msgid "Absent"
@@ -988,7 +1009,7 @@ msgstr "Fraværende"
 
 #: /src/schooltool/gradebook/browser/report_card.py:67
 msgid "Tardy"
-msgstr ""
+msgstr "For sent"
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
@@ -996,27 +1017,27 @@ msgstr "A"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: /src/schooltool/gradebook/browser/report_card.py:254
 msgid "Report Sheets for ${year}"
-msgstr ""
+msgstr "rapportark for ${year}"
 
 #: /src/schooltool/gradebook/browser/report_card.py:399
 msgid "Hide/unhide Report Sheets for ${year}"
-msgstr ""
+msgstr "Vis/gem rapportark for ${year}"
 
 #: /src/schooltool/gradebook/browser/report_card.py:461
 msgid "Report Sheet Template Details"
-msgstr ""
+msgstr "Rapportarkskabelon detaljer"
 
 #: /src/schooltool/gradebook/browser/report_card.py:351
 msgid "Report Sheet Template Information"
-msgstr ""
+msgstr "Rapportarkskabelon information"
 
 #: /src/schooltool/gradebook/browser/report_card.py:390
 msgid "-- Use range below --"
-msgstr ""
+msgstr "-- Brug område herunder --"
 
 #: /src/schooltool/gradebook/browser/report_card.py:404
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:251
@@ -1030,7 +1051,7 @@ msgstr "Karaktersystem"
 
 #: /src/schooltool/gradebook/browser/report_card.py:405
 msgid "Choose an existing score system or use range below"
-msgstr ""
+msgstr "Vælg et eksisterende pointsysem eller brug område herunder"
 
 #: /src/schooltool/gradebook/browser/report_card.py:410
 #: /src/schooltool/requirement/browser/scoresystem.py:235
@@ -1040,7 +1061,7 @@ msgstr "Minimum"
 
 #: /src/schooltool/gradebook/browser/report_card.py:411
 msgid "Lowest integer score value possible"
-msgstr ""
+msgstr "Laveste heltal pointscoreværdi mulig"
 
 #: /src/schooltool/gradebook/browser/report_card.py:416
 #: /src/schooltool/requirement/browser/scoresystem.py:235
@@ -1050,16 +1071,16 @@ msgstr "Maksimum"
 
 #: /src/schooltool/gradebook/browser/report_card.py:417
 msgid "Highest integer score value possible"
-msgstr ""
+msgstr "Højeste heltal pointscoreværdi mulig"
 
 #: /src/schooltool/gradebook/browser/report_card.py:485
 msgid "Add new report activity"
-msgstr ""
+msgstr "Tiløj ny rapportaktivitet"
 
 #: /src/schooltool/gradebook/browser/report_card.py:548
 #: /src/schooltool/gradebook/browser/report_card.py:600
 msgid "Report Activity Details"
-msgstr ""
+msgstr "Rapportaktivitet detaljer"
 
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
@@ -1073,35 +1094,35 @@ msgstr "Anvend"
 #: /src/schooltool/gradebook/browser/report_card.py:1089
 #: /src/schooltool/gradebook/browser/report_card.py:1229
 msgid "Report Card Layout for ${year}"
-msgstr ""
+msgstr "Rapportkort layout for ${year}"
 
 #: /src/schooltool/gradebook/browser/report_card.py:1190
 msgid "Grid Column Details"
-msgstr ""
+msgstr "Gittersøjle detaljer"
 
 #: /src/schooltool/gradebook/browser/report_card.py:1194
 msgid "Grid column source"
-msgstr ""
+msgstr "Gittersøjle kilde"
 
 #: /src/schooltool/gradebook/browser/report_card.py:1198
 msgid "Grid column heading"
-msgstr ""
+msgstr "Gittersøjle overskrift"
 
 #: /src/schooltool/gradebook/browser/report_card.py:1212
 msgid "Outline Item Details"
-msgstr ""
+msgstr "Skitseelement detaljer"
 
 #: /src/schooltool/gradebook/browser/report_card.py:1216
 msgid "Outline item source"
-msgstr ""
+msgstr "Skitseelement kilde"
 
 #: /src/schooltool/gradebook/browser/report_card.py:1220
 msgid "Outline item heading"
-msgstr ""
+msgstr "Skitseelement overskrift"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:46
 msgid "Request Failures by Term Report"
-msgstr ""
+msgstr "Forspørg dumpede i terminsrapporten"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:61
 msgid "Choose a report activity"
@@ -1109,31 +1130,33 @@ msgstr "Vælg en rapportaktivitet"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:95
 msgid "Maximum Passing Score"
-msgstr ""
+msgstr "Maximum pointscore for at bestå"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:97
 msgid "Minimum Passing Score"
-msgstr ""
+msgstr "Minimum pointscore for at bestå"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:115
 msgid "You must specify both a report activity and a minimum passing score."
 msgstr ""
+"Du skal specificere både en rapportaktivitet og en minimum pointscore for at "
+"bestå"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:140
 msgid "Request Absences By Day Report"
-msgstr ""
+msgstr "Forspørg fravær efter dag rapport"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:161
 msgid "You must specify a valid date within the school year."
-msgstr ""
+msgstr "Du skal vælge en gyldig dato i skoleåret."
 
 #: /src/schooltool/gradebook/browser/request_reports.py:198
 msgid "Request Report Card"
-msgstr ""
+msgstr "Forspørg rapportkort"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:200
 msgid "Request Detailed Student Report"
-msgstr ""
+msgstr "Forespørg detajleret studerendekort"
 
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:194
@@ -1165,6 +1188,10 @@ msgid ""
 "calculate grades. For example, the grade in a section might be comprised of "
 "60% test scores, 20% homework and 20% class participation."
 msgstr ""
+"Kategorier i SchoolTools karakterbog organiserer aktiviteter og giver "
+"lærerne mulighed for at vægte forskellige typer af aktiviteter forskellig "
+"for at udregne karakterer. For eksempel, karakteren i en sektion kan bestå "
+"af 60 % testpointscore, 20 % hjemmearbejde og 20 % klasseaktivitet."
 
 #: /src/schooltool/gradebook/browser/templates/categories.pt:22
 msgid ""
@@ -1174,6 +1201,11 @@ msgid ""
 "Likewise, if some of the default categories are not relevant to your school, "
 "remove them below."
 msgstr ""
+"På nuværende tidspunkt, administreres listen af kategorier for alle lærere "
+"gennem denne formular. Det betyder, hvis en eller flere lærere vil bruge en "
+"katagori der ikke er på listen kan administratoren tilføje den her. Hvis "
+"nogen af standard kategorierne ikke er relevante for din skole kan du fjerne "
+"dem herunder."
 
 #. Default: "Remove"
 #: /src/schooltool/gradebook/browser/templates/categories.pt:33
@@ -1193,7 +1225,7 @@ msgstr "Ændre"
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:8
 msgid "Deploy Report Worksheet Template"
-msgstr ""
+msgstr "Udgiv rapportarksskabelon"
 
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:16
 msgid "Template"
@@ -1201,7 +1233,7 @@ msgstr "Skabelon"
 
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:25
 msgid "Deploy"
-msgstr ""
+msgstr "Udgiv"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:2
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:2
@@ -1221,31 +1253,37 @@ msgid ""
 "The activity categories used in section gradebooks throughout the school are "
 "managed from this page."
 msgstr ""
+"Aktivitetskategorier der bruges i sektionens karakterbog for hele skolen kan "
+"administreres fra denne side."
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:10
 msgid ""
 "Please edit them to suit the types of assignments and assessements used in "
 "your school."
 msgstr ""
+"Rediger dem så de passe alle typer opgaver og evalueringer der bruges i din "
+"skole."
 
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:8
 msgid "Enter Details and Select Column"
-msgstr ""
+msgstr "Indtast detaljer og vælg søjle"
 
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:6
 msgid ""
 "Use external scores to add data from sources outside the SchoolTool "
 "Gradebook."
 msgstr ""
+"Brug externe pointscore for at tilføje data fra kilder udefra SchoolTools "
+"karakterbog."
 
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:10
 msgid ""
 "External score sources must be configured by your system administrator"
-msgstr ""
+msgstr "Eksterne pointscore skal konfigureres af din systemadministrator."
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:30
@@ -1259,11 +1297,11 @@ msgstr "Slet"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:15
 msgid "Edit this category"
-msgstr ""
+msgstr "Rediger denne kategori"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 msgid "There are no activity categories."
-msgstr ""
+msgstr "Der er ingen aktivitetskatgorier"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
@@ -1283,43 +1321,43 @@ msgstr "Udført"
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete?"
-msgstr ""
+msgstr "Slet?"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
-msgstr ""
+msgstr "Der er ingen kursusaktiviteter."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
-msgstr ""
+msgstr "Dette kursus har ingen kursusarbejdsarksskabeloner."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
 msgid "Current Course Worksheets"
-msgstr ""
+msgstr "Nuærende kursusarbejdsark."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:30
 msgid "This year has no course worksheets."
-msgstr ""
+msgstr "Dette skoleår har ingen kursusarbejdsark."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:50
 msgid "Select worksheet to add"
-msgstr ""
+msgstr "Vælg et arbejdsark at tilføje"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:55
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:19
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:58
 #: /src/schooltool/gradebook/browser/templates/request_student_report.pt:22
 msgid "Term or Year"
-msgstr ""
+msgstr "Termin eller år"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:58
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:22
 msgid "Add the worksheet to a specific term or the entire year."
-msgstr ""
+msgstr "Tilføj arbejdsarket til en specifik termin eller hele skoleåret."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:73
 msgid "Worksheet Template"
-msgstr ""
+msgstr "Arbejdsarkskabelon"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:77
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:99
@@ -1335,12 +1373,16 @@ msgid ""
 "If you add the same template multiple times, give each version an easily "
 "distinguishable name."
 msgstr ""
+"Hvis du tilføjer samme skabelon flere gange, husk at give hver version et "
+"tydeligt huskbart navn."
 
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:62
 msgid ""
 "If you add the same worksheet multiple times, give each version an easily "
 "distinguishable name."
 msgstr ""
+"HVis du tilføjer samme arbejdsark flere gange, husk at give hver version et "
+"tydeligt huskbart navn."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:48
@@ -1359,9 +1401,21 @@ msgstr "Navn"
 msgid "Save"
 msgstr "Gem"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:4
+msgid "This section contains only worksheets that are hidden."
+msgstr "Denne sektion indeholder kun arbejdsark der er skjulte."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:8
+msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
+msgstr "Du kan ${unhide_worksheets} eller ${add_worksheet}."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:22
+msgid "Choose a grade to apply to all the students in the gradebook column."
+msgstr "Vælg en karakter at give alle de studerende i denne gradebooksøjle."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:85
 msgid "Fill empty cells"
-msgstr ""
+msgstr "Fyld de tomme celler"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:128
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:222
@@ -1370,90 +1424,90 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:333
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:350
 msgid "Sort by"
-msgstr ""
+msgstr "Sorter efter"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:44
 msgid "Show Total"
-msgstr ""
+msgstr "Vis total"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:47
 msgid "Hide Total"
-msgstr ""
+msgstr "Gem total"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:50
 msgid "Show Ave."
-msgstr ""
+msgstr "Vis gennemsnit"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:53
 msgid "Hide Ave."
-msgstr ""
+msgstr "Gem gennemsnit"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:58
 msgid "Show Abs."
-msgstr ""
+msgstr "Vis fravær"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:61
 msgid "Hide Abs."
-msgstr ""
+msgstr "Gem fravær"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:64
 msgid "Show Trd."
-msgstr ""
+msgstr "Vis forsent"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:67
 msgid "Hide Trd."
-msgstr ""
+msgstr "Gem forsent"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:78
 #: /src/schooltool/gradebook/interfaces.py:349
 msgid "Points"
-msgstr ""
+msgstr "Point"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
 msgid "Report"
-msgstr ""
+msgstr "Rapport"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Score this"
-msgstr ""
+msgstr "Giv karakterer"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
 msgid "Fill down"
-msgstr ""
+msgstr "Fyld ud"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:230
 msgid "Move left"
-msgstr ""
+msgstr "Flyt til venstre"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:136
 msgid "Move right"
-msgstr ""
+msgstr "Flyt til højre"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:140
 msgid "Update grades"
-msgstr ""
+msgstr "Opdater karakterer"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:257
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:257
 msgid "Shortcut: Alt-S"
-msgstr ""
+msgstr "Genvel: Alt-S"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:310
 msgid "Zoom Out"
-msgstr ""
+msgstr "Zoom ud"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:314
 msgid "Zoom Normal"
-msgstr ""
+msgstr "Zoom til normal niveau"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:318
 msgid "Zoom In"
-msgstr ""
+msgstr "Zoom ind"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_startup.pt:3
 #: /src/schooltool/gradebook/browser/templates/gradebook_startup.pt:13
@@ -1476,32 +1530,35 @@ msgid ""
 "Report sheets use the SchoolTool gradebook to collect data and commentary "
 "from teachers about students in all sections."
 msgstr ""
+"Rapportark bruger SchoolTools gradebook til at samle data og kommentarer fra "
+"lærerne om de studerende i alle sektioner."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:10
 msgid ""
 "The first step in the process is to create a new report sheet template."
-msgstr ""
+msgstr "Første skridt i denne process er at oprette en rapportarksskabelon."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
 msgid "After you create a template, the next step is to ${deploy-sheet}"
 msgstr ""
+"Efter du har oprettet en skabelon er det næste skridt at ${deploy-sheet}"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
 msgid "deploy it to teacher gradebooks."
-msgstr ""
+msgstr "Udgiv det til lærernes gradebook"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:3
 msgid "Currently Deployed WorkSheets"
-msgstr ""
+msgstr "Nuværende udgivne arbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:9
 msgid "Deployed Worksheet"
-msgstr ""
+msgstr "Udgivne arbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:10
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
 msgid "Index"
-msgstr ""
+msgstr "Indeks"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:14
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
@@ -1511,46 +1568,108 @@ msgstr "Synlig"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
-msgstr ""
+msgstr "Dette skoleår har ingen udgivne arbejdsark."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:11
 msgid "Currently Deployed Report Sheets"
-msgstr ""
+msgstr "Nuværende udgivne rapportark"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:12
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:15
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
 msgid "Report Sheet"
-msgstr ""
+msgstr "Rapportark"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:35
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:30
 msgid "This year has no report sheets deployed."
-msgstr ""
+msgstr "Dette år har ikke nogle udgivne rapportark."
 
-#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
+msgid "Manage Worksheet Templates"
+msgstr "Administrer arbejdsarkskabeloner"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
+msgid "Manage Report Sheet Templates"
+msgstr "Administrer rapportarksskabeloner"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:14
+msgid "There are ${count} report sheet templates set up."
+msgstr "Der er opsat ${count} rapportarksskabeloner."
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
+msgid "There are no report sheet templates set up."
+msgstr "Der er ingen sat nogle rapportarksskabeloner op."
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+msgid "Manage Deployed Report Sheets"
+msgstr "Administrer Udgivne rapportark"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+#: /src/schooltool/gradebook/gradebook_init.py:53
+msgid "Deployed Report Sheets"
+msgstr "Udgivne rapportark"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:16
+msgid "There are ${count} report sheets deployed in ${schoolyear}"
+msgstr "Der er ${count} rapportark udgivet i ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:20
+msgid "There are no report sheets deployed in ${schoolyear}"
+msgstr "Der er ingen rapportark udgivet i ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:6
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
-msgstr ""
+msgstr "Ikke afgivet karakterer"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:9
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
+msgid "Grid Columns"
+msgstr "Gittersøjler"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:50
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
+msgid "Heading"
+msgstr "Overskrift"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:40
+msgid "This report has no grid columns."
+msgstr "Denne rapport har ingen gittersøjler"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
+msgid "Outline Items"
+msgstr "Skitseelementer"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
+msgid "This report has no outline items."
+msgstr "Denne rapport har ingen skitseelementer"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
 "Use this page to lay out a standard report card, pulling data from ${report-"
 "sheets} and the attendance journal."
 msgstr ""
+"Brug denne side til at lave et standard rapportkort, med data fra ${report-"
+"sheets} og fraværsprotokollen."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid "report sheets"
-msgstr ""
+msgstr "Rapportark"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:12
 msgid ""
 "The standard report card contains a grid where each row corresponds to a "
 "section and the columns as defined on this page."
 msgstr ""
+"Standard rapportkortet indeholder et gitter hvor hver række svarer til en "
+"sektion og søjlerne er defineret på denne side."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:16
 msgid ""
@@ -1558,65 +1677,78 @@ msgid ""
 "defined outline items laid out like a text outline. This is necessary for "
 "comments or other scores that will not fit in a traditional grid."
 msgstr ""
+"Under gitteret er en skitse som gennemløbes for hver sektion og definerer "
+"skitseelementer vist som tekstskitser. Dette er nødvendigt for kommentarer "
+"eller andre pointscorer der ikke vil passe i et traditionelt gitter."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:21
 msgid ""
 "Both the grid and outline layouts are optional; if no columns or items are "
 "defined, the whole layout is skipped."
 msgstr ""
+"Både gitteret og skitse layout'et er valgfritt; hvis der ikke er søjler "
+"eller elementer defineret bliver hele layoutet ignoreret."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:25
 msgid ""
 "The report cards can be generated for an individual person or all the people "
 "in a group."
 msgstr ""
+"Rapportkort kan genereret for individuelle personer eller alle personer i en "
+"gruppe."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:49
 msgid "Select report sheet to deploy"
-msgstr ""
+msgstr "Vælg rapportark der skal udgives"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:61
 msgid "Select a term or deploy to the entire year."
-msgstr ""
+msgstr "Vællg en termin eller udgiv til hele året."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
 msgid ""
-"If you deploy the same template multiple times, give each deployment an "
-"easily distinguishable name."
+"If you deploy the same template multiple times in the same term, give each "
+"deployment an easily distinguishable name."
 msgstr ""
+"Hvis du udgiver den samme skabelon flere gang i samme termin, så give hver "
+"udgivelse et nemt huskeligt navn."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "The first step in the process is to ${add-sheet}"
-msgstr ""
+msgstr "Første skridt i processen er at ${add-sheet}"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "create a new report sheet template."
-msgstr ""
+msgstr "Opret en nyt rapportarksskabelon"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:15
 msgid ""
 "Once you have a template, use this form to add the report sheet to the "
 "gradebook of every section that meets in the specified term or terms."
 msgstr ""
+"Når du har en skabelon, brug denne formular til at tilføje rapportark til "
+"karakterbogen for hver sektion der mødes i de specificerede termin(er)."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:22
 msgid ""
 "Data collected through report sheets can be included in the ${report-card-"
 "layout} or custom reports."
 msgstr ""
+"Data samlet gennem rapportark kan inkluderes i ${report-card-layout} eller "
+"specieltilpassede rapporter."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:22
 msgid "standard report card"
-msgstr ""
+msgstr "standard rapportkort"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:11
 msgid "File Type"
-msgstr ""
+msgstr "Filtype"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
 msgid "Date (yyyy-mm-dd)"
-msgstr ""
+msgstr "Dato (yyyy-mm-dd)"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:41
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:73
@@ -1633,6 +1765,8 @@ msgid ""
 "This report is a list of students achieving below a minimum score on a "
 "selected activity from a report sheet."
 msgstr ""
+"Denne rapport er en liste over studerende der har opnået en pointscore under "
+"minimum på en valgt aktivitet fra rapportkortet."
 
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:22
 msgid ""
@@ -1643,39 +1777,46 @@ msgid ""
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Submit.\""
 msgstr ""
+"For eksempel, hvis terminen \"Efterår 2011\" og du har udgivet et rapportark "
+"med titlen \"Semester karakterer\", som indeholder en aktivitet \"Første "
+"kvartal\", som bruger en karakterskala hver \"3\" eller højere er en "
+"bestående karakter. For at oprette en rapport over studerende der dumper "
+"første kvartalt karakterer, skal du vælge de rapportaktiviteten \"Efterår "
+"2011 - Semester karaktere - Første kvartal\" og vælg \"3\" som den karakter "
+"man minimum skal have for at bestå."
 
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:35
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:38
 msgid "Request Report"
-msgstr ""
+msgstr "Forspørg rapport"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
 msgid "Select a year or term"
-msgstr ""
+msgstr "Vælg et år eller en termin"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:5
 msgid "Report Activities"
-msgstr ""
+msgstr "Rapportarktiviteter"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
 msgid "There are no report activities."
-msgstr ""
+msgstr "Der er ingen rapportaktiviteter."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
 "A report sheet is a special kind of gradebook worksheet that can be deployed "
 "to all teacher gradebooks in the school."
 msgstr ""
+"Et rapportark er en speciel slags karaterbogsark der kan udgives til alle "
+"skolens lærere's karakterbøger."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:10
 msgid ""
 "Each deployed worksheet will contain the report activities defined in its "
 "template."
 msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
-msgid "There are no report sheet templates set up."
-msgstr ""
+"Hver udgivet arbejdsark vil indeholde en rapportaktivitet der defineres i "
+"denne skabelon."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:18
@@ -1683,6 +1824,8 @@ msgid ""
 "This form allows you to change the weighting of categories when calculating "
 "average scores within a worksheet."
 msgstr ""
+"Denne formular giver dig mulighed for at ændre på vægtene af kategorier når "
+"der udregnes gennemsnitlig pointscore i et arbejdsark."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
@@ -1690,6 +1833,8 @@ msgid ""
 "Enter numeric values for each relevant category. The total of all values "
 "must be exactly 100."
 msgstr ""
+"Indtast en numerisk værdi for hver af de relevante kategorier. Den samlede "
+"værdi skal være 100."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
@@ -1698,16 +1843,19 @@ msgid ""
 "quizzes as 20%, enter \"60\" next to \"Exam\", \"20\" next to \"Homework\" "
 "and \"20\" next to \"Quiz\"."
 msgstr ""
+"For eksempel, for at vægte eksamener 60 % af karakteren, hjemmearbejds som "
+"20 % og quiz'er som 20 %, indtast \"60\" ved siden af \"eksamener, \"20\" "
+"ved siden af \"hjemmearbejde\" og \"20\" ved siden af \"quiz'zer\"."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:19
 msgid ""
 "The list of categories can be customized for your school by your system "
 "administrator."
-msgstr ""
+msgstr "Listen af kategorier kan tilpasses af skolens administrator."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:5
 msgid "Reorder or Hide Worksheets"
-msgstr ""
+msgstr "Arranger eller gem arbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
@@ -1716,16 +1864,16 @@ msgstr "Rækkefølge"
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2
 msgid "Summary Worksheet"
-msgstr ""
+msgstr "Arbejdsark resume"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:55
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:86
 msgid "Overwrite existing worksheets titled \"Summary\"."
-msgstr ""
+msgstr "Overskriv eksistrende arbejdsark med titlen \"Resume\"."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:59
 msgid "Create summary worksheet"
-msgstr ""
+msgstr "Opret resume arbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_related.pt:6
 msgid ""
@@ -1733,6 +1881,9 @@ msgid ""
 "organize large numbers of activities. You can link columns from one "
 "worksheet to another."
 msgstr ""
+"Brug arbejdsark i din karakterbog på sammemåde som du ville arganiserer "
+"aktiviteter i et regneark. Du kan henvise søjlerne fra et arbejdsark til et "
+"andet."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:76
@@ -1740,6 +1891,9 @@ msgid ""
 "You can add a summary worksheet to each of your gradebooks that "
 "automatically includes a column for the average of all existing worksheets."
 msgstr ""
+"Du kan tilføje arbejdsark resume til hver at dine karakterbøger, så det "
+"automatisk inkulderer en søjle for gennemsnittet af alle eksistrende "
+"arbejdsark."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:11
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:79
@@ -1749,11 +1903,15 @@ msgid ""
 "entitled \"Summary\" will be created, which includes the average scores from "
 "\"A,\" \"B\" and \"C\" in the first three columns."
 msgstr ""
+"For eksempel, hvis du har 3 arbejdsark i en sektion, \"A\", \"B\" og \"C\" "
+"og klikker \"Opret arbejdsark resume\", vil der blive oprettet et ark med "
+"titlen \"Resume\", med den gennemsnitligt scorer fra \"A\", \"B\" og \"C\" i "
+"de 3 første søjler."
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:4
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:13
 msgid "Set Column Preferences"
-msgstr ""
+msgstr "Indstil søjleindstillinger"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:19
 msgid "Column Type"
@@ -1765,7 +1923,7 @@ msgstr "Skjul?"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:62
 msgid "Hide 'show only activities due in past _ weeks'"
-msgstr ""
+msgstr "Gem 'vis kun aktiviter afvikler de sidste_ uger'"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:68
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:38
@@ -1774,7 +1932,7 @@ msgstr "Opdatér"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:92
 msgid "Create Summary Worksheets"
-msgstr ""
+msgstr "Opret resume arbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
@@ -1797,7 +1955,7 @@ msgstr "Afsnit:"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:98
 msgid "show only activities due in past ${num_weeks} weeks"
-msgstr ""
+msgstr "vis kun aktiviteter afviklet de sidste ${num_weeks} uger"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:141
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:154
@@ -1808,25 +1966,16 @@ msgstr "(sortér)"
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:8
 msgid "Hide Deployed Report Sheet"
-msgstr ""
+msgstr "Gem udgivne rapportark"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
-msgid "Grid Columns"
-msgstr ""
+msgstr "Rapportkort layout"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:82
 msgid "Source"
 msgstr "Kilde"
-
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
-msgid "Heading"
-msgstr "Overskrift"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:57
 msgid "New Column"
@@ -1839,7 +1988,7 @@ msgstr "Vælg en kolonne at tilføj"
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:78
 #: /src/schooltool/gradebook/interfaces.py:180
 msgid "Outline Activities"
-msgstr ""
+msgstr "Skitser aktiviteter"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:123
 msgid "Choose an activity to add"
@@ -1851,7 +2000,7 @@ msgstr "OK"
 
 #: /src/schooltool/gradebook/browser/templates/no_current_term.pt:4
 msgid "No Current Term"
-msgstr ""
+msgstr "Ingen nuværende termin"
 
 #: /src/schooltool/gradebook/browser/templates/no_current_term.pt:10
 msgid ""
@@ -1859,10 +2008,13 @@ msgid ""
 "no terms set up in your SchoolTool instance. Please have a user with "
 "administration access set up at least one term and try the operation again."
 msgstr ""
+"Den handling du forsøgte kunne ikke gennemføres fordi der ikke er indstillet "
+"nogen terminer i din SchoolTool instans. Få en bruger med "
+"administratoradgang til at opsætte mindst en termin og prøv igen."
 
 #: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:4
 msgid "No Report Sheets"
-msgstr ""
+msgstr "Ingen rapportkort"
 
 #: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:10
 msgid ""
@@ -1871,14 +2023,17 @@ msgid ""
 "administration access set up at least one report sheet and try the operation "
 "again."
 msgstr ""
+"Den handling du forsøgte kunne ikke gennemføres fordi der ikke er indstillet "
+"noget rapportark i din SchoolTool instans. Få en bruger med "
+"administratoradgang til at opsætte mindst et rapportark og prøv igen."
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:4
 msgid "Report Worksheet"
-msgstr ""
+msgstr "Rapportarbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:9
 msgid "Activities of ${title}"
-msgstr ""
+msgstr "Aktivitet ${title}"
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:14
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:14
@@ -1886,6 +2041,8 @@ msgid ""
 "A report sheet template defines the activities to be included in a report "
 "sheet deployed to each section in a term or year."
 msgstr ""
+"En rapportarksskabelon definerer aktiviteterne der skal inkluderes i et "
+"rapportark der skal udgives til hver sektion i en termin eller et år."
 
 #: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/interfaces.py:159
@@ -1901,52 +2058,55 @@ msgid ""
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
 msgstr ""
+"For eksempel, hvis terminet er \"Efterår 2011\" og du har udgivet et "
+"rapportark med titlen \"Semester karakterer\", som indeholder en aktivitet "
+"\"Første kvartal\", som bruger en karakterskala hvor \"3\" eller højere er "
+"en karakter for bestået. For at oprette en rapport over studerende der "
+"dumper det første kvartal, skal du vælge rapportaktivitet \"Efterår 2011 - "
+"Semester karakterer - Første kvartal\" og vælg \"3\" som den karakter man "
+"minimums skal have for at bestå. Klik derefter \"Download\"."
 
 #: /src/schooltool/gradebook/browser/templates/summary.pt:10
 msgid "Section Worksheet Summary"
-msgstr ""
+msgstr "Sektions arbejdsark resume"
 
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:8
 msgid "Unhide Deployed Report Sheet"
-msgstr ""
+msgstr "Vis udgivne rapportark"
 
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
 msgid "Unhide"
-msgstr ""
+msgstr "Vis"
 
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:4
 msgid "Delete Worksheet"
-msgstr ""
+msgstr "Slet arbejdsark"
 
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:12
 msgid ""
 "Are you sure you want to delete this worksheet together with all its "
 "activities?"
 msgstr ""
+"Er du sikker på du vil slette dette arbejdsark og alle arbejdsarkets "
+"aktiviter?"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:106
 msgid "This worksheet has no activities."
-msgstr ""
+msgstr "Dette arbejdsark har ingen aktiviteter."
 
 #: /src/schooltool/gradebook/browser/worksheet.py:124
 msgid "Worksheet Details"
-msgstr ""
+msgstr "Arbejdsarkdetaljer"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:181
 msgid "Worksheet Information"
-msgstr ""
+msgstr "Arbejdsarkinformation"
 
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:48
-#: /src/schooltool/gradebook/gradebook_init.py:53
-msgid "Deployed Report Sheets"
-msgstr ""
-
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:49
 #: /src/schooltool/gradebook/gradebook_init.py:56
 msgid "Report Card Layouts"
-msgstr ""
+msgstr "Rapportkort layout"
 
 #: /src/schooltool/gradebook/gradebook_init.py:119
 msgid "Assignment"
@@ -1982,11 +2142,11 @@ msgstr "Projekt"
 
 #: /src/schooltool/gradebook/interfaces.py:126
 msgid "Identifies the report sheet in teacher gradebooks."
-msgstr ""
+msgstr "Identificerer rapportarket i lærerens karakterbog."
 
 #: /src/schooltool/gradebook/interfaces.py:158
 msgid "Identifies the course worksheet in gradebooks."
-msgstr ""
+msgstr "Identificere kursusarbejdsarket i karakterbøgerne."
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "The date the activity is due to be graded."
@@ -1994,13 +2154,9 @@ msgstr "Den dag aktiviteten skal gives karakter."
 
 #: /src/schooltool/gradebook/interfaces.py:139
 msgid "The column label for the activity in the gradebook."
-msgstr ""
+msgstr "Søjleetiketten for aktiviteten i denne karakterbog."
 
-#: /src/schooltool/gradebook/interfaces.py:144
-msgid "A detailed description of the activity."
-msgstr "En detaljeret beskrivelse af aktiviteten."
-
-#: /src/schooltool/gradebook/interfaces.py:149
+#: /src/schooltool/gradebook/interfaces.py:180
 msgid "The activity category"
 msgstr "Aktivitetskategori"
 
@@ -2022,16 +2178,16 @@ msgstr "Kolonner"
 
 #: /src/schooltool/gradebook/interfaces.py:177
 msgid "Columns to be printed in the report card."
-msgstr ""
+msgstr "Søjler der vil blive udskrevet på rapportkortet."
 
 #: /src/schooltool/gradebook/interfaces.py:181
 msgid "Activities to be printed in the outline section."
-msgstr ""
+msgstr "Aktiviterer der vil blive udskrivet i skitseelement sektionen."
 
 #: /src/schooltool/gradebook/interfaces.py:215
 #: /src/schooltool/gradebook/interfaces.py:320
 msgid "Worksheets in this gradebook."
-msgstr ""
+msgstr "Arbejdsark i denne karakterbog."
 
 #: /src/schooltool/gradebook/interfaces.py:219
 msgid "Activities in this gradebook."
@@ -2049,12 +2205,12 @@ msgstr "Studerende i denne karakterbog."
 #: /src/schooltool/gradebook/interfaces.py:370
 #: /src/schooltool/gradebook/interfaces.py:393
 msgid "External Activity Source"
-msgstr ""
+msgstr "Eksterne aktivitetskilder"
 
 #: /src/schooltool/gradebook/interfaces.py:340
 #: /src/schooltool/gradebook/interfaces.py:394
 msgid "The registration name of the source"
-msgstr ""
+msgstr "Registrationsnavnet på kilden"
 
 #: /src/schooltool/gradebook/interfaces.py:344
 #: /src/schooltool/gradebook/interfaces.py:398
@@ -2064,81 +2220,79 @@ msgstr "Ekstern aktivitets ID"
 #: /src/schooltool/gradebook/interfaces.py:345
 #: /src/schooltool/gradebook/interfaces.py:399
 msgid "A unique identifier for the external activity"
-msgstr ""
+msgstr "En unik identifikation for den eksterne aktivitet"
 
 #: /src/schooltool/gradebook/interfaces.py:350
 msgid "Points value to calculate the activity grade"
-msgstr ""
+msgstr "Pointværdi for at udregne aktivitetskarakteren"
 
 #: /src/schooltool/gradebook/interfaces.py:371
 msgid "Name of the external activities source"
-msgstr ""
+msgstr "Navnet på den eksterne aktivitetskilde"
 
 #: /src/schooltool/gradebook/interfaces.py:376
 msgid "A brief title of the external activities source"
-msgstr ""
+msgstr "En kort titel på den eksterne aktivitetskilde"
 
 #: /src/schooltool/gradebook/interfaces.py:404
 msgid "A brief title of the external activity."
-msgstr ""
+msgstr "En kort titel til den eksterne aktivitet."
 
-#: /src/schooltool/gradebook/interfaces.py:409
-msgid "A detailed description of the external activity."
-msgstr "En detaljeret beskrivelse af den eksterne aktivitet."
-
-#: /src/schooltool/gradebook/interfaces.py:427
+#: /src/schooltool/gradebook/interfaces.py:457
 msgid "Linked Column Activity Source"
-msgstr ""
+msgstr "Henvisningssøjle aktivitetskilde"
 
 #: /src/schooltool/gradebook/interfaces.py:428
 msgid "A text string that specifies the source of the column"
-msgstr ""
+msgstr "En tekststren der specificerer kilden for søjlen"
 
 #: /src/schooltool/gradebook/journal.py:46
 msgid "Journal Source"
-msgstr ""
+msgstr "Journalkilde"
 
 #: /src/schooltool/gradebook/journal.py:64
 msgid "Journal Average"
-msgstr ""
+msgstr "Journalgennemsnit"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
-msgstr ""
+msgstr "Opret, rediger og udgiv rapportarksskabeloner."
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
-msgstr ""
+msgstr "Rediger skabeloner"
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Create and edit gradebook data for a section."
-msgstr ""
+msgstr "Opret og rediger karakterbogsdata for en sektion."
 
 #: /src/schooltool/gradebook/security.zcml:17
 msgid "Edit Gradebook"
-msgstr ""
+msgstr "Rediger karakterbog"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View Gradebook"
-msgstr ""
+msgstr "Se karakterbog"
 
 #: /src/schooltool/gradebook/security.zcml:24
 msgid "View gradebook data for a section."
-msgstr ""
+msgstr "Se karakterbogsdata for en sektion."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "Only the instructor of a section can edit its gradebook."
-msgstr ""
+msgstr "Kun instruktøren af en sektion kan redigere sektionens karakterbog."
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid ""
 "The instructor of a section and school administration can edit a section's "
 "gradebook."
 msgstr ""
+"Instruktøren af en sektion og skolens administrator kan redigere en sektions "
+"karakterbog."
 
 #: /src/schooltool/gradebook/security.zcml:55
 msgid "Add Course Worksheet"
-msgstr ""
+msgstr "Tilføj kursusarbejdsark."
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/flourish.zcml:10
@@ -2164,38 +2318,41 @@ msgid ""
 "retain existing scores. This cannot currently be undone, but a new version "
 "of the same score system can be created."
 msgstr ""
+"Hvis du gemmer dette pointsystem vil det ikke være tilgængeligt til "
+"fremtidig brug, men vil beholde de eksisterende scorer. Dette kan ikke "
+"fortrydes, men der kan oprettet en nyt version af  scoresystemet."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:14
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:42
 msgid "New Score System"
-msgstr ""
+msgstr "Nyt pointsystem"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:34
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:6
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:51
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:15
 msgid "Abbreviation"
-msgstr ""
+msgstr "Forkortelse"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:35
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:7
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:16
 msgid "Point Value"
-msgstr ""
+msgstr "Pointværdi"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:36
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:8
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:53
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:17
 msgid "Low Percentage"
-msgstr ""
+msgstr "Lav procent"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:75
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:102
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:9
 msgid "Passing Score"
-msgstr ""
+msgstr "Pointscore for at bestå"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:80
 msgid "Type"
@@ -2206,6 +2363,8 @@ msgid ""
 "If the values in the score system descend, e.g., 1 is the best score, set "
 "this to 'Maximum'. Otherwise leave it as the 'Minimum' passing score."
 msgstr ""
+"Hvis værdierne i pointsystemet falder, f.eks. 1 er den bedste score, indstil "
+"dette til 'Maximum'. Ellers behold 'Minimum' som pointscore for at bestå."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:6
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:20
@@ -2213,6 +2372,8 @@ msgid ""
 "This form allows you to create a customized \"score system\" or grading "
 "scale."
 msgstr ""
+"Denne formulae give dig mulighed for at oprette et speciel tilrettet "
+"\"scoresystem\" eller karakterskala."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:9
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:26
@@ -2220,6 +2381,7 @@ msgid ""
 "A score system is made up of a sequence of possible scores with decreasing "
 "values."
 msgstr ""
+"Et scoresystem består af en sekvens af mulige score med faldende værdier."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:12
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:29
@@ -2229,6 +2391,9 @@ msgid ""
 "be used in any calculations made with the scores, such as finding a grade "
 "point average."
 msgstr ""
+"Hver score erassocieres med en numerisk pointværdi. For eksempel, i USA, er "
+"et \"A\" normalt 4 point værd, et \"B\" er 3 point værd, etc. Denne værdi "
+"bruges til at udregninger med pointscorer, såsom at udregne et gennemsnit."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:15
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:32
@@ -2237,6 +2402,9 @@ msgid ""
 "the corresponding grade. For example, 95% and above is an \"A,\" 87% and up "
 "is a \"B,\" etc."
 msgstr ""
+"Hver score er også associeret med en minimumsprocent der er nødvendig for at "
+"opnå den korresponderende karakter. For eksempel, 95 % og over er et \"A\",  "
+"87% og op er et \"B,\" etc."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:18
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:35
@@ -2245,12 +2413,16 @@ msgid ""
 "characters and you wish to create an alternative abbreviation for the "
 "gradebook."
 msgstr ""
+"Indtast en forkortelse for en scorem hvis scoren har mere en 4 karaktere "
+"eller du ønsker at oprette en alternation forkortelse for karakterbogen."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:21
 msgid ""
 "Start with the highest score. Click \"Add\" to add scores until you have "
 "created a score with a minimum percentage of 0."
 msgstr ""
+"Start med den højeste score. Klik 'Tilføj' for at tilføje scorer indtil du "
+"har oprettet en score med minimum 0 procentpoint."
 
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:24
 msgid "There are none."
@@ -2261,14 +2433,16 @@ msgid ""
 "A score system is a scale used for assessment, such as a grading scale or "
 "rubric scale."
 msgstr ""
+"Et scoresystem er en skala der bruges til evaluering, såsom en karakterskala "
+"eller en rubrikskala."
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
-msgstr ""
+msgstr "${requirement} indehold"
 
 #: /src/schooltool/requirement/browser/requirement.pt:11
 msgid "${requirement} Sub Requirements"
-msgstr ""
+msgstr "${requirement} underindhold"
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
@@ -2292,19 +2466,19 @@ msgstr "Titelfelt må ikke være tomt."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:49
 msgid "Value field must contain a valid number."
-msgstr ""
+msgstr "Værdifelt skal indeholde et gyldigt tal."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:50
 msgid "Percent field must contain a valid number."
-msgstr ""
+msgstr "Procentfelt skal indeholde et gyldigt tal."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:51
 msgid "All values must be non-negative."
-msgstr ""
+msgstr "Alle værdier skal være ikke-negative."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:52
 msgid "All percentages must be non-negative."
-msgstr ""
+msgstr "Alle procenter skal være ikke-negative."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:53
 msgid "Percentages cannot be greater than 100."
@@ -2316,23 +2490,23 @@ msgstr "Et karaktersystem skal have mindst to karakterer."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:55
 msgid "Score values must go in descending order."
-msgstr ""
+msgstr "Pointværdierne skal være i faldende rækkefølge."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:56
 msgid "Score percentages must go in descending order."
-msgstr ""
+msgstr "Alle procentpointene skal være i faldende rækkefølge."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:57
 msgid "The last percentage must be zero."
-msgstr ""
+msgstr "Den sidste procent skal være 0."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:58
 msgid "Duplicate scores are not allowed."
-msgstr ""
+msgstr "Dobbelt pointscore er ikke tilladt."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:59
 msgid "Duplicate abbreviations are not allowed."
-msgstr ""
+msgstr "Dobbelt forkortelser er ikke tilladt."
 
 #: /src/schooltool/requirement/browser/scoresystem.py:265
 msgid "Yes"
@@ -2352,23 +2526,28 @@ msgstr "Kundetilpasset karaktersystem"
 
 #: /src/schooltool/requirement/browser/scoresystem.py:504
 msgid "Hide ${scoresystem}"
-msgstr ""
+msgstr "Gem ${scoresystem}"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:23
 msgid ""
 "Each score system needs a short title to identify it to users, for example, "
 "if your school's grades go from \"A\" to \"E,\" the title could be \"A-E.\""
 msgstr ""
+"Hvert scoresystem skal have en kort titel for at identificere for brugerne, "
+"for eksempel, hvis din skole's karakterer er fra \"A\" til \"E\", kunne "
+"titlen være \"A-E\"."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:38
 msgid ""
 "Start with the highest score. Click \"Add a lower score\" to add scores "
 "until you have created a score with a minimum percentage of 0."
 msgstr ""
+"Start med den højeste score. Klik 'Tilføg den laveste score' for at tilføje "
+"scorer indtil du har skabt en score med med minimumsprocent 0."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:80
 msgid "Add a lower score"
-msgstr ""
+msgstr "Tilføj den laveste score"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:83
 msgid ""
@@ -2376,11 +2555,20 @@ msgid ""
 "the value below to say 'Maximum' passing score. Otherwise leave it a "
 "'Minimum' passing score."
 msgstr ""
+"Hvis værdierne i scoresystemet er faldende, f.eks. 1 er den bedste score, "
+"indstil værdien herunder til 'Maximum' score for at bestå. Ellers lad "
+"værdier være 'Minimum' for at bestå."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:98
 msgid "passing score:"
-msgstr ""
+msgstr "Score for at bestå:"
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Vis karaktersystem"
+
+#~ msgid "A detailed description of the activity."
+#~ msgstr "En detaljeret beskrivelse af aktiviteten."
+
+#~ msgid "A detailed description of the external activity."
+#~ msgstr "En detaljeret beskrivelse af den eksterne aktivitet."

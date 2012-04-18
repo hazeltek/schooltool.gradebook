@@ -7,6 +7,7 @@ CHANGES
 
 - Period order on report incorrect (https://launchpad.net/bugs/932508)
 - Report Card Data should be Exportable (https://launchpad.net/bugs/976757)
+- Updated translations
 
 
 2.0.3 (2012-03-16)
