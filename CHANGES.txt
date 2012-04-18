@@ -2,10 +2,21 @@
 CHANGES
 =======
 
-2.0.4 (unreleased)
+2.1.1 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+2.1.0 (2012-04-18)
+------------------
+
+- Report sheets XLS export (https://launchpad.net/bugs/976757)
+- Period order in attendance report incorrect (https://launchpad.net/bugs/932508)
+- Round the score in student gradebook (https://launchpad.net/bugs/950531)
+- Refactor worksheets to separate activities and enable different kinds of
+  worksheets.
+- Updated translations
 
 
 2.0.3 (2012-03-16)
@@ -16,6 +27,7 @@ CHANGES
 - Tab hiding (https://launchpad.net/bugs/938810)
 - Fixes to navigation, style, i18n, tables, etc.
 - Updated translations
+
 
 2.0.2 (2012-02-02)
 ------------------

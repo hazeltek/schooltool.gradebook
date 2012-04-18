@@ -61,7 +61,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     namespace_packages=["schooltool"],
-    install_requires=['schooltool>=1.9',
+    install_requires=['schooltool>=2.0.3',
                       'rwproperty',
                       'setuptools',
                       'xlwt',

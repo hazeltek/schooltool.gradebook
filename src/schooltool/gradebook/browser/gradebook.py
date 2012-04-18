@@ -550,7 +550,7 @@ class GradebookOverview(SectionFinder):
 
         if interfaces.IActivity.providedBy(insecure_source):
             short, long, best_score = self.getActivityAttrs(source)
-        elif interfaces.IWorksheet.providedBy(insecure_source):
+        elif interfaces.IActivityWorksheet.providedBy(insecure_source):
             long = source.title
             short = activity.label or long
             if len(short) > 5:
@@ -690,7 +690,7 @@ class GradebookOverview(SectionFinder):
                 value = self.getStudentActivityValue(student_info, activity)
                 source = activity_info['linked_source']
                 if source is not None:
-                    if value and interfaces.IWorksheet.providedBy(source):
+                    if value and interfaces.IActivityWorksheet.providedBy(source):
                         value = '%.1f' % value
                 grade = {
                     'activity': activity_info['hash'],
@@ -1228,6 +1228,8 @@ class MyGradesView(SectionFinder):
                         value = score.scoreSystem.getNumericalValue(score.value)
                         if value is None:
                             value = 0
+                    if int(value) != value:
+                        value = '%.1f' % value
                     count += s_max - s_min
                     grade = {
                         'comment': False,
@@ -1807,6 +1809,7 @@ class FlourishStudentGradebookView(flourish.page.Page):
         self.average_scoresystem = scoresystems.get(
             prefs.get('scoresystem', ''))
 
+        # XXX: the rest is a copy of MyGradesView.update
         self.table = []
         count = 0
         for activity in gradebook.getWorksheetActivities(worksheet):
@@ -1827,6 +1830,8 @@ class FlourishStudentGradebookView(flourish.page.Page):
                         value = score.scoreSystem.getNumericalValue(score.value)
                         if value is None:
                             value = 0
+                    if int(value) != value:
+                        value = '%.1f' % value
                     count += s_max - s_min
                     grade = {
                         'comment': False,

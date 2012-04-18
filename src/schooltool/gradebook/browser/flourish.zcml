@@ -24,7 +24,7 @@
       />
 
   <flourish:breadcrumb
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title=""
       />
 
@@ -249,7 +249,7 @@
 
     <flourish:page
         name="edit.html"
-        for="schooltool.gradebook.interfaces.IWorksheet"
+        for="schooltool.gradebook.interfaces.IActivityWorksheet"
         class="schooltool.gradebook.browser.worksheet.FlourishWorksheetEditView"
         content_template="templates/z3c-schooltool-form.pt"
         permission="schooltool.edit"
@@ -259,7 +259,7 @@
 
   <flourish:page
       name="addActivity.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="New Activity"
       content_template="templates/f_add_edit_activity.pt"
@@ -269,7 +269,7 @@
 
   <flourish:page
       name="addLinkedActivity.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="New External Score"
       content_template="templates/f_add_edit_activity.pt"
@@ -279,7 +279,7 @@
 
   <flourish:page
       name="addLinkedColumn.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="New Linked Column"
       content_template="templates/f_add_edit_linked_column.pt"
@@ -359,12 +359,12 @@
       for="..interfaces.IStudentGradebook"
       content_template="templates/f_student_gradebook.pt"
       class=".gradebook.FlourishStudentGradebookView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <flourish:page
       name="weights.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       title="Gradebook"
       subtitle="Edit Category Weights"
       content_template="templates/f_weight_categories.pt"
@@ -861,6 +861,59 @@
        link="request_failing_report.html"
        />
 
+  <report:reportLink
+       name="report_sheets_export"
+       for="schooltool.term.interfaces.ITerm"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="Term"
+       description="Export report card data for every student in every section for the term."
+       title="Report Sheets"
+       file_type="xls"
+       link="request_report_sheets_export.html"
+       />
+
+  <flourish:page
+       name="request_report_sheets_export.html"
+       for="schooltool.term.interfaces.ITerm"
+       class=".request_reports.FlourishRequestReportSheetsExportView"
+       permission="schooltool.edit"
+       />
+
+  <flourish:page
+       name="export_report_sheets.xls"
+       for="schooltool.term.interfaces.ITerm"
+       class=".xls_views.FlourishReportSheetsExportTermView"
+       permission="schooltool.edit"
+       />
+
+  <report:reportLink
+       name="report_sheets_export"
+       for="schooltool.schoolyear.interfaces.ISchoolYear"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="School Year"
+       description="Export report card data for every student in every section for the school .
+                    There will be one worksheet for each term in the year."
+       title="Report Sheets"
+       file_type="xls"
+       link="request_report_sheets_export.html"
+       />
+
+  <flourish:page
+       name="request_report_sheets_export.html"
+       for="schooltool.schoolyear.interfaces.ISchoolYear"
+       class=".request_reports.FlourishRequestReportSheetsExportView"
+       permission="schooltool.edit"
+       />
+
+  <flourish:page
+       name="export_report_sheets.xls"
+       for="schooltool.schoolyear.interfaces.ISchoolYear"
+       class=".xls_views.FlourishReportSheetsExportSchoolYearView"
+       permission="schooltool.edit"
+       />
+
   <configure zcml:condition="have schooltool.lyceum.journal">
     <flourish:page
         name="request_absences_by_day.html"
@@ -1145,7 +1198,7 @@
 
   <flourish:page
       name="deploy_as_course_worksheet.html"
-      for="..interfaces.IWorksheet"
+      for="..interfaces.IActivityWorksheet"
       subtitle="Add as Course Worksheet"
       class=".course_worksheets.FlourishDeployAsCourseWorksheetView"
       content_template="templates/f_deploy_as_course_worksheet.pt"
