@@ -6,7 +6,10 @@ CHANGES
 ------------------
 
 - Period order on report incorrect (https://launchpad.net/bugs/932508)
+- Refactor worksheets to separate activities and enable different kinds of
+  worksheets.
 - Report Card Data should be Exportable (https://launchpad.net/bugs/976757)
+- Round the score in student gradebook (https://launchpad.net/bugs/950531)
 - Updated translations
 
 

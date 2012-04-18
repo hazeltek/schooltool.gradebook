@@ -1228,6 +1228,8 @@ class MyGradesView(SectionFinder):
                         value = score.scoreSystem.getNumericalValue(score.value)
                         if value is None:
                             value = 0
+                    if int(value) != value:
+                        value = '%.1f' % value
                     count += s_max - s_min
                     grade = {
                         'comment': False,
@@ -1807,6 +1809,7 @@ class FlourishStudentGradebookView(flourish.page.Page):
         self.average_scoresystem = scoresystems.get(
             prefs.get('scoresystem', ''))
 
+        # XXX: the rest is a copy of MyGradesView.update
         self.table = []
         count = 0
         for activity in gradebook.getWorksheetActivities(worksheet):
@@ -1827,6 +1830,8 @@ class FlourishStudentGradebookView(flourish.page.Page):
                         value = score.scoreSystem.getNumericalValue(score.value)
                         if value is None:
                             value = 0
+                    if int(value) != value:
+                        value = '%.1f' % value
                     count += s_max - s_min
                     grade = {
                         'comment': False,
