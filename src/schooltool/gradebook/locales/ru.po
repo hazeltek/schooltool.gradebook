@@ -307,7 +307,7 @@ msgstr "Категория по умолчанию успешно сменена
 
 #: /src/schooltool/gradebook/browser/category.py:206
 msgid "Make Default"
-msgstr ""
+msgstr "Назначить По Умолчанию"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:53
 #: /src/schooltool/gradebook/browser/configure.zcml:87
@@ -762,7 +762,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:242
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:252
 msgid "Total"
-msgstr ""
+msgstr "Всего"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:87
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:259
@@ -906,7 +906,7 @@ msgstr "Следующие ученики находятся под угрозо
 #: /src/schooltool/gradebook/browser/report.zcml:10
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student"
-msgstr ""
+msgstr "Учащийся"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:480
 #: /src/schooltool/gradebook/browser/pdf_views.py:669
@@ -1065,7 +1065,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
 msgid "Please correct the marked fields below."
-msgstr ""
+msgstr "Пожалуйста, исправьте отмеченные поля ниже."
 
 #: /src/schooltool/gradebook/browser/report_card.py:620
 msgid "Apply"
@@ -1215,7 +1215,7 @@ msgstr ""
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:2
 #: /src/schooltool/requirement/browser/f_scoresystems_related.pt:2
 msgid "What is This?"
-msgstr ""
+msgstr "Что это?"
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:6
 msgid ""
@@ -1246,7 +1246,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
 msgid "Default"
-msgstr ""
+msgstr "По умолчанию"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:30
@@ -1520,7 +1520,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Visible"
-msgstr ""
+msgstr "Видимый"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
@@ -1683,7 +1683,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:11
 msgid "File Type"
-msgstr ""
+msgstr "Тип Файла"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
 msgid "Date (yyyy-mm-dd)"
@@ -1696,7 +1696,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:80
 #: /src/schooltool/gradebook/browser/templates/request_student_report.pt:35
 msgid "Download"
-msgstr ""
+msgstr "Загрузить"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:16
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
@@ -1778,7 +1778,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
-msgstr ""
+msgstr "Порядок"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2

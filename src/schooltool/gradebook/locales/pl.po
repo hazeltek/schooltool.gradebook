@@ -202,7 +202,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet.py:126
 #: /src/schooltool/gradebook/browser/worksheet.py:191
 msgid "Submit"
-msgstr ""
+msgstr "Wyślij"
 
 #: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
@@ -307,7 +307,7 @@ msgstr "Domyślna kategoria pomyślnie zmieniona"
 
 #: /src/schooltool/gradebook/browser/category.py:206
 msgid "Make Default"
-msgstr ""
+msgstr "Ustaw jako domyślny"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:53
 #: /src/schooltool/gradebook/browser/configure.zcml:87
@@ -1069,7 +1069,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report_card.py:549
 #: /src/schooltool/gradebook/browser/report_card.py:601
 msgid "Please correct the marked fields below."
-msgstr ""
+msgstr "Popraw zaznaczone pola poniżej."
 
 #: /src/schooltool/gradebook/browser/report_card.py:620
 msgid "Apply"
@@ -1535,7 +1535,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Visible"
-msgstr ""
+msgstr "Widoczność"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
@@ -1698,7 +1698,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:26
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:11
 msgid "File Type"
-msgstr ""
+msgstr "Typ pliku"
 
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
 msgid "Date (yyyy-mm-dd)"
@@ -1798,7 +1798,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
-msgstr ""
+msgstr "Zamówienie"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2

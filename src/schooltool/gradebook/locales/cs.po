@@ -906,7 +906,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/report.zcml:10
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student"
-msgstr ""
+msgstr "Student"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:480
 #: /src/schooltool/gradebook/browser/pdf_views.py:669
@@ -936,7 +936,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:675
 msgid "Teacher"
-msgstr ""
+msgstr "Učitel"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:688
 msgid "Tardies"
@@ -1240,13 +1240,12 @@ msgid ""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:10
-msgid ""
-"External score sources must be configured by your system administrator"
+msgid "External score sources must be configured by your system administrator"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
 msgid "Default"
-msgstr ""
+msgstr "Výchozí"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:30
@@ -1520,7 +1519,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Visible"
-msgstr ""
+msgstr "Viditelné"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."

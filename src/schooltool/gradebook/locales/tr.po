@@ -1247,7 +1247,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
 msgid "Default"
-msgstr ""
+msgstr "Varsayılan"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:30

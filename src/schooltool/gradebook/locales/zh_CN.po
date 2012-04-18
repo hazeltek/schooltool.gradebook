@@ -202,7 +202,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/worksheet.py:126
 #: /src/schooltool/gradebook/browser/worksheet.py:191
 msgid "Submit"
-msgstr ""
+msgstr "提交"
 
 #: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
