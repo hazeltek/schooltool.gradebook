@@ -359,7 +359,7 @@
       for="..interfaces.IStudentGradebook"
       content_template="templates/f_student_gradebook.pt"
       class=".gradebook.FlourishStudentGradebookView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <flourish:page
