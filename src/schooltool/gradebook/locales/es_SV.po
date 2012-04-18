@@ -9,16 +9,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 18:58+0200\n"
-"PO-Revision-Date: 2011-12-28 20:23+0000\n"
+"POT-Creation-Date: 2012-03-16 18:31+0200\n"
+"PO-Revision-Date: 2012-03-25 17:24+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-02 05:21+0000\n"
-"X-Generator: Launchpad (build 14886)\n"
+"X-Launchpad-Export-Date: 2012-03-26 05:12+0000\n"
+"X-Generator: Launchpad (build 15008)\n"
+"Language: \n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -33,11 +33,11 @@ msgstr "Actividades"
 #: /src/schooltool/gradebook/activity.py:301
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:5
 msgid "Course Activities"
-msgstr ""
+msgstr "Actividades de Asignatura"
 
 #: /src/schooltool/gradebook/activity.py:317
 msgid "Deployed Worksheets"
-msgstr ""
+msgstr "Hojas Implementadas"
 
 #: /src/schooltool/gradebook/browser/activity.py:66
 #: /src/schooltool/gradebook/browser/gradebook.py:83
@@ -501,16 +501,16 @@ msgstr "Esquema de Libreta de Notas"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:76
 msgid "Course Worksheet Details"
-msgstr ""
+msgstr "Detalles de Hoja de Asignatura"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:115
 msgid "Course Worksheet Template Information"
-msgstr ""
+msgstr "Información de Plantilla de Hoja de Asignatura"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:157
 #: /src/schooltool/gradebook/browser/course_worksheets.py:167
 msgid "Course Activity Details"
-msgstr ""
+msgstr "Detalles de la Actividad de Asignatura"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:218
 #: /src/schooltool/gradebook/browser/report_card.py:275
@@ -519,7 +519,7 @@ msgstr "-- Año completo --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:308
 msgid "Worksheets for ${year}"
-msgstr ""
+msgstr "Hojas de ${year}"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:329
 #: /src/schooltool/gradebook/browser/report_card.py:290
@@ -528,7 +528,7 @@ msgstr "-- Seleccione una plantilla --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:366
 msgid "Hide/unhide Deployed Worksheets for ${year}"
-msgstr ""
+msgstr "Ocultar/Mostrar Hojas Implementadas de ${year}"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:88
 #: /src/schooltool/gradebook/browser/flourish.zcml:601
@@ -720,35 +720,35 @@ msgstr "Resumen de ausencias y llegadas tarde de una sección en un período."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:989
 msgid "Worksheet Templates"
-msgstr ""
+msgstr "Plantillas de Hoja"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1008
 msgid "Course Worksheet"
-msgstr ""
+msgstr "Hoja de Asignatura"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1017
 msgid "New Course Worksheet"
-msgstr ""
+msgstr "Nueva Hoja de Asignatura"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1026
 msgid "New Course Activity"
-msgstr ""
+msgstr "Nueva Actividad de Asignatura"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1054
 msgid "Course Activity"
-msgstr ""
+msgstr "Actividad de Asignatura"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1096
 msgid "Hide/unhide Worksheets"
-msgstr ""
+msgstr "Ocultar/Mostrar Hojas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1137
 msgid "Add to Course Worksheets"
-msgstr ""
+msgstr "Añadir a las Hojas de Asignatura"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1145
 msgid "Add as Course Worksheet"
-msgstr ""
+msgstr "Añadir como Hoja de Asignatura"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
@@ -756,21 +756,23 @@ msgstr "Reportes"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
-msgstr ""
+msgstr "Hoja para Imprimir"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "The current worksheet formatted for printing."
-msgstr ""
+msgstr "La hoja actual formateada para impresión."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1151
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
 msgstr ""
+"Una hoja de cálculo en formato Excel que contiene todas las hojas de este "
+"cuadro de notas."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1151
 msgid "Gradebook Export"
-msgstr ""
+msgstr "Exportar Cuadro de Notas"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:87
 #: /src/schooltool/gradebook/browser/pdf_views.py:730
@@ -815,7 +817,7 @@ msgstr "N/D"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:804
 msgid "No Visible Worksheets"
-msgstr ""
+msgstr "No hay Hojas Visibles"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:806
 msgid "Enter Grades"
@@ -1306,7 +1308,7 @@ msgstr "Editar esta categoría"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 msgid "There are no activity categories."
-msgstr ""
+msgstr "No hay categorías de actividad."
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
@@ -1330,23 +1332,23 @@ msgstr "¿Eliminar?"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
-msgstr ""
+msgstr "No hay actividades de asignatura."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
-msgstr ""
+msgstr "Esta asignatura no tiene plantillas de hoja de asignatura."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
 msgid "Current Course Worksheets"
-msgstr ""
+msgstr "Hojas de Asignatura Actuales"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:30
 msgid "This year has no course worksheets."
-msgstr ""
+msgstr "Este año no tiene hojas de asignatura."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:50
 msgid "Select worksheet to add"
-msgstr ""
+msgstr "Seleccione la hoja a añadir"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:55
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:19
@@ -1358,11 +1360,11 @@ msgstr "Período o Año"
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:58
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:22
 msgid "Add the worksheet to a specific term or the entire year."
-msgstr ""
+msgstr "Añadir la hoja a un período específico o al año completo."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:73
 msgid "Worksheet Template"
-msgstr ""
+msgstr "Plantilla de Hoja"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:77
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:99
@@ -1378,12 +1380,16 @@ msgid ""
 "If you add the same template multiple times, give each version an easily "
 "distinguishable name."
 msgstr ""
+"Si añade la misma plantilla varias veces, asigne a cada versión un nombre "
+"que sea fácil de distinguir."
 
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:62
 msgid ""
 "If you add the same worksheet multiple times, give each version an easily "
 "distinguishable name."
 msgstr ""
+"Si añade la misma hoja varias veces, asigne a cada versión un nombre que sea "
+"fácil de distinguir."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:48
@@ -1402,9 +1408,23 @@ msgstr "Nombre"
 msgid "Save"
 msgstr "Guardar"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
-msgid "Fill empty cells"
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:4
+msgid "This section contains only worksheets that are hidden."
+msgstr "Esta sección contiene sólo hojas ocultas."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:8
+msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
+msgstr "Puede ${unhide_worksheets}, o ${add_worksheet}."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:22
+msgid "Choose a grade to apply to all the students in the gradebook column."
 msgstr ""
+"Escoja una nota para aplicar a todos los estudiantes en la columna del "
+"cuadro de notas."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:85
+msgid "Fill empty cells"
+msgstr "Llenar las celdas vacías"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:128
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:222
@@ -1462,7 +1482,7 @@ msgstr "Calificar esto"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
 msgid "Fill down"
-msgstr ""
+msgstr "Llenar columna"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:230
 msgid "Move left"
@@ -1539,11 +1559,11 @@ msgstr "implementarla en los cuadros de notas de los maestros."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:3
 msgid "Currently Deployed WorkSheets"
-msgstr ""
+msgstr "Hojas Implementadas Actuales"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:9
 msgid "Deployed Worksheet"
-msgstr ""
+msgstr "Hoja Implementada"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:10
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
@@ -1554,11 +1574,11 @@ msgstr "Índice"
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Visible"
-msgstr ""
+msgstr "Visible"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
-msgstr ""
+msgstr "Este año no tiene hojas implementadas."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:11
@@ -1577,11 +1597,69 @@ msgstr "Hoja de Reporte"
 msgid "This year has no report sheets deployed."
 msgstr "Este año no tiene hojas de reporte implementadas."
 
-#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
+msgid "Manage Worksheet Templates"
+msgstr "Administrar Plantillas de Hoja"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
+msgid "Manage Report Sheet Templates"
+msgstr "Administrar Plantillas de Hoja de Reporte"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:14
+msgid "There are ${count} report sheet templates set up."
+msgstr "Hay ${count} plantillas de hoja de reporte configuradas."
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
+msgid "There are no report sheet templates set up."
+msgstr "No hay plantilals de hoja de reporte configuradas."
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+msgid "Manage Deployed Report Sheets"
+msgstr "Administrar Hojas de Reporte Implementadas"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+#: /src/schooltool/gradebook/gradebook_init.py:53
+msgid "Deployed Report Sheets"
+msgstr "Hojas de Reporte Implementadas"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:16
+msgid "There are ${count} report sheets deployed in ${schoolyear}"
+msgstr "Hay ${count} hojas de reporte implementadas en ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:20
+msgid "There are no report sheets deployed in ${schoolyear}"
+msgstr "No hay hojas de reporte implementadas en ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:6
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
 msgstr "Sin Calificar"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:9
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
+msgid "Grid Columns"
+msgstr "Columnas de Rejilla"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:50
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
+msgid "Heading"
+msgstr "Encabezado"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:40
+msgid "This report has no grid columns."
+msgstr "Este reporte no tiene columnas de rejilla."
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
+msgid "Outline Items"
+msgstr "Elementos de Resumen"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
+msgid "This report has no outline items."
+msgstr "Este reporte no tiene elementos de resumen."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
@@ -1639,11 +1717,11 @@ msgstr "Seleccione un período o implemente en el año completo."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
 msgid ""
-"If you deploy the same template multiple times, give each deployment an "
-"easily distinguishable name."
+"If you deploy the same template multiple times in the same term, give each "
+"deployment an easily distinguishable name."
 msgstr ""
-"Si implementa la misma plantilla múltiples veces, asigne a cada "
-"implementación un nombre que sea fácil de distinguir."
+"Si implementa la misma plantilla varias veces en el mismo período, asigne a "
+"cada implementación un nombre fácil de distinguir."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "The first step in the process is to ${add-sheet}"
@@ -1733,7 +1811,7 @@ msgstr "Actividades de Reporte"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
 msgid "There are no report activities."
-msgstr ""
+msgstr "No hay actividades dre reporte."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
@@ -1750,10 +1828,6 @@ msgid ""
 msgstr ""
 "Cada hoja implementada contendrá las actividades de reporte definidas en "
 "esta plantilla."
-
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
-msgid "There are no report sheet templates set up."
-msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:18
@@ -1915,19 +1989,10 @@ msgstr "Ocultar Hoja de Reporte Implementada"
 msgid "Layout Report Card"
 msgstr "Esquematizar Libreta de Notas"
 
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
-msgid "Grid Columns"
-msgstr "Columnas de Rejilla"
-
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:82
 msgid "Source"
 msgstr "Fuente"
-
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
-msgid "Heading"
-msgstr "Encabezado"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:57
 msgid "New Column"
@@ -2056,12 +2121,6 @@ msgstr "Detalles de la Hoja"
 msgid "Worksheet Information"
 msgstr "Información de la Hoja"
 
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:48
-#: /src/schooltool/gradebook/gradebook_init.py:53
-msgid "Deployed Report Sheets"
-msgstr "Hojas de Reporte Implementadas"
-
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:49
 #: /src/schooltool/gradebook/gradebook_init.py:56
 msgid "Report Card Layouts"
 msgstr "Esquemas de Libretas de Notas"
@@ -2105,7 +2164,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:158
 msgid "Identifies the course worksheet in gradebooks."
-msgstr ""
+msgstr "Identifica a la hoja de asignatura en los cuadros de notas."
 
 #: /src/schooltool/gradebook/interfaces.py:166
 msgid "The date the activity is due to be graded."
@@ -2115,11 +2174,7 @@ msgstr "La fecha en que la actividad expiró para ser calificada."
 msgid "The column label for the activity in the gradebook."
 msgstr "La etiqueta de columna para la actividad en el cuadro de notas."
 
-#: /src/schooltool/gradebook/interfaces.py:144
-msgid "A detailed description of the activity."
-msgstr "Una descripción detallada de la actividad"
-
-#: /src/schooltool/gradebook/interfaces.py:149
+#: /src/schooltool/gradebook/interfaces.py:180
 msgid "The activity category"
 msgstr "La categoría de la actividad"
 
@@ -2201,11 +2256,7 @@ msgstr "Un breve título para la fuente de actividades externas"
 msgid "A brief title of the external activity."
 msgstr "Un breve título para la actividad externa."
 
-#: /src/schooltool/gradebook/interfaces.py:409
-msgid "A detailed description of the external activity."
-msgstr "Una descripción detallada de la actividad externa."
-
-#: /src/schooltool/gradebook/interfaces.py:427
+#: /src/schooltool/gradebook/interfaces.py:457
 msgid "Linked Column Activity Source"
 msgstr "Fuente de Actividad Vinculada"
 
@@ -2259,7 +2310,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:55
 msgid "Add Course Worksheet"
-msgstr ""
+msgstr "Añadir Hoja de Asignatura"
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/flourish.zcml:10
@@ -2548,3 +2599,9 @@ msgstr "Ver sistema de puntuación"
 #~ "Su navegador tiene Javascript desactivado, o no es compatible. Javascript es "
 #~ "<b>requerido</b> para el cuadro de notas. Por favor, active Javascript o "
 #~ "utilice un navegador con JavaScript."
+
+#~ msgid "A detailed description of the activity."
+#~ msgstr "Una descripción detallada de la actividad"
+
+#~ msgid "A detailed description of the external activity."
+#~ msgstr "Una descripción detallada de la actividad externa."

@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-15 18:58+0200\n"
-"PO-Revision-Date: 2012-02-16 14:09+0000\n"
+"POT-Creation-Date: 2012-03-16 18:31+0200\n"
+"PO-Revision-Date: 2012-03-24 16:22+0000\n"
 "Last-Translator: Aleksi Kinnunen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-02 05:20+0000\n"
-"X-Generator: Launchpad (build 14886)\n"
+"X-Launchpad-Export-Date: 2012-03-25 05:57+0000\n"
+"X-Generator: Launchpad (build 14981)\n"
+"Language: fi\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -27,7 +27,7 @@ msgstr "Taulu1"
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:8
 #: /src/schooltool/gradebook/interfaces.py:218
 msgid "Activities"
-msgstr "Aktiviteetit"
+msgstr "Arviointimateriaalit"
 
 #: /src/schooltool/gradebook/activity.py:301
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:5
@@ -126,16 +126,16 @@ msgstr "Otsikko"
 
 #: /src/schooltool/gradebook/browser/activity.py:334
 msgid "Column Label"
-msgstr ""
+msgstr "Sarakeotsikko"
 
 #: /src/schooltool/gradebook/browser/activity.py:335
 msgid "Limit to 5 characters or less."
-msgstr ""
+msgstr "Korkeintaan 5 merkkiä."
 
 #: /src/schooltool/gradebook/browser/activity.py:339
 #: /src/schooltool/gradebook/interfaces.py:133
 msgid "Due Date"
-msgstr ""
+msgstr "Määräpäivä"
 
 #: /src/schooltool/gradebook/browser/activity.py:343
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:20
@@ -162,29 +162,34 @@ msgid ""
 "when calculating averages.  The list of categories can be set schoolwide set "
 "by your system administrator."
 msgstr ""
+"Kategorioiden avulla erilaisia arvioitavia materiaaleja voidaan painottaa "
+"eri tavalla kurssin keskiarvoa laskettaessa. Koulussa käytettävät "
+"arviointimateriaalit määrittää koulun ylläpitäjä."
 
 #: /src/schooltool/gradebook/browser/activity.py:356
 #: /src/schooltool/gradebook/browser/activity.py:467
 msgid "Full Credit Score"
-msgstr ""
+msgstr "Paras arvosana"
 
 #: /src/schooltool/gradebook/browser/activity.py:357
 msgid ""
 "This value must be an integer.  You may award extra credit above this value."
 msgstr ""
+"Arvosanan tulee olla kokonaisluku. Voit antaa ylimääräisiä pisteitä tämän "
+"arvosanan yli (esimerkiksi 10+)."
 
 #: /src/schooltool/gradebook/browser/activity.py:363
 msgid "Minimum Score"
-msgstr ""
+msgstr "Huonoin arvosana"
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "This value must be an integer."
-msgstr ""
+msgstr "Arvosanan tulee olla kokonaisluku."
 
 #: /src/schooltool/gradebook/browser/activity.py:385
 #: /src/schooltool/gradebook/browser/activity.py:536
 msgid "Activity Details"
-msgstr ""
+msgstr "Arviointimateriaalin tiedot"
 
 #: /src/schooltool/gradebook/browser/activity.py:389
 #: /src/schooltool/gradebook/browser/activity.py:486
@@ -238,11 +243,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:640
 msgid "$value is not a valid weight."
-msgstr ""
+msgstr "$value ei ole kelvollinen painotusarvo."
 
 #: /src/schooltool/gradebook/browser/activity.py:648
 msgid "Category weights must add up to 100."
-msgstr ""
+msgstr "Painotusten yhteissumman tulee olla tasan 100."
 
 #: /src/schooltool/gradebook/browser/activity.py:704
 msgid "The external activity couldn't be found"
@@ -270,7 +275,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:80
 msgid "Activity"
-msgstr "Aktiviteetti"
+msgstr "Arviointimateriaali"
 
 #: /src/schooltool/gradebook/browser/activity.py:1033
 msgid "Linked Column"
@@ -425,7 +430,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:239
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:119
 msgid "New Activity"
-msgstr "Uusi aktiviteetti"
+msgstr "Uusi arviointimateriaali"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:340
 #: /src/schooltool/gradebook/browser/configure.zcml:384
@@ -532,7 +537,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:71
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:37
 msgid "Section"
-msgstr "Osio"
+msgstr "Opetusryhmä"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:90
 #: /src/schooltool/gradebook/browser/flourish.zcml:566
@@ -571,7 +576,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories.pt:16
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:30
 msgid "Category Weights"
-msgstr ""
+msgstr "Kategoriapainotukset"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:249
 msgid "New External Score"
@@ -587,7 +592,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:317
 msgid "Grade Activity"
-msgstr ""
+msgstr "Anna arvosanat"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:327
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:89
@@ -598,11 +603,11 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:14
 msgid "Score"
-msgstr "Arvosana"
+msgstr "Arvioi"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:344
 msgid "Edit Category Weights"
-msgstr ""
+msgstr "Muokkaa kategoriapainotuksia"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:438
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:58
@@ -665,7 +670,7 @@ msgstr "Ryhmä"
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student Detail Report"
-msgstr ""
+msgstr "Oppilastietoraportti"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:756
 #: /src/schooltool/gradebook/browser/report.zcml:40
@@ -675,7 +680,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
 #: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Student Report Card"
-msgstr ""
+msgstr "Oppilaskortti"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:768
 #: /src/schooltool/gradebook/browser/report.zcml:30
@@ -755,7 +760,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1151
 msgid "Gradebook Export"
-msgstr ""
+msgstr "Arviointien vienti"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:87
 #: /src/schooltool/gradebook/browser/pdf_views.py:730
@@ -768,7 +773,7 @@ msgstr "Yht."
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:259
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:285
 msgid "Ave."
-msgstr ""
+msgstr "Keskiarvo"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:90
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:208
@@ -804,7 +809,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:806
 msgid "Enter Grades"
-msgstr ""
+msgstr "Suorita arviointi"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:901
 msgid "No score system"
@@ -812,7 +817,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1165
 msgid "The grade $value for $name is not valid."
-msgstr "Arvosana $value $name:lle ei ole käypä."
+msgstr "Arvosana \"$value\" henkilölle $name ei kelpaa."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1481
 msgid "-- No score system --"
@@ -834,7 +839,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1641
 msgid "Enter grade details below"
-msgstr ""
+msgstr "Kirjoita arvionti alapuolelle"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1747
 msgid "$worksheet for $student in $section"
@@ -846,7 +851,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:209
 msgid "Report Card: ${schoolyear}"
-msgstr ""
+msgstr "Oppilaskortti: ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:209
 #: /src/schooltool/gradebook/browser/pdf_views.py:326
@@ -855,19 +860,19 @@ msgstr "Kurssit"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:220
 msgid "Student: ${student}"
-msgstr ""
+msgstr "Oppilas: ${student}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:331
 msgid "Detailed Student Report: ${schoolyear}"
-msgstr ""
+msgstr "Yksityiskohtainen oppilastietoraportti: ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:323
 msgid "Grade Detail"
-msgstr ""
+msgstr "Arvosanat"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:329
 msgid "Attendance Detail"
-msgstr ""
+msgstr "Poissaolot"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:332
 msgid "Dates"
@@ -879,7 +884,7 @@ msgstr "Oppilaan nimi"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:338
 msgid "User Id"
-msgstr ""
+msgstr "Käyttäjätunnus"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:478
 msgid "Failures by Term Report: ${term}"
@@ -934,7 +939,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:666
 msgid "Absences by Section Report"
-msgstr "Raportti osiokohtaisista poissaoloista"
+msgstr "Raportti opetusryhmäkohtaisista poissaoloista"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:675
 msgid "Teacher"
@@ -946,16 +951,19 @@ msgstr "Myöhästymiset"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:793
 msgid "Gradebook Report"
-msgstr ""
+msgstr "Arviointiraportti"
 
 #: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
+"Sisältää arviointitiedot. Suunniteltu lähetettäväksi oppilaan vanhemmille."
 
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid ""
 "Contains scores from report sheets and attendance.  For use by school staff."
 msgstr ""
+"Sisältää arviointi- ja poissaolotiedot. Suunniteltu kouluhenkilökunnan "
+"käyttöön."
 
 #: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "Student Report Card by Group"
@@ -1159,7 +1167,7 @@ msgstr "Otsikko"
 #: /src/schooltool/gradebook/browser/templates/categories.pt:4
 #: /src/schooltool/gradebook/browser/templates/categories.pt:15
 msgid "Manage Activity Categories"
-msgstr "Hallinnoi aktiviteettikategorioita"
+msgstr "Arviointimateriaalikategorioiden hallinta"
 
 #: /src/schooltool/gradebook/browser/templates/categories.pt:19
 msgid ""
@@ -1367,7 +1375,19 @@ msgstr "Nimi"
 msgid "Save"
 msgstr "Tallenna"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:4
+msgid "This section contains only worksheets that are hidden."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:8
+msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:22
+msgid "Choose a grade to apply to all the students in the gradebook column."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:85
 msgid "Fill empty cells"
 msgstr ""
 
@@ -1378,7 +1398,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:333
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:350
 msgid "Sort by"
-msgstr ""
+msgstr "Järjestä"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:44
 msgid "Show Total"
@@ -1390,11 +1410,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:50
 msgid "Show Ave."
-msgstr ""
+msgstr "Näytä kskarvo"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:53
 msgid "Hide Ave."
-msgstr ""
+msgstr "Piilota kskarvo"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:58
 msgid "Show Abs."
@@ -1415,7 +1435,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:78
 #: /src/schooltool/gradebook/interfaces.py:349
 msgid "Points"
-msgstr ""
+msgstr "Arvosana"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
 msgid "Report"
@@ -1423,7 +1443,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Score this"
-msgstr ""
+msgstr "Anna arvosanat"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
 msgid "Fill down"
@@ -1431,11 +1451,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:230
 msgid "Move left"
-msgstr ""
+msgstr "Siirrä vasemmalle"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:136
 msgid "Move right"
-msgstr ""
+msgstr "Siirrä oikealle"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:140
 msgid "Update grades"
@@ -1453,15 +1473,15 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:310
 msgid "Zoom Out"
-msgstr ""
+msgstr "Loitonna"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:314
 msgid "Zoom Normal"
-msgstr ""
+msgstr "Alkuperäinen"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:318
 msgid "Zoom In"
-msgstr ""
+msgstr "Lähennä"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_startup.pt:3
 #: /src/schooltool/gradebook/browser/templates/gradebook_startup.pt:13
@@ -1538,11 +1558,69 @@ msgstr ""
 msgid "This year has no report sheets deployed."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
+msgid "Manage Worksheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
+msgid "Manage Report Sheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:14
+msgid "There are ${count} report sheet templates set up."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
+msgid "There are no report sheet templates set up."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+msgid "Manage Deployed Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+#: /src/schooltool/gradebook/gradebook_init.py:53
+msgid "Deployed Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:16
+msgid "There are ${count} report sheets deployed in ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:20
+msgid "There are no report sheets deployed in ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:6
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
 msgstr "Ei arviointeja"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:9
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
+msgid "Grid Columns"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:50
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
+msgid "Heading"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:40
+msgid "This report has no grid columns."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
+msgid "Outline Items"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
+msgid "This report has no outline items."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
@@ -1589,8 +1667,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
 msgid ""
-"If you deploy the same template multiple times, give each deployment an "
-"easily distinguishable name."
+"If you deploy the same template multiple times in the same term, give each "
+"deployment an easily distinguishable name."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
@@ -1659,7 +1737,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
 msgid "Select a year or term"
-msgstr ""
+msgstr "Valitse lukuvuosi tai jakso"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:5
 msgid "Report Activities"
@@ -1681,16 +1759,14 @@ msgid ""
 "template."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
-msgid "There are no report sheet templates set up."
-msgstr ""
-
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:18
 msgid ""
 "This form allows you to change the weighting of categories when calculating "
 "average scores within a worksheet."
 msgstr ""
+"Tällä lomakkeella voi muuttaa eri arviointimateriaalien painotusta "
+"keskiarvoa laskettaessa."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
@@ -1698,6 +1774,8 @@ msgid ""
 "Enter numeric values for each relevant category. The total of all values "
 "must be exactly 100."
 msgstr ""
+"Kirjoita jokaiseen käyttämäsi arviointimateriaalin kohdalle numero. "
+"Painotusten summan tulee olla tasan 100."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
@@ -1706,12 +1784,17 @@ msgid ""
 "quizzes as 20%, enter \"60\" next to \"Exam\", \"20\" next to \"Homework\" "
 "and \"20\" next to \"Quiz\"."
 msgstr ""
+"Esimerkiksi jossain kielessä kokeen painotus voisi olla 60% arvioinnista, "
+"kotitehtävien 20% ja sanakokeiden 30%. Tällaisessa tapauksessa kirjoita "
+"kokeen alapuolelle \"60\", kotitehtävien alle \"20\" ja sanakokeiden \"30\"."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:19
 msgid ""
 "The list of categories can be customized for your school by your system "
 "administrator."
 msgstr ""
+"Kategorioista vastaa koulusi ylläpitäjä. Voit pyytää häneltä uusia "
+"kategorioita."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:5
 msgid "Reorder or Hide Worksheets"
@@ -1786,7 +1869,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
-msgstr "Arvosana ${name}"
+msgstr "Arvioi ${name}"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:47
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:181
@@ -1801,7 +1884,7 @@ msgstr "Lukukausi:"
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:77
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:33
 msgid "Section:"
-msgstr "Osio:"
+msgstr "Opetusryhmä:"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:98
 msgid "show only activities due in past ${num_weeks} weeks"
@@ -1822,18 +1905,9 @@ msgstr ""
 msgid "Layout Report Card"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
-msgid "Grid Columns"
-msgstr ""
-
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:82
 msgid "Source"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
-msgid "Heading"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:57
@@ -1946,12 +2020,6 @@ msgstr ""
 msgid "Worksheet Information"
 msgstr ""
 
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:48
-#: /src/schooltool/gradebook/gradebook_init.py:53
-msgid "Deployed Report Sheets"
-msgstr ""
-
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:49
 #: /src/schooltool/gradebook/gradebook_init.py:56
 msgid "Report Card Layouts"
 msgstr ""
@@ -2004,13 +2072,9 @@ msgstr ""
 msgid "The column label for the activity in the gradebook."
 msgstr ""
 
-#: /src/schooltool/gradebook/interfaces.py:144
-msgid "A detailed description of the activity."
-msgstr "Yksityiskohtainen kuvaus aktiviteetistä"
-
-#: /src/schooltool/gradebook/interfaces.py:149
+#: /src/schooltool/gradebook/interfaces.py:180
 msgid "The activity category"
-msgstr "Aktiviteettikategoria"
+msgstr "Arviointimateriaalikategoria"
 
 #: /src/schooltool/gradebook/interfaces.py:154
 msgid "Scoresystem"
@@ -2018,11 +2082,11 @@ msgstr "Pisteytysjärjestelmä"
 
 #: /src/schooltool/gradebook/interfaces.py:155
 msgid "The activity scoresystem."
-msgstr "Aktiviteetin pisteytysjärjestelmä"
+msgstr "Arviointimateriaalin pisteytysjärjestelmä"
 
 #: /src/schooltool/gradebook/interfaces.py:160
 msgid "The date the activity was created."
-msgstr "Aktiviteetin luomispäivämäärä"
+msgstr "Arviointimateriaalin luomispäivämäärä"
 
 #: /src/schooltool/gradebook/interfaces.py:176
 msgid "Columns"
@@ -2043,7 +2107,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:219
 msgid "Activities in this gradebook."
-msgstr "Aktiviteetit tässä arvostelulistassa"
+msgstr "Arviointimateriaalit tässä arvostelulistassa"
 
 #: /src/schooltool/gradebook/interfaces.py:222
 msgid "Students"
@@ -2090,11 +2154,7 @@ msgstr ""
 msgid "A brief title of the external activity."
 msgstr ""
 
-#: /src/schooltool/gradebook/interfaces.py:409
-msgid "A detailed description of the external activity."
-msgstr ""
-
-#: /src/schooltool/gradebook/interfaces.py:427
+#: /src/schooltool/gradebook/interfaces.py:457
 msgid "Linked Column Activity Source"
 msgstr ""
 
@@ -2197,13 +2257,13 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:53
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:17
 msgid "Low Percentage"
-msgstr ""
+msgstr "Vähimmäisosuus"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:75
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:102
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:9
 msgid "Passing Score"
-msgstr "Alin hyväksytty arvosana"
+msgstr "Hyväksytty arvosana"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:80
 msgid "Type"
@@ -2214,8 +2274,8 @@ msgid ""
 "If the values in the score system descend, e.g., 1 is the best score, set "
 "this to 'Maximum'. Otherwise leave it as the 'Minimum' passing score."
 msgstr ""
-"Jos pisteytysjärjestelmän paras arvosana on pienin luku (esimerkiksi 1), "
-"valitse tähän \"Maksimi\". Muussa tapauksessa valitse \"Minimi\"."
+"Jos pisteytysjärjestelmän paras arvosana on pienin luku, kuten 1, valitse "
+"tähän \"Maksimi\". Muussa tapauksessa valitse \"Minimi\"."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:6
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:20
@@ -2230,6 +2290,10 @@ msgid ""
 "A score system is made up of a sequence of possible scores with decreasing "
 "values."
 msgstr ""
+"Pisteytysjärjestelmässä määritellään koulunne käyttämä arvostelujärjestelmä "
+"(Suomessa käytössä muun muassa 4-10 ja erinomainen-hyvä-tyydyttävä-heikko -"
+"järjestelmät). Määrittelyssä listataan mahdolliset arvosanat ja niiden "
+"prosentuaalinen arvo."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:12
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:29
@@ -2239,6 +2303,10 @@ msgid ""
 "be used in any calculations made with the scores, such as finding a grade "
 "point average."
 msgstr ""
+"Jokaiseen arvosanaan liittyy siis numerolla määriteltävä pistearvo. "
+"Esimerkiksi Yhdysvalloissa A on arvoltaan 4 pistettä, B 3 pistettä ja niin "
+"edelleen. Nämä pistearvot voidaan laskea mille tahansa "
+"pisteytysjärjestelmälle laskemalla keskiarvo."
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add_related.pt:15
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:32
@@ -2268,7 +2336,7 @@ msgid ""
 "created a score with a minimum percentage of 0."
 msgstr ""
 "Kirjoita ensimmäiseksi paras mahdollinen arvosana. Napsauta tämän jälkeen "
-"\"Lisää\" ja lisää tuloksia kunnes huonoin vähimmäisosuus on nolla."
+"\"Lisää\" ja lisää arvosanoja kunnes huonoin vähimmäisosuus on nolla."
 
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:24
 msgid "There are none."
@@ -2394,7 +2462,7 @@ msgid ""
 "the value below to say 'Maximum' passing score. Otherwise leave it a "
 "'Minimum' passing score."
 msgstr ""
-"Jos pisteytysjärjestelmän paras arvosana on pienin luku (esimerkiksi 1), "
+"Jos pisteytysjärjestelmän paras arvosana on pienin luku, esimerkiksi 1, "
 "valitse alapuolelle \"Maksimi\". Muussa tapauksessa valitse \"Minimi\"."
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:98
@@ -2404,6 +2472,9 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Näytä pisteytysjärjestelmä"
+
+#~ msgid "A detailed description of the activity."
+#~ msgstr "Yksityiskohtainen kuvaus aktiviteetistä"
 
 #~ msgid ""
 #~ "Your browser either has Javascript turned off, or it is not supported. "
