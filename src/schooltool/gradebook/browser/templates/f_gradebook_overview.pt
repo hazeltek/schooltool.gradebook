@@ -176,6 +176,12 @@
                   </li>
                   <li>
                     <a href="" i18n:translate=""
+                       tal:attributes="href row/student/url">
+                      Student
+                    </a>
+                  </li>
+                  <li>
+                    <a href="" i18n:translate=""
                        tal:attributes="href row/student/gradeurl">
                       Score
                     </a>
@@ -189,8 +195,8 @@
                 </ul>
                 <div>
                   <a class="popup_link"
-                     href=""
-                     tal:attributes="title row/student/title"
+                     tal:attributes="title row/student/title;
+                                     href row/student/url"
                      tal:content="row/student/title" />
                 </div>
               </td>
