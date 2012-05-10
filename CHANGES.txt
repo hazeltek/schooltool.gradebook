@@ -5,7 +5,7 @@ CHANGES
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix a rare failure when upgrading from gradebook <= 0.9.0 (LP: #995615)
 
 
 2.1.0 (2012-04-18)
