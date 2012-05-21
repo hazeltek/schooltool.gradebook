@@ -188,6 +188,12 @@
                   </li>
                   <li>
                     <a href="" i18n:translate=""
+                       tal:attributes="href string: ${row/student/gradeurl}/history.html">
+                      Score History
+                    </a>
+                  </li>
+                  <li>
+                    <a href="" i18n:translate=""
                        tal:attributes="href string: ${row/student/gradeurl}/view.html">
                       Report
                     </a>
