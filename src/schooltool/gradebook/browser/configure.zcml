@@ -519,7 +519,7 @@
       for="..interfaces.IStudentGradebook"
       class=".gradebook.StudentGradebookView"
       template="templates/student_gradebook.pt"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <!-- Terms -->

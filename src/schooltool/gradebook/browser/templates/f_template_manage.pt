@@ -9,7 +9,7 @@
         <tr>
           <th i18n:translate="">Title</th>
           <th i18n:translate="">Score System</th>
-          <th i18n:translate="">Delete?</th>
+          <th i18n:translate="">Delete</th>
         </tr>
       </thead>
       <tal:block repeat="activity activities">

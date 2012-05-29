@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           i18n_domain="schooltool.gradebook">
+
+  <include package="schooltool.skin.flourish.instance" />
+  <include package="schooltool.testing" file="selenium.zcml" />
+  <include package="schooltool.requirement" />
+  <include package="schooltool.gradebook" />
+  <browser:defaultSkin name="SchoolToolFlourish" />
+
+</configure>

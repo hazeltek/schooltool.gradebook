@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-15 18:58+0200\n"
-"PO-Revision-Date: 2011-10-28 17:31+0000\n"
+"POT-Creation-Date: 2012-03-16 18:31+0200\n"
+"PO-Revision-Date: 2012-03-15 20:12+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
-"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-02 05:20+0000\n"
-"X-Generator: Launchpad (build 14886)\n"
+"X-Launchpad-Export-Date: 2012-03-17 05:17+0000\n"
+"X-Generator: Launchpad (build 14951)\n"
+"Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -1385,7 +1385,19 @@ msgstr "Vardas"
 msgid "Save"
 msgstr "Išsaugoti"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:4
+msgid "This section contains only worksheets that are hidden."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:8
+msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:22
+msgid "Choose a grade to apply to all the students in the gradebook column."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:85
 msgid "Fill empty cells"
 msgstr ""
 
@@ -1535,7 +1547,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:11
 msgid "Visible"
-msgstr ""
+msgstr "Matoma"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
@@ -1558,11 +1570,69 @@ msgstr "Ataskaitos lapas"
 msgid "This year has no report sheets deployed."
 msgstr "Šiais metais nebuvo išdalinta jokių ataskaitos lapų."
 
-#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
+msgid "Manage Worksheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
+msgid "Manage Report Sheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:14
+msgid "There are ${count} report sheet templates set up."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
+msgid "There are no report sheet templates set up."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+msgid "Manage Deployed Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+#: /src/schooltool/gradebook/gradebook_init.py:53
+msgid "Deployed Report Sheets"
+msgstr "Išdalinti ataskaitos lapai"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:16
+msgid "There are ${count} report sheets deployed in ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:20
+msgid "There are no report sheets deployed in ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:6
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
 msgstr "Niekas neįvertinta"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:9
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
+msgid "Grid Columns"
+msgstr "Lentelės stulpeliai"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:50
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
+msgid "Heading"
+msgstr "Antraštė"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:40
+msgid "This report has no grid columns."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
+msgid "Outline Items"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
+msgid "This report has no outline items."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
@@ -1620,8 +1690,8 @@ msgstr "Pasirinkite semestrą, arba išdalinkite visiems metams."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
 msgid ""
-"If you deploy the same template multiple times, give each deployment an "
-"easily distinguishable name."
+"If you deploy the same template multiple times in the same term, give each "
+"deployment an easily distinguishable name."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
@@ -1719,10 +1789,6 @@ msgid ""
 "Each deployed worksheet will contain the report activities defined in its "
 "template."
 msgstr "Kiekviename lape bus ataskaitos veiklos, apibrėžtos jo šablone."
-
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
-msgid "There are no report sheet templates set up."
-msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:18
@@ -1874,19 +1940,10 @@ msgstr "Paslėpti išdalintą ataskaitos lapą"
 msgid "Layout Report Card"
 msgstr "Keisti ataskaitos kortelės išdėstymą"
 
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
-msgid "Grid Columns"
-msgstr "Lentelės stulpeliai"
-
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:82
 msgid "Source"
 msgstr "Šaltinis"
-
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
-msgid "Heading"
-msgstr "Antraštė"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:57
 msgid "New Column"
@@ -2006,12 +2063,6 @@ msgstr "Lapo aprašas"
 msgid "Worksheet Information"
 msgstr "Lentelės informacija"
 
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:48
-#: /src/schooltool/gradebook/gradebook_init.py:53
-msgid "Deployed Report Sheets"
-msgstr "Išdalinti ataskaitos lapai"
-
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:49
 #: /src/schooltool/gradebook/gradebook_init.py:56
 msgid "Report Card Layouts"
 msgstr "Ataskaitos kortelių išdėstymai"
@@ -2064,11 +2115,7 @@ msgstr "Data kada veikla bus įvertinta."
 msgid "The column label for the activity in the gradebook."
 msgstr "Veiklos stulpelio antraštė pažymių knygelėje."
 
-#: /src/schooltool/gradebook/interfaces.py:144
-msgid "A detailed description of the activity."
-msgstr "Smulkus veiklos aprašymas"
-
-#: /src/schooltool/gradebook/interfaces.py:149
+#: /src/schooltool/gradebook/interfaces.py:180
 msgid "The activity category"
 msgstr "Veiklos kategorija"
 
@@ -2150,11 +2197,7 @@ msgstr "Trumpas išorinės veiklos šaltinio pavadinimas"
 msgid "A brief title of the external activity."
 msgstr "Trumpas išorinės veiklos pavadinimas."
 
-#: /src/schooltool/gradebook/interfaces.py:409
-msgid "A detailed description of the external activity."
-msgstr "Smulkus išorinės veiklos aprašymas."
-
-#: /src/schooltool/gradebook/interfaces.py:427
+#: /src/schooltool/gradebook/interfaces.py:457
 msgid "Linked Column Activity Source"
 msgstr "Susieto stulpelio veiklos šaltinis"
 
@@ -2453,3 +2496,9 @@ msgstr "patenkinamas pažymys:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Rodyti vertinimo sistemą"
+
+#~ msgid "A detailed description of the activity."
+#~ msgstr "Smulkus veiklos aprašymas"
+
+#~ msgid "A detailed description of the external activity."
+#~ msgstr "Smulkus išorinės veiklos aprašymas."

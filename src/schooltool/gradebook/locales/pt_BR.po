@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-15 18:58+0200\n"
-"PO-Revision-Date: 2012-03-12 22:55+0000\n"
+"POT-Creation-Date: 2012-03-16 18:31+0200\n"
+"PO-Revision-Date: 2012-03-21 22:39+0000\n"
 "Last-Translator: Roberto Vasconcelos Novaes <rvnovaes@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-13 05:20+0000\n"
-"X-Generator: Launchpad (build 14933)\n"
+"X-Launchpad-Export-Date: 2012-03-22 06:17+0000\n"
+"X-Generator: Launchpad (build 14981)\n"
+"Language: \n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -1303,7 +1303,7 @@ msgstr "Editar esta categoria"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 msgid "There are no activity categories."
-msgstr ""
+msgstr "Não existem categorias de atividades."
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
@@ -1327,7 +1327,7 @@ msgstr "Excluir?"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
-msgstr ""
+msgstr "Não existem categorias do curso."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
@@ -1403,7 +1403,21 @@ msgstr "Nome"
 msgid "Save"
 msgstr "Salvar"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:4
+msgid "This section contains only worksheets that are hidden."
+msgstr "Esta turma contém apenas planilhas ocultas."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:8
+msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
+msgstr "Você pode ${unhide_worksheets}, ou ${add_worksheet}."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:22
+msgid "Choose a grade to apply to all the students in the gradebook column."
+msgstr ""
+"Escolha uma nota para atribuir para todos os alunos na coluna do livro de "
+"notas."
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:85
 msgid "Fill empty cells"
 msgstr "Preencher células vazias"
 
@@ -1576,11 +1590,69 @@ msgstr "Relatório"
 msgid "This year has no report sheets deployed."
 msgstr "Este ano não possui relatórios implementados"
 
-#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
+msgid "Manage Worksheet Templates"
+msgstr "Gerenciar modelos de planilhas"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
+msgid "Manage Report Sheet Templates"
+msgstr "Gerenciar modelos de Boletins"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:14
+msgid "There are ${count} report sheet templates set up."
+msgstr "Existem ${count} boletins configurados"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:17
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
+msgid "There are no report sheet templates set up."
+msgstr "Não há modelos de relatório definidos."
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+msgid "Manage Deployed Report Sheets"
+msgstr "Gerenciar Boletins Implantados"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
+#: /src/schooltool/gradebook/gradebook_init.py:53
+msgid "Deployed Report Sheets"
+msgstr "Relatórios implantados"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:16
+msgid "There are ${count} report sheets deployed in ${schoolyear}"
+msgstr "Existem ${count} boletins implantados em ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:20
+msgid "There are no report sheets deployed in ${schoolyear}"
+msgstr "Não existem boletins implantados para ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:6
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:75
 msgid "Nothing Graded"
 msgstr "Nada pontuado"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:9
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
+msgid "Grid Columns"
+msgstr "Colunas da tabela"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:50
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
+#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
+msgid "Heading"
+msgstr "Cabeçalho"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:40
+msgid "This report has no grid columns."
+msgstr "Este relatório não possui colunas na planilha"
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
+msgid "Outline Items"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
+msgid "This report has no outline items."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
@@ -1638,11 +1710,9 @@ msgstr "Selecione um termo ou implante para o ano inteiro."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:97
 msgid ""
-"If you deploy the same template multiple times, give each deployment an "
-"easily distinguishable name."
+"If you deploy the same template multiple times in the same term, give each "
+"deployment an easily distinguishable name."
 msgstr ""
-"Se você implementar o mesmo modelo várias vezes, dê a cada implementação um "
-"nome distinto."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "The first step in the process is to ${add-sheet}"
@@ -1749,10 +1819,6 @@ msgid ""
 msgstr ""
 "Cada folha de notas implantada terá as atividades de relatório definidas "
 "neste modelo."
-
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
-msgid "There are no report sheet templates set up."
-msgstr "Não há modelos de relatório definidos."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:18
@@ -1910,19 +1976,10 @@ msgstr "Ocultar relatório implantado"
 msgid "Layout Report Card"
 msgstr "Modelo de boletim"
 
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:16
-msgid "Grid Columns"
-msgstr "Colunas da tabela"
-
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:20
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:82
 msgid "Source"
 msgstr "Origem"
-
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:21
-#: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:83
-msgid "Heading"
-msgstr "Cabeçalho"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:57
 msgid "New Column"
@@ -2051,12 +2108,6 @@ msgstr "Detalhes da planilha"
 msgid "Worksheet Information"
 msgstr "Informação da planilha"
 
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:48
-#: /src/schooltool/gradebook/gradebook_init.py:53
-msgid "Deployed Report Sheets"
-msgstr "Relatórios implantados"
-
-#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:49
 #: /src/schooltool/gradebook/gradebook_init.py:56
 msgid "Report Card Layouts"
 msgstr "Layouts de boletins"
@@ -2109,11 +2160,7 @@ msgstr "A data na qual a atividade deve ser pontuada."
 msgid "The column label for the activity in the gradebook."
 msgstr "O nome da coluna para a atividade no livro de notas."
 
-#: /src/schooltool/gradebook/interfaces.py:144
-msgid "A detailed description of the activity."
-msgstr "Uma descrição detalhada da atividade."
-
-#: /src/schooltool/gradebook/interfaces.py:149
+#: /src/schooltool/gradebook/interfaces.py:180
 msgid "The activity category"
 msgstr "A categoria da atividade"
 
@@ -2195,11 +2242,7 @@ msgstr "Um breve título para a fonte das atividades externas"
 msgid "A brief title of the external activity."
 msgstr "Um breve título da atividade externa."
 
-#: /src/schooltool/gradebook/interfaces.py:409
-msgid "A detailed description of the external activity."
-msgstr "Uma descrição detalahda da atividade externa."
-
-#: /src/schooltool/gradebook/interfaces.py:427
+#: /src/schooltool/gradebook/interfaces.py:457
 msgid "Linked Column Activity Source"
 msgstr "Coluna relacionada fonte da atividade"
 
@@ -2541,3 +2584,9 @@ msgstr "Ver Sistema de Pontuação"
 #~ "Seu navegador está com o Javascript desativado, ou não é suportado. "
 #~ "Javascript é <b>necessário</b> para o boletim. Por favor ative o Javascript "
 #~ "ou use um navegador com Javascript."
+
+#~ msgid "A detailed description of the external activity."
+#~ msgstr "Uma descrição detalahda da atividade externa."
+
+#~ msgid "A detailed description of the activity."
+#~ msgstr "Uma descrição detalhada da atividade."

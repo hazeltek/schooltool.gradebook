@@ -45,7 +45,6 @@ def removeUtils(site_manager, provided):
     if not n_provided:
         return
 
-    assert n_provided == len(utilities)
     del site_manager.utilities._provided[provided]
     site_manager.utilities._v_lookup.remove_extendor(provided)
 

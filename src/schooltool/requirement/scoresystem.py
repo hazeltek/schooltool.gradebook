@@ -50,7 +50,7 @@ class ScoreSystemAppStartup(StartUpBase):
             self.app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
             scoresystems = self.app[SCORESYSTEM_CONTAINER_KEY]
             chooser = INameChooser(scoresystems)
-            for ss in [PassFail, AmericanLetterScoreSystem, 
+            for ss in [PassFail, AmericanLetterScoreSystem,
                        ExtendedAmericanLetterScoreSystem]:
                 custom_ss = CustomScoreSystem(ss.title, ss.description,
                     ss.scores, ss._bestScore, ss._minPassingScore)
