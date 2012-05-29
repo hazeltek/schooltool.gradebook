@@ -22,6 +22,7 @@ Gradebook Views
 
 __docformat__ = 'reStructuredText'
 
+import pytz
 import csv
 import datetime
 from decimal import Decimal
@@ -50,6 +51,7 @@ from z3c.form import field, button
 import schooltool.skin.flourish.page
 import schooltool.skin.flourish.form
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.app.interfaces import IApplicationPreferences
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection, ISectionContainer
@@ -67,7 +69,7 @@ from schooltool.gradebook.journal import ABSENT, TARDY
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
-    IScoreSystemContainer)
+    IScoreSystemContainer, IEvaluations, IScore)
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm, IDateManager
@@ -542,7 +544,8 @@ class GradebookOverview(SectionFinder):
                     score = gradebook.getScore(student['object'], activity)
                     # Delete the score
                     if score and cell_score_value is UNSCORED:
-                        self.context.removeEvaluation(student['object'], activity)
+                        self.context.removeEvaluation(student['object'], activity,
+                                                      evaluator=evaluator)
                         self.changed = True
                     # Do nothing
                     elif not score and cell_score_value is UNSCORED:
@@ -1239,7 +1242,8 @@ class GradeActivity(object):
                     score = gradebook.getScore(student, activity)
                     # Delete the score
                     if score and request_score_value is UNSCORED:
-                        self.context.removeEvaluation(student, activity)
+                        self.context.removeEvaluation(student, activity,
+                                                      evaluator=evaluator)
                     # Do nothing
                     elif not score and request_score_value is UNSCORED:
                         continue
@@ -1795,6 +1799,130 @@ class FlourishGradeStudent(GradeStudent, flourish.form.Form):
             action)
 
 
+class FlourishStudentGradeHistory(flourish.page.Page):
+
+    @property
+    def title(self):
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        return ISection(gradebook).title
+
+    @property
+    def subtitle(self):
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        return _(u'${worksheet} grade history for ${student}',
+                 mapping={'worksheet': gradebook.context.title,
+                          'student': self.context.student.title})
+
+    @property
+    def timezone(self):
+        app = ISchoolToolApplication(None)
+        prefs = IApplicationPreferences(app)
+        timezone_name = prefs.timezone
+        return pytz.timezone(timezone_name)
+
+    @property
+    def timeformat(self):
+        app = ISchoolToolApplication(None)
+        prefs = IApplicationPreferences(app)
+        return prefs.timeformat
+
+    def buildHistoryTable(self):
+        persons = ISchoolToolApplication(None)['persons']
+        gradebook = proxy.removeSecurityProxy(self.context.gradebook)
+        worksheet = proxy.removeSecurityProxy(gradebook.context)
+        student = self.context.student
+        timezone = self.timezone
+        timeformat = self.timeformat
+
+        # XXX: this is nearly a copy of MyGradesView.update
+        self.table = []
+        count = 0
+        for activity in gradebook.getWorksheetActivities(worksheet):
+            evaluations = IEvaluations(student)
+            evaluations = proxy.removeSecurityProxy(evaluations)
+            current = evaluations.get(activity, None)
+            history = evaluations.getHistory(activity)
+            if (current is None and
+                not history):
+                continue
+
+            grade_records = []
+            for evaluation in [current] + list(reversed(history)):
+                if evaluation is None:
+                    record = {
+                        'comment': True,
+                        'paragraphs': buildHTMLParagraphs(_('Removed score')),
+                        }
+                    continue
+                score = IScore(evaluation, None)
+                if score:
+                    ss = score.scoreSystem
+                    if ICommentScoreSystem.providedBy(ss):
+                        record = {
+                            'comment': True,
+                            'paragraphs': buildHTMLParagraphs(score.value),
+                            }
+                    elif IValuesScoreSystem.providedBy(ss):
+                        s_min, s_max = getScoreSystemDiscreteValues(ss)
+                        value = score.value
+                        if IDiscreteValuesScoreSystem.providedBy(ss):
+                            value = score.scoreSystem.getNumericalValue(score.value)
+                            if value is None:
+                                value = 0
+                        if int(value) != value:
+                            value = '%.1f' % value
+                        count += s_max - s_min
+                        record = {
+                            'comment': False,
+                            'value': '%s / %s' % (value, ss.getBestScore()),
+                            }
+                    else:
+                        record = {
+                            'comment': False,
+                            'value': score.value,
+                            }
+                else:
+                    record = {
+                        'comment': True,
+                        'paragraphs': buildHTMLParagraphs(_('Removed score')),
+                        }
+
+                if (evaluation is not None and evaluation.evaluator):
+                    record['evaluator'] = persons.get(evaluation.evaluator, None)
+                else:
+                    record['evaluator'] = None
+                if (evaluation is not None and evaluation.evaluator):
+                    record['evaluator'] = persons.get(evaluation.evaluator, None)
+                else:
+                    record['evaluator'] = None
+
+                if (evaluation is not None and
+                    getattr(evaluation, 'time', None) is not None):
+                    time_utc = pytz.utc.localize(evaluation.time)
+                    time = time_utc.astimezone(timezone)
+                    record['date'] = time.date()
+                    record['time'] = time.strftime(timeformat)
+                else:
+                    record['date'] = None
+                    record['time'] = None
+
+                grade_records.append(record)
+
+            row = {
+                'activity': activity.title,
+                'grades': grade_records,
+                }
+
+            self.table.append(row)
+
+
+    def update(self):
+        super(FlourishStudentGradeHistory, self).update()
+        self.buildHistoryTable()
+
+
+
+
 class StudentGradebookView(object):
     """View a student gradebook."""
 
@@ -2199,6 +2327,10 @@ class FlourishStudentPopupMenuView(flourish.page.Page):
                     {
                         'label': self.translate(_('Score')),
                         'url': gradeurl,
+                        },
+                    {
+                        'label': self.translate(_('Score History')),
+                        'url': '%s/history.html' % gradeurl,
                         },
                     {
                         'label': self.translate(_('Report')),

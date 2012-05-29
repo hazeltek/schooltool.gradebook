@@ -1,0 +1,54 @@
+<div i18n:domain="schooltool.gradebook">
+
+  <h3 tal:condition="not: view/table"
+     i18n:translate="">
+    <tal:block content="context/student/@@title"
+               i18n:name="student_name" />
+    was never scored in this worksheet.
+  </h3>
+
+  <table tal:condition="view/table">
+    <thead>
+      <tr>
+        <th i18n:translate="">Score</th>
+        <th i18n:translate="">Evaluator</th>
+        <th i18n:translate="">Date</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    <tal:block repeat="activity view/table">
+      <tr>
+        <th tal:content="activity/activity" colspan="3" />
+      </tr>
+      <tr tal:repeat="grade activity/grades">
+        <td tal:condition="grade/comment">
+          <tal:block repeat="paragraph grade/paragraphs">
+            <p tal:content="structure paragraph"/>
+          </tal:block>
+        </td>
+        <td tal:condition="not: grade/comment">
+          <div tal:content="grade/value" />
+        </td>
+        <td>
+          <tal:block tal:condition="grade/evaluator"
+                     tal:content="grade/evaluator/@@title|nothing"/>
+        </td>
+        <td>
+          <tal:block condition="python:grade['time'] is not None">
+            <span tal:content="grade/date/@@fullDate|nothing" />
+            -
+            <span tal:content="grade/time|nothing" />
+          </tal:block>
+        </td>
+      </tr>
+    </tal:block>
+    </tbody>
+  </table>
+
+  <h3>
+    <a tal:attributes="href string:${context/__parent__/@@absolute_url}"
+       i18n:translate="">Done</a>
+  </h3>
+</div>
+

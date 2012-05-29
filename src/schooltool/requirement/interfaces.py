@@ -227,6 +227,12 @@ class IEvaluations(zope.interface.common.mapping.IMapping):
     def addEvaluation(evaluation):
         """Add an evaluation."""
 
+    def appendToHistory(self, requirement, evaluation):
+        """Append a historical record for the requirement."""
+
+    def getHistory(self, requirement):
+        """Read historical records of this requirement."""
+
     def getEvaluationsForRequirement(requirement, recursive=True):
         """Match all evaluations that satisfy the requirement.
 

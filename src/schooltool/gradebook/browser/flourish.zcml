@@ -379,6 +379,20 @@
       permission="schooltool.view"
       />
 
+  <flourish:page_breadcrumbs
+      show_page_title="false"
+      title="Scores"
+      view=".gradebook.FlourishStudentGradeHistory"
+      />
+
+  <flourish:page
+      name="history.html"
+      for="..interfaces.IStudentGradebook"
+      content_template="templates/f_student_grade_history.pt"
+      class=".gradebook.FlourishStudentGradeHistory"
+      permission="schooltool.edit"
+      />
+
   <flourish:page
       name="weights.html"
       for="..interfaces.IActivityWorksheet"

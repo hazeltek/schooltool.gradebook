@@ -69,8 +69,11 @@ class Evaluations(persistent.Persistent, Contained):
     """
     implements(interfaces.IEvaluations)
 
+    _history = None
+
     def __init__(self, items=None):
         super(Evaluations, self).__init__()
+
         self._btree = OOBTree()
         for name, value in items or []:
             self[name] = value
@@ -83,12 +86,18 @@ class Evaluations(persistent.Persistent, Contained):
         """See zope.interface.common.mapping.IWriteMapping"""
         value = self[key]
         del self._btree[IKeyReference(key)]
+        self.appendToHistory(key, value)
         event = ObjectRemovedEvent(value, self)
         zope.event.notify(event)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, requirement, value):
         """See zope.interface.common.mapping.IWriteMapping"""
-        self._btree[IKeyReference(key)] = value
+        key = IKeyReference(requirement)
+        if (key in self._btree or
+            self.getHistory(requirement)):
+            current = self._btree.get(key, None)
+            self.appendToHistory(requirement, current)
+        self._btree[key] = value
         value, event = containedEvent(value, self)
         zope.event.notify(event)
 
@@ -124,6 +133,21 @@ class Evaluations(persistent.Persistent, Contained):
     def __len__(self):
         """See zope.interface.common.mapping.IEnumerableMapping"""
         return len(self._btree)
+
+    def appendToHistory(self, requirement, evaluation):
+        if self._history is None:
+            self._history = OOBTree()
+        key = IKeyReference(requirement)
+        if key not in self._history:
+            self._history[key] = persistent.list.PersistentList()
+        self._history[key].append(evaluation)
+
+    def getHistory(self, requirement):
+        if self._history is None:
+            return []
+        key = IKeyReference(requirement)
+        history = self._history.get(key, [])
+        return history
 
     def addEvaluation(self, evaluation):
         """See interfaces.IEvaluations"""
@@ -183,7 +207,6 @@ class Score(object):
 
     def __nonzero__(self):
         return self.value is not UNSCORED
-
 
 
 class Evaluation(Contained, Score):

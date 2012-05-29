@@ -231,7 +231,10 @@ class GradebookBase(object):
         """See interfaces.IGradebook"""
         student = self._checkStudent(student)
         activity = self._checkActivity(activity)
-        if activity in requirement.interfaces.IEvaluations(student):
+        evaluations = requirement.interfaces.IEvaluations(student)
+        evaluation = evaluations.get(activity, None)
+        if (evaluation is None or
+            evaluation.value is UNSCORED):
             return True
         return False
 
@@ -252,14 +255,21 @@ class GradebookBase(object):
         evaluation = requirement.evaluation.Evaluation(
             activity, activity.scoresystem, score, evaluator)
         evaluations = requirement.interfaces.IEvaluations(student)
+        current = evaluations.get(activity)
+        if current is not None:
+            evaluation.previous = current
         evaluations.addEvaluation(evaluation)
 
-    def removeEvaluation(self, student, activity):
+    def removeEvaluation(self, student, activity, evaluator=None):
         """See interfaces.IGradebook"""
         student = self._checkStudent(student)
         activity = self._checkActivity(activity)
         evaluations = requirement.interfaces.IEvaluations(student)
-        del evaluations[activity]
+        unscored = requirement.evaluation.Evaluation(
+            activity, activity.scoresystem, UNSCORED, evaluator)
+        # throw KeyError here, like "del evaluations[activity]" would have
+        unscored.previous = evaluations[activity]
+        evaluations.addEvaluation(unscored)
 
     def getWorksheetActivities(self, worksheet):
         if worksheet:
@@ -393,7 +403,8 @@ class GradebookBase(object):
         evaluations = requirement.interfaces.IEvaluations(student)
         activities = self.getCurrentActivities(person)
         for activity, evaluation in evaluations.items():
-            if activity in activities:
+            if (activity in activities and
+                evaluation.score is not UNSCORED):
                 yield activity, evaluation
 
     def getEvaluationsForStudent(self, student):
@@ -401,7 +412,8 @@ class GradebookBase(object):
         self._checkStudent(student)
         evaluations = requirement.interfaces.IEvaluations(student)
         for activity, evaluation in evaluations.items():
-            if activity in self.activities:
+            if (activity in self.activities and
+                evaluation.score is not UNSCORED):
                 yield activity, evaluation
 
     def getEvaluationsForActivity(self, activity):
@@ -476,12 +488,12 @@ class StudentGradebookFormAdapter(object):
         gradebook = self.context.gradebook
         student = self.context.student
         activity = self.context.activities[name]
-        evaluator = None
+        evaluator = None # XXX: WHY???
         try:
             if value is None or value == '':
                 score = gradebook.getScore(student, activity)
                 if score:
-                    gradebook.removeEvaluation(student, activity)
+                    gradebook.removeEvaluation(student, activity, evaluator=evaluator)
             else:
                 score_value = activity.scoresystem.fromUnicode(value)
                 gradebook.evaluate(student, activity, score_value, evaluator)
