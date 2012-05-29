@@ -1,0 +1,227 @@
+Hiding Worksheets
+-----------------
+
+We want to allow the user to hide a worksheet so that it no longer
+figures in the gradebook.  The worksheet will not be deleted from the
+database, but it will be ignored in all areas of gradebook management.
+
+Helpers:
+
+    >>> # FORMATTERS
+    >>> def format_tab(tab):
+    ...     text = tab.query.tag('a').text
+    ...     active = tab.get_attribute('class') in ('active',)
+    ...     return ['%s', '*%s*'][active] % text
+    >>> def format_menu(menu):
+    ...     result = []
+    ...     header = menu.query.css('.header').text
+    ...     result.append(header)
+    ...     result.append('-'*len(header))
+    ...     options = [a.text for a in menu.query_all.tag('a')]
+    ...     result.extend(options)
+    ...     return '\n'.join(result)
+
+    >>> # GETTERS
+    >>> def get_tabs(browser):
+    ...     return browser.query_all.css('.third-nav li')
+
+    >>> # PRINTERS
+    >>> def print_tabs(browser):
+    ...     for tab in get_tabs(browser):
+    ...         print format_tab(tab)
+    >>> def print_menus(browser, navigators=True):
+    ...     menus = browser.query_all.css('.refine .content')
+    ...     if navigators:
+    ...         menus = menus[3:]
+    ...     for menu in menus:
+    ...         print format_menu(menu), '\n'
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with a single term (Year):
+
+    >>> manager.ui.schoolyear.add('2005-2006', '2005-09-01', '2006-07-15')
+    >>> manager.ui.term.add('2005-2006', 'Year', '2005-09-01', '2006-07-15')
+
+Set up one course:
+
+    >>> manager.ui.course.add('2005-2006', 'Math I')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Paul', 'Carduner', 'paul', 'pwd')
+    >>> manager.ui.person.add('Stephan', 'Richter', 'stephan', 'pwd')
+
+Set up one section with instructor and students:
+
+    >>> manager.ui.section.add('2005-2006', 'Year', 'Math I')
+    >>> manager.ui.section.instructors.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                    ['stephan'])
+    >>> manager.ui.section.students.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                 ['paul'])
+
+Log in as teacher and go to his gradebook:
+
+    >>> stephan = browsers.stephan
+    >>> stephan.ui.login('stephan', 'pwd')
+    >>> stephan.query.link('Gradebook').click()
+
+In a regular worksheet the sidebar has some links that act on the
+worksheet being viewed and other that act on the gradebook. Let's
+print the worksheet menus in the sidebar:
+
+    >>> print_menus(stephan)
+    Add
+    ---
+    Worksheet
+    Activity
+    <BLANKLINE>
+    Settings
+    --------
+    Worksheets
+    Category Weights
+    <BLANKLINE>
+    Reports
+    -------
+    Gradebook Export
+    Printable Worksheet
+
+The sidebar shows additional options for users that can modify the
+course. Let's allow the manager to edit the gradebook:
+
+    >>> manager.query.link('Server').click()
+    >>> manager.query.link('Security').click()
+    >>> manager.query.xpath('//a[@title="Edit the access rights"]').click()
+    >>> manager.query.id('on.administration_can_grade_students').click()
+    >>> manager.query.name('UPDATE_SUBMIT').click()
+
+And see the options displayed to him in the gradebook:
+
+    >>> manager.ui.section.go('2005-2006', 'Year', 'Math I (1)')
+    >>> manager.query.link('Gradebook').click()
+    >>> print_menus(manager, navigators=False)
+    Add
+    ---
+    Worksheet
+    Activity
+    <BLANKLINE>
+    Settings
+    --------
+    Worksheets
+    Category Weights
+    <BLANKLINE>
+    Actions
+    -------
+    Add to Course Worksheets
+    <BLANKLINE>
+    Reports
+    -------
+    Gradebook Export
+    Printable Worksheet
+
+We'll add two new worksheets, Sheet2 and Sheet3, and will make Sheet2
+the current worksheet:
+
+    >>> stephan.query.link('Worksheet').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('Sheet2')
+    >>> stephan.query.id('form-buttons-add').click()
+    >>> stephan.query.link('Worksheet').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('Sheet3')
+    >>> stephan.query.id('form-buttons-add').click()
+    >>> stephan.query.link('Sheet2').click()
+
+    >>> print_tabs(stephan)
+    Sheet1
+    *Sheet2*
+    Sheet3
+
+Now we'll hide our current worksheet:
+
+    >>> stephan.query.link('Worksheets').click()
+    >>> sel = '//input[@type="checkbox" and @value="Sheet2"]'
+    >>> stephan.query.xpath(sel).click()
+
+Finally, we'll return to the gradebook, noting that it handles the current
+worksheet being hidden, changing the current worksheet to the first one that
+is not hidden.
+
+    >>> stephan.query.link('Done').click()
+    >>> print_tabs(stephan)
+    *Sheet1*
+    Sheet3
+
+Unhiding Worksheets
+-------------------
+
+Now that we can hide worksheets, we need to allow the user to change
+their mind and unhide a worksheet they previously hid.  We need to
+navigate to the worksheets from which we can call up the view for
+unhiding worksheets. We'll unhide the worksheet we just hid:
+
+    >>> stephan.query.link('Worksheets').click()
+    >>> sel = '//input[@type="checkbox" and @value="Sheet2"]'
+    >>> stephan.query.xpath(sel).click()
+
+After returning to the gradebook view we see that the worksheet has
+reappeared in the worksheets tabs.
+
+    >>> stephan.query.link('Done').click()
+    >>> print_tabs(stephan)
+    *Sheet1*
+    Sheet2
+    Sheet3
+
+Hiding all the worksheets
+-------------------------
+
+It is possible to hide all the worksheets in the gradebook:
+
+    >>> stephan.query.link('Worksheets').click()
+    >>> for sheet in ['Worksheet', 'Sheet2', 'Sheet3']:
+    ...     sel = '//input[@type="checkbox" and @value="%s"]' % sheet
+    ...     stephan.query.xpath(sel).click()
+
+When we return to the gradebook, we get no tabs and a warning message:
+
+    >>> stephan.query.link('Done').click()
+
+    >>> get_tabs(stephan)
+    []
+    >>> print stephan.query.css('.page .header h1').text
+    No Visible Worksheets
+    >>> print stephan.query_all.css('.container p')[0].text
+    This section contains only worksheets that are hidden.
+
+When all the worksheets are hidden, the menus only show options that
+act on the gradebook:
+
+    >>> print_menus(stephan)
+    Add
+    ---
+    Worksheet
+    <BLANKLINE>
+    Settings
+    --------
+    Worksheets
+
+The behavior is the same for the manager:
+
+    >>> manager.ui.section.go('2005-2006', 'Year', 'Math I (1)')
+    >>> manager.query.link('Gradebook').click()
+    >>> get_tabs(manager)
+    []
+    >>> print manager.query.css('.page .header h1').text
+    No Visible Worksheets
+    >>> print manager.query_all.css('.container p')[0].text
+    This section contains only worksheets that are hidden.
+    >>> print_menus(manager, navigators=False)
+    Add
+    ---
+    Worksheet
+    <BLANKLINE>
+    Settings
+    --------
+    Worksheets

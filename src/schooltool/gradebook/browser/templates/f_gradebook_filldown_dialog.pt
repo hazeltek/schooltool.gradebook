@@ -1,0 +1,33 @@
+<div class="hidden-dialog" id="filldown-dialog-container"
+     i18n:domain="schooltool.gradebook">
+  <div class="filldown-dialog-title" i18n:translate="">
+    Fill empty cells
+  </div>
+  <form>
+    <div class="viewspace">
+      <fieldset>
+        <div class="row">
+          <div class="label">
+            <label for="filldown_value">
+              <span i18n:translate="">Grade</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Choose a grade to apply to all the students in the
+            gradebook column.
+          </p>
+          <div class="widget">
+            <input type="text" id="filldown_value" name="filldown_value"
+                   value="" size="4" />
+          </div>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <input type="submit" class="button-ok filldown-submit" name="SUBMIT"
+               value="Submit" i18n:attributes="value" />
+        <input type="submit" class="button-cancel filldown-cancel" name="CANCEL"
+               value="Cancel" i18n:attributes="value" />
+      </div>
+    </div>
+  </form>
+</div>

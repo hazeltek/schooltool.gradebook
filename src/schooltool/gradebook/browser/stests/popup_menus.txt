@@ -1,0 +1,641 @@
+Popup Menus
+-----------
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+We will add a custom score system which we will use later.
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Score Systems').click()
+    >>> manager.query.link('Score System').click()
+    >>> manager.query.id('title').ui.set_value('Good/Bad')
+    >>> manager.query.name('displayed1').ui.set_value('Good')
+    >>> manager.query.name('abbr1').ui.set_value('G')
+    >>> manager.query.name('value1').ui.set_value('1')
+    >>> manager.query.name('percent1').ui.set_value('70')
+    >>> manager.query.name('SAVE').click()
+    >>> manager.query.name('displayed2').ui.set_value('Bad')
+    >>> manager.query.name('abbr2').ui.set_value('B')
+    >>> manager.query.name('value2').ui.set_value('0')
+    >>> manager.query.name('percent2').ui.set_value('0')
+    >>> manager.query.name('SAVE').click()
+    >>> manager.query.name('UPDATE_SUBMIT').click()
+
+Now, set up a school year (2005-2006) with two terms (Fall and
+Spring):
+
+    >>> manager.ui.schoolyear.add('2005-2006', '2005-09-01', '2006-07-15')
+    >>> manager.ui.term.add('2005-2006', 'Fall', '2005-09-01', '2006-01-31')
+    >>> manager.ui.term.add('2005-2006', 'Spring', '2006-02-01', '2006-07-15')
+
+Set up one course:
+
+    >>> manager.ui.course.add('2005-2006', 'Physics I')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Paul', 'Carduner', 'paul', 'pwd')
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Claudia', 'Richter', 'claudia', 'pwd')
+    >>> manager.ui.person.add('Stephan', 'Richter', 'stephan', 'pwd')
+
+Set up a section with instructor and students for the Fall:
+
+    >>> manager.ui.section.add('2005-2006', 'Fall', 'Physics I')
+    >>> manager.ui.section.instructors.add('2005-2006', 'Fall', 'Physics I (1)',
+    ...                                    ['stephan'])
+    >>> manager.ui.section.students.add('2005-2006', 'Fall', 'Physics I (1)',
+    ...                                 ['tom', 'claudia', 'paul'])
+
+Log in as teacher:
+
+    >>> stephan = browsers.stephan
+    >>> stephan.ui.login('stephan', 'pwd')
+
+Add a couple of activities to the default worksheet:
+
+    >>> stephan.query.link('Gradebook').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('HW 1')
+    >>> desc = 'Homework 1'
+    >>> stephan.query.id('form-widgets-description').ui.set_value(desc)
+    >>> stephan.query.id('form-widgets-category').ui.set_value('Assignment')
+    >>> stephan.query.id('form-widgets-max').clear()
+    >>> stephan.query.id('form-widgets-max').ui.set_value('50')
+    >>> stephan.query.id('form-buttons-add').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('Quiz')
+    >>> desc = 'Week 1 Pop Quiz'
+    >>> stephan.query.id('form-widgets-description').ui.set_value(desc)
+    >>> stephan.query.id('form-widgets-category').ui.set_value('Exam')
+    >>> stephan.query.id('form-buttons-add').click()
+
+Add some grades:
+
+    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW1', '40')
+    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'HW1', '48')
+    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW1', '45')
+
+    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'Quiz', '90')
+    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'Quiz', '88')
+    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Quiz', '29')
+
+    >>> stephan.query.name('UPDATE_SUBMIT').click()
+
+Check the worksheet. By default the Total and Average columns are
+calculated normally:
+
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+-------+
+    | Name             | HW1 | Quiz | Total | Ave.  |
+    |                  | 50  | 100  |       |       |
+    +------------------+-----+------+-------+-------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | 86.7% |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | 90.7% |
+    | Richter, Claudia | 45  | 29   | 74.0  | 49.3% |
+    +------------------+-----+------+-------+-------+
+
+The total columns have hidden popup menus:
+
+    >>> total_menu = stephan.query.css('#column_total ul.popup_menu')
+    >>> stephan.wait_no(lambda:total_menu.query.tag('img'))
+    >>> print total_menu
+    <ul class="popup_menu">
+      <li class="header">
+        Total
+      </li>
+      <li>
+        <a href="?hide=total">
+          Hide
+        </a>
+      </li>
+      <li>
+        <a href="?sort_by=total">
+          Sort by
+        </a>
+      </li>
+    </ul>
+    >>> total_menu.is_displayed()
+    False
+
+    >>> average_menu = stephan.query.css('#column_average ul.popup_menu')
+    >>> stephan.wait_no(lambda:average_menu.query.tag('img'))
+    >>> print average_menu
+    <ul class="popup_menu">
+      <li class="header">
+        Ave.
+      </li>
+      <li>
+        <a href="?hide=average">
+          Hide
+        </a>
+      </li>
+      <li>
+        <a href="?sort_by=average">
+          Sort by
+        </a>
+      </li>
+      <li>
+        <span class="hover_link">
+          Score System
+        </span>
+        <ul class="hover_menu">
+          <li class="current">
+            No score system
+          </li>
+          <li>
+            <a href="?scoresystem=extended-letter-grade-">
+              Extended Letter Grade
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=goodbad-">
+              Good/Bad
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=letter-grade-">
+              Letter Grade
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=passfail-">
+              Pass/Fail
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    >>> average_menu.is_displayed()
+    False
+
+They're shown when the user clicks on the column headers. The user can
+hide them again clicking outside the menus:
+
+    >>> stephan.query.link('Total').click()
+    >>> total_menu.is_displayed()
+    True
+    >>> stephan.query.css('span.school').click()
+    >>> total_menu.is_displayed()
+    False
+
+Same with the Average menu:
+
+    >>> stephan.query.link('Ave.').click()
+    >>> average_menu.is_displayed()
+    True
+    >>> stephan.query.css('span.school').click()
+    >>> average_menu.is_displayed()
+    False
+
+Let's hide both total columns:
+
+    >>> stephan.query.link('Total').click()
+    >>> stephan.query.link('Hide').click()
+    >>> stephan.query.link('Ave.').click()
+    >>> stephan.query.link('Hide').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+
+    | Name             | HW1 | Quiz |
+    |                  | 50  | 100  |
+    +------------------+-----+------+
+    | Carduner, Paul   | 40  | 90   |
+    | Hoffman, Tom     | 48  | 88   |
+    | Richter, Claudia | 45  | 29   |
+    +------------------+-----+------+
+
+Hidden columns can be shown again using the Name menu:
+
+    >>> name_menu = stephan.query.css('#students-part th.name ul.popup_menu')
+    >>> stephan.wait_no(lambda:name_menu.query.tag('img'))
+    >>> # XXX: journal options should not appear here
+    >>> print name_menu
+    <ul class="popup_menu">
+      <li class="header">
+        Name
+      </li>
+      <li>
+        <a href="?sort_by=student">
+          Sort by
+        </a>
+      </li>
+      <li>
+        <a href="?show=total">
+          Show Total
+        </a>
+      </li>
+      <li>
+        <a href="?show=average">
+          Show Ave.
+        </a>
+      </li>
+      <li>
+        <a href="?show=absences">
+          Show Abs.
+        </a>
+      </li>
+      <li>
+        <a href="?show=tardies">
+          Show Trd.
+        </a>
+      </li>
+    </ul>
+    >>> name_menu.is_displayed()
+    False
+    >>> stephan.query.link('Name').click()
+    >>> name_menu.is_displayed()
+    True
+
+Let's show both total columns:
+
+    >>> stephan.query.link('Show Total').click()
+    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Show Ave.').click()
+
+and set the score system we created at the beginning for the Average
+column:
+
+    >>> stephan.query.link('Ave.').click()
+    >>> stephan.query.link('Good/Bad').click()
+    >>> average_menu = stephan.query.css('#column_average ul.popup_menu')
+    >>> stephan.wait_no(lambda:average_menu.query.tag('img'))
+    >>> print average_menu
+    <ul class="popup_menu">
+      <li class="header">
+        Ave.
+      </li>
+      <li>
+        <a href="?hide=average">
+          Hide
+        </a>
+      </li>
+      <li>
+        <a href="?sort_by=average">
+          Sort by
+        </a>
+      </li>
+      <li>
+        <span class="hover_link">
+          Score System
+        </span>
+        <ul class="hover_menu">
+          <li>
+            <a href="?scoresystem">
+              No score system
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=extended-letter-grade-">
+              Extended Letter Grade
+            </a>
+          </li>
+          <li class="current">
+            Good/Bad
+          </li>
+          <li>
+            <a href="?scoresystem=letter-grade-">
+              Letter Grade
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=passfail-">
+              Pass/Fail
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+------+
+    | Name             | HW1 | Quiz | Total | Ave. |
+    |                  | 50  | 100  |       |      |
+    +------------------+-----+------+-------+------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | Good |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | Good |
+    | Richter, Claudia | 45  | 29   | 74.0  | Bad  |
+    +------------------+-----+------+-------+------+
+
+Now, let's change to the extended letter grade scoresystem:
+
+    >>> stephan.query.link('Ave.').click()
+    >>> stephan.query.link('Extended Letter Grade').click()
+    >>> average_menu = stephan.query.css('#column_average ul.popup_menu')
+    >>> stephan.wait_no(lambda:average_menu.query.tag('img'))
+    >>> print average_menu
+    <ul class="popup_menu">
+      <li class="header">
+        Ave.
+      </li>
+      <li>
+        <a href="?hide=average">
+          Hide
+        </a>
+      </li>
+      <li>
+        <a href="?sort_by=average">
+          Sort by
+        </a>
+      </li>
+      <li>
+        <span class="hover_link">
+          Score System
+        </span>
+        <ul class="hover_menu">
+          <li>
+            <a href="?scoresystem">
+              No score system
+            </a>
+          </li>
+          <li class="current">
+            Extended Letter Grade
+          </li>
+          <li>
+            <a href="?scoresystem=goodbad-">
+              Good/Bad
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=letter-grade-">
+              Letter Grade
+            </a>
+          </li>
+          <li>
+            <a href="?scoresystem=passfail-">
+              Pass/Fail
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+------+
+    | Name             | HW1 | Quiz | Total | Ave. |
+    |                  | 50  | 100  |       |      |
+    +------------------+-----+------+-------+------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | B    |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | A-   |
+    | Richter, Claudia | 45  | 29   | 74.0  | F    |
+    +------------------+-----+------+-------+------+
+
+Now, let's test a corner case. The Gradebook allows extra credits in
+scores, and because of the way the average is calculated, there's a
+possibility of having averages higher that 100%.
+
+Before testing this, let's remove the extended letter grade
+scoresystem for the average:
+
+    >>> stephan.query.link('Ave.').click()
+    >>> stephan.query.link('No score system').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+-------+
+    | Name             | HW1 | Quiz | Total | Ave.  |
+    |                  | 50  | 100  |       |       |
+    +------------------+-----+------+-------+-------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | 86.7% |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | 90.7% |
+    | Richter, Claudia | 45  | 29   | 74.0  | 49.3% |
+    +------------------+-----+------+-------+-------+
+
+Let's grade Claudia so we get an average higher than 100%:
+
+    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW1', '51')
+    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Quiz', '101')
+    >>> stephan.query.name('UPDATE_SUBMIT').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+--------+
+    | Name             | HW1 | Quiz | Total | Ave.   |
+    |                  | 50  | 100  |       |        |
+    +------------------+-----+------+-------+--------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | 86.7%  |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | 90.7%  |
+    | Richter, Claudia | 51  | 101  | 152.0 | 101.3% |
+    +------------------+-----+------+-------+--------+
+
+Even though this average is higher than 100%, if we convert it back to
+the extended letter grade scoresystem, we should get an A+:
+
+    >>> stephan.query.link('Ave.').click()
+    >>> stephan.query.link('Extended Letter Grade').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+------+
+    | Name             | HW1 | Quiz | Total | Ave. |
+    |                  | 50  | 100  |       |      |
+    +------------------+-----+------+-------+------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | B    |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | A-   |
+    | Richter, Claudia | 51  | 101  | 152.0 | A+   |
+    +------------------+-----+------+-------+------+
+
+And if we change to the Good/Bad scoresystem, we should get Good:
+
+    >>> stephan.query.link('Ave.').click()
+    >>> stephan.query.link('Good/Bad').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-------+------+
+    | Name             | HW1 | Quiz | Total | Ave. |
+    |                  | 50  | 100  |       |      |
+    +------------------+-----+------+-------+------+
+    | Carduner, Paul   | 40  | 90   | 130.0 | Good |
+    | Hoffman, Tom     | 48  | 88   | 136.0 | Good |
+    | Richter, Claudia | 51  | 101  | 152.0 | Good |
+    +------------------+-----+------+-------+------+
+
+Users can also hide the total columns from the Name popup menu:
+
+    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Hide Total').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+------+
+    | Name             | HW1 | Quiz | Ave. |
+    |                  | 50  | 100  |      |
+    +------------------+-----+------+------+
+    | Carduner, Paul   | 40  | 90   | Good |
+    | Hoffman, Tom     | 48  | 88   | Good |
+    | Richter, Claudia | 51  | 101  | Good |
+    +------------------+-----+------+------+
+
+Now, let's insert a few more activities:
+
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('HW 2')
+    >>> stephan.query.id('form-widgets-category').ui.set_value('Assignment')
+    >>> stephan.query.id('form-buttons-add').click()
+
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('Quiz 2')
+    >>> stephan.query.id('form-widgets-category').ui.set_value('Exam')
+    >>> stephan.query.id('form-buttons-add').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-----+------+-----+-------+------+
+    | Name             | HW1 | Quiz | HW2 | Quiz2 | Ave. |
+    |                  | 50  | 100  | 100 | 100   |      |
+    +------------------+-----+------+-----+-------+------+
+    | Carduner, Paul   | 40  | 90   |     |       | Good |
+    | Hoffman, Tom     | 48  | 88   |     |       | Good |
+    | Richter, Claudia | 51  | 101  |     |       | Good |
+    +------------------+-----+------+-----+-------+------+
+
+Activities also have their own popup menus:
+
+    >>> hw1_menu = stephan.query.css('#Activity ul.popup_menu')
+    >>> stephan.wait_no(lambda:hw1_menu.query.tag('img'))
+    >>> print hw1_menu
+    <ul class="popup_menu">
+      <li class="header">
+        HW 1
+      </li>
+      <li>
+        <a href="http://localhost/.../Activity">
+          Edit
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../gradeActivity.html?activity=Activity">
+          Score this
+        </a>
+      </li>
+      <li>
+        <a class="filldown" href="#">
+          Fill down
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../gradebook?sort_by=Activity">
+          Sort by
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../gradebook?delete=Activity">
+          Delete
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../gradebook?move_right=Activity">
+          Move right
+        </a>
+      </li>
+    </ul>
+
+Notice how this activity can be moved to the right. Let's move it:
+
+    >>> stephan.query.link('HW1').click()
+    >>> stephan.query.link('Move right').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+------+-----+-----+-------+------+
+    | Name             | Quiz | HW1 | HW2 | Quiz2 | Ave. |
+    |                  | 100  | 50  | 100 | 100   |      |
+    +------------------+------+-----+-----+-------+------+
+    | Carduner, Paul   | 90   | 40  |     |       | Good |
+    | Hoffman, Tom     | 88   | 48  |     |       | Good |
+    | Richter, Claudia | 101  | 51  |     |       | Good |
+    +------------------+------+-----+-----+-------+------+
+
+Now, let's bring the Quiz2 activity to the left:
+
+    >>> stephan.query.link('Quiz2').click()
+    >>> stephan.query.link('Move left').click()
+    >>> stephan.query.link('Quiz2').click()
+    >>> stephan.query.link('Move left').click()
+    >>> stephan.query.link('Quiz2').click()
+    >>> stephan.query.link('Move left').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+-----+------+
+    | Name             | Quiz2 | Quiz | HW1 | HW2 | Ave. |
+    |                  | 100   | 100  | 50  | 100 |      |
+    +------------------+-------+------+-----+-----+------+
+    | Carduner, Paul   |       | 90   | 40  |     | Good |
+    | Hoffman, Tom     |       | 88   | 48  |     | Good |
+    | Richter, Claudia |       | 101  | 51  |     | Good |
+    +------------------+-------+------+-----+-----+------+
+
+Activities can be deleted:
+
+    >>> stephan.query.link('HW2').click()
+    >>> stephan.query.link('Delete').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+------+
+    | Name             | Quiz2 | Quiz | HW1 | Ave. |
+    |                  | 100   | 100  | 50  |      |
+    +------------------+-------+------+-----+------+
+    | Carduner, Paul   |       | 90   | 40  | Good |
+    | Hoffman, Tom     |       | 88   | 48  | Good |
+    | Richter, Claudia |       | 101  | 51  | Good |
+    +------------------+-------+------+-----+------+
+
+and sorted:
+
+    >>> stephan.query.link('Quiz').click()
+    >>> stephan.query.link('Sort by').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+------+
+    | Name             | Quiz2 | Quiz | HW1 | Ave. |
+    |                  | 100   | 100  | 50  |      |
+    +------------------+-------+------+-----+------+
+    | Richter, Claudia |       | 101  | 51  | Good |
+    | Carduner, Paul   |       | 90   | 40  | Good |
+    | Hoffman, Tom     |       | 88   | 48  | Good |
+    +------------------+-------+------+-----+------+
+
+Let's sort by student name:
+
+    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Sort by').click()
+    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Sort by').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+------+
+    | Name             | Quiz2 | Quiz | HW1 | Ave. |
+    |                  | 100   | 100  | 50  |      |
+    +------------------+-------+------+-----+------+
+    | Richter, Claudia |       | 101  | 51  | Good |
+    | Hoffman, Tom     |       | 88   | 48  | Good |
+    | Carduner, Paul   |       | 90   | 40  | Good |
+    +------------------+-------+------+-----+------+

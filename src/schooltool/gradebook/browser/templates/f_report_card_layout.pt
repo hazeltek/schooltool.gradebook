@@ -12,7 +12,7 @@
           <tr>
             <th i18n:translate="">Grid Column</th>
             <th i18n:translate="">Heading</th>
-            <th i18n:translate="">Delete?</th>
+            <th i18n:translate="">Delete</th>
           </tr>
         </thead>
         <tr tal:repeat="column columns">
@@ -48,7 +48,7 @@
           <tr>
             <th i18n:translate="">Outline Item</th>
             <th i18n:translate="">Heading</th>
-            <th i18n:translate="">Delete?</th>
+            <th i18n:translate="">Delete</th>
           </tr>
         </thead>
         <tr tal:repeat="activity activities">

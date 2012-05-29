@@ -407,6 +407,9 @@ class DeployAsCourseWorksheetLinkViewlet(flourish.page.LinkViewlet):
     @property
     def enabled(self):
         gradebook = removeSecurityProxy(self.context)
+        worksheet = gradebook.context
+        if worksheet.hidden:
+            return False
         courses = list(ISection(gradebook).courses)
         if not courses:
             return False

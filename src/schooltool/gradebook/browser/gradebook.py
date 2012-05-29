@@ -42,6 +42,7 @@ from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.viewlet import viewlet
 from zope.i18n.interfaces.locales import ICollator
+from zope.i18n import translate
 
 from z3c.form import form as z3cform
 from z3c.form import field, button
@@ -63,13 +64,14 @@ from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.journal import ABSENT, TARDY
-from schooltool.requirement.scoresystem import UNSCORED
+from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
     IScoreSystemContainer)
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
 from schooltool.term.interfaces import ITerm, IDateManager
+from schooltool.report.report import ReportLinkViewlet
 from schooltool.skin import flourish
 
 from schooltool.gradebook import GradebookMessage as _
@@ -105,6 +107,9 @@ class GradebookStartup(object):
     """A view for entry into into the gradebook or mygrades views."""
 
     template = ViewPageTemplateFile('templates/gradebook_startup.pt')
+    noSections = False
+    teacher_gradebook_view_name = 'gradebook'
+    student_gradebook_view_name = 'mygrades'
 
     def __call__(self):
         if IPerson(self.request.principal, None) is None:
@@ -114,28 +119,39 @@ class GradebookStartup(object):
             return ''
         return self.template()
 
+    @Lazy
+    def sectionsTaught(self):
+        return list(IInstructor(self.person).sections())
+
+    @Lazy
+    def sectionsAttended(self):
+        return list(ILearner(self.person).sections())
+
     def update(self):
         self.person = IPerson(self.request.principal)
-        self.sectionsTaught = list(IInstructor(self.person).sections())
-        self.sectionsAttended = list(ILearner(self.person).sections())
-
+        if not self.sectionsTaught and not self.sectionsAttended:
+            self.noSections = True
         if self.sectionsTaught:
             section = getCurrentSectionTaught(self.person)
             if section is None or section.__parent__ is None:
                 section = self.sectionsTaught[0]
-            self.gradebookURL = absoluteURL(section, self.request)+ '/gradebook'
+            self.gradebookURL = '%s/%s' % (absoluteURL(section, self.request),
+                                           self.teacher_gradebook_view_name)
             if not self.sectionsAttended:
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
             section = getCurrentSectionAttended(self.person)
             if section is None or section.__parent__ is None:
                 section = self.sectionsAttended[0]
-            self.mygradesURL = absoluteURL(section, self.request) + '/mygrades'
+            self.mygradesURL = '%s/%s' % (absoluteURL(section, self.request),
+                                          self.student_gradebook_view_name)
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
 
 
 class FlourishGradebookStartup(flourish.page.Page, GradebookStartup):
+
+    content_template = ViewPageTemplateFile("templates/f_gradebook_startup.pt")
 
     def update(self):
         if IPerson(self.request.principal, None) is None:
@@ -144,6 +160,8 @@ class FlourishGradebookStartup(flourish.page.Page, GradebookStartup):
 
 
 class GradebookStartupNavLink(flourish.page.LinkViewlet):
+
+    startup_view_name = 'gradebook.html'
 
     @property
     def enabled(self):
@@ -161,8 +179,8 @@ class GradebookStartupNavLink(flourish.page.LinkViewlet):
         if person is None:
             return ''
         app = ISchoolToolApplication(None)
-        app_url = absoluteURL(app, self.request)
-        return '%s/gradebook.html' % app_url
+        return '%s/%s' % (absoluteURL(app, self.request),
+                          self.startup_view_name)
 
 
 class SectionGradebookRedirectView(BrowserView):
@@ -172,23 +190,29 @@ class SectionGradebookRedirectView(BrowserView):
        ?final=yes is used to isntruct this view to redirect to the final grades
        view instead of the gradebook"""
 
+    teacher_worksheet_view_name = 'gradebook'
+    student_worksheet_view_name = 'mygrades'
+
     def __call__(self):
         person = IPerson(self.request.principal)
-        activities = interfaces.IActivities(self.context)
-        ensureAtLeastOneWorksheet(activities)
-        current_worksheet = activities.getCurrentWorksheet(person)
-        url = absoluteURL(activities, self.request)
+        worksheets = interfaces.IActivities(self.context)
+        ensureAtLeastOneWorksheet(worksheets)
+        current_worksheet = worksheets.getCurrentWorksheet(person)
+        url = absoluteURL(worksheets, self.request)
         if current_worksheet is not None:
             url = absoluteURL(current_worksheet, self.request)
             if person in self.context.members:
-                url += '/mygrades'
+                url += '/%s' % self.student_worksheet_view_name
             else:
-                url += '/gradebook'
+                url += '/%s' % self.teacher_worksheet_view_name
         self.request.response.redirect(url)
         return "Redirecting..."
 
 
 class GradebookBase(BrowserView):
+
+    teacher_gradebook_view_name = 'gradebook'
+    student_gradebook_view_name = 'mygrades'
 
     def __init__(self, context, request):
         super(GradebookBase, self).__init__(context, request)
@@ -279,9 +303,9 @@ class SectionFinder(GradebookBase):
                 continue
             url = absoluteURL(section, self.request)
             if self.isTeacher:
-                url += '/gradebook'
+                url += '/%s' % self.teacher_gradebook_view_name
             else:
-                url += '/mygrades'
+                url += '/%s' % self.student_gradebook_view_name
             title = '%s - %s' % (", ".join([course.title
                                             for course in section.courses]),
                                  section.title)
@@ -342,9 +366,9 @@ class SectionFinder(GradebookBase):
                             newSection = section
                 url = absoluteURL(newSection, self.request)
                 if self.isTeacher:
-                    url += '/gradebook'
+                    url += '/%s' % self.teacher_gradebook_view_name
                 else:
-                    url += '/mygrades'
+                    url += '/%s' % self.student_gradebook_view_name
                 self.request.response.redirect(url)
                 return True
         return False
@@ -562,6 +586,7 @@ class GradebookOverview(SectionFinder):
         return {
             'linked_source': source,
             'scorable': False,
+            'cssClass': None,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -591,6 +616,7 @@ class GradebookOverview(SectionFinder):
         return {
             'linked_source': None,
             'scorable': scorable,
+            'cssClass': scorable and 'scorable' or None,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -786,6 +812,12 @@ class FlourishGradebookOverview(GradebookOverview,
                                 flourish.page.WideContainerPage):
     """flourish Gradebook Overview/Table"""
 
+    content_template = ViewPageTemplateFile(
+        "templates/f_gradebook_overview.pt")
+
+    labels_row_header = _('Activity')
+    scores_row_header = _('Points')
+
     @property
     def page_class(self):
         if self.all_hidden:
@@ -808,28 +840,6 @@ class FlourishGradebookOverview(GradebookOverview,
     def journal_present(self):
         section = ISection(proxy.removeSecurityProxy(self.context))
         return interfaces.ISectionJournalData(section, None) is not None
-
-    def handleYearChange(self):
-        if 'currentYear' in self.request:
-            currentSection = ISection(proxy.removeSecurityProxy(self.context))
-            currentYear = ISchoolYear(ITerm(currentSection))
-            requestYearId = self.request['currentYear']
-            if requestYearId != currentYear.__name__:
-                for section in self.getUserSections():
-                    year = ISchoolYear(ITerm(section))
-                    if year.__name__ == requestYearId:
-                        newSection = section
-                        break
-                else:
-                    return False
-                url = absoluteURL(newSection, self.request)
-                if self.isTeacher:
-                    url += '/gradebook'
-                else:
-                    url += '/mygrades'
-                self.request.response.redirect(url)
-                return True
-        return False
 
     def handlePreferencesChange(self):
         if not self.isTeacher:
@@ -908,8 +918,6 @@ class FlourishGradebookOverview(GradebookOverview,
     def update(self):
         """Handle change of current year."""
         self.person = IPerson(self.request.principal)
-        if self.handleYearChange():
-            return
 
         """Handle change of column preferences."""
         self.handlePreferencesChange()
@@ -923,136 +931,200 @@ class FlourishGradebookOverview(GradebookOverview,
         """Everything else handled by old skin method."""
         GradebookOverview.update(self)
 
+    def handleTermChange(self):
+        return False
 
-class FlourishGradebookYearNavigation(flourish.page.RefineLinksViewlet):
+    def handleSectionChange(self):
+        return False
+
+
+class TeacherNavigationViewletBase(flourish.page.RefineLinksViewlet):
+
+    @property
+    def person(self):
+        return IPerson(self.request.principal)
+
+    @property
+    def section(self):
+        return proxy.removeSecurityProxy(self.context).section
+
+    def render(self, *args, **kw):
+        if self.person in self.section.instructors:
+            return super(TeacherNavigationViewletBase,
+                         self).render(*args, **kw)
+
+
+class FlourishGradebookYearNavigation(TeacherNavigationViewletBase):
     """flourish Gradebook Overview year navigation viewlet."""
 
 
 class FlourishGradebookYearNavigationViewlet(flourish.viewlet.Viewlet,
                                              GradebookOverview):
     template = InlineViewPageTemplate('''
-    <form method="post"
-          tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentYear" class="navigator"
-              onchange="this.form.submit()">
-        <tal:block repeat="year view/getYears">
-          <option
-              tal:attributes="value year/form_id;
+    <select name="currentYear" class="navigator"
+            tal:define="years view/getYears"
+            tal:condition="years"
+            onchange="ST.redirect($(this).context.value)">
+      <option tal:repeat="year years"
+              tal:attributes="value year/section_url;
                               selected year/selected"
               tal:content="year/title" />
-        </tal:block>
-      </select>
-    </form>
+    </select>
     ''')
 
     @property
     def person(self):
         return IPerson(self.request.principal)
 
+    @Lazy
+    def user_sections(self):
+        return self.getUserSections()
+
     def getYears(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentYear = ISchoolYear(ITerm(currentSection))
         years = []
-        for section in self.getUserSections():
+        for section in self.user_sections:
             year = ISchoolYear(ITerm(section))
             if year not in years:
                 years.append(year)
         return [{'title': year.title,
-                 'form_id': year.__name__,
+                 'section_url': self.getSectionURL(year),
                  'selected': year is currentYear and 'selected' or None}
-                for year in years]
+                for year in sorted(years, key=lambda x:x.first)]
 
     def render(self, *args, **kw):
         return self.template(*args, **kw)
 
+    def getSectionURL(self, year):
+        result = None
+        for section in self.user_sections:
+            term = ITerm(section)
+            if ISchoolYear(term).__name__ == year.__name__:
+               result = section
+               break
+        url = absoluteURL(result, self.request)
+        if self.isTeacher:
+            url += '/%s' % self.teacher_gradebook_view_name
+        else:
+            url += '/%s' % self.student_gradebook_view_name
+        return url
 
-class FlourishGradebookTermNavigation(flourish.page.RefineLinksViewlet):
+
+class FlourishGradebookTermNavigation(TeacherNavigationViewletBase):
     """flourish Gradebook Overview term navigation viewlet."""
 
 
 class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
                                              GradebookOverview):
     template = InlineViewPageTemplate('''
-    <form method="post"
-          tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentTerm" class="navigator"
-              onchange="this.form.submit()">
-        <tal:block repeat="term view/getTerms">
-          <option
-              tal:attributes="value term/form_id;
+    <select name="currentTerm" class="navigator"
+            tal:define="terms view/getTerms"
+            tal:condition="terms"
+            onchange="ST.redirect($(this).context.value)">
+      <option tal:repeat="term terms"
+              tal:attributes="value term/section_url;
                               selected term/selected"
               tal:content="term/title" />
-        </tal:block>
-      </select>
-    </form>
+    </select>
     ''')
 
     @property
     def person(self):
         return IPerson(self.request.principal)
+
+    @Lazy
+    def user_sections(self):
+        return self.getUserSections()
 
     def getTerms(self):
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
         currentYear = ISchoolYear(currentTerm)
         terms = []
-        for section in self.getUserSections():
+        for section in self.user_sections:
             term = ITerm(section)
-            if term not in terms and ISchoolYear(term) == currentYear:
+            if ISchoolYear(term) == currentYear and term not in terms:
                 terms.append(term)
         return [{'title': term.title,
-                 'form_id': self.getTermId(term),
+                 'section_url': self.getSectionURL(term),
                  'selected': term is currentTerm and 'selected' or None}
-                for term in terms]
+                for term in sorted(terms, key=lambda x:x.first)]
 
     def render(self, *args, **kw):
         return self.template(*args, **kw)
 
+    def getCourse(self, section):        
+        try:
+            return list(section.courses)[0]
+        except (IndexError,):
+            return None
 
-class FlourishGradebookSectionNavigation(flourish.page.RefineLinksViewlet):
+    def getSectionURL(self, term):
+        result = None
+        currentSection = ISection(proxy.removeSecurityProxy(self.context))
+        currentCourse = self.getCourse(currentSection)
+        for section in self.user_sections:
+            if term == ITerm(section):
+                if currentCourse == self.getCourse(section):
+                    result = section
+                    break
+                elif result is None:
+                    result = section
+        url = absoluteURL(result, self.request)
+        if self.isTeacher:
+            url += '/%s' % self.teacher_gradebook_view_name
+        else:
+            url += '/%s' % self.student_gradebook_view_name
+        return url
+
+
+class FlourishGradebookSectionNavigation(TeacherNavigationViewletBase):
     """flourish Gradebook Overview section navigation viewlet."""
 
 
 class FlourishGradebookSectionNavigationViewlet(flourish.viewlet.Viewlet,
                                                 GradebookOverview):
     template = InlineViewPageTemplate('''
-    <form method="post"
-          tal:attributes="action string:${context/@@absolute_url}">
-      <select name="currentSection" class="navigator"
-              onchange="this.form.submit()">
-        <tal:block repeat="section view/getSections">
-	  <option
-	      tal:attributes="value section/form_id;
-			      selected section/selected;"
-	      tal:content="section/title" />
-        </tal:block>
-      </select>
-    </form>
+    <select name="currentSection" class="navigator"
+            tal:define="sections view/getSections"
+            tal:condition="sections"
+            onchange="ST.redirect($(this).context.value)">
+      <option tal:repeat="section sections"
+            tal:attributes="value section/url;
+                            selected section/selected;"
+            tal:content="section/title" />
+    </select>
     ''')
 
     @property
     def person(self):
         return IPerson(self.request.principal)
 
+    @Lazy
+    def user_sections(self):
+        return self.getUserSections()
+
     def getSections(self):
+        result = []
+        collator = ICollator(self.request.locale)
         currentSection = ISection(proxy.removeSecurityProxy(self.context))
         currentTerm = ITerm(currentSection)
-        for section in self.getUserSections():
+        for section in self.user_sections:
             term = ITerm(section)
             if term != currentTerm:
                 continue
             url = absoluteURL(section, self.request)
             if self.isTeacher:
-                url += '/gradebook'
+                url += '/%s' % self.teacher_gradebook_view_name
             else:
-                url += '/mygrades'
-            yield {
-                'obj': section,
+                url += '/%s' % self.student_gradebook_view_name
+            result.append({
                 'url': url,
                 'title': section.title,
-                'form_id': self.getSectionId(section),
                 'selected': section==currentSection and 'selected' or None,
-                }
+                })
+        return sorted(result, key=lambda x:collator.key(x['title']))
 
     def render(self, *args, **kw):
         return self.template(*args, **kw)
@@ -1067,9 +1139,17 @@ class ActivityAddLink(flourish.page.LinkViewlet):
     @property
     def title(self):
         worksheet = proxy.removeSecurityProxy(self.context).context
-        if worksheet.deployed:
+        if worksheet.deployed or worksheet.hidden:
             return ''
         return _("Activity")
+
+
+class CategoryWeightsLink(flourish.page.LinkViewlet):
+
+    @property
+    def enabled(self):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        return not worksheet.deployed and not worksheet.hidden
 
 
 class FlourishGradebookSettingsLinks(flourish.page.RefineLinksViewlet):
@@ -1082,14 +1162,7 @@ class FlourishGradebookActionsLinks(flourish.page.RefineLinksViewlet):
 
 class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
-    template = InlineViewPageTemplate("""
-        <ul tal:attributes="class view/list_class">
-          <li tal:repeat="item view/items"
-              tal:attributes="class item/class"
-              tal:content="structure item/viewlet">
-          </li>
-        </ul>
-    """)
+    template = ViewPageTemplateFile('templates/f_gradebook_tertiary_nav.pt')
 
     @property
     def items(self):
@@ -1103,7 +1176,7 @@ class GradebookTertiaryNavigationManager(flourish.page.TertiaryNavigationManager
                 classes.append('deployed')
             result.append({
                 'class': classes and ' '.join(classes) or None,
-                'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
+                'viewlet': u'<a title="%s" href="%s">%s</a>' % (worksheet.title, url, worksheet.title[:15]),
                 })
         return result
 
@@ -1297,9 +1370,9 @@ class FlourishMyGradesView(MyGradesView, flourish.page.Page):
                     return False
                 url = absoluteURL(newSection, self.request)
                 if self.isTeacher:
-                    url += '/gradebook'
+                    url += '/%s' % self.teacher_gradebook_view_name
                 else:
-                    url += '/mygrades'
+                    url += '/%s' % self.student_gradebook_view_name
                 self.request.response.redirect(url)
                 return True
         return False
@@ -1346,14 +1419,10 @@ class FlourishMyGradesSectionNavigationViewlet(
 
 class MyGradesTertiaryNavigationManager(flourish.page.TertiaryNavigationManager):
 
-    template = InlineViewPageTemplate("""
-        <ul tal:attributes="class view/list_class">
-          <li tal:repeat="item view/items"
-              tal:attributes="class item/class"
-              tal:content="structure item/viewlet">
-          </li>
-        </ul>
-    """)
+    # XXX: almost the same as GradebookTertiaryNavigationManager
+    #      merge
+
+    template = ViewPageTemplateFile('templates/f_gradebook_tertiary_nav.pt')
 
     @property
     def items(self):
@@ -1362,9 +1431,12 @@ class MyGradesTertiaryNavigationManager(flourish.page.TertiaryNavigationManager)
         current = gradebook.context.__name__
         for worksheet in gradebook.worksheets:
             url = '%s/mygrades' % absoluteURL(worksheet, self.request)
+            classes = worksheet.__name__ == current and ['active'] or []
+            if worksheet.deployed:
+                classes.append('deployed')
             result.append({
-                'class': worksheet.__name__ == current and 'active' or None,
-                'viewlet': u'<a href="%s">%s</a>' % (url, worksheet.title[:15]),
+                'class': classes and ' '.join(classes) or None,
+                'viewlet': u'<a title="%s" href="%s">%s</a>' % (worksheet.title, url, worksheet.title[:15]),
                 })
         return result
 
@@ -1935,3 +2007,384 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
         can_view = flourish.canView(self.gradebook)
         return can_view
 
+
+class FlourishGradebookValidateScoreView(flourish.page.Page):
+
+    def __call__(self):
+        result = {'is_valid': True, 'is_extracredit': False}
+        activity_id = self.request.get('activity_id')
+        score = self.request.get('score')
+        if score and activity_id:
+            person = IPerson(self.request.principal)
+            worksheet = self.context.getCurrentWorksheet(person)
+            activity = worksheet.get(activity_id)
+            if activity is not None:
+                scoresystem = activity.scoresystem
+                score = self.request.get('score')
+                try:
+                    score = scoresystem.fromUnicode(score)
+                except (ScoreValidationError,):
+                    result['is_valid'] = False
+                else:
+                    if score > scoresystem.getBestScore():
+                        result['is_extracredit'] = True
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        encoder = flourish.tal.JSONEncoder()
+        json = encoder.encode(result)
+        return json
+
+
+class FlourishActivityPopupMenuView(flourish.page.Page):
+
+    def translate(self, message):
+        return translate(message, context=self.request)
+
+    def __call__(self):
+        result = {}
+        activity_id = self.request.get('activity_id')
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        if activity_id is not None and activity_id in worksheet:
+            activity = worksheet[activity_id]
+            info = self.getActivityInfo(activity)
+            deployed = worksheet.deployed
+            info.update({
+                    'canDelete': not deployed,
+                    'moveLeft': not deployed,
+                    'moveRight': not deployed,
+                    })
+            keys = worksheet.keys()
+            if keys[0] == activity.__name__:
+                info['moveLeft'] = False
+            if keys[-1] == activity.__name__:
+                info['moveRight'] = False
+            url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+            result['header'] = info['longTitle']
+            options = []
+            if info['canDelete']:
+                options.append({
+                        'label': self.translate(_('Edit')),
+                        'url': absoluteURL(info['object'], self.request),
+                        })
+            if info['scorable']:
+                options.append({
+                        'label': self.translate(_('Score this')),
+                        'url': '%s/gradeActivity.html?activity=%s' % (
+                            url, info['hash'])
+                        })
+                options.append({
+                        'label': self.translate(_('Fill down')),
+                        'url': '#',
+                        'css_class': 'filldown',
+                        })
+            options.append({
+                    'label': self.translate(_('Sort by')),
+                    'url': '%s?sort_by=%s' % (url, info['hash']),
+                    })
+            if info['canDelete']:
+                options.append({
+                        'label': self.translate(_('Delete')),
+                        'url': '%s?delete=%s' % (url, info['hash']),
+                        })
+            if info['moveLeft']:
+                options.append({
+                        'label': self.translate(_('Move left')),
+                        'url': '%s?move_left=%s' % (url, info['hash']),
+                        })
+            if info['moveRight']:
+                options.append({
+                        'label': self.translate(_('Move right')),
+                        'url': '%s?move_right=%s' % (url, info['hash']),
+                        })
+            if info['updateGrades']:
+                options.append({
+                        'label': self.translate(_('Update grades')),
+                        'url': info['updateGrades'],
+                        })
+            result['options'] = options
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        encoder = flourish.tal.JSONEncoder()
+        json = encoder.encode(result)
+        return json
+
+    # XXX: All of this has been copied from the gradebook view
+    def getLinkedActivityInfo(self, activity):
+        source = getSourceObj(activity.source)
+        insecure_activity = proxy.removeSecurityProxy(activity)
+        insecure_source = proxy.removeSecurityProxy(source)
+        if interfaces.IActivity.providedBy(insecure_source):
+            short, long, best_score = self.getActivityAttrs(source)
+        elif interfaces.IWorksheet.providedBy(insecure_source):
+            long = source.title
+            short = activity.label or long
+            if len(short) > 5:
+                short = short[:5].strip()
+            best_score = '100'
+        else:
+            short = long = best_score = ''
+        return {
+            'linked_source': source,
+            'scorable': False,
+            'cssClass': None,
+            'shortTitle': short,
+            'longTitle': long,
+            'max': best_score,
+            'hash': insecure_activity.__name__,
+            'object': activity,
+            'updateGrades': '',
+            }
+
+    def getActivityInfo(self, activity):
+        insecure_activity = proxy.removeSecurityProxy(activity)
+        if interfaces.ILinkedColumnActivity.providedBy(insecure_activity):
+            return self.getLinkedActivityInfo(activity)
+        short, long, best_score = self.getActivityAttrs(activity)
+        scorable = not (
+            ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
+            interfaces.ILinkedActivity.providedBy(insecure_activity))
+        if interfaces.ILinkedActivity.providedBy(insecure_activity):
+            updateGrades = '%s/updateGrades.html' % (
+                absoluteURL(insecure_activity, self.request))
+        else:
+            updateGrades = ''
+        return {
+            'linked_source': None,
+            'scorable': scorable,
+            'cssClass': scorable and 'scorable' or None,
+            'shortTitle': short,
+            'longTitle': long,
+            'max': best_score,
+            'hash': insecure_activity.__name__,
+            'object': activity,
+            'updateGrades': updateGrades,
+            }
+
+    def getActivityAttrs(self, activity):
+        longTitle = activity.title
+        shortTitle = activity.label or longTitle
+        shortTitle = shortTitle.replace(' ', '')
+        if len(shortTitle) > 5:
+            shortTitle = shortTitle[:5].strip()
+        ss = proxy.removeSecurityProxy(activity.scoresystem)
+        if ICommentScoreSystem.providedBy(ss):
+            bestScore = ''
+        else:
+            bestScore = ss.getBestScore()
+        return shortTitle, longTitle, bestScore
+
+
+class FlourishStudentPopupMenuView(flourish.page.Page):
+
+    def translate(self, message):
+        return translate(message, context=self.request)
+
+    def __call__(self):
+        student_id = self.request.get('student_id')
+        result = {}
+        if student_id is not None:
+            app = ISchoolToolApplication(None)
+            student = app['persons'].get(student_id)
+            if student is not None and student in self.context.students:
+                url = absoluteURL(student, self.request)
+                gradeurl = '%s/%s' % (
+                    absoluteURL(self.context, self.request),
+                    student.username)
+                result['header'] = student.title
+                options = [
+                    {
+                        'label': self.translate(_('Student')),
+                        'url': url,
+                        },
+                    {
+                        'label': self.translate(_('Score')),
+                        'url': gradeurl,
+                        },
+                    {
+                        'label': self.translate(_('Report')),
+                        'url': '%s/view.html' % gradeurl,
+                        },
+                    ]
+                result['options'] = options
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        encoder = flourish.tal.JSONEncoder()
+        json = encoder.encode(result)
+        return json
+
+
+class FlourishNamePopupMenuView(flourish.page.Page):
+
+    def translate(self, message):
+        return translate(message, context=self.request)
+
+    def __call__(self):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        self.deployed = worksheet.deployed
+        self.processColumnPreferences()
+        options = [
+            {
+                'label': self.translate(_('Sort by')),
+                'url': '?sort_by=student',
+                },
+            ]
+        if not worksheet.deployed:
+            if self.total_hide:
+                options.append({
+                        'label': self.translate(_('Show Total')),
+                        'url': '?show=total',
+                        })
+            else:
+                options.append({
+                        'label': self.translate(_('Hide Total')),
+                        'url': '?hide=total',
+                        })
+            if self.average_hide:
+                options.append({
+                        'label': self.translate(_('Show Ave.')),
+                        'url': '?show=average',
+                        })
+            else:
+                options.append({
+                        'label': self.translate(_('Hide Ave.')),
+                        'url': '?hide=average',
+                        })
+        if self.journal_present:
+            if self.absences_hide:
+                options.append({
+                        'label': self.translate(_('Show Abs.')),
+                        'url': '?show=absences',
+                        })
+            else:
+                options.append({
+                        'label': self.translate(_('Hide Abs.')),
+                        'url': '?hide=absences',
+                        })
+            if self.tardies_hide:
+                options.append({
+                        'label': self.translate(_('Show Trd.')),
+                        'url': '?show=tardies',
+                        })
+            else:
+                options.append({
+                        'label': self.translate(_('Hide Trd.')),
+                        'url': '?hide=tardies',
+                        })
+        result = {
+            'header': translate(_('Name'), context=self.request),
+            'options': options,
+            }
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        encoder = flourish.tal.JSONEncoder()
+        json = encoder.encode(result)
+        return json
+
+    # XXX: Copied (and modified) from the gradebook view
+    def processColumnPreferences(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        person = IPerson(self.request.principal)
+        columnPreferences = gradebook.getColumnPreferences(person)
+        journal_data = interfaces.ISectionJournalData(ISection(gradebook), None)
+        self.journal_present = journal_data is not None
+        prefs = columnPreferences.get('absences', {})
+        if journal_data is None:
+            self.absences_hide = True
+        else:
+            self.absences_hide = prefs.get('hide', True)
+        prefs = columnPreferences.get('tardies', {})
+        if journal_data is None:
+            self.tardies_hide = True
+        else:
+            self.tardies_hide = prefs.get('hide', True)
+        prefs = columnPreferences.get('total', {})
+        self.total_hide = prefs.get('hide', False)
+        prefs = columnPreferences.get('average', {})
+        self.average_hide = prefs.get('hide', False)
+
+
+class FlourishTotalPopupMenuView(flourish.page.Page):
+
+    titles = {
+        'total': _('Total'),
+        'average': _('Ave.'),
+        'tardies': _('Trd.'),
+        'absences': _('Abs.'),
+        }
+
+    def translate(self, message):
+        return translate(message, context=self.request)
+
+    def __call__(self):
+        result = {}
+        column_id = self.request.get('column_id')
+        if column_id in self.titles:
+            result['header'] = self.translate(self.titles[column_id])
+            result['options'] = [
+                {
+                    'label': self.translate(_('Hide')),
+                    'url': '?hide=%s' % column_id,
+                    },
+                {
+                    'label': self.translate(_('Sort by')),
+                    'url': '?sort_by=%s' % column_id,
+                    },
+                ]
+            if column_id in ('average',):
+                scoresystem_options = []
+                for scoresystem in self._scoresystems:
+                    scoresystem_options.append({
+                            'label': scoresystem['title'],
+                            'url': scoresystem['url'],
+                            'current': scoresystem['current'],
+                            })
+                result['options'].append({
+                        'header': self.translate(_('Score System')),
+                        'options': scoresystem_options,
+                        })
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        encoder = flourish.tal.JSONEncoder()
+        json = encoder.encode(result)
+        return json
+
+    # XXX: Copied (and modified) from the gradebook view
+    @property
+    def _scoresystems(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        person = IPerson(self.request.principal)
+        columnPreferences = gradebook.getColumnPreferences(person)
+        vocab = queryUtility(
+            IVocabularyFactory,
+            'schooltool.requirement.discretescoresystems')(None)
+        current = columnPreferences.get('average', {}).get('scoresystem', '')
+        results = [{
+            'title': _('No score system'),
+            'url': '?scoresystem',
+            'current': not current,
+            }]
+        for term in vocab:
+            results.append({
+                'title': term.value.title,
+                'url': '?scoresystem=%s' % term.token,
+                'current': term.value.__name__ == current,
+                })
+        return results
+
+
+class PrintableWorksheetViewlet(ReportLinkViewlet):
+
+    def render(self, *args, **kw):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        if worksheet.hidden:
+            return ''
+        return super(PrintableWorksheetViewlet, self).render(*args, **kw)
+
+
+class GradebookExportViewlet(ReportLinkViewlet):
+
+    def render(self, *args, **kw):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        if worksheet.hidden:
+            return ''
+        return super(GradebookExportViewlet, self).render(*args, **kw)

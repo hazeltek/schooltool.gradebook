@@ -1,0 +1,485 @@
+Gradebook navigation features
+=============================
+
+We'll test how the user navigates through the gradebook
+interface.
+
+Some helpers:
+
+    >>> # FORMATTERS
+    >>> def format_option(option, selected):
+    ...     return ['%s', '*%s*'][selected] % option
+    >>> def format_navigator(header, option):
+    ...     return '%s: %s' % (header, option)
+    >>> def format_tab(tab):
+    ...     text = tab.query.tag('a').text
+    ...     active = tab.get_attribute('class') in ('active',)
+    ...     return ['%s', '*%s*'][active] % text
+
+    >>> # GETTERS
+    >>> def get_navigators(browser):
+    ...     return browser.query_all.css('.refine .content')[:3]
+    >>> def get_section_navigator(browser):
+    ...     return get_navigators(browser)[0]
+    >>> def get_term_navigator(browser):
+    ...     return get_navigators(browser)[1]
+    >>> def get_schoolyear_navigator(browser):
+    ...     return get_navigators(browser)[2]
+    >>> def get_navigator_header(navigator):
+    ...     return navigator.query.css('.header').text
+    >>> def get_navigator_options(navigator):
+    ...     result = []
+    ...     for option in navigator.query_all.tag('option'):
+    ...         result.append((option.text, option.is_selected()))
+    ...     return result
+    >>> def get_navigator_selected_option(navigator):
+    ...     options = get_navigator_options(navigator)
+    ...     text, selected = filter(lambda x:x[-1], options)[0]
+    ...     return text
+    >>> def get_tabs(browser):
+    ...     return browser.query_all.css('.third-nav li')  
+
+    >>> # PRINTERS
+    >>> def print_navigator_options(navigator):
+    ...     for text, selected in get_navigator_options(navigator):
+    ...         print format_option(text, selected)
+    >>> def print_navigator(navigator):
+    ...     header = get_navigator_header(navigator)
+    ...     selected = get_navigator_selected_option(navigator)
+    ...     print format_navigator(header, selected)
+    >>> def print_navigators(browser):
+    ...     for navigator in get_navigators(browser):
+    ...         print_navigator(navigator)
+    >>> def print_section_navigator(browser):
+    ...     navigator = get_section_navigator(browser)
+    ...     print_navigator_options(navigator)
+    >>> def print_term_navigator(browser):
+    ...     navigator = get_term_navigator(browser)
+    ...     print_navigator_options(navigator)
+    >>> def print_schoolyear_navigator(browser):
+    ...     navigator = get_schoolyear_navigator(browser)
+    ...     print_navigator_options(navigator)
+    >>> def print_tabs(browser):
+    ...     for tab in get_tabs(browser):
+    ...         print format_tab(tab)
+
+Let's log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+and add a few things:
+
+- School years
+
+    >>> manager.ui.schoolyear.add('2012', '2012-01-01', '2012-12-31')
+    >>> manager.ui.schoolyear.add('2013', '2013-01-01', '2013-12-31')
+
+- Terms
+
+    >>> manager.ui.term.add('2012', 'Q1', '2012-01-01', '2012-03-31')
+    >>> manager.ui.term.add('2012', 'Q2', '2012-04-01', '2012-06-30')
+    >>> manager.ui.term.add('2012', 'Q3', '2012-07-01', '2012-09-30')
+    >>> manager.ui.term.add('2012', 'Q4', '2012-10-01', '2012-12-31')
+
+    >>> manager.ui.term.add('2013', 'S1', '2013-01-01', '2013-06-30')
+    >>> manager.ui.term.add('2013', 'S2', '2013-07-01', '2013-12-31')
+
+- Courses
+
+    >>> manager.ui.course.add('2012', 'Math')
+    >>> manager.ui.course.add('2012', 'Baseball')
+    >>> manager.ui.course.add('2012', 'Soccer')
+    >>> manager.ui.course.add('2013', 'Math')
+    >>> manager.ui.course.add('2013', 'Baseball')
+
+- Sections. We'll customize the titles for clarity:
+
+    >>> manager.ui.section.add('2012', 'Q1', 'Math', ends='Q4')
+    >>> manager.ui.section.add('2012', 'Q3', 'Baseball', title='Baseball Q3')
+    >>> manager.ui.section.add('2012', 'Q1', 'Soccer', ends='Q2')
+
+    >>> for term in ['Q1', 'Q2', 'Q3', 'Q4']:
+    ...     manager.ui.section.go('2012', term, 'Math (1)')
+    ...     manager.query.xpath('//a[@title="Edit this section"]').click()
+    ...     title = manager.query.id('form-widgets-title')
+    ...     title.clear()
+    ...     title.ui.set_value('Math %s' % term)
+    ...     manager.query.id('form-buttons-apply').click()
+    >>> for term in ['Q1', 'Q2']:
+    ...     manager.ui.section.go('2012', term, 'Soccer (2)')
+    ...     manager.query.xpath('//a[@title="Edit this section"]').click()
+    ...     title = manager.query.id('form-widgets-title')
+    ...     title.clear()
+    ...     title.ui.set_value('Soccer %s' % term)
+    ...     manager.query.id('form-buttons-apply').click()
+
+    >>> manager.ui.section.add('2013', 'S1', 'Math', ends='S2')
+    >>> manager.ui.section.add('2013', 'S1', 'Baseball', ends='S2')
+
+    >>> for term in ['S1', 'S2']:
+    ...     manager.ui.section.go('2013', term, 'Math (1)')
+    ...     manager.query.xpath('//a[@title="Edit this section"]').click()
+    ...     title = manager.query.id('form-widgets-title')
+    ...     title.clear()
+    ...     title.ui.set_value('Math %s' % term)
+    ...     manager.query.id('form-buttons-apply').click()
+    >>> for term in ['S1', 'S2']:
+    ...     manager.ui.section.go('2013', term, 'Baseball (2)')
+    ...     manager.query.xpath('//a[@title="Edit this section"]').click()
+    ...     title = manager.query.id('form-widgets-title')
+    ...     title.clear()
+    ...     title.ui.set_value('Baseball %s' % term)
+    ...     manager.query.id('form-buttons-apply').click()
+
+- People:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'pwd')
+    >>> manager.ui.person.add('Liliana', 'Vividor', 'liliana', 'pwd')
+
+- Instructors and students. Here's the section setup we'll create
+
++------+
+| 2012 |
++------+
++-----------+-----------+-------------+---------+
+| Q1        | Q2        | Q3          | Q4      |
++-----------+-----------+-------------+---------+
+| Math Q1   | Math Q2   | Math Q3     | Math Q4 |
+| jeffrey   | jeffrey   | jeffrey     | jeffrey |
+| *******   | tom       | *******     | ******* |
+| camila    | *******   | camila      | camila  |
+| mario     | camila    | mario       | mario   |
+|           | mario     |             |         |
++-----------+-----------+-------------+---------+
+| Soccer Q1 | Soccer Q2 |             |         |
+| tom       | jeffrey   |             |         |
+| ********* | tom       |             |         |
+| camila    | ********* |             |         |
+| mario     | camila    |             |         |
+| nestor    | mario     |             |         |
+|           | nestor    |             |         |
++-----------+-----------+-------------+---------+
+|           |           | Baseball Q3 |         |
+|           |           | tom         |         |
+|           |           | *********** |         |
+|           |           | nestor      |         |
+|           |           | liliana     |         |
++-----------+-----------+-------------+---------+
++------+
+| 2013 |
++------+
++-------------+-------------+
+| S1          | S2          |
++-------------+-------------+
+| Math S1     | Math S2     |
+| tom         | tom         |
+| *******     | jeffrey     |
+| camila      | *******     |
+| mario       | camila      |
+|             | mario       |
++-------------+-------------+
+| Baseball S1 | Baseball S2 |
+| tom         | tom         |
+| *********   | *********** |
+| nestor      | nestor      |
+| liliana     | liliana     |
++-------------+-------------+
+
+    >>> manager.ui.section.instructors.add('2012', 'Q3', 'Baseball Q3',
+    ...                                    ['tom'])
+    >>> manager.ui.section.instructors.add('2012', 'Q1', 'Soccer Q1',
+    ...                                    ['tom'])
+    >>> manager.ui.section.instructors.add('2012', 'Q2', 'Soccer Q2',
+    ...                                    ['jeffrey'])
+    >>> manager.ui.section.instructors.add('2012', 'Q1', 'Math Q1',
+    ...                                    ['jeffrey'])
+    >>> manager.ui.section.instructors.add('2012', 'Q2', 'Math Q2',
+    ...                                    ['tom'])
+    >>> manager.ui.section.instructors.remove('2012', 'Q3', 'Math Q3',
+    ...                                       ['tom'])
+
+    >>> manager.ui.section.students.add('2012', 'Q1', 'Math Q1',
+    ...                                 ['camila', 'mario'])
+    >>> manager.ui.section.students.add('2012', 'Q1', 'Soccer Q1',
+    ...                                 ['camila', 'mario', 'nestor'])
+    >>> manager.ui.section.students.add('2012', 'Q3', 'Baseball Q3',
+    ...                                 ['nestor', 'liliana'])
+
+    >>> manager.ui.section.instructors.add('2013', 'S1', 'Math S1',
+    ...                                    ['tom'])
+    >>> manager.ui.section.instructors.add('2013', 'S2', 'Math S2',
+    ...                                    ['jeffrey'])
+    >>> manager.ui.section.instructors.add('2013', 'S1', 'Baseball S1',
+    ...                                    ['tom'])
+
+    >>> manager.ui.section.students.add('2013', 'S1', 'Math S1',
+    ...                                 ['camila', 'mario'])
+    >>> manager.ui.section.students.add('2013', 'S1', 'Baseball S1',
+    ...                                 ['nestor', 'liliana'])
+
+Section / Term / Year navigators
+--------------------------------
+
+These navigator menus are placed at the top of the left sidebar.
+
+Let's create browsers for both teachers and go to their gradebooks:
+
+    >>> jeffrey = browsers.jeffrey
+    >>> jeffrey.ui.login('jeffrey', 'pwd')
+    >>> jeffrey.query.link('Gradebook').click()
+
+    >>> tom = browsers.tom
+    >>> tom.ui.login('tom', 'pwd')
+    >>> tom.query.link('Gradebook').click()
+
+The first time the user visits the gradebook, the selected section in
+the navigators will be the first section the teacher was added to:
+
+In Jeffrey's case that's the Soccer Q2 section:
+
+    >>> print_navigators(jeffrey)
+    Section: Soccer Q2
+    Term: Q2
+    Year: 2012
+
+In Tom's case it's Baseball Q3:
+
+    >>> print_navigators(tom)
+    Section: Baseball Q3
+    Term: Q3
+    Year: 2012
+
+Users have access to all of their sections in that term through the
+Section navigator. Sections are sorted alphabetically:
+
+    >>> print_section_navigator(jeffrey)
+    Math Q2
+    *Soccer Q2*
+
+    >>> print_section_navigator(tom)
+    *Baseball Q3*
+
+Let's move Jeffrey to his Math Q2 section:
+
+    >>> navigator = jeffrey.query_all.css('.refine .navigator')[0]
+    >>> navigator.ui.set_value('Math Q2')
+    >>> print_navigators(jeffrey)
+    Section: Math Q2
+    Term: Q2
+    Year: 2012
+
+The Term navigator allows users to change between terms in that school
+year. Terms will be listed only if the user has a section in that
+term. Terms are sorted chronologically:
+
+    >>> print_term_navigator(jeffrey)
+    Q1
+    *Q2*
+    Q3
+    Q4
+
+    >>> print_term_navigator(tom)
+    Q1
+    Q2
+    *Q3*
+
+The Term navigator has another feature, it takes the user to a section
+of the matching course (if any exists). For example, if Jeffrey
+selects Q3, he will be taken to the Math Q3 section:
+
+    >>> navigator = jeffrey.query_all.css('.refine .navigator')[1]
+    >>> navigator.ui.set_value('Q3')
+    >>> print_navigators(jeffrey)
+    Section: Math Q3
+    Term: Q3
+    Year: 2012
+
+If Tom selects the Q2 term, he will be taken to the first section he
+was added to in that term, because there are no sections matching the
+Baseball course:
+
+    >>> navigator = tom.query_all.css('.refine .navigator')[1]
+    >>> navigator.ui.set_value('Q2')
+    >>> print_navigators(tom)
+    Section: Soccer Q2
+    Term: Q2
+    Year: 2012
+
+Finally, the Year navigator takes the user to the first section he was
+added in that year. Years are sorted chronologically:
+
+    >>> print_schoolyear_navigator(jeffrey)
+    *2012*
+    2013
+
+    >>> navigator = jeffrey.query_all.css('.refine .navigator')[2]
+    >>> navigator.ui.set_value('2013')
+    >>> print_navigators(jeffrey)
+    Section: Math S2
+    Term: S2
+    Year: 2013
+
+    >>> navigator = tom.query_all.css('.refine .navigator')[2]
+    >>> navigator.ui.set_value('2013')
+    >>> print_navigators(tom)
+    Section: Math S1
+    Term: S1
+    Year: 2013
+
+    >>> print_schoolyear_navigator(tom)
+    2012
+    *2013*
+
+If the teacher is removed from the section, he can no longer access
+its gradebook through the navigators:
+
+    >>> manager.ui.section.instructors.remove('2012', 'Q3', 'Math Q3',
+    ...                                       ['jeffrey'])
+    >>> navigator = jeffrey.query_all.css('.refine .navigator')[2]
+    >>> navigator.ui.set_value('2012')
+    >>> print_term_navigator(jeffrey)
+    Q1
+    *Q2*
+    >>> print_navigators(jeffrey)
+    Section: Soccer Q2
+    Term: Q2
+    Year: 2012
+
+Worksheet tabs
+--------------
+
+When the gradebook of a section has many worksheets, the user can
+navigate through them using the tabs in the tertiary navigation
+bar. By default, every section has only one worksheet:
+
+    >>> print_tabs(jeffrey)
+    *Sheet1*
+
+Let's add a few more worksheets:
+
+    >>> jeffrey.query.link('Worksheet').click()
+    >>> jeffrey.query.id('form-widgets-title').ui.set_value('Sheet2')
+    >>> jeffrey.query.id('form-buttons-add').click()
+    >>> jeffrey.query.link('Worksheet').click()
+    >>> jeffrey.query.id('form-widgets-title').ui.set_value('Sheet3')
+    >>> jeffrey.query.id('form-buttons-add').click()
+    >>> jeffrey.query.link('Worksheet').click()
+    >>> jeffrey.query.id('form-widgets-title').ui.set_value('Sheet4')
+    >>> jeffrey.query.id('form-buttons-add').click()
+
+    >>> print_tabs(jeffrey)
+    Sheet1
+    Sheet2
+    Sheet3
+    *Sheet4*
+
+The user can change to another worksheet by clicking on its tab:
+
+    >>> jeffrey.query.link('Sheet2').click()
+    >>> print_tabs(jeffrey)
+    Sheet1
+    *Sheet2*
+    Sheet3
+    Sheet4
+
+There are also some arrows that help the user to change
+worksheets. When there are not enough worksheets to fill the tertiary
+navigation bar, all the arrows are disabled:
+
+    >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
+    ...     print arrow.get_attribute('class')
+    navbar-arrow navbar-go-previous navbar-arrow-inactive
+    navbar-arrow navbar-go-next navbar-arrow-inactive
+    navbar-arrow navbar-list-worksheets navbar-arrow-inactive
+
+Let's add more worksheets to fill the tertiary navigation bar:
+
+    >>> jeffrey.query.link('Worksheet').click()
+    >>> jeffrey.query.id('form-widgets-title').ui.set_value('Sheet5')
+    >>> jeffrey.query.id('form-buttons-add').click()
+    >>> jeffrey.query.link('Worksheet').click()
+    >>> jeffrey.query.id('form-widgets-title').ui.set_value('Sheet6')
+    >>> jeffrey.query.id('form-buttons-add').click()
+    >>> jeffrey.query.link('Worksheet').click()
+    >>> jeffrey.query.id('form-widgets-title').ui.set_value('Sheet7')
+    >>> jeffrey.query.id('form-buttons-add').click()
+
+Some of the arrows are now enabled:
+
+    >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
+    ...     print arrow.get_attribute('class')
+    navbar-arrow navbar-go-previous
+    navbar-arrow navbar-go-next navbar-arrow-inactive
+    navbar-arrow navbar-list-worksheets
+
+We can display the worksheets list menu by clicking on the last arrow:
+
+    >>> jeffrey.query_all.id('worksheets-list')
+    []
+    >>> jeffrey.query.css('.navbar-list-worksheets').click()
+    >>> worksheets_list = jeffrey.query.id('worksheets-list')
+    >>> worksheets_list.is_displayed()
+    True
+
+The worksheets list behaves like the other popup menus. If the user
+clicks somewhere else, it gets hidden:
+
+    >>> jeffrey.query.css('span.school').click()
+    >>> jeffrey.wait_no(worksheets_list.is_displayed)
+
+Let's check the options in the worksheets menu:
+
+    >>> jeffrey.query.css('.navbar-list-worksheets').click()
+    >>> print_tabs(jeffrey)
+    Sheet1
+    Sheet2
+    Sheet3
+    Sheet4
+    Sheet5
+    Sheet6
+    *Sheet7*
+
+and select one worksheet from the list:
+
+    >>> worksheets_list.query.link('Sheet6').click()
+    >>> print_tabs(jeffrey)
+    Sheet1
+    Sheet2
+    Sheet3
+    Sheet4
+    Sheet5
+    *Sheet6*
+    Sheet7
+
+Now, all the arrows are enabled:
+
+    >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
+    ...     print arrow.get_attribute('class')
+    navbar-arrow navbar-go-previous
+    navbar-arrow navbar-go-next
+    navbar-arrow navbar-list-worksheets
+
+If we click the right arrow once, it gets disabled because there are
+no more worksheets to show:
+
+    >>> jeffrey.query.css('.navbar-go-next').click()
+    >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
+    ...     print arrow.get_attribute('class')
+    navbar-arrow navbar-go-previous
+    navbar-arrow navbar-go-next navbar-arrow-inactive
+    navbar-arrow navbar-list-worksheets
+
+Same happens with the right arrow:
+
+    >>> jeffrey.query.css('.navbar-go-previous').click()
+    >>> jeffrey.query.css('.navbar-go-previous').click()
+    >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
+    ...     print arrow.get_attribute('class')
+    navbar-arrow navbar-go-previous navbar-arrow-inactive
+    navbar-arrow navbar-go-next
+    navbar-arrow navbar-list-worksheets

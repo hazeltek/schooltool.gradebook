@@ -1,0 +1,14 @@
+Test that it works
+==================
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Check a link set by the gradebook:
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Activity Categories').click()
+    >>> manager.url
+    u'http://localhost/activity_categories'

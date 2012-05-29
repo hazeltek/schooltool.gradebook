@@ -1,0 +1,243 @@
+Selenium browser extensions tests
+=================================
+
+Let's test the selenium extensions created in the
+schooltool.gradebook.stesting module.
+
+See the README.selenium.txt file in the
+schooltool/gradebook/browser/stests directory for instructions on how
+to use them.
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Add a school year:
+
+    >>> manager.ui.schoolyear.add('2012', '2012-01-01', '2012-12-31')
+
+Add a term:
+
+    >>> manager.ui.term.add('2012', 'Single Year', '2012-01-01', '2012-12-31')
+
+Add some people:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'pwd')
+
+Add a course:
+
+    >>> manager.ui.course.add('2012', 'Baseball')
+
+Add a section:
+
+    >>> manager.ui.section.add('2012', 'Single Year', 'Baseball')
+
+with instructor:
+
+    >>> manager.ui.section.instructors.add('2012', 'Single Year',
+    ...                                    'Baseball (1)', ['tom'])
+
+and students:
+
+    >>> manager.ui.section.students.add('2012', 'Single Year',
+    ...                                 'Baseball (1)',
+    ...                                 ['camila', 'mario', 'nestor'])
+
+
+browser.ui.worksheet.score()
+----------------------------
+
+Used for scoring an activity for a student.
+
+Let's login as the instructor:
+
+    >>> teacher = browsers.teacher
+    >>> teacher.ui.login('tom', 'pwd')
+
+and visit the gradebook of the section:
+
+    >>> teacher.ui.section.go('2012', 'Single Year', 'Baseball (1)')
+    >>> teacher.query.css('.sidebar').query.link('Gradebook').click();
+
+The student titles are shown in the default worksheet:
+
+    >>> for link in teacher.query_all.css('.students tbody a.popup_link'):
+    ...     print link.text
+    Cerna, Camila
+    Guzman, Nestor
+    Tejada, Mario
+
+Let's add some activities to the default worksheet:
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Pitching')
+    >>> teacher.query.id('form-widgets-label').type('PITCH')
+    >>> teacher.query.button('Submit').click()
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Batting')
+    >>> teacher.query.id('form-widgets-label').type('BAT')
+    >>> teacher.query.button('Submit').click()
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Swing')
+    >>> teacher.query.button('Submit').click()
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Running bases')
+    >>> teacher.query.id('form-widgets-label').type('RUNNING')
+    >>> teacher.query.button('Submit').click()
+
+The activity labels are shown in the worksheet:
+
+    >>> for link in teacher.query_all.css('.grades thead a.popup_link'):
+    ...     print link.text
+    PITCH
+    BAT
+    Swing
+    RUNNI
+
+Now we can grade the activities using the student title and the
+activity label:
+
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'PITCH', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'BAT', '60')
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Swing', '90')
+
+    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'PITCH', '100')
+    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'BAT', '70')
+    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'Swing', '85')
+
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'PITCH', '70')
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'BAT', '60')
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Swing', '75')
+
+    >>> teacher.query.button('Save').click()
+
+We'll check that our changes were correctly saved using our next
+browser extension.
+
+
+browser.ui.worksheet.pprint()
+-----------------------------
+
+Used for printing the current worksheet.
+
+Let's add a second worksheet and print it:
+
+    >>> teacher.query.link('Worksheet').click()
+    >>> teacher.query.id('form-widgets-title').type('Coaching')
+    >>> teacher.query.button('Submit').click()
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +--------+------------+
+    | Sheet1 | *Coaching* |
+    +--------+------------+
+    +----------------+-------+------+
+    | Name           | Total | Ave. |
+    |                |       |      |
+    +----------------+-------+------+
+    | Cerna, Camila  | 0.0   | N/A  |
+    | Guzman, Nestor | 0.0   | N/A  |
+    | Tejada, Mario  | 0.0   | N/A  |
+    +----------------+-------+------+
+
+Let's go back to the first worksheet, and print it:
+
+    >>> teacher.query.link('Sheet1').click()
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+----------+
+    | *Sheet1* | Coaching |
+    +----------+----------+
+    +----------------+-------+-----+-------+-------+-------+-------+
+    | Name           | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
+    |                | 100   | 100 | 100   | 100   |       |       |
+    +----------------+-------+-----+-------+-------+-------+-------+
+    | Cerna, Camila  | 90    | 60  | 90    |       | 240.0 | 80.0% |
+    | Guzman, Nestor | 100   | 70  | 85    |       | 255.0 | 85.0% |
+    | Tejada, Mario  | 70    | 60  | 75    |       | 205.0 | 68.3% |
+    +----------------+-------+-----+-------+-------+-------+-------+
+
+Let's change some scores:
+
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'PITCH', '')
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Swing', '85')
+
+    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'PITCH', '-90')
+    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'BAT', '20')
+
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'PITCH', '0')
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Swing', '120')
+
+and print the gradebook before saving the changes to see the input
+fields:
+
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+----------+
+    | *Sheet1* | Coaching |
+    +----------+----------+
+    +----------------+---------+---------+---------+-------+-------+-------+
+    | Name           | PITCH   | BAT     | Swing   | RUNNI | Total | Ave.  |
+    |                | 100     | 100     | 100     | 100   |       |       |
+    +----------------+---------+---------+---------+-------+-------+-------+
+    | Cerna, Camila  | [_____] | 60      | [85___] |       | 240.0 | 80.0% |
+    | Guzman, Nestor | [-90__] | [20___] | 85      |       | 255.0 | 85.0% |
+    | Tejada, Mario  | [0____] | 60      | [120__] |       | 205.0 | 68.3% |
+    +----------------+---------+---------+---------+-------+-------+-------+
+
+We can also print validation codes. The letters next to each input
+field mean:
+
+* v: valid score
+* e: extra credit score
+* i: invalid score
+
+    >>> teacher.ui.gradebook.worksheet.pprint(show_validation=True)
+    +----------+----------+
+    | *Sheet1* | Coaching |
+    +----------+----------+
+    +----------------+----------+----------+----------+-------+-------+-------+
+    | Name           | PITCH    | BAT      | Swing    | RUNNI | Total | Ave.  |
+    |                | 100      | 100      | 100      | 100   |       |       |
+    +----------------+----------+----------+----------+-------+-------+-------+
+    | Cerna, Camila  | [_____]v | 60       | [85___]v |       | 240.0 | 80.0% |
+    | Guzman, Nestor | [-90__]i | [20___]v | 85       |       | 255.0 | 85.0% |
+    | Tejada, Mario  | [0____]v | 60       | [120__]e |       | 205.0 | 68.3% |
+    +----------------+----------+----------+----------+-------+-------+-------+
+
+After fixing the invalid scores and saving the changes, the totals and
+averages are recalculated:
+
+    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'PITCH', '90')
+    >>> teacher.query.button('Save').click()
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+----------+
+    | *Sheet1* | Coaching |
+    +----------+----------+
+    +----------------+-------+-----+-------+-------+-------+-------+
+    | Name           | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
+    |                | 100   | 100 | 100   | 100   |       |       |
+    +----------------+-------+-----+-------+-------+-------+-------+
+    | Cerna, Camila  |       | 60  | 85    |       | 145.0 | 72.5% |
+    | Guzman, Nestor | 90    | 20  | 85    |       | 195.0 | 65.0% |
+    | Tejada, Mario  | 0     | 60  | 120   |       | 180.0 | 60.0% |
+    +----------------+-------+-----+-------+-------+-------+-------+
+
+If we print the worksheet with the validation flag set, but there are
+no input fields, we get the same output:
+
+    >>> teacher.ui.gradebook.worksheet.pprint(show_validation=True)
+    +----------+----------+
+    | *Sheet1* | Coaching |
+    +----------+----------+
+    +----------------+-------+-----+-------+-------+-------+-------+
+    | Name           | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
+    |                | 100   | 100 | 100   | 100   |       |       |
+    +----------------+-------+-----+-------+-------+-------+-------+
+    | Cerna, Camila  |       | 60  | 85    |       | 145.0 | 72.5% |
+    | Guzman, Nestor | 90    | 20  | 85    |       | 195.0 | 65.0% |
+    | Tejada, Mario  | 0     | 60  | 120   |       | 180.0 | 60.0% |
+    +----------------+-------+-----+-------+-------+-------+-------+
