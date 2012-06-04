@@ -714,8 +714,7 @@
   <flourish:viewlet
       name="report_card_layout"
       after="gradebook/templates"
-      title="Report Card Layout"
-      class="schooltool.skin.flourish.page.LinkViewlet"
+      class=".report_card.LayoutReportCardLink"
       manager="schooltool.app.browser.app.CustomizeSchoolLinks"
       permission="schooltool.edit"
       />
