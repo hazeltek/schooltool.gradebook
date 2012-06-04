@@ -365,7 +365,8 @@ activity.  This represents a column of the worksheet
     >>> sorted(gradebook.getEvaluationsForActivity(hw1),
     ...        key=lambda x: x[0].username)
     [(<...Person ...>, <Evaluation for <Activity u'HW 1'>, value=7>),
-     (<...Person ...>, <Evaluation for <Activity u'HW 1'>, value=10>)]
+     (<...Person ...>, <Evaluation for <Activity u'HW 1'>, value=10>),
+     (<...Person ...>, <Evaluation for <Activity u'HW 1'>, value=UNSCORED>)]
 
 We can get an evaluation for a student, activity pair, which represents
 a cell in the worksheet.
