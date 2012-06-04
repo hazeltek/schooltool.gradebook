@@ -1081,8 +1081,23 @@ class LayoutReportCardView(object):
         return absoluteURL(self.context, self.request)
 
 
+class LayoutReportCardLink(FlourishSchooYearMixin, flourish.page.LinkViewlet):
+
+    @property
+    def title(self):
+        if self.schoolyear is None:
+            return ''
+        return _("Report Card Layout")
+
+
 class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
     """A flourish view for laying out the columns of the report card"""
+
+    def __init__(self, context, request):
+        super(FlourishLayoutReportCardView, self).__init__(context, request)
+        if self.schoolyear is None:
+            url = absoluteURL(ISchoolToolApplication(None), self.request)
+            self.request.response.redirect(url + '/manage')
 
     @property
     def title(self):
