@@ -22,7 +22,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 from persistent import Persistent
 
@@ -102,6 +102,8 @@ class UNSCORED(object):
     We want this to behave as a global, meaning it's pickled by name, rather
     than value. We need to arrange that it has a suitable __reduce__.
     """
+
+    value = None
 
     def __reduce__(self):
         return 'UNSCORED'
@@ -336,6 +338,12 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if score is UNSCORED:
             return True
+        try:
+            Decimal(score)
+        except TypeError:
+            return False
+        except InvalidOperation:
+            return False
         return score >= self.min
 
     def getBestScore(self):
