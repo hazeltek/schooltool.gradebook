@@ -639,3 +639,58 @@ Let's sort by student name:
     | Hoffman, Tom     |       | 88   | 48  | Good |
     | Carduner, Paul   |       | 90   | 40  | Good |
     +------------------+-------+------+-----+------+
+
+Student names also have popup menus:
+
+    >>> sel = '#students-part tbody a.popup_link'
+    >>> for link in stephan.query_all.css(sel):
+    ...     print link.text
+    Richter, Claudia
+    Hoffman, Tom
+    Carduner, Paul
+    >>> sel = '#students-part tbody ul.popup_menu'
+    >>> claudia_menu, tom_menu, paul_menu = stephan.query_all.css(sel)
+
+By default, they are hidden:
+
+    >>> claudia_menu.is_displayed()
+    False
+    >>> tom_menu.is_displayed()
+    False
+    >>> paul_menu.is_displayed()
+    False
+
+And they appear when the user clicks on the student names:
+
+    >>> stephan.query.link('Hoffman, Tom').click()
+    >>> tom_menu.is_displayed()
+    True
+
+These menus contain options related to the student:
+
+    >>> print tom_menu
+    <ul class="popup_menu popup_active" style="display: block; ">
+      <li class="header">
+        Hoffman, Tom
+      </li>
+      <li>
+        <a href="http://localhost/persons/tom">
+          Student
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../Worksheet/gradebook/tom">
+          Score
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../Worksheet/gradebook/tom/history.html">
+          Score History
+        </a>
+      </li>
+      <li>
+        <a href="http://localhost/.../Worksheet/gradebook/tom/view.html">
+          Report
+        </a>
+      </li>
+    </ul>
