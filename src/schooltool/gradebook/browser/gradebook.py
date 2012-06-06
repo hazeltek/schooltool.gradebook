@@ -1921,8 +1921,6 @@ class FlourishStudentGradeHistory(flourish.page.Page):
         self.buildHistoryTable()
 
 
-
-
 class StudentGradebookView(object):
     """View a student gradebook."""
 
@@ -2136,9 +2134,25 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
         return can_view
 
 
-class FlourishGradebookValidateScoreView(flourish.page.Page):
+class JSONViewBase(flourish.page.Page):
+
+    def result(self):
+        raise NotImplementedError('subclasses must provide result()')
+
+    def translate(self, message):
+        return translate(message, context=self.request)
 
     def __call__(self):
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        encoder = flourish.tal.JSONEncoder()
+        json = encoder.encode(self.result())
+        return json
+        
+
+class FlourishGradebookValidateScoreView(JSONViewBase):
+
+    def result(self):
         result = {'is_valid': True, 'is_extracredit': False}
         activity_id = self.request.get('activity_id')
         score = self.request.get('score')
@@ -2156,19 +2170,57 @@ class FlourishGradebookValidateScoreView(flourish.page.Page):
                 else:
                     if score > scoresystem.getBestScore():
                         result['is_extracredit'] = True
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
-        encoder = flourish.tal.JSONEncoder()
-        json = encoder.encode(result)
-        return json
+        return result
 
 
-class FlourishActivityPopupMenuView(flourish.page.Page):
+class FlourishActivityPopupMenuView(JSONViewBase):
 
-    def translate(self, message):
-        return translate(message, context=self.request)
+    def options(self, info, worksheet):
+        options = []
+        url = '%s/gradebook' % absoluteURL(worksheet, self.request)
+        if info['canDelete']:
+            options.append({
+                    'label': self.translate(_('Edit')),
+                    'url': absoluteURL(info['object'], self.request),
+                    })
+        if info['scorable']:
+            options.append({
+                    'label': self.translate(_('Score this')),
+                    'url': '%s/gradeActivity.html?activity=%s' % (
+                        url, info['hash'])
+                    })
+            options.append({
+                    'label': self.translate(_('Fill down')),
+                    'url': '#',
+                    'css_class': 'filldown',
+                    })
+        options.append({
+                'label': self.translate(_('Sort by')),
+                'url': '%s?sort_by=%s' % (url, info['hash']),
+                })
+        if info['canDelete']:
+            options.append({
+                    'label': self.translate(_('Delete')),
+                    'url': '%s?delete=%s' % (url, info['hash']),
+                    })
+        if info['moveLeft']:
+            options.append({
+                    'label': self.translate(_('Move left')),
+                    'url': '%s?move_left=%s' % (url, info['hash']),
+                    })
+        if info['moveRight']:
+            options.append({
+                    'label': self.translate(_('Move right')),
+                    'url': '%s?move_right=%s' % (url, info['hash']),
+                    })
+        if info['updateGrades']:
+            options.append({
+                    'label': self.translate(_('Update grades')),
+                    'url': info['updateGrades'],
+                    })
+        return options
 
-    def __call__(self):
+    def result(self):
         result = {}
         activity_id = self.request.get('activity_id')
         worksheet = proxy.removeSecurityProxy(self.context).context
@@ -2186,55 +2238,9 @@ class FlourishActivityPopupMenuView(flourish.page.Page):
                 info['moveLeft'] = False
             if keys[-1] == activity.__name__:
                 info['moveRight'] = False
-            url = '%s/gradebook' % absoluteURL(worksheet, self.request)
             result['header'] = info['longTitle']
-            options = []
-            if info['canDelete']:
-                options.append({
-                        'label': self.translate(_('Edit')),
-                        'url': absoluteURL(info['object'], self.request),
-                        })
-            if info['scorable']:
-                options.append({
-                        'label': self.translate(_('Score this')),
-                        'url': '%s/gradeActivity.html?activity=%s' % (
-                            url, info['hash'])
-                        })
-                options.append({
-                        'label': self.translate(_('Fill down')),
-                        'url': '#',
-                        'css_class': 'filldown',
-                        })
-            options.append({
-                    'label': self.translate(_('Sort by')),
-                    'url': '%s?sort_by=%s' % (url, info['hash']),
-                    })
-            if info['canDelete']:
-                options.append({
-                        'label': self.translate(_('Delete')),
-                        'url': '%s?delete=%s' % (url, info['hash']),
-                        })
-            if info['moveLeft']:
-                options.append({
-                        'label': self.translate(_('Move left')),
-                        'url': '%s?move_left=%s' % (url, info['hash']),
-                        })
-            if info['moveRight']:
-                options.append({
-                        'label': self.translate(_('Move right')),
-                        'url': '%s?move_right=%s' % (url, info['hash']),
-                        })
-            if info['updateGrades']:
-                options.append({
-                        'label': self.translate(_('Update grades')),
-                        'url': info['updateGrades'],
-                        })
-            result['options'] = options
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
-        encoder = flourish.tal.JSONEncoder()
-        json = encoder.encode(result)
-        return json
+            result['options'] = self.options(info, worksheet)
+        return result
 
     # XXX: All of this has been copied from the gradebook view
     def getLinkedActivityInfo(self, activity):
@@ -2302,58 +2308,47 @@ class FlourishActivityPopupMenuView(flourish.page.Page):
         return shortTitle, longTitle, bestScore
 
 
-class FlourishStudentPopupMenuView(flourish.page.Page):
+class FlourishStudentPopupMenuView(JSONViewBase):
 
-    def translate(self, message):
-        return translate(message, context=self.request)
+    def options(self, student):
+        url = absoluteURL(student, self.request)
+        gradeurl = '%s/%s' % (
+            absoluteURL(self.context, self.request),
+            student.username)
+        return [
+            {
+                'label': self.translate(_('Student')),
+                'url': url,
+                },
+            {
+                'label': self.translate(_('Score')),
+                'url': gradeurl,
+                },
+            {
+                'label': self.translate(_('Score History')),
+                'url': '%s/history.html' % gradeurl,
+                },
+            {
+                'label': self.translate(_('Report')),
+                'url': '%s/view.html' % gradeurl,
+                },
+            ]
 
-    def __call__(self):
+    def result(self):
         student_id = self.request.get('student_id')
         result = {}
         if student_id is not None:
             app = ISchoolToolApplication(None)
             student = app['persons'].get(student_id)
             if student is not None and student in self.context.students:
-                url = absoluteURL(student, self.request)
-                gradeurl = '%s/%s' % (
-                    absoluteURL(self.context, self.request),
-                    student.username)
                 result['header'] = student.title
-                options = [
-                    {
-                        'label': self.translate(_('Student')),
-                        'url': url,
-                        },
-                    {
-                        'label': self.translate(_('Score')),
-                        'url': gradeurl,
-                        },
-                    {
-                        'label': self.translate(_('Score History')),
-                        'url': '%s/history.html' % gradeurl,
-                        },
-                    {
-                        'label': self.translate(_('Report')),
-                        'url': '%s/view.html' % gradeurl,
-                        },
-                    ]
-                result['options'] = options
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
-        encoder = flourish.tal.JSONEncoder()
-        json = encoder.encode(result)
-        return json
+                result['options'] = self.options(student)
+        return result
 
 
-class FlourishNamePopupMenuView(flourish.page.Page):
+class FlourishNamePopupMenuView(JSONViewBase):
 
-    def translate(self, message):
-        return translate(message, context=self.request)
-
-    def __call__(self):
-        worksheet = proxy.removeSecurityProxy(self.context).context
-        self.deployed = worksheet.deployed
-        self.processColumnPreferences()
+    def options(self, worksheet):
         options = [
             {
                 'label': self.translate(_('Sort by')),
@@ -2402,15 +2397,17 @@ class FlourishNamePopupMenuView(flourish.page.Page):
                         'label': self.translate(_('Hide Trd.')),
                         'url': '?hide=tardies',
                         })
+        return options
+
+    def result(self):
+        worksheet = proxy.removeSecurityProxy(self.context).context
+        self.deployed = worksheet.deployed
+        self.processColumnPreferences()
         result = {
             'header': translate(_('Name'), context=self.request),
-            'options': options,
+            'options': self.options(worksheet),
             }
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
-        encoder = flourish.tal.JSONEncoder()
-        json = encoder.encode(result)
-        return json
+        return result
 
     # XXX: Copied (and modified) from the gradebook view
     def processColumnPreferences(self):
@@ -2435,7 +2432,7 @@ class FlourishNamePopupMenuView(flourish.page.Page):
         self.average_hide = prefs.get('hide', False)
 
 
-class FlourishTotalPopupMenuView(flourish.page.Page):
+class FlourishTotalPopupMenuView(JSONViewBase):
 
     titles = {
         'total': _('Total'),
@@ -2444,41 +2441,38 @@ class FlourishTotalPopupMenuView(flourish.page.Page):
         'absences': _('Abs.'),
         }
 
-    def translate(self, message):
-        return translate(message, context=self.request)
+    def options(self, column_id):
+        options = [
+            {
+                'label': self.translate(_('Hide')),
+                'url': '?hide=%s' % column_id,
+                },
+            {
+                'label': self.translate(_('Sort by')),
+                'url': '?sort_by=%s' % column_id,
+                },
+            ]
+        if column_id in ('average',):
+            scoresystem_options = []
+            for scoresystem in self._scoresystems:
+                scoresystem_options.append({
+                        'label': scoresystem['title'],
+                        'url': scoresystem['url'],
+                        'current': scoresystem['current'],
+                        })
+            options.append({
+                    'header': self.translate(_('Score System')),
+                    'options': scoresystem_options,
+                    })
+        return options
 
-    def __call__(self):
+    def result(self):
         result = {}
         column_id = self.request.get('column_id')
         if column_id in self.titles:
             result['header'] = self.translate(self.titles[column_id])
-            result['options'] = [
-                {
-                    'label': self.translate(_('Hide')),
-                    'url': '?hide=%s' % column_id,
-                    },
-                {
-                    'label': self.translate(_('Sort by')),
-                    'url': '?sort_by=%s' % column_id,
-                    },
-                ]
-            if column_id in ('average',):
-                scoresystem_options = []
-                for scoresystem in self._scoresystems:
-                    scoresystem_options.append({
-                            'label': scoresystem['title'],
-                            'url': scoresystem['url'],
-                            'current': scoresystem['current'],
-                            })
-                result['options'].append({
-                        'header': self.translate(_('Score System')),
-                        'options': scoresystem_options,
-                        })
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
-        encoder = flourish.tal.JSONEncoder()
-        json = encoder.encode(result)
-        return json
+            result['options'] = self.options(column_id)
+        return result
 
     # XXX: Copied (and modified) from the gradebook view
     @property

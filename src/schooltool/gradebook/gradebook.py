@@ -233,8 +233,8 @@ class GradebookBase(object):
         activity = self._checkActivity(activity)
         evaluations = requirement.interfaces.IEvaluations(student)
         evaluation = evaluations.get(activity, None)
-        if (evaluation is None or
-            evaluation.value is UNSCORED):
+        if not (evaluation is None or
+                evaluation.value is UNSCORED):
             return True
         return False
 
@@ -404,7 +404,7 @@ class GradebookBase(object):
         activities = self.getCurrentActivities(person)
         for activity, evaluation in evaluations.items():
             if (activity in activities and
-                evaluation.score is not UNSCORED):
+                evaluation.value is not UNSCORED):
                 yield activity, evaluation
 
     def getEvaluationsForStudent(self, student):
@@ -413,7 +413,7 @@ class GradebookBase(object):
         evaluations = requirement.interfaces.IEvaluations(student)
         for activity, evaluation in evaluations.items():
             if (activity in self.activities and
-                evaluation.score is not UNSCORED):
+                evaluation.value is not UNSCORED):
                 yield activity, evaluation
 
     def getEvaluationsForActivity(self, activity):
