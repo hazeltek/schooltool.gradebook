@@ -1288,9 +1288,9 @@ class MyGradesView(SectionFinder):
 
         self.table = []
         count = 0
-        for activity in self.context.getCurrentActivities(self.person):
+        for activity in gradebook.getCurrentActivities(self.person):
             activity = proxy.removeSecurityProxy(activity)
-            score = self.context.getScore(self.person, activity)
+            score = gradebook.getScore(self.person, activity)
 
             if score:
                 if ICommentScoreSystem.providedBy(score.scoreSystem):
