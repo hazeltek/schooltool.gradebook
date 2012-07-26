@@ -488,7 +488,8 @@ class StudentGradebookFormAdapter(object):
         gradebook = self.context.gradebook
         student = self.context.student
         activity = self.context.activities[name]
-        evaluator = None # XXX: WHY???
+        # XXX: hack to receive the evaluator from the form
+        evaluator = removeSecurityProxy(self.context).evaluator
         try:
             if value is None or value == '':
                 score = gradebook.getScore(student, activity)

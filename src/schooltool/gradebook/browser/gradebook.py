@@ -1648,6 +1648,9 @@ class GradeStudent(z3cform.EditForm):
 
     def update(self):
         self.person = IPerson(self.request.principal)
+        # XXX: hack to pass the evaluator to the form adapter
+        gradebook = proxy.removeSecurityProxy(self.context)
+        gradebook.evaluator = getName(self.person)
         for index, activity in enumerate(self.getFilteredActivities()):
             if interfaces.ILinkedColumnActivity.providedBy(activity):
                 continue
