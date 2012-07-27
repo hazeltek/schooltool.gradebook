@@ -36,7 +36,7 @@
         </td>
         <td>
           <tal:block condition="python:grade['time'] is not None">
-            <span tal:content="grade/date/@@fullDate|nothing" />
+            <span tal:content="grade/date/@@mediumDate|nothing" />
             -
             <span tal:content="grade/time|nothing" />
           </tal:block>
