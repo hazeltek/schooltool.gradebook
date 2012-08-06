@@ -146,7 +146,7 @@ class Evaluations(persistent.Persistent, Contained):
         if self._history is None:
             return []
         key = IKeyReference(requirement)
-        history = self._history.get(key, [])
+        history = list(self._history.get(key, []))
         return history
 
     def addEvaluation(self, evaluation):
