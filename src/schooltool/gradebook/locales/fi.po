@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-16 18:31+0200\n"
-"PO-Revision-Date: 2012-03-24 16:22+0000\n"
+"POT-Creation-Date: 2012-04-18 17:14+0300\n"
+"PO-Revision-Date: 2012-06-28 21:33+0000\n"
 "Last-Translator: Aleksi Kinnunen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-25 05:57+0000\n"
-"X-Generator: Launchpad (build 14981)\n"
+"X-Launchpad-Export-Date: 2012-06-29 05:03+0000\n"
+"X-Generator: Launchpad (build 15505)\n"
 "Language: fi\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -256,7 +256,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/activity.py:856
 #: /src/schooltool/gradebook/browser/activity.py:938
 msgid "Average"
-msgstr ""
+msgstr "Keskiarvo"
 
 #: /src/schooltool/gradebook/browser/activity.py:895
 msgid "Add Linked Column"
@@ -698,8 +698,29 @@ msgid ""
 "and term."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:806
-#: /src/schooltool/gradebook/browser/pdf_views.py:685
+#: /src/schooltool/gradebook/browser/flourish.zcml:864
+msgid ""
+"Export report card data for every student in every section for the term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:864
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+msgid "Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+msgid ""
+"Export report card data for every student in every section for the school .  "
+"                   There will be one worksheet for each term in the year."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/report.zcml:63
+msgid "School Year"
+msgstr "Lukuvuosi"
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:931
+#: /src/schooltool/gradebook/browser/pdf_views.py:724
 msgid "Absences"
 msgstr "Poissaolot"
 
@@ -773,27 +794,27 @@ msgstr "Yht."
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:259
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:285
 msgid "Ave."
-msgstr "Keskiarvo"
+msgstr "Kskarvo"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:90
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:208
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
 msgid "Abs."
-msgstr ""
+msgstr "Pssolot"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:90
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:225
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:235
 msgid "Trd."
-msgstr ""
+msgstr "Myöh."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:246
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
 msgstr ""
-"Joitain tekemiäsi muutoksia ei ole tallennettu. Napsauta OK tallentaaksesi "
-"muutokset nyt tai PERUUTA jatkaaksesi tallentamatta."
+"Joitain tehtyjä muutoksia ei ole tallennettu. Tallenna muutokset nyt "
+"napsauttamalla OK tai jatka tallentamatta napsauttamalla Peruuta."
 
 #: /src/schooltool/gradebook/browser/gradebook.py:509
 msgid "Invalid scores (highlighted in red) were not saved."
@@ -985,21 +1006,17 @@ msgstr "Poissaolot päivittäin"
 msgid "Lists students absent on a given day."
 msgstr "Luettelo oppilaiden poissaoloista pyydettynä päivänä."
 
-#: /src/schooltool/gradebook/browser/report.zcml:63
-msgid "School Year"
-msgstr "Lukuvuosi"
-
 #: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Absences by Section"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:66
 msgid "Absent"
-msgstr ""
+msgstr "Poissaolo"
 
 #: /src/schooltool/gradebook/browser/report_card.py:67
 msgid "Tardy"
-msgstr ""
+msgstr "Myöhästynyt"
 
 #: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
@@ -1043,27 +1060,27 @@ msgstr "Pisteytysjärjestelmä"
 msgid "Choose an existing score system or use range below"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:410
+#: /src/schooltool/gradebook/browser/report_card.py:574
 #: /src/schooltool/requirement/browser/scoresystem.py:235
 #: /src/schooltool/requirement/interfaces.py:151
-msgid "Minimum"
-msgstr "Minimi"
-
-#: /src/schooltool/gradebook/browser/report_card.py:411
-msgid "Lowest integer score value possible"
-msgstr "Alhaisin mahdollinen pistemäärä"
-
-#: /src/schooltool/gradebook/browser/report_card.py:416
-#: /src/schooltool/requirement/browser/scoresystem.py:235
-#: /src/schooltool/requirement/interfaces.py:157
 msgid "Maximum"
 msgstr "Maksimi"
 
-#: /src/schooltool/gradebook/browser/report_card.py:417
+#: /src/schooltool/gradebook/browser/report_card.py:575
 msgid "Highest integer score value possible"
 msgstr "Korkein mahdollinen pistemäärä"
 
-#: /src/schooltool/gradebook/browser/report_card.py:485
+#: /src/schooltool/gradebook/browser/report_card.py:580
+#: /src/schooltool/requirement/browser/scoresystem.py:235
+#: /src/schooltool/requirement/interfaces.py:157
+msgid "Minimum"
+msgstr "Minimi"
+
+#: /src/schooltool/gradebook/browser/report_card.py:581
+msgid "Lowest integer score value possible"
+msgstr "Alhaisin mahdollinen pistemäärä"
+
+#: /src/schooltool/gradebook/browser/report_card.py:649
 msgid "Add new report activity"
 msgstr ""
 

@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2012-04-18 17:14+0300\n"
+"POT-Creation-Date: 2012-08-07 16:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -702,7 +702,7 @@ msgid "Report Sheets"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:890
-msgid "Export report card data for every student in every section for the school .                     There will be one worksheet for each term in the year."
+msgid "Export report card data for every student in every section for the school. There will be one worksheet for each term in the year."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:890

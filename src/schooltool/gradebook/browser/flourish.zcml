@@ -893,8 +893,7 @@
        layer="schooltool.skin.flourish.IFlourishLayer"
        permission="schooltool.edit"
        group="School Year"
-       description="Export report card data for every student in every section for the school .
-                    There will be one worksheet for each term in the year."
+       description="Export report card data for every student in every section for the school. There will be one worksheet for each term in the year."
        title="Report Sheets"
        file_type="xls"
        link="request_report_sheets_export.html"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-03-16 18:31+0200\n"
-"PO-Revision-Date: 2012-03-21 22:39+0000\n"
-"Last-Translator: Roberto Vasconcelos Novaes <rvnovaes@gmail.com>\n"
+"POT-Creation-Date: 2012-04-18 17:14+0300\n"
+"PO-Revision-Date: 2012-05-21 12:32+0000\n"
+"Last-Translator: Adriano Steffler <Unknown>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-22 06:17+0000\n"
-"X-Generator: Launchpad (build 14981)\n"
+"X-Launchpad-Export-Date: 2012-05-24 12:04+0000\n"
+"X-Generator: Launchpad (build 15288)\n"
 "Language: \n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -705,8 +705,33 @@ msgstr ""
 "Exibe todos os alunos que foram reprovados na atividade de relatório e no "
 "termo selecionados."
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:806
-#: /src/schooltool/gradebook/browser/pdf_views.py:685
+#: /src/schooltool/gradebook/browser/flourish.zcml:864
+msgid ""
+"Export report card data for every student in every section for the term."
+msgstr ""
+"Exportar cartões de dados de relatórios para todos os alunos em todas as "
+"seções para o período escolar."
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:864
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+msgid "Report Sheets"
+msgstr "Fichas de relatórios"
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+msgid ""
+"Export report card data for every student in every section for the school. "
+"There will be one worksheet for each term in the year."
+msgstr ""
+"Exportar cartões de dados de relatórios para todos os alunos em todas as "
+"seções para a escola. Haverá uma planilha para cada período escolar do ano."
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/report.zcml:63
+msgid "School Year"
+msgstr "Ano Escolar"
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:931
+#: /src/schooltool/gradebook/browser/pdf_views.py:724
 msgid "Absences"
 msgstr "Faltas"
 
@@ -996,10 +1021,6 @@ msgstr "Faltas por Dia"
 msgid "Lists students absent on a given day."
 msgstr "Listar os alunos faltosos de um dia"
 
-#: /src/schooltool/gradebook/browser/report.zcml:63
-msgid "School Year"
-msgstr "Ano Escolar"
-
 #: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Absences by Section"
 msgstr "Faltas por turma"
@@ -1054,27 +1075,27 @@ msgstr "Sistema de Notas"
 msgid "Choose an existing score system or use range below"
 msgstr "Escolha um sistema de notas já existente ou user a escala abaixo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:410
+#: /src/schooltool/gradebook/browser/report_card.py:574
 #: /src/schooltool/requirement/browser/scoresystem.py:235
 #: /src/schooltool/requirement/interfaces.py:151
-msgid "Minimum"
-msgstr "Mínimo"
-
-#: /src/schooltool/gradebook/browser/report_card.py:411
-msgid "Lowest integer score value possible"
-msgstr "Menor nota possível"
-
-#: /src/schooltool/gradebook/browser/report_card.py:416
-#: /src/schooltool/requirement/browser/scoresystem.py:235
-#: /src/schooltool/requirement/interfaces.py:157
 msgid "Maximum"
 msgstr "Máximo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:417
+#: /src/schooltool/gradebook/browser/report_card.py:575
 msgid "Highest integer score value possible"
 msgstr "Mair nota possível"
 
-#: /src/schooltool/gradebook/browser/report_card.py:485
+#: /src/schooltool/gradebook/browser/report_card.py:580
+#: /src/schooltool/requirement/browser/scoresystem.py:235
+#: /src/schooltool/requirement/interfaces.py:157
+msgid "Minimum"
+msgstr "Mínimo"
+
+#: /src/schooltool/gradebook/browser/report_card.py:581
+msgid "Lowest integer score value possible"
+msgstr "Menor nota possível"
+
+#: /src/schooltool/gradebook/browser/report_card.py:649
 msgid "Add new report activity"
 msgstr "Adicionar nova atividade de relatório"
 
@@ -1648,11 +1669,11 @@ msgstr "Este relatório não possui colunas na planilha"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
 msgid "Outline Items"
-msgstr ""
+msgstr "Destacar itens"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
 msgid "This report has no outline items."
-msgstr ""
+msgstr "O relatório não tem itens delineados."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
@@ -1713,6 +1734,8 @@ msgid ""
 "If you deploy the same template multiple times in the same term, give each "
 "deployment an easily distinguishable name."
 msgstr ""
+"Se você for implantar o mesmo modelo várias vezes no mesmo período escolar, "
+"dê a cada implantação um nome facilmente distinguível."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "The first step in the process is to ${add-sheet}"
@@ -1802,7 +1825,7 @@ msgstr "Atividade de Relatório"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
 msgid "There are no report activities."
-msgstr ""
+msgstr "Não há atividades de relatório."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
