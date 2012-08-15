@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-16 18:31+0200\n"
+"POT-Creation-Date: 2012-04-18 17:14+0300\n"
 "PO-Revision-Date: 2012-03-25 17:24+0000\n"
 "Last-Translator: Douglas Cerna <douglascerna@yahoo.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-03-26 05:12+0000\n"
-"X-Generator: Launchpad (build 15008)\n"
+"X-Launchpad-Export-Date: 2012-04-19 04:59+0000\n"
+"X-Generator: Launchpad (build 15108)\n"
 "Language: \n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -708,8 +708,29 @@ msgstr ""
 "Muestra todos los estudiantes que reprueban la actividad de reporte "
 "seleccionada en el período."
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:806
-#: /src/schooltool/gradebook/browser/pdf_views.py:685
+#: /src/schooltool/gradebook/browser/flourish.zcml:864
+msgid ""
+"Export report card data for every student in every section for the term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:864
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+msgid "Report Sheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+msgid ""
+"Export report card data for every student in every section for the school .  "
+"                   There will be one worksheet for each term in the year."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/report.zcml:63
+msgid "School Year"
+msgstr "Año Escolar"
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:931
+#: /src/schooltool/gradebook/browser/pdf_views.py:724
 msgid "Absences"
 msgstr "Ausencias"
 
@@ -1000,10 +1021,6 @@ msgstr "Ausencias por día"
 msgid "Lists students absent on a given day."
 msgstr "Lista los estudiantes ausentes en un día determinado."
 
-#: /src/schooltool/gradebook/browser/report.zcml:63
-msgid "School Year"
-msgstr "Año Escolar"
-
 #: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Absences by Section"
 msgstr "Ausencias por Sección"
@@ -1058,27 +1075,27 @@ msgstr "Sistema de puntuación"
 msgid "Choose an existing score system or use range below"
 msgstr "Escoja un sistema de notas existente o use el rango de abajo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:410
+#: /src/schooltool/gradebook/browser/report_card.py:574
 #: /src/schooltool/requirement/browser/scoresystem.py:235
 #: /src/schooltool/requirement/interfaces.py:151
-msgid "Minimum"
-msgstr "Mínimo"
-
-#: /src/schooltool/gradebook/browser/report_card.py:411
-msgid "Lowest integer score value possible"
-msgstr "Valor entero de nota más bajo posible"
-
-#: /src/schooltool/gradebook/browser/report_card.py:416
-#: /src/schooltool/requirement/browser/scoresystem.py:235
-#: /src/schooltool/requirement/interfaces.py:157
 msgid "Maximum"
 msgstr "Máximo"
 
-#: /src/schooltool/gradebook/browser/report_card.py:417
+#: /src/schooltool/gradebook/browser/report_card.py:575
 msgid "Highest integer score value possible"
 msgstr "Valor entero de nota más alto posible"
 
-#: /src/schooltool/gradebook/browser/report_card.py:485
+#: /src/schooltool/gradebook/browser/report_card.py:580
+#: /src/schooltool/requirement/browser/scoresystem.py:235
+#: /src/schooltool/requirement/interfaces.py:157
+msgid "Minimum"
+msgstr "Mínimo"
+
+#: /src/schooltool/gradebook/browser/report_card.py:581
+msgid "Lowest integer score value possible"
+msgstr "Valor entero de nota más bajo posible"
+
+#: /src/schooltool/gradebook/browser/report_card.py:649
 msgid "Add new report activity"
 msgstr "Añadir nueva actividad de reporte"
 

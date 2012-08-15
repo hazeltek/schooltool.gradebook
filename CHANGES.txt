@@ -2,11 +2,37 @@
 CHANGES
 =======
 
-2.1.1 (unreleased)
+2.2.1 (unreleased)
 ------------------
 
-- Fix a rare failure when upgrading from gradebook <= 0.9.0 (LP: #995615)
+- Nothing changed yet.
+
+
+2.2.0 (2012-08-08)
+------------------
+
+Features
+++++++++
+
+- Gradebook refactoring
+- New style for worksheet tabs that allows for many sheets and long titles
+- Hide sidebar button
+- Score history
+- Updated translations
+
+Bugfixes
+++++++++
+
+- Text area smaller than cell (https://launchpad.net/bugs/921750)
+- Red cells don't revert to green (https://launchpad.net/bugs/921694)
+- Fix a rare failure when upgrading from gradebook <= 0.9.0 (https://launchpad.net/bugs/995615)
 - Report Layout displays a server error (https://launchpad.net/bugs/1008176)
+- Set short spreadsheet names in Gradebook Export xls (https://launchpad.net/bugs/1024814)
+
+Developer tools
++++++++++++++++
+
+- Selenium tests and testing extensions
 
 
 2.1.0 (2012-04-18)
