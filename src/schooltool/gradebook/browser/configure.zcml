@@ -503,7 +503,7 @@
       name="gradebook.pdf"
       for="..interfaces.IGradebook"
       class=".pdf_views.GradebookPDFView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <!-- Student Gradebook -->

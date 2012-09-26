@@ -553,6 +553,13 @@ class FlourishActivityEditView(flourish.form.Form,
     def handle_cancel_action(self, action):
         self.request.response.redirect(self.nextURL())
 
+    def nextURL(self):
+        next = self.request.get('nexturl')
+        if next:
+            return next
+        worksheet = self.context.__parent__
+        return absoluteURL(worksheet, self.request) + '/gradebook'
+
 
 class LinkedActivityEditView(z3cform.EditForm):
     """Edit form for linked activity."""
