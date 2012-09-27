@@ -1241,7 +1241,7 @@
       class="schooltool.report.browser.report.ReportsLinks"
       title="Reports"
       view=".gradebook.FlourishGradebookOverview"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <report:reportLink
@@ -1262,7 +1262,7 @@
       view=".gradebook.FlourishGradebookOverview"
       class=".gradebook.GradebookExportViewlet"
       layer="schooltool.skin.flourish.IFlourishLayer"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       group="Section"
       description="A single Excel-formatted spreadsheet containing all the worksheets for this gradebook."
       title="Gradebook Export"
@@ -1274,14 +1274,14 @@
       name="request_printable_worksheet.html"
       for="schooltool.gradebook.interfaces.IGradebook"
       class=".request_reports.FlourishRequestPrintableWorksheetView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <flourish:page
       name="request_gradebook_export.html"
       for="schooltool.gradebook.interfaces.IGradebook"
       class=".request_reports.FlourishRequestGradebookExportView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <!-- Popup views -->

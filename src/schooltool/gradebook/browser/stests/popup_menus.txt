@@ -587,9 +587,28 @@ Now, let's bring the Quiz2 activity to the left:
     | Richter, Claudia |       | 101  | 51  |     | Good |
     +------------------+-------+------+-----+-----+------+
 
-Activities can be deleted:
+Activities can be edited:
 
     >>> stephan.query.link('HW2').click()
+    >>> stephan.query.link('Edit').click()
+    >>> stephan.query.id('form-widgets-label').ui.set_value('HW-2')
+    >>> stephan.query.id('form-buttons-apply').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+------+------+
+    | Name             | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
+    |                  | 100   | 100  | 50  | 100  |      |
+    +------------------+-------+------+-----+------+------+
+    | Carduner, Paul   |       | 90   | 40  |      | Good |
+    | Hoffman, Tom     |       | 88   | 48  |      | Good |
+    | Richter, Claudia |       | 101  | 51  |      | Good |
+    +------------------+-------+------+-----+------+------+
+
+Activities can be deleted:
+
+    >>> stephan.query.link('HW-2').click()
     >>> stephan.query.link('Delete').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
