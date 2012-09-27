@@ -56,6 +56,7 @@ from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
 from schooltool.gradebook.activity import Worksheet
+from schooltool.gradebook.gradebook import canAverage
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -860,7 +861,8 @@ class LinkedColumnBase(BrowserView):
                             }
                         results.append(result)
                         term_disp = section_disp = ws_disp = ''
-                    if len(activities):
+                    if len(activities) and canAverage(worksheet,
+                                                      self.currentWorksheet):
                         result = {
                             'term': '',
                             'section': '',

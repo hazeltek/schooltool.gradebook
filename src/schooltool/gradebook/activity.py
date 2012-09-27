@@ -103,7 +103,7 @@ def getSourceObj(source):
 
     if act_hash == 'ave':
         return worksheet
-    for activity in worksheet.values():
+    for key, activity in worksheet.items():
         if act_hash == unicode(hash(IKeyReference(activity))):
             return activity
     return None
