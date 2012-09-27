@@ -194,6 +194,22 @@ def getWorksheetAverageScore(evaluatee, worksheet):
     return score
 
 
+def canAverage(worksheet, containing=None):
+    if containing is None:
+        containing = worksheet
+    for activity in worksheet.values():
+        linked_act = interfaces.ILinkedColumnActivity(activity, None)
+        if linked_act is not None:
+            source = getSourceObj(linked_act.source)
+            linked_ws = interfaces.IWorksheet(source, None)
+            if linked_ws is not None:
+                linked_ws = proxy.removeSecurityProxy(linked_ws)
+                if (linked_ws is proxy.removeSecurityProxy(containing) or
+                    not canAverage(linked_ws, containing)):
+                    return False
+    return True
+
+
 class GradebookBase(object):
     def __init__(self, context):
         self.context = context
@@ -287,8 +303,9 @@ class GradebookBase(object):
                 return ss.min, ss.max, score.value
             return None, None, None
 
-        if worksheet is None:
+        if worksheet is None or not canAverage(worksheet):
             return 0, UNSCORED
+
         # XXX: move this to gradebook adapter for GenericWorksheet
         weights = None
         if hasattr(worksheet, 'getCategoryWeights'):
