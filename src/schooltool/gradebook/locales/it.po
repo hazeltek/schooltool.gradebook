@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
-"POT-Creation-Date: 2012-04-18 17:14+0300\n"
+"POT-Creation-Date: 2012-08-08 18:34+0300\n"
 "PO-Revision-Date: 2012-08-13 12:34+0000\n"
 "Last-Translator: Andrea Bernini <andrea.bernini@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -602,7 +602,11 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:344
+#: /src/schooltool/gradebook/browser/flourish.zcml:382
+msgid "Scores"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:396
 msgid "Edit Category Weights"
 msgstr ""
 
@@ -707,8 +711,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:890
 msgid ""
-"Export report card data for every student in every section for the school .  "
-"                   There will be one worksheet for each term in the year."
+"Export report card data for every student in every section for the school. "
+"There will be one worksheet for each term in the year."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:890
@@ -793,19 +797,19 @@ msgstr "Totale"
 msgid "Ave."
 msgstr "Med."
 
-#: /src/schooltool/gradebook/browser/gradebook.py:90
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:208
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
-msgid "Abs."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:90
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:225
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:235
+#: /src/schooltool/gradebook/browser/gradebook.py:94
+#: /src/schooltool/gradebook/browser/gradebook.py:2443
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:88
 msgid "Trd."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:246
+#: /src/schooltool/gradebook/browser/gradebook.py:94
+#: /src/schooltool/gradebook/browser/gradebook.py:2444
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:84
+msgid "Abs."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:264
 msgid ""
 "You have some changes that have not been saved.  Click OK to save now or "
 "CANCEL to continue without saving."
@@ -821,7 +825,12 @@ msgstr "I punteggi invalidi (evidenziati in rosso) non sono stati salvati"
 msgid "N/A"
 msgstr "Non disponibile"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:804
+#: /src/schooltool/gradebook/browser/gradebook.py:822
+#: /src/schooltool/gradebook/interfaces.py:394
+msgid "Points"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:834
 msgid "No Visible Worksheets"
 msgstr ""
 
@@ -859,13 +868,146 @@ msgstr "Inserire i voti per ${fullname}"
 msgid "Enter grade details below"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:1747
+#: /src/schooltool/gradebook/browser/gradebook.py:1815
+msgid "${worksheet} grade history for ${student}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:1857
+#: /src/schooltool/gradebook/browser/gradebook.py:1890
+msgid "Removed score"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:1945
 msgid "$worksheet for $student in $section"
 msgstr "$foglio di lavoro per lo $studente nella $sezione"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:1790
 msgid "${section} grades for ${worksheet}"
 msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2191
+msgid "Score this"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2196
+msgid "Fill down"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2201
+#: /src/schooltool/gradebook/browser/gradebook.py:2357
+#: /src/schooltool/gradebook/browser/gradebook.py:2454
+msgid "Sort by"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2206
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:9
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:31
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:34
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:12
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:29
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:32
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:15
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:31
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:34
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:51
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:67
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:70
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:12
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:29
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:32
+#: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:18
+#: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
+msgid "Delete"
+msgstr "Elimina"
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2211
+msgid "Move left"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2216
+msgid "Move right"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2221
+msgid "Update grades"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2323
+#: /src/schooltool/gradebook/browser/pdf_views.py:507
+#: /src/schooltool/gradebook/browser/pdf_views.py:661
+#: /src/schooltool/gradebook/browser/pdf_views.py:721
+#: /src/schooltool/gradebook/browser/pdf_views.py:845
+#: /src/schooltool/gradebook/browser/report.zcml:10
+#: /src/schooltool/gradebook/browser/report.zcml:20
+msgid "Student"
+msgstr "Studente"
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2331
+msgid "Score History"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2335
+msgid "Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2364
+msgid "Show Total"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2369
+msgid "Hide Total"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2374
+msgid "Show Ave."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2379
+msgid "Hide Ave."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2385
+msgid "Show Abs."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2390
+msgid "Hide Abs."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2395
+msgid "Show Trd."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2400
+msgid "Hide Trd."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2410
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:24
+#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:37
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:130
+msgid "Name"
+msgstr "Nome"
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2450
+#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
+#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:39
+#: /src/schooltool/requirement/browser/flourish.zcml:126
+#: /src/schooltool/requirement/browser/scoresystem.py:515
+msgid "Hide"
+msgstr "Nascondere"
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2467
+#: /src/schooltool/gradebook/browser/report_card.py:568
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:11
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
+#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:22
+#: /src/schooltool/requirement/browser/flourish.zcml:109
+#: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
+#: /src/schooltool/requirement/interfaces.py:171
+msgid "Score System"
+msgstr "Sistema di punteggio"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:209
 msgid "Report Card: ${schoolyear}"
@@ -925,17 +1067,8 @@ msgid "The following students are at risk of failing the following courses:"
 msgstr ""
 "I seguenti studenti sono a rischio di non superare le seguenti materie:"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:477
-#: /src/schooltool/gradebook/browser/pdf_views.py:627
-#: /src/schooltool/gradebook/browser/pdf_views.py:682
-#: /src/schooltool/gradebook/browser/pdf_views.py:805
-#: /src/schooltool/gradebook/browser/report.zcml:10
-#: /src/schooltool/gradebook/browser/report.zcml:20
-msgid "Student"
-msgstr "Studente"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:480
-#: /src/schooltool/gradebook/browser/pdf_views.py:669
+#: /src/schooltool/gradebook/browser/pdf_views.py:510
+#: /src/schooltool/gradebook/browser/pdf_views.py:708
 msgid "Course"
 msgstr "Materia"
 
@@ -1041,17 +1174,7 @@ msgstr ""
 msgid "-- Use range below --"
 msgstr "-- Usare intervallo sottostante --"
 
-#: /src/schooltool/gradebook/browser/report_card.py:404
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:251
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:10
-#: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:22
-#: /src/schooltool/requirement/browser/flourish.zcml:91
-#: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
-#: /src/schooltool/requirement/interfaces.py:171
-msgid "Score System"
-msgstr "Sistema di punteggio"
-
-#: /src/schooltool/gradebook/browser/report_card.py:405
+#: /src/schooltool/gradebook/browser/report_card.py:569
 msgid "Choose an existing score system or use range below"
 msgstr ""
 "Scegli un sistema di punteggio esistente oppure usa un intervallo sottostante"
@@ -1159,21 +1282,10 @@ msgstr ""
 msgid "Request Detailed Student Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:194
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:211
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:228
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:245
-#: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:39
-#: /src/schooltool/requirement/browser/flourish.zcml:108
-#: /src/schooltool/requirement/browser/scoresystem.py:515
-msgid "Hide"
-msgstr "Nascondere"
-
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
-#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:24
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:25
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:21
-#: /src/schooltool/gradebook/interfaces.py:138
+#: /src/schooltool/gradebook/interfaces.py:184
 msgid "Label"
 msgstr "Etichetta"
 
@@ -1277,21 +1389,11 @@ msgid ""
 "External score sources must be configured by your system administrator"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:7
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
 msgid "Default"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:8
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:30
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:33
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:128
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:28
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:31
-#: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:18
-msgid "Delete"
-msgstr "Elimina"
-
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:15
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:16
 msgid "Edit this category"
 msgstr ""
 
@@ -1312,12 +1414,6 @@ msgstr ""
 #: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
 msgid "Done"
 msgstr "Completato"
-
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:11
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
-#: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
-msgid "Delete?"
-msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
@@ -1376,13 +1472,13 @@ msgid ""
 "distinguishable name."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:48
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:83
-#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:37
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:130
-msgid "Name"
-msgstr "Nome"
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
+msgid "Fill empty cells"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:15
+msgid "Choose a grade to apply to all the students in the gradebook column."
+msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:59
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
@@ -1401,95 +1497,25 @@ msgstr ""
 msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:22
-msgid "Choose a grade to apply to all the students in the gradebook column."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:85
-msgid "Fill empty cells"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:128
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:222
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:299
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:316
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:333
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:350
-msgid "Sort by"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:44
-msgid "Show Total"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:47
-msgid "Hide Total"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:50
-msgid "Show Ave."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:53
-msgid "Hide Ave."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:58
-msgid "Show Abs."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:61
-msgid "Hide Abs."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:64
-msgid "Show Trd."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:67
-msgid "Hide Trd."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:78
-#: /src/schooltool/gradebook/interfaces.py:349
-msgid "Points"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:95
-msgid "Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
-msgid "Score this"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:218
-msgid "Fill down"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:230
-msgid "Move left"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:136
-msgid "Move right"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:140
-msgid "Update grades"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:257
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:117
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:247
 msgid "S"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:257
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:117
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:247
 msgid "Shortcut: Alt-S"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:310
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:122
+msgid "Expand"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
+msgid "Collapse"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:130
 msgid "Zoom Out"
 msgstr ""
 
@@ -1757,7 +1783,21 @@ msgstr ""
 msgid "Select a year or term"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:5
+msgid "${student_name} was never scored in this worksheet."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:14
+msgid "Evaluator"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:15
+#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
+#: /src/schooltool/gradebook/interfaces.py:204
+msgid "Date"
+msgstr "Data"
+
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:6
 msgid "Report Activities"
 msgstr ""
 
@@ -1988,11 +2028,6 @@ msgid ""
 "A report sheet template defines the activities to be included in a report "
 "sheet deployed to each section in a term or year."
 msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
-#: /src/schooltool/gradebook/interfaces.py:159
-msgid "Date"
-msgstr "Data"
 
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:28
 msgid ""
@@ -2472,12 +2507,3 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr ""
-
-#~ msgid ""
-#~ "Your browser either has Javascript turned off, or it is not supported. "
-#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
-#~ "use a browser with Javascript."
-#~ msgstr ""
-#~ "Il tuo browser o non ha Javascript acceso, o non è supportato. Javascript è "
-#~ "<b>richiesto</b> per il registro dei voti. Per favore abilita Javascript o "
-#~ "usa un browser con Javascript."
