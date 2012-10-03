@@ -5,7 +5,8 @@ CHANGES
 2.2.1 (unreleased)
 ------------------
 
-- recusion error in gradebook (https://launchpad.net/bugs/1052931)
+- Recursion error in gradebook (https://launchpad.net/bugs/1052931)
+- Fixed Edit Activity submit
 
 
 2.2.0 (2012-08-08)
@@ -40,6 +41,7 @@ Developer tools
 
 - Report sheets XLS export (https://launchpad.net/bugs/976757)
 - Period order in attendance report incorrect (https://launchpad.net/bugs/932508)
+- Add a link to Student in student's popup menu (https://launchpad.net/bugs/919388)
 - Round the score in student gradebook (https://launchpad.net/bugs/950531)
 - Refactor worksheets to separate activities and enable different kinds of
   worksheets.
