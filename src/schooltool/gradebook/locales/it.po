@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "POT-Creation-Date: 2012-04-18 17:14+0300\n"
-"PO-Revision-Date: 2012-04-18 18:23+0000\n"
-"Last-Translator: Giuseppe Terrasi <Unknown>\n"
+"PO-Revision-Date: 2012-08-13 12:34+0000\n"
+"Last-Translator: Andrea Bernini <andrea.bernini@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-04-19 04:58+0000\n"
-"X-Generator: Launchpad (build 15108)\n"
+"X-Launchpad-Export-Date: 2012-08-14 05:18+0000\n"
+"X-Generator: Launchpad (build 15791)\n"
 "Language: it\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -32,7 +32,7 @@ msgstr "Attività"
 #: /src/schooltool/gradebook/activity.py:301
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:5
 msgid "Course Activities"
-msgstr ""
+msgstr "Attività del corso"
 
 #: /src/schooltool/gradebook/activity.py:317
 msgid "Deployed Worksheets"
@@ -126,16 +126,16 @@ msgstr "Titolo"
 
 #: /src/schooltool/gradebook/browser/activity.py:334
 msgid "Column Label"
-msgstr ""
+msgstr "Etichetta colonna"
 
 #: /src/schooltool/gradebook/browser/activity.py:335
 msgid "Limit to 5 characters or less."
-msgstr ""
+msgstr "Limite a 5 caratteri o meno."
 
 #: /src/schooltool/gradebook/browser/activity.py:339
 #: /src/schooltool/gradebook/interfaces.py:133
 msgid "Due Date"
-msgstr ""
+msgstr "Data di scadenza"
 
 #: /src/schooltool/gradebook/browser/activity.py:343
 #: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:20
@@ -172,10 +172,12 @@ msgstr ""
 msgid ""
 "This value must be an integer.  You may award extra credit above this value."
 msgstr ""
+"Questo valore deve essere un intero. Potresti guadagnare un credito extra "
+"sopra questo valore."
 
 #: /src/schooltool/gradebook/browser/activity.py:363
 msgid "Minimum Score"
-msgstr ""
+msgstr "Punteggio minimo"
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "This value must be an integer."
