@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-18 17:14+0300\n"
-"PO-Revision-Date: 2012-06-25 16:33+0000\n"
-"Last-Translator: Miguel de Dios <tres.14159@gmail.com>\n"
+"PO-Revision-Date: 2012-08-28 16:39+0000\n"
+"Last-Translator: Javier Nicolás <chapitron@hotmail.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-26 05:44+0000\n"
-"X-Generator: Launchpad (build 15482)\n"
+"X-Launchpad-Export-Date: 2012-08-29 05:28+0000\n"
+"X-Generator: Launchpad (build 15864)\n"
 "Language: es\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -130,7 +130,7 @@ msgstr "Etiqueta de columna"
 
 #: /src/schooltool/gradebook/browser/activity.py:335
 msgid "Limit to 5 characters or less."
-msgstr ""
+msgstr "Limitado a 5 caracteres o menos."
 
 #: /src/schooltool/gradebook/browser/activity.py:339
 #: /src/schooltool/gradebook/interfaces.py:133
@@ -179,7 +179,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "This value must be an integer."
-msgstr ""
+msgstr "Este valor debe ser un entero."
 
 #: /src/schooltool/gradebook/browser/activity.py:385
 #: /src/schooltool/gradebook/browser/activity.py:536
@@ -515,7 +515,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/course_worksheets.py:329
 #: /src/schooltool/gradebook/browser/report_card.py:290
 msgid "-- Select a template --"
-msgstr ""
+msgstr "-- Seleccione una plantilla --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:366
 msgid "Hide/unhide Deployed Worksheets for ${year}"
@@ -621,7 +621,7 @@ msgstr "Nueva Plantilla"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:538
 msgid "Action"
-msgstr ""
+msgstr "Acción"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:548
 msgid "Hide/unhide Sheets"
