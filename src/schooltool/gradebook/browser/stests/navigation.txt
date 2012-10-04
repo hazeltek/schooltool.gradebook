@@ -267,7 +267,9 @@ Section navigator. Sections are sorted alphabetically:
 Let's move Jeffrey to his Math Q2 section:
 
     >>> navigator = jeffrey.query_all.css('.refine .navigator')[0]
+    >>> page = jeffrey.query.tag('html')
     >>> navigator.ui.set_value('Math Q2')
+    >>> jeffrey.wait(lambda: page.expired)
     >>> print_navigators(jeffrey)
     Section: Math Q2
     Term: Q2
@@ -293,7 +295,9 @@ of the matching course (if any exists). For example, if Jeffrey
 selects Q3, he will be taken to the Math Q3 section:
 
     >>> navigator = jeffrey.query_all.css('.refine .navigator')[1]
+    >>> page = jeffrey.query.tag('html')
     >>> navigator.ui.set_value('Q3')
+    >>> jeffrey.wait(lambda: page.expired)
     >>> print_navigators(jeffrey)
     Section: Math Q3
     Term: Q3
@@ -304,7 +308,9 @@ was added to in that term, because there are no sections matching the
 Baseball course:
 
     >>> navigator = tom.query_all.css('.refine .navigator')[1]
+    >>> page = tom.query.tag('html')
     >>> navigator.ui.set_value('Q2')
+    >>> tom.wait(lambda: page.expired)
     >>> print_navigators(tom)
     Section: Soccer Q2
     Term: Q2
@@ -318,14 +324,18 @@ added in that year. Years are sorted chronologically:
     2013
 
     >>> navigator = jeffrey.query_all.css('.refine .navigator')[2]
+    >>> page = jeffrey.query.tag('html')
     >>> navigator.ui.set_value('2013')
+    >>> jeffrey.wait(lambda: page.expired)
     >>> print_navigators(jeffrey)
     Section: Math S2
     Term: S2
     Year: 2013
 
     >>> navigator = tom.query_all.css('.refine .navigator')[2]
+    >>> page = tom.query.tag('html')
     >>> navigator.ui.set_value('2013')
+    >>> tom.wait(lambda: page.expired)
     >>> print_navigators(tom)
     Section: Math S1
     Term: S1
@@ -341,7 +351,9 @@ its gradebook through the navigators:
     >>> manager.ui.section.instructors.remove('2012', 'Q3', 'Math Q3',
     ...                                       ['jeffrey'])
     >>> navigator = jeffrey.query_all.css('.refine .navigator')[2]
+    >>> page = jeffrey.query.tag('html')
     >>> navigator.ui.set_value('2012')
+    >>> jeffrey.wait(lambda: page.expired)
     >>> print_term_navigator(jeffrey)
     Q1
     *Q2*

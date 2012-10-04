@@ -49,19 +49,23 @@ def table_header(browser):
     for header in browser.query_all.css(sel):
         row1.append(header.text.strip())
     sel = '.grades thead a.popup_link'
-    for header in browser.query_all.css(sel):
-        row1.append(header.text.strip())
+    headers = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    row1.extend([header.text.strip() for header in headers])
     sel = '.totals thead a.popup_link'
-    for header in browser.query_all.css(sel):
-        row1.append(header.text.strip())
+    headers = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    row1.extend([header.text.strip() for header in headers])
     result.append(row1)
     row2 = ['']
-    sel = 'id("grades-part")//thead/tr[2]/th'
-    for header in browser.query_all.xpath(sel):
-        row2.append(header.text.strip())
-    sel = 'id("totals-part")//thead//th'
-    for header in browser.query_all.xpath(sel):
-        row2.append('')
+    sel = '#grades-part thead tr:nth-child(2) th'
+    headers = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    row2.extend([header.text.strip() for header in headers])
+    sel = '#totals-part thead th'
+    headers = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    row2.extend(['' for header in headers])
     result.append(row2)
     return result
 
@@ -69,14 +73,20 @@ def table_header(browser):
 def table_rows(browser, show_validation):
     rows = []
     sel = '.students tbody a.popup_link'
-    for student in browser.query_all.css(sel):
+    students = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    for student in students:
         rows.append([student.text.strip()])
     sel = '.grades tbody tr'
-    for index, row in enumerate(browser.query_all.css(sel)):
+    grade_rows = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    for index, row in enumerate(grade_rows):
         student = rows[index]
-        sel = 'td[not(contains(@class, "placeholder"))]'
-        for td in row.query_all.xpath(sel):
-            fields = td.query_all.tag('input')
+        tds = browser.driver.execute_script(
+            'return $(arguments[0]).find("td").not(".placeholder")', row)
+        for td in tds:
+            fields = browser.driver.execute_script(
+                'return $(arguments[0]).find("input")', td)
             if fields:
                 field = fields[0]
                 value = browser.driver.execute_script(
@@ -89,12 +99,15 @@ def table_rows(browser, show_validation):
                 value = td.text.strip()
             student.append(value)
     sel = '.totals tbody tr'
-    for index, row in enumerate(browser.query_all.css(sel)):
+    total_rows = browser.driver.execute_script(
+        'return $(arguments[0])', sel)
+    for index, row in enumerate(total_rows):
         student = rows[index]
-        for td in row.query_all.tag('td'):
+        tds = browser.driver.execute_script(
+            'return $(arguments[0]).find("td")', row)
+        for td in tds:
             student.append(td.text.strip())
     return rows
-
 
 def print_gradebook(browser, show_validation):
     print format_table([tertiary_navigation(browser)])
