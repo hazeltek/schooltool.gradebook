@@ -340,11 +340,11 @@ class GradebookBase(object):
                     continue
 
                 totals.setdefault(activity.category, Decimal(0))
-                totals[activity.category] += value - minimum
+                totals[activity.category] += value
                 average_totals.setdefault(activity.category, Decimal(0))
-                average_totals[activity.category] += (value - minimum)
+                average_totals[activity.category] += value
                 average_counts.setdefault(activity.category, Decimal(0))
-                average_counts[activity.category] += (maximum - minimum)
+                average_counts[activity.category] += maximum
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights and weights[category] is not None:
@@ -367,8 +367,8 @@ class GradebookBase(object):
                 minimum, maximum, value = getMinMaxValue(score)
                 if minimum is None:
                     continue
-                total += value - minimum
-                count += maximum - minimum
+                total += value
+                count += maximum
             if count:
                 return total, Decimal(100 * total) / Decimal(count)
             else:
