@@ -56,16 +56,16 @@ def evolve(context):
     apps = findObjectsProviding(root, ISchoolToolApplication)
     for app in apps:
         setSite(app)
+        site_manager = app.getSiteManager()
+
         if SCORESYSTEM_CONTAINER_KEY not in app:
             app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
-        scoresystems = app[SCORESYSTEM_CONTAINER_KEY]
-
-        site_manager = app.getSiteManager()
-        chooser = INameChooser(scoresystems)
-        utilities = list(site_manager.getUtilitiesFor(ICustomScoreSystem))
-        for key, util in utilities:
-            name = chooser.chooseName('', util)
-            scoresystems[name] = util
+            scoresystems = app[SCORESYSTEM_CONTAINER_KEY]
+            chooser = INameChooser(scoresystems)
+            utilities = list(site_manager.getUtilitiesFor(ICustomScoreSystem))
+            for key, util in utilities:
+                name = chooser.chooseName('', util)
+                scoresystems[name] = util
 
         removeUtils(site_manager, ICustomScoreSystem)
 
