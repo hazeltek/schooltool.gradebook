@@ -7,6 +7,7 @@ CHANGES
 
 - Recursion error in gradebook (https://launchpad.net/bugs/1052931)
 - Fixed Edit Activity submit
+- Updated translations
 - Total and Average calculation shouldn't use the minium score of the activity
   (https://launchpad.net/bugs/966426)
 
