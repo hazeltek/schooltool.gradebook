@@ -2,14 +2,14 @@
 CHANGES
 =======
 
-2.2.1 (unreleased)
+2.2.1 (2012-10-09)
 ------------------
 
-- Recursion error in gradebook (https://launchpad.net/bugs/1052931)
+- Cross linked sections break gradebook (https://launchpad.net/bugs/1052931)
 - Fixed Edit Activity submit
-- Updated translations
-- Total and Average calculation shouldn't use the minium score of the activity
+- Total and Average calculation shouldn't use the minimum score of the activity
   (https://launchpad.net/bugs/966426)
+- Updated translations
 
 
 2.2.0 (2012-08-08)
