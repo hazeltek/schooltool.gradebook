@@ -284,7 +284,9 @@ class GradebookBase(object):
         unscored = requirement.evaluation.Evaluation(
             activity, activity.scoresystem, UNSCORED, evaluator)
         # throw KeyError here, like "del evaluations[activity]" would have
-        unscored.previous = evaluations[activity]
+        previous = evaluations.get(activity)
+        if previous is not None:
+            unscored.previous = evaluations[activity]
         evaluations.addEvaluation(unscored)
 
     def getWorksheetActivities(self, worksheet):
