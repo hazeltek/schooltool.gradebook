@@ -45,7 +45,6 @@ def removeUtils(site_manager, provided):
     if not n_provided:
         return
 
-    assert n_provided == len(utilities)
     del site_manager.utilities._provided[provided]
     site_manager.utilities._v_lookup.remove_extendor(provided)
 
@@ -57,14 +56,16 @@ def evolve(context):
     apps = findObjectsProviding(root, ISchoolToolApplication)
     for app in apps:
         setSite(app)
-        scoresystems = app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
-
         site_manager = app.getSiteManager()
-        chooser = INameChooser(scoresystems)
-        utilities = list(site_manager.getUtilitiesFor(ICustomScoreSystem))
-        for key, util in utilities:
-            name = chooser.chooseName('', util)
-            scoresystems[name] = util
+
+        if SCORESYSTEM_CONTAINER_KEY not in app:
+            app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
+            scoresystems = app[SCORESYSTEM_CONTAINER_KEY]
+            chooser = INameChooser(scoresystems)
+            utilities = list(site_manager.getUtilitiesFor(ICustomScoreSystem))
+            for key, util in utilities:
+                name = chooser.chooseName('', util)
+                scoresystems[name] = util
 
         removeUtils(site_manager, ICustomScoreSystem)
 

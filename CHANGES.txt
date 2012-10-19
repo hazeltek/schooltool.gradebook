@@ -2,10 +2,59 @@
 CHANGES
 =======
 
-2.1.1 (unreleased)
+2.3.1 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+2.3.0 (2012-10-19)
+------------------
+
+- Fix score history when first grade is unscored
+- Complete Dutch translation.
+
+
+2.2.1 (2012-10-09)
+------------------
+
+- Total and Average calculation shouldn't use the minimum score of the activity
+  (https://launchpad.net/bugs/966426)
+
+
+2.2.0 (2012-08-08)
+------------------
+
+Features
+++++++++
+
+- Gradebook refactoring
+- New style for worksheet tabs that allows for many sheets and long titles
+- Hide sidebar button
+- Score history
+- Updated translations
+
+Bugfixes
+++++++++
+
+- Text area smaller than cell (https://launchpad.net/bugs/921750)
+- Red cells don't revert to green (https://launchpad.net/bugs/921694)
+
+Developer tools
++++++++++++++++
+
+- Selenium tests and testing extensions
+
+
+2.1.1 (2012-10-03)
+------------------
+
+- Cross linked sections break gradebook (https://launchpad.net/bugs/1052931)
+- Fixed Edit Activity submit
+- Fix a rare failure when upgrading from gradebook <= 0.9.0 (https://launchpad.net/bugs/995615)
+- Report Layout displays a server error (https://launchpad.net/bugs/1008176)
+- Set short spreadsheet names in Gradebook Export xls (https://launchpad.net/bugs/1024814)
+- Updated translations
 
 
 2.1.0 (2012-04-18)
@@ -13,6 +62,7 @@ CHANGES
 
 - Report sheets XLS export (https://launchpad.net/bugs/976757)
 - Period order in attendance report incorrect (https://launchpad.net/bugs/932508)
+- Add a link to Student in student's popup menu (https://launchpad.net/bugs/919388)
 - Round the score in student gradebook (https://launchpad.net/bugs/950531)
 - Refactor worksheets to separate activities and enable different kinds of
   worksheets.

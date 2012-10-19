@@ -1,3 +1,4 @@
+import stesting
 from zope.i18nmessageid import MessageFactory
 GradebookMessage = MessageFactory("schooltool.gradebook")
 

@@ -56,6 +56,7 @@ from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
 from schooltool.gradebook.activity import LinkedActivity, Activities
 from schooltool.gradebook.activity import Worksheet
+from schooltool.gradebook.gradebook import canAverage
 from schooltool.person.interfaces import IPerson
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
@@ -553,6 +554,13 @@ class FlourishActivityEditView(flourish.form.Form,
     def handle_cancel_action(self, action):
         self.request.response.redirect(self.nextURL())
 
+    def nextURL(self):
+        next = self.request.get('nexturl')
+        if next:
+            return next
+        worksheet = self.context.__parent__
+        return absoluteURL(worksheet, self.request) + '/gradebook'
+
 
 class LinkedActivityEditView(z3cform.EditForm):
     """Edit form for linked activity."""
@@ -734,18 +742,19 @@ class WorksheetsExportView(export.ExcelExportView):
     """A view for exporting worksheets to a XLS file"""
 
     def print_headers(self, ws, worksheet):
+        row = 2
         gradebook = interfaces.IGradebook(worksheet)
         activities = gradebook.getWorksheetActivities(worksheet)
         header_labels = ['ID', 'First name', 'Last name']
         header_labels.extend([activity.title for activity in activities])
         headers = [export.Header(label) for label in header_labels]
         for col, header in enumerate(headers):
-            self.write(ws, 0, col, header.data, **header.style)
+            self.write(ws, row, col, header.data, **header.style)
 
     def print_grades(self, ws, worksheet):
         gradebook = interfaces.IGradebook(worksheet)
         activities = gradebook.getWorksheetActivities(worksheet)
-        starting_row = 1
+        starting_row = 3
         students = sorted(gradebook.students,
                           key=lambda x:IDemographics(x).get('ID', ''))
         for row, student in enumerate(students):
@@ -762,9 +771,17 @@ class WorksheetsExportView(export.ExcelExportView):
             for col, cell in enumerate(cells):
                 self.write(ws, starting_row+row, col, cell.data, **cell.style)
 
+    def print_worksheet_header(self, ws, worksheet):
+        row = 0
+        headers = [export.Header('Worksheet'),
+                   export.Text(worksheet.title)]
+        for col, header in enumerate(headers):
+            self.write(ws, row, col, header.data, **header.style)
+
     def export_worksheets(self, wb):
-        for worksheet in self.context.values():
-            ws = wb.add_sheet(worksheet.title)
+        for i, worksheet in enumerate(self.context.values()):
+            ws = wb.add_sheet(str(i+1))
+            self.print_worksheet_header(ws, worksheet)
             self.print_headers(ws, worksheet)
             self.print_grades(ws, worksheet)
 
@@ -851,7 +868,8 @@ class LinkedColumnBase(BrowserView):
                             }
                         results.append(result)
                         term_disp = section_disp = ws_disp = ''
-                    if len(activities):
+                    if len(activities) and canAverage(worksheet,
+                                                      self.currentWorksheet):
                         result = {
                             'term': '',
                             'section': '',

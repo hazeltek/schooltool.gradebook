@@ -194,6 +194,22 @@ def getWorksheetAverageScore(evaluatee, worksheet):
     return score
 
 
+def canAverage(worksheet, containing=None):
+    if containing is None:
+        containing = worksheet
+    for activity in worksheet.values():
+        linked_act = interfaces.ILinkedColumnActivity(activity, None)
+        if linked_act is not None:
+            source = getSourceObj(linked_act.source)
+            linked_ws = interfaces.IWorksheet(source, None)
+            if linked_ws is not None:
+                linked_ws = proxy.removeSecurityProxy(linked_ws)
+                if (linked_ws is proxy.removeSecurityProxy(containing) or
+                    not canAverage(linked_ws, containing)):
+                    return False
+    return True
+
+
 class GradebookBase(object):
     def __init__(self, context):
         self.context = context
@@ -201,9 +217,9 @@ class GradebookBase(object):
         self.__parent__ = context
         self.section = self.context.__parent__.__parent__
         # Establish worksheets and all activities
-        activities = interfaces.IActivities(self.section)
-        ensureAtLeastOneWorksheet(activities)
-        self.worksheets = list(activities.values())
+        worksheets = interfaces.IActivities(self.section)
+        ensureAtLeastOneWorksheet(worksheets)
+        self.worksheets = list(worksheets.values())
         self.activities = []
         for activity in context.values():
             self.activities.append(activity)
@@ -231,7 +247,10 @@ class GradebookBase(object):
         """See interfaces.IGradebook"""
         student = self._checkStudent(student)
         activity = self._checkActivity(activity)
-        if activity in requirement.interfaces.IEvaluations(student):
+        evaluations = requirement.interfaces.IEvaluations(student)
+        evaluation = evaluations.get(activity, None)
+        if not (evaluation is None or
+                evaluation.value is UNSCORED):
             return True
         return False
 
@@ -252,14 +271,23 @@ class GradebookBase(object):
         evaluation = requirement.evaluation.Evaluation(
             activity, activity.scoresystem, score, evaluator)
         evaluations = requirement.interfaces.IEvaluations(student)
+        current = evaluations.get(activity)
+        if current is not None:
+            evaluation.previous = current
         evaluations.addEvaluation(evaluation)
 
-    def removeEvaluation(self, student, activity):
+    def removeEvaluation(self, student, activity, evaluator=None):
         """See interfaces.IGradebook"""
         student = self._checkStudent(student)
         activity = self._checkActivity(activity)
         evaluations = requirement.interfaces.IEvaluations(student)
-        del evaluations[activity]
+        unscored = requirement.evaluation.Evaluation(
+            activity, activity.scoresystem, UNSCORED, evaluator)
+        # throw KeyError here, like "del evaluations[activity]" would have
+        previous = evaluations.get(activity)
+        if previous is not None:
+            unscored.previous = evaluations[activity]
+        evaluations.addEvaluation(unscored)
 
     def getWorksheetActivities(self, worksheet):
         if worksheet:
@@ -277,9 +305,13 @@ class GradebookBase(object):
                 return ss.min, ss.max, score.value
             return None, None, None
 
-        if worksheet is None:
+        if worksheet is None or not canAverage(worksheet):
             return 0, UNSCORED
-        weights = worksheet.getCategoryWeights()
+
+        # XXX: move this to gradebook adapter for GenericWorksheet
+        weights = None
+        if hasattr(worksheet, 'getCategoryWeights'):
+            weights = worksheet.getCategoryWeights()
 
         # weight by categories
         if weights:
@@ -310,11 +342,11 @@ class GradebookBase(object):
                     continue
 
                 totals.setdefault(activity.category, Decimal(0))
-                totals[activity.category] += value - minimum
+                totals[activity.category] += value
                 average_totals.setdefault(activity.category, Decimal(0))
-                average_totals[activity.category] += (value - minimum)
+                average_totals[activity.category] += value
                 average_counts.setdefault(activity.category, Decimal(0))
-                average_counts[activity.category] += (maximum - minimum)
+                average_counts[activity.category] += maximum
             average = Decimal(0)
             for category, value in average_totals.items():
                 if category in weights and weights[category] is not None:
@@ -337,8 +369,8 @@ class GradebookBase(object):
                 minimum, maximum, value = getMinMaxValue(score)
                 if minimum is None:
                     continue
-                total += value - minimum
-                count += maximum - minimum
+                total += value
+                count += maximum
             if count:
                 return total, Decimal(100 * total) / Decimal(count)
             else:
@@ -346,15 +378,15 @@ class GradebookBase(object):
 
     def getCurrentWorksheet(self, person):
         section = self.section
-        activities = interfaces.IActivities(section)
-        current = activities.getCurrentWorksheet(person)
+        worksheets = interfaces.IActivities(section)
+        current = worksheets.getCurrentWorksheet(person)
         return current
 
     def setCurrentWorksheet(self, person, worksheet):
         section = self.section
-        activities = interfaces.IActivities(section)
+        worksheets = interfaces.IActivities(section)
         worksheet = proxy.removeSecurityProxy(worksheet)
-        activities.setCurrentWorksheet(person, worksheet)
+        worksheets.setCurrentWorksheet(person, worksheet)
 
     def getDueDateFilter(self, person):
         person = proxy.removeSecurityProxy(person)
@@ -390,7 +422,8 @@ class GradebookBase(object):
         evaluations = requirement.interfaces.IEvaluations(student)
         activities = self.getCurrentActivities(person)
         for activity, evaluation in evaluations.items():
-            if activity in activities:
+            if (activity in activities and
+                evaluation.value is not UNSCORED):
                 yield activity, evaluation
 
     def getEvaluationsForStudent(self, student):
@@ -398,7 +431,8 @@ class GradebookBase(object):
         self._checkStudent(student)
         evaluations = requirement.interfaces.IEvaluations(student)
         for activity, evaluation in evaluations.items():
-            if activity in self.activities:
+            if (activity in self.activities and
+                evaluation.value is not UNSCORED):
                 yield activity, evaluation
 
     def getEvaluationsForActivity(self, activity):
@@ -473,12 +507,13 @@ class StudentGradebookFormAdapter(object):
         gradebook = self.context.gradebook
         student = self.context.student
         activity = self.context.activities[name]
-        evaluator = None
+        # XXX: hack to receive the evaluator from the form
+        evaluator = removeSecurityProxy(self.context).evaluator
         try:
             if value is None or value == '':
                 score = gradebook.getScore(student, activity)
                 if score:
-                    gradebook.removeEvaluation(student, activity)
+                    gradebook.removeEvaluation(student, activity, evaluator=evaluator)
             else:
                 score_value = activity.scoresystem.fromUnicode(value)
                 gradebook.evaluate(student, activity, score_value, evaluator)

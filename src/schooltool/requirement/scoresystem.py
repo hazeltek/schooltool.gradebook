@@ -22,7 +22,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 from persistent import Persistent
 
@@ -50,7 +50,7 @@ class ScoreSystemAppStartup(StartUpBase):
             self.app[SCORESYSTEM_CONTAINER_KEY] = ScoreSystemContainer()
             scoresystems = self.app[SCORESYSTEM_CONTAINER_KEY]
             chooser = INameChooser(scoresystems)
-            for ss in [PassFail, AmericanLetterScoreSystem, 
+            for ss in [PassFail, AmericanLetterScoreSystem,
                        ExtendedAmericanLetterScoreSystem]:
                 custom_ss = CustomScoreSystem(ss.title, ss.description,
                     ss.scores, ss._bestScore, ss._minPassingScore)
@@ -102,6 +102,8 @@ class UNSCORED(object):
     We want this to behave as a global, meaning it's pickled by name, rather
     than value. We need to arrange that it has a suitable __reduce__.
     """
+
+    value = None
 
     def __reduce__(self):
         return 'UNSCORED'
@@ -336,6 +338,12 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if score is UNSCORED:
             return True
+        try:
+            Decimal(score)
+        except TypeError:
+            return False
+        except InvalidOperation:
+            return False
         return score >= self.min
 
     def getBestScore(self):

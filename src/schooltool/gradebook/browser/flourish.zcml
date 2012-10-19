@@ -73,16 +73,34 @@
       name="gradebook.html"
       for="schooltool.app.interfaces.ISchoolToolApplication"
       title="Gradebook"
-      content_template="templates/f_gradebook_startup.pt"
       class=".gradebook.FlourishGradebookStartup"
       permission="schooltool.view"
+      />
+
+  <flourish:activeViewlet
+      name="gradebook"
+      manager="schooltool.skin.flourish.page.IHeaderNavigationManager"
+      view=".gradebook.FlourishGradebookStartup"
       />
 
   <flourish:page
       name="index.html"
       for="..interfaces.IGradebook"
-      content_template="templates/f_gradebook_overview.pt"
       class=".gradebook.FlourishGradebookOverview"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="validate_score"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishGradebookValidateScoreView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="filldown"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      template="templates/f_gradebook_filldown_dialog.pt"
       permission="schooltool.view"
       />
 
@@ -180,7 +198,6 @@
 
   <flourish:viewlet
       name="../../addWorksheet.html"
-      after="../addLinkedColumn.html"
       title="Worksheet"
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager=".gradebook.FlourishGradebookOverviewLinks"
@@ -199,7 +216,7 @@
   <flourish:viewlet
       name="../weights.html"
       title="Category Weights"
-      class="schooltool.skin.flourish.page.LinkViewlet"
+      class=".gradebook.CategoryWeightsLink"
       manager=".gradebook.FlourishGradebookSettingsLinks"
       permission="schooltool.edit"
       />
@@ -360,6 +377,20 @@
       content_template="templates/f_student_gradebook.pt"
       class=".gradebook.FlourishStudentGradebookView"
       permission="schooltool.view"
+      />
+
+  <flourish:page_breadcrumbs
+      show_page_title="false"
+      title="Scores"
+      view=".gradebook.FlourishStudentGradeHistory"
+      />
+
+  <flourish:page
+      name="history.html"
+      for="..interfaces.IStudentGradebook"
+      content_template="templates/f_student_grade_history.pt"
+      class=".gradebook.FlourishStudentGradeHistory"
+      permission="schooltool.edit"
       />
 
   <flourish:page
@@ -683,8 +714,7 @@
   <flourish:viewlet
       name="report_card_layout"
       after="gradebook/templates"
-      title="Report Card Layout"
-      class="schooltool.skin.flourish.page.LinkViewlet"
+      class=".report_card.LayoutReportCardLink"
       manager="schooltool.app.browser.app.CustomizeSchoolLinks"
       permission="schooltool.edit"
       />
@@ -868,7 +898,7 @@
        permission="schooltool.edit"
        group="Term"
        description="Export report card data for every student in every section for the term."
-       title="Report Sheets"
+       title="Report Sheet Data Export"
        file_type="xls"
        link="request_report_sheets_export.html"
        />
@@ -894,7 +924,7 @@
        permission="schooltool.edit"
        group="School Year"
        description="Export report card data for every student in every section for the school. There will be one worksheet for each term in the year."
-       title="Report Sheets"
+       title="Report Sheet Data Export"
        file_type="xls"
        link="request_report_sheets_export.html"
        />
@@ -1211,16 +1241,17 @@
       class="schooltool.report.browser.report.ReportsLinks"
       title="Reports"
       view=".gradebook.FlourishGradebookOverview"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <report:reportLink
       name="printable_worksheet"
       view=".gradebook.FlourishGradebookOverview"
+      class=".gradebook.PrintableWorksheetViewlet"
       layer="schooltool.skin.flourish.IFlourishLayer"
       permission="schooltool.edit"
       group="Section"
-      description="The current worksheet formatted for printing."
+      description="The current gradebook worksheet formatted for printing."
       title="Printable Worksheet"
       file_type="pdf"
       link="request_printable_worksheet.html"
@@ -1229,8 +1260,9 @@
   <report:reportLink
       name="gradebook_export"
       view=".gradebook.FlourishGradebookOverview"
+      class=".gradebook.GradebookExportViewlet"
       layer="schooltool.skin.flourish.IFlourishLayer"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       group="Section"
       description="A single Excel-formatted spreadsheet containing all the worksheets for this gradebook."
       title="Gradebook Export"
@@ -1242,15 +1274,44 @@
       name="request_printable_worksheet.html"
       for="schooltool.gradebook.interfaces.IGradebook"
       class=".request_reports.FlourishRequestPrintableWorksheetView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <flourish:page
       name="request_gradebook_export.html"
       for="schooltool.gradebook.interfaces.IGradebook"
       class=".request_reports.FlourishRequestGradebookExportView"
-      permission="schooltool.edit"
+      permission="schooltool.view"
+      />
+
+  <!-- Popup views -->
+
+  <flourish:page
+      name="name_popup_menu"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishNamePopupMenuView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="activity_popup_menu"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishActivityPopupMenuView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="student_popup_menu"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishStudentPopupMenuView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="total_popup_menu"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishTotalPopupMenuView"
+      permission="schooltool.view"
       />
 
 </configure>
-

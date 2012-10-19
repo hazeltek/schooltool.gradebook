@@ -1,0 +1,72 @@
+Ignore minimum score when computing total and average
+-----------------------------------------------------
+
+Although we want to use the minimum score of an activity to validate a cell
+and prevent any values less than the minimum, we don't want to base the total
+and average off of the minimum as we have done in the past.
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with a single term (Year):
+
+    >>> manager.ui.schoolyear.add('2005-2006', '2005-09-01', '2006-07-15')
+    >>> manager.ui.term.add('2005-2006', 'Year', '2005-09-01', '2006-07-15')
+
+Set up one course:
+
+    >>> manager.ui.course.add('2005-2006', 'Math I')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Paul', 'Carduner', 'paul', 'pwd')
+    >>> manager.ui.person.add('Stephan', 'Richter', 'stephan', 'pwd')
+
+Set up one section with instructor and students:
+
+    >>> manager.ui.section.add('2005-2006', 'Year', 'Math I')
+    >>> manager.ui.section.instructors.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                    ['stephan'])
+    >>> manager.ui.section.students.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                 ['paul'])
+
+Log in as teacher and go to his gradebook:
+
+    >>> stephan = browsers.stephan
+    >>> stephan.ui.login('stephan', 'pwd')
+    >>> stephan.query.link('Gradebook').click()
+
+We'll add a couple activities with minimum scores.
+
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('HW1')
+    >>> stephan.query.id('form-widgets-min').ui.set_value('25')
+    >>> from selenium.webdriver.common.keys import Keys
+    >>> stephan.query.id('form-widgets-max').type(Keys.BACK_SPACE, Keys.BACK_SPACE, Keys.BACK_SPACE)
+    >>> stephan.query.id('form-widgets-max').ui.set_value('75')
+    >>> stephan.query.id('form-buttons-add').click()
+
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('HW2')
+    >>> stephan.query.id('form-widgets-min').ui.set_value('50')
+    >>> stephan.query.id('form-buttons-add').click()
+
+We'll score them for the student and see that the total and average have no
+regard for the minimum, the average working off the maximum.
+
+    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW1', '51')
+    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW2', '80')
+    >>> stephan.query.name('UPDATE_SUBMIT').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +----------------+-----+-----+-------+-------+
+    | Name           | HW1 | HW2 | Total | Ave.  |
+    |                | 75  | 100 |       |       |
+    +----------------+-----+-----+-------+-------+
+    | Carduner, Paul | 51  | 80  | 131.0 | 74.9% |
+    +----------------+-----+-----+-------+-------+
+

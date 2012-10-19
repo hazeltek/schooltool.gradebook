@@ -1,0 +1,154 @@
+Linked Columns that point within each other
+-------------------------------------------
+
+We needed to code special protection against a user pointing two sheets into
+each other's averages and thereby causing an infinite recursion exception.
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with a single term (Year):
+
+    >>> manager.ui.schoolyear.add('2005-2006', '2005-09-01', '2006-07-15')
+    >>> manager.ui.term.add('2005-2006', 'Year', '2005-09-01', '2006-07-15')
+
+Set up one course:
+
+    >>> manager.ui.course.add('2005-2006', 'Math I')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Paul', 'Carduner', 'paul', 'pwd')
+    >>> manager.ui.person.add('Stephan', 'Richter', 'stephan', 'pwd')
+
+Set up one section with instructor and students:
+
+    >>> manager.ui.section.add('2005-2006', 'Year', 'Math I')
+    >>> manager.ui.section.instructors.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                    ['stephan'])
+    >>> manager.ui.section.students.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                 ['paul'])
+
+Log in as teacher and go to his gradebook:
+
+    >>> stephan = browsers.stephan
+    >>> stephan.ui.login('stephan', 'pwd')
+    >>> stephan.query.link('Gradebook').click()
+
+We'll add two new worksheets, Sheet2 and Sheet3:
+
+    >>> stephan.query.link('Worksheet').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('Sheet2')
+    >>> stephan.query.id('form-buttons-add').click()
+    >>> stephan.query.link('Worksheet').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('Sheet3')
+    >>> stephan.query.id('form-buttons-add').click()
+
+We'll add an activity to each sheet.
+
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('S3')
+    >>> stephan.query.id('form-buttons-add').click()
+
+    >>> stephan.query.link('Sheet2').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('S2')
+    >>> stephan.query.id('form-buttons-add').click()
+
+    >>> stephan.query.link('Sheet1').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.id('form-widgets-title').ui.set_value('S1')
+    >>> stephan.query.id('form-buttons-add').click()
+
+Now we'll go to add a linked activity in Sheet1 that points to an activity in
+Sheet2.  We see that we can add either the activity or the average from both
+Sheet2 and Sheet3.
+
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> print stephan.query_all.css('table .buttons input').get_attribute('value')
+    S2
+    Average
+    S3
+    Average
+
+Let's add the activity from Sheet2, S2.
+
+    >>> stephan.query.xpath('//input[@value="S2"]').click()
+
+Now let's add a linked column to Sheet2.  Again we see that we can add either
+the activity or the average of Sheet1 and Sheet3.
+
+    >>> stephan.query.link('Sheet2').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> print stephan.query_all.css('table .buttons input').get_attribute('value')
+    S1
+    Average
+    S3
+    Average
+
+We'll link to the activity from Sheet1.  This caused a recursion bug itself,
+but not anymore.
+
+    >>> stephan.query.xpath('//input[@value="S1"]').click()
+
+Now we'll show what happens when we try to have two sheets point to each others'
+averages.  We'll link Sheet1 to Sheet2's average.
+
+    >>> stephan.query.link('Sheet1').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> stephan.query_all.xpath('//input[@value="Average"]')[0].click()
+
+We see that Sheet2 cannot link back to Sheet1's average because that would
+cause an infinite recursion exception.
+
+    >>> stephan.query.link('Sheet2').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> print stephan.query_all.css('table .buttons input').get_attribute('value')
+    S1
+    S3
+    Average
+
+We can link to Sheet3's average, however, so we will.
+
+    >>> stephan.query.xpath('//input[@value="Average"]').click()
+
+Now we see that Sheet3 can not link to Sheet1 or Sheet2's averages because
+either one would cause the infinite recursion.
+
+    >>> stephan.query.link('Sheet3').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> print stephan.query_all.css('table .buttons input').get_attribute('value')
+    S1
+    S2
+    >>> stephan.query.name('CANCEL').click()
+
+Sheet2 can still add another column linked to Sheet3's average.
+
+    >>> stephan.query.link('Sheet2').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> print stephan.query_all.css('table .buttons input').get_attribute('value')
+    S1
+    S3
+    Average
+    >>> stephan.query.name('CANCEL').click()
+
+Sheet1 can still add another column linked to Sheet2 or Sheet3's average.
+
+    >>> stephan.query.link('Sheet1').click()
+    >>> stephan.query.link('Activity').click()
+    >>> stephan.query.link('Linked Column').click()
+    >>> print stephan.query_all.css('table .buttons input').get_attribute('value')
+    S2
+    Average
+    S3
+    Average
+    >>> stephan.query.name('CANCEL').click()
+

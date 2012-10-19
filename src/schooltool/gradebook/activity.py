@@ -47,15 +47,20 @@ COURSE_ACTIVITIES_KEY = 'schooltool.gradebook.course_activities'
 COURSE_DEPLOYED_WORKSHEETS_KEY = 'schooltool.gradebook.course_deployed'
 
 
-def ensureAtLeastOneWorksheet(activities):
-    # only create Sheet1 if no personal worksheet (hidden or not) is found
-    for worksheet in activities.all_worksheets:
+def ensureAtLeastOneWorksheet(worksheets, factory=None, title=None):
+    # only create new worksheet if no personal
+    # worksheet (hidden or not) is found
+    for worksheet in worksheets.all_worksheets:
         if not worksheet.deployed:
             return
-    sheet1 = Worksheet(_('Sheet1'))
-    chooser = INameChooser(activities)
+    if factory is None:
+        factory = Worksheet
+    if title is None:
+        title = _('Sheet1')
+    sheet1 = factory(title)
+    chooser = INameChooser(worksheets)
     name = chooser.chooseName('', sheet1)
-    activities[name] = sheet1
+    worksheets[name] = sheet1
 
 
 def createSourceString(sourceObj):
@@ -98,7 +103,7 @@ def getSourceObj(source):
 
     if act_hash == 'ave':
         return worksheet
-    for activity in worksheet.values():
+    for key, activity in worksheet.items():
         if act_hash == unicode(hash(IKeyReference(activity))):
             return activity
     return None

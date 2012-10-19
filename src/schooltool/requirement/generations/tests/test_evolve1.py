@@ -297,14 +297,30 @@ def doctest_removeUtils_subclass():
               [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IStubUtil>,
               <InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>]}
 
-   We do not handle this case:
+    Stub utils are removed, but subclass utils are still there
 
         >>> from schooltool.requirement.generations.evolve1 import removeUtils
 
         >>> removeUtils(sm, IStubUtil)
-        Traceback (most recent call last):
-        ...
-        AssertionError
+
+        >>> pprint(sm.utilities._v_lookup._extendors)
+        {<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.IStubUtil>:
+              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>],
+         <InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>:
+              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>],
+         <InterfaceClass zope.interface.Interface>:
+              [<InterfaceClass schooltool.requirement.generations.tests.test_evolve1.ISubclassUtil>]}
+
+        >>> pprint(dict(sm.getUtilitiesFor(ISubclassUtil)))
+        {u'hey': <schooltool.requirement.generations.tests.test_evolve1.SubclassUtil object at ...>,
+         u'ho': <schooltool.requirement.generations.tests.test_evolve1.SubclassUtil object at ...>}
+
+        >>> pprint(dict(sm.getUtilitiesFor(IStubUtil)))
+        {u'hey': <schooltool.requirement.generations.tests.test_evolve1.SubclassUtil object at ...>,
+         u'ho': <schooltool.requirement.generations.tests.test_evolve1.SubclassUtil object at ...>}
+
+    Is this acceptable?
+    Are there any ICustomScoreSystem subclasses? - no
 
     """
 

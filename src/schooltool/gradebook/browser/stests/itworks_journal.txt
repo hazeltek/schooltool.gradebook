@@ -1,0 +1,46 @@
+Test that it works
+==================
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Add people:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'pwd')
+    >>> manager.ui.person.add('Liliana', 'Vividor', 'liliana', 'pwd')
+
+We need at least one section to use the journal. So, let's add a year:
+
+    >>> manager.ui.schoolyear.add('2012', '2012-01-01', '2012-12-31')
+
+A term:
+
+    >>> manager.ui.term.add('2012', 'Semester 1', '2012-01-01', '2012-06-30')
+    >>> manager.ui.term.add('2012', 'Semester 2', '2012-07-01', '2012-12-31')
+
+A course:
+
+    >>> manager.ui.course.add('2012', 'Math',
+    ...                       description='The math course.\n\nVery cool')
+
+A section with instructors and students:
+
+    >>> manager.ui.section.add('2012', 'Semester 1', 'Math')
+    >>> instructors = ['tom', 'jeffrey']
+    >>> manager.ui.section.instructors.add('2012', 'Semester 1', 'Math (1)',
+    ...                                    instructors)
+    >>> students = ['camila', 'nestor', 'liliana']
+    >>> manager.ui.section.students.add('2012', 'Semester 1', 'Math (1)',
+    ...                                 students)
+
+And check its Journal link:
+
+    >>> manager.ui.section.go('2012', 'Semester 1', 'Math (1)')
+    >>> manager.query.link('Journal').click()
+    >>> manager.url
+    u'http://localhost/schoolyears/2012/semester-1/sections/1/journal'
