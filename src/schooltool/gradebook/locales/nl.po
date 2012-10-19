@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-08-08 18:34+0300\n"
-"PO-Revision-Date: 2012-08-10 16:21+0000\n"
+"PO-Revision-Date: 2012-10-16 18:24+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-11 05:58+0000\n"
-"X-Generator: Launchpad (build 15780)\n"
+"X-Launchpad-Export-Date: 2012-10-17 04:48+0000\n"
+"X-Generator: Launchpad (build 16152)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -31,7 +31,7 @@ msgstr "Activiteiten"
 #: /src/schooltool/gradebook/activity.py:301
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:5
 msgid "Course Activities"
-msgstr "Vakactiviteiten"
+msgstr "Vak-activiteiten"
 
 #: /src/schooltool/gradebook/activity.py:317
 msgid "Deployed Worksheets"
@@ -503,12 +503,12 @@ msgstr "Vak-werkbladdetails"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:115
 msgid "Course Worksheet Template Information"
-msgstr "Informatie vakwerkbladsjabloon"
+msgstr "Informatie vak-werkbladsjabloon"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:157
 #: /src/schooltool/gradebook/browser/course_worksheets.py:167
 msgid "Course Activity Details"
-msgstr "Vakactiviteitsdetails"
+msgstr "Vak-activiteitsdetails"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:218
 #: /src/schooltool/gradebook/browser/report_card.py:275
@@ -758,11 +758,11 @@ msgstr "Nieuw vak-werkblad"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1026
 msgid "New Course Activity"
-msgstr "Nieuwe vakactiviteit"
+msgstr "Nieuwe vak-activiteit"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1054
 msgid "Course Activity"
-msgstr "Vakactiviteit"
+msgstr "Vak-activiteit"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1096
 msgid "Hide/unhide Worksheets"
@@ -1443,7 +1443,7 @@ msgstr "Gereed"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
-msgstr "Er zijn geen vakactiviteiten."
+msgstr "Er zijn geen vak-activiteiten."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
