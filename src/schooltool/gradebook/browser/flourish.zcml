@@ -898,7 +898,7 @@
        permission="schooltool.edit"
        group="Term"
        description="Export report card data for every student in every section for the term."
-       title="Report Sheets"
+       title="Report Sheet Data Export"
        file_type="xls"
        link="request_report_sheets_export.html"
        />
@@ -924,7 +924,7 @@
        permission="schooltool.edit"
        group="School Year"
        description="Export report card data for every student in every section for the school. There will be one worksheet for each term in the year."
-       title="Report Sheets"
+       title="Report Sheet Data Export"
        file_type="xls"
        link="request_report_sheets_export.html"
        />
@@ -1251,7 +1251,7 @@
       layer="schooltool.skin.flourish.IFlourishLayer"
       permission="schooltool.edit"
       group="Section"
-      description="The current worksheet formatted for printing."
+      description="The current gradebook worksheet formatted for printing."
       title="Printable Worksheet"
       file_type="pdf"
       link="request_printable_worksheet.html"
