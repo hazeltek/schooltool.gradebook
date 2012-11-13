@@ -80,7 +80,7 @@ journal average:
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('New External Activity').click()
-    >>> stephan.getControl('External Activity').displayValue = ['Journal Source - Journal Average']
+    >>> stephan.getControl('External Activity').displayValue = ['Journal - Journal Average']
     >>> stephan.getControl('Label').value = u"Att."
     >>> stephan.getControl('Points').value = '10'
     >>> stephan.getControl('Add').click()
