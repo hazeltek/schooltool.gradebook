@@ -474,7 +474,8 @@ class ILinkedActivityForm(IActivityForm):
                       "the full credit score multiplied by the percentage "
                       "value of the external score."),
         min=0,
-        required=True)
+        required=True,
+        default=100)
 
 
 class FlourishLinkedActivityAddView(flourish.form.AddForm,
