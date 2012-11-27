@@ -1334,6 +1334,7 @@ class MyGradesView(SectionFinder):
             row = {
                 'activity': title,
                 'grade': grade,
+                'object': activity,
                 }
             self.table.append(row)
 
