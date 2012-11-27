@@ -650,6 +650,21 @@
       />
 
   <flourish:viewlet
+      name="grades_table"
+      class=".gradebook.MyGradesTable"
+      manager="schooltool.skin.flourish.interfaces.IAJAXParts"
+      view=".gradebook.FlourishMyGradesView"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="filter"
+      class="schooltool.table.table.DoNotFilter"
+      manager=".gradebook.MyGradesTable"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
       name="mygrades_section_navigation"
       before="mygrades_term_navigation"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
