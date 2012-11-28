@@ -1404,6 +1404,8 @@ def mygrades_score_formatter(grade, item, formatter):
 
 class MyGradesTable(table.ajax.Table):
 
+    batch_size = 0
+
     def items(self):
         return self.view.table
 
