@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-08 18:34+0300\n"
-"PO-Revision-Date: 2012-10-16 18:24+0000\n"
+"POT-Creation-Date: 2012-11-13 11:42+0200\n"
+"PO-Revision-Date: 2012-11-29 14:30+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-10-17 04:48+0000\n"
-"X-Generator: Launchpad (build 16152)\n"
+"X-Launchpad-Export-Date: 2012-11-29 14:52+0000\n"
+"X-Generator: Launchpad (build 16319)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -715,12 +715,12 @@ msgstr ""
 "Rapportkaartgegevens exporteren voor elke leerling in elke sectie van deze "
 "termijn."
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:864
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
-msgid "Report Sheets"
-msgstr "Rapportbladen"
+#: /src/schooltool/gradebook/browser/flourish.zcml:894
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
+msgid "Report Sheet Data Export"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""
 "Export report card data for every student in every section for the school. "
 "There will be one worksheet for each term in the year."
@@ -784,11 +784,11 @@ msgstr "Rapporten"
 msgid "Printable Worksheet"
 msgstr "Afdrukbaar werkblad"
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1139
-msgid "The current worksheet formatted for printing."
-msgstr "Huidige werkblad geformatteerd om af te drukken."
+#: /src/schooltool/gradebook/browser/flourish.zcml:1247
+msgid "The current gradebook worksheet formatted for printing."
+msgstr "Het huidige cijferlijstwerkblad is gereed om af te drukken."
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1151
+#: /src/schooltool/gradebook/browser/flourish.zcml:1260
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
@@ -1299,7 +1299,7 @@ msgstr "Rapportkaart opvragen"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:200
 msgid "Request Detailed Student Report"
-msgstr "Gedetailleerd leerlingenrapport ophalen"
+msgstr "Gedetailleerd leerlingenrapport opvragen"
 
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:25
@@ -1426,20 +1426,6 @@ msgstr "Deze categorie bewerken"
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 msgid "There are no activity categories."
 msgstr "Er zijn geen activiteitscategorieën."
-
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
-#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
-#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
-msgid "Done"
-msgstr "Gereed"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
@@ -1643,6 +1629,22 @@ msgstr "Dit jaar heeft geen toegepaste rapportbladen."
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Manage Worksheet Templates"
 msgstr "Werkbladsjabloonbeheer"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Course Worksheets"
+msgstr "Vak-werkbladen"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Manage Course Worksheets"
+msgstr "Vak-werkbladbeheer"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
+msgid "There are ${count} course worksheets for ${schoolyear}"
+msgstr "Er zijn ${count} vak-werkbladen voor ${schoolyear}"
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
+msgid "There are no course worksheets for ${schoolyear}"
+msgstr "Er zijn geen vak-werkbladen voor ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
 msgid "Manage Report Sheet Templates"
@@ -2313,10 +2315,6 @@ msgstr "Gekoppelde kolom activiteitenbron"
 msgid "A text string that specifies the source of the column"
 msgstr "Tekst die de bron van de kolom aangeeft"
 
-#: /src/schooltool/gradebook/journal.py:46
-msgid "Journal Source"
-msgstr "Logboekbron"
-
 #: /src/schooltool/gradebook/journal.py:64
 msgid "Journal Average"
 msgstr "Logboekgemiddelde"
@@ -2657,3 +2655,6 @@ msgstr "Scoresysteem tonen"
 
 #~ msgid "Delete?"
 #~ msgstr "Verwijderen?"
+
+#~ msgid "Journal Source"
+#~ msgstr "Logboekbron"
