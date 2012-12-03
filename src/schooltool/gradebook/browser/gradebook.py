@@ -2171,7 +2171,8 @@ class FlourishGradebookValidateScoreView(JSONViewBase):
                 except (ScoreValidationError,):
                     result['is_valid'] = False
                 else:
-                    if score > scoresystem.getBestScore():
+                    if (IRangedValuesScoreSystem.providedBy(scoresystem) and
+                        score > scoresystem.getBestScore()):
                         result['is_extracredit'] = True
         return result
 
