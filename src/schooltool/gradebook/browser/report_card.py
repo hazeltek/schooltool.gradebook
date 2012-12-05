@@ -53,6 +53,7 @@ from schooltool.gradebook.interfaces import (IGradebookRoot,
     IGradebookTemplates, IReportWorksheet, IReportActivity, IActivities)
 from schooltool.gradebook.activity import (Worksheet, Activity, ReportWorksheet,
     ReportActivity)
+from schooltool.gradebook.browser.activity import FlourishWeightCategoriesView
 from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
 from schooltool.gradebook.gradebook_init import OutlineActivity
@@ -463,6 +464,17 @@ class FlourishReportCardLayoutOverviewLinks(flourish.page.RefineLinksViewlet):
 
 class ReportSheetAddLinks(flourish.page.RefineLinksViewlet):
     """Report sheet add links viewlet."""
+
+
+class ReportSheetSettingsLinks(flourish.page.RefineLinksViewlet):
+    """Report sheet settings links viewlet."""
+
+
+class ReportSheetWeightCategoriesView(FlourishWeightCategoriesView):
+    """Report sheet category weights view."""
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
 
 
 class FlourishReportSheetAddView(flourish.form.AddForm):
