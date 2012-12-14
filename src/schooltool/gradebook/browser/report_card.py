@@ -1302,6 +1302,8 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
             for key in root.deployed:
                 if key.startswith(deployedKey):
                     deployedWorksheet = root.deployed[key]
+                    if deployedWorksheet.hidden:
+                        continue
                     for activity in deployedWorksheet.values():
                         if ICommentScoreSystem.providedBy(activity.scoresystem):
                             if no_comment: 
