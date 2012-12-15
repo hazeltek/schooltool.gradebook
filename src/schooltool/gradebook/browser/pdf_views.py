@@ -39,6 +39,7 @@ from schooltool.term.interfaces import ITerm, IDateManager
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.browser.gradebook import GradebookOverview
+from schooltool.gradebook.browser.gradebook import convertAverage
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
     TARDY_KEY, AVERAGE_KEY, AVERAGE_HEADING)
@@ -48,6 +49,7 @@ from schooltool.gradebook.interfaces import IGradebook
 from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.interfaces import IScoreSystemContainer
 from schooltool.requirement.scoresystem import UNSCORED
 
 
@@ -107,11 +109,21 @@ class BaseStudentPDFView(BasePDFView):
         if worksheetName not in activities:
             return None
         worksheet = activities[worksheetName]
+
         gradebook = removeSecurityProxy(IGradebook(worksheet))
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            columnPreferences = {}
+        else:
+            columnPreferences = gradebook.getColumnPreferences(person)
+        prefs = columnPreferences.get('average', {})
+        scoresystems = IScoreSystemContainer(ISchoolToolApplication(None))
+        average_scoresystem = scoresystems.get(prefs.get('scoresystem', ''))
+
         total, average = gradebook.getWorksheetTotalAverage(worksheet, student)
         if average is UNSCORED:
             return None
-        return average
+        return convertAverage(average, average_scoresystem)
 
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
