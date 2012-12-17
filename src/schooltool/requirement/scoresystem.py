@@ -228,7 +228,8 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if score is UNSCORED:
             return True
-        return score in self.scoresDict().keys()
+        lower_scores = [s.lower() for s in self.scoresDict().keys()]
+        return score.lower() in lower_scores
 
     def getBestScore(self):
         """See interfaces.IScoreSystem"""
@@ -238,10 +239,10 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if rawScore == '':
             return UNSCORED
-
-        if not self.isValidScore(rawScore):
-            raise ScoreValidationError(rawScore)
-        return rawScore
+        for score in self.scoresDict().keys():
+            if score.lower() == rawScore.lower():
+                return score
+        raise ScoreValidationError(rawScore)
 
     def getNumericalValue(self, score):
         """See interfaces.IScoreSystem"""
