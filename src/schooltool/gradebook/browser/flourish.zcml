@@ -1329,4 +1329,18 @@
       permission="schooltool.view"
       />
 
+  <flourish:pdf
+      name="gradebook.pdf"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".pdf_views.FlourishGradebookPDFView"
+      permission="schooltool.view"
+      />
+
+  <flourish:content
+      name="grid"
+      for="schooltool.gradebook.interfaces.IActivityWorksheet"
+      class=".pdf_views.WorksheetGrid"
+      permission="schooltool.view"
+      />
+
 </configure>

@@ -218,9 +218,7 @@ class GradebookBase(BrowserView):
     teacher_gradebook_view_name = 'gradebook'
     student_gradebook_view_name = 'mygrades'
 
-    def __init__(self, context, request):
-        super(GradebookBase, self).__init__(context, request)
-        self.changed = False
+    changed = False
 
     @property
     def students(self):
@@ -705,10 +703,11 @@ class GradebookOverview(SectionFinder):
 
         return value
 
-    def table(self):
+    def table(self, worksheet=None):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
-        worksheet = gradebook.getCurrentWorksheet(self.person)
+        if worksheet is None:
+            worksheet = gradebook.getCurrentWorksheet(self.person)
 
         section = ISection(worksheet, None)
         journal_data = interfaces.ISectionJournalData(section, None)
