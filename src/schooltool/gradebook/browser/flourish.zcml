@@ -104,6 +104,27 @@
       permission="schooltool.view"
       />
 
+  <zope:adapter
+      for="schooltool.gradebook.interfaces.IGradebook"
+      provides=".gradebook.ICommentCellForm"
+      factory=".gradebook.CommentCellFormAdapter"
+      />
+
+  <flourish:page
+      name="comment_cell"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishGradebookCommentCell"
+      template="templates/f_gradebook_comment_cell_dialog.pt"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="comment_cell_submit"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      class=".gradebook.FlourishGradebookCommentCellSubmit"
+      permission="schooltool.view"
+      />
+
   <flourish:viewlet
       name="gradebook_section_navigation"
       before="gradebook_term_navigation"

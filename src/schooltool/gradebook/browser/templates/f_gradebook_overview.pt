@@ -68,8 +68,13 @@
           </thead>
           <tbody>
             <tr tal:repeat="row table">
-              <td tal:repeat="grade row/grades"
-                  tal:content="grade/value" />
+              <tal:block repeat="grade row/grades">
+                <td tal:condition="grade/is_comment" class="comment-cell"
+                    tal:content="grade/value"
+                    tal:attributes="hidden_value grade/hidden_value" />
+                <td tal:condition="not: grade/is_comment"
+                    tal:content="grade/value" />
+              </tal:block>
               <td class="placeholder">&nbsp;</td>
             </tr>
           </tbody>

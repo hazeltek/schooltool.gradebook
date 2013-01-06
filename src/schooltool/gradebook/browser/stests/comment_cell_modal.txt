@@ -1,0 +1,139 @@
+Special modal for gradebook comment cells
+-----------------------------------------
+
+If an activity is a for the comment score system, there is no way to edit
+its contents from within the the gradebook spreadsheet.  Until now, we
+required the user to grade the student, and then they could get to the
+ckeditor widget for the cell in question.  Now, we provide a special modal
+that pops up when the user clicks on a cell for a comment activity.
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Now, set up a school year (2005-2006) with a single term (Year):
+
+    >>> manager.ui.schoolyear.add('2005-2006', '2005-09-01', '2006-07-15')
+    >>> manager.ui.term.add('2005-2006', 'Year', '2005-09-01', '2006-07-15')
+
+Set up one course:
+
+    >>> manager.ui.course.add('2005-2006', 'Math I')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Paul', 'Carduner', 'paul', 'pwd')
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Stephan', 'Richter', 'stephan', 'pwd')
+
+Set up one section with instructor and students:
+
+    >>> manager.ui.section.add('2005-2006', 'Year', 'Math I')
+    >>> manager.ui.section.instructors.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                    ['stephan'])
+    >>> manager.ui.section.students.add('2005-2006', 'Year', 'Math I (1)',
+    ...                                 ['paul', 'tom'])
+
+Set up and deploy a report sheet with two comment activities:
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Report Sheet Templates').click()
+    >>> manager.query.link('Report Sheet Template').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('Comments')
+    >>> manager.query.id('form-buttons-add').click()
+    >>> manager.query.link('Report Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('CM1')
+    >>> manager.query.id('form-widgets-scoresystem').ui.set_value('Comment')
+    >>> manager.query.id('form-buttons-add').click()
+    >>> manager.query.link('Report Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('CM2')
+    >>> manager.query.id('form-widgets-description').ui.set_value('Comment 2')
+    >>> manager.query.id('form-widgets-scoresystem').ui.set_value('Comment')
+    >>> manager.query.id('form-buttons-add').click()
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Deployed Report Sheets').click()
+    >>> manager.query.id('template').ui.set_value('Comments')
+    >>> manager.query.name('SUBMIT').click()
+
+Log in as teacher and go to his gradebook for the Comments sheet:
+
+    >>> stephan = browsers.stephan
+    >>> stephan.ui.login('stephan', 'pwd')
+    >>> stephan.query.link('Gradebook').click()
+    >>> stephan.query.link('Comments').click()
+
+We see that there are four cells to grade, two activities for the two students,
+but in this case, they have the special comment-cell class and hidden_value
+attribute.  All hidden values are blank because we haven't entered scores yet.
+
+    >>> cells = stephan.query_all.css('.comment-cell')
+    >>> print cells
+    <td class="comment-cell" hidden_value="">
+    </td>
+    <td class="comment-cell" hidden_value="">
+    </td>
+    <td class="comment-cell" hidden_value="">
+    </td>
+    <td class="comment-cell" hidden_value="">
+    </td>
+
+We'll visit the first comment cell.  We see the student name and the activity
+title are there.  We didn't give the first activity a description, so the
+hint is blank.
+
+    >>> cells[0].click()
+    >>> print stephan.query.css('#comment-cell-dialog-title').text
+    Carduner, Paul
+    >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
+    CM1
+    >>> stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
+    u''
+
+The cancel button gets out of the modal.
+
+    >>> stephan.query.css('.comment-cell-cancel').click()
+
+We'll note the contents of the modal for each of the other three cells.
+
+    >>> cells[1].click()
+    >>> print stephan.query.css('#comment-cell-dialog-title').text
+    Carduner, Paul
+    >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
+    CM2
+    >>> print stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
+    Comment 2
+    >>> stephan.query.css('.comment-cell-cancel').click()
+
+    >>> cells[2].click()
+    >>> print stephan.query.css('#comment-cell-dialog-title').text
+    Hoffman, Tom
+    >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
+    CM1
+    >>> stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
+    u''
+    >>> stephan.query.css('.comment-cell-cancel').click()
+
+    >>> cells[3].click()
+    >>> print stephan.query.css('#comment-cell-dialog-title').text
+    Hoffman, Tom
+    >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
+    CM2
+    >>> print stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
+    Comment 2
+
+For the fouth cell, we'll go through the trouble of entering data and hitting
+the submit button.
+
+XXX these tests should work, and the clicking does give focus to the editor
+element, but the set_value doesn't work.  For now, the submit does at least
+return to the gradebook.
+
+    >>> editor = stephan.query.id('form-widgets-value___Frame')
+    >>> editor.click()
+    >>> editor.ui.set_value('123')
+    >>> stephan.query.css('.comment-cell-submit').click()
+    >>> stephan.url
+    u'http://localhost/schoolyears/2005-2006/year/sections/1/activities/2005-2006_year_1/gradebook'
+
