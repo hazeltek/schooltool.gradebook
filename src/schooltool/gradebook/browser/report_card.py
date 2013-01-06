@@ -73,13 +73,16 @@ TARDY_KEY = 'tardy'
 
 
 def copyActivities(sourceWorksheet, destWorksheet):
-    """Copy the activities from the source worksheet to the destination."""
+    """Copy the activities and the category weights from the source worksheet
+       to the destination."""
 
     for key, activity in sourceWorksheet.items():
         activityCopy = Activity(activity.title, activity.category,
                                 activity.scoresystem, activity.description,
                                 activity.label)
         destWorksheet[key] = activityCopy
+    for category, weight in sourceWorksheet.getCategoryWeights().items():
+        destWorksheet.setCategoryWeight(category, weight)
 
 
 class TemplatesView(object):
@@ -662,7 +665,7 @@ class ReportActivityAddView(form.AddForm):
     template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
-    fields = fields.select('title', 'label', 'description')
+    fields = fields.select('title', 'label', 'description', 'category')
     fields += field.Fields(IReportScoreSystem)
 
     def updateActions(self):
@@ -699,7 +702,7 @@ class ReportActivityAddView(form.AddForm):
                 min=minimum, max=maximum)
         else:
             scoresystem = data['scoresystem']
-        activity = ReportActivity(data['title'], categories.default, 
+        activity = ReportActivity(data['title'], data['category'], 
                                   scoresystem, data['description'],
                                   data['label'])
         return activity
@@ -742,7 +745,7 @@ class ReportActivityEditView(form.EditForm):
     template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
-    fields = fields.select('title', 'label', 'description')
+    fields = fields.select('title', 'label', 'description', 'category')
     fields += field.Fields(IReportScoreSystem)
 
     @button.buttonAndHandler(_("Cancel"))
