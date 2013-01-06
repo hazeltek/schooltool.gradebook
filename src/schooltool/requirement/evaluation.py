@@ -196,6 +196,8 @@ class Score(object):
         def set(self, value):
             if not self.scoreSystem.isValidScore(value):
                 raise ValueError('%r is not a valid score.' %value)
+            if interfaces.IDiscreteValuesScoreSystem.providedBy(value):
+                value = self.scoreSystem.fromUnicode(value)
             self._value = value
             # XXX mg: since it is a very bad idea to mix datetimes with tzinfo
             # and datetimes without tzinfo, I suggest using datetimes with
