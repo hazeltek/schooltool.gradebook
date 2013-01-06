@@ -11,6 +11,7 @@ CHANGES
 - added report sheet average to report card layout, pdf view
 - removed hidden deployed worksheets from dropdown in layout activity add views
 - fixed average in report card to round and show only one significant digit
+- fixed gradebook score validator to not give extracredit with discrete scoresystems
 
 
 2.3.1 (2012-11-29)
