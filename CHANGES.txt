@@ -9,6 +9,7 @@ CHANGES
 - removed blocking of deployed report sheets from displaying total/average
 - added category to report sheet template activity add/edit views
 - added report sheet average to report card layout, pdf view
+- removed hidden deployed worksheets from dropdown in layout activity add views
 
 
 2.3.1 (2012-11-29)
