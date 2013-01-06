@@ -222,18 +222,8 @@ class GenericWorksheet(requirement.Requirement):
     hidden = False
 
 
-class Worksheet(GenericWorksheet):
-    zope.interface.implements(interfaces.IActivityWorksheet,
-                              annotation.interfaces.IAttributeAnnotatable)
-
-    def values(self):
-        activities = []
-        for activity in super(Worksheet, self).values():
-            if interfaces.ILinkedColumnActivity.providedBy(activity):
-                if isHiddenSource(activity.source):
-                    continue
-            activities.append(activity)
-        return activities
+class WorksheetAnnotatableMixin(object):
+    zope.interface.implements(annotation.interfaces.IAttributeAnnotatable)
 
     def getCategoryWeights(self):
         ann = annotation.interfaces.IAnnotations(self)
@@ -246,6 +236,20 @@ class Worksheet(GenericWorksheet):
         if CATEGORY_WEIGHTS_KEY not in ann:
             ann[CATEGORY_WEIGHTS_KEY] = persistent.dict.PersistentDict()
         ann[CATEGORY_WEIGHTS_KEY][category] = weight
+
+
+class Worksheet(GenericWorksheet, WorksheetAnnotatableMixin):
+    zope.interface.implements(interfaces.IActivityWorksheet,
+                              annotation.interfaces.IAttributeAnnotatable)
+
+    def values(self):
+        activities = []
+        for activity in super(Worksheet, self).values():
+            if interfaces.ILinkedColumnActivity.providedBy(activity):
+                if isHiddenSource(activity.source):
+                    continue
+            activities.append(activity)
+        return activities
 
     def canAverage(self):
         if not self.deployed:
@@ -261,7 +265,7 @@ class Worksheet(GenericWorksheet):
         return self.__name__ in sheets
 
 
-class ReportWorksheet(requirement.Requirement):
+class ReportWorksheet(requirement.Requirement, WorksheetAnnotatableMixin):
     zope.interface.implements(interfaces.IReportWorksheet)
 
     deployed = False

@@ -540,6 +540,33 @@
       permission="schooltool.edit"
       />
 
+  <flourish:viewlet
+      name="reportsheet-settings-links"
+      after="reportsheet-add-links"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".report_card.ReportSheetSettingsLinks"
+      view="schooltool.gradebook.browser.report_card.FlourishReportSheetEditView"
+      title="Settings"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="weights.html"
+      title="Category Weights"
+      class="schooltool.skin.flourish.page.LinkViewlet"
+      manager=".report_card.ReportSheetSettingsLinks"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="weights.html"
+      for="schooltool.gradebook.interfaces.IReportWorksheet"
+      subtitle="Edit"
+      content_template="templates/f_weight_categories.pt"
+      class=".report_card.ReportSheetWeightCategoriesView"
+      permission="schooltool.edit"
+      />
+
   <configure package="schooltool.skin.flourish">
     <flourish:page
         name="addReportSheet.html"
