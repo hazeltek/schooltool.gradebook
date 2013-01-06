@@ -1,0 +1,35 @@
+<div class="hidden-dialog" id="comment-cell-dialog-container"
+     i18n:domain="schooltool.gradebook">
+  <script tal:attributes="src string:${context/schooltool:app/@@absolute_url}/@@/fckeditor/2.6.4.1/fckeditor/fckeditor.js">
+  </script>
+  <div id="comment-cell-dialog-title" dialog_title="Enter Comment"
+       i18n:attributes="dialog_title">
+  </div>
+  <form tal:attributes="action string:${request/URL}_submit" method="post">
+    <input type="hidden" id="comment-student-id" name="comment-student-id" value="" />
+    <input type="hidden" id="comment-activity-id" name="comment-activity-id" value="" />
+    <div class="viewspace">
+      <fieldset>
+        <div class="row">
+          <div class="label">
+            <label for="comment_value">
+              <span i18n:translate="">Comment</span>
+            </label>
+          </div>
+          <p class="hint" i18n:translate="">
+            Enter a comment.
+          </p>
+          <div class="widget">
+            <span tal:replace="structure view/widgets/value/render">ckeditor</span>
+          </div>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <input type="submit" class="button-ok comment-cell-submit" name="SUBMIT"
+               value="Submit" i18n:attributes="value" />
+        <input type="submit" class="button-cancel comment-cell-cancel" name="CANCEL"
+               value="Cancel" i18n:attributes="value" />
+      </div>
+    </div>
+  </form>
+</div>

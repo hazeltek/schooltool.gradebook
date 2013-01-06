@@ -13,6 +13,7 @@ CHANGES
 - fixed average in report card to round and show only one significant digit
 - fixed gradebook score validator to not give extracredit with discrete scoresystems
 - changed discrete scoresystems to allow case-insensitive score entry
+- modal for entering scores in gradebook cells of commment activities
 
 
 2.3.1 (2012-11-29)
