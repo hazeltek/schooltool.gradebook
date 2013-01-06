@@ -8,6 +8,7 @@ CHANGES
 - report sheet templates now have category weights
 - removed blocking of deployed report sheets from displaying total/average
 - added category to report sheet template activity add/edit views
+- added report sheet average to report card layout, pdf view
 
 
 2.3.1 (2012-11-29)

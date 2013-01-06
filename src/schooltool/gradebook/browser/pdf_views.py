@@ -45,7 +45,7 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.browser.gradebook import GradebookOverview
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
-    TARDY_KEY)
+    TARDY_KEY, AVERAGE_KEY, AVERAGE_HEADING)
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
@@ -101,6 +101,22 @@ class BaseStudentPDFView(BasePDFView):
                 result += 1
         return result or None
 
+    def isAverageSource(self, layout):
+        termName, worksheetName, activityName = layout.source.split('|')
+        return activityName == AVERAGE_KEY
+
+    def getAverageScore(self, student, section, layout):
+        termName, worksheetName, activityName = layout.source.split('|')
+        activities = IActivities(section)
+        if worksheetName not in activities:
+            return None
+        worksheet = activities[worksheetName]
+        gradebook = removeSecurityProxy(IGradebook(worksheet))
+        total, average = gradebook.getWorksheetTotalAverage(worksheet, student)
+        if average is UNSCORED:
+            return None
+        return average
+
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
         activities = IActivities(section)
@@ -114,6 +130,8 @@ class BaseStudentPDFView(BasePDFView):
         if layout.source == TARDY_KEY:
             return TARDY_HEADING
         termName, worksheetName, activityName = layout.source.split('|')
+        if activityName == AVERAGE_KEY:
+            return AVERAGE_HEADING
         root = IGradebookRoot(ISchoolToolApplication(None))
         heading = root.deployed[worksheetName][activityName].title
         if len(layout.heading):
@@ -159,6 +177,10 @@ class BaseStudentPDFView(BasePDFView):
                     if score is not None:
                         if course in byCourse:
                             score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                elif self.isAverageSource(layout):
+                    score = self.getAverageScore(student, section, layout)
+                    if score is not None:
                         byCourse[course] = unicode(score)
                 else:
                     activity = self.getActivity(section, layout)
