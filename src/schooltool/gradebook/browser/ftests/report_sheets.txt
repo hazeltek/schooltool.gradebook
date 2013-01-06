@@ -338,13 +338,13 @@ and like all deployed sheets it has no totals or average columns:
     +--------+------------------+----------------+
     | Sheet1 | *Report Sheet 1* | Report Sheet 2 |
     +--------+------------------+----------------+
-    +----------------+---------+-------+---------+
-    | Name           | Repor   | RA1.1 | RA1.4   |
-    +----------------+---------+-------+---------+
-    | Cerna, Camila  | [_____] |       | [_____] |
-    | Guzman, Nestor | [_____] |       | [_____] |
-    | Tejada, Mario  | [_____] |       | [_____] |
-    +----------------+---------+-------+---------+
+    +----------------+-------+------+---------+-------+---------+
+    | Name           | Total | Ave. | Repor   | RA1.1 | RA1.4   |
+    +----------------+-------+------+---------+-------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] |       | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] |       | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] |       | [_____] |
+    +----------------+-------+------+---------+-------+---------+
 
 Note that the 'Report Activity 1 (RA1.1)' cannot be graded directly in
 the worksheet nor on it's own. That's because it uses a Comment score
@@ -382,13 +382,13 @@ We get back to the 'Report Sheet 1' sheet:
     +--------+------------------+----------------+
     | Sheet1 | *Report Sheet 1* | Report Sheet 2 |
     +--------+------------------+----------------+
-    +----------------+---------+-------+---------+
-    | Name           | Repor   | RA1.1 | RA1.4   |
-    +----------------+---------+-------+---------+
-    | Cerna, Camila  | [A-___] | ...   | [78___] |
-    | Guzman, Nestor | [_____] | ...   | [87___] |
-    | Tejada, Mario  | [_____] |       | [_____] |
-    +----------------+---------+-------+---------+
+    +----------------+-------+-------+---------+-------+---------+
+    | Name           | Total | Ave.  | Repor   | RA1.1 | RA1.4   |
+    +----------------+-------+-------+---------+-------+---------+
+    | Cerna, Camila  | 81.7  | 78.6% | [A-___] | ...   | [78___] |
+    | Guzman, Nestor | 87.0  | 87.0% | [_____] | ...   | [87___] |
+    | Tejada, Mario  | 0.0   | N/A   | [_____] |       | [_____] |
+    +----------------+-------+-------+---------+-------+---------+
 
 Let's check the Report Sheet 2 sheet:
 
@@ -397,13 +397,13 @@ Let's check the Report Sheet 2 sheet:
     +--------+----------------+------------------+
     | Sheet1 | Report Sheet 1 | *Report Sheet 2* |
     +--------+----------------+------------------+
-    +----------------+---------+---------+
-    | Name           | Repor   | Repor   |
-    +----------------+---------+---------+
-    | Cerna, Camila  | [_____] | [_____] |
-    | Guzman, Nestor | [_____] | [_____] |
-    | Tejada, Mario  | [_____] | [_____] |
-    +----------------+---------+---------+
+    +----------------+-------+------+---------+---------+
+    | Name           | Total | Ave. | Repor   | Repor   |
+    +----------------+-------+------+---------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
+    +----------------+-------+------+---------+---------+
 
 Now, if we go to the other section in this term, we should see these
 same report sheets and activities deployed:
@@ -421,26 +421,26 @@ same report sheets and activities deployed:
     +------------------+----------------+--------+
     | *Report Sheet 1* | Report Sheet 2 | Sheet1 |
     +------------------+----------------+--------+
-    +----------------+---------+-------+---------+
-    | Name           | Repor   | RA1.1 | RA1.4   |
-    +----------------+---------+-------+---------+
-    | Cerna, Camila  | [_____] |       | [_____] |
-    | Guzman, Nestor | [_____] |       | [_____] |
-    | Tejada, Mario  | [_____] |       | [_____] |
-    +----------------+---------+-------+---------+
+    +----------------+-------+------+---------+-------+---------+
+    | Name           | Total | Ave. | Repor   | RA1.1 | RA1.4   |
+    +----------------+-------+------+---------+-------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] |       | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] |       | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] |       | [_____] |
+    +----------------+-------+------+---------+-------+---------+
 
     >>> teacher.getLink('Report Sheet 2').click()
     >>> printGradebook(teacher.contents)
     +----------------+------------------+--------+
     | Report Sheet 1 | *Report Sheet 2* | Sheet1 |
     +----------------+------------------+--------+
-    +----------------+---------+---------+
-    | Name           | Repor   | Repor   |
-    +----------------+---------+---------+
-    | Cerna, Camila  | [_____] | [_____] |
-    | Guzman, Nestor | [_____] | [_____] |
-    | Tejada, Mario  | [_____] | [_____] |
-    +----------------+---------+---------+
+    +----------------+-------+------+---------+---------+
+    | Name           | Total | Ave. | Repor   | Repor   |
+    +----------------+-------+------+---------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
+    +----------------+-------+------+---------+---------+
 
 And if we go to the other term, Term2, in this schoolyear, we'll see
 that the 'Report Sheet 1' sheet is common for both terms and we'll see
@@ -459,26 +459,26 @@ the other 'Report Sheet 3' deployed only for that term:
     +------------------+----------------+--------+
     | *Report Sheet 1* | Report Sheet 3 | Sheet1 |
     +------------------+----------------+--------+
-    +----------------+---------+-------+---------+
-    | Name           | Repor   | RA1.1 | RA1.4   |
-    +----------------+---------+-------+---------+
-    | Cerna, Camila  | [_____] |       | [_____] |
-    | Guzman, Nestor | [_____] |       | [_____] |
-    | Tejada, Mario  | [_____] |       | [_____] |
-    +----------------+---------+-------+---------+
+    +----------------+-------+------+---------+-------+---------+
+    | Name           | Total | Ave. | Repor   | RA1.1 | RA1.4   |
+    +----------------+-------+------+---------+-------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] |       | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] |       | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] |       | [_____] |
+    +----------------+-------+------+---------+-------+---------+
 
     >>> teacher.getLink('Report Sheet 3').click()
     >>> printGradebook(teacher.contents)
     +----------------+------------------+--------+
     | Report Sheet 1 | *Report Sheet 3* | Sheet1 |
     +----------------+------------------+--------+
-    +----------------+---------+
-    | Name           | REPAC   |
-    +----------------+---------+
-    | Cerna, Camila  | [_____] |
-    | Guzman, Nestor | [_____] |
-    | Tejada, Mario  | [_____] |
-    +----------------+---------+
+    +----------------+-------+------+---------+
+    | Name           | Total | Ave. | REPAC   |
+    +----------------+-------+------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] |
+    +----------------+-------+------+---------+
 
 And now, if we go to the section in the 2012 schoolyear, we won't see
 any common report sheet deployed, just the default worksheet:
@@ -577,6 +577,7 @@ the second with three graded report activities:
     </td>
     
     >>> student.printQuery('//table[@class="student_gradebook"]/tr/*[1]/div/text()')
+    Ave.: 78.6%
     Activity
     Report Activity 1.2
     Report Activity 1.1
@@ -615,6 +616,7 @@ and the third with two report activities with no grades:
     </td>
 
     >>> student.printQuery('//table[@class="student_gradebook"]/tr/*[1]/div/text()')
+    Nothing Graded
     Activity
     Report Activity 2-1
     Report Activity 2-2
@@ -641,6 +643,7 @@ Let's check the report sheets for the other graded student:
     </td>
     
     >>> other_student.printQuery('//table[@class="student_gradebook"]/tr/*[1]/div/text()')
+    Ave.: 87.0%
     Activity
     Report Activity 1.2
     Report Activity 1.1
@@ -790,13 +793,13 @@ sure it's still ok.
     +--------+----------------+------------------+
     | Sheet1 | Report Sheet 1 | *Report Sheet 2* |
     +--------+----------------+------------------+
-    +----------------+---------+---------+
-    | Name           | Repor   | Repor   |
-    +----------------+---------+---------+
-    | Cerna, Camila  | [_____] | [_____] |
-    | Guzman, Nestor | [_____] | [_____] |
-    | Tejada, Mario  | [_____] | [_____] |
-    +----------------+---------+---------+
+    +----------------+-------+------+---------+---------+
+    | Name           | Total | Ave. | Repor   | Repor   |
+    +----------------+-------+------+---------+---------+
+    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
+    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
+    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
+    +----------------+-------+------+---------+---------+
 
 Finally, we need the hide and unhide views to handle the case where there
 are no report sheets to hide or unhide.  Presently there are no report sheets

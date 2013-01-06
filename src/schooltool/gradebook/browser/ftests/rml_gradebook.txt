@@ -217,24 +217,36 @@ Table columns representing student names and grades:
     Richter, Claudia
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[2]/para')
+    <para style="grid_heading">Total</para>
+    <para style="cell">85.0</para>
+    <para style="cell">92.3</para>
+    <para style="cell">4.7</para>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[3]/para')
+    <para style="grid_heading">Ave.</para>
+    <para style="cell">84.2%</para>
+    <para style="cell">88.8%</para>
+    <para style="cell">94.0%</para>
+
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[4]/para')
     <para style="grid_heading">First</para>
     <para style="cell">85</para>
     <para style="cell">90</para>
     <para style="cell"/>
 
-    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[3]/para')
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[5]/para')
     <para style="grid_heading">Secon</para>
     <para style="cell">...</para>
     <para style="cell">...</para>
     <para style="cell"/>
 
-    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[4]/para')
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[6]/para')
     <para style="grid_heading">Third</para>
     <para style="cell"/>
     <para style="cell">C+</para>
     <para style="cell">A-</para>
 
-    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[5]/para')
+    >>> teacher.printXMLQuery('//blockTable[2]/tr/td[7]/para')
     <para style="grid_heading">Forth</para>
     <para style="cell">Fail</para>
     <para style="cell"/>

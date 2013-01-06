@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - report sheet templates now have category weights
+- removed blocking of deployed report sheets from displaying total/average
 
 
 2.3.1 (2012-11-29)

@@ -252,17 +252,7 @@ class Worksheet(GenericWorksheet, WorksheetAnnotatableMixin):
         return activities
 
     def canAverage(self):
-        if not self.deployed:
-            return True
-
-        section = ISection(self, None)
-        if section is None:
-            return False
-        courses = list(section.courses)
-        if not courses:
-            return False
-        sheets = interfaces.ICourseDeployedWorksheets(courses[0])
-        return self.__name__ in sheets
+        return True
 
 
 class ReportWorksheet(requirement.Requirement, WorksheetAnnotatableMixin):
