@@ -2,18 +2,18 @@
 CHANGES
 =======
 
-2.3.2 (unreleased)
+2.4a1 (2013-01-23)
 ------------------
 
-- report sheet templates now have category weights
-- removed blocking of deployed report sheets from displaying total/average
-- added category to report sheet template activity add/edit views
-- added report sheet average to report card layout, pdf view
-- removed hidden deployed worksheets from dropdown in layout activity add views
-- fixed average in report card to round and show only one significant digit
-- fixed gradebook score validator to not give extracredit with discrete scoresystems
-- changed discrete scoresystems to allow case-insensitive score entry
-- modal for entering scores in gradebook cells of commment activities
+- Remake "Printable Worksheet" as a new style PDF
+- Report sheet templates now have category weights
+- Display total/average in deployed report sheets
+- Added category to report sheet template activity add/edit views
+- Added report sheet average to report card layout, pdf view
+- Removed hidden deployed worksheets from dropdown in layout activity add views
+- Do not give extra credit with discrete scoresystems
+- Case-insensitive score entry
+- Modal for entering scores in gradebook cells of commment activities
 - Updated translations
 
 
