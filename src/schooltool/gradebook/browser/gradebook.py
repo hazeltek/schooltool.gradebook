@@ -45,6 +45,7 @@ from zope.viewlet import viewlet
 from zope.i18n.interfaces.locales import ICollator
 from zope.i18n import translate
 
+from zc.table.column import GetterColumn
 from z3c.form import form as z3cform
 from z3c.form import field, button
 
@@ -72,6 +73,7 @@ from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IScoreSystemContainer, IEvaluations, IScore)
 from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
 from schooltool.table.table import simple_form_key
+from schooltool import table
 from schooltool.term.interfaces import ITerm, IDateManager
 from schooltool.report.report import ReportLinkViewlet
 from schooltool.skin import flourish
@@ -1332,6 +1334,7 @@ class MyGradesView(SectionFinder):
             row = {
                 'activity': title,
                 'grade': grade,
+                'object': activity,
                 }
             self.table.append(row)
 
@@ -1389,6 +1392,44 @@ class FlourishMyGradesView(MyGradesView, flourish.page.Page):
 
         """Everything else handled by old skin method."""
         MyGradesView.update(self)
+
+
+def mygrades_score_formatter(grade, item, formatter):
+    if grade['comment']:
+        paragraphs = ['<p>%s</p>' % p for p in grade['paragraphs']]
+        return ''.join(paragraphs)
+    else:
+        return grade['value']
+
+
+class MyGradesTable(table.ajax.Table):
+
+    batch_size = 0
+
+    def items(self):
+        return self.view.table
+
+    def columns(self):
+        activity = GetterColumn(
+            name='title',
+            title=_('Activity'),
+            getter=lambda i, f: i['activity'])
+        score = GetterColumn(
+            name='score',
+            title=_('Score'),
+            getter=lambda i, f: i['grade'],
+            cell_formatter=mygrades_score_formatter)
+        return [activity, score]
+
+    def sortOn(self):
+        return None
+
+    def updateFormatter(self):
+        if self._table_formatter is None:
+            self.setUp(table_formatter=self.table_formatter,
+                       batch_size=self.batch_size,
+                       prefix=self.__name__,
+                       css_classes={'table': 'data'})
 
 
 class FlourishMyGradesYearNavigation(flourish.page.RefineLinksViewlet):

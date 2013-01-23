@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2012-10-19 22:44+0300\n"
+"POT-Creation-Date: 2012-11-13 11:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -2094,10 +2094,6 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:428
 msgid "A text string that specifies the source of the column"
-msgstr ""
-
-#: /src/schooltool/gradebook/journal.py:46
-msgid "Journal Source"
 msgstr ""
 
 #: /src/schooltool/gradebook/journal.py:64

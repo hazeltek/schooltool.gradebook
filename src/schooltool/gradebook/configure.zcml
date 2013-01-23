@@ -24,11 +24,6 @@
 
   <!-- Activity categories -->
 
-  <interface
-      interface=".interfaces.ICategoryContainer"
-      type="zope.app.content.interfaces.IContentType"
-      />
-
   <class class=".category.CategoryContainer">
     <allow interface="zope.container.interfaces.ISimpleReadContainer" />
     <require permission="schooltool.view"

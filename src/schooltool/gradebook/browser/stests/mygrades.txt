@@ -1,0 +1,129 @@
+Student gradebook tests
+=======================
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Set up a section:
+
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Liliana', 'Vividor', 'liliana', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+
+    >>> manager.ui.schoolyear.add('2012', '2012-01-01', '2012-12-31')
+    >>> manager.ui.term.add('2012', '2012', '2012-01-01', '2012-12-31')
+    >>> manager.ui.course.add('2012', 'Math')
+    >>> manager.ui.section.add('2012', '2012', 'Math')
+    >>> manager.ui.section.instructors.add('2012', '2012', 'Math (1)',
+    ...                                    ['jeffrey'])
+    >>> manager.ui.section.students.add('2012', '2012', 'Math (1)',
+    ...                                 ['camila', 'liliana', 'mario'])
+
+Log in as teacher:
+
+    >>> teacher = browsers.teacher
+    >>> teacher.ui.login('jeffrey', 'pwd')
+
+Let's add some activities to the default worksheet:
+
+    >>> teacher.query.link('Gradebook').click()
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Multiply two fractions')
+    >>> teacher.query.button('Submit').click()
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Divide a fraction by a mixed number')
+    >>> teacher.query.id('form-widgets-label').type('02')
+    >>> teacher.query.button('Submit').click()
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Divide a fraction by a whole number')
+    >>> teacher.query.button('Submit').click()
+
+    >>> teacher.query.link('Activity').click()
+    >>> teacher.query.id('form-widgets-title').type('Read and write fractions')
+    >>> teacher.query.id('form-widgets-label').type('04')
+    >>> teacher.query.button('Submit').click()
+
+Grade the activities:
+
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Multi', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', '02', '100')
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Divid', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', '04', '80')
+
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Multi', '80')
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Divid', '75')
+    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', '04', '70')
+
+    >>> teacher.query.button('Save').click()
+
+Print the default worksheet:
+
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+-----+-------+-----+-------+-------+
+    | Name             | Multi | 02  | Divid | 04  | Total | Ave.  |
+    |                  | 100   | 100 | 100   | 100 |       |       |
+    +------------------+-------+-----+-------+-----+-------+-------+
+    | Cerna, Camila    | 90    | 100 | 90    | 80  | 360.0 | 90.0% |
+    | Tejada, Mario    | 80    |     | 75    | 70  | 225.0 | 75.0% |
+    | Vividor, Liliana |       |     |       |     | 0.0   | N/A   |
+    +------------------+-------+-----+-------+-----+-------+-------+
+
+Log in as Camila and check the default worksheet:
+
+    >>> camila = browsers.camila
+    >>> camila.ui.login('camila', 'pwd')
+    >>> camila.query.link('Gradebook').click()
+
+    >>> print camila.query.tag('h3').text
+    Ave.: 90.0%
+    >>> sel = 'table tbody tr'
+    >>> for row in camila.query_all.css(sel):
+    ...     activity, score = row.query_all.tag('td')
+    ...     print '%s, %s' % (activity.text, score.text)
+    Multiply two fractions, 90 / 100
+    Divide a fraction by a mixed number, 100 / 100
+    Divide a fraction by a whole number, 90 / 100
+    Read and write fractions, 80 / 100
+
+Log in as Mario and check the default worksheet:
+
+    >>> mario = browsers.mario
+    >>> mario.ui.login('mario', 'pwd')
+    >>> mario.query.link('Gradebook').click()
+
+    >>> print mario.query.tag('h3').text
+    Ave.: 75.0%
+    >>> sel = 'table tbody tr'
+    >>> for row in mario.query_all.css(sel):
+    ...     activity, score = row.query_all.tag('td')
+    ...     print '%s, %s' % (activity.text, score.text)
+    Multiply two fractions, 80 / 100
+    Divide a fraction by a mixed number,
+    Divide a fraction by a whole number, 75 / 100
+    Read and write fractions, 70 / 100
+
+Log in as Liliana and check the default worksheet:
+
+    >>> liliana = browsers.liliana
+    >>> liliana.ui.login('liliana', 'pwd')
+    >>> liliana.query.link('Gradebook').click()
+
+    >>> print liliana.query.tag('h3').text
+    Nothing Graded
+    >>> sel = 'table tbody tr'
+    >>> for row in liliana.query_all.css(sel):
+    ...     activity, score = row.query_all.tag('td')
+    ...     print '%s, %s' % (activity.text, score.text)
+    Multiply two fractions,
+    Divide a fraction by a mixed number,
+    Divide a fraction by a whole number,
+    Read and write fractions,
+

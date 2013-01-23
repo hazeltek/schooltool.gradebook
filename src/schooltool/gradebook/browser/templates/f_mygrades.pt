@@ -5,23 +5,5 @@
         tal:content="string: ${view/average_label}: ${view/average}" />
     <h3 tal:condition="not: view/average" i18n:translate="">Nothing Graded</h3>
   </tal:block>
-  <table tal:define="table view/table" tal:condition="table">
-    <tr>
-      <thead>
-        <th i18n:translate="">Activity</th>
-        <th i18n:translate="">Score</th>
-      </thead>
-    </tr>
-    <tr tal:repeat="row table">
-      <td tal:content="row/activity" />
-      <td tal:condition="row/grade/comment">
-        <tal:block repeat="paragraph row/grade/paragraphs">
-          <p tal:content="structure paragraph"/>
-        </tal:block>
-      </td>
-      <td tal:condition="not: row/grade/comment">
-        <div tal:content="row/grade/value" />
-      </td>
-    </tr>
-  </table>
+  <div tal:content="structure context/schooltool:content/ajax/view/context/grades_table" />
 </div>

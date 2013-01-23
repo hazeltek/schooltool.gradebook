@@ -43,7 +43,7 @@ class JournalSource(object):
     implements(interfaces.IExternalActivities)
 
     source = "journalsource"
-    title = _('Journal Source')
+    title = _('Journal')
 
     def __init__(self, context):
         self.context = context
