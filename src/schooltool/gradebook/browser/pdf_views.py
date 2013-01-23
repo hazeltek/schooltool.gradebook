@@ -22,14 +22,12 @@ PDF Views
 
 from datetime import datetime
 from decimal import Decimal
-from copy import deepcopy
 
 from zope.cachedescriptors.property import Lazy
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility, getMultiAdapter
 from zope.i18n.interfaces.locales import ICollator
 from zope.security.proxy import removeSecurityProxy
-from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
@@ -898,7 +896,7 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
 class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
                                GradebookOverview):
 
-    name = _("GRADEBOOK")
+    name = _("Gradebook")
 
     content_template=flourish.templates.Inline('''
     <tal:block repeat="worksheet view/worksheets"
