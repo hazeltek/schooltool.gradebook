@@ -53,6 +53,7 @@ from schooltool.gradebook.interfaces import (IGradebookRoot,
     IGradebookTemplates, IReportWorksheet, IReportActivity, IActivities)
 from schooltool.gradebook.activity import (Worksheet, Activity, ReportWorksheet,
     ReportActivity)
+from schooltool.gradebook.browser.activity import FlourishWeightCategoriesView
 from schooltool.gradebook.category import getCategories
 from schooltool.gradebook.gradebook_init import ReportLayout, ReportColumn
 from schooltool.gradebook.gradebook_init import OutlineActivity
@@ -65,20 +66,25 @@ from schooltool.requirement.scoresystem import DiscreteScoreSystemsVocabulary
 
 ABSENT_HEADING = _('Absent')
 TARDY_HEADING = _('Tardy')
+AVERAGE_HEADING = _('Average')
 ABSENT_ABBREVIATION = _('A')
 TARDY_ABBREVIATION = _('T')
 ABSENT_KEY = 'absent'
 TARDY_KEY = 'tardy'
+AVERAGE_KEY = '__average__'
 
 
 def copyActivities(sourceWorksheet, destWorksheet):
-    """Copy the activities from the source worksheet to the destination."""
+    """Copy the activities and the category weights from the source worksheet
+       to the destination."""
 
     for key, activity in sourceWorksheet.items():
         activityCopy = Activity(activity.title, activity.category,
                                 activity.scoresystem, activity.description,
                                 activity.label)
         destWorksheet[key] = activityCopy
+    for category, weight in sourceWorksheet.getCategoryWeights().items():
+        destWorksheet.setCategoryWeight(category, weight)
 
 
 class TemplatesView(object):
@@ -465,6 +471,17 @@ class ReportSheetAddLinks(flourish.page.RefineLinksViewlet):
     """Report sheet add links viewlet."""
 
 
+class ReportSheetSettingsLinks(flourish.page.RefineLinksViewlet):
+    """Report sheet settings links viewlet."""
+
+
+class ReportSheetWeightCategoriesView(FlourishWeightCategoriesView):
+    """Report sheet category weights view."""
+
+    def nextURL(self):
+        return absoluteURL(self.context, self.request)
+
+
 class FlourishReportSheetAddView(flourish.form.AddForm):
     """flourish view for adding a report sheet template."""
 
@@ -650,7 +667,7 @@ class ReportActivityAddView(form.AddForm):
     template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
-    fields = fields.select('title', 'label', 'description')
+    fields = fields.select('title', 'label', 'description', 'category')
     fields += field.Fields(IReportScoreSystem)
 
     def updateActions(self):
@@ -687,7 +704,7 @@ class ReportActivityAddView(form.AddForm):
                 min=minimum, max=maximum)
         else:
             scoresystem = data['scoresystem']
-        activity = ReportActivity(data['title'], categories.default, 
+        activity = ReportActivity(data['title'], data['category'], 
                                   scoresystem, data['description'],
                                   data['label'])
         return activity
@@ -730,7 +747,7 @@ class ReportActivityEditView(form.EditForm):
     template = ViewPageTemplateFile('templates/add_edit_report_activity.pt')
 
     fields = field.Fields(IReportActivity)
-    fields = fields.select('title', 'label', 'description')
+    fields = fields.select('title', 'label', 'description', 'category')
     fields += field.Fields(IReportScoreSystem)
 
     @button.buttonAndHandler(_("Cancel"))
@@ -1114,8 +1131,11 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
         term = self.schoolyear[termName]
         root = IGradebookRoot(ISchoolToolApplication(None))
         worksheet = root.deployed[worksheetName]
-        activity = worksheet[activityName]
-        return '%s - %s - %s' % (term.title, worksheet.title, activity.title)
+        if activityName == AVERAGE_KEY:
+            activity_title = AVERAGE_HEADING
+        else:
+            activity_title = worksheet[activityName].title
+        return '%s - %s - %s' % (term.title, worksheet.title, activity_title)
 
     def getEditURL(self, source_type, index):
         return '%s/editReportCard%s.html?schoolyear_id=%s&source_index=%s' % (
@@ -1282,6 +1302,8 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
             for key in root.deployed:
                 if key.startswith(deployedKey):
                     deployedWorksheet = root.deployed[key]
+                    if deployedWorksheet.hidden:
+                        continue
                     for activity in deployedWorksheet.values():
                         if ICommentScoreSystem.providedBy(activity.scoresystem):
                             if no_comment: 
@@ -1290,6 +1312,17 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
                             deployedWorksheet.title, activity.title)
                         value = '%s|%s|%s' % (term.__name__,
                             deployedWorksheet.__name__, activity.__name__)
+                        result = {
+                            'name': name,
+                            'value': value,
+                            'selected': value == source and 'selected' or None,
+                            }
+                        results.append(result)
+                    if not no_journal:
+                        name = '%s - %s - %s' % (term.title,
+                            deployedWorksheet.title, AVERAGE_HEADING)
+                        value = '%s|%s|%s' % (term.__name__,
+                            deployedWorksheet.__name__, AVERAGE_KEY)
                         result = {
                             'name': name,
                             'value': value,

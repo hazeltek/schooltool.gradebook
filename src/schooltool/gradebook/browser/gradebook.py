@@ -28,14 +28,16 @@ import datetime
 from decimal import Decimal
 from StringIO import StringIO
 import urllib
+from lxml import html
 
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.cachedescriptors.property import Lazy
 from zope.html.field import HtmlFragment
+from zope.interface import Interface
 from zope.publisher.browser import BrowserView
-from zope.schema import ValidationError, TextLine
+from zope.schema import ValidationError, TextLine, Text
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
 from zope.security.interfaces import Unauthorized
@@ -218,9 +220,7 @@ class GradebookBase(BrowserView):
     teacher_gradebook_view_name = 'gradebook'
     student_gradebook_view_name = 'mygrades'
 
-    def __init__(self, context, request):
-        super(GradebookBase, self).__init__(context, request)
-        self.changed = False
+    changed = False
 
     @property
     def students(self):
@@ -700,15 +700,27 @@ class GradebookOverview(SectionFinder):
         if cell_name in self.request:
             value = self.request[cell_name]
 
-        if value and ICommentScoreSystem.providedBy(activity.scoresystem):
-            value = '...'
-
         return value
 
-    def table(self):
+    def getCommentShorthand(self, comment):
+        result = ''
+        inside_markup = False
+        for char in comment:
+            if inside_markup:
+                if char == '>':
+                    inside_markup = False
+            else:
+                if char == '<':
+                    inside_markup = True
+                else:
+                    result += char
+        return html.fromstring(result).text.lstrip()[:4]
+
+    def table(self, worksheet=None):
         """Generate the table of grades."""
         gradebook = proxy.removeSecurityProxy(self.context)
-        worksheet = gradebook.getCurrentWorksheet(self.person)
+        if worksheet is None:
+            worksheet = gradebook.getCurrentWorksheet(self.person)
 
         section = ISection(worksheet, None)
         journal_data = interfaces.ISectionJournalData(section, None)
@@ -718,7 +730,14 @@ class GradebookOverview(SectionFinder):
             grades = []
             for activity_info in self.filtered_activity_info:
                 activity = activity_info['object']
+                is_comment = False
+                hidden_value = ''
                 value = self.getStudentActivityValue(student_info, activity)
+                if ICommentScoreSystem.providedBy(activity.scoresystem):
+                    is_comment = True
+                    hidden_value = value
+                    if value:
+                        value = self.getCommentShorthand(value)
                 source = activity_info['linked_source']
                 if source is not None:
                     if value and interfaces.IActivityWorksheet.providedBy(source):
@@ -726,7 +745,9 @@ class GradebookOverview(SectionFinder):
                 grade = {
                     'activity': activity_info['hash'],
                     'editable': activity_info['scorable'],
-                    'value': value
+                    'value': value,
+                    'is_comment': is_comment,
+                    'hidden_value': hidden_value,
                     }
                 grades.append(grade)
 
@@ -2212,7 +2233,10 @@ class FlourishGradebookValidateScoreView(JSONViewBase):
                 except (ScoreValidationError,):
                     result['is_valid'] = False
                 else:
-                    if score > scoresystem.getBestScore():
+                    if IDiscreteValuesScoreSystem.providedBy(scoresystem):
+                        result['score'] = score
+                    if (IRangedValuesScoreSystem.providedBy(scoresystem) and
+                        score > scoresystem.getBestScore()):
                         result['is_extracredit'] = True
         return result
 
@@ -2558,3 +2582,68 @@ class GradebookExportViewlet(ReportLinkViewlet):
         if worksheet.hidden:
             return ''
         return super(GradebookExportViewlet, self).render(*args, **kw)
+
+
+class ICommentCellForm(Interface):
+    '''An interface used to build the comment cell modal'''
+
+    value = HtmlFragment(
+        title=_("Value"),
+        required=False)
+
+
+class CommentCellFormAdapter(object):
+
+    def __init__(self, context):
+        pass
+
+    def __getattr__(self, name):
+        return ''
+
+
+class FlourishGradebookCommentCell(flourish.form.Form):
+
+    fields = field.Fields(ICommentCellForm)
+
+
+class FlourishGradebookCommentCellSubmit(flourish.page.Page):
+
+    def update(self):
+        persons = ISchoolToolApplication(None)['persons']
+        student_id = self.request.get('comment-student-id')
+        student = persons.get(student_id, None)
+
+        gradebook = proxy.removeSecurityProxy(self.context)
+        worksheet = gradebook.context
+        activity_id = self.request.get('comment-activity-id')
+        activity = worksheet.get(activity_id, None)
+
+        value = self.request.get('form.widgets.value', None)
+
+        self.request.response.redirect(absoluteURL(gradebook, self.request))
+        if student is not None and activity is not None and value is not None:
+            evaluator = getName(IPerson(self.request.principal))
+
+            # XXX: heavy code duplication with GradebookOverview
+
+            # If a value is present, create an evaluation, if the
+            # score is different
+            try:
+                request_score_value = activity.scoresystem.fromUnicode(
+                    value)
+            except (ValidationError, ValueError):
+                return
+
+            score = gradebook.getScore(student, activity)
+            # Delete the score
+            if score and request_score_value is UNSCORED:
+                gradebook.removeEvaluation(student, activity,
+                                           evaluator=evaluator)
+            # Do nothing
+            elif not score and request_score_value is UNSCORED:
+                return
+            # Replace the score or add new one
+            elif not score or request_score_value != score.value:
+                gradebook.evaluate(student, activity, request_score_value,
+                                   evaluator)
+

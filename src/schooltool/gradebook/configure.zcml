@@ -160,7 +160,7 @@
         permission="schooltool.edit"
         interface="zope.interface.common.mapping.IWriteMapping"
         set_schema=".interfaces.IReportWorksheet"
-        attributes="changePosition"
+        attributes="changePosition getCategoryWeights setCategoryWeight"
         />
   </class>
   <class class=".activity.CourseWorksheet">

@@ -22,12 +22,12 @@ PDF Views
 
 from datetime import datetime
 from decimal import Decimal
-from copy import deepcopy
 
+from zope.cachedescriptors.property import Lazy
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.component import getUtility
+from zope.component import getUtility, getMultiAdapter
+from zope.i18n.interfaces.locales import ICollator
 from zope.security.proxy import removeSecurityProxy
-from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
@@ -37,17 +37,21 @@ from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
 
+import schooltool.table
+from schooltool.skin import flourish
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.browser.gradebook import GradebookOverview
+from schooltool.gradebook.browser.gradebook import convertAverage
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
-    TARDY_KEY)
+    TARDY_KEY, AVERAGE_KEY, AVERAGE_HEADING)
 from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
 from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
+from schooltool.requirement.interfaces import IScoreSystemContainer
 from schooltool.requirement.scoresystem import UNSCORED
 
 
@@ -97,6 +101,32 @@ class BaseStudentPDFView(BasePDFView):
                 result += 1
         return result or None
 
+    def isAverageSource(self, layout):
+        termName, worksheetName, activityName = layout.source.split('|')
+        return activityName == AVERAGE_KEY
+
+    def getAverageScore(self, student, section, layout):
+        termName, worksheetName, activityName = layout.source.split('|')
+        activities = IActivities(section)
+        if worksheetName not in activities:
+            return None
+        worksheet = activities[worksheetName]
+
+        gradebook = removeSecurityProxy(IGradebook(worksheet))
+        person = IPerson(self.request.principal, None)
+        if person is None:
+            columnPreferences = {}
+        else:
+            columnPreferences = gradebook.getColumnPreferences(person)
+        prefs = columnPreferences.get('average', {})
+        scoresystems = IScoreSystemContainer(ISchoolToolApplication(None))
+        average_scoresystem = scoresystems.get(prefs.get('scoresystem', ''))
+
+        total, average = gradebook.getWorksheetTotalAverage(worksheet, student)
+        if average is UNSCORED:
+            return None
+        return convertAverage(average, average_scoresystem)
+
     def getActivity(self, section, layout):
         termName, worksheetName, activityName = layout.source.split('|')
         activities = IActivities(section)
@@ -110,6 +140,8 @@ class BaseStudentPDFView(BasePDFView):
         if layout.source == TARDY_KEY:
             return TARDY_HEADING
         termName, worksheetName, activityName = layout.source.split('|')
+        if activityName == AVERAGE_KEY:
+            return AVERAGE_HEADING
         root = IGradebookRoot(ISchoolToolApplication(None))
         heading = root.deployed[worksheetName][activityName].title
         if len(layout.heading):
@@ -126,7 +158,7 @@ class BaseStudentPDFView(BasePDFView):
                     if teacher not in teachers:
                         teachers.append(teacher)
         courseTitles = ', '.join(c.title for c in course)
-        teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name) 
+        teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name)
             for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
         return '%s (%s)' % (courseTitles, teacherNames)
@@ -155,6 +187,10 @@ class BaseStudentPDFView(BasePDFView):
                     if score is not None:
                         if course in byCourse:
                             score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                elif self.isAverageSource(layout):
+                    score = self.getAverageScore(student, section, layout)
+                    if score is not None:
                         byCourse[course] = unicode(score)
                 else:
                     activity = self.getActivity(section, layout)
@@ -856,3 +892,155 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
             num_cols += 1
         return '6cm' +',1.6cm' * (num_cols)
 
+
+class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
+                               GradebookOverview):
+
+    name = _("Gradebook")
+
+    content_template=flourish.templates.Inline('''
+    <tal:block repeat="worksheet view/worksheets"
+               content="structure worksheet/schooltool:content/grid" />
+    ''')
+
+    def formatDate(self, date, format='mediumDate'):
+        if date is None:
+            return ''
+        formatter = getMultiAdapter((date, self.request), name=format)
+        return formatter()
+
+    @property
+    def scope(self):
+        dtm = getUtility(IDateManager)
+        today = dtm.today
+        return self.formatDate(today)
+
+    @property
+    def title(self):
+        return ', '.join([course.title for course in self.section.courses])
+
+    @property
+    def subtitles_left(self):
+        section = removeSecurityProxy(self.section)
+        instructors = '; '.join([person.title
+                                 for person in section.instructors])
+        instructors_message = _('Instructors: ${instructors}',
+                                mapping={'instructors': instructors})
+        subtitles = [
+            '%s (%s)' % (section.title, section.__name__),
+            instructors_message,
+            ]
+        return subtitles
+
+    @property
+    def base_filename(self):
+        courses = [c.__name__ for c in self.section.courses]
+        worksheet = self.context.__parent__
+        return 'gradebook_%s_%s' % ('_'.join(courses), worksheet.title)
+
+    @Lazy
+    def worksheets(self):
+        worksheet = removeSecurityProxy(self.context).context
+        return [worksheet]
+
+    @Lazy
+    def section(self):
+        worksheet = removeSecurityProxy(self.context).context
+        section = ISection(worksheet)
+        return section
+
+    def updateGradebookOverview(self):
+        self.person = IPerson(self.request.principal)
+        self.sortKey = self.context.getSortKey(self.person)
+        self.processColumnPreferences()
+
+    def update(self):
+        super(FlourishGradebookPDFView, self).update()
+        self.updateGradebookOverview()
+
+
+class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
+
+    absences_column = None
+    tardies_column = None
+    total_column = None
+    average_column = None
+
+    @property
+    def title(self):
+        return self.worksheet.title
+
+    @property
+    def worksheet(self):
+        return self.context
+
+    @property
+    def gradebook_overview(self):
+        return self.view
+
+    def updateColumns(self):
+        self.columns = []
+        for info in self.gradebook_overview.filtered_activity_info:
+            self.columns.append(schooltool.table.pdf.GridColumn(
+                info['longTitle'], item=info['hash']
+                ))
+        if not self.gradebook_overview.absences_hide:
+            self.absences_column = schooltool.table.pdf.GridColumn(
+                self.gradebook_overview.absences_label,
+                item='schooltool.gradebook.absences'
+                )
+            self.columns.append(self.absence_column)
+        if not self.gradebook_overview.tardies_hide:
+            self.tardies_column = schooltool.table.pdf.GridColumn(
+                self.gradebook_overview.tardies_label,
+                item='schooltool.gradebook.tardies',
+                )
+            self.columns.append(self.tardies_column)
+        if not self.gradebook_overview.total_hide:
+            self.total_column = schooltool.table.pdf.GridColumn(
+                self.gradebook_overview.total_label, font_name='Ubuntu_Bold',
+                item='schooltool.gradebook.total',
+                )
+            self.columns.append(self.total_column)
+        if not self.gradebook_overview.average_hide:
+            self.average_column = schooltool.table.pdf.GridColumn(
+                self.gradebook_overview.average_label, font_name='Ubuntu_Bold',
+                item='schooltool.gradebook.average',
+                )
+            self.columns.append(self.average_column)
+
+    def updateRows(self):
+        self.rows = []
+        collator = ICollator(self.request.locale)
+        for info in sorted(self.gradebook_overview.students_info,
+                           key=lambda info: collator.key(info['title'])):
+            self.rows.append(schooltool.table.pdf.GridRow(
+                info['title'], item=info['id']
+                ))
+
+    def updateData(self):
+        cols_by_hash = dict([(col.item, col) for col in self.columns])
+        rows_by_id = dict([(row.item, row) for row in self.rows])
+        self.grid = {}
+        table = self.gradebook_overview.table(self.worksheet)
+        for info in table:
+            row = rows_by_id.get(info['student']['id'])
+            for grade in info['grades']:
+                col = cols_by_hash.get(grade['activity'])
+                if (row is not None and
+                    col is not None):
+                    self.grid[row, col] = grade['value']
+            if self.absences_column is not None:
+                self.grid[row, self.absences_column] = info.get('absences', u'')
+            if self.tardies_column is not None:
+                self.grid[row, self.tardies_column] = info.get('tardies', u'')
+            if self.total_column is not None:
+                self.grid[row, self.total_column] = info.get('total', u'')
+            if self.average_column is not None:
+                self.grid[row, self.average_column] = info.get('average', u'')
+
+    def updateGrid(self):
+        super(WorksheetGrid, self).updateGrid()
+        self.updateColumns()
+        self.updateRows()
+        self.updateData()
