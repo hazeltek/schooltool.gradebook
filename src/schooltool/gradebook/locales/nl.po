@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-11-13 11:42+0200\n"
-"PO-Revision-Date: 2012-11-29 14:30+0000\n"
+"PO-Revision-Date: 2013-01-01 07:38+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-29 14:52+0000\n"
-"X-Generator: Launchpad (build 16319)\n"
+"X-Launchpad-Export-Date: 2013-01-02 04:49+0000\n"
+"X-Generator: Launchpad (build 16378)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -718,7 +718,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:894
 #: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid "Report Sheet Data Export"
-msgstr ""
+msgstr "Rapportkaartgegevens exporteren"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""

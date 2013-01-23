@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-08 18:34+0300\n"
-"PO-Revision-Date: 2012-08-28 16:39+0000\n"
+"POT-Creation-Date: 2012-11-13 11:42+0200\n"
+"PO-Revision-Date: 2012-11-29 14:36+0000\n"
 "Last-Translator: Javier Nicolás <chapitron@hotmail.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-29 05:28+0000\n"
-"X-Generator: Launchpad (build 15864)\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:29+0000\n"
+"X-Generator: Launchpad (build 16319)\n"
 "Language: es\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -579,7 +579,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:269
 msgid "Edit Activity"
-msgstr ""
+msgstr "Editar actividad"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:297
 msgid "Edit External Score"
@@ -708,12 +708,12 @@ msgid ""
 "Export report card data for every student in every section for the term."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:864
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
-msgid "Report Sheets"
+#: /src/schooltool/gradebook/browser/flourish.zcml:894
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
+msgid "Report Sheet Data Export"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""
 "Export report card data for every student in every section for the school. "
 "There will be one worksheet for each term in the year."
@@ -774,11 +774,11 @@ msgstr "Informes"
 msgid "Printable Worksheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1139
-msgid "The current worksheet formatted for printing."
+#: /src/schooltool/gradebook/browser/flourish.zcml:1247
+msgid "The current gradebook worksheet formatted for printing."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1151
+#: /src/schooltool/gradebook/browser/flourish.zcml:1260
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
@@ -1410,20 +1410,6 @@ msgstr ""
 msgid "There are no activity categories."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
-#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
-#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
-msgid "Done"
-msgstr "Hecho"
-
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
 msgstr ""
@@ -1613,6 +1599,22 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Manage Worksheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Manage Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
+msgid "There are ${count} course worksheets for ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
+msgid "There are no course worksheets for ${schoolyear}"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
@@ -2253,10 +2255,6 @@ msgstr "Fuente de actividad vinculada"
 msgid "A text string that specifies the source of the column"
 msgstr "Una cadena de texto que especifica la fuente de la columna"
 
-#: /src/schooltool/gradebook/journal.py:46
-msgid "Journal Source"
-msgstr ""
-
 #: /src/schooltool/gradebook/journal.py:64
 msgid "Journal Average"
 msgstr ""
@@ -2563,6 +2561,15 @@ msgstr "Ver sistema de puntuación"
 
 #~ msgid "A detailed description of the external activity."
 #~ msgstr "Una descripción detallada de la actividad externa."
+
+#~ msgid ""
+#~ "Your browser either has Javascript turned off, or it is not supported. "
+#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
+#~ "use a browser with Javascript."
+#~ msgstr ""
+#~ "Su navegador tiene Javascript desactivado, o no es compatible. Javascript es "
+#~ "<b>requerido</b> para el cuadro de notas. Por favor, active Javascript o "
+#~ "utilice un navegador con JavaScript."
 
 #~ msgid "Delete?"
 #~ msgstr "¿Borrar?"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-08 18:34+0300\n"
-"PO-Revision-Date: 2012-04-25 13:30+0000\n"
+"POT-Creation-Date: 2012-11-13 11:42+0200\n"
+"PO-Revision-Date: 2012-11-29 14:35+0000\n"
 "Last-Translator: Sylver_51 <Sylver_51@yahoo.com.br>\n"
 "Language-Team: English (Australia) <en_AU@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-09 05:24+0000\n"
-"X-Generator: Launchpad (build 15761)\n"
+"X-Launchpad-Export-Date: 2012-11-30 05:29+0000\n"
+"X-Generator: Launchpad (build 16319)\n"
 "Language: en_AU\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -125,11 +125,11 @@ msgstr "Title"
 
 #: /src/schooltool/gradebook/browser/activity.py:334
 msgid "Column Label"
-msgstr ""
+msgstr "Column Label"
 
 #: /src/schooltool/gradebook/browser/activity.py:335
 msgid "Limit to 5 characters or less."
-msgstr "Limitar a 5 caracteres ou menos"
+msgstr "Limit to 5 characters or less."
 
 #: /src/schooltool/gradebook/browser/activity.py:339
 #: /src/schooltool/gradebook/interfaces.py:133
@@ -168,18 +168,17 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/activity.py:356
 #: /src/schooltool/gradebook/browser/activity.py:467
 msgid "Full Credit Score"
-msgstr ""
+msgstr "Full Credit Score"
 
 #: /src/schooltool/gradebook/browser/activity.py:357
 msgid ""
 "This value must be an integer.  You may award extra credit above this value."
 msgstr ""
-"Este valor tem de ser do tipo inteiro. Poderá ganhar créditos extra acima "
-"deste valor."
+"This value must be an integer. You may award extra credit above this value."
 
 #: /src/schooltool/gradebook/browser/activity.py:363
 msgid "Minimum Score"
-msgstr ""
+msgstr "Minimum Score"
 
 #: /src/schooltool/gradebook/browser/activity.py:364
 msgid "This value must be an integer."
@@ -227,7 +226,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/activity.py:480
 #: /src/schooltool/gradebook/browser/activity.py:589
 msgid "External Score Details"
-msgstr ""
+msgstr "External Score Details"
 
 #: /src/schooltool/gradebook/browser/activity.py:524
 #: /src/schooltool/gradebook/browser/report_card.py:751
@@ -280,11 +279,11 @@ msgstr "Activity"
 
 #: /src/schooltool/gradebook/browser/activity.py:1033
 msgid "Linked Column"
-msgstr ""
+msgstr "Linked Column"
 
 #: /src/schooltool/gradebook/browser/activity.py:1034
 msgid "External Score"
-msgstr ""
+msgstr "External Score"
 
 #: /src/schooltool/gradebook/browser/category.py:57
 msgid "Categories"
@@ -712,12 +711,12 @@ msgid ""
 msgstr ""
 "Export report card data for every student in every section for the term."
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:864
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
-msgid "Report Sheets"
-msgstr "Report Sheets"
+#: /src/schooltool/gradebook/browser/flourish.zcml:894
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
+msgid "Report Sheet Data Export"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""
 "Export report card data for every student in every section for the school. "
 "There will be one worksheet for each term in the year."
@@ -778,11 +777,11 @@ msgstr "Reports"
 msgid "Printable Worksheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1139
-msgid "The current worksheet formatted for printing."
+#: /src/schooltool/gradebook/browser/flourish.zcml:1247
+msgid "The current gradebook worksheet formatted for printing."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1151
+#: /src/schooltool/gradebook/browser/flourish.zcml:1260
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
@@ -1407,20 +1406,6 @@ msgstr ""
 msgid "There are no activity categories."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
-#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
-#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
-msgid "Done"
-msgstr "Done"
-
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
 msgstr ""
@@ -1610,6 +1595,22 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Manage Worksheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Manage Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
+msgid "There are ${count} course worksheets for ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
+msgid "There are no course worksheets for ${schoolyear}"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
@@ -2244,10 +2245,6 @@ msgstr "Linked Column Activity Source"
 msgid "A text string that specifies the source of the column"
 msgstr "A text string that specifies the source of the column"
 
-#: /src/schooltool/gradebook/journal.py:46
-msgid "Journal Source"
-msgstr "Journal Source"
-
 #: /src/schooltool/gradebook/journal.py:64
 msgid "Journal Average"
 msgstr "Journal Average"
@@ -2575,3 +2572,6 @@ msgstr "View Score System"
 
 #~ msgid "Delete?"
 #~ msgstr "Delete?"
+
+#~ msgid "Journal Source"
+#~ msgstr "Journal Source"
