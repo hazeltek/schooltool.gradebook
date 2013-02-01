@@ -23,10 +23,8 @@ Gradebook Views
 __docformat__ = 'reStructuredText'
 
 import pytz
-import csv
 import datetime
 from decimal import Decimal
-from StringIO import StringIO
 import urllib
 from lxml import html
 
@@ -37,7 +35,7 @@ from zope.cachedescriptors.property import Lazy
 from zope.html.field import HtmlFragment
 from zope.interface import Interface
 from zope.publisher.browser import BrowserView
-from zope.schema import ValidationError, TextLine, Text
+from zope.schema import ValidationError, TextLine
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security import proxy
 from zope.security.interfaces import Unauthorized
@@ -57,7 +55,7 @@ from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.interfaces import IApplicationPreferences
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
-from schooltool.course.interfaces import ISection, ISectionContainer
+from schooltool.course.interfaces import ISection
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
@@ -73,7 +71,7 @@ from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
     IScoreSystemContainer, IEvaluations, IScore)
-from schooltool.schoolyear.interfaces import ISchoolYear, ISchoolYearContainer
+from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.table.table import simple_form_key
 from schooltool import table
 from schooltool.term.interfaces import ITerm, IDateManager
@@ -2129,39 +2127,6 @@ class FlourishStudentGradebookView(flourish.page.Page):
             self.average = convertAverage(average, self.average_scoresystem)
         else:
             self.average = None
-
-
-class GradebookCSVView(BrowserView):
-
-    def __call__(self):
-        csvfile = StringIO()
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        row = ['year', 'term', 'section', 'worksheet', 'activity', 'student',
-               'grade']
-        writer.writerow(row)
-        syc = ISchoolYearContainer(self.context)
-        for year in syc.values():
-            for term in year.values():
-                for section in ISectionContainer(term).values():
-                    self.writeGradebookRows(writer, year, term, section)
-        return csvfile.getvalue().decode('utf-8')
-
-    def writeGradebookRows(self, writer, year, term, section):
-        activities = interfaces.IActivities(section)
-        for worksheet in activities.values():
-            gb = interfaces.IGradebook(worksheet)
-            for student in gb.students:
-                for activity in gb.activities:
-                    score = gb.getScore(student, activity)
-                    if not score:
-                        continue
-                    value = unicode(score.value).replace('\n', '\\n')
-                    value = value.replace('\r', '\\r')
-                    row = [year.__name__, term.__name__, section.__name__,
-                           worksheet.__name__, activity.__name__,
-                           student.username, value]
-                    row = [item.encode('utf-8') for item in row]
-                    writer.writerow(row)
 
 
 class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):

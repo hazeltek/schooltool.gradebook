@@ -5,7 +5,7 @@ CHANGES
 2.4a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove Download Gradebook CSV
 
 
 2.4a1 (2013-01-23)
