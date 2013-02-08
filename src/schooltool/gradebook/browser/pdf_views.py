@@ -989,7 +989,7 @@ class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
                 self.gradebook_overview.absences_label,
                 item='schooltool.gradebook.absences'
                 )
-            self.columns.append(self.absence_column)
+            self.columns.append(self.absences_column)
         if not self.gradebook_overview.tardies_hide:
             self.tardies_column = schooltool.table.pdf.GridColumn(
                 self.gradebook_overview.tardies_label,

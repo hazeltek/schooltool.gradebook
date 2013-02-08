@@ -19,7 +19,7 @@ CHANGES
 - Removed hidden deployed worksheets from dropdown in layout activity add views
 - Do not give extra credit with discrete scoresystems
 - Case-insensitive score entry
-- Modal for entering scores in gradebook cells of commment activities
+- Modal for entering scores in gradebook cells of comment activities
 - Updated translations
 
 
