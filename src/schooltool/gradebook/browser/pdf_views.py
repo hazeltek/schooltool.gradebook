@@ -896,7 +896,7 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
 class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
                                GradebookOverview):
 
-    name = _("Gradebook")
+    name = _('GRADEBOOK')
 
     content_template=flourish.templates.Inline('''
     <tal:block repeat="worksheet view/worksheets"
@@ -912,7 +912,8 @@ class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
     @property
     def scope(self):
         term = ITerm(self.section)
-        return term.title
+        schoolyear = ISchoolYear(term)
+        return '%s | %s' % (term.title, schoolyear.title)
 
     @property
     def title(self):
