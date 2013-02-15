@@ -911,9 +911,8 @@ class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
 
     @property
     def scope(self):
-        dtm = getUtility(IDateManager)
-        today = dtm.today
-        return self.formatDate(today)
+        term = ITerm(self.section)
+        return term.title
 
     @property
     def title(self):
