@@ -896,7 +896,7 @@ class GradebookPDFView(BasePDFView, GradebookOverview):
 class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
                                GradebookOverview):
 
-    name = _('GRADEBOOK')
+    name = _("Gradebook")
 
     content_template=flourish.templates.Inline('''
     <tal:block repeat="worksheet view/worksheets"

@@ -2,10 +2,11 @@
 CHANGES
 =======
 
-2.4a2 (unreleased)
+2.4a2 (2013-02-19)
 ------------------
 
 - Remove Download Gradebook CSV
+- Updated Printable Gradebook style
 
 
 2.4a1 (2013-01-23)
