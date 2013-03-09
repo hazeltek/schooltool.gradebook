@@ -47,7 +47,7 @@ setup(
     maintainer="SchoolTool Developers",
     maintainer_email="schooltool-developers@lists.launchpad.net",
     platforms=["any"],
-    classifiers=["Development Status :: 4 - Beta",
+    classifiers=["Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Intended Audience :: End Users/Desktop",
     "License :: OSI Approved :: GNU General Public License (GPL)",
