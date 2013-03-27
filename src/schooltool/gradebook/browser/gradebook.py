@@ -137,7 +137,9 @@ class GradebookStartup(object):
             self.noSections = True
         if self.sectionsTaught:
             section = getCurrentSectionTaught(self.person)
-            if section is None or section.__parent__ is None:
+            if (section is None or
+                section.__parent__ is None or
+                section not in self.sectionsTaught):
                 section = self.sectionsTaught[0]
             self.gradebookURL = '%s/%s' % (absoluteURL(section, self.request),
                                            self.teacher_gradebook_view_name)
@@ -145,7 +147,9 @@ class GradebookStartup(object):
                 self.request.response.redirect(self.gradebookURL)
         if self.sectionsAttended:
             section = getCurrentSectionAttended(self.person)
-            if section is None or section.__parent__ is None:
+            if (section is None or
+                section.__parent__ is None or
+                section not in self.sectionsAttended):
                 section = self.sectionsAttended[0]
             self.mygradesURL = '%s/%s' % (absoluteURL(section, self.request),
                                           self.student_gradebook_view_name)
@@ -484,7 +488,8 @@ class GradebookOverview(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
-        setCurrentSectionTaught(self.person, gradebook.section)
+        if gradebook.section in self.getUserSections():
+            setCurrentSectionTaught(self.person, gradebook.section)
 
         """Retrieve column preferences."""
         self.processColumnPreferences()
@@ -1302,7 +1307,8 @@ class MyGradesView(SectionFinder):
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
         gradebook.setCurrentWorksheet(self.person, worksheet)
-        setCurrentSectionAttended(self.person, gradebook.section)
+        if gradebook.section in self.getUserSections():
+            setCurrentSectionAttended(self.person, gradebook.section)
 
         """Retrieve column preferences."""
         self.processColumnPreferences()
