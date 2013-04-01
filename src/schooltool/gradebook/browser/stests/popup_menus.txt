@@ -688,7 +688,7 @@ And they appear when the user clicks on the student names:
 These menus contain options related to the student:
 
     >>> print tom_menu
-    <ul class="popup_menu popup_active" style="display: block; ">
+    <ul class="popup_menu popup_active" ...>
       <li class="header">
         Hoffman, Tom
       </li>

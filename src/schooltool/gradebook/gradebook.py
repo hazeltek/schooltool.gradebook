@@ -56,6 +56,14 @@ DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
 COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
 
 
+def getInstructorSections(person):
+    return list(course.interfaces.IInstructor(person).sections())
+
+
+def getLearnerSections(person):
+    return list(course.interfaces.ILearner(person).sections())
+
+
 def getCurrentSectionTaught(person):
     person = proxy.removeSecurityProxy(person)
     ann = annotation.interfaces.IAnnotations(person)
@@ -63,6 +71,8 @@ def getCurrentSectionTaught(person):
         ann[CURRENT_SECTION_TAUGHT_KEY] = None
     else:
         section = ann[CURRENT_SECTION_TAUGHT_KEY]
+        if section not in getInstructorSections(person):
+            return None
         try:
             interfaces.IActivities(section)
         except:
@@ -73,7 +83,8 @@ def getCurrentSectionTaught(person):
 def setCurrentSectionTaught(person, section):
     person = proxy.removeSecurityProxy(person)
     ann = annotation.interfaces.IAnnotations(person)
-    ann[CURRENT_SECTION_TAUGHT_KEY] = section
+    if section in getInstructorSections(person):
+        ann[CURRENT_SECTION_TAUGHT_KEY] = section
 
 
 def getCurrentSectionAttended(person):
@@ -83,6 +94,8 @@ def getCurrentSectionAttended(person):
         ann[CURRENT_SECTION_ATTENDED_KEY] = None
     else:
         section = ann[CURRENT_SECTION_ATTENDED_KEY]
+        if section not in getLearnerSections(person):
+            return None
         try:
             interfaces.IActivities(section)
         except:
@@ -93,7 +106,8 @@ def getCurrentSectionAttended(person):
 def setCurrentSectionAttended(person, section):
     person = proxy.removeSecurityProxy(person)
     ann = annotation.interfaces.IAnnotations(person)
-    ann[CURRENT_SECTION_ATTENDED_KEY] = section
+    if section in getLearnerSections(person):
+        ann[CURRENT_SECTION_ATTENDED_KEY] = section
 
 
 class WorksheetGradebookTraverser(object):
