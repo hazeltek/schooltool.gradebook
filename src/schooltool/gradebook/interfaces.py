@@ -132,7 +132,7 @@ class IWorksheet(interfaces.IRequirement):
     contains('interfaces.IRequirement')
 
 
-class IWorksheetAnnotatbleMixin(Interface):
+class IWorksheetAnnotatableMixin(Interface):
 
     def getCategoryWeights():
         """Get the category weights for the worksheet.  This method will
@@ -144,7 +144,7 @@ class IWorksheetAnnotatbleMixin(Interface):
            acceptable"""
 
 
-class IActivityWorksheet(IWorksheet, IWorksheetAnnotatbleMixin):
+class IActivityWorksheet(IWorksheet, IWorksheetAnnotatableMixin):
     '''A list of activities that must be fulfilled in a course or section.'''
 
     def canAverage():
@@ -154,7 +154,7 @@ class IActivityWorksheet(IWorksheet, IWorksheetAnnotatbleMixin):
     contains('.IActivity')
 
 
-class IReportWorksheet(interfaces.IRequirement, IWorksheetAnnotatbleMixin):
+class IReportWorksheet(interfaces.IRequirement, IWorksheetAnnotatableMixin):
     '''A worksheet template to get copied into section gradebooks.'''
 
     containers(IGradebookTemplates, IGradebookDeployed)
