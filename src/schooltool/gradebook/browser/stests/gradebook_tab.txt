@@ -1,0 +1,203 @@
+Gradebook tab
+=============
+
+We'll test that the Gradebook tab redirect teachers only to sections
+they teach.
+
+Helper:
+
+    >>> def print_section_navigator(browser):
+    ...     sel = 'select[name="currentSection"] option'
+    ...     for option in browser.query_all.css(sel):
+    ...         print ['%s', '*%s*'][option.is_selected()] % option.text
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'pwd')
+    >>> manager.ui.person.add('Liliana', 'Vividor', 'liliana', 'pwd')
+    >>> manager.ui.person.add('German', 'Tejada', 'german', 'pwd')
+
+Set up some courses with a section each:
+
+    >>> manager.ui.schoolyear.add('2013', '2013-01-01', '2013-12-31')
+    >>> manager.ui.term.add('2013', 'Year', '2013-01-01', '2013-12-31')
+
+    >>> manager.ui.course.add('2013', 'Math')
+    >>> manager.ui.course.add('2013', 'Physics')
+    >>> manager.ui.course.add('2013', 'Algebra')
+
+    >>> manager.ui.course.add('2013', 'Baseball')
+    >>> manager.ui.course.add('2013', 'Soccer')
+    >>> manager.ui.course.add('2013', 'Swimming')
+
+    >>> manager.ui.section.add('2013', 'Year', 'Algebra')
+    >>> manager.ui.section.add('2013', 'Year', 'Math')
+    >>> manager.ui.section.add('2013', 'Year', 'Physics')
+    >>> manager.ui.section.add('2013', 'Year', 'Baseball')
+    >>> manager.ui.section.add('2013', 'Year', 'Soccer')
+    >>> manager.ui.section.add('2013', 'Year', 'Swimming')
+
+    >>> for section in ['Algebra (1)', 'Math (2)', 'Physics (3)']:
+    ...     manager.ui.section.instructors.add('2013', 'Year', section,
+    ...                                        ['jeffrey'])
+    ...     manager.ui.section.students.add('2013', 'Year', section,
+    ...                                     ['camila', 'mario', 'nestor'])
+
+    >>> for section in ['Baseball (4)', 'Soccer (5)', 'Swimming (6)']:
+    ...     manager.ui.section.instructors.add('2013', 'Year', section,
+    ...                                        ['tom'])
+    ...     manager.ui.section.students.add('2013', 'Year', section,
+    ...                                     ['liliana', 'german'])
+
+Log in as teacher:
+
+    >>> teacher = browsers.teacher
+    >>> teacher.ui.login('jeffrey', 'pwd')
+
+Click the Gradebook tab:
+
+    >>> teacher.query.link('Gradebook').click()
+
+List the sections navigator:
+
+    >>> print_section_navigator(teacher)
+    *Algebra (1)*
+    Math (2)
+    Physics (3)
+
+Switch to the Math (2) section and list the sections navigator again:
+
+    >>> navigator = teacher.query_all.css('.refine .navigator')[0]
+    >>> page = teacher.query.tag('html')
+    >>> navigator.ui.set_value('Math (2)')
+    >>> teacher.wait(lambda: page.expired)
+    >>> print_section_navigator(teacher)
+    Algebra (1)
+    *Math (2)*
+    Physics (3)
+
+Go to Home page and back to the Gradebook tab. Current section should
+be Math (2):
+
+    >>> teacher.query.link('Home').click()
+    >>> teacher.query.link('Gradebook').click()
+    >>> print_section_navigator(teacher)
+    Algebra (1)
+    *Math (2)*
+    Physics (3)
+
+Add teacher to the School Administrators group:
+
+    >>> manager.ui.group.members.add('2013', 'School Administrators',
+    ...                              ['jeffrey'])
+
+This gives the teacher ability to see other teachers' gradebooks:
+
+    >>> teacher.ui.section.go('2013', 'Year', 'Baseball (4)')
+    >>> sel = '//div[contains(@class, "sidebar")]//a[text()="Gradebook"]'
+    >>> teacher.query.xpath(sel).click()
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    |                  |       |      |
+    +------------------+-------+------+
+    | Tejada, German   | 0.0   | N/A  |
+    | Vividor, Liliana | 0.0   | N/A  |
+    +------------------+-------+------+
+
+Go to Home page and back to the Gradebook tab. Again, the current
+section should be Math (2), not Baseball (4):
+
+    >>> teacher.query.link('Home').click()
+    >>> teacher.query.link('Gradebook').click()
+    >>> print_section_navigator(teacher)
+    Algebra (1)
+    *Math (2)*
+    Physics (3)
+
+Let's repeat this whole process for a student. Log in as student:
+
+    >>> student = browsers.student
+    >>> student.ui.login('camila', 'pwd')
+
+Click the Gradebook tab:
+
+    >>> student.query.link('Gradebook').click()
+
+List the sections navigator:
+
+    >>> print_section_navigator(student)
+    *Algebra (1)*
+    Math (2)
+    Physics (3)
+
+Switch to the Math (2) section and list the sections navigator again:
+
+    >>> navigator = student.query_all.css('.refine .navigator')[0]
+    >>> page = student.query.tag('html')
+    >>> navigator.ui.set_value('Math (2)')
+    >>> student.wait(lambda: page.expired)
+    >>> print student.query.tag('h3').text
+    Nothing Graded
+    >>> print_section_navigator(student)
+    Algebra (1)
+    *Math (2)*
+    Physics (3)
+
+Go to Home page and back to the Gradebook tab. Current section should
+be Math (2):
+
+    >>> student.query.link('Home').click()
+    >>> student.query.link('Gradebook').click()
+    >>> print student.query.tag('h3').text
+    Nothing Graded
+    >>> print_section_navigator(student)
+    Algebra (1)
+    *Math (2)*
+    Physics (3)
+
+Add student to the School Administrators group:
+
+    >>> manager.ui.group.members.add('2013', 'School Administrators',
+    ...                              ['camila'])
+
+This gives the gradebook ability to see other section gradebooks:
+
+    >>> student.ui.section.go('2013', 'Year', 'Baseball (4)')
+    >>> sel = '//div[contains(@class, "sidebar")]//a[text()="Gradebook"]'
+    >>> student.query.xpath(sel).click()
+    >>> student.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+
+    | Name             | Total | Ave. |
+    |                  |       |      |
+    +------------------+-------+------+
+    | Tejada, German   | 0.0   | N/A  |
+    | Vividor, Liliana | 0.0   | N/A  |
+    +------------------+-------+------+
+
+Go to Home page and back to the Gradebook tab. Again, the current
+section should be Math (2), not Baseball (4):
+
+    >>> student.query.link('Home').click()
+    >>> student.query.link('Gradebook').click()
+    >>> print student.query.tag('h3').text
+    Nothing Graded
+    >>> print_section_navigator(student)
+    Algebra (1)
+    *Math (2)*
+    Physics (3)

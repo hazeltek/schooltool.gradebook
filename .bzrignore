@@ -15,3 +15,4 @@
 ./tags
 ./coverage
 ./ftest-coverage
+./buildout.cfg

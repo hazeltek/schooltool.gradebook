@@ -23,7 +23,6 @@ $Id$
 __docformat__ = 'reStructuredText'
 
 import persistent.dict
-import rwproperty
 from decimal import Decimal
 
 import zope.interface
@@ -356,11 +355,11 @@ class LinkedActivity(Activity):
         self.source = external_activity.source
         self.external_activity_id = external_activity.external_activity_id
 
-    @rwproperty.getproperty
+    @property
     def points(self):
         return int(self.scoresystem.max)
 
-    @rwproperty.setproperty
+    @points.setter
     def points(self, value):
         self.scoresystem.max = Decimal(value)
 

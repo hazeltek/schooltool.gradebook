@@ -208,36 +208,3 @@ Gradebook's worksheets can be exported to a XLS file:
     >>> stephan.headers.get('Content-Type')
     'application/vnd.ms-excel'
 
-
-CSV test
-~~~~~~~~
-
-We supply a CSV view for getting all grades out of schooltool in CSV format.
-
-    >>> manager.getLink('Manage').click()
-    >>> manager.getLink('Download Gradebook CSV').click()
-    >>> print manager.contents
-    "year","term","section","worksheet","activity","student","grade"
-    "2005","semester1","1","Worksheet","Activity","claudia","45"
-    "2005","semester1","1","Worksheet","Activity-2","claudia","29"
-    "2005","semester1","1","Worksheet","Activity","paul","40"
-    "2005","semester1","1","Worksheet","Activity-2","paul","90"
-    "2005","semester1","1","Worksheet","Activity","tom","48"
-    "2005","semester1","1","Worksheet","Activity-2","tom","88"
-    "2005","semester2","1","Worksheet","Activity","claudia","31"
-    "2005","semester2","1","Worksheet","Activity-2","claudia","60"
-    "2005","semester2","1","Worksheet","Activity","paul","50"
-    "2005","semester2","1","Worksheet","Activity-2","paul","80"
-    "2005","semester2","1","Worksheet","Activity","tom","37"
-    "2005","semester2","1","Worksheet","Activity-2","tom","70"
-    "2006","semester1","1","Worksheet","Activity","claudia","95"
-    "2006","semester1","1","Worksheet","Activity-2","claudia","87"
-    "2006","semester1","1","Worksheet","Activity","paul","90"
-    "2006","semester1","1","Worksheet","Activity-2","paul","100"
-    "2006","semester1","1","Worksheet","Activity","tom","80"
-    "2006","semester1","1","Worksheet","Activity-2","tom","95"
-    "2006","semester2","1","Worksheet","Activity","claudia","100"
-    "2006","semester2","1","Worksheet","Activity","paul","70"
-    "2006","semester2","1","Worksheet","Activity-2","paul","70"
-    "2006","semester2","1","Worksheet","Activity","tom","85"
-    "2006","semester2","1","Worksheet","Activity-2","tom","80"

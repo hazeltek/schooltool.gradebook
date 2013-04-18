@@ -911,9 +911,9 @@ class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
 
     @property
     def scope(self):
-        dtm = getUtility(IDateManager)
-        today = dtm.today
-        return self.formatDate(today)
+        term = ITerm(self.section)
+        schoolyear = ISchoolYear(term)
+        return '%s | %s' % (term.title, schoolyear.title)
 
     @property
     def title(self):
@@ -989,7 +989,7 @@ class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
                 self.gradebook_overview.absences_label,
                 item='schooltool.gradebook.absences'
                 )
-            self.columns.append(self.absence_column)
+            self.columns.append(self.absences_column)
         if not self.gradebook_overview.tardies_hide:
             self.tardies_column = schooltool.table.pdf.GridColumn(
                 self.gradebook_overview.tardies_label,

@@ -2,10 +2,30 @@
 CHANGES
 =======
 
-2.4a2 (unreleased)
+2.4.1 (unreleased)
 ------------------
 
+- Nothing changed yet.
+
+
+2.4.0 (2013-04-18)
+------------------
+
+- Remove ``rwproperty`` dependency.
+
+
+2.4b1 (2013-04-04)
+------------------
+
+- Tab redirects to a section only if current user can access it (https://launchpad.net/bugs/1155226)
 - Added Thai translation
+
+
+2.4a2 (2013-02-19)
+------------------
+
+- Remove Download Gradebook CSV
+- Updated Printable Gradebook style
 
 
 2.4a1 (2013-01-23)
@@ -19,7 +39,7 @@ CHANGES
 - Removed hidden deployed worksheets from dropdown in layout activity add views
 - Do not give extra credit with discrete scoresystems
 - Case-insensitive score entry
-- Modal for entering scores in gradebook cells of commment activities
+- Modal for entering scores in gradebook cells of comment activities
 - Updated translations
 
 
