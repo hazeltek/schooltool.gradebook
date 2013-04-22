@@ -31,9 +31,11 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import IDateManager
+from schooltool.report.browser.report import RequestRemoteReportDialog
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot
+from schooltool.gradebook.gradebook import GradebookReportTask
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.skin.flourish.form import Dialog
@@ -280,10 +282,10 @@ class FlourishRequestSectionAbsencesView(RequestReportDownloadDialog):
         return absoluteURL(self.context, self.request) + '/section_absences.pdf'
 
 
-class FlourishRequestPrintableWorksheetView(RequestReportDownloadDialog):
+class FlourishRequestPrintableWorksheetView(RequestRemoteReportDialog):
 
-    def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/gradebook.pdf'
+    report_builder = 'gradebook.pdf'
+    task_factory = GradebookReportTask
 
 
 class FlourishRequestGradebookExportView(RequestReportDownloadDialog):
