@@ -118,13 +118,6 @@
       permission="schooltool.view"
       />
 
-  <flourish:page
-      name="comment_cell_submit"
-      for="schooltool.gradebook.interfaces.IGradebook"
-      class=".gradebook.FlourishGradebookCommentCellSubmit"
-      permission="schooltool.view"
-      />
-
   <flourish:viewlet
       name="gradebook_section_navigation"
       before="gradebook_term_navigation"
