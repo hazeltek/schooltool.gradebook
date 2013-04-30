@@ -81,6 +81,44 @@ class BasePDFView(ReportPDFView):
         return '%s_%s.pdf' % (basename, timestamp)
 
 
+class TermPDFPage(flourish.report.PlainPDFPage):
+
+    current_term = None
+    schoolyear = None
+    term = None
+
+    @property
+    def scope(self):
+        scope = []
+        if self.term is not None:
+            scope.append(self.term.title)
+        if self.schoolyear is not None:
+            scope.append(self.schoolyear.title)
+        return ' | '.join(scope)
+
+    def updateTimespan(self):
+        self.current_term = getUtility(IDateManager).current_term
+        if self.current_term is not None:
+            self.schoolyear = ISchoolYear(self.current_term)
+        if 'term' in self.request:
+            self.term = self.schoolyear.get(self.request['term'])
+
+    def update(self):
+        self.updateTimespan()
+        super(TermPDFPage, self).update()
+
+    def formatDate(self, date, format='mediumDate'):
+        if date is None:
+            return ''
+        formatter = getMultiAdapter((date, self.request), name=format)
+        return formatter()
+
+    def guessPeriodGroup(self, meeting):
+        # XXX: this is a copy-pasted quick fix, evil in it's own way
+        if meeting.period is not None:
+            return meeting.period.title
+        return meeting.dtstart.time().isoformat()[:5]
+
 
 class BaseStudentPDFView(BasePDFView):
     """A base class for all student PDF views"""
@@ -616,21 +654,34 @@ class FailingReportPDFView(BasePDFView):
         return results
 
 
-class AbsencesByDayPDFView(BasePDFView):
-    """A view for printing a report with those students absent on a given day"""
+class AbsencesByDayPDFView(TermPDFPage):
 
-    template=ViewPageTemplateFile('rml/absences_by_day_rml.pt')
-
-    def __init__(self, context, request):
-        super(AbsencesByDayPDFView, self).__init__(context, request)
-        self.schoolyear = self.context
-
-    def title(self):
-        return _('Absences By Day Report')
+    name = _('ABSENCES BY DAY')
 
     @property
-    def filename(self):
-        return self.makeFileName('abs_day_%s' % self.context.__name__)
+    def message_title(self):
+        day = self.getDay()
+        if day is None:
+            return _('absences by day report')
+        return _('absences for ${day}',
+                 mapping={'day': self.formatDate(day)})
+
+    @property
+    def title(self):
+        for_date = self.getDay()
+        if for_date is None:
+            return None
+        formatted_date = self.formatDate(for_date, format="fullDate")
+        return formatted_date
+
+    @property
+    def base_filename(self):
+        day = self.getDay()
+        if day is None:
+            filename = 'abs_day_' + self.context.__name__
+        else:
+            filename = 'abs_day_%d_%02d_%02d' % (day.year, day.month, day.day)
+        return filename
 
     def getDay(self):
         day = self.request.get('day', None)
@@ -639,8 +690,18 @@ class AbsencesByDayPDFView(BasePDFView):
         try:
             year, month, day = [int(part) for part in day.split('-')]
             return datetime.date(datetime(year, month, day))
-        except:
+        except (TypeError, ValueError):
+            pass
+        try:
+            return datetime.date(day)
+        except (TypeError, ValueError):
             return None
+
+    def formatDate(self, date, format='mediumDate'):
+        if date is None:
+            return ''
+        formatter = getMultiAdapter((date, self.request), name=format)
+        return formatter()
 
     def compareDates(self, first, second):
         return (first.year == second.year and first.month == second.month and
@@ -683,23 +744,21 @@ class AbsencesByDayPDFView(BasePDFView):
                 periods[period] = 0
         return sorted(periods.keys())
 
-    def date_heading(self):
-        day = self.getDay()
-        if day is None:
-            return ''
-        else:
-            return day.strftime('%A %B %0d, %Y')
-
-    def periods_heading(self):
-        return _('Period Number')
-
-    def name_heading(self):
-        return _('Student')
-
     def widths(self):
         data = self.getData()
         periods = self.getPeriods(data)
-        return '8cm' + ',1cm' * len(periods)
+        n_cols = len(periods)
+        if not n_cols:
+            return None
+        col_width = max(int(40./n_cols), 8)
+        widths_string = ' '.join(
+            ['%d%%' % max((100-col_width*n_cols), 10)] +
+            ['%d%%' % col_width] * (n_cols)
+            )
+        return widths_string
+
+    def header_widths(self):
+        return '60% 40%'
 
     def periods(self):
         data = self.getData()
@@ -723,47 +782,44 @@ class AbsencesByDayPDFView(BasePDFView):
         return rows
 
 
-class SectionAbsencesPDFView(BasePDFView):
+class SectionAbsencesPDFView(TermPDFPage):
     """A view for printing a report with absences for a given section"""
 
-    template=ViewPageTemplateFile('rml/section_absences_rml.pt')
-
-    def __init__(self, context, request):
-        super(SectionAbsencesPDFView, self).__init__(context, request)
-        self.section = self.context
-
-    def title(self):
-        return _('Absences by Section Report')
+    name = _('SECTION ABSENCES')
 
     @property
-    def filename(self):
-        courses = [c.__name__ for c in self.context.courses]
-        return self.makeFileName('abs_section_%s' % '_'.join(courses))
+    def message_title(self):
+        return _('${section} absence report',
+                 mapping={'section': self.section.title})
 
-    def course_heading(self):
-        return _('Course')
+    @property
+    def title(self):
+        return self.section.title
 
-    def course(self):
-        return ', '.join([course.title for course in self.section.courses])
+    @property
+    def section(self):
+        return self.context
 
-    def teacher_heading(self):
-        return _('Teacher')
+    @property
+    def subtitles_left(self):
+        instructors = ['%s %s' % (teacher.first_name, teacher.last_name)
+                       for teacher in self.section.instructors]
+        subtitles = [
+            _('Teacher(s): ${instructors}',
+              mapping={'instructors': ', '.join(instructors)})
+            ]
+        return subtitles
 
-    def teacher(self):
-        return ', '.join(['%s %s' % (teacher.first_name, teacher.last_name)
-                          for teacher in self.section.instructors])
+    @property
+    def base_filename(self):
+        courses = [c.__name__ for c in self.section.courses]
+        filename = 'abs_section_%s' % '_'.join(courses)
+        return filename
 
-    def student_heading(self):
-        return _('Student')
-
-    def absences_heading(self):
-        return _('Absences')
-
-    def tardies_heading(self):
-        return _('Tardies')
-
-    def total_heading(self):
-        return _('Total')
+    def updateTimespan(self):
+        self.term = ITerm(self.section)
+        self.schoolyear = ISchoolYear(self.term)
+        self.current_term = getUtility(IDateManager).current_term
 
     def getStudentData(self, jd, student):
         student_data = {}
@@ -908,6 +964,11 @@ class FlourishGradebookPDFView(flourish.report.PlainPDFPage,
             return ''
         formatter = getMultiAdapter((date, self.request), name=format)
         return formatter()
+
+    @property
+    def message_title(self):
+        return _('${section} gradebook',
+                 mapping={'section': self.section.title})
 
     @property
     def scope(self):

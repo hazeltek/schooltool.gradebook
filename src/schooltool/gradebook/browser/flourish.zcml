@@ -1004,7 +1004,6 @@
         name="request_absences_by_day.html"
         for="schooltool.schoolyear.interfaces.ISchoolYear"
         class=".request_reports.FlourishRequestAbsencesByDayView"
-        template="templates/f_request_absences_by_day.pt"
         permission="schooltool.edit"
         />
     <flourish:page

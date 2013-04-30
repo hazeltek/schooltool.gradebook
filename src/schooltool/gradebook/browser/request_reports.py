@@ -23,17 +23,23 @@ Request PDF Views
 from datetime import datetime
 from urllib import unquote_plus
 
+import zope.schema
+import zope.schema.interfaces
+import z3c.form
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
+from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import IDateManager
+from schooltool.report.browser.report import RequestRemoteReportDialog
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot
+from schooltool.gradebook.gradebook import GradebookReportTask
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.skin.flourish.form import Dialog
@@ -266,24 +272,65 @@ class FlourishRequestFailingReportView(RequestReportDownloadDialogBase,
         RequestFailingReportView.update(self)
 
 
-class FlourishRequestAbsencesByDayView(RequestReportDownloadDialogBase,
-                                       RequestAbsencesByDayView):
+class IRequestAbsencesByDayForm(Interface):
+
+    date = zope.schema.Date(
+        title=_(u'Date'),
+        required=True)
+
+
+class DayMustBeInSchoolYear(zope.schema.interfaces.ValidationError):
+    __doc__ = _('You must specify a valid date within the school year.')
+
+
+class AbsenceByDayValidator(z3c.form.validator.SimpleFieldValidator):
+
+    def validate(self, value):
+        date = value
+        if (date is None or
+            date < self.view.schoolyear.first or
+            date > self.view.schoolyear.last):
+            raise DayMustBeInSchoolYear(value)
+
+
+class FlourishRequestAbsencesByDayView(RequestRemoteReportDialog):
+
+    fields = z3c.form.field.Fields(IRequestAbsencesByDayForm)
+
+    report_builder = 'absences_by_day.pdf'
+
+    title = _('Request Absences By Day Report')
+
+    @property
+    def schoolyear(self):
+        return self.context
 
     def update(self):
-        RequestReportDownloadDialogBase.update(self)
-        RequestAbsencesByDayView.update(self)
+        self.message = ''
+        RequestRemoteReportDialog.update(self)
+
+    def updateTaskParams(self, task):
+        date = self.form_params.get('date')
+        if date is not None:
+            day = '%d-%02d-%02d' % (date.year, date.month, date.day)
+            task.request_params['day'] = day
 
 
-class FlourishRequestSectionAbsencesView(RequestReportDownloadDialog):
+z3c.form.validator.WidgetValidatorDiscriminators(
+    AbsenceByDayValidator,
+    view=FlourishRequestAbsencesByDayView,
+    field=IRequestAbsencesByDayForm['date'])
 
-    def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/section_absences.pdf'
+
+class FlourishRequestSectionAbsencesView(RequestRemoteReportDialog):
+
+    report_builder = 'section_absences.pdf'
 
 
-class FlourishRequestPrintableWorksheetView(RequestReportDownloadDialog):
+class FlourishRequestPrintableWorksheetView(RequestRemoteReportDialog):
 
-    def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/gradebook.pdf'
+    report_builder = 'gradebook.pdf'
+    task_factory = GradebookReportTask
 
 
 class FlourishRequestGradebookExportView(RequestReportDownloadDialog):

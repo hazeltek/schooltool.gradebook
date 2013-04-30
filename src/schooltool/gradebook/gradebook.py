@@ -29,14 +29,18 @@ from zope import annotation
 from zope.keyreference.interfaces import IKeyReference
 from zope.component import adapts, adapter
 from zope.component import queryMultiAdapter, getMultiAdapter
+from zope.component import getUtility
 from zope.interface import implements, implementer
 from zope.location.location import LocationProxy
 from zope.publisher.interfaces import IPublishTraverse
 from zope.security.proxy import removeSecurityProxy
+from zope.security.proxy import removeSecurityProxy
+from zope.intid.interfaces import IIntIds
 
 from schooltool import course, requirement
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IBasicPerson
+from schooltool.report.report import ReportTask
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
 from schooltool.securitypolicy.crowds import AdministrationCrowd
 
@@ -568,4 +572,27 @@ class GradebookEditorsCrowd(ConfigurableCrowd):
         """Return the value of the related setting (True or False)."""
         return (AdministrationCrowd(self.context).contains(principal) and
                 super(GradebookEditorsCrowd, self).contains(principal))
+
+
+class GradebookReportTask(ReportTask):
+    implements(interfaces.IGradebookReportTask)
+
+    worksheet_intid = None
+
+    @property
+    def context(self):
+        int_ids = getUtility(IIntIds)
+        worksheet = int_ids.queryObject(self.worksheet_intid)
+        if worksheet is None:
+            return None
+        gradebook = interfaces.IGradebook(worksheet)
+        return gradebook
+
+    @context.setter
+    def context(self, value):
+        unproxied = removeSecurityProxy(value)
+        worksheet = unproxied.__parent__
+        int_ids = getUtility(IIntIds)
+        self.worksheet_intid = int_ids.getId(worksheet)
+
 

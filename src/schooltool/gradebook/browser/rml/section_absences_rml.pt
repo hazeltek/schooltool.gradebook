@@ -1,99 +1,55 @@
-<?xml version="1.0" standalone="no" ?>
-<!DOCTYPE document SYSTEM "rml_1_0.dtd" [
-  <!ENTITY pound   "&#xA3;">
-  <!ENTITY nbsp    "&#160;">
-]>
+<tal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="schooltool.gradebook">
 
-<document
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  metal:use-macro="context/@@rml_macros/report"
-  i18n:domain="schooltool.gradebook">
+  <pto>
+    <pto_header>
+      <hr width="100%" thickness="1" cap="square" color="separator"
+          spaceAfter="4" spaceBefore="8" align="center" />
+      <para style="section-title" i18n:translate="">Absences (continued)</para>
+      <blockTable style="multi-table.header"
+                  colWidths="55% 15% 15% 15%">
+        <tr>
+          <td i18n:translate="">Student</td>
+          <td i18n:translate="">Absences</td>
+          <td i18n:translate="">Tardies</td>
+          <td i18n:translate="">Total</td>
+        </tr>
+      </blockTable>
+    </pto_header>
+    <pto_trailer>
+      <para style="pagesplit-continued">Continued on next page &gt;</para>
+    </pto_trailer>
 
-<metal:block fill-slot="page_templates">
-  <tal:block content="structure view/use_template/default" />
-</metal:block>
+    <hr width="100%" thickness="1" cap="square" color="separator"
+        spaceAfter="4" spaceBefore="8" align="center" />
+    <para style="section-title" i18n:translate="">Absences</para>
+    <blockTable style="multi-table.header"
+                colWidths="55% 15% 15% 15%">
+      <tr>
+        <td i18n:translate="">Student</td>
+        <td i18n:translate="">Absences</td>
+        <td i18n:translate="">Tardies</td>
+        <td i18n:translate="">Total</td>
+      </tr>
+    </blockTable>
 
-<stylesheet>
-  <metal:block fill-slot="extra_initialize">
-  </metal:block>
-  <metal:block fill-slot="stylesheet">
+    HELLO!
+    <tal:block define="students view/students"
+               condition="students">
+      <blockTable style="multi-table.content-only"
+                  colWidths="55% 15% 15% 15%">
+        <tr tal:repeat="student students">
+          <td tal:content="student/name"></td>
+          <td tal:content="student/absences"></td>
+          <td tal:content="student/tardies"></td>
+          <td tal:content="student/total"></td>
+        </tr>
+      </blockTable>
+    </tal:block>
+  </pto>
 
-    <paraStyle
-      name="normal"
-      fontName="Arial_Normal"
-      fontSize="10"
-      leading="12"/>
-
-    <paraStyle
-      name="bold"
-      fontName="Arial_Bold"
-      fontSize="10"
-      alignment="left"
-      leading="12"/>
-
-    <paraStyle
-      name="heading"
-      fontName="Arial_Bold"
-      fontSize="10"
-      alignment="right"
-      leading="12"/>
-
-    <paraStyle
-      name="section_heading"
-      fontName="Arial_Bold"
-      fontSize="12"
-      alignment="center"
-      leading="12"/>
-
-    <blockTableStyle id="headings_table">
-        <blockValign value="top" start="0,0" stop="0,-1"/>
-    </blockTableStyle>
-
-    <blockTableStyle id="grid">
-    	<lineStyle kind="OUTLINE"
-          colorName="black" thickness="0.25"
-          start="0,0" stop="-1,-1" />
-        <blockValign value="top" start="0,0" stop="0,-1"/>
-    </blockTableStyle>
-  </metal:block>
-</stylesheet>
-
-<story metal:fill-slot="story">
-  <blockTable style="headings_table" colWidths="4cm,4cm,4cm,4cm">
-    <tr>
-      <td><para style="heading" tal:content="view/course_heading" /></td>
-      <td><para style="normal" tal:content="view/course" /></td>
-      <td><para style="heading" tal:content="view/teacher_heading" /></td>
-      <td><para style="normal" tal:content="view/teacher" /></td>
-    </tr>
-  </blockTable>
-  <spacer length=".5cm" />
-
-  <blockTable style="grid" colWidths="7.5cm,2.5cm,2.5cm,2.5cm">
-    <tr>
-      <td><para style="bold" tal:content="view/student_heading" /></td>
-      <td><para style="bold" tal:content="view/absences_heading" /></td>
-      <td><para style="bold" tal:content="view/tardies_heading" /></td>
-      <td><para style="bold" tal:content="view/total_heading" /></td>
-    </tr>
-  </blockTable>
-  <spacer length=".2cm" />
-
-  <blockTable style="headings_table" colWidths="7.5cm,2.5cm,2.5cm,2.5cm"
-              tal:condition="python: len(view.students()) > 0">
-    <tr tal:repeat="student view/students">
-      <td><para style="normal" tal:content="student/name" /></td>
-      <td><para style="normal" tal:content="student/absences" /></td>
-      <td><para style="normal" tal:content="student/tardies" /></td>
-      <td><para style="normal" tal:content="student/total" /></td>
-    </tr>
-  </blockTable>
-
-  <condPageBreak height="88cm"/>
-
-</story>
-
-</document>
+</tal:block>
 

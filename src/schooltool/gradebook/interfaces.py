@@ -28,6 +28,7 @@ from zope.container.interfaces import IContainer
 from zope.container.constraints import containers, contains
 from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
+from schooltool.report.interfaces import IReportTask
 from schooltool.gradebook import GradebookMessage as _
 
 
@@ -479,3 +480,6 @@ class ILinkedColumnActivity(IActivity):
 class ISectionJournalData(Interface):
     """Bridge interface to remove gradebook dependency on lyceum journal."""
 
+
+class IGradebookReportTask(IReportTask):
+    pass
