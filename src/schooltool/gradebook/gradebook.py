@@ -30,16 +30,16 @@ from zope.keyreference.interfaces import IKeyReference
 from zope.component import adapts, adapter
 from zope.component import queryMultiAdapter, getMultiAdapter
 from zope.component import getUtility
-from zope.interface import implements, implementer
+from zope.interface import implements, implementer, Interface
 from zope.location.location import LocationProxy
 from zope.publisher.interfaces import IPublishTraverse
-from zope.security.proxy import removeSecurityProxy
 from zope.security.proxy import removeSecurityProxy
 from zope.intid.interfaces import IIntIds
 
 from schooltool import course, requirement
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IBasicPerson
+from schooltool.export.export import XLSReportTask
 from schooltool.report.report import ReportTask
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
 from schooltool.securitypolicy.crowds import AdministrationCrowd
@@ -596,3 +596,24 @@ class GradebookReportTask(ReportTask):
         self.worksheet_intid = int_ids.getId(worksheet)
 
 
+class TraversableXLSReportTask(XLSReportTask):
+    traverse_intid = None
+    traverse_name = None
+
+    @property
+    def context(self):
+        int_ids = getUtility(IIntIds)
+        target = int_ids.queryObject(self.traverse_intid)
+        if target is None:
+            return None
+        request = self.getCurrentRequest()
+        traverser = getMultiAdapter((target, request), Interface, self.traverse_name)
+        result = traverser.traverse(self.traverse_name)
+        return result
+
+    @context.setter
+    def context(self, value):
+        target, name = value
+        int_ids = getUtility(IIntIds)
+        self.traverse_intid = int_ids.getId(target)
+        self.traverse_name = name

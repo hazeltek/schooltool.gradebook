@@ -380,6 +380,13 @@
              set_schema=".interfaces.IGradebookReportTask" />
   </class>
 
+  <class class=".gradebook.TraversableXLSReportTask">
+    <require permission="schooltool.view"
+             interface="schooltool.report.interfaces.IReportTask" />
+    <require permission="schooltool.edit"
+             set_schema="schooltool.report.interfaces.IReportTask" />
+  </class>
+
   <!-- generations -->
   <utility
       name="schooltool.gradebook"
