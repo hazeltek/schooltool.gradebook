@@ -30,16 +30,19 @@ from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.interface import Interface
 from zope.publisher.browser import BrowserView
+from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import IDateManager
+from schooltool.export.export import RequestXLSReportDialog
 from schooltool.report.browser.report import RequestRemoteReportDialog
 
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.interfaces import IGradebookRoot
 from schooltool.gradebook.gradebook import GradebookReportTask
+from schooltool.gradebook.gradebook import TraversableXLSReportTask
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.skin.flourish.form import Dialog
@@ -333,17 +336,19 @@ class FlourishRequestPrintableWorksheetView(RequestRemoteReportDialog):
     task_factory = GradebookReportTask
 
 
-class FlourishRequestGradebookExportView(RequestReportDownloadDialog):
+class FlourishRequestGradebookExportView(RequestXLSReportDialog):
 
-    def nextURL(self):
+    report_builder = 'export.xls'
+    task_factory = TraversableXLSReportTask
+
+    @property
+    def target(self):
         worksheet = self.context.__parent__
         activities = worksheet.__parent__
-        return absoluteURL(activities, self.request) + '/export.xls'
+        return (activities.__parent__, activities.__name__)
 
 
-class FlourishRequestReportSheetsExportView(RequestReportDownloadDialog):
+class FlourishRequestReportSheetsExportView(RequestXLSReportDialog):
 
-    def nextURL(self):
-        url = absoluteURL(self.context, self.request)
-        return url + '/export_report_sheets.xls'
+    report_builder = 'export_report_sheets.xls'
 

@@ -115,6 +115,7 @@
   <page
       name="export.xls"
       for="..interfaces.IActivities"
+      layer="zope.publisher.interfaces.browser.IBrowserRequest"
       class=".activity.WorksheetsExportView"
       permission="schooltool.view"
       />

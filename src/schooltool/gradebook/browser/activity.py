@@ -742,6 +742,14 @@ class UpdateGradesActionMenuViewlet(ViewletBase):
 class WorksheetsExportView(export.ExcelExportView):
     """A view for exporting worksheets to a XLS file"""
 
+    @property
+    def base_filename(self):
+        section = self.context.__parent__
+        activities = self.context
+        filename = '%s %s' % (section.title, activities.title)
+        filename = filename.replace(' ', '_')
+        return filename
+
     def print_headers(self, ws, worksheet):
         row = 2
         gradebook = interfaces.IGradebook(worksheet)
@@ -789,11 +797,7 @@ class WorksheetsExportView(export.ExcelExportView):
     def __call__(self):
         wb = xlwt.Workbook()
         self.export_worksheets(wb)
-        datafile = StringIO()
-        wb.save(datafile)
-        data = datafile.getvalue()
-        self.setUpHeaders(data)
-        return data
+        return wb
 
 
 class LinkedColumnBase(BrowserView):
