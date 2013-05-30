@@ -653,18 +653,11 @@ class WeightCategoriesView(object):
                     value = None
                 newValues[category] = value
             else:
-                total = 0
                 for category, value in newValues.items():
                     if value is not None:
-                        total += value
-                if total != Decimal(100):
-                    self.message = _('Category weights must add up to 100.')
-                else:
-                    for category, value in newValues.items():
-                        if value is not None:
-                            value = value / 100
-                        self.context.setCategoryWeight(category, value)
-                    self.request.response.redirect(self.nextURL())
+                        value = value / 100
+                    self.context.setCategoryWeight(category, value)
+                self.request.response.redirect(self.nextURL())
 
     def rows(self):
         weights = self.context.getCategoryWeights()
