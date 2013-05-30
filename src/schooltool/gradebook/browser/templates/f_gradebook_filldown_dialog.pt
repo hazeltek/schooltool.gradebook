@@ -1,5 +1,9 @@
 <div class="hidden-dialog" id="filldown-dialog-container"
      i18n:domain="schooltool.gradebook">
+  <div id="unsaved-changes-warning" class="unsaved-changes-warning"
+       i18n:translate="">
+    You have unsaved changes that will be lost.
+  </div>
   <div class="filldown-dialog-title" i18n:translate="">
     Fill empty cells
   </div>

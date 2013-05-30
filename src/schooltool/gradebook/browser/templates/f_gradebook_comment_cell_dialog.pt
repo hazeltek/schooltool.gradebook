@@ -5,7 +5,7 @@
   <div id="comment-cell-dialog-title" dialog_title="Enter Comment"
        i18n:attributes="dialog_title">
   </div>
-  <form tal:attributes="action string:${request/URL}_submit" method="post">
+  <form>
     <input type="hidden" id="comment-student-id" name="comment-student-id" value="" />
     <input type="hidden" id="comment-activity-id" name="comment-activity-id" value="" />
     <div class="viewspace">
