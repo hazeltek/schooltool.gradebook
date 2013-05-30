@@ -5,7 +5,7 @@ CHANGES
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Updated translations, added Sinhalese.
 
 
 2.4.0 (2013-04-18)

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-11-13 11:42+0200\n"
+"POT-Creation-Date: 2013-02-01 15:02-0500\n"
 "PO-Revision-Date: 2013-01-06 22:11+0000\n"
 "Last-Translator: dr&mx <dronmax@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-01-07 05:17+0000\n"
-"X-Generator: Launchpad (build 16402)\n"
+"X-Launchpad-Export-Date: 2013-04-19 05:43+0000\n"
+"X-Generator: Launchpad (build 16567)\n"
 "Language: ru\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -337,11 +337,7 @@ msgstr "Категории заданий"
 msgid "Report Sheet Templates"
 msgstr "Шаблоны листов отчётов"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:98
-msgid "Download Gradebook CSV"
-msgstr "Скачать табель в CSV"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:135
+#: /src/schooltool/gradebook/browser/configure.zcml:134
 msgid "Add a Worksheet"
 msgstr "Добавить рабочий лист"
 
@@ -1018,7 +1014,12 @@ msgstr "Скрыть"
 msgid "Score System"
 msgstr "Система счёта"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:209
+#: /src/schooltool/gradebook/browser/gradebook.py:2591
+msgid "Value"
+msgstr ""
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card: ${schoolyear}"
 msgstr "Форма отчёта: ${schoolyear}"
 
@@ -1114,7 +1115,11 @@ msgstr "Опоздания"
 msgid "Gradebook Report"
 msgstr "Отчёт табеля успеваемости"
 
-#: /src/schooltool/gradebook/browser/report.zcml:10
+#: /src/schooltool/gradebook/browser/pdf_views.py:927
+msgid "Instructors: ${instructors}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
 "Содержит баллы из листов отчёта. Отформатирован для отправки родителям."
@@ -1460,6 +1465,18 @@ msgstr ""
 msgid ""
 "If you add the same worksheet multiple times, give each version an easily "
 "distinguishable name."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
+msgid "Enter Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:16
+msgid "Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:19
+msgid "Enter a comment."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3

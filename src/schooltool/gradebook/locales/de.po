@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-11-13 11:42+0200\n"
+"POT-Creation-Date: 2013-02-01 15:02-0500\n"
 "PO-Revision-Date: 2012-11-29 14:35+0000\n"
 "Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-11-30 05:28+0000\n"
-"X-Generator: Launchpad (build 16319)\n"
+"X-Launchpad-Export-Date: 2013-04-19 05:43+0000\n"
+"X-Generator: Launchpad (build 16567)\n"
 "Language: de\n"
 "X-Rosetta-Version: 0.1\n"
 "X-Poedit-Bookmarks: 326,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
@@ -334,11 +334,7 @@ msgstr "Aktivitäts-Kategorien"
 msgid "Report Sheet Templates"
 msgstr "Zeugnisformular-Vorlagen"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:98
-msgid "Download Gradebook CSV"
-msgstr "Gradebook CSV herunterladen"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:135
+#: /src/schooltool/gradebook/browser/configure.zcml:134
 msgid "Add a Worksheet"
 msgstr "Ein Arbeitsblatt hinzufügen"
 
@@ -1013,7 +1009,12 @@ msgstr "Ausblenden"
 msgid "Score System"
 msgstr "Notensystem"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:209
+#: /src/schooltool/gradebook/browser/gradebook.py:2591
+msgid "Value"
+msgstr ""
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card: ${schoolyear}"
 msgstr ""
 
@@ -1108,7 +1109,11 @@ msgstr "Verspätungen"
 msgid "Gradebook Report"
 msgstr "Bericht zum Notenstand"
 
-#: /src/schooltool/gradebook/browser/report.zcml:10
+#: /src/schooltool/gradebook/browser/pdf_views.py:927
+msgid "Instructors: ${instructors}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
 
@@ -1461,6 +1466,18 @@ msgstr ""
 msgid ""
 "If you add the same worksheet multiple times, give each version an easily "
 "distinguishable name."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
+msgid "Enter Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:16
+msgid "Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:19
+msgid "Enter a comment."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
@@ -2532,22 +2549,3 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Punkte-System anzeigen."
-
-#~ msgid "A detailed description of the activity."
-#~ msgstr "Eine detailierte Beschreibung der Aktivität"
-
-#~ msgid "A detailed description of the external activity."
-#~ msgstr "Eine detailierte Beschreibung der externen Aktivität."
-
-#~ msgid ""
-#~ "Your browser either has Javascript turned off, or it is not supported. "
-#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
-#~ "use a browser with Javascript."
-#~ msgstr ""
-#~ "Ihr Browser hat Javascript entweder abgeschaltet oder es wird nicht "
-#~ "unterstützt. Javascript wird für das Notenbuch<b> benötigt<b>. Bitte "
-#~ "schalten Sie Javascript ein oder verwenden Sie einen Browser der Javascript "
-#~ "unterstützt."
-
-#~ msgid "Delete?"
-#~ msgstr "Löschen?"
