@@ -903,6 +903,20 @@
       permission="schooltool.edit"
       />
 
+  <zope:adapter
+       factory=".request_reports.RequestFailing_score_title"
+       name="label"
+       />
+
+  <zope:adapter
+       factory=".request_reports.RequestFailing_score_discrete_title"
+       name="label"
+       />
+
+  <zope:adapter
+      factory=".request_reports.FailingTextScoreValidator"
+      />
+
   <flourish:page
       name="request_failing_report.html"
       for="schooltool.term.interfaces.ITerm"
@@ -1382,5 +1396,30 @@
       class=".pdf_views.WorksheetGrid"
       permission="schooltool.view"
       />
+
+  <page
+      name="request_failing_report.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".request_reports.RequestFailingReportView"
+      template="templates/request_failing_report.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:pdf
+      name="failures_by_term.pdf"
+      for="schooltool.term.interfaces.ITerm"
+      class=".pdf_views.FailingReportPDFView"
+      permission="schooltool.edit"
+      />
+
+  <zope:utility
+     factory=".request_reports.termactivitychoicesfactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.TermActivityChoices" />
+
+  <zope:utility
+     factory=".request_reports.failingreportscorefactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.FailingReportScores" />
 
 </configure>

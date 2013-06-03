@@ -24,18 +24,19 @@ from datetime import datetime
 from urllib import unquote_plus
 
 import zope.schema
+import zope.schema.vocabulary
 import zope.schema.interfaces
 import z3c.form
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
-from zope.interface import Interface
+from zope.i18n import translate
+from zope.interface import implements, Interface
 from zope.publisher.browser import BrowserView
-from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.schoolyear.interfaces import ISchoolYear
-from schooltool.term.interfaces import IDateManager
+from schooltool.term.interfaces import IDateManager, ITerm
 from schooltool.export.export import RequestXLSReportDialog
 from schooltool.report.browser.report import RequestRemoteReportDialog
 
@@ -46,7 +47,205 @@ from schooltool.gradebook.gradebook import TraversableXLSReportTask
 from schooltool.requirement.interfaces import ICommentScoreSystem
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.skin.flourish.form import Dialog
-from schooltool.report.browser.report import RequestReportDownloadDialog
+
+
+class TermActivityChoices(zope.schema.vocabulary.SimpleVocabulary):
+    implements(zope.schema.interfaces.IContextSourceBinder)
+
+    def __init__(self, context):
+        self.context = context
+        terms = self.createTerms(ITerm(self.context.get('term')))
+        zope.schema.vocabulary.SimpleVocabulary.__init__(self, terms)
+
+    def createTerms(self, term):
+        result = []
+        result.append(self.createTerm(
+                None,
+                z3c.form.widget.SequenceWidget.noValueToken,
+                _("Select a source"),
+                ))
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyear = ISchoolYear(term)
+        deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
+        for key in root.deployed:
+            if key.startswith(deployedKey):
+                deployedWorksheet = root.deployed[key]
+                for activity in deployedWorksheet.values():
+                    if ICommentScoreSystem.providedBy(activity.scoresystem):
+                        continue
+                    title = '%s - %s - %s' % (term.title,
+                        deployedWorksheet.title, activity.title)
+                    token = '%s-%s-%s' % (term.__name__,
+                        deployedWorksheet.__name__, activity.__name__)
+                    token=unicode(token).encode('punycode')
+                    result.append(self.createTerm(
+                        (deployedWorksheet, activity,),
+                        token,
+                        title,
+                        ))
+        return result
+
+
+def termactivitychoicesfactory():
+    return TermActivityChoices
+
+
+class FailingReportScores(zope.schema.vocabulary.SimpleVocabulary):
+    implements(zope.schema.interfaces.IContextSourceBinder)
+
+    def __init__(self, context):
+        self.context = context
+        terms = self.createTerms()
+        zope.schema.vocabulary.SimpleVocabulary.__init__(self, terms)
+
+    def createTerms(self):
+        result = []
+        scoresystem = self.context.get('scoresystem')
+        if not scoresystem:
+            return result
+        result.append(self.createTerm(
+                None,
+                z3c.form.widget.SequenceWidget.noValueToken,
+                _("Select a score"),
+                ))
+        for score in scoresystem.scores:
+            title = score[0]
+            result.append(self.createTerm(
+                    score[0],
+                    'scr-%s' % unicode(title).encode('punycode'),
+                    title,
+                    ))
+        return result
+
+
+def failingreportscorefactory():
+    return FailingReportScores
+
+
+class IRequestFailingReport(Interface):
+
+    source = zope.schema.Choice(
+        title=(u"Report Activity"),
+        source="schooltool.gradebook.TermActivityChoices",
+        required=True)
+
+
+class ITextMinmaxScore(Interface):
+
+    score = zope.schema.TextLine(
+        title=_(u'Score'),
+        required=True)
+
+
+class IDiscreteValuesMinmaxScore(Interface):
+
+    score = zope.schema.Choice(
+        title=(u"Score"),
+        source="schooltool.gradebook.FailingReportScores",
+        required=True)
+
+
+class FailingTextScoreValidator(z3c.form.validator.SimpleFieldValidator):
+
+    def validate(self, value):
+        scoresystem = self.context.get('scoresystem')
+        if not scoresystem:
+            raise zope.schema.interfaces.RequiredMissing()
+        if (value is not self.field.missing_value and
+            not scoresystem.isValidScore(value)):
+            raise z3c.form.converter.FormatterValidationError(
+                _("${value} is not valid in ${scoresystem}.",
+                    mapping={
+                        'value': value,
+                        'scoresystem': scoresystem.description or scoresystem.title,
+                    }),
+                value)
+        return z3c.form.validator.SimpleFieldValidator.validate(self, value)
+
+
+class FlourishRequestFailingReportView(RequestRemoteReportDialog):
+
+    fields = z3c.form.field.Fields(IRequestFailingReport)
+
+    report_builder = 'failures_by_term.pdf'
+
+    def resetForm(self):
+        RequestRemoteReportDialog.resetForm(self)
+        self.form_params['term'] = self.context
+        self.updateWidgets()
+        if 'score' not in self.widgets:
+            self.addScoreField()
+        self.form_params['scoresystem'] = self.scoresystem
+
+    def updateWidgets(self):
+        super(FlourishRequestFailingReportView, self).updateWidgets()
+        if (self.widgets and 'score' in self.widgets and
+            unicode(self.source_token) != self.request.get('source_token')):
+            widget = self.widgets['score']
+            widget.value = widget.__class__(widget.request).value
+            widget.ignoreRequest = True
+            widget.update()
+        self.widgets['source'].onchange = u"ST.dialogs.submit(this)"
+
+    @property
+    def source_token(self):
+        return self.widgets['source'].value
+
+    @property
+    def scoresystem(self):
+        widget = self.widgets['source']
+        if not widget.value:
+            return None
+        res = widget.terms.getValue(widget.value[0])
+        if not res:
+            return None
+        worksheet, activity = res
+        return activity.scoresystem
+
+    def addScoreField(self):
+        scoresystem = self.scoresystem
+        if not scoresystem:
+            return
+        if (IDiscreteValuesScoreSystem.providedBy(scoresystem) and
+            scoresystem.scores):
+            self.fields += z3c.form.field.Fields(IDiscreteValuesMinmaxScore['score'])
+        else:
+            self.fields += z3c.form.field.Fields(ITextMinmaxScore['score'])
+
+    @property
+    def score_title(self):
+        scoresystem = self.scoresystem
+        if scoresystem and IDiscreteValuesScoreSystem.providedBy(scoresystem):
+            if scoresystem._isMaxPassingScore:
+                return _('Maximum Passing Score')
+        return _('Minimum Passing Score')
+
+    def updateTaskParams(self, task):
+        term = self.context
+        deployedWorksheet, activity = self.form_params['source']
+        task.request_params['activity'] = '%s|%s|%s' % (
+            term.__name__, deployedWorksheet.__name__, activity.__name__)
+        task.request_params['min'] = self.form_params.get('score')
+
+
+RequestFailing_score_title = z3c.form.widget.ComputedWidgetAttribute(
+    lambda adapter: translate(adapter.view.score_title, context=adapter.request),
+    view=FlourishRequestFailingReportView,
+    field=ITextMinmaxScore['score']
+    )
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    FailingTextScoreValidator,
+    view=FlourishRequestFailingReportView,
+    field=ITextMinmaxScore['score'])
+
+
+RequestFailing_score_discrete_title = z3c.form.widget.ComputedWidgetAttribute(
+    lambda adapter: translate(adapter.view.score_title, context=adapter.request),
+    view=FlourishRequestFailingReportView,
+    field=IDiscreteValuesMinmaxScore['score']
+    )
 
 
 class RequestFailingReportView(BrowserView):
@@ -265,14 +464,6 @@ class FlourishRequestStudentReportView(RequestReportDownloadDialogBase,
     def update(self):
         RequestReportDownloadDialogBase.update(self)
         RequestStudentReportView.update(self)
-
-
-class FlourishRequestFailingReportView(RequestReportDownloadDialogBase,
-                                       RequestFailingReportView):
-
-    def update(self):
-        RequestReportDownloadDialogBase.update(self)
-        RequestFailingReportView.update(self)
 
 
 class IRequestAbsencesByDayForm(Interface):

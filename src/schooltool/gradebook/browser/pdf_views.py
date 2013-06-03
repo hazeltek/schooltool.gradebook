@@ -529,10 +529,17 @@ class GroupDetailPDFView(BaseStudentDetailPDFView):
         return self.makeFileName('student_detail_%s' % self.context.__name__)
 
 
-class FailingReportPDFView(BasePDFView):
+class FailingReportPDFView(flourish.report.PlainPDFPage):
     """A view for printing a report of all the students failing an activity"""
 
-    template=ViewPageTemplateFile('rml/failing_report_rml.pt')
+    content_template = flourish.templates.XMLFile('rml/failing_report_rml.pt')
+
+    name = _("Failures by Term")
+
+    @property
+    def message_title(self):
+        return _("term ${term} failures",
+                 mapping={'term': self.term.title})
 
     def __init__(self, context, request):
         super(FailingReportPDFView, self).__init__(context, request)
@@ -548,46 +555,37 @@ class FailingReportPDFView(BasePDFView):
         root = IGradebookRoot(ISchoolToolApplication(None))
         return root.deployed[worksheetName][activityName]
 
-    def title(self):
-        return _('Failures by Term Report: ${term}',
-                 mapping={'term': self.term.title})
+    def formatDate(self, date, format='mediumDate'):
+        if date is None:
+            return ''
+        formatter = getMultiAdapter((date, self.request), name=format)
+        return formatter()
 
     @property
-    def filename(self):
-        return self.makeFileName('fail_%s' % self.term.__name__)
+    def scope(self):
+        term = ITerm(self.context)
+        first = self.formatDate(term.first)
+        last = self.formatDate(term.last)
+        return '%s | %s - %s' % (term.title, first, last)
 
-    def worksheet_heading(self):
-        return _('Report Sheet:')
+    @property
+    def base_filename(self):
+        return 'failures_%s' % self.term.__name__
 
-    def worksheet_value(self):
-        return self.activity.__parent__.title
-
-    def activity_heading(self):
-        return _('Activity:')
-
-    def activity_value(self):
-        return self.activity.title
-
-    def score_heading(self):
-        return _('Passing Score:')
-
-    def score_value(self):
-        return self.request.get('min', '')
+    @property
+    def subtitles_left(self):
+        subtitles = [
+            _('Report Sheet: ${worksheet}', mapping={
+                    'worksheet': self.activity.__parent__.title}),
+            _('Activity: ${activity}', mapping={
+                    'activity': self.activity.title}),
+            _('Passing Score: ${score}', mapping={
+                    'score': self.request.get('min', '')}),
+            ]
+        return subtitles
 
     def heading_message(self):
         return _('The following students are at risk of failing the following courses:')
-
-    def name_heading(self):
-        return _('Student')
-
-    def course_heading(self):
-        return _('Course')
-
-    def teacher_heading(self):
-        return _('Teacher(s)')
-
-    def grade_heading(self):
-        return _('Grade')
 
     def getSectionData(self, section):
         data = []
