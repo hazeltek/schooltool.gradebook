@@ -42,7 +42,7 @@ from schooltool.basicperson.interfaces import IBasicPerson
 from schooltool.export.export import XLSReportTask
 from schooltool.report.report import ReportTask
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
-from schooltool.securitypolicy.crowds import AdministrationCrowd
+from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import getSourceObj
@@ -570,7 +570,7 @@ class GradebookEditorsCrowd(ConfigurableCrowd):
 
     def contains(self, principal):
         """Return the value of the related setting (True or False)."""
-        return (AdministrationCrowd(self.context).contains(principal) and
+        return (AdministratorsCrowd(self.context).contains(principal) and
                 super(GradebookEditorsCrowd, self).contains(principal))
 
 
