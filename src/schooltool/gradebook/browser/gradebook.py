@@ -45,6 +45,7 @@ from zope.viewlet import viewlet
 from zope.i18n.interfaces.locales import ICollator
 from zope.i18n import translate
 
+import zc.resourcelibrary
 from zc.table.column import GetterColumn
 from z3c.form import form as z3cform
 from z3c.form import field, button
@@ -615,6 +616,9 @@ class GradebookOverview(SectionFinder):
                 absoluteURL(insecure_activity, self.request))
         else:
             updateGrades = ''
+
+        if ICommentScoreSystem.providedBy(insecure_activity.scoresystem):
+            zc.resourcelibrary.need("fckeditor")
 
         return {
             'linked_source': None,

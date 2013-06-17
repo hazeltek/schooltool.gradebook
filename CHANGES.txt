@@ -5,7 +5,7 @@ CHANGES
 2.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix clicking on comment cells to bring up the editor.
 
 
 2.4.1 (2013-05-30)
