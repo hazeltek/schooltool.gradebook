@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-02-01 15:02-0500\n"
-"PO-Revision-Date: 2013-03-09 14:07+0000\n"
+"PO-Revision-Date: 2013-05-18 14:50+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-03-10 05:02+0000\n"
-"X-Generator: Launchpad (build 16523)\n"
+"X-Launchpad-Export-Date: 2013-05-19 05:28+0000\n"
+"X-Generator: Launchpad (build 16626)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -834,12 +834,11 @@ msgstr ""
 msgid "Invalid scores (highlighted in red) were not saved."
 msgstr "Onjuiste scores (aangegeven in rood) werden niet opgeslagen."
 
-#: /src/schooltool/gradebook/browser/gradebook.py:671
+#: /src/schooltool/gradebook/browser/gradebook.py:592
 msgid "N/A"
-msgstr "Niet beschikbaar"
+msgstr "N/A"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:822
-#: /src/schooltool/gradebook/interfaces.py:394
+#: /src/schooltool/gradebook/interfaces.py:333
 msgid "Points"
 msgstr "Punten"
 
@@ -2654,27 +2653,3 @@ msgstr "slagingsscore:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Scoresysteem tonen"
-
-#~ msgid "A detailed description of the activity."
-#~ msgstr "Een gedetailleerde omschrijving van de activiteit."
-
-#~ msgid "A detailed description of the external activity."
-#~ msgstr "Een gedetailleerde omschrijving van de externe activiteit."
-
-#~ msgid ""
-#~ "Your browser either has Javascript turned off, or it is not supported. "
-#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
-#~ "use a browser with Javascript."
-#~ msgstr ""
-#~ "In uw browser staat Javascript uitgeschakeld of wordt niet ondersteund. "
-#~ "Javascript is <b>nodig</b> voor de cijferlijsten. Schakel Javascript in of "
-#~ "gebruik een browser met Javascript."
-
-#~ msgid "Delete?"
-#~ msgstr "Verwijderen?"
-
-#~ msgid "Download Gradebook CSV"
-#~ msgstr "Cijferlijst-CSV downloaden"
-
-#~ msgid "Journal Source"
-#~ msgstr "Logboekbron"

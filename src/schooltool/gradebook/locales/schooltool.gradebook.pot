@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2013-02-01 15:02-0500\n"
+"POT-Creation-Date: 2013-05-30 19:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -1431,6 +1431,10 @@ msgid "Enter a comment."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
+msgid "You have unsaved changes that will be lost."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:7
 msgid "Fill empty cells"
 msgstr ""
 

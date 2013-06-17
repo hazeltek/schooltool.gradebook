@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-08 18:34+0300\n"
+"POT-Creation-Date: 2013-02-01 15:02-0500\n"
 "PO-Revision-Date: 2012-04-25 13:21+0000\n"
 "Last-Translator: Sylver_51 <Sylver_51@yahoo.com.br>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-09 05:24+0000\n"
-"X-Generator: Launchpad (build 15761)\n"
+"X-Launchpad-Export-Date: 2013-04-19 05:43+0000\n"
+"X-Generator: Launchpad (build 16567)\n"
 "Language: pt\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -338,11 +338,7 @@ msgstr "Categorias de Actividade"
 msgid "Report Sheet Templates"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/configure.zcml:98
-msgid "Download Gradebook CSV"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/configure.zcml:135
+#: /src/schooltool/gradebook/browser/configure.zcml:134
 msgid "Add a Worksheet"
 msgstr "Adicionar um Folha de Exercício"
 
@@ -710,12 +706,12 @@ msgid ""
 "Export report card data for every student in every section for the term."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:864
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
-msgid "Report Sheets"
+#: /src/schooltool/gradebook/browser/flourish.zcml:894
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
+msgid "Report Sheet Data Export"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""
 "Export report card data for every student in every section for the school. "
 "There will be one worksheet for each term in the year."
@@ -776,11 +772,11 @@ msgstr "Relatórios"
 msgid "Printable Worksheet"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1139
-msgid "The current worksheet formatted for printing."
+#: /src/schooltool/gradebook/browser/flourish.zcml:1247
+msgid "The current gradebook worksheet formatted for printing."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1151
+#: /src/schooltool/gradebook/browser/flourish.zcml:1260
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
@@ -1015,7 +1011,12 @@ msgstr "Ocultar"
 msgid "Score System"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:209
+#: /src/schooltool/gradebook/browser/gradebook.py:2591
+msgid "Value"
+msgstr ""
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card: ${schoolyear}"
 msgstr ""
 
@@ -1110,7 +1111,11 @@ msgstr ""
 msgid "Gradebook Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report.zcml:10
+#: /src/schooltool/gradebook/browser/pdf_views.py:927
+msgid "Instructors: ${instructors}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
 
@@ -1395,20 +1400,6 @@ msgstr ""
 msgid "There are no activity categories."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
-#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
-#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
-msgid "Done"
-msgstr "Concluído"
-
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
 msgstr ""
@@ -1464,6 +1455,18 @@ msgstr ""
 msgid ""
 "If you add the same worksheet multiple times, give each version an easily "
 "distinguishable name."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
+msgid "Enter Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:16
+msgid "Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:19
+msgid "Enter a comment."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
@@ -1598,6 +1601,22 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Manage Worksheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Manage Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
+msgid "There are ${count} course worksheets for ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
+msgid "There are no course worksheets for ${schoolyear}"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
@@ -2198,10 +2217,6 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:428
 msgid "A text string that specifies the source of the column"
-msgstr ""
-
-#: /src/schooltool/gradebook/journal.py:46
-msgid "Journal Source"
 msgstr ""
 
 #: /src/schooltool/gradebook/journal.py:64

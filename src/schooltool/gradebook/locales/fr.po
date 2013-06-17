@@ -7,31 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-08-08 18:34+0300\n"
+"POT-Creation-Date: 2013-02-01 15:02-0500\n"
 "PO-Revision-Date: 2012-03-15 20:13+0000\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-09 05:23+0000\n"
-"X-Generator: Launchpad (build 15761)\n"
+"X-Launchpad-Export-Date: 2013-04-19 05:43+0000\n"
+"X-Generator: Launchpad (build 16567)\n"
 "Language: fr\n"
 "X-Rosetta-Version: 0.1\n"
-
-#: /src/schooltool/gradebook/browser/templates/f_categories.pt:44
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:36
-#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:28
-#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:42
-#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:22
-#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:64
-#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:36
-#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:28
-msgid "Done"
-msgstr "Terminé"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -351,11 +337,7 @@ msgstr "Catégories d'Activité"
 msgid "Report Sheet Templates"
 msgstr "Modèles de Feuille de Rapport"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:98
-msgid "Download Gradebook CSV"
-msgstr "Télécharger le carnet de notes au format CSV"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:135
+#: /src/schooltool/gradebook/browser/configure.zcml:134
 msgid "Add a Worksheet"
 msgstr "Ajouter une Feuille de Travail"
 
@@ -729,12 +711,12 @@ msgid ""
 "Export report card data for every student in every section for the term."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:864
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
-msgid "Report Sheets"
+#: /src/schooltool/gradebook/browser/flourish.zcml:894
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
+msgid "Report Sheet Data Export"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""
 "Export report card data for every student in every section for the school. "
 "There will be one worksheet for each term in the year."
@@ -795,11 +777,11 @@ msgstr "Rapports"
 msgid "Printable Worksheet"
 msgstr "Feuille de Travail Imprimable"
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1139
-msgid "The current worksheet formatted for printing."
-msgstr "La feuille de travail en cours formattée pour l'impression."
+#: /src/schooltool/gradebook/browser/flourish.zcml:1247
+msgid "The current gradebook worksheet formatted for printing."
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1151
+#: /src/schooltool/gradebook/browser/flourish.zcml:1260
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
@@ -1037,7 +1019,12 @@ msgstr "Masquer"
 msgid "Score System"
 msgstr "Système de score"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:209
+#: /src/schooltool/gradebook/browser/gradebook.py:2591
+msgid "Value"
+msgstr ""
+
+#. Default: ""
+#: /src/schooltool/gradebook/browser/pdf_views.py:203
 msgid "Report Card: ${schoolyear}"
 msgstr "Fiche de Rapport: ${schoolyear}"
 
@@ -1133,7 +1120,11 @@ msgstr "Retards"
 msgid "Gradebook Report"
 msgstr "Rapport du Carnet de Notes"
 
-#: /src/schooltool/gradebook/browser/report.zcml:10
+#: /src/schooltool/gradebook/browser/pdf_views.py:927
+msgid "Instructors: ${instructors}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:8
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
 "Contient les cotes provenant des feuilles de rapport. Sont formaté pour être "
@@ -1500,6 +1491,18 @@ msgid ""
 "distinguishable name."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
+msgid "Enter Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:16
+msgid "Comment"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:19
+msgid "Enter a comment."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
 msgid "Fill empty cells"
 msgstr ""
@@ -1638,6 +1641,22 @@ msgstr "Il n'y a pas de feuille de rapport déployée cet année."
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Manage Worksheet Templates"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
+msgid "Manage Course Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
+msgid "There are ${count} course worksheets for ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
+msgid "There are no course worksheets for ${schoolyear}"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
@@ -2313,10 +2332,6 @@ msgstr "Rubrique de Source d'Activité Liées"
 msgid "A text string that specifies the source of the column"
 msgstr "Une chaîne de texte qui spécifie la source de la rubrique"
 
-#: /src/schooltool/gradebook/journal.py:46
-msgid "Journal Source"
-msgstr "Source de Journal"
-
 #: /src/schooltool/gradebook/journal.py:64
 msgid "Journal Average"
 msgstr "Moyenne de journal"
@@ -2641,21 +2656,3 @@ msgstr "cote de passage:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Afficher le Système de Cotation"
-
-#~ msgid "A detailed description of the activity."
-#~ msgstr "Une description détaillée de l'activité."
-
-#~ msgid "Delete?"
-#~ msgstr "Supprimer ?"
-
-#~ msgid ""
-#~ "Your browser either has Javascript turned off, or it is not supported. "
-#~ "Javascript is <b>required</b> for the gradebook. Please enable Javascript or "
-#~ "use a browser with Javascript."
-#~ msgstr ""
-#~ "Javascript n'est pas activé (ou n'est pas pris en charge) dans votre "
-#~ "navigateur. Javascript est <b>nécessaire</b> pour le cahier de notes. "
-#~ "Veuillez activer Javascript ou utiliser un navigateur le prenant en charge."
-
-#~ msgid "A detailed description of the external activity."
-#~ msgstr "Une description détaillée de l'activité externe."

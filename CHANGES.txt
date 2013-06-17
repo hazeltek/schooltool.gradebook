@@ -2,10 +2,18 @@
 CHANGES
 =======
 
-2.4.1 (unreleased)
+2.5.0 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+2.4.1 (2013-05-30)
+------------------
+
+- Made comment cells to submit the gradebook form
+- Warn about unsaved changes when leaving gradebook (https://launchpad.net/bugs/907999)
+- Updated translations, added Sinhalese.
 
 
 2.4.0 (2013-04-18)
