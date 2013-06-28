@@ -160,6 +160,14 @@ class IRangedValuesScoreSystem(IValuesScoreSystem):
         default=0)
 
 
+class IPersistentRangedValuesScoreSystem(IRangedValuesScoreSystem):
+
+    hidden = zope.schema.Bool(
+        title=u"Hidden Score System",
+        required=False
+        )
+
+
 class IHaveEvaluations(zope.interface.Interface):
     """A marker interface for objects that can have evaluations"""
 

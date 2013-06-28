@@ -466,6 +466,10 @@ class FlourishScoreSystemContainerLinks(RefineLinksViewlet):
     """Score system container links viewlet."""
 
 
+class FlourishScoreSystemContainerCustomizeLinks(RefineLinksViewlet):
+    """Score system container customization links viewlet."""
+
+
 class FlourishCustomScoreSystemActionsLinks(RefineLinksViewlet):
     """Custom score system actions links viewlet."""
 

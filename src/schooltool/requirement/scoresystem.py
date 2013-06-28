@@ -318,6 +318,7 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
     # See interfaces.IRangedValuesScoreSystem
     min = None
     max = None
+    hidden = False
     _minPassingScore = None
 
     def __init__(self, title=None, description=None,
@@ -376,6 +377,12 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         # normalized numerical score
         value = self.getNumericalValue(score) - self.min
         return value / (self.max - self.min)
+
+
+class PersistentRangedValuesScoreSystem(RangedValuesScoreSystem, Persistent):
+    implements(interfaces.IPersistentRangedValuesScoreSystem)
+
+    hidden = False
 
 
 class GlobalRangedValuesScoreSystem(RangedValuesScoreSystem):

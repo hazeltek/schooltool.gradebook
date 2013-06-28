@@ -107,6 +107,16 @@
       />
 
   <flourish:viewlet
+      name="scoresystem-customize"
+      after="scoresystem-container"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".scoresystem.FlourishScoreSystemContainerCustomizeLinks"
+      view=".scoresystem.FlourishScoreSystemContainerView"
+      title="Customize"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="add.html"
       manager=".scoresystem.FlourishScoreSystemContainerLinks"
       class="schooltool.skin.flourish.page.LinkViewlet"
