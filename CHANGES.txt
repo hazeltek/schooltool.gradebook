@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - Fix clicking on comment cells to bring up the editor.
+- Updated Sinhalese translation
 
 
 2.4.1 (2013-05-30)
