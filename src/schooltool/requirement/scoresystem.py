@@ -72,7 +72,9 @@ def getScoreSystemContainer(app):
 
 class ScoreValidationError(zope.schema.ValidationError):
     """Validation error for scores"""
+
     def __init__(self, score):
+        super(zope.schema.ValidationError, self).__init__(score)
         self.score = score
 
     def doc(self):
