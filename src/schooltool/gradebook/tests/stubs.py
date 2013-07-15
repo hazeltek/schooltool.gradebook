@@ -79,7 +79,7 @@ class SomeProductStub(ExternalActivitiesStub):
                                        u"some1",
                                        u"Some1",
                                        u"Some1 description",
-                                       grades={"paul": Decimal("0.5")})}
+                                       grades={"paul": Decimal('0.5')})}
 
 
 class ThirdPartyStub(ExternalActivitiesStub):
@@ -103,16 +103,16 @@ class SampleSource(ExternalActivitiesStub):
                                                    u"Hardware",
                                                    u"Hardware description",
                                                    grades={"claudia": \
-                                                           Decimal("0.4"),
+                                                           Decimal('0.4'),
                                                            "tom": \
-                                                           Decimal("0.6")}),
+                                                           Decimal('0.6')}),
                   "html": ExternalActivityStub(u"samplesource",
                                                u"html",
                                                u"HTML",
                                                grades={"claudia": \
-                                                       Decimal("0.8"),
+                                                       Decimal('0.8'),
                                                        "paul": \
-                                                       Decimal("0.5")})}
+                                                       Decimal('0.5')})}
 
     def __init__(self, context):
         self.section = context

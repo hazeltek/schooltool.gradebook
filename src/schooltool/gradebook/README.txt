@@ -447,10 +447,10 @@ Let's create some category weights for the current worksheet.
     >>> from decimal import Decimal
     >>> sorted(week1.getCategoryWeights().items())
     []
-    >>> week1.setCategoryWeight('assignment', Decimal("0.38"))
-    >>> week1.setCategoryWeight('exam', Decimal("0.62"))
+    >>> week1.setCategoryWeight('assignment', Decimal('0.38'))
+    >>> week1.setCategoryWeight('exam', Decimal('0.62'))
     >>> sorted(week1.getCategoryWeights().items())
-    [('assignment', Decimal("0.38")), ('exam', Decimal("0.62"))]
+    [('assignment', Decimal('0.38')), ('exam', Decimal('0.62'))]
 
 We left out the project category intentionally to test handling the case
 where the user creates an activity with a category that is not weighted.
@@ -579,7 +579,7 @@ for the given student:
 
     >>> external_activity = someproduct.getExternalActivities()[0]
     >>> external_activity.getGrade(paul)
-    Decimal("0.5")
+    Decimal('0.5')
 
 If the student doesn't have a grade for that external activity, None
 should be returned:
@@ -654,13 +654,13 @@ actual worksheet grade for the linked activity:
     >>> linked_activity.scoresystem
     <RangedValuesScoreSystem u'generated'>
     >>> linked_activity.scoresystem.max
-    Decimal("15")
+    Decimal('15')
 
 If the points attribute changes, the score system also changes:
 
     >>> linked_activity.points = 20
     >>> linked_activity.scoresystem.max
-    Decimal("20")
+    Decimal('20')
 
 Course Activities
 -----------------
