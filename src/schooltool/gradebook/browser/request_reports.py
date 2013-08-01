@@ -27,6 +27,7 @@ import zope.schema
 import zope.schema.vocabulary
 import zope.schema.interfaces
 import z3c.form
+import z3c.form.validator
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.i18n import translate
