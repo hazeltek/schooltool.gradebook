@@ -2,9 +2,10 @@
 CHANGES
 =======
 
-2.5.1 (unreleased)
+2.5.1 (2013-08-01)
 ------------------
 
+- Changes to scores systems, needed for the new attendance features.
 
 
 2.5.0 (2013-07-03)
