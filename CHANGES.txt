@@ -5,7 +5,13 @@ CHANGES
 2.5.0 (unreleased)
 ------------------
 
+
+
+2.4.2 (2013-07-01)
+------------------
+
 - Fix clicking on comment cells to bring up the editor.
+- Updated Sinhalese translation
 
 
 2.4.1 (2013-05-30)
