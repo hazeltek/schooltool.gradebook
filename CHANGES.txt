@@ -2,9 +2,12 @@
 CHANGES
 =======
 
-2.5.0 (unreleased)
+2.5.0 (2013-07-03)
 ------------------
 
+- Background PDF reports
+- Background XLS export
+- Removed one hundred total constraint on category weights
 
 
 2.4.2 (2013-07-01)
