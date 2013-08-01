@@ -2,10 +2,24 @@
 CHANGES
 =======
 
-2.5.0 (unreleased)
+2.5.1 (unreleased)
+------------------
+
+
+
+2.5.0 (2013-07-03)
+------------------
+
+- Background PDF reports
+- Background XLS export
+- Removed one hundred total constraint on category weights
+
+
+2.4.2 (2013-07-01)
 ------------------
 
 - Fix clicking on comment cells to bring up the editor.
+- Updated Sinhalese translation
 
 
 2.4.1 (2013-05-30)
