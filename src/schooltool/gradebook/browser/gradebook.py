@@ -455,7 +455,24 @@ class SectionFinder(GradebookBase):
             self.apply_all_colspan += 1
 
 
-class GradebookOverview(SectionFinder):
+class JSONScoresBase(object):
+
+    def getJSONScores(self, scoresystem):
+        encoder = flourish.tal.JSONEncoder()
+        result = []
+        for label, abbr, value, percent in scoresystem.scores:
+            title = label
+            if abbr:
+                title += ': %s' % abbr
+            result.append({
+                'label': title,
+                'value': label,
+            })
+        json = encoder.encode(result)
+        return json
+
+
+class GradebookOverview(SectionFinder, JSONScoresBase):
     """Gradebook Overview/Table"""
 
     isTeacher = True
@@ -591,6 +608,7 @@ class GradebookOverview(SectionFinder):
             'linked_source': source,
             'scorable': False,
             'cssClass': None,
+            'scores': None,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -611,6 +629,11 @@ class GradebookOverview(SectionFinder):
             ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
             interfaces.ILinkedActivity.providedBy(insecure_activity))
 
+        scores = None
+        if scorable and \
+           IDiscreteValuesScoreSystem.providedBy(insecure_activity.scoresystem):
+            scores = self.getJSONScores(insecure_activity.scoresystem)
+
         if interfaces.ILinkedActivity.providedBy(insecure_activity):
             updateGrades = '%s/updateGrades.html' % (
                 absoluteURL(insecure_activity, self.request))
@@ -624,6 +647,7 @@ class GradebookOverview(SectionFinder):
             'linked_source': None,
             'scorable': scorable,
             'cssClass': scorable and 'scorable' or None,
+            'scores': scores,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -2210,7 +2234,7 @@ class FlourishGradebookValidateScoreView(JSONViewBase):
         return result
 
 
-class FlourishActivityPopupMenuView(JSONViewBase):
+class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
 
     def options(self, info, worksheet):
         options = []
@@ -2298,6 +2322,7 @@ class FlourishActivityPopupMenuView(JSONViewBase):
             'linked_source': source,
             'scorable': False,
             'cssClass': None,
+            'scores': None,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -2314,6 +2339,10 @@ class FlourishActivityPopupMenuView(JSONViewBase):
         scorable = not (
             ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
             interfaces.ILinkedActivity.providedBy(insecure_activity))
+        scores = None
+        if scorable and \
+           IDiscreteValuesScoreSystem.providedBy(insecure_activity.scoresystem):
+            scores = self.getJSONScores(insecure_activity.scoresystem)
         if interfaces.ILinkedActivity.providedBy(insecure_activity):
             updateGrades = '%s/updateGrades.html' % (
                 absoluteURL(insecure_activity, self.request))
@@ -2323,6 +2352,7 @@ class FlourishActivityPopupMenuView(JSONViewBase):
             'linked_source': None,
             'scorable': scorable,
             'cssClass': scorable and 'scorable' or None,
+            'scores': scores,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,

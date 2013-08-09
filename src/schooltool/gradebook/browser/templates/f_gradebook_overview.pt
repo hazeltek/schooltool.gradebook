@@ -47,7 +47,8 @@
             <tr>
               <tal:loop repeat="activity activities">
                 <th tal:attributes="id activity/hash;
-                                    class activity/cssClass">
+                                    class activity/cssClass;
+                                    data-scores activity/scores;">
                   <a class="popup_link"
                      href=""
                      tal:attributes="title activity/longTitle;
