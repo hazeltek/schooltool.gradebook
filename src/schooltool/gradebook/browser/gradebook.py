@@ -2603,3 +2603,7 @@ class CommentCellFormAdapter(object):
 class FlourishGradebookCommentCell(flourish.form.Form):
 
     fields = field.Fields(ICommentCellForm)
+
+
+class TermReportLinkViewlet(ReportLinkViewlet):
+    pass
