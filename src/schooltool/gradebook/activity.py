@@ -177,7 +177,7 @@ class Worksheets(requirement.Requirement):
     def getCurrentWorksheet(self, person):
         default = self.getDefaultWorksheet()
         current = self.getCurrentSectionWorksheets(person)
-        if current is None:
+        if not current:
             return default
         section_id = hash(IKeyReference(self.__parent__))
         worksheet = current.get(section_id, default)

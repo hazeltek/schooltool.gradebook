@@ -405,7 +405,7 @@
       for="..interfaces.IStudentGradebook"
       content_template="templates/f_student_grade_history.pt"
       class=".gradebook.FlourishStudentGradeHistory"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <flourish:page

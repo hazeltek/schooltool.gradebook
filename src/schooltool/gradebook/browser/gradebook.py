@@ -494,10 +494,19 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
                     })
         return result
 
+    def doneURL(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        section = ISection(gradebook)
+        return absoluteURL(section, self.request)
+
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
         self.message = ''
+
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.doneURL())
+            return
 
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
@@ -871,6 +880,10 @@ class FlourishGradebookOverview(GradebookOverview,
     scores_row_header = _('Points')
 
     @property
+    def readonly(self):
+        return not flourish.canEdit(self.context)
+
+    @property
     def page_class(self):
         if self.all_hidden:
             return 'page'
@@ -1106,7 +1119,7 @@ class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
     def render(self, *args, **kw):
         return self.template(*args, **kw)
 
-    def getCourse(self, section):        
+    def getCourse(self, section):
         try:
             return list(section.courses)[0]
         except (IndexError,):
@@ -1260,10 +1273,14 @@ class GradeActivity(object):
             yield {'student': {'title': student.title, 'id': student.username},
                    'value': value}
 
+    def doneURL(self):
+        return absoluteURL(ISection(self.context), self.request)
+
     def update(self):
         self.messages = []
+
         if 'CANCEL' in self.request:
-            self.request.response.redirect('index.html')
+            self.request.response.redirect(self.doneURL())
 
         elif 'UPDATE_SUBMIT' in self.request:
             activity = self.activity['obj']
@@ -2206,7 +2223,7 @@ class JSONViewBase(flourish.page.Page):
         encoder = flourish.tal.JSONEncoder()
         json = encoder.encode(self.result())
         return json
-        
+
 
 class FlourishGradebookValidateScoreView(JSONViewBase):
 
@@ -2235,6 +2252,10 @@ class FlourishGradebookValidateScoreView(JSONViewBase):
 
 
 class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
+
+    @property
+    def readonly(self):
+        return not flourish.canEdit(self.context)
 
     def options(self, info, worksheet):
         options = []
@@ -2288,11 +2309,11 @@ class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
         if activity_id is not None and activity_id in worksheet:
             activity = worksheet[activity_id]
             info = self.getActivityInfo(activity)
-            deployed = worksheet.deployed
+            can_modify = not self.readonly and not worksheet.deployed
             info.update({
-                    'canDelete': not deployed,
-                    'moveLeft': not deployed,
-                    'moveRight': not deployed,
+                    'canDelete': can_modify,
+                    'moveLeft': can_modify,
+                    'moveRight': can_modify,
                     })
             keys = worksheet.keys()
             if keys[0] == activity.__name__:
@@ -2337,13 +2358,15 @@ class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
             return self.getLinkedActivityInfo(activity)
         short, long, best_score = self.getActivityAttrs(activity)
         scorable = not (
+            self.readonly or
             ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
             interfaces.ILinkedActivity.providedBy(insecure_activity))
         scores = None
         if scorable and \
            IDiscreteValuesScoreSystem.providedBy(insecure_activity.scoresystem):
             scores = self.getJSONScores(insecure_activity.scoresystem)
-        if interfaces.ILinkedActivity.providedBy(insecure_activity):
+        if (interfaces.ILinkedActivity.providedBy(insecure_activity) and
+            not self.readonly):
             updateGrades = '%s/updateGrades.html' % (
                 absoluteURL(insecure_activity, self.request))
         else:
@@ -2377,29 +2400,35 @@ class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
 
 class FlourishStudentPopupMenuView(JSONViewBase):
 
+    @property
+    def readonly(self):
+        return not flourish.canEdit(self.context)
+
     def options(self, student):
         url = absoluteURL(student, self.request)
+        readonly = self.readonly
         gradeurl = '%s/%s' % (
             absoluteURL(self.context, self.request),
             student.username)
-        return [
-            {
-                'label': self.translate(_('Student')),
-                'url': url,
-                },
-            {
+        options = []
+        options.append({
+            'label': self.translate(_('Student')),
+            'url': url,
+            })
+        if not readonly:
+            options.append({
                 'label': self.translate(_('Score')),
                 'url': gradeurl,
-                },
-            {
-                'label': self.translate(_('Score History')),
-                'url': '%s/history.html' % gradeurl,
-                },
-            {
-                'label': self.translate(_('Report')),
-                'url': '%s/view.html' % gradeurl,
-                },
-            ]
+                })
+        options.append({
+            'label': self.translate(_('Score History')),
+            'url': '%s/history.html' % gradeurl,
+            })
+        options.append({
+            'label': self.translate(_('Report')),
+            'url': '%s/view.html' % gradeurl,
+            })
+        return options
 
     def result(self):
         student_id = self.request.get('student_id')

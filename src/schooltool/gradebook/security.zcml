@@ -46,7 +46,7 @@
   <allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.view"
-      crowds="administrators section_instructors" />
+      crowds="administrators clerks section_instructors" />
   <allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.edit"
