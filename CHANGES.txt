@@ -5,6 +5,7 @@ CHANGES
 2.4.2 (unreleased)
 ------------------
 
+- Updated Portuguese translation
 - Updated Sinhalese translation
 
 
