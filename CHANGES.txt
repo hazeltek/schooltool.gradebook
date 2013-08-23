@@ -8,6 +8,7 @@ CHANGES
 - Read-only gradebook and term reports access for clerks and administrators
 - Used jQuery UI autocomplete widget for discrete score systems
 - Update GPL license and file headers from gnu.org (https://launchpad.net/bugs/1211145)
+- Updated Portuguese translation
 
 
 2.5.1 (2013-08-01)
