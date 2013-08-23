@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2013-08-01 22:08+0300\n"
+"POT-Creation-Date: 2013-08-23 12:11+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -1503,7 +1503,11 @@ msgstr ""
 msgid "Shortcut: Alt-S"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:122
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:127
+msgid "Done"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
 msgid "Expand"
 msgstr ""
 
