@@ -5,7 +5,8 @@ CHANGES
 2.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Read-only gradebook and term reports access for clerks and administrators
+- Used jQuery UI autocomplete widget for discrete score systems
 
 
 2.5.1 (2013-08-01)
