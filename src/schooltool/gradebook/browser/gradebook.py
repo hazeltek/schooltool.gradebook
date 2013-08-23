@@ -13,8 +13,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
 Gradebook Views
@@ -45,6 +44,7 @@ from zope.viewlet import viewlet
 from zope.i18n.interfaces.locales import ICollator
 from zope.i18n import translate
 
+import zc.resourcelibrary
 from zc.table.column import GetterColumn
 from z3c.form import form as z3cform
 from z3c.form import field, button
@@ -454,7 +454,24 @@ class SectionFinder(GradebookBase):
             self.apply_all_colspan += 1
 
 
-class GradebookOverview(SectionFinder):
+class JSONScoresBase(object):
+
+    def getJSONScores(self, scoresystem):
+        encoder = flourish.tal.JSONEncoder()
+        result = []
+        for label, abbr, value, percent in scoresystem.scores:
+            title = label
+            if abbr:
+                title += ': %s' % abbr
+            result.append({
+                'label': title,
+                'value': label,
+            })
+        json = encoder.encode(result)
+        return json
+
+
+class GradebookOverview(SectionFinder, JSONScoresBase):
     """Gradebook Overview/Table"""
 
     isTeacher = True
@@ -476,10 +493,19 @@ class GradebookOverview(SectionFinder):
                     })
         return result
 
+    def doneURL(self):
+        gradebook = proxy.removeSecurityProxy(self.context)
+        section = ISection(gradebook)
+        return absoluteURL(section, self.request)
+
     def update(self):
         self.person = IPerson(self.request.principal)
         gradebook = proxy.removeSecurityProxy(self.context)
         self.message = ''
+
+        if 'CANCEL' in self.request:
+            self.request.response.redirect(self.doneURL())
+            return
 
         """Make sure the current worksheet matches the current url"""
         worksheet = gradebook.context
@@ -590,6 +616,7 @@ class GradebookOverview(SectionFinder):
             'linked_source': source,
             'scorable': False,
             'cssClass': None,
+            'scores': None,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -610,16 +637,25 @@ class GradebookOverview(SectionFinder):
             ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
             interfaces.ILinkedActivity.providedBy(insecure_activity))
 
+        scores = None
+        if scorable and \
+           IDiscreteValuesScoreSystem.providedBy(insecure_activity.scoresystem):
+            scores = self.getJSONScores(insecure_activity.scoresystem)
+
         if interfaces.ILinkedActivity.providedBy(insecure_activity):
             updateGrades = '%s/updateGrades.html' % (
                 absoluteURL(insecure_activity, self.request))
         else:
             updateGrades = ''
 
+        if ICommentScoreSystem.providedBy(insecure_activity.scoresystem):
+            zc.resourcelibrary.need("fckeditor")
+
         return {
             'linked_source': None,
             'scorable': scorable,
             'cssClass': scorable and 'scorable' or None,
+            'scores': scores,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -841,6 +877,10 @@ class FlourishGradebookOverview(GradebookOverview,
 
     labels_row_header = _('Activity')
     scores_row_header = _('Points')
+
+    @property
+    def readonly(self):
+        return not flourish.canEdit(self.context)
 
     @property
     def page_class(self):
@@ -1078,7 +1118,7 @@ class FlourishGradebookTermNavigationViewlet(flourish.viewlet.Viewlet,
     def render(self, *args, **kw):
         return self.template(*args, **kw)
 
-    def getCourse(self, section):        
+    def getCourse(self, section):
         try:
             return list(section.courses)[0]
         except (IndexError,):
@@ -1232,10 +1272,14 @@ class GradeActivity(object):
             yield {'student': {'title': student.title, 'id': student.username},
                    'value': value}
 
+    def doneURL(self):
+        return absoluteURL(ISection(self.context), self.request)
+
     def update(self):
         self.messages = []
+
         if 'CANCEL' in self.request:
-            self.request.response.redirect('index.html')
+            self.request.response.redirect(self.doneURL())
 
         elif 'UPDATE_SUBMIT' in self.request:
             activity = self.activity['obj']
@@ -2178,7 +2222,7 @@ class JSONViewBase(flourish.page.Page):
         encoder = flourish.tal.JSONEncoder()
         json = encoder.encode(self.result())
         return json
-        
+
 
 class FlourishGradebookValidateScoreView(JSONViewBase):
 
@@ -2206,7 +2250,11 @@ class FlourishGradebookValidateScoreView(JSONViewBase):
         return result
 
 
-class FlourishActivityPopupMenuView(JSONViewBase):
+class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
+
+    @property
+    def readonly(self):
+        return not flourish.canEdit(self.context)
 
     def options(self, info, worksheet):
         options = []
@@ -2260,11 +2308,11 @@ class FlourishActivityPopupMenuView(JSONViewBase):
         if activity_id is not None and activity_id in worksheet:
             activity = worksheet[activity_id]
             info = self.getActivityInfo(activity)
-            deployed = worksheet.deployed
+            can_modify = not self.readonly and not worksheet.deployed
             info.update({
-                    'canDelete': not deployed,
-                    'moveLeft': not deployed,
-                    'moveRight': not deployed,
+                    'canDelete': can_modify,
+                    'moveLeft': can_modify,
+                    'moveRight': can_modify,
                     })
             keys = worksheet.keys()
             if keys[0] == activity.__name__:
@@ -2294,6 +2342,7 @@ class FlourishActivityPopupMenuView(JSONViewBase):
             'linked_source': source,
             'scorable': False,
             'cssClass': None,
+            'scores': None,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -2308,9 +2357,15 @@ class FlourishActivityPopupMenuView(JSONViewBase):
             return self.getLinkedActivityInfo(activity)
         short, long, best_score = self.getActivityAttrs(activity)
         scorable = not (
+            self.readonly or
             ICommentScoreSystem.providedBy(insecure_activity.scoresystem) or
             interfaces.ILinkedActivity.providedBy(insecure_activity))
-        if interfaces.ILinkedActivity.providedBy(insecure_activity):
+        scores = None
+        if scorable and \
+           IDiscreteValuesScoreSystem.providedBy(insecure_activity.scoresystem):
+            scores = self.getJSONScores(insecure_activity.scoresystem)
+        if (interfaces.ILinkedActivity.providedBy(insecure_activity) and
+            not self.readonly):
             updateGrades = '%s/updateGrades.html' % (
                 absoluteURL(insecure_activity, self.request))
         else:
@@ -2319,6 +2374,7 @@ class FlourishActivityPopupMenuView(JSONViewBase):
             'linked_source': None,
             'scorable': scorable,
             'cssClass': scorable and 'scorable' or None,
+            'scores': scores,
             'shortTitle': short,
             'longTitle': long,
             'max': best_score,
@@ -2343,29 +2399,35 @@ class FlourishActivityPopupMenuView(JSONViewBase):
 
 class FlourishStudentPopupMenuView(JSONViewBase):
 
+    @property
+    def readonly(self):
+        return not flourish.canEdit(self.context)
+
     def options(self, student):
         url = absoluteURL(student, self.request)
+        readonly = self.readonly
         gradeurl = '%s/%s' % (
             absoluteURL(self.context, self.request),
             student.username)
-        return [
-            {
-                'label': self.translate(_('Student')),
-                'url': url,
-                },
-            {
+        options = []
+        options.append({
+            'label': self.translate(_('Student')),
+            'url': url,
+            })
+        if not readonly:
+            options.append({
                 'label': self.translate(_('Score')),
                 'url': gradeurl,
-                },
-            {
-                'label': self.translate(_('Score History')),
-                'url': '%s/history.html' % gradeurl,
-                },
-            {
-                'label': self.translate(_('Report')),
-                'url': '%s/view.html' % gradeurl,
-                },
-            ]
+                })
+        options.append({
+            'label': self.translate(_('Score History')),
+            'url': '%s/history.html' % gradeurl,
+            })
+        options.append({
+            'label': self.translate(_('Report')),
+            'url': '%s/view.html' % gradeurl,
+            })
+        return options
 
     def result(self):
         student_id = self.request.get('student_id')
@@ -2569,3 +2631,7 @@ class CommentCellFormAdapter(object):
 class FlourishGradebookCommentCell(flourish.form.Form):
 
     fields = field.Fields(ICommentCellForm)
+
+
+class TermReportLinkViewlet(ReportLinkViewlet):
+    pass

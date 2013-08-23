@@ -13,12 +13,9 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Testing setup for schooltool.requirement
-
-$Id$
 """
 __docformat__ = 'reStructuredText'
 
@@ -77,4 +74,4 @@ def fixDecimal():
     See http://mail.python.org/pipermail/python-dev/2008-July/081420.html
     """
     import decimal
-    decimal.Decimal.__repr__ = lambda s: 'Decimal("%s")' % str(s)
+    decimal.Decimal.__repr__ = lambda s: "Decimal('%s')" % str(s)

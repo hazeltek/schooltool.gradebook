@@ -372,6 +372,21 @@
       factory=".gradebook_init.GradebookAppStartup"
       name="schooltool.gradebook" />
 
+  <!-- remote tasks -->
+  <class class=".gradebook.GradebookReportTask">
+    <require permission="schooltool.view"
+             interface=".interfaces.IGradebookReportTask" />
+    <require permission="schooltool.edit"
+             set_schema=".interfaces.IGradebookReportTask" />
+  </class>
+
+  <class class=".gradebook.TraversableXLSReportTask">
+    <require permission="schooltool.view"
+             interface="schooltool.report.interfaces.IReportTask" />
+    <require permission="schooltool.edit"
+             set_schema="schooltool.report.interfaces.IReportTask" />
+  </class>
+
   <!-- generations -->
   <utility
       name="schooltool.gradebook"

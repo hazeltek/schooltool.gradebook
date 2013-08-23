@@ -13,8 +13,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Activity Views.
 """
@@ -653,18 +652,11 @@ class WeightCategoriesView(object):
                     value = None
                 newValues[category] = value
             else:
-                total = 0
                 for category, value in newValues.items():
                     if value is not None:
-                        total += value
-                if total != Decimal(100):
-                    self.message = _('Category weights must add up to 100.')
-                else:
-                    for category, value in newValues.items():
-                        if value is not None:
-                            value = value / 100
-                        self.context.setCategoryWeight(category, value)
-                    self.request.response.redirect(self.nextURL())
+                        value = value / 100
+                    self.context.setCategoryWeight(category, value)
+                self.request.response.redirect(self.nextURL())
 
     def rows(self):
         weights = self.context.getCategoryWeights()
@@ -742,6 +734,14 @@ class UpdateGradesActionMenuViewlet(ViewletBase):
 class WorksheetsExportView(export.ExcelExportView):
     """A view for exporting worksheets to a XLS file"""
 
+    @property
+    def base_filename(self):
+        section = self.context.__parent__
+        activities = self.context
+        filename = '%s %s' % (section.title, activities.title)
+        filename = filename.replace(' ', '_')
+        return filename
+
     def print_headers(self, ws, worksheet):
         row = 2
         gradebook = interfaces.IGradebook(worksheet)
@@ -789,11 +789,7 @@ class WorksheetsExportView(export.ExcelExportView):
     def __call__(self):
         wb = xlwt.Workbook()
         self.export_worksheets(wb)
-        datafile = StringIO()
-        wb.save(datafile)
-        data = datafile.getvalue()
-        self.setUpHeaders(data)
-        return data
+        return wb
 
 
 class LinkedColumnBase(BrowserView):

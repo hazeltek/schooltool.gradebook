@@ -13,12 +13,9 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Activity implementation
-
-$Id$
 """
 __docformat__ = 'reStructuredText'
 
@@ -177,7 +174,7 @@ class Worksheets(requirement.Requirement):
     def getCurrentWorksheet(self, person):
         default = self.getDefaultWorksheet()
         current = self.getCurrentSectionWorksheets(person)
-        if current is None:
+        if not current:
             return default
         section_id = hash(IKeyReference(self.__parent__))
         worksheet = current.get(section_id, default)

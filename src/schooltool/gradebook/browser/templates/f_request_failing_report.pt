@@ -1,81 +1,30 @@
-<div i18n:domain="schooltool.gradebook">
-  <div class="status" tal:condition="view/message">
-    <div class="summary ui-state-error ui-corner-all">
-      <span class="ui-icon ui-icon-alert">icon</span>
-      <tal:block content="view/message">
-        [error message]
-      </tal:block>
+<div i18n:domain="schooltool">
+  <table class="report-dialog-message">
+    <tbody>
+      <tr>
+        <td i18n:translate="">
+          Description
+        </td>
+        <td tal:content="view/description" />
+      </tr>
+      <tr>
+        <td i18n:translate="">
+          File Type
+        </td>
+        <td tal:content="view/file_type" />
+      </tr>
+    </tbody>
+  </table>
+  <metal:block use-macro="macro:form">
+    <div metal:fill-slot="extra-widgets">
+      <input name="file_type" type="hidden"
+             tal:attributes="value view/request/file_type|nothing"
+             tal:condition="view/request/file_type|nothing" />
+      <input name="description" type="hidden"
+             tal:attributes="value view/request/description|nothing"
+             tal:condition="view/request/description|nothing" />
+      <input name="source_token" type="hidden"
+             tal:attributes="value view/source_token|nothing" />
     </div>
-  </div>
-  <form method="post"
-        tal:attributes="action string:${context/@@absolute_url}/request_failing_report.html">
-    <input type="hidden" name="form-submitted" value="" />
-    <table>
-      <tbody>
-        <tr>
-          <td colspan="2" i18n:translate="">
-            This report is a list of students achieving below a
-            minimum score on a selected activity from a report sheet.
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" i18n:translate="">
-            For example, say the term is "Fall 2011," and you have
-            deployed a report sheet entitled "Semester Grades," which
-            includes an activity "First Quarter," using a grading
-            scale where a "3" or higher is passing.  To create a
-            report of students failing the first quarter grade, you
-            would select the report activity "Fall 2011 - Semester
-            Grades - First Quarter" and choose "3" as the minimum
-            passing grade.  And click "Submit."
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <h3 i18n:translate="">Request Report</h3>
-          </td>
-        </tr>
-        <tr>
-          <td i18n:translate="">Report Activity</td>
-          <td>
-            <select id="source" name="source">
-              <tal:block repeat="choice view/choices">
-                <option tal:condition="python: choice['value'] == view.current_source()"
-                        selected="selected"
-                        tal:attributes="value choice/value"
-                        tal:content="choice/name" />
-                <option tal:condition="python: choice['value'] != view.current_source()"
-                        tal:attributes="value choice/value"
-                        tal:content="choice/name" />
-              </tal:block>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td tal:content="view/minmax" />
-          <td>
-            <select id="score" name="score"
-                    tal:condition="python: len(view.scores()) > 0">
-              <tal:block repeat="score view/scores">
-                <option tal:content="score/name"
-                        tal:attributes="value score/value;
-                                        selected score/selected" />
-              </tal:block>
-            </select>
-            <input type="text" id="score" name="score"
-                   tal:attributes="value request/score|nothing"
-                   tal:condition="python: len(view.scores()) == 0" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="buttons">
-      <input type="submit" class="button-ok" name="DOWNLOAD"
-             onclick="return ST.dialogs.submit(this, this);"
-             value="Download" i18n:attributes="value" />
-      <input type="submit" class="button-cancel" name="CANCEL"
-             onclick="return ST.dialogs.close(this);"
-             value="Cancel" i18n:attributes="value" />
-    </div>
-  </form>
+  </metal:block>
 </div>

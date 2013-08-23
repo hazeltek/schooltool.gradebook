@@ -13,8 +13,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
 XLS Views
@@ -28,15 +27,20 @@ from schooltool.course.interfaces import ISectionContainer
 from schooltool.export import export
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.skin import flourish
+from schooltool.task.progress import normalized_progress
 
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import ISectionJournalData
 from schooltool.requirement.interfaces import IEvaluations
 
+from schooltool.gradebook import GradebookMessage as _
+
 
 class FlourishReportSheetsExportTermView(export.ExcelExportView,
                                          flourish.page.Page):
     """A view for exporting report sheets to an XLS file"""
+
+    message_title = _('report sheets export')
 
     def print_headers(self, ws):
         headers = ['Section ID', 'Student ID', 'Absent', 'Tardy']
@@ -62,7 +66,6 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
                 self.write(ws, row, 2, unicode(absences))
             if tardies:
                 self.write(ws, row, 3, unicode(tardies))
-
         evaluations = IEvaluations(student)
         for index, activity in enumerate(self.activities):
             worksheet = activities[activity.__parent__.__name__]
@@ -71,9 +74,11 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
             if score:
                 self.write(ws, row, index + 4, unicode(score.value))
 
-    def print_grades(self, ws):
+    def print_grades(self, ws, term_idx, total_terms):
         row = 1
-        for section in ISectionContainer(self.term).values():
+
+        sections = ISectionContainer(self.term).values()
+        for ns, section in enumerate(sections):
             jd = ISectionJournalData(section, None)
             activities = IActivities(section)
             students = sorted(section.members, key=lambda s: s.username)
@@ -82,19 +87,38 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
                 self.write(ws, row, 0, section.__name__)
                 row += 1
             else:
-                for student in students:
+                for nstud, student in enumerate(students):
                     self.print_student(ws, row, section, jd, activities,
                                        student)
                     row += 1
+                    self.progress('worksheets', normalized_progress(
+                            term_idx, total_terms,
+                            ns, len(sections),
+                            nstud, len(students),
+                            ))
+            self.progress('worksheets', normalized_progress(
+                    term_idx, total_terms,
+                    ns, len(sections),
+                    ))
 
-    def export_term(self, wb):
+    def export_term(self, wb, idx, total_terms):
+        self.progress('worksheets', normalized_progress(
+                idx, total_terms,
+                ))
         ws = wb.add_sheet(self.term.__name__)
         self.print_headers(ws)
-        self.print_grades(ws)
+        self.print_grades(ws, idx, total_terms)
 
-    def getFileName(self):
-        return 'report_sheets_%s_%s.xls' % (self.schoolyear.__name__,
-                                            self.term.__name__)
+    @property
+    def base_filename(self):
+        terms = self.getTerms()
+        if not terms:
+            return 'report_sheets'
+        term = terms[-1]
+        schoolyear = ISchoolYear(term)
+        base_filename =  'report_sheets_%s_%s.xls' % (schoolyear.__name__,
+                                                      term.__name__)
+        return base_filename
 
     def getTerms(self):
         return [self.context]
@@ -108,21 +132,32 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
                 activities.extend(sheet.values())
         return activities
 
-    def __call__(self):
-        wb = xlwt.Workbook()
-
-        for self.term in self.getTerms():
+    def export_terms(self, workbook, terms):
+        terms = list(terms)
+        for nt, self.term in enumerate(terms):
             self.schoolyear = ISchoolYear(self.term)
             self.activities = self.getActivities()
-            self.export_term(wb)
+            self.export_term(workbook, nt, len(terms))
 
-        datafile = StringIO()
-        wb.save(datafile)
-        data = datafile.getvalue()
-        self.setUpHeaders(data)
-        disposition = 'filename="%s"' % self.getFileName()
-        self.request.response.setHeader('Content-Disposition', disposition)
-        return data
+        self.finish('worksheets')
+
+    def addImporters(self, progress):
+        progress.add(
+            'worksheets',
+            title=_('Term Worksheets'), progress=0.0)
+
+    def __call__(self):
+        self.makeProgress()
+        self.task_progress.title = _("Exporting worksheets")
+        self.addImporters(self.task_progress)
+
+        wb = xlwt.Workbook()
+
+        self.export_terms(wb, self.getTerms())
+
+        self.task_progress.title = _("Export complete")
+        self.task_progress.force('worksheets', progress=1.0)
+        return wb
 
 
 class FlourishReportSheetsExportSchoolYearView(
@@ -130,8 +165,18 @@ class FlourishReportSheetsExportSchoolYearView(
     """A view for exporting report sheets to an XLS file,
        one sheet for each term of the school year."""
 
-    def getFileName(self):
-        return 'report_sheets_%s.xls' % self.schoolyear.__name__
+    @property
+    def base_filename(self):
+        terms = self.getTerms()
+        if not terms:
+            return 'report_sheets'
+        schoolyear = ISchoolYear(terms[-1])
+        return 'report_sheets_%s' % schoolyear.__name__
+
+    def addImporters(self, progress):
+        self.task_progress.add(
+            'worksheets',
+            title=_('School Year Worksheets'), progress=0.0)
 
     def getTerms(self):
         return self.context.values()

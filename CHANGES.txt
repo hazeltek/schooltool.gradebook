@@ -2,10 +2,39 @@
 CHANGES
 =======
 
-2.4.2 (unreleased)
+2.5.3 (unreleased)
 ------------------
 
+- Nothing changed yet.
+
+
+2.5.2 (2013-08-23)
+------------------
+
+- Read-only gradebook and term reports access for clerks and administrators
+- Used jQuery UI autocomplete widget for discrete score systems
+- Update GPL license and file headers from gnu.org (https://launchpad.net/bugs/1211145)
 - Updated Portuguese translation
+
+
+2.5.1 (2013-08-01)
+------------------
+
+- Changes to scores systems, needed for the new attendance features.
+
+
+2.5.0 (2013-07-03)
+------------------
+
+- Background PDF reports
+- Background XLS export
+- Removed one hundred total constraint on category weights
+
+
+2.4.2 (2013-07-01)
+------------------
+
+- Fix clicking on comment cells to bring up the editor.
 - Updated Sinhalese translation
 
 

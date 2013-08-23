@@ -13,12 +13,9 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """ScoreSystem Interfaces
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 
@@ -72,7 +69,9 @@ def getScoreSystemContainer(app):
 
 class ScoreValidationError(zope.schema.ValidationError):
     """Validation error for scores"""
+
     def __init__(self, score):
+        super(zope.schema.ValidationError, self).__init__(score)
         self.score = score
 
     def doc(self):
@@ -318,6 +317,7 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
     # See interfaces.IRangedValuesScoreSystem
     min = None
     max = None
+    hidden = False
     _minPassingScore = None
 
     def __init__(self, title=None, description=None,
@@ -376,6 +376,12 @@ class RangedValuesScoreSystem(AbstractValuesScoreSystem):
         # normalized numerical score
         value = self.getNumericalValue(score) - self.min
         return value / (self.max - self.min)
+
+
+class PersistentRangedValuesScoreSystem(RangedValuesScoreSystem, Persistent):
+    implements(interfaces.IPersistentRangedValuesScoreSystem)
+
+    hidden = False
 
 
 class GlobalRangedValuesScoreSystem(RangedValuesScoreSystem):

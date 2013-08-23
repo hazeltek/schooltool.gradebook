@@ -1,25 +1,13 @@
-Category Weighting
-------------------
+Category Weighting when weights don't add up to 100
+---------------------------------------------------
+
+We'll test that the Category Weights view doesn't need the weights to
+add up to 100 anymore.
 
 Log in as manager:
 
     >>> manager = browsers.manager
     >>> manager.ui.login('manager', 'schooltool')
-
-Administrator checks activity categories available for teachers:
-
-    >>> manager.query.link('School').click()
-    >>> manager.query.link('Activity Categories').click()
-    >>> for category in manager.query_all.css('tbody tr span'):
-    ...     print category.text
-    Assignment
-    Essay
-    Exam
-    Homework
-    Journal
-    Lab
-    Presentation
-    Project
 
 Now, set up a school year (2005-2006) with a single term (Year):
 
@@ -112,63 +100,19 @@ By default the Average column is calculated normally:
     | Richter, Claudia | 50  | 95    | 50  |       | 195.0 | 97.5% |
     +------------------+-----+-------+-----+-------+-------+-------+
 
-Let's create some category weights for the current worksheet. Note
-that the categories are ordered alphabetically.
-
-    >>> def format_category_weight(label, value):
-    ...     return "%s: %s" % (label, repr(value))
-    >>> def print_category_weights(browser):
-    ...     for row in browser.query_all.css('fieldset .row'):
-    ...         label = row.query.css('.label span').text
-    ...         value = row.query.tag('input').get_attribute('value')
-    ...         print format_category_weight(label, value)
+Let's create some category weights for the current worksheet. We'll
+fill in valid values for Assignment, Homework and Exam, even though
+they don't add up to 100, hitting 'Submit' will succeed and return us
+to the gradebook.  There we will note the effect of the weighting in
+the Average column.
 
     >>> stephan.query.link('Category Weights').click()
-    >>> print stephan.query.css('.page .header h2').text
-    Edit Category Weights
-    >>> print_category_weights(stephan)
-    Assignment: u''
-    Essay: u''
-    Exam: u''
-    Homework: u''
-    Journal: u''
-    Lab: u''
-    Presentation: u''
-    Project: u''
-
-First we'll show what happens when a value is invalid.  The only valid weights
-will be numbers between 0 and 100.
-
-    >>> stephan.query.id('assignment').ui.set_value('bad value')
-    >>> stephan.query.name('UPDATE_SUBMIT').click()
-    >>> print stephan.query.css('.ui-state-error').text
-    icon
-    bad value is not a valid weight.
-
     >>> stephan.query.id('assignment').clear()
-    >>> stephan.query.id('assignment').ui.set_value('-1')
-    >>> stephan.query.name('UPDATE_SUBMIT').click()
-    >>> print stephan.query.css('.ui-state-error').text
-    icon
-    -1 is not a valid weight.
-
-    >>> stephan.query.id('assignment').clear()
-    >>> stephan.query.id('assignment').ui.set_value('101')
-    >>> stephan.query.name('UPDATE_SUBMIT').click()
-    >>> print stephan.query.css('.ui-state-error').text
-    icon
-    101 is not a valid weight.
-
-We'll fill in valid values for Assignment, Homework and Exam. Hitting
-'Submit' will succeed and return us to the gradebook.  There we will
-note the effect of the weighting in the Average column.
-
-    >>> stephan.query.id('assignment').clear()
-    >>> stephan.query.id('assignment').ui.set_value('20')
+    >>> stephan.query.id('assignment').ui.set_value('10')
     >>> stephan.query.id('exam').clear()
-    >>> stephan.query.id('exam').ui.set_value('50')
+    >>> stephan.query.id('exam').ui.set_value('25')
     >>> stephan.query.id('homework').clear()
-    >>> stephan.query.id('homework').ui.set_value('30')
+    >>> stephan.query.id('homework').ui.set_value('15')
     >>> stephan.query.name('UPDATE_SUBMIT').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
@@ -182,34 +126,6 @@ note the effect of the weighting in the Average column.
     | Hoffman, Tom     | 45  | 80    | 50  |       | 175.0 | 85.6% |
     | Richter, Claudia | 50  | 95    | 50  |       | 195.0 | 96.9% |
     +------------------+-----+-------+-----+-------+-------+-------+
-
-Finally, we'll test hitting the 'Cancel' button.  It should return to the
-gradebook without changing the weights.
-
-    >>> stephan.query.link('Category Weights').click()
-    >>> print_category_weights(stephan)
-    Assignment: u'20'
-    Essay: u''
-    Exam: u'50'
-    Homework: u'30'
-    Journal: u''
-    Lab: u''
-    Presentation: u''
-    Project: u''
-    >>> stephan.query.id('exam').clear()
-    >>> stephan.query.id('exam').ui.set_value('85')
-    >>> stephan.query.name('CANCEL').click()
-    >>> stephan.query.link('Category Weights').click()
-    >>> print_category_weights(stephan)
-    Assignment: u'20'
-    Essay: u''
-    Exam: u'50'
-    Homework: u'30'
-    Journal: u''
-    Lab: u''
-    Presentation: u''
-    Project: u''
-    >>> stephan.query.name('CANCEL').click()
 
 Let's add a new Assignment activity:
 
@@ -241,29 +157,14 @@ Note how the Average changed for Paul and Tom, but not for Claudia:
     | Richter, Claudia | 50  | 95    | 50  |       |       | 195.0 | 96.9% |
     +------------------+-----+-------+-----+-------+-------+-------+-------+
 
-Now, let's give Homeworks the 100% of weight:
+Now, let's only give Homeworks some weight:
 
     >>> stephan.query.link('Category Weights').click()
     >>> stephan.query.id('assignment').clear()
     >>> stephan.query.id('exam').clear()
     >>> stephan.query.id('homework').clear()
-    >>> stephan.query.id('homework').ui.set_value('100')
+    >>> stephan.query.id('homework').ui.set_value('1')
     >>> stephan.query.name('UPDATE_SUBMIT').click()
-
-Let's go back to check that the values of the weights were stored
-correctly:
-
-    >>> stephan.query.link('Category Weights').click()
-    >>> print_category_weights(stephan)
-    Assignment: u''
-    Essay: u''
-    Exam: u''
-    Homework: u'100'
-    Journal: u''
-    Lab: u''
-    Presentation: u''
-    Project: u''
-    >>> stephan.query.name('CANCEL').click()
 
 The Averages have changed:
 
@@ -294,18 +195,6 @@ Let's test that explicit zeros are saved:
     >>> stephan.query.id('project').ui.set_value('0.0')
     >>> stephan.query.name('UPDATE_SUBMIT').click()
 
-    >>> stephan.query.link('Category Weights').click()
-    >>> print_category_weights(stephan)
-    Assignment: u'0'
-    Essay: u'0'
-    Exam: u''
-    Homework: u'100'
-    Journal: u''
-    Lab: u'0'
-    Presentation: u''
-    Project: u'0'
-    >>> stephan.query.name('CANCEL').click()
-
 Since all these weights are zero, they shouldn't affect the averages:
 
     >>> stephan.ui.gradebook.worksheet.pprint()
@@ -320,34 +209,3 @@ Since all these weights are zero, they shouldn't affect the averages:
     | Hoffman, Tom     | 45  | 80    | 50  |       | 7     | 182.0 | 95.0%  |
     | Richter, Claudia | 50  | 95    | 50  |       |       | 195.0 | 100.0% |
     +------------------+-----+-------+-----+-------+-------+-------+--------+
-
-Divide by zero bug
-------------------
-
-Until we fixed the bug, there was a case that crashed the gradebook where there
-was a score for a non-weighted category but no score for a weighted one.  To
-prove that the bug has been fixed, we will remove all the scores for Claudia
-and add one for the 'Experiment' activity whose category, 'Assignment', has a
-weight of zero.
-
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW1', '0')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Quiz1', '0')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW2', '0')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Exper', '50')
-    >>> stephan.query.name('UPDATE_SUBMIT').click()
-
-It didn't crash.  We see that Claudia has an average of zero even though she
-has a score for 'Experiment' because it has a weight of zero.
-
-    >>> stephan.ui.gradebook.worksheet.pprint()
-    +----------+
-    | *Sheet1* |
-    +----------+
-    +------------------+-----+-------+-----+-------+-------+-------+-------+
-    | Name             | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.  |
-    |                  | 50  | 100   | 50  | 100   | 10    |       |       |
-    +------------------+-----+-------+-----+-------+-------+-------+-------+
-    | Carduner, Paul   | 40  | 90    | 45  |       | 9     | 184.0 | 85.0% |
-    | Hoffman, Tom     | 45  | 80    | 50  |       | 7     | 182.0 | 95.0% |
-    | Richter, Claudia | 0   | 0     | 0   |       | 50    | 50.0  | 0.0%  |
-    +------------------+-----+-------+-----+-------+-------+-------+-------+

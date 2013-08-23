@@ -2,10 +2,16 @@
 <configure xmlns="http://namespaces.zope.org/browser"
            xmlns:zope="http://namespaces.zope.org/zope"
            xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:security="http://schooltool.org/securitypolicy"
            xmlns:report="http://namespaces.schooltool.org/report"
            i18n_domain="schooltool.gradebook">
 
   <!-- Report links -->
+
+  <security:allow
+     interface=".gradebook.TermReportLinkViewlet"
+     crowds="managers administrators clerks"
+     permission="schooltool.view" />
 
   <report:reportLink
        name="student_report_card"
@@ -50,7 +56,8 @@
   <report:reportLink
        name="failures_by_term"
        for="schooltool.term.interfaces.ITerm"
-       permission="schooltool.edit"
+       class="schooltool.gradebook.browser.gradebook.TermReportLinkViewlet"
+       permission="schooltool.view"
        group="Term"
        description="Shows all students receiving failing scores in the selected report activity and term."
        title="Failures by Term"
@@ -63,7 +70,8 @@
     <report:reportLink
          name="absences_by_day"
          for="schooltool.schoolyear.interfaces.ISchoolYear"
-         permission="schooltool.edit"
+         class="schooltool.gradebook.browser.gradebook.TermReportLinkViewlet"
+         permission="schooltool.view"
          group="School Year"
          description="Lists students absent on a given day."
          title="Absences By Day"

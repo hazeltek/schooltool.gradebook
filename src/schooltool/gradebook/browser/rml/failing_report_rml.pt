@@ -1,117 +1,45 @@
-<?xml version="1.0" standalone="no" ?>
-<!DOCTYPE document SYSTEM "rml_1_0.dtd" [
-  <!ENTITY pound   "&#xA3;">
-  <!ENTITY nbsp    "&#160;">
-]>
+<tal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="schooltool">
 
-<document
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  metal:use-macro="context/@@rml_macros/report"
-  i18n:domain="schooltool.gradebook">
+    <pto>
+      <pto_header>
+        <hr width="100%" thickness="1" cap="square" color="separator"
+            spaceAfter="4" spaceBefore="8" align="center" />
+        <para style="section-title" i18n:translate="">Students at risk of failing courses (continued)</para>
+      </pto_header>
+      <pto_trailer>
+        <para style="pagesplit-continued" i18n:translate="">Continued on next page &gt;</para>
+      </pto_trailer>
 
-<metal:block fill-slot="page_templates">
-  <tal:block content="structure view/use_template/default" />
-</metal:block>
+      <hr width="100%" thickness="1" cap="square" color="separator"
+          spaceAfter="4" spaceBefore="8" align="center" />
+      <para style="section-title" i18n:translate="">Students at risk of failing courses</para>
 
-<stylesheet>
-  <metal:block fill-slot="extra_initialize">
-  </metal:block>
-  <metal:block fill-slot="stylesheet">
-
-    <paraStyle
-      name="normal"
-      fontName="Arial_Normal"
-      fontSize="10"
-      leading="12"/>
-
-    <paraStyle
-      name="bold"
-      fontName="Arial_Bold"
-      fontSize="10"
-      alignment="left"
-      leading="12"/>
-
-    <paraStyle
-      name="heading"
-      fontName="Arial_Bold"
-      fontSize="10"
-      alignment="right"
-      leading="12"/>
-
-    <paraStyle
-      name="section_heading"
-      fontName="Arial_Bold"
-      fontSize="12"
-      alignment="center"
-      leading="12"/>
-
-    <blockTableStyle id="headings_table">
-        <blockValign value="top" start="0,0" stop="0,-1"/>
-    </blockTableStyle>
-
-    <blockTableStyle id="grid">
-    	<lineStyle kind="OUTLINE"
-          colorName="black" thickness="0.25"
-          start="0,0" stop="-1,-1" />
-        <blockValign value="top" start="0,0" stop="0,-1"/>
-    </blockTableStyle>
-  </metal:block>
-</stylesheet>
-
-<story metal:fill-slot="story">
-  <blockTable style="headings_table" colWidths="6cm,6cm"
-              alignment="center">
-    <tr>
-      <td><para style="heading" tal:content="view/worksheet_heading" /></td>
-      <td><para style="bold" tal:content="view/worksheet_value" /></td>
-    </tr>
-    <tr>
-      <td><para style="heading" tal:content="view/activity_heading" /></td>
-      <td><para style="bold" tal:content="view/activity_value" /></td>
-    </tr>
-    <tr>
-      <td><para style="heading" tal:content="view/score_heading" /></td>
-      <td><para style="bold" tal:content="view/score_value" /></td>
-    </tr>
-  </blockTable>
-
-  <spacer length=".5cm" />
-  <para style="bold" tal:content="view/heading_message" />
-
-  <spacer length=".5cm" />
-  <blockTable style="grid" colWidths="3cm,6cm,6cm,4cm"
-              alignment="left">
-    <tr>
-      <td><para style="bold" tal:content="view/name_heading" /></td>
-      <td><para style="bold" tal:content="view/course_heading" /></td>
-      <td><para style="bold" tal:content="view/teacher_heading" /></td>
-      <td><para style="bold" tal:content="view/grade_heading" /></td>
-    </tr>
-  </blockTable>
-  <spacer length=".5cm" />
-
-  <tal:block repeat="student view/students">
-
-    <para style="bold" tal:content="student/name" />
-
-    <blockTable style="headings_table" colWidths="3cm,6cm,6cm,4cm"
-                alignment="left"
-                tal:condition="python: len(student['rows']) > 0">
-      <tr tal:repeat="row student/rows">
-        <td />
-        <td><para style="normal" tal:content="row/course" /></td>
-        <td><para style="normal" tal:content="row/teacher" /></td>
-        <td><para style="normal" tal:content="row/grade" /></td>
+    <blockTable style="table" colWidths="25% 25% 25% 25%" repeatRows="1" alignment="left">
+      <tr>
+        <td i18n:translate="">Student</td>
+        <td i18n:translate="">Course</td>
+        <td i18n:translate="">Teacher(s)</td>
+        <td i18n:translate="">Grade</td>
       </tr>
+      <tal:block repeat="student view/students">
+        <tr>
+          <td><para tal:content="student/name" /></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr tal:repeat="row student/rows">
+          <td />
+          <td><para tal:content="row/course" /></td>
+          <td><para tal:content="row/teacher" /></td>
+          <td><para tal:content="row/grade" /></td>
+        </tr>
+      </tal:block>
     </blockTable>
-    <spacer length=".5cm" />
-  </tal:block>
 
-  <condPageBreak height="88cm"/>
-
-</story>
-
-</document>
-
+    </pto>
+</tal:block>

@@ -13,8 +13,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
 Gradebook Implementation
@@ -29,16 +28,20 @@ from zope import annotation
 from zope.keyreference.interfaces import IKeyReference
 from zope.component import adapts, adapter
 from zope.component import queryMultiAdapter, getMultiAdapter
-from zope.interface import implements, implementer
+from zope.component import getUtility
+from zope.interface import implements, implementer, Interface
 from zope.location.location import LocationProxy
 from zope.publisher.interfaces import IPublishTraverse
 from zope.security.proxy import removeSecurityProxy
+from zope.intid.interfaces import IIntIds
 
 from schooltool import course, requirement
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.basicperson.interfaces import IBasicPerson
+from schooltool.export.export import XLSReportTask
+from schooltool.report.report import ReportTask
 from schooltool.securitypolicy.crowds import ConfigurableCrowd
-from schooltool.securitypolicy.crowds import AdministrationCrowd
+from schooltool.securitypolicy.crowds import AdministratorsCrowd
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import getSourceObj
@@ -566,6 +569,50 @@ class GradebookEditorsCrowd(ConfigurableCrowd):
 
     def contains(self, principal):
         """Return the value of the related setting (True or False)."""
-        return (AdministrationCrowd(self.context).contains(principal) and
+        return (AdministratorsCrowd(self.context).contains(principal) and
                 super(GradebookEditorsCrowd, self).contains(principal))
 
+
+class GradebookReportTask(ReportTask):
+    implements(interfaces.IGradebookReportTask)
+
+    worksheet_intid = None
+
+    @property
+    def context(self):
+        int_ids = getUtility(IIntIds)
+        worksheet = int_ids.queryObject(self.worksheet_intid)
+        if worksheet is None:
+            return None
+        gradebook = interfaces.IGradebook(worksheet)
+        return gradebook
+
+    @context.setter
+    def context(self, value):
+        unproxied = removeSecurityProxy(value)
+        worksheet = unproxied.__parent__
+        int_ids = getUtility(IIntIds)
+        self.worksheet_intid = int_ids.getId(worksheet)
+
+
+class TraversableXLSReportTask(XLSReportTask):
+    traverse_intid = None
+    traverse_name = None
+
+    @property
+    def context(self):
+        int_ids = getUtility(IIntIds)
+        target = int_ids.queryObject(self.traverse_intid)
+        if target is None:
+            return None
+        request = self.getCurrentRequest()
+        traverser = getMultiAdapter((target, request), Interface, self.traverse_name)
+        result = traverser.traverse(self.traverse_name)
+        return result
+
+    @context.setter
+    def context(self, value):
+        target, name = value
+        int_ids = getUtility(IIntIds)
+        self.traverse_intid = int_ids.getId(target)
+        self.traverse_name = name

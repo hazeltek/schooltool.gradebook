@@ -13,12 +13,9 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Gradebook interfaces
-
-$Id$
 """
 __docformat__ = 'reStructuredText'
 
@@ -28,6 +25,7 @@ from zope.container.interfaces import IContainer
 from zope.container.constraints import containers, contains
 from zope.schema.interfaces import IIterableSource
 from schooltool.requirement import interfaces, scoresystem
+from schooltool.report.interfaces import IReportTask
 from schooltool.gradebook import GradebookMessage as _
 
 
@@ -479,3 +477,6 @@ class ILinkedColumnActivity(IActivity):
 class ISectionJournalData(Interface):
     """Bridge interface to remove gradebook dependency on lyceum journal."""
 
+
+class IGradebookReportTask(IReportTask):
+    pass

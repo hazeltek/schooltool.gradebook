@@ -32,7 +32,7 @@
   <!-- security settings -->
   <setting
       key="administration_can_grade_students"
-      text="The instructor of a section and school administration can edit a section's gradebook."
+      text="School administrators can edit a section's gradebook."
       alt_text="Only the instructor of a section can edit its gradebook."
       default="False" />
 
@@ -42,11 +42,11 @@
   <allow
       interface="schooltool.gradebook.interfaces.IGradebookRoot"
       permission="schooltool.edit"
-      crowds="administration" />
+      crowds="administrators clerks" />
   <allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.view"
-      crowds="administration section_instructors" />
+      crowds="administrators clerks section_instructors" />
   <allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.edit"

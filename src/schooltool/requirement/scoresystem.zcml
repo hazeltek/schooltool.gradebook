@@ -67,6 +67,16 @@
         set_schema=".interfaces.IScoreSystem"
         />
   </class>
+  <class class=".scoresystem.PersistentRangedValuesScoreSystem">
+    <require
+        permission="zope.View"
+        interface=".interfaces.IPersistentRangedValuesScoreSystem"
+        />
+    <require
+        permission="schooltool.edit"
+        set_schema=".interfaces.IPersistentRangedValuesScoreSystem"
+        />
+  </class>
   <class class=".scoresystem.CustomScoreSystem">
     <require
         permission="zope.View"

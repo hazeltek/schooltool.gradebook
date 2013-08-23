@@ -47,7 +47,8 @@
             <tr>
               <tal:loop repeat="activity activities">
                 <th tal:attributes="id activity/hash;
-                                    class activity/cssClass">
+                                    class activity/cssClass;
+                                    data-scores activity/scores;">
                   <a class="popup_link"
                      href=""
                      tal:attributes="title activity/longTitle;
@@ -121,7 +122,11 @@
       <div class="buttons">
         <input type="submit" class="button-ok" name="UPDATE_SUBMIT" value="Save"
                title="Shortcut: Alt-S" accesskey="S"
+               tal:condition="not:view/readonly"
                i18n:attributes="value; title; accesskey" />
+        <input type="submit" class="button-ok" name="CANCEL" value="Done"
+               tal:condition="view/readonly"
+               i18n:attributes="value" />
       </div>
       <div class="buttons zoom-buttons">
         <button type="button" class="button-neutral zoom-button expand"
@@ -148,5 +153,10 @@
     </div>
   </form>
 </div>
+
+<script>ST.state.push()</script>
+<tal:script tal:replace="structure scriptlocal:readonly view/readonly" />
+<script>ST.gradebook.readonly = ST.local.readonly;</script>
+<script>ST.state.pop()</script>
 
 </tal:block>

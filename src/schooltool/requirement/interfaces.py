@@ -13,12 +13,9 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Requirement Interfaces
-
-$Id$
 """
 
 __docformat__ = 'restructuredtext'
@@ -158,6 +155,14 @@ class IRangedValuesScoreSystem(IValuesScoreSystem):
         description=u'Minimum value in the score system',
         required=True,
         default=0)
+
+
+class IPersistentRangedValuesScoreSystem(IRangedValuesScoreSystem):
+
+    hidden = zope.schema.Bool(
+        title=u"Hidden Score System",
+        required=False
+        )
 
 
 class IHaveEvaluations(zope.interface.Interface):

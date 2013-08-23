@@ -115,6 +115,7 @@
   <page
       name="export.xls"
       for="..interfaces.IActivities"
+      layer="zope.publisher.interfaces.browser.IBrowserRequest"
       class=".activity.WorksheetsExportView"
       permission="schooltool.view"
       />
@@ -561,19 +562,6 @@
       for="schooltool.term.interfaces.ITerm"
       class=".report_card.UnhideReportWorksheetView"
       template="templates/unhide_report_worksheet.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="request_failing_report.html"
-      for="schooltool.term.interfaces.ITerm"
-      class=".request_reports.RequestFailingReportView"
-      template="templates/request_failing_report.pt"
-      permission="schooltool.edit"
-      />
-  <page
-      name="failures_by_term.pdf"
-      for="schooltool.term.interfaces.ITerm"
-      class=".pdf_views.FailingReportPDFView"
       permission="schooltool.edit"
       />
 

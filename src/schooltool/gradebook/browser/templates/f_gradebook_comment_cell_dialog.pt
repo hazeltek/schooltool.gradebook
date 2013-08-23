@@ -1,7 +1,5 @@
 <div class="hidden-dialog" id="comment-cell-dialog-container"
      i18n:domain="schooltool.gradebook">
-  <script tal:attributes="src string:${context/schooltool:app/@@absolute_url}/@@/fckeditor/2.6.4.1/fckeditor/fckeditor.js">
-  </script>
   <div id="comment-cell-dialog-title" dialog_title="Enter Comment"
        i18n:attributes="dialog_title">
   </div>

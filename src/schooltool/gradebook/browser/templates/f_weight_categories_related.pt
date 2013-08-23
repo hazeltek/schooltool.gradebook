@@ -8,8 +8,7 @@
       calculating average scores within a worksheet.
     </p>
     <p i18n:translate="">
-      Enter numeric values for each relevant category. The total of
-      all values must be exactly 100.
+      Enter numeric values for each relevant category.
     </p>
     <p i18n:translate="">
       For example, to weight exams as 60% of the grade, homework as

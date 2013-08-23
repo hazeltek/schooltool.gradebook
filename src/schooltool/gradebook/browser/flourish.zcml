@@ -2,6 +2,7 @@
 <configure xmlns="http://namespaces.zope.org/browser"
            xmlns:z3c="http://namespaces.zope.org/z3c"
            xmlns:zope="http://namespaces.zope.org/zope"
+           xmlns:security="http://schooltool.org/securitypolicy"
            xmlns:flourish="http://schooltool.org/flourish"
            xmlns:zcml="http://namespaces.zope.org/zcml"
            xmlns:report="http://namespaces.schooltool.org/report"
@@ -404,7 +405,7 @@
       for="..interfaces.IStudentGradebook"
       content_template="templates/f_student_grade_history.pt"
       class=".gradebook.FlourishStudentGradeHistory"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       />
 
   <flourish:page
@@ -431,19 +432,29 @@
       name="manage-report-sheet-templates-overview"
       after="manage-resources-overview"
       view="schooltool.app.browser.app.ManageSchool"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       manager="schooltool.skin.flourish.page.IPageContentManager"
       class=".report_card.FlourishManageReportSheetTemplatesOverview"
       />
+
+  <security:allow
+     interface=".report_card.FlourishManageReportSheetTemplatesOverview"
+     crowds="administrators clerks"
+     permission="schooltool.view" />
 
   <flourish:viewlet
       name="manage-report-sheets-overview"
       after="manage-report-sheet-templates-overview"
       view="schooltool.app.browser.app.ManageSchool"
-      permission="schooltool.edit"
+      permission="schooltool.view"
       manager="schooltool.skin.flourish.page.IPageContentManager"
       class=".report_card.FlourishManageReportSheetsOverview"
       />
+
+  <security:allow
+     interface=".report_card.FlourishManageReportSheetsOverview"
+     crowds="administrators clerks"
+     permission="schooltool.view" />
 
   <flourish:page
       name="index.html"
@@ -624,6 +635,11 @@
       content_template="templates/f_report_sheets.pt"
       permission="schooltool.edit"
       />
+
+  <security:allow
+     interface=".report_card.FlourishReportSheetsView"
+     crowds="administrators clerks"
+     permission="schooltool.edit" />
 
   <flourish:activeViewlet
       name="manage_school"
@@ -903,6 +919,20 @@
       permission="schooltool.edit"
       />
 
+  <zope:adapter
+       factory=".request_reports.RequestFailing_score_title"
+       name="label"
+       />
+
+  <zope:adapter
+       factory=".request_reports.RequestFailing_score_discrete_title"
+       name="label"
+       />
+
+  <zope:adapter
+      factory=".request_reports.FailingTextScoreValidator"
+      />
+
   <flourish:page
       name="request_failing_report.html"
       for="schooltool.term.interfaces.ITerm"
@@ -910,6 +940,11 @@
       template="templates/f_request_failing_report.pt"
       permission="schooltool.edit"
       />
+
+  <security:allow
+     interface=".request_reports.FlourishRequestFailingReportView"
+     crowds="managers administrators clerks"
+     permission="schooltool.edit" />
 
   <report:reportLink
        name="group_detail_report"
@@ -939,7 +974,8 @@
        name="failures_by_term"
        for="schooltool.term.interfaces.ITerm"
        layer="schooltool.skin.flourish.IFlourishLayer"
-       permission="schooltool.edit"
+       class="schooltool.gradebook.browser.gradebook.TermReportLinkViewlet"
+       permission="schooltool.view"
        group="Term"
        description="Shows all students receiving failing scores in the selected report activity and term."
        title="Failures"
@@ -1004,7 +1040,6 @@
         name="request_absences_by_day.html"
         for="schooltool.schoolyear.interfaces.ISchoolYear"
         class=".request_reports.FlourishRequestAbsencesByDayView"
-        template="templates/f_request_absences_by_day.pt"
         permission="schooltool.edit"
         />
     <flourish:page
@@ -1070,7 +1105,7 @@
       title="Activity Categories"
       class="schooltool.skin.flourish.page.LinkViewlet"
       manager="schooltool.app.browser.app.CustomizeSchoolLinks"
-      permission="schooltool.view"
+      permission="schooltool.edit"
       />
 
   <flourish:page
@@ -1383,5 +1418,35 @@
       class=".pdf_views.WorksheetGrid"
       permission="schooltool.view"
       />
+
+  <page
+      name="request_failing_report.html"
+      for="schooltool.term.interfaces.ITerm"
+      class=".request_reports.RequestFailingReportView"
+      template="templates/request_failing_report.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:pdf
+      name="failures_by_term.pdf"
+      for="schooltool.term.interfaces.ITerm"
+      class=".pdf_views.FailingReportPDFView"
+      permission="schooltool.view"
+      />
+
+  <security:allow
+     interface=".pdf_views.FailingReportPDFView"
+     crowds="managers administrators clerks"
+     permission="schooltool.view" />
+
+  <zope:utility
+     factory=".request_reports.termactivitychoicesfactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.TermActivityChoices" />
+
+  <zope:utility
+     factory=".request_reports.failingreportscorefactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.FailingReportScores" />
 
 </configure>
