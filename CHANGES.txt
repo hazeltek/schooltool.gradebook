@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-2.5.2 (unreleased)
+2.5.2 (2013-08-23)
 ------------------
 
 - Read-only gradebook and term reports access for clerks and administrators
