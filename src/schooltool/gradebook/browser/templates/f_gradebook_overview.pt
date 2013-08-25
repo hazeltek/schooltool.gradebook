@@ -155,8 +155,11 @@
 </div>
 
 <script>ST.state.push()</script>
-<tal:script tal:replace="structure scriptlocal:readonly view/readonly" />
+<tal:script tal:replace="structure scriptlocal:
+                         readonly view/readonly;
+                         needs_comments view/needs_comments;" />
 <script>ST.gradebook.readonly = ST.local.readonly;</script>
+<script>ST.gradebook.needs_comments = ST.local.needs_comments;</script>
 <script>ST.state.pop()</script>
 
 </tal:block>

@@ -475,6 +475,7 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
     """Gradebook Overview/Table"""
 
     isTeacher = True
+    needs_comments = False
 
     @Lazy
     def students_info(self):
@@ -649,6 +650,7 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             updateGrades = ''
 
         if ICommentScoreSystem.providedBy(insecure_activity.scoresystem):
+            self.needs_comments = True
             zc.resourcelibrary.need("fckeditor")
 
         return {
