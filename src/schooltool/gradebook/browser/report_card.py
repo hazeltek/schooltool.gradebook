@@ -225,6 +225,12 @@ class FlourishReportSheetsBase(FlourishSchooYearMixin):
         else:
             return []
 
+    def schoolyear_view_url(self, name):
+        app_url = absoluteURL(self.context, self.request)
+        return '%s/%s?schoolyear_id=%s' % (app_url,
+                                           name,
+                                           self.schoolyear.__name__)
+
 
 class FlourishManageReportSheetTemplatesOverview(FlourishReportSheetsBase,
                                                  flourish.page.Content):
@@ -238,6 +244,9 @@ class FlourishManageReportSheetTemplatesOverview(FlourishReportSheetsBase,
         root = IGradebookRoot(ISchoolToolApplication(None))
         return list(root.templates.values())
 
+    def templates_url(self):
+        return self.schoolyear_view_url('gradebook/templates')
+
 
 class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
                                          flourish.page.Content):
@@ -245,6 +254,9 @@ class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
 
     body_template = ViewPageTemplateFile(
         'templates/f_manage_report_sheets_overview.pt')
+
+    def sheets_url(self):
+        return self.schoolyear_view_url('report_sheets')
 
 
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
@@ -364,8 +376,7 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
                 copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
-        url = absoluteURL(ISchoolToolApplication(None), self.request)
-        return url + '/manage'
+        return self.schoolyear_view_url('manage')
 
 
 class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,

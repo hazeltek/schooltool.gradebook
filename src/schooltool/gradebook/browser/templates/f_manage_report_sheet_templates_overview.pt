@@ -3,7 +3,7 @@
      tal:define="templates view/templates">
   <h3>
     <a title="Manage Report Sheet Templates"
-       tal:attributes="href string:${context/@@absolute_url}/gradebook/templates"
+       tal:attributes="href view/templates_url"
        i18n:attributes="title"
        i18n:translate="">
       Report Sheet Templates

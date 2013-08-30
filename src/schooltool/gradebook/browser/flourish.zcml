@@ -466,6 +466,16 @@
       />
 
   <flourish:viewlet
+      name="done"
+      after="*"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      view=".report_card.FlourishTemplatesView"
+      class="schooltool.app.browser.app.ManageItemDoneLink"
+      render="template"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
       name="report-sheets_overview"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".report_card.FlourishReportSheetsOverviewLinks"
@@ -511,7 +521,6 @@
       manager="schooltool.skin.flourish.page.IPageRelatedManager"
       permission="schooltool.edit"
       />
-
 
   <flourish:viewlet
       name="what-is-this"
