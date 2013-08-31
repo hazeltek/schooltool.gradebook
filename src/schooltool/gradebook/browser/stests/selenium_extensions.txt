@@ -17,10 +17,6 @@ Add a school year:
 
     >>> manager.ui.schoolyear.add('2012', '2012-01-01', '2012-12-31')
 
-Add manager to clerks group:
-
-    >>> manager.ui.group.members.add('2012', 'Clerks', ['manager'])
-
 Add a term:
 
     >>> manager.ui.term.add('2012', 'Single Year', '2012-01-01', '2012-12-31')
