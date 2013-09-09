@@ -1275,7 +1275,7 @@ class GradeActivity(object):
                    'value': value}
 
     def doneURL(self):
-        return absoluteURL(ISection(self.context), self.request)
+        return absoluteURL(self.context, self.request)
 
     def update(self):
         self.messages = []
@@ -1320,7 +1320,7 @@ class GradeActivity(object):
                             student, activity, request_score_value, evaluator)
 
             if not len(self.messages):
-                self.request.response.redirect('index.html')
+                self.request.response.redirect(self.doneURL())
 
 
 class FlourishGradeActivity(GradeActivity, flourish.page.Page):
