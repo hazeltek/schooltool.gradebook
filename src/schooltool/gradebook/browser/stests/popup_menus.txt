@@ -606,6 +606,84 @@ Activities can be edited:
     | Richter, Claudia |       | 101  | 51  |      | Good |
     +------------------+-------+------+-----+------+------+
 
+Activities can be scored in a separate page:
+
+    >>> stephan.query.link('HW-2').click()
+    >>> stephan.query.link('Score this').click()
+    >>> print stephan.query.css('h2')
+    <h2>
+      Grade Activity
+    </h2>
+
+    >>> print stephan.query.css('tbody')
+    <tbody>
+      <tr>
+        <td>
+          <label for="claudia">
+            Richter, Claudia
+          </label>
+        </td>
+        <td>
+          <input id="claudia" name="claudia" size="4" type="text" value="" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="paul">
+            Carduner, Paul
+          </label>
+        </td>
+        <td>
+          <input id="paul" name="paul" size="4" type="text" value="" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="tom">
+            Hoffman, Tom
+          </label>
+        </td>
+        <td>
+          <input id="tom" name="tom" size="4" type="text" value="" />
+        </td>
+      </tr>
+    </tbody>
+
+    >>> stephan.query.id('tom').ui.set_value('70')
+    >>> stephan.query.name('UPDATE_SUBMIT').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+------+------+
+    | Name             | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
+    |                  | 100   | 100  | 50  | 100  |      |
+    +------------------+-------+------+-----+------+------+
+    | Carduner, Paul   |       | 90   | 40  |      | Good |
+    | Hoffman, Tom     |       | 88   | 48  | 70   | Good |
+    | Richter, Claudia |       | 101  | 51  |      | Good |
+    +------------------+-------+------+-----+------+------+
+
+Or filled with same value for all students:
+
+    >>> stephan.query.link('HW-2').click()
+    >>> stephan.query.link('Fill down').click()
+    >>> stephan.query.id('filldown_value').ui.set_value('75')
+    >>> stephan.query.name('SUBMIT').click()
+    >>> stephan.query.name('UPDATE_SUBMIT').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +------------------+-------+------+-----+------+------+
+    | Name             | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
+    |                  | 100   | 100  | 50  | 100  |      |
+    +------------------+-------+------+-----+------+------+
+    | Carduner, Paul   |       | 90   | 40  | 75   | Good |
+    | Hoffman, Tom     |       | 88   | 48  | 70   | Good |
+    | Richter, Claudia |       | 101  | 51  | 75   | Good |
+    +------------------+-------+------+-----+------+------+
+
 Activities can be deleted:
 
     >>> stephan.query.link('HW-2').click()
