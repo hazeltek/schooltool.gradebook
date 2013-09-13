@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-02-01 15:02-0500\n"
-"PO-Revision-Date: 2012-06-28 21:33+0000\n"
+"POT-Creation-Date: 2013-08-23 12:11+0300\n"
+"PO-Revision-Date: 2013-08-23 09:20+0000\n"
 "Last-Translator: Aleksi Kinnunen <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-19 05:43+0000\n"
-"X-Generator: Launchpad (build 16567)\n"
+"X-Launchpad-Export-Date: 2013-08-24 05:45+0000\n"
+"X-Generator: Launchpad (build 16738)\n"
 "Language: fi\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -245,11 +245,7 @@ msgstr ""
 msgid "$value is not a valid weight."
 msgstr "$value ei ole kelvollinen painotusarvo."
 
-#: /src/schooltool/gradebook/browser/activity.py:648
-msgid "Category weights must add up to 100."
-msgstr "Painotusten yhteissumman tulee olla tasan 100."
-
-#: /src/schooltool/gradebook/browser/activity.py:704
+#: /src/schooltool/gradebook/browser/activity.py:710
 msgid "The external activity couldn't be found"
 msgstr ""
 
@@ -719,17 +715,21 @@ msgstr ""
 msgid "School Year"
 msgstr "Lukuvuosi"
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:931
-#: /src/schooltool/gradebook/browser/pdf_views.py:724
-msgid "Absences"
-msgstr "Poissaolot"
-
-#: /src/schooltool/gradebook/browser/flourish.zcml:806
+#: /src/schooltool/gradebook/browser/flourish.zcml:1029
 #: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Summary of absences and tardies from a single section and term."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:989
+#: /src/schooltool/gradebook/browser/flourish.zcml:1029
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:26
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:16
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:28
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:33
+msgid "Absences"
+msgstr "Poissaolot"
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1166
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Worksheet Templates"
 msgstr ""
 
@@ -1050,65 +1050,64 @@ msgstr "Oppilaan nimi"
 msgid "User Id"
 msgstr "Käyttäjätunnus"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:478
-msgid "Failures by Term Report: ${term}"
+#: /src/schooltool/gradebook/browser/pdf_views.py:537
+#: /src/schooltool/gradebook/browser/report.zcml:50
+msgid "Failures by Term"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:456
-msgid "Report Sheet:"
-msgstr "Raporttilomake:"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:462
-msgid "Activity:"
+#: /src/schooltool/gradebook/browser/pdf_views.py:541
+msgid "term ${term} failures"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:468
-msgid "Passing Score:"
-msgstr "Alin hyväksytty arvosana:"
+#: /src/schooltool/gradebook/browser/pdf_views.py:578
+msgid "Report Sheet: ${worksheet}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:474
+#: /src/schooltool/gradebook/browser/pdf_views.py:580
+msgid "Activity: ${activity}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:582
+msgid "Passing Score: ${score}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:588
 msgid "The following students are at risk of failing the following courses:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:510
-#: /src/schooltool/gradebook/browser/pdf_views.py:708
-msgid "Course"
-msgstr "Kurssi"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:483
-msgid "Teacher(s)"
-msgstr "Opettaja(t)"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:486
-#: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
-msgid "Grade"
-msgstr "Luokka"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:563
-msgid "Absences By Day Report"
-msgstr "Raportti päiväkohtaisista poissaoloista"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:624
-msgid "Period Number"
+#: /src/schooltool/gradebook/browser/pdf_views.py:657
+msgid "ABSENCES BY DAY"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:666
-msgid "Absences by Section Report"
-msgstr "Raportti opetusryhmäkohtaisista poissaoloista"
+#: /src/schooltool/gradebook/browser/pdf_views.py:663
+msgid "absences by day report"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:675
-msgid "Teacher"
-msgstr "Opettaja"
+#: /src/schooltool/gradebook/browser/pdf_views.py:664
+msgid "absences for ${day}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:688
-msgid "Tardies"
-msgstr "Myöhästymiset"
+#: /src/schooltool/gradebook/browser/pdf_views.py:786
+msgid "SECTION ABSENCES"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:793
+#: /src/schooltool/gradebook/browser/pdf_views.py:790
+msgid "${section} absence report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:806
+msgid "Teacher(s): ${instructors}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:923
 msgid "Gradebook Report"
 msgstr "Arviointiraportti"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:927
+#: /src/schooltool/gradebook/browser/pdf_views.py:968
+msgid "${section} gradebook"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:986
 msgid "Instructors: ${instructors}"
 msgstr ""
 
@@ -1130,10 +1129,6 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Student Detail Report by Group"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/report.zcml:50
-msgid "Failures by Term"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/report.zcml:63
@@ -1255,15 +1250,20 @@ msgstr ""
 msgid "Outline item heading"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:46
-msgid "Request Failures by Term Report"
+#: /src/schooltool/gradebook/browser/request_reports.py:66
+msgid "Select a source"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:61
-msgid "Choose a report activity"
+#: /src/schooltool/gradebook/browser/request_reports.py:110
+msgid "Select a score"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:95
+#: /src/schooltool/gradebook/browser/request_reports.py:158
+msgid "${value} is not valid in ${scoresystem}."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:221
+#: /src/schooltool/gradebook/browser/request_reports.py:304
 msgid "Maximum Passing Score"
 msgstr ""
 
@@ -1271,7 +1271,15 @@ msgstr ""
 msgid "Minimum Passing Score"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:115
+#: /src/schooltool/gradebook/browser/request_reports.py:255
+msgid "Request Failures by Term Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:270
+msgid "Choose a report activity"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:324
 msgid "You must specify both a report activity and a minimum passing score."
 msgstr ""
 
@@ -1290,6 +1298,28 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/request_reports.py:200
 msgid "Request Detailed Student Report"
 msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:473
+#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:15
+#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
+#: /src/schooltool/gradebook/interfaces.py:208
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:11
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:11
+msgid "Absences (continued)"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:16
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:32
+msgid "Period Number"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:17
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:34
+msgid "Tardies"
+msgstr "Myöhästymiset"
 
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:25
@@ -1475,10 +1505,19 @@ msgid "Enter a comment."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
+msgid "You have unsaved changes that will be lost."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:7
 msgid "Fill empty cells"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:15
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:16
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
+msgid "Grade"
+msgstr "Luokka"
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:19
 msgid "Choose a grade to apply to all the students in the gradebook column."
 msgstr ""
 
@@ -1509,7 +1548,11 @@ msgstr ""
 msgid "Shortcut: Alt-S"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:122
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:127
+msgid "Done"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
 msgid "Expand"
 msgstr ""
 
@@ -1762,44 +1805,16 @@ msgstr ""
 msgid "File Type"
 msgstr "Tiedostomuoto"
 
-#: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
-msgid "Date (yyyy-mm-dd)"
-msgstr "Päivämäärä (vvvv-kk-pp)"
+#: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
+msgid "Select a year or term"
+msgstr "Valitse lukuvuosi tai jakso"
 
-#: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:41
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:73
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:35
 #: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:38
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:80
 #: /src/schooltool/gradebook/browser/templates/request_student_report.pt:35
 msgid "Download"
 msgstr "Lataa"
-
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:16
-#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
-msgid ""
-"This report is a list of students achieving below a minimum score on a "
-"selected activity from a report sheet."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:22
-msgid ""
-"For example, say the term is \"Fall 2011,\" and you have deployed a report "
-"sheet entitled \"Semester Grades,\" which includes an activity \"First "
-"Quarter,\" using a grading scale where a \"3\" or higher is passing. To "
-"create a report of students failing the first quarter grade, you would "
-"select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
-"and choose \"3\" as the minimum passing grade. And click \"Submit.\""
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:35
-#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:38
-msgid "Request Report"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
-msgid "Select a year or term"
-msgstr "Valitse lukuvuosi tai jakso"
 
 #: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:5
 msgid "${student_name} was never scored in this worksheet."
@@ -1808,12 +1823,6 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:14
 msgid "Evaluator"
 msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:15
-#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
-#: /src/schooltool/gradebook/interfaces.py:204
-msgid "Date"
-msgstr "Päivämäärä"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:6
 msgid "Report Activities"
@@ -1846,12 +1855,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
-msgid ""
-"Enter numeric values for each relevant category. The total of all values "
-"must be exactly 100."
-msgstr ""
-"Kirjoita jokaiseen käyttämäsi arviointimateriaalin kohdalle numero. "
-"Painotusten summan tulee olla tasan 100."
+msgid "Enter numeric values for each relevant category."
+msgstr "Kirjoita jokaiseen käyttämäsi arviointimateriaalin kohdalle numero."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
@@ -2045,6 +2050,12 @@ msgid ""
 "sheet deployed to each section in a term or year."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
+msgid ""
+"This report is a list of students achieving below a minimum score on a "
+"selected activity from a report sheet."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:28
 msgid ""
 "For example, say the term is \"Fall 2011,\" and you have deployed a report "
@@ -2053,6 +2064,10 @@ msgid ""
 "create a report of students failing the first quarter grade, you would "
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:38
+msgid "Request Report"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/summary.pt:10
@@ -2089,6 +2104,26 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/worksheet.py:181
 msgid "Worksheet Information"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:44
+msgid "report sheets export"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:148
+msgid "Term Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:152
+msgid "Exporting worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:159
+msgid "Export complete"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:180
+msgid "School Year Worksheets"
 msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:56
@@ -2266,9 +2301,7 @@ msgid "Only the instructor of a section can edit its gradebook."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:33
-msgid ""
-"The instructor of a section and school administration can edit a section's "
-"gradebook."
+msgid "School administrators can edit a section's gradebook."
 msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:55
@@ -2414,6 +2447,10 @@ msgid ""
 "A score system is a scale used for assessment, such as a grading scale or "
 "rubric scale."
 msgstr "Pisteytysjärjestelmän avulla oppilaille voidaan antaa arvosanoja."
+
+#: /src/schooltool/requirement/browser/flourish.zcml:109
+msgid "Customize"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"

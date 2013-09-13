@@ -1781,6 +1781,7 @@ msgid "This form allows you to change the weighting of categories when calculati
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
+#: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
 msgid "Enter numeric values for each relevant category."
 msgstr ""
 
@@ -1972,10 +1973,6 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
 msgid "Unhide"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
-msgid "Enter numeric values for each relevant category. The total of all values must be exactly 100."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:4

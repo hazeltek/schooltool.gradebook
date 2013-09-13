@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - Fix report sheet links when a different school year is selected
+- Updated translations
 
 
 2.5.2 (2013-08-23)
