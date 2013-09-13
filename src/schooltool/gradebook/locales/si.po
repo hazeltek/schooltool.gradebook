@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-05-30 19:38+0300\n"
-"PO-Revision-Date: 2013-06-03 16:02+0000\n"
+"POT-Creation-Date: 2013-08-23 12:11+0300\n"
+"PO-Revision-Date: 2013-08-23 09:20+0000\n"
 "Last-Translator: Kasuri Thiyumini <thiyumini20@gmail.com>\n"
 "Language-Team: Sinhalese <si@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-04 05:48+0000\n"
-"X-Generator: Launchpad (build 16660)\n"
+"X-Launchpad-Export-Date: 2013-08-24 05:46+0000\n"
+"X-Generator: Launchpad (build 16738)\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -196,11 +196,7 @@ msgstr "ප්‍රවර්ග වැඞපත සඳහ බරතැබීම
 msgid "$value is not a valid weight."
 msgstr "$වටිනාකම බරතැබීම වලංගු නැත"
 
-#: /src/schooltool/gradebook/browser/activity.py:374
-msgid "Category weights must add up to 100."
-msgstr "ප්‍රවර්ග බරතැබීම 100 වඞා එක්කල යුතුයි"
-
-#: /src/schooltool/gradebook/browser/activity.py:427
+#: /src/schooltool/gradebook/browser/activity.py:710
 msgid "The external activity couldn't be found"
 msgstr "අතිරේක ක්‍රියාකාරකම් සොයාගත නොහැකියි"
 
@@ -595,17 +591,23 @@ msgstr ""
 msgid "School Year"
 msgstr "පාසල් වර්ෂය"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:677
-msgid "Absences"
-msgstr "නොපැමිණීම"
-
-#: /src/schooltool/gradebook/browser/report.zcml:62
+#: /src/schooltool/gradebook/browser/flourish.zcml:1029
+#: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Summary of absences and tardies from a single section and term."
 msgstr ""
 "එක් අංශයක නියමිත කාලපරිච්ඡේදයක් තුල නොපැමිනෙන සහ ප්‍රමාදවී පැමිනෙන අය  "
 "පිළිබද සාරාංශය."
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:989
+#: /src/schooltool/gradebook/browser/flourish.zcml:1029
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:26
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:16
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:28
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:33
+msgid "Absences"
+msgstr "නොපැමිණීම"
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1166
+#: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Worksheet Templates"
 msgstr "වැඞපත් ආකෟති"
 
@@ -896,66 +898,64 @@ msgstr "ශිෂ්‍යය නම"
 msgid "User Id"
 msgstr "භාවිතා කරන්නාගේ අයි.ඩී එක"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:447
-msgid "Failures by Term Report: ${term}"
-msgstr "වාර වාර්තාවේ වැරදි: {වාරය}"
+#: /src/schooltool/gradebook/browser/pdf_views.py:537
+#: /src/schooltool/gradebook/browser/report.zcml:50
+msgid "Failures by Term"
+msgstr "කණ්ඩායමෙන් වු වැරදි"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:451
-msgid "Report Sheet:"
-msgstr "වාර්තා පත"
+#: /src/schooltool/gradebook/browser/pdf_views.py:541
+msgid "term ${term} failures"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:457
-msgid "Activity:"
-msgstr "ක්‍රියාකාරකම"
+#: /src/schooltool/gradebook/browser/pdf_views.py:578
+msgid "Report Sheet: ${worksheet}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:463
-msgid "Passing Score:"
-msgstr "සමත් වීමේ ලකුණු"
+#: /src/schooltool/gradebook/browser/pdf_views.py:580
+msgid "Activity: ${activity}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:469
+#: /src/schooltool/gradebook/browser/pdf_views.py:582
+msgid "Passing Score: ${score}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:588
 msgid "The following students are at risk of failing the following courses:"
 msgstr "පහත ශිෂ්‍යයන් සදහා පහත පාඨමාලා අසමත් වීමේ අවධානමක් පවතී"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:475
-#: /src/schooltool/gradebook/browser/pdf_views.py:661
-msgid "Course"
-msgstr "පාඨමාලාව"
+#: /src/schooltool/gradebook/browser/pdf_views.py:657
+msgid "ABSENCES BY DAY"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:478
-msgid "Teacher(s)"
-msgstr "ගුරැතුමන්"
+#: /src/schooltool/gradebook/browser/pdf_views.py:663
+msgid "absences by day report"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:481
-#: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
-msgid "Grade"
-msgstr "ශේණිය"
+#: /src/schooltool/gradebook/browser/pdf_views.py:664
+msgid "absences for ${day}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:557
-msgid "Absences By Day Report"
-msgstr "දෛනික වාර්තාට අනුව නොපැමිණ ඇත"
+#: /src/schooltool/gradebook/browser/pdf_views.py:786
+msgid "SECTION ABSENCES"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:616
-msgid "Period Number"
-msgstr "පරිච්ඡේද අංකය"
+#: /src/schooltool/gradebook/browser/pdf_views.py:790
+msgid "${section} absence report"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:658
-msgid "Absences by Section Report"
-msgstr "අංශ  වාර්තාට අනුව නොපැමිණ ඇත"
+#: /src/schooltool/gradebook/browser/pdf_views.py:806
+msgid "Teacher(s): ${instructors}"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:667
-msgid "Teacher"
-msgstr "ගුරුවරයා"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:680
-msgid "Tardies"
-msgstr "සුනංගුවී"
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:776
+#: /src/schooltool/gradebook/browser/pdf_views.py:923
 msgid "Gradebook Report"
 msgstr "ශේණිපොත් වාර්තාව"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:927
+#: /src/schooltool/gradebook/browser/pdf_views.py:968
+msgid "${section} gradebook"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:986
 msgid "Instructors: ${instructors}"
 msgstr "උපදේශකයන්: ${උපදේශකයන්}"
 
@@ -977,11 +977,7 @@ msgstr "කණ්ඞායම් සදහා වූ ශිෂ්‍යය ව�
 msgid "Student Detail Report by Group"
 msgstr "කණ්ඞායම් සදහා වූ ශිෂ්‍යය විස්තර වාර්තාව"
 
-#: /src/schooltool/gradebook/browser/report.zcml:45
-msgid "Failures by Term"
-msgstr "කණ්ඩායමෙන් වු වැරදි"
-
-#: /src/schooltool/gradebook/browser/report.zcml:57
+#: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "Absences By Day"
 msgstr "දෛනික නොපැමිණීම"
 
@@ -1100,15 +1096,20 @@ msgstr "අයිතම සංක්ෂිප්ත ප්‍රභවය"
 msgid "Outline item heading"
 msgstr "අයිතම සංක්ෂිප්ත පිලිබද මාතෘකාව"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:42
-msgid "Request Failures by Term Report"
-msgstr "වාර වාර්තා සදහා වු අසමත්වූ ඉල්ලීම්"
+#: /src/schooltool/gradebook/browser/request_reports.py:66
+msgid "Select a source"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:155
-msgid "Choose a report activity"
-msgstr "වාර්තා ක්‍රියාකාරකමක් තෝරාගන්න"
+#: /src/schooltool/gradebook/browser/request_reports.py:110
+msgid "Select a score"
+msgstr ""
 
-#: /src/schooltool/gradebook/browser/request_reports.py:189
+#: /src/schooltool/gradebook/browser/request_reports.py:158
+msgid "${value} is not valid in ${scoresystem}."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/request_reports.py:221
+#: /src/schooltool/gradebook/browser/request_reports.py:304
 msgid "Maximum Passing Score"
 msgstr "උපරිම සමත්වීමේ ලකුණු"
 
@@ -1116,7 +1117,15 @@ msgstr "උපරිම සමත්වීමේ ලකුණු"
 msgid "Minimum Passing Score"
 msgstr "අවම සමත්වීමේ ලකුණු"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:209
+#: /src/schooltool/gradebook/browser/request_reports.py:255
+msgid "Request Failures by Term Report"
+msgstr "වාර වාර්තා සදහා වු අසමත්වූ ඉල්ලීම්"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:270
+msgid "Choose a report activity"
+msgstr "වාර්තා ක්‍රියාකාරකමක් තෝරාගන්න"
+
+#: /src/schooltool/gradebook/browser/request_reports.py:324
 msgid "You must specify both a report activity and a minimum passing score."
 msgstr ""
 "ඔබ විසින් පිළියල කරන දෛනික වාර්තා සඳහා නොපැණීමේ ඉල්ලීමක් වාර්තා "
@@ -1138,9 +1147,32 @@ msgstr "ඉල්ලීම් වාර්තා පත"
 msgid "Request Detailed Student Report"
 msgstr "සිසුන්ගේ ඉල්ලීම් පිලිබඳ විස්තර වාර්තා"
 
+#: /src/schooltool/gradebook/browser/request_reports.py:473
+#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:15
+#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
+#: /src/schooltool/gradebook/interfaces.py:208
+msgid "Date"
+msgstr "දිනය"
+
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:11
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:11
+msgid "Absences (continued)"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:16
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:32
+msgid "Period Number"
+msgstr "පරිච්ඡේද අංකය"
+
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:17
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:34
+msgid "Tardies"
+msgstr "සුනංගුවී"
+
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:25
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:21
-#: /src/schooltool/gradebook/interfaces.py:122
+#: /src/schooltool/gradebook/interfaces.py:184
 msgid "Label"
 msgstr "ලේබලය"
 
@@ -1329,7 +1361,12 @@ msgstr "ඔබ විසින් සුරකීමට පෙර වෙනස�
 msgid "Fill empty cells"
 msgstr "අසම්පූර්ණ කොටස සම්පූර්ණ කරන්න"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:15
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:16
+#: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
+msgid "Grade"
+msgstr "ශේණිය"
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:19
 msgid "Choose a grade to apply to all the students in the gradebook column."
 msgstr "ශේණිපොත් තීරයට සියලුම ශිෂ්‍යයන්ගේ ශේණිය දක්කරන්න."
 
@@ -1360,7 +1397,11 @@ msgstr "S"
 msgid "Shortcut: Alt-S"
 msgstr "කෙටි මග : Alt-S"
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:122
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:127
+msgid "Done"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
 msgid "Expand"
 msgstr "ව්‍යප්තිය"
 
@@ -1622,44 +1663,16 @@ msgstr "සම්මත වාර්තාපත."
 msgid "File Type"
 msgstr "ගොනු වර්ගය"
 
-#: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:32
-msgid "Date (yyyy-mm-dd)"
-msgstr "දිනය (ව-මා-දි)"
+#: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
+msgid "Select a year or term"
+msgstr "වසරක් හෝ වාරයක් තෝරන්න ."
 
-#: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:41
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:73
 #: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:35
 #: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:38
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:80
 #: /src/schooltool/gradebook/browser/templates/request_student_report.pt:35
 msgid "Download"
 msgstr "බාගත කරන්න"
-
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:16
-#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
-msgid ""
-"This report is a list of students achieving below a minimum score on a "
-"selected activity from a report sheet."
-msgstr "අවම ලකුණට අඩුවෙන් ලකුණු ඇති ශිෂ්‍යයන් වාර්තාව තුලින් තෝරන්න ."
-
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:22
-msgid ""
-"For example, say the term is \"Fall 2011,\" and you have deployed a report "
-"sheet entitled \"Semester Grades,\" which includes an activity \"First "
-"Quarter,\" using a grading scale where a \"3\" or higher is passing. To "
-"create a report of students failing the first quarter grade, you would "
-"select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
-"and choose \"3\" as the minimum passing grade. And click \"Submit.\""
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:35
-#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:38
-msgid "Request Report"
-msgstr "ඉල්ලීම් වාර්තාව."
-
-#: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:21
-msgid "Select a year or term"
-msgstr "වසරක් හෝ වාරයක් තෝරන්න ."
 
 #: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:5
 msgid "${student_name} was never scored in this worksheet."
@@ -1668,12 +1681,6 @@ msgstr "${ශිෂ්‍යයාගේ නම} මෙම වැඩපතට �
 #: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:14
 msgid "Evaluator"
 msgstr "අගයන්නා."
-
-#: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:15
-#: /src/schooltool/gradebook/browser/templates/request_absences_by_day.pt:26
-#: /src/schooltool/gradebook/interfaces.py:204
-msgid "Date"
-msgstr "දිනය"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:6
 msgid "Report Activities"
@@ -1707,11 +1714,8 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
-msgid ""
-"Enter numeric values for each relevant category. The total of all values "
-"must be exactly 100."
-msgstr ""
-"සංඛ්‍යාත්මක අගයන් සෑම කොටසකටම එක්කරන්න. මුලු අගය හරියටම 100ක් විය යුතුයි."
+msgid "Enter numeric values for each relevant category."
+msgstr "සංඛ්‍යාත්මක අගයන් සෑම කොටසකටම එක්කරන්න."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
@@ -1910,6 +1914,12 @@ msgid ""
 msgstr ""
 "වසරේ සෑම වාරයකටම හෝ අංශයකටම අදාල ක්‍රියාකාරකම් වාර්තාපත් ආකෘතියේ අඩංගු කරන්න."
 
+#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
+msgid ""
+"This report is a list of students achieving below a minimum score on a "
+"selected activity from a report sheet."
+msgstr "අවම ලකුණට අඩුවෙන් ලකුණු ඇති ශිෂ්‍යයන් වාර්තාව තුලින් තෝරන්න ."
+
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:28
 msgid ""
 "For example, say the term is \"Fall 2011,\" and you have deployed a report "
@@ -1919,6 +1929,10 @@ msgid ""
 "select the report activity \"Fall 2011 - Semester Grades - First Quarter\" "
 "and choose \"3\" as the minimum passing grade. And click \"Download.\""
 msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:38
+msgid "Request Report"
+msgstr "ඉල්ලීම් වාර්තාව."
 
 #: /src/schooltool/gradebook/browser/templates/summary.pt:10
 msgid "Section Worksheet Summary"
@@ -1956,6 +1970,26 @@ msgstr "වැඩපත් විස්තර."
 #: /src/schooltool/gradebook/browser/worksheet.py:181
 msgid "Worksheet Information"
 msgstr "වැඩපත් තොරතුරු."
+
+#: /src/schooltool/gradebook/browser/xls_views.py:44
+msgid "report sheets export"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:148
+msgid "Term Worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:152
+msgid "Exporting worksheets"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:159
+msgid "Export complete"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/xls_views.py:180
+msgid "School Year Worksheets"
+msgstr ""
 
 #: /src/schooltool/gradebook/gradebook_init.py:56
 msgid "Report Card Layouts"
@@ -2132,10 +2166,8 @@ msgid "Only the instructor of a section can edit its gradebook."
 msgstr "අංශයේ උපදේශකයන්ට පමණක් ශේණිපොත සංස්කරණය කිරීමට හැකිය."
 
 #: /src/schooltool/gradebook/security.zcml:33
-msgid ""
-"The instructor of a section and school administration can edit a section's "
-"gradebook."
-msgstr "අංශයේ උපදේශකයන්ට හා පාසල් පරිපාලකට ශේණිපොත සංස්කරණය කිරීමට හැකිය."
+msgid "School administrators can edit a section's gradebook."
+msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:55
 msgid "Add Course Worksheet"
@@ -2278,6 +2310,10 @@ msgid ""
 "rubric scale."
 msgstr ""
 "ලකුණු ක්‍රමය ඇගයීම් සදහා භාවිතා කරයි, ශේණිගතකිරීමේ හෝ අභිධාන පරිමාණයක් ලෙස ."
+
+#: /src/schooltool/requirement/browser/flourish.zcml:109
+msgid "Customize"
+msgstr ""
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
