@@ -1,4 +1,5 @@
 import stesting
+import schooltool.common
 from zope.i18nmessageid import MessageFactory
 GradebookMessage = MessageFactory("schooltool.gradebook")
 
@@ -23,3 +24,5 @@ def makeDecimalARock():
 
 makeDecimalARock()
 del makeDecimalARock
+
+schooltool.common.register_lauchpad_project(__package__, 'schooltool.gradebook')
