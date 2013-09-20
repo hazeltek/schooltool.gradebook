@@ -1859,8 +1859,11 @@ class GradeStudent(z3cform.EditForm):
         student = self.context.student
 
         prev, next = None, None
-        members = [member for name, member in
-                   sorted([(m.last_name + m.first_name, m) for m in section.members])]
+
+        collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x, collator)
+        members = sorted(section.members, key=sorting_key)
         if len(members) < 2:
             return prev, next
         for index, member in enumerate(members):
