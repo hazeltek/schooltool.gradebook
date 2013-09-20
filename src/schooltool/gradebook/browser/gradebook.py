@@ -1273,7 +1273,10 @@ class GradeActivity(object):
     @property
     def grades(self):
         gradebook = proxy.removeSecurityProxy(self.context)
-        for student in self.context.students:
+        collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x, collator)
+        for student in sorted(self.context.students, key=sorting_key):
             reqValue = self.request.get(student.username)
             score = gradebook.getScore(student, self.activity['obj'])
             if not score:
@@ -1281,7 +1284,10 @@ class GradeActivity(object):
             else:
                 value = reqValue or score.value
 
-            yield {'student': {'title': student.title, 'id': student.username},
+            yield {'student': {'title': student.title,
+                               'first_name': student.first_name,
+                               'last_name': student.last_name,
+                               'id': student.username},
                    'value': value}
 
     def doneURL(self):
@@ -1335,6 +1341,10 @@ class GradeActivity(object):
 
 class FlourishGradeActivity(GradeActivity, flourish.page.Page):
     """flourish Grading a single activity"""
+
+    @Lazy
+    def name_sorting_columns(self):
+        return getUtility(IPersonFactory).columns()
 
 
 def getScoreSystemDiscreteValues(ss):
