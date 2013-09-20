@@ -2064,8 +2064,7 @@ class StudentGradebookView(object):
 
         mapping = {
             'worksheet': gradebook.context.title,
-            'student': '%s %s' % (self.context.student.first_name,
-                                  self.context.student.last_name),
+            'student': self.context.student.title,
             'section': '%s - %s' % (", ".join([course.title
                                                for course in
                                                gradebook.section.courses]),
