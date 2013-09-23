@@ -29,7 +29,7 @@ from lxml import html
 
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.component import queryUtility
+from zope.component import queryUtility, getUtility
 from zope.cachedescriptors.property import Lazy
 from zope.html.field import HtmlFragment
 from zope.interface import Interface
@@ -53,6 +53,7 @@ import schooltool.skin.flourish.page
 import schooltool.skin.flourish.form
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.interfaces import IApplicationPreferences
+from schooltool.common import SchoolToolMessage
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection
@@ -66,6 +67,7 @@ from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionTaught, getCurrentSectionAttended,
     setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
+from schooltool.person.interfaces import IPersonFactory
 from schooltool.gradebook.journal import ABSENT, TARDY
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
@@ -484,6 +486,8 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             insecure_student = proxy.removeSecurityProxy(student)
             result.append({
                     'title': student.title,
+                    'first_name': student.first_name,
+                    'last_name': student.last_name,
                     'username': insecure_student.username,
                     'id': insecure_student.username,
                     'url': absoluteURL(student, self.request),
@@ -493,6 +497,10 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
                     'object': student,
                     })
         return result
+
+    @Lazy
+    def name_sorting_columns(self):
+        return getUtility(IPersonFactory).columns()
 
     def doneURL(self):
         gradebook = proxy.removeSecurityProxy(self.context)
@@ -822,8 +830,10 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
         # Do the sorting
         key, reverse = self.sortKey
         self.collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x, self.collator)
         def generateStudentKey(row):
-            return self.collator.key(row['student']['title'])
+            return sorting_key(row['student']['object'])
         def generateKey(row):
             if key == 'student':
                 return generateStudentKey(row)
@@ -1263,7 +1273,10 @@ class GradeActivity(object):
     @property
     def grades(self):
         gradebook = proxy.removeSecurityProxy(self.context)
-        for student in self.context.students:
+        collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x, collator)
+        for student in sorted(self.context.students, key=sorting_key):
             reqValue = self.request.get(student.username)
             score = gradebook.getScore(student, self.activity['obj'])
             if not score:
@@ -1271,7 +1284,10 @@ class GradeActivity(object):
             else:
                 value = reqValue or score.value
 
-            yield {'student': {'title': student.title, 'id': student.username},
+            yield {'student': {'title': student.title,
+                               'first_name': student.first_name,
+                               'last_name': student.last_name,
+                               'id': student.username},
                    'value': value}
 
     def doneURL(self):
@@ -1325,6 +1341,10 @@ class GradeActivity(object):
 
 class FlourishGradeActivity(GradeActivity, flourish.page.Page):
     """flourish Grading a single activity"""
+
+    @Lazy
+    def name_sorting_columns(self):
+        return getUtility(IPersonFactory).columns()
 
 
 def getScoreSystemDiscreteValues(ss):
@@ -1839,8 +1859,11 @@ class GradeStudent(z3cform.EditForm):
         student = self.context.student
 
         prev, next = None, None
-        members = [member for name, member in
-                   sorted([(m.last_name + m.first_name, m) for m in section.members])]
+
+        collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x, collator)
+        members = sorted(section.members, key=sorting_key)
         if len(members) < 2:
             return prev, next
         for index, member in enumerate(members):
@@ -2041,8 +2064,7 @@ class StudentGradebookView(object):
 
         mapping = {
             'worksheet': gradebook.context.title,
-            'student': '%s %s' % (self.context.student.first_name,
-                                  self.context.student.last_name),
+            'student': self.context.student.title,
             'section': '%s - %s' % (", ".join([course.title
                                                for course in
                                                gradebook.section.courses]),

@@ -195,8 +195,7 @@ class BaseStudentPDFView(BasePDFView):
                     if teacher not in teachers:
                         teachers.append(teacher)
         courseTitles = ', '.join(c.title for c in course)
-        teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name)
-            for teacher in teachers]
+        teacherNames = [teacher.title for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
         return '%s (%s)' % (courseTitles, teacherNames)
 
@@ -288,10 +287,8 @@ class BaseReportCardPDFView(BaseStudentPDFView):
     def students(self):
         results = []
         for student in self.collectStudents():
-            student_name = u'%s %s' % (
-                student.first_name, student.last_name)
             student_title = _('Student: ${student}',
-                              mapping={'student': student_name})
+                              mapping={'student': student.title})
 
             sections = []
             for section in ILearner(student).sections():
@@ -495,9 +492,8 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
     def students(self):
         results = []
         for student in self.collectStudents():
-            name = u'%s %s' % (student.first_name, student.last_name)
             result = {
-                'name': name,
+                'name': student.title,
                 'userid': student.username,
                 'grades': self.grades(student),
                 'attendance': self.attendance(student),
@@ -636,15 +632,14 @@ class FailingReportPDFView(flourish.report.PlainPDFPage):
             rows = []
             for student_row in student_rows[student]:
                 teacher = list(student_row['section'].instructors)[0]
-                name = '%s %s' % (teacher.first_name, teacher.last_name)
                 row = {
                     'course': list(student_row['section'].courses)[0].title,
-                    'teacher': name,
+                    'teacher': teacher.title,
                     'grade': student_row['grade'],
                     }
                 rows.append(row)
             result = {
-                'name': '%s %s' % (student.first_name, student.last_name),
+                'name': student.title,
                 'rows': rows,
                 }
             results.append(result)
@@ -772,7 +767,7 @@ class AbsencesByDayPDFView(TermPDFPage):
                 index = periods.index(period)
                 scores[index] = data[student][period]
             row = {
-                'name': '%s %s' % (student.first_name, student.last_name),
+                'name': student.title,
                 'periods': scores,
                 }
             rows.append(row)
@@ -799,7 +794,7 @@ class SectionAbsencesPDFView(TermPDFPage):
 
     @property
     def subtitles_left(self):
-        instructors = ['%s %s' % (teacher.first_name, teacher.last_name)
+        instructors = [teacher.title
                        for teacher in self.section.instructors]
         subtitles = [
             _('Teacher(s): ${instructors}',
@@ -842,7 +837,7 @@ class SectionAbsencesPDFView(TermPDFPage):
         rows = []
         for student in sorted(data, key=lambda s: s.title):
             row = {
-                'name': '%s %s' % (student.first_name, student.last_name),
+                'name': student.title,
                 'absences': data[student]['absences'],
                 'tardies': data[student]['tardies'],
                 'total': data[student]['absences'] + data[student]['tardies'],
