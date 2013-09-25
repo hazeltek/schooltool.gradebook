@@ -91,22 +91,22 @@ Add a homework activity with due date on February 11th:
 Grade this homework:
 
     >>> teacher.getLink('BALL').click()
-    >>> teacher.getControl('Cerna, Camila').value = '7'
-    >>> teacher.getControl('Guzman, Nestor').value = '10'
-    >>> teacher.getControl('Tejada, Mario').value = '8'
+    >>> teacher.getControl('Camila Cerna').value = '7'
+    >>> teacher.getControl('Nestor Guzman').value = '10'
+    >>> teacher.getControl('Mario Tejada').value = '8'
     >>> teacher.getControl('Save').click()
     
     >>> printGradebook(teacher.contents)
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+--------+---------+
-    | Name           | Total | Ave.   | BALL    |
-    +----------------+-------+--------+---------+
-    | Cerna, Camila  | 7.0   | 70.0%  | [7____] |
-    | Guzman, Nestor | 10.0  | 100.0% | [10___] |
-    | Tejada, Mario  | 8.0   | 80.0%  | [8____] |
-    +----------------+-------+--------+---------+
+    +---------------+-------+--------+---------+
+    | Name          | Total | Ave.   | BALL    |
+    +---------------+-------+--------+---------+
+    | Camila Cerna  | 7.0   | 70.0%  | [7____] |
+    | Nestor Guzman | 10.0  | 100.0% | [10___] |
+    | Mario Tejada  | 8.0   | 80.0%  | [8____] |
+    +---------------+-------+--------+---------+
 
 Add a second homework with due date on April 4th and grade it:
 
@@ -119,22 +119,22 @@ Add a second homework with due date on April 4th and grade it:
     >>> teacher.getControl('Add').click()
 
     >>> teacher.getLink('TEAM').click()
-    >>> teacher.getControl('Cerna, Camila').value = '10'
-    >>> teacher.getControl('Guzman, Nestor').value = '6'
-    >>> teacher.getControl('Tejada, Mario').value = '8'
+    >>> teacher.getControl('Camila Cerna').value = '10'
+    >>> teacher.getControl('Nestor Guzman').value = '6'
+    >>> teacher.getControl('Mario Tejada').value = '8'
     >>> teacher.getControl('Save').click()
 
     >>> printGradebook(teacher.contents)
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+
-    | Name           | Total | Ave.  | BALL    | TEAM    |
-    +----------------+-------+-------+---------+---------+
-    | Cerna, Camila  | 17.0  | 85.0% | [7____] | [10___] |
-    | Guzman, Nestor | 16.0  | 80.0% | [10___] | [6____] |
-    | Tejada, Mario  | 16.0  | 80.0% | [8____] | [8____] |
-    +----------------+-------+-------+---------+---------+
+    +---------------+-------+-------+---------+---------+
+    | Name          | Total | Ave.  | BALL    | TEAM    |
+    +---------------+-------+-------+---------+---------+
+    | Camila Cerna  | 17.0  | 85.0% | [7____] | [10___] |
+    | Nestor Guzman | 16.0  | 80.0% | [10___] | [6____] |
+    | Mario Tejada  | 16.0  | 80.0% | [8____] | [8____] |
+    +---------------+-------+-------+---------+---------+
 
 And a third one with due date on April 29th:
 
@@ -147,22 +147,22 @@ And a third one with due date on April 29th:
     >>> teacher.getControl('Add').click()
 
     >>> teacher.getLink('GAME').click()
-    >>> teacher.getControl('Cerna, Camila').value = '9'
-    >>> teacher.getControl('Guzman, Nestor').value = '9'
-    >>> teacher.getControl('Tejada, Mario').value = '9'
+    >>> teacher.getControl('Camila Cerna').value = '9'
+    >>> teacher.getControl('Nestor Guzman').value = '9'
+    >>> teacher.getControl('Mario Tejada').value = '9'
     >>> teacher.getControl('Save').click()
 
     >>> printGradebook(teacher.contents)
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+---------+
-    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    |
-    +----------------+-------+-------+---------+---------+---------+
-    | Cerna, Camila  | 26.0  | 86.7% | [7____] | [10___] | [9____] |
-    | Guzman, Nestor | 25.0  | 83.3% | [10___] | [6____] | [9____] |
-    | Tejada, Mario  | 25.0  | 83.3% | [8____] | [8____] | [9____] |
-    +----------------+-------+-------+---------+---------+---------+
+    +---------------+-------+-------+---------+---------+---------+
+    | Name          | Total | Ave.  | BALL    | TEAM    | GAME    |
+    +---------------+-------+-------+---------+---------+---------+
+    | Camila Cerna  | 26.0  | 86.7% | [7____] | [10___] | [9____] |
+    | Nestor Guzman | 25.0  | 83.3% | [10___] | [6____] | [9____] |
+    | Mario Tejada  | 25.0  | 83.3% | [8____] | [8____] | [9____] |
+    +---------------+-------+-------+---------+---------+---------+
 
 Now, let's add an exam with due date on May 20th:
 
@@ -175,29 +175,29 @@ Now, let's add an exam with due date on May 20th:
     >>> teacher.getControl('Add').click()
 
     >>> teacher.getLink('GOAL').click()
-    >>> teacher.getControl('Cerna, Camila').value = '10'
-    >>> teacher.getControl('Guzman, Nestor').value = '5'
-    >>> teacher.getControl('Tejada, Mario').value = '10'
+    >>> teacher.getControl('Camila Cerna').value = '10'
+    >>> teacher.getControl('Nestor Guzman').value = '5'
+    >>> teacher.getControl('Mario Tejada').value = '10'
     >>> teacher.getControl('Save').click()
 
     >>> printGradebook(teacher.contents)
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Cerna, Camila  | 36.0  | 90.0% | [7____] | [10___] | [9____] | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
-    +----------------+-------+-------+---------+---------+---------+---------+
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Name          | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Camila Cerna  | 36.0  | 90.0% | [7____] | [10___] | [9____] | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +---------------+-------+-------+---------+---------+---------+---------+
 
 And go grade a single student:
 
     >>> teacher.getLink('>', index=0).click()
     >>> url = teacher.url
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Cerna, Camila
+    Enter grades for Camila Cerna
 
 To see all the activities available to be graded:
 
@@ -215,13 +215,13 @@ and change one:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
-    +----------------+-------+-------+---------+---------+---------+---------+
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Name          | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +---------------+-------+-------+---------+---------+---------+---------+
 
 Let's check the 'view.html' view for the student (XXX: which btw has no way
 to be accessed, no links, no button, nothing!):
@@ -266,13 +266,13 @@ activities, showing only those with due date in the past 9 weeks:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+---------+
-    | Name           | Total | Ave.  | TEAM    | GAME    | GOAL    |
-    +----------------+-------+-------+---------+---------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [10___] | [9____] | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [6____] | [9____] | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [9____] | [10___] |
-    +----------------+-------+-------+---------+---------+---------+
+    +---------------+-------+-------+---------+---------+---------+
+    | Name          | Total | Ave.  | TEAM    | GAME    | GOAL    |
+    +---------------+-------+-------+---------+---------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [10___] | [9____] | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [6____] | [9____] | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [8____] | [9____] | [10___] |
+    +---------------+-------+-------+---------+---------+---------+
 
 Notice how the 'Get a ball (BALL)' activity is filtered out, but the
 Total and Average values stay the same.
@@ -281,7 +281,7 @@ If we get back to grade a single student:
 
     >>> teacher.getLink('>', index=0).click()
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Cerna, Camila
+    Enter grades for Camila Cerna
 
 We see the filter works there too:
 
@@ -316,13 +316,13 @@ past two weeks:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+
-    | Name           | Total | Ave.  | GOAL    |
-    +----------------+-------+-------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [10___] |
-    +----------------+-------+-------+---------+
+    +---------------+-------+-------+---------+
+    | Name          | Total | Ave.  | GOAL    |
+    +---------------+-------+-------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [10___] |
+    +---------------+-------+-------+---------+
 
 And if we change the dropdown to one week, all the activities are
 filtered out:
@@ -337,13 +337,13 @@ filtered out:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+
-    | Name           | Total | Ave.  |
-    +----------------+-------+-------+
-    | Cerna, Camila  | 29.0  | 96.7% |
-    | Guzman, Nestor | 30.0  | 75.0% |
-    | Tejada, Mario  | 35.0  | 87.5% |
-    +----------------+-------+-------+
+    +---------------+-------+-------+
+    | Name          | Total | Ave.  |
+    +---------------+-------+-------+
+    | Camila Cerna  | 29.0  | 96.7% |
+    | Nestor Guzman | 30.0  | 75.0% |
+    | Mario Tejada  | 35.0  | 87.5% |
+    +---------------+-------+-------+
 
 Let's change the due date for the GOAL activity to May 30th:
 
@@ -360,13 +360,13 @@ the past week:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+
-    | Name           | Total | Ave.  | GOAL    |
-    +----------------+-------+-------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [10___] |
-    +----------------+-------+-------+---------+
+    +---------------+-------+-------+---------+
+    | Name          | Total | Ave.  | GOAL    |
+    +---------------+-------+-------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [10___] |
+    +---------------+-------+-------+---------+
 
 To show all the activities again, we unmark the checkbox:
 
@@ -380,13 +380,13 @@ To show all the activities again, we unmark the checkbox:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
-    +----------------+-------+-------+---------+---------+---------+---------+
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Name          | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +---------------+-------+-------+---------+---------+---------+---------+
 
 
 Filter keeps its value through term, section and worksheet changes (BUG?)
@@ -413,13 +413,13 @@ section of the first semester:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Name           | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
-    +----------------+-------+-------+---------+---------+---------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
-    +----------------+-------+-------+---------+---------+---------+---------+
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Name          | Total | Ave.  | BALL    | TEAM    | GAME    | GOAL    |
+    +---------------+-------+-------+---------+---------+---------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [_____] | [10___] | [9____] | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [10___] | [6____] | [9____] | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [8____] | [8____] | [9____] | [10___] |
+    +---------------+-------+-------+---------+---------+---------+---------+
 
 We'll add a second worksheet with two activities, one with due date on
 April 11th and the other on May 27th:
@@ -449,13 +449,13 @@ All the activites are shown in the second worksheet:
     +--------+-------------+
     | Sheet1 | *Second WS* |
     +--------+-------------+
-    +----------------+-------+------+---------+---------+
-    | Name           | Total | Ave. | WIN     | SAVE    |
-    +----------------+-------+------+---------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
-    +----------------+-------+------+---------+---------+
+    +---------------+-------+------+---------+---------+
+    | Name          | Total | Ave. | WIN     | SAVE    |
+    +---------------+-------+------+---------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] | [_____] |
+    +---------------+-------+------+---------+---------+
 
 Let's apply the due filter in the second worksheet:
 
@@ -470,13 +470,13 @@ Let's apply the due filter in the second worksheet:
     +--------+-------------+
     | Sheet1 | *Second WS* |
     +--------+-------------+
-    +----------------+-------+------+---------+
-    | Name           | Total | Ave. | SAVE    |
-    +----------------+-------+------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] |
-    +----------------+-------+------+---------+
+    +---------------+-------+------+---------+
+    | Name          | Total | Ave. | SAVE    |
+    +---------------+-------+------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] |
+    +---------------+-------+------+---------+
 
 If we change back to the first worksheet, the checkbox is marked and
 the dropdown has its new value, so the old filter is also applied to
@@ -491,13 +491,13 @@ this worksheet:
     +----------+-----------+
     | *Sheet1* | Second WS |
     +----------+-----------+
-    +----------------+-------+-------+---------+
-    | Name           | Total | Ave.  | GOAL    |
-    +----------------+-------+-------+---------+
-    | Cerna, Camila  | 29.0  | 96.7% | [10___] |
-    | Guzman, Nestor | 30.0  | 75.0% | [5____] |
-    | Tejada, Mario  | 35.0  | 87.5% | [10___] |
-    +----------------+-------+-------+---------+
+    +---------------+-------+-------+---------+
+    | Name          | Total | Ave.  | GOAL    |
+    +---------------+-------+-------+---------+
+    | Camila Cerna  | 29.0  | 96.7% | [10___] |
+    | Nestor Guzman | 30.0  | 75.0% | [5____] |
+    | Mario Tejada  | 35.0  | 87.5% | [10___] |
+    +---------------+-------+-------+---------+
 
 If we change to another section, the old filter keeps its values:
 
@@ -517,13 +517,13 @@ If we change to another section, the old filter keeps its values:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +---------------+-------+------+
+    | Name          | Total | Ave. |
+    +---------------+-------+------+
+    | Camila Cerna  | 0.0   | N/A  |
+    | Nestor Guzman | 0.0   | N/A  |
+    | Mario Tejada  | 0.0   | N/A  |
+    +---------------+-------+------+
 
 Or to another term:
 
@@ -543,10 +543,10 @@ Or to another term:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +---------------+-------+------+
+    | Name          | Total | Ave. |
+    +---------------+-------+------+
+    | Camila Cerna  | 0.0   | N/A  |
+    | Nestor Guzman | 0.0   | N/A  |
+    | Mario Tejada  | 0.0   | N/A  |
+    +---------------+-------+------+

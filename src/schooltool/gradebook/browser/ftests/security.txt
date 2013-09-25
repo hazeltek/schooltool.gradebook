@@ -26,7 +26,7 @@ Set up one course:
 Set up persons:
 
     >>> from schooltool.basicperson.browser.ftests.setup import addPerson
-    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Paul', 'Carduner', 'paul', 'pwd', browser=manager)
     >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
@@ -103,13 +103,13 @@ For managers, the default is to allow them to view, but not edit.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 136.0 | 90.7% | [48___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
     >>> manager.getLink('HW1').click()
     Traceback (most recent call last):
@@ -143,13 +143,13 @@ And try again:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 118.0 | 78.7% | [30___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 118.0 | 78.7% | [30___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
 A teacher should be able to view and edit his own gradebook.
 
@@ -158,13 +158,13 @@ A teacher should be able to view and edit his own gradebook.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 118.0 | 78.7% | [30___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 118.0 | 78.7% | [30___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
     >>> stephan.getLink('HW1').click()
     >>> stephan.printQuery('//h3')
@@ -177,13 +177,13 @@ A teacher should be able to view and edit his own gradebook.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 138.0 | 92.0% | [50___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 138.0 | 92.0% | [50___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
 Students won't be able to see each other's grade's because the mygrades view
 uses the request's principal to determine which grades to display.

@@ -33,7 +33,7 @@ Set up two courses:
 Set up persons:
 
     >>> from schooltool.basicperson.browser.ftests.setup import addPerson
-    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Paul', 'Carduner', 'paul', 'pwd', browser=manager)
     >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
@@ -96,13 +96,13 @@ Check the totals and averages:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 136.0 | 90.7% | [48___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
 We'll add another worksheet:
 
@@ -123,13 +123,13 @@ Let's add some activities, weighting and grades to the new worksheet:
     +--------+----------------+
     | Sheet1 | *Second Sheet* |
     +--------+----------------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    +------------------+-------+------+
-    | Cardune, Paul    | 0.0   | N/A  |
-    | Hoffman, Tom     | 0.0   | N/A  |
-    | Richter, Claudia | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------------+-------+------+
+    | Name            | Total | Ave. |
+    +-----------------+-------+------+
+    | Paul Carduner   | 0.0   | N/A  |
+    | Tom Hoffman     | 0.0   | N/A  |
+    | Claudia Richter | 0.0   | N/A  |
+    +-----------------+-------+------+
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'First Homework'
@@ -155,21 +155,21 @@ Let's add some activities, weighting and grades to the new worksheet:
     >>> stephan.getControl('Update').click()
 
     >>> stephan.getLink('1stHW').click()
-    >>> stephan.getControl('Cardune, Paul').value = u'70'
-    >>> stephan.getControl('Hoffman, Tom').value = u'75'
-    >>> stephan.getControl('Richter, Claudia').value = u'85'
+    >>> stephan.getControl('Paul Carduner').value = u'70'
+    >>> stephan.getControl('Tom Hoffman').value = u'75'
+    >>> stephan.getControl('Claudia Richter').value = u'85'
     >>> stephan.getControl('Save').click()
 
     >>> stephan.getLink('1stPr').click()
-    >>> stephan.getControl('Cardune, Paul').value = u'84'
-    >>> stephan.getControl('Hoffman, Tom').value = u'73'
-    >>> stephan.getControl('Richter, Claudia').value = u'67'
+    >>> stephan.getControl('Paul Carduner').value = u'84'
+    >>> stephan.getControl('Tom Hoffman').value = u'73'
+    >>> stephan.getControl('Claudia Richter').value = u'67'
     >>> stephan.getControl('Save').click()
 
     >>> stephan.getLink('2ndPr').click()
-    >>> stephan.getControl('Cardune, Paul').value = u'72'
-    >>> stephan.getControl('Hoffman, Tom').value = u'81'
-    >>> stephan.getControl('Richter, Claudia').value = u'89'
+    >>> stephan.getControl('Paul Carduner').value = u'72'
+    >>> stephan.getControl('Tom Hoffman').value = u'81'
+    >>> stephan.getControl('Claudia Richter').value = u'89'
     >>> stephan.getControl('Save').click()
 
 Check the total and averages for this worksheet:
@@ -178,13 +178,13 @@ Check the total and averages for this worksheet:
     +--------+----------------+
     | Sheet1 | *Second Sheet* |
     +--------+----------------+
-    +------------------+-------+-------+---------+---------+---------+
-    | Name             | Total | Ave.  | 1stHW   | 1stPr   | 2ndPr   |
-    +------------------+-------+-------+---------+---------+---------+
-    | Cardune, Paul    | 226.0 | 76.0% | [70___] | [84___] | [72___] |
-    | Hoffman, Tom     | 229.0 | 76.5% | [75___] | [73___] | [81___] |
-    | Richter, Claudia | 241.0 | 79.8% | [85___] | [67___] | [89___] |
-    +------------------+-------+-------+---------+---------+---------+
+    +-----------------+-------+-------+---------+---------+---------+
+    | Name            | Total | Ave.  | 1stHW   | 1stPr   | 2ndPr   |
+    +-----------------+-------+-------+---------+---------+---------+
+    | Paul Carduner   | 226.0 | 76.0% | [70___] | [84___] | [72___] |
+    | Tom Hoffman     | 229.0 | 76.5% | [75___] | [73___] | [81___] |
+    | Claudia Richter | 241.0 | 79.8% | [85___] | [67___] | [89___] |
+    +-----------------+-------+-------+---------+---------+---------+
 
 We'll switch to the Spring term and add some activities and scores to
 the Physics I section:
@@ -205,15 +205,15 @@ the Physics I section:
     >>> stephan.getControl('Add').click()
 
     >>> stephan.getLink('Lab1').click()
-    >>> stephan.getControl('Cardune, Paul').value = u'89'
-    >>> stephan.getControl('Hoffman, Tom').value = u'72'
-    >>> stephan.getControl('Richter, Claudia').value = u'91'
+    >>> stephan.getControl('Paul Carduner').value = u'89'
+    >>> stephan.getControl('Tom Hoffman').value = u'72'
+    >>> stephan.getControl('Claudia Richter').value = u'91'
     >>> stephan.getControl('Save').click()
 
     >>> stephan.getLink('Final').click()
-    >>> stephan.getControl('Cardune, Paul').value = u'99'
-    >>> stephan.getControl('Hoffman, Tom').value = u'88'
-    >>> stephan.getControl('Richter, Claudia').value = u'89'
+    >>> stephan.getControl('Paul Carduner').value = u'99'
+    >>> stephan.getControl('Tom Hoffman').value = u'88'
+    >>> stephan.getControl('Claudia Richter').value = u'89'
     >>> stephan.getControl('Save').click()
 
 We'll test the totals and averages so that we can check the linked
@@ -223,13 +223,13 @@ values later:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | Lab1    | Final   |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 188.0 | 94.5% | [89___] | [99___] |
-    | Hoffman, Tom     | 160.0 | 80.4% | [72___] | [88___] |
-    | Richter, Claudia | 180.0 | 90.5% | [91___] | [89___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | Lab1    | Final   |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 188.0 | 94.5% | [89___] | [99___] |
+    | Tom Hoffman     | 160.0 | 80.4% | [72___] | [88___] |
+    | Claudia Richter | 180.0 | 90.5% | [91___] | [89___] |
+    +-----------------+-------+-------+---------+---------+
 
 Now we'll return to the Fall Math I section and add our first linked
 column to the Sheet1 worksheet. We'll also test the Cancel button in
@@ -242,13 +242,13 @@ the New Linked Column form:
     +----------+--------------+
     | *Sheet1* | Second Sheet |
     +----------+--------------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 136.0 | 90.7% | [48___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
     >>> stephan.getLink('New Linked Column').click()
     >>> stephan.printQuery('//h1/text()')
@@ -338,13 +338,13 @@ the sources of the links.
     +----------+--------------+
     | *Sheet1* | Second Sheet |
     +----------+--------------+
-    +------------------+-------+-------+---------+---------+-------+-------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | 2ndPr | PHYSI |
-    +------------------+-------+-------+---------+---------+-------+-------+
-    | Cardune, Paul    | 296.5 | 84.7% | [40___] | [90___] | 72    | 94.5  |
-    | Hoffman, Tom     | 297.4 | 85.0% | [48___] | [88___] | 81    | 80.4  |
-    | Richter, Claudia | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
-    +------------------+-------+-------+---------+---------+-------+-------+
+    +-----------------+-------+-------+---------+---------+-------+-------+
+    | Name            | Total | Ave.  | HW1     | Quiz    | 2ndPr | PHYSI |
+    +-----------------+-------+-------+---------+---------+-------+-------+
+    | Paul Carduner   | 296.5 | 84.7% | [40___] | [90___] | 72    | 94.5  |
+    | Tom Hoffman     | 297.4 | 85.0% | [48___] | [88___] | 81    | 80.4  |
+    | Claudia Richter | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
+    +-----------------+-------+-------+---------+---------+-------+-------+
 
 What happens if the value of the source of a linked column
 change. Let's change the grade for Paul's Second Presentation of the
@@ -352,7 +352,7 @@ Second Sheet:
 
     >>> stephan.getLink('Second Sheet').click()
     >>> stephan.getLink('2ndPr').click()
-    >>> stephan.getControl('Cardune, Paul').value = '99'
+    >>> stephan.getControl('Paul Carduner').value = '99'
     >>> stephan.getControl('Save').click()
 
 And let's change a grade for Tom in the Spring Physics I section so
@@ -361,19 +361,19 @@ his average also changes:
     >>> stephan.getControl(name='currentTerm').displayValue = ['2005-2006 / Spring']
     >>> stephan.getForm().submit()
     >>> stephan.getLink('Final').click()
-    >>> stephan.getControl('Hoffman, Tom').value = u'60'
+    >>> stephan.getControl('Tom Hoffman').value = u'60'
     >>> stephan.getControl('Save').click()
     >>> printGradebook(stephan.contents)
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | Lab1    | Final   |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 188.0 | 94.5% | [89___] | [99___] |
-    | Hoffman, Tom     | 132.0 | 66.3% | [72___] | [60___] |
-    | Richter, Claudia | 180.0 | 90.5% | [91___] | [89___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | Lab1    | Final   |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 188.0 | 94.5% | [89___] | [99___] |
+    | Tom Hoffman     | 132.0 | 66.3% | [72___] | [60___] |
+    | Claudia Richter | 180.0 | 90.5% | [91___] | [89___] |
+    +-----------------+-------+-------+---------+---------+
 
 The linked columns should also change:
 
@@ -384,19 +384,19 @@ The linked columns should also change:
     +----------+--------------+
     | *Sheet1* | Second Sheet |
     +----------+--------------+
-    +------------------+-------+-------+---------+---------+-------+-------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | 2ndPr | PHYSI |
-    +------------------+-------+-------+---------+---------+-------+-------+
-    | Cardune, Paul    | 323.5 | 92.4% | [40___] | [90___] | 99    | 94.5  |
-    | Hoffman, Tom     | 283.3 | 81.0% | [48___] | [88___] | 81    | 66.3  |
-    | Richter, Claudia | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
-    +------------------+-------+-------+---------+---------+-------+-------+
+    +-----------------+-------+-------+---------+---------+-------+-------+
+    | Name            | Total | Ave.  | HW1     | Quiz    | 2ndPr | PHYSI |
+    +-----------------+-------+-------+---------+---------+-------+-------+
+    | Paul Carduner   | 323.5 | 92.4% | [40___] | [90___] | 99    | 94.5  |
+    | Tom Hoffman     | 283.3 | 81.0% | [48___] | [88___] | 81    | 66.3  |
+    | Claudia Richter | 253.5 | 72.4% | [45___] | [29___] | 89    | 90.5  |
+    +-----------------+-------+-------+---------+---------+-------+-------+
 
 We can grade student by student, we'll see no linked columns there.
 
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.printQuery('//h3/text()')
-    Enter grades for Cardune, Paul
+    Enter grades for Paul Carduner
 
     >>> stephan.printQuery('//label/span/text()')
     HW 1 (50)
@@ -424,7 +424,7 @@ Let's go back to the Math I section of the Fall and check the grades for Paul:
     >>> stephan.getForm().submit()
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.printQuery('//h3/text()')
-    Enter grades for Cardune, Paul
+    Enter grades for Paul Carduner
     >>> stephan.printQuery('//label/span/text()')
     HW 1 (50)
     Quiz (100)
@@ -447,13 +447,13 @@ the 2nd Presentation linked column of Sheet1 with no source:
     +--------+----------------+
     | Sheet1 | *Second Sheet* |
     +--------+----------------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | 1stHW   | 1stPr   |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 154.0 | 80.5% | [70___] | [84___] |
-    | Hoffman, Tom     | 148.0 | 73.5% | [75___] | [73___] |
-    | Richter, Claudia | 152.0 | 71.5% | [85___] | [67___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | 1stHW   | 1stPr   |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 154.0 | 80.5% | [70___] | [84___] |
+    | Tom Hoffman     | 148.0 | 73.5% | [75___] | [73___] |
+    | Claudia Richter | 152.0 | 71.5% | [85___] | [67___] |
+    +-----------------+-------+-------+---------+---------+
 
 Now, when we get back to Sheet1, the linked column should have
 disappeared:
@@ -463,19 +463,19 @@ disappeared:
     +----------+--------------+
     | *Sheet1* | Second Sheet |
     +----------+--------------+
-    +------------------+-------+-------+---------+---------+-------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | PHYSI |
-    +------------------+-------+-------+---------+---------+-------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
-    | Hoffman, Tom     | 202.3 | 80.9% | [48___] | [88___] | 66.3  |
-    | Richter, Claudia | 164.5 | 65.8% | [45___] | [29___] | 90.5  |
-    +------------------+-------+-------+---------+---------+-------+
+    +-----------------+-------+-------+---------+---------+-------+
+    | Name            | Total | Ave.  | HW1     | Quiz    | PHYSI |
+    +-----------------+-------+-------+---------+---------+-------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Tom Hoffman     | 202.3 | 80.9% | [48___] | [88___] | 66.3  |
+    | Claudia Richter | 164.5 | 65.8% | [45___] | [29___] | 90.5  |
+    +-----------------+-------+-------+---------+---------+-------+
 
 Same if we grade a student:
 
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.printQuery('//h3/text()')
-    Enter grades for Cardune, Paul
+    Enter grades for Paul Carduner
     >>> stephan.printQuery('//label/span/text()')
     HW 1 (50)
     Quiz (100)
@@ -514,13 +514,13 @@ We're back to the Sheet1 worksheet of the Math Fall section:
     +----------+--------------+
     | *Sheet1* | Second Sheet |
     +----------+--------------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |
-    | Hoffman, Tom     | 136.0 | 90.7% | [48___] | [88___] |
-    | Richter, Claudia | 74.0  | 49.3% | [45___] | [29___] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |
+    | Tom Hoffman     | 136.0 | 90.7% | [48___] | [88___] |
+    | Claudia Richter | 74.0  | 49.3% | [45___] | [29___] |
+    +-----------------+-------+-------+---------+---------+
 
 If we unhide the worksheet:
 
@@ -544,10 +544,10 @@ the linked column is shown again:
     +----------+--------------+
     | *Sheet1* | Second Sheet |
     +----------+--------------+
-    +------------------+-------+-------+---------+---------+-------+
-    | Name             | Total | Ave.  | HW1     | Quiz    | PHYSI |
-    +------------------+-------+-------+---------+---------+-------+
-    | Cardune, Paul    | 130.0 | 86.7% | [40___] | [90___] |       |
-    | Hoffman, Tom     | 202.3 | 80.9% | [48___] | [88___] | 66.3  |
-    | Richter, Claudia | 164.5 | 65.8% | [45___] | [29___] | 90.5  |
-    +------------------+-------+-------+---------+---------+-------+
+    +-----------------+-------+-------+---------+---------+-------+
+    | Name            | Total | Ave.  | HW1     | Quiz    | PHYSI |
+    +-----------------+-------+-------+---------+---------+-------+
+    | Paul Carduner   | 130.0 | 86.7% | [40___] | [90___] |       |
+    | Tom Hoffman     | 202.3 | 80.9% | [48___] | [88___] | 66.3  |
+    | Claudia Richter | 164.5 | 65.8% | [45___] | [29___] | 90.5  |
+    +-----------------+-------+-------+---------+---------+-------+
