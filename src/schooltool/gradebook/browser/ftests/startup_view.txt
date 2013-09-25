@@ -22,7 +22,7 @@ Set up one course:
 Set up persons:
 
     >>> from schooltool.basicperson.browser.ftests.setup import addPerson
-    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Paul', 'Carduner', 'paul', 'pwd', browser=manager)
     >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
@@ -56,13 +56,13 @@ He's taken to the teacher gradebook:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    +------------------+-------+------+
-    | Cardune, Paul    | 0.0   | N/A  |
-    | Hoffman, Tom     | 0.0   | N/A  |
-    | Richter, Claudia | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------------+-------+------+
+    | Name            | Total | Ave. |
+    +-----------------+-------+------+
+    | Paul Carduner   | 0.0   | N/A  |
+    | Tom Hoffman     | 0.0   | N/A  |
+    | Claudia Richter | 0.0   | N/A  |
+    +-----------------+-------+------+
 
 Let's log in as Claudia, a student:
 
@@ -150,13 +150,13 @@ that allows him to go to either his gradebook or his mygrades views.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    +------------------+-------+------+
-    | Cardune, Paul    | 0.0   | N/A  |
-    | Hoffman, Tom     | 0.0   | N/A  |
-    | Richter, Claudia | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------------+-------+------+
+    | Name            | Total | Ave. |
+    +-----------------+-------+------+
+    | Paul Carduner   | 0.0   | N/A  |
+    | Tom Hoffman     | 0.0   | N/A  |
+    | Claudia Richter | 0.0   | N/A  |
+    +-----------------+-------+------+
 
     >>> stephan.getLink('Gradebook').click()
     >>> stephan.getLink('Classes you attend').click()

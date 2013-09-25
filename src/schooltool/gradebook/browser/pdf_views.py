@@ -33,6 +33,7 @@ from schooltool.app.browser.report import ReportPDFView
 from schooltool.course.interfaces import ILearner, ISectionContainer
 from schooltool.course.interfaces import ISection
 from schooltool.person.interfaces import IPerson
+from schooltool.person.interfaces import IPersonFactory
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
 
@@ -52,6 +53,13 @@ from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemContainer
 from schooltool.requirement.scoresystem import UNSCORED
+
+
+def getSortingKey(request):
+    collator = ICollator(request.locale)
+    factory = getUtility(IPersonFactory)
+    sorting_key = lambda x: factory.getSortingKey(x, collator)
+    return sorting_key
 
 
 class BasePDFView(ReportPDFView):
@@ -628,7 +636,7 @@ class FailingReportPDFView(flourish.report.PlainPDFPage):
                 rows.append(row)
 
         results = []
-        for student in sorted(student_rows,  key=lambda s: s.title):
+        for student in sorted(student_rows,  key=getSortingKey(self.request)):
             rows = []
             for student_row in student_rows[student]:
                 teacher = list(student_row['section'].instructors)[0]
@@ -761,7 +769,7 @@ class AbsencesByDayPDFView(TermPDFPage):
         periods = self.getPeriods(data)
 
         rows = []
-        for student in sorted(data, key=lambda s: s.title):
+        for student in sorted(data, key=getSortingKey(self.request)):
             scores = [''] * len(periods)
             for period in data[student]:
                 index = periods.index(period)
@@ -835,7 +843,7 @@ class SectionAbsencesPDFView(TermPDFPage):
                     data[student] = student_data
 
         rows = []
-        for student in sorted(data, key=lambda s: s.title):
+        for student in sorted(data, key=getSortingKey(self.request)):
             row = {
                 'name': student.title,
                 'absences': data[student]['absences'],
