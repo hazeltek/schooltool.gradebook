@@ -725,15 +725,16 @@ class AbsencesByDayPDFView(TermPDFPage):
             if jd is None:
                 continue
             for student in section.members:
-                for meeting in jd.recordedMeetings(student):
+                for meeting, score in jd.absentMeetings(student):
                     if not self.compareDates(meeting.dtstart, day):
                         continue
                     period = self.guessPeriodGroup(meeting)
-                    grade = jd.getGrade(student, meeting)
-                    result = ''
-                    if grade == 'n':
+                    ss = score.scoreSystem
+                    if ss.isExcused(score):
+                        continue
+                    elif ss.isAbsent(score):
                         result = ABSENT_ABBREVIATION
-                    if grade == 'p':
+                    elif ss.isTardy(score):
                         result = TARDY_ABBREVIATION
                     if result:
                         data.setdefault(student, {})[period] = result
@@ -827,11 +828,13 @@ class SectionAbsencesPDFView(TermPDFPage):
         student_data = {}
         student_data['absences'] = 0
         student_data['tardies'] = 0
-        for meeting in jd.recordedMeetings(student):
-            grade = jd.getGrade(student, meeting)
-            if grade == 'n':
+        for meeting, score in jd.absentMeetings(student):
+            ss = score.scoreSystem
+            if ss.isExcused(score):
+                continue
+            elif ss.isAbsent(score):
                 student_data['absences'] += 1
-            if grade == 'p':
+            elif ss.isTardy(score):
                 student_data['tardies'] += 1
         return student_data
 
