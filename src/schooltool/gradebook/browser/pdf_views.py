@@ -1323,7 +1323,7 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
             style_id=id_base+'-style',
             table_style_name='report_card_grades',
             title_column_width=5*units.cm,
-            min_column_width=1.5*units.cm,
+            max_column_width=1*units.cm,
             continued_font_size=8,
             header_min_font_size=12)
         table.update()

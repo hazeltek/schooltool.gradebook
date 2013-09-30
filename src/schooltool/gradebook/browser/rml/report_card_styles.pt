@@ -5,14 +5,18 @@
     i18n:domain="schooltool.gradebook">
 
   <blockTableStyle id="report_card_grades">
-    <lineStyle kind="LINEABOVE" colorName="grade.table.grades-line"
-               start="0,0" stop="-1,0"/>
-    <lineStyle kind="LINEBEFORE" colorName="grade.table.grades-line"
+    <lineStyle kind="LINEABOVE" colorName="white"
+               start="0,0" stop="-2,0"/>
+    <lineStyle kind="LINEBEFORE" colorName="white"
                start="1,0" stop="-2,-1"/>
+    <lineStyle kind="LINEAFTER" colorName="white"
+               start="-2,0" stop="-2,-1"/>
     <blockFont start="0,0" stop="-1,-1" name="Ubuntu_Regular" size="8" />
     <blockBackground
         start="0,0" stop="-1,-1"
         colorsByRow="table.row-alt.background,table.row.background" />
+    <blockBackground start="-1,0" stop="-1,-1"
+        colorName="table.row.background" />
     <blockTextColor  start="0,0" stop="-1,-1"
                      colorName="table.text" />
     <blockAlignment start="1,0" stop="-1,-1" value="center" />
