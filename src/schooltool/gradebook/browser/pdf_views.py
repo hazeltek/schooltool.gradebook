@@ -456,14 +456,18 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
             jd = ISectionJournalData(section, None)
             if jd is None:
                 continue
-            for meeting in jd.recordedMeetings(student):
+            for meeting, score in jd.absentMeetings(student):
                 period = self.guessPeriodGroup(meeting)
                 day = meeting.dtstart
-                grade = jd.getGrade(student, meeting)
-                result = ''
-                if grade == 'n':
+                ss = score.scoreSystem
+                if ss.isExcused(score):
+                    continue
+                result = None
+                if ss.isExcused(score):
+                    continue
+                elif ss.isAbsent(score):
                     result = ABSENT_ABBREVIATION
-                if grade == 'p':
+                elif ss.isTardy(score):
                     result = TARDY_ABBREVIATION
                 if result:
                     data.setdefault(day, {})[period] = result
@@ -730,6 +734,7 @@ class AbsencesByDayPDFView(TermPDFPage):
                         continue
                     period = self.guessPeriodGroup(meeting)
                     ss = score.scoreSystem
+                    result = None
                     if ss.isExcused(score):
                         continue
                     elif ss.isAbsent(score):
@@ -1299,7 +1304,7 @@ class ReportCardStudentCommentsViewlet(ReportCardStudentGradesMixin,
 class ReportCardGrid(ReportCardStudentGradesMixin,
                      schooltool.table.pdf.GridContentBlock):
 
-    title = _('Courses')
+    title = None
 
     @property
     def pdf_view(self):

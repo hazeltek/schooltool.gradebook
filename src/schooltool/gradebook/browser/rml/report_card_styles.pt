@@ -49,6 +49,7 @@
       name="report_card.table.row-title"
       fontName="Ubuntu_Regular"
       fontSize="8"
+      leading="10"
       />
 
   <paraStyle
