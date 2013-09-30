@@ -621,7 +621,7 @@ Of course, you can also abort the grading.
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/gradeActivity.html?activity=Activity'
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
-    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/index.html'
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
 
 Let's enter some grades for the second worksheet, 'Week 2', so that we have
 some interesting numbers for the summary view.
