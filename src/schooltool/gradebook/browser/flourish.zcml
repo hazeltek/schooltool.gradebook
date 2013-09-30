@@ -899,8 +899,7 @@
   <flourish:page
       name="request_report_card.html"
       for="schooltool.person.interfaces.IPerson"
-      class=".request_reports.FlourishRequestStudentReportView"
-      template="templates/f_request_student_report.pt"
+      class=".request_reports.FlourishRequestReportCardView"
       permission="schooltool.edit"
       />
 
@@ -915,8 +914,7 @@
   <flourish:page
       name="request_report_card.html"
       for="schooltool.group.interfaces.IGroup"
-      class=".request_reports.FlourishRequestStudentReportView"
-      template="templates/f_request_student_report.pt"
+      class=".request_reports.FlourishRequestReportCardView"
       permission="schooltool.edit"
       />
 
@@ -1457,5 +1455,95 @@
      factory=".request_reports.failingreportscorefactory"
      provides="zope.schema.interfaces.IVocabularyFactory"
      name="schooltool.gradebook.FailingReportScores" />
+
+  <flourish:page
+      name="report_card.pdf"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.FlourishStudentReportCardPDFView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="report_card.pdf"
+      for="schooltool.group.interfaces.IGroup"
+      class=".pdf_views.FlourishGroupReportCardPDFView"
+      permission="schooltool.view"
+      />
+
+  <configure package="schooltool.skin.flourish">
+
+    <flourish:viewlet
+        name="default"
+        manager="schooltool.skin.flourish.report.PDFTemplateSection"
+        class="schooltool.gradebook.browser.pdf_views.NoHeaderPlainPageTemplate"
+        view="schooltool.gradebook.browser.pdf_views.FlourishStudentReportCardPDFView"
+        render="template"
+        template="rml/pdf_plain_page_template.pt"
+        permission="zope.Public"
+        />
+
+  </configure>
+
+  <flourish:content
+      name="story"
+      class=".pdf_views.StudentReportCardPDFStory"
+      view=".pdf_views.FlourishStudentReportCardPDFView"
+      permission="zope.Public"
+      />
+
+  <flourish:viewlet
+      name="report_card_styles"
+      after="*"
+      manager="schooltool.skin.flourish.report.PDFStylesheetSection"
+      view=".pdf_views.FlourishStudentReportCardPDFView"
+      class="schooltool.skin.flourish.report.PDFPart"
+      template="rml/report_card_styles.pt"
+      permission="zope.Public"
+      />
+
+  <flourish:content
+      name="report_card"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.StudentReportCardViewletManager"
+      view=".pdf_views.StudentReportCardPDFStory"
+      permission="zope.Public"
+      />
+
+  <flourish:viewlet
+      name="report_card_header"
+      before="report_card_grades"
+      for="schooltool.person.interfaces.IPerson"
+      manager=".pdf_views.StudentReportCardViewletManager"
+      class=".pdf_views.ReportCardStudentHeaderViewlet"
+      render="template"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="report_card_grades"
+      after="report_card_header"
+      for="schooltool.person.interfaces.IPerson"
+      manager=".pdf_views.StudentReportCardViewletManager"
+      class=".pdf_views.ReportCardStudentGradesViewlet"
+      render="template"
+      permission="schooltool.view"
+      />
+
+  <flourish:content
+      name="report_card_grid"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.ReportCardGrid"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="report_card_comments"
+      after="report_card_grades"
+      for="schooltool.person.interfaces.IPerson"
+      manager=".pdf_views.StudentReportCardViewletManager"
+      class=".pdf_views.ReportCardStudentCommentsViewlet"
+      render="template"
+      permission="schooltool.view"
+      />
 
 </configure>

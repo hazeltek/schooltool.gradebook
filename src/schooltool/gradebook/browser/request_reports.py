@@ -543,3 +543,7 @@ class FlourishRequestReportSheetsExportView(RequestXLSReportDialog):
 
     report_builder = 'export_report_sheets.xls'
 
+
+class FlourishRequestReportCardView(RequestRemoteReportDialog):
+
+    report_builder = 'report_card.pdf'

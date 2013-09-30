@@ -27,7 +27,9 @@ from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility, getMultiAdapter
 from zope.i18n.interfaces.locales import ICollator
 from zope.security.proxy import removeSecurityProxy
+from reportlab.lib import units
 
+from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
 from schooltool.course.interfaces import ILearner, ISectionContainer
@@ -1105,3 +1107,282 @@ class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
         self.updateColumns()
         self.updateRows()
         self.updateData()
+
+
+# XXX: this is duplicated in CanDo, move to core?
+class NoHeaderPlainPageTemplate(flourish.report.PlainPageTemplate):
+
+    @property
+    def header(self):
+        default = super(NoHeaderPlainPageTemplate, self).header
+        default['height'] = 0
+        return default
+
+
+class FlourishStudentReportCardPDFView(flourish.report.PlainPDFPage,
+                                       ActiveSchoolYearContentMixin,
+                                       BaseStudentPDFView):
+
+    name = _('Report Card')
+
+    def students(self):
+        return [self.context]
+
+    def scope(self):
+        schoolyear = self.schoolyear
+        return schoolyear.title if schoolyear is not None else ''
+
+    @property
+    def base_filename(self):
+        return 'report_card_%s' % self.context.__name__
+
+    @property
+    def message_title(self):
+        return _('${student} report card',
+                 mapping={'student': self.context.title})
+
+
+class FlourishGroupReportCardPDFView(FlourishStudentReportCardPDFView):
+
+    def students(self):
+        return sorted(self.context.members, key=getSortingKey(self.request))
+
+
+class StudentReportCardPDFStory(flourish.report.PDFStory):
+
+    template = flourish.templates.Inline('''
+    <tal:loop repeat="student view/view/students">
+      <tal:block replace="structure student/schooltool:content/report_card" />
+    </tal:loop>
+    ''')
+
+
+class StudentReportCardViewletManager(flourish.viewlet.ViewletManager):
+
+    pass
+
+
+class ReportCardStudentHeaderViewlet(flourish.viewlet.Viewlet):
+
+    template = flourish.templates.XMLFile('rml/report_card_student_header.pt')
+
+
+class ReportCardStudentGradesViewlet(flourish.viewlet.Viewlet):
+
+    template = flourish.templates.Inline('''
+    <tal:block replace="structure view/report_card_grid" />
+    ''')
+
+    @property
+    def report_card_grid(self):
+        view = self.view.view
+        grid = getMultiAdapter((self.context, self.request, view),
+                               name='report_card_grid')
+        grid.update()
+        if grid.rows:
+            return grid
+        return ''
+
+
+class ReportCardStudentGradesMixin(object):
+
+    @property
+    def student(self):
+        return self.context
+
+    @property
+    def term(self):
+        term_id = self.request.get('term_id')
+        if self.schoolyear is not None:
+            return self.schoolyear.get(term_id)
+
+    @Lazy
+    def sections(self):
+        sections = []
+        for section in ILearner(self.student).sections():
+            term = ITerm(section)
+            schoolyear = ISchoolYear(term)
+            if ((schoolyear != self.schoolyear) or
+                (self.term is not None and term != self.term)):
+                continue
+            sections.append(section)
+        return sections
+
+    @Lazy
+    def courses(self):
+        courses = []
+        collator = ICollator(self.request.locale)
+        for section in self.sections:
+            course = tuple(section.courses)
+            if course not in courses:
+                courses.append(course)
+        return sorted(courses,
+                      key=lambda x:collator.key(self.pdf_view.getCourseTitle(x, self.sections)))
+
+    @Lazy
+    def layout_columns(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if (self.schoolyear is not None and
+            self.schoolyear.__name__ in root.layouts):
+            return root.layouts[self.schoolyear.__name__].columns
+        return []
+
+    @Lazy
+    def outline_activities(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if (self.schoolyear is not None and
+            self.schoolyear.__name__ in root.layouts):
+            return root.layouts[self.schoolyear.__name__].outline_activities
+        return []
+
+
+class ReportCardStudentCommentsViewlet(ReportCardStudentGradesMixin,
+                                       flourish.viewlet.Viewlet):
+
+    template = flourish.templates.XMLFile(
+        'rml/report_card_student_comments.pt')
+
+    @property
+    def pdf_view(self):
+        return self.view.view
+
+    @property
+    def schoolyear(self):
+        return self.pdf_view.schoolyear
+
+    def comments_by_course(self):
+        view = self.pdf_view
+        result = []
+        for course in self.courses:
+            result.append({
+                    'title': view.getCourseTitle(course, self.sections),
+                    'comments': self.getComments(course, self.sections),
+                    })
+        return result
+
+    def getComments(self, course, sections):
+        result = []
+        evaluations = IEvaluations(self.student)
+        for section in sections:
+            if tuple(section.courses) == course:
+                term = ITerm(section)
+                for outline_activity in self.outline_activities:
+                    source = outline_activity.source
+                    termName, worksheetName, activityName = source.split('|')
+                    if termName != term.__name__:
+                        continue
+                    activities = IActivities(section)
+                    if worksheetName not in activities:
+                        continue
+                    if activityName not in activities[worksheetName]:
+                        continue
+                    activity = activities[worksheetName][activityName]
+                    score = evaluations.get(activity, None)
+                    if not score:
+                        continue
+                    heading = self.pdf_view.getLayoutActivityHeading(
+                        outline_activity, truncate=False)
+                    html2rml = getMultiAdapter((score.value, self.request),
+                                               name='html2rml')
+                    html2rml.para_class = 'report_card_comment'
+                    activity_result = {
+                        'heading': heading,
+                        'value': html2rml,
+                        }
+                    result.append(activity_result)
+        return result
+
+
+class ReportCardGrid(ReportCardStudentGradesMixin,
+                     schooltool.table.pdf.GridContentBlock):
+
+    title = _('Courses')
+
+    @property
+    def pdf_view(self):
+        return self.view
+
+    @property
+    def schoolyear(self):
+        return self.pdf_view.schoolyear
+
+    def updateGrid(self):
+        super(ReportCardGrid, self).updateGrid()
+        self.updateColumns()
+        self.updateRows()
+        self.updateData()
+
+    def updateTables(self):
+        id_base = self.getRMLId()
+        table_width = self.getTableWidth()
+        table = schooltool.table.pdf.AutoFitGrid(
+            self.rows, self.columns, self.grid, table_width,
+            style_id=id_base+'-style',
+            table_style_name='report_card_grades',
+            title_column_width=5*units.cm,
+            min_column_width=1.5*units.cm,
+            continued_font_size=8,
+            header_min_font_size=12)
+        table.update()
+        self.tables = [table]
+        while table.remaining_columns:
+            other = schooltool.table.pdf.AutoFitGrid(
+                self.rows, table.remaining_columns, self.grid, table_width,
+                style_id=id_base+'-style%d' % len(self.tables),
+                config=table.config)
+            other.update()
+            self.tables.append(other)
+            table = other
+
+    def updateColumns(self):
+        self.columns = []
+        for i, layout_column in enumerate(self.layout_columns):
+            heading = self.pdf_view.getLayoutActivityHeading(layout_column,
+                                                             truncate=False)
+            self.columns.append(schooltool.table.pdf.GridColumn(
+                    heading, item=i, font_size=8))
+
+    def updateRows(self):
+        self.rows = []
+        for course in self.courses:
+            course_title = self.pdf_view.getCourseTitle(course, self.sections)
+            self.rows.append(schooltool.table.pdf.GridRow(
+                    course_title, item=course, para_class='report_card.table.row-title'))
+
+    def updateData(self):
+        cols_by_id = dict([(col.item, col) for col in self.columns])
+        rows_by_id = dict([(row.item, row) for row in self.rows])
+        self.grid = {}
+        scores = {}
+        evaluations = IEvaluations(self.student)
+        for i, layout in enumerate(self.layout_columns):
+            byCourse = {}
+            for section in self.sections:
+                course = tuple(section.courses)
+                if self.pdf_view.isJournalSource(layout):
+                    score = self.pdf_view.getJournalScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        if course in byCourse:
+                            score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                elif self.pdf_view.isAverageSource(layout):
+                    score = self.pdf_view.getAverageScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        byCourse[course] = unicode(score)
+                else:
+                    activity = self.pdf_view.getActivity(section, layout)
+                    if activity is None:
+                        continue
+                    score = evaluations.get(activity, None)
+                    if score:
+                        byCourse[course] = unicode(score.value)
+            if len(byCourse):
+                scores[layout.source] = byCourse
+        for course in self.courses:
+            for i, layout in enumerate(self.layout_columns):
+                byCourse = scores.get(layout.source)
+                if byCourse is not None:
+                    score = byCourse.get(course, '')
+                    self.grid[rows_by_id[course], cols_by_id[i]] = score
