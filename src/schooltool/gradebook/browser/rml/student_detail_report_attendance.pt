@@ -1,0 +1,31 @@
+<tal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="schooltool.gradebook">
+  <pto tal:define="attendance view/attendance"
+       tal:condition="attendance/rows">
+    <para style="report_card_comments-header" i18n:translate="">
+      Attendance detail
+    </para>
+    <blockTable style="multi-table.header" colWidths="60% 40%">
+      <tr>
+        <td />
+        <td i18n:translate="">Period Number</td>
+      </tr>
+    </blockTable>
+    <blockTable style="multi-table.subtable"
+                tal:attributes="colWidths attendance/widths">
+      <tr>
+        <td i18n:translate="">Date</td>
+        <td tal:repeat="heading attendance/headings"
+            tal:content="heading" />
+      </tr>
+      <tr tal:repeat="row attendance/rows">
+        <td tal:content="row/title" />
+        <td tal:repeat="score row/scores" tal:content="score" />
+      </tr>
+    </blockTable>
+  </pto>
+  <nextPage />
+</tal:block>

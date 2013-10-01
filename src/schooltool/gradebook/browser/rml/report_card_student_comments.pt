@@ -1,0 +1,21 @@
+<metal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="schooltool.gradebook">
+  <pto>
+    <tal:loop repeat="course view/comments_by_course">
+      <tal:block define="comments course/comments"
+                 tal:condition="comments">
+        <para style="report_card_comments-header" tal:content="course/title" />
+        <blockTable style="table.comments" colWidths="25%,75%">
+          <tr tal:repeat="comment comments">
+            <td tal:content="comment/heading" />
+            <td tal:content="structure comment/value" />
+          </tr>
+        </blockTable>
+      </tal:block>
+    </tal:loop>
+  </pto>
+  <nextPage />
+</metal:block>
