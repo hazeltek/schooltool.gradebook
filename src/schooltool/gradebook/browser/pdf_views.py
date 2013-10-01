@@ -1394,3 +1394,114 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
                 if byCourse is not None:
                     score = byCourse.get(course, '')
                     self.grid[rows_by_id[course], cols_by_id[i]] = score
+
+
+class FlourishStudentDetailReportPDFView(flourish.report.PlainPDFPage,
+                                         ActiveSchoolYearContentMixin,
+                                         BaseStudentDetailPDFView):
+
+    name = _('Student Detail Report')
+
+    def students(self):
+        return [self.context]
+
+    def scope(self):
+        schoolyear = self.schoolyear
+        return schoolyear.title if schoolyear is not None else ''
+
+    @property
+    def base_filename(self):
+        return 'student_detail_report_%s' % self.context.__name__
+
+    @property
+    def message_title(self):
+        return _('${student} detail report',
+                 mapping={'student': self.context.title})
+
+
+class FlourishGroupDetailReportPDFView(FlourishStudentDetailReportPDFView):
+
+    def students(self):
+        return sorted(self.context.members, key=getSortingKey(self.request))
+
+
+class StudentDetailReportPDFStory(flourish.report.PDFStory):
+
+    template = flourish.templates.Inline('''
+    <tal:loop repeat="student view/view/students">
+      <tal:block replace="structure student/schooltool:content/detail_report" />
+    </tal:loop>
+    ''')
+
+
+class StudentDetailReportViewletManager(flourish.viewlet.ViewletManager):
+
+    pass
+
+
+class StudentDetailReportAttendanceViewlet(ReportCardStudentGradesMixin,
+                                           flourish.viewlet.Viewlet,
+                                           TermPDFPage):
+
+    template = flourish.templates.XMLFile(
+        'rml/student_detail_report_attendance.pt')
+
+    @property
+    def pdf_view(self):
+        return self.view.view
+
+    @property
+    def schoolyear(self):
+        return self.pdf_view.schoolyear
+
+    def attendance(self):
+        student = self.student
+        data = {}
+        for section in self.sections:
+            jd = ISectionJournalData(section, None)
+            if jd is None:
+                continue
+            for meeting, score in jd.absentMeetings(student):
+                period = self.guessPeriodGroup(meeting)
+                day = meeting.dtstart
+                ss = score.scoreSystem
+                if ss.isExcused(score):
+                    continue
+                result = None
+                if ss.isExcused(score):
+                    continue
+                elif ss.isAbsent(score):
+                    result = ABSENT_ABBREVIATION
+                elif ss.isTardy(score):
+                    result = TARDY_ABBREVIATION
+                if result:
+                    data.setdefault(day, {})[period] = result
+        periods = {}
+        for day in data:
+            for period in data[day]:
+                periods[period] = 0
+        periods = sorted(periods.keys())
+        widths_string = None
+        n_cols = len(periods)
+        if n_cols:
+            col_width = max(int(40./n_cols), 8)
+            widths_string = ' '.join(
+                ['%d%%' % max((100-col_width*n_cols), 10)] +
+                ['%d%%' % col_width] * (n_cols)
+                )
+        rows = []
+        for day in sorted(data):
+            scores = [''] * len(periods)
+            for period in data[day]:
+                index = periods.index(period)
+                scores[index] = data[day][period]
+            row = {
+                'title': day.strftime('%x'),
+                'scores': scores,
+                }
+            rows.append(row)
+        return {
+            'widths': widths_string,
+            'headings': periods,
+            'rows': rows,
+            }
