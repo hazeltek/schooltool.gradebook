@@ -65,11 +65,11 @@ and visit the gradebook of the section:
 
 The student titles are shown in the default worksheet:
 
-    >>> for link in teacher.query_all.css('.students tbody a.popup_link'):
-    ...     print link.text
-    Cerna, Camila
-    Guzman, Nestor
-    Tejada, Mario
+    >>> for link in teacher.query_all.css('.students tbody td:first-child a.popup_link'):
+    ...     print link.get_attribute('title')
+    Camila Cerna
+    Nestor Guzman
+    Mario Tejada
 
 Let's add some activities to the default worksheet:
 
@@ -104,17 +104,17 @@ The activity labels are shown in the worksheet:
 Now we can grade the activities using the student title and the
 activity label:
 
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'PITCH', '90')
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'BAT', '60')
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Swing', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'PITCH', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'BAT', '60')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'Swing', '90')
 
-    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'PITCH', '100')
-    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'BAT', '70')
-    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'Swing', '85')
+    >>> teacher.ui.gradebook.worksheet.score('Nestor Guzman', 'PITCH', '100')
+    >>> teacher.ui.gradebook.worksheet.score('Nestor Guzman', 'BAT', '70')
+    >>> teacher.ui.gradebook.worksheet.score('Nestor Guzman', 'Swing', '85')
 
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'PITCH', '70')
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'BAT', '60')
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Swing', '75')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'PITCH', '70')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'BAT', '60')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'Swing', '75')
 
     >>> teacher.query.button('Save').click()
 
@@ -136,14 +136,14 @@ Let's add a second worksheet and print it:
     +--------+------------+
     | Sheet1 | *Coaching* |
     +--------+------------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    |                |       |      |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Cerna     | Camila     | 0.0   | N/A  |
+    | Guzman    | Nestor     | 0.0   | N/A  |
+    | Tejada    | Mario      | 0.0   | N/A  |
+    +-----------+------------+-------+------+
 
 Let's go back to the first worksheet, and print it:
 
@@ -152,25 +152,25 @@ Let's go back to the first worksheet, and print it:
     +----------+----------+
     | *Sheet1* | Coaching |
     +----------+----------+
-    +----------------+-------+-----+-------+-------+-------+-------+
-    | Name           | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
-    |                | 100   | 100 | 100   | 100   |       |       |
-    +----------------+-------+-----+-------+-------+-------+-------+
-    | Cerna, Camila  | 90    | 60  | 90    |       | 240.0 | 80.0% |
-    | Guzman, Nestor | 100   | 70  | 85    |       | 255.0 | 85.0% |
-    | Tejada, Mario  | 70    | 60  | 75    |       | 205.0 | 68.3% |
-    +----------------+-------+-----+-------+-------+-------+-------+
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
+    | Last Name | First Name | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
+    |           |            | 100   | 100 | 100   | 100   |       |       |
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
+    | Cerna     | Camila     | 90    | 60  | 90    |       | 240.0 | 80.0% |
+    | Guzman    | Nestor     | 100   | 70  | 85    |       | 255.0 | 85.0% |
+    | Tejada    | Mario      | 70    | 60  | 75    |       | 205.0 | 68.3% |
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
 
 Let's change some scores:
 
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'PITCH', '')
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Swing', '85')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'PITCH', '')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'Swing', '85')
 
-    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'PITCH', '-90')
-    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'BAT', '20')
+    >>> teacher.ui.gradebook.worksheet.score('Nestor Guzman', 'PITCH', '-90')
+    >>> teacher.ui.gradebook.worksheet.score('Nestor Guzman', 'BAT', '20')
 
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'PITCH', '0')
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Swing', '120')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'PITCH', '0')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'Swing', '120')
 
 and print the gradebook before saving the changes to see the input
 fields:
@@ -179,14 +179,14 @@ fields:
     +----------+----------+
     | *Sheet1* | Coaching |
     +----------+----------+
-    +----------------+---------+---------+---------+-------+-------+-------+
-    | Name           | PITCH   | BAT     | Swing   | RUNNI | Total | Ave.  |
-    |                | 100     | 100     | 100     | 100   |       |       |
-    +----------------+---------+---------+---------+-------+-------+-------+
-    | Cerna, Camila  | [_____] | 60      | [85___] |       | 240.0 | 80.0% |
-    | Guzman, Nestor | [-90__] | [20___] | 85      |       | 255.0 | 85.0% |
-    | Tejada, Mario  | [0____] | 60      | [120__] |       | 205.0 | 68.3% |
-    +----------------+---------+---------+---------+-------+-------+-------+
+    +-----------+------------+---------+---------+---------+-------+-------+-------+
+    | Last Name | First Name | PITCH   | BAT     | Swing   | RUNNI | Total | Ave.  |
+    |           |            | 100     | 100     | 100     | 100   |       |       |
+    +-----------+------------+---------+---------+---------+-------+-------+-------+
+    | Cerna     | Camila     | [_____] | 60      | [85___] |       | 240.0 | 80.0% |
+    | Guzman    | Nestor     | [-90__] | [20___] | 85      |       | 255.0 | 85.0% |
+    | Tejada    | Mario      | [0____] | 60      | [120__] |       | 205.0 | 68.3% |
+    +-----------+------------+---------+---------+---------+-------+-------+-------+
 
 We can also print validation codes. The letters next to each input
 field mean:
@@ -199,32 +199,32 @@ field mean:
     +----------+----------+
     | *Sheet1* | Coaching |
     +----------+----------+
-    +----------------+----------+----------+----------+-------+-------+-------+
-    | Name           | PITCH    | BAT      | Swing    | RUNNI | Total | Ave.  |
-    |                | 100      | 100      | 100      | 100   |       |       |
-    +----------------+----------+----------+----------+-------+-------+-------+
-    | Cerna, Camila  | [_____]v | 60       | [85___]v |       | 240.0 | 80.0% |
-    | Guzman, Nestor | [-90__]i | [20___]v | 85       |       | 255.0 | 85.0% |
-    | Tejada, Mario  | [0____]v | 60       | [120__]e |       | 205.0 | 68.3% |
-    +----------------+----------+----------+----------+-------+-------+-------+
+    +-----------+------------+----------+----------+----------+-------+-------+-------+
+    | Last Name | First Name | PITCH    | BAT      | Swing    | RUNNI | Total | Ave.  |
+    |           |            | 100      | 100      | 100      | 100   |       |       |
+    +-----------+------------+----------+----------+----------+-------+-------+-------+
+    | Cerna     | Camila     | [_____]v | 60       | [85___]v |       | 240.0 | 80.0% |
+    | Guzman    | Nestor     | [-90__]i | [20___]v | 85       |       | 255.0 | 85.0% |
+    | Tejada    | Mario      | [0____]v | 60       | [120__]e |       | 205.0 | 68.3% |
+    +-----------+------------+----------+----------+----------+-------+-------+-------+
 
 After fixing the invalid scores and saving the changes, the totals and
 averages are recalculated:
 
-    >>> teacher.ui.gradebook.worksheet.score('Guzman, Nestor', 'PITCH', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Nestor Guzman', 'PITCH', '90')
     >>> teacher.query.button('Save').click()
     >>> teacher.ui.gradebook.worksheet.pprint()
     +----------+----------+
     | *Sheet1* | Coaching |
     +----------+----------+
-    +----------------+-------+-----+-------+-------+-------+-------+
-    | Name           | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
-    |                | 100   | 100 | 100   | 100   |       |       |
-    +----------------+-------+-----+-------+-------+-------+-------+
-    | Cerna, Camila  |       | 60  | 85    |       | 145.0 | 72.5% |
-    | Guzman, Nestor | 90    | 20  | 85    |       | 195.0 | 65.0% |
-    | Tejada, Mario  | 0     | 60  | 120   |       | 180.0 | 60.0% |
-    +----------------+-------+-----+-------+-------+-------+-------+
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
+    | Last Name | First Name | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
+    |           |            | 100   | 100 | 100   | 100   |       |       |
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
+    | Cerna     | Camila     |       | 60  | 85    |       | 145.0 | 72.5% |
+    | Guzman    | Nestor     | 90    | 20  | 85    |       | 195.0 | 65.0% |
+    | Tejada    | Mario      | 0     | 60  | 120   |       | 180.0 | 60.0% |
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
 
 If we print the worksheet with the validation flag set, but there are
 no input fields, we get the same output:
@@ -233,11 +233,11 @@ no input fields, we get the same output:
     +----------+----------+
     | *Sheet1* | Coaching |
     +----------+----------+
-    +----------------+-------+-----+-------+-------+-------+-------+
-    | Name           | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
-    |                | 100   | 100 | 100   | 100   |       |       |
-    +----------------+-------+-----+-------+-------+-------+-------+
-    | Cerna, Camila  |       | 60  | 85    |       | 145.0 | 72.5% |
-    | Guzman, Nestor | 90    | 20  | 85    |       | 195.0 | 65.0% |
-    | Tejada, Mario  | 0     | 60  | 120   |       | 180.0 | 60.0% |
-    +----------------+-------+-----+-------+-------+-------+-------+
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
+    | Last Name | First Name | PITCH | BAT | Swing | RUNNI | Total | Ave.  |
+    |           |            | 100   | 100 | 100   | 100   |       |       |
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
+    | Cerna     | Camila     |       | 60  | 85    |       | 145.0 | 72.5% |
+    | Guzman    | Nestor     | 90    | 20  | 85    |       | 195.0 | 65.0% |
+    | Tejada    | Mario      | 0     | 60  | 120   |       | 180.0 | 60.0% |
+    +-----------+------------+-------+-----+-------+-------+-------+-------+
