@@ -1082,8 +1082,10 @@ class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
     def updateRows(self):
         self.rows = []
         collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x['object'], collator)
         for info in sorted(self.gradebook_overview.students_info,
-                           key=lambda info: collator.key(info['title'])):
+                           key=sorting_key):
             self.rows.append(schooltool.table.pdf.GridRow(
                 info['title'], item=info['id']
                 ))
