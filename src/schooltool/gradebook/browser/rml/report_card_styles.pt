@@ -4,26 +4,6 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="schooltool.gradebook">
 
-  <blockTableStyle id="report_card_grades">
-    <lineStyle kind="LINEABOVE" colorName="white"
-               start="0,0" stop="-2,0"/>
-    <lineStyle kind="LINEBEFORE" colorName="white"
-               start="1,0" stop="-2,-1"/>
-    <lineStyle kind="LINEAFTER" colorName="white"
-               start="-2,0" stop="-2,-1"/>
-    <blockFont start="0,0" stop="-1,-1" name="Ubuntu_Regular" size="8" />
-    <blockBackground
-        start="0,0" stop="-1,-1"
-        colorsByRow="table.row-alt.background,table.row.background" />
-    <blockBackground start="-1,0" stop="-1,-1"
-        colorName="table.row.background" />
-    <blockTextColor  start="0,0" stop="-1,-1"
-                     colorName="table.text" />
-    <blockAlignment start="1,0" stop="-1,-1" value="center" />
-    <blockAlignment start="0,0" stop="0,-1" value="left" />
-    <blockValign start="0,0" stop="-1,-1" value="middle" />
-  </blockTableStyle>
-
  <blockTableStyle id="table.comments">
     <blockValign value="TOP" start="0,0" stop="-1,-1"/>
     <blockFont start="0,0" stop="-1,-1" size="8" name="Ubuntu_Regular" />
@@ -43,13 +23,6 @@
       name="report_card_comment"
       fontName="Ubuntu_Regular"
       fontSize="8"
-      />
-
-  <paraStyle
-      name="report_card.table.row-title"
-      fontName="Ubuntu_Regular"
-      fontSize="8"
-      leading="10"
       />
 
   <paraStyle

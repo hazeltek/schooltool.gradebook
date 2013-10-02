@@ -1320,42 +1320,20 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
         self.updateRows()
         self.updateData()
 
-    def updateTables(self):
-        id_base = self.getRMLId()
-        table_width = self.getTableWidth()
-        table = schooltool.table.pdf.AutoFitGrid(
-            self.rows, self.columns, self.grid, table_width,
-            style_id=id_base+'-style',
-            table_style_name='report_card_grades',
-            title_column_width=5*units.cm,
-            max_column_width=1*units.cm,
-            continued_font_size=8,
-            header_min_font_size=12)
-        table.update()
-        self.tables = [table]
-        while table.remaining_columns:
-            other = schooltool.table.pdf.AutoFitGrid(
-                self.rows, table.remaining_columns, self.grid, table_width,
-                style_id=id_base+'-style%d' % len(self.tables),
-                config=table.config)
-            other.update()
-            self.tables.append(other)
-            table = other
-
     def updateColumns(self):
         self.columns = []
         for i, layout_column in enumerate(self.layout_columns):
             heading = self.pdf_view.getLayoutActivityHeading(layout_column,
                                                              truncate=False)
             self.columns.append(schooltool.table.pdf.GridColumn(
-                    heading, item=i, font_size=8))
+                    heading, item=i))
 
     def updateRows(self):
         self.rows = []
         for course in self.courses:
             course_title = self.pdf_view.getCourseTitle(course, self.sections)
             self.rows.append(schooltool.table.pdf.GridRow(
-                    course_title, item=course, para_class='report_card.table.row-title'))
+                    course_title, item=course))
 
     def updateData(self):
         cols_by_id = dict([(col.item, col) for col in self.columns])
