@@ -808,13 +808,14 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             absences = tardies = 0
             if (journal_data and not (self.absences_hide and self.tardies_hide)):
                 # XXX: opt: perm checks may breed here
-                meetings = journal_data.recordedMeetings(student_info['object'])
-                for meeting in meetings:
-                    grade = journal_data.getGrade(
-                        student_info['object'], meeting)
-                    if grade == ABSENT:
+                meetings = journal_data.absentMeetings(student_info['object'])
+                for meeting, score in meetings:
+                    ss = score.scoreSystem
+                    if ss.isExcused(score):
+                        continue
+                    elif ss.isAbsent(score):
                         absences += 1
-                    elif grade == TARDY:
+                    elif ss.isTardy(score):
                         tardies += 1
 
             rows.append(
