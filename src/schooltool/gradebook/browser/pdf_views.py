@@ -27,7 +27,6 @@ from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility, getMultiAdapter
 from zope.i18n.interfaces.locales import ICollator
 from zope.security.proxy import removeSecurityProxy
-from reportlab.lib import units
 
 from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -183,12 +182,12 @@ class BaseStudentPDFView(BasePDFView):
 
     def getLayoutActivityHeading(self, layout, truncate=True):
         if layout.source == ABSENT_KEY:
-            return ABSENT_HEADING
+            return layout.heading or ABSENT_HEADING
         if layout.source == TARDY_KEY:
-            return TARDY_HEADING
+            return layout.heading or TARDY_HEADING
         termName, worksheetName, activityName = layout.source.split('|')
         if activityName == AVERAGE_KEY:
-            return AVERAGE_HEADING
+            return layout.heading or AVERAGE_HEADING
         root = IGradebookRoot(ISchoolToolApplication(None))
         heading = root.deployed[worksheetName][activityName].title
         if len(layout.heading):
