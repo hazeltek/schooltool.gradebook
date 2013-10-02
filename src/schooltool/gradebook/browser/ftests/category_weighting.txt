@@ -153,20 +153,19 @@ will be numbers between 0 and 100.
     101 is not a valid weight.
 
 We'll fill in valid values for Assignment, Homework and Exam, but they
-will not add up to 100.  We should get an error message to that
-effect.
+will not add up to 100.  It is not an error any more.
 
     >>> stephan.getControl('Assignment').value = u'99'
     >>> stephan.getControl('Exam').value = u'99'
     >>> stephan.getControl('Homework').value = u'99'
     >>> stephan.getControl('Update').click()
     >>> stephan.printQuery('//div[@class="message"]/text()')
-    Category weights must add up to 100.
 
 If we get the weights to add up to 100, hitting 'Update' will succeed
 and return us to the gradebook.  There we will note the effect of the
 weighting in the Average column.
 
+    >>> stephan.getLink('Weight Categories').click()
     >>> stephan.getControl('Assignment').value = u'20'
     >>> stephan.getControl('Exam').value = u'50'
     >>> stephan.getControl('Homework').value = u'30'
