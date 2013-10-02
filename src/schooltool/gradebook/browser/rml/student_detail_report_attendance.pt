@@ -8,12 +8,6 @@
     <para style="report_card_comments-header" i18n:translate="">
       Attendance detail
     </para>
-    <blockTable style="multi-table.header" colWidths="60% 40%">
-      <tr>
-        <td />
-        <td i18n:translate="">Period Number</td>
-      </tr>
-    </blockTable>
     <blockTable style="multi-table.subtable"
                 tal:attributes="colWidths attendance/widths">
       <tr>

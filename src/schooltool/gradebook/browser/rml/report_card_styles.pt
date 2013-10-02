@@ -14,9 +14,10 @@
 
   <paraStyle
       name="report_card_comments-header"
-      fontName="Ubuntu_Bold"
+      fontName="Ubuntu_Regular"
       fontSize="10"
       spaceBefore="10"
+      spaceAfter="10"
       />
 
   <paraStyle
