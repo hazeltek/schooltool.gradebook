@@ -75,13 +75,13 @@ Add a couple of activities to the default worksheet:
 
 Add some grades:
 
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW1', '40')
-    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'HW1', '48')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW1', '45')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'HW1', '40')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'HW1', '48')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'HW1', '45')
 
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'Quiz', '90')
-    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'Quiz', '88')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Quiz', '29')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'Quiz', '90')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'Quiz', '88')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'Quiz', '29')
 
     >>> stephan.query.name('UPDATE_SUBMIT').click()
 
@@ -92,14 +92,14 @@ calculated normally:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+-------+
-    | Name             | HW1 | Quiz | Total | Ave.  |
-    |                  | 50  | 100  |       |       |
-    +------------------+-----+------+-------+-------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | 86.7% |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | 90.7% |
-    | Richter, Claudia | 45  | 29   | 74.0  | 49.3% |
-    +------------------+-----+------+-------+-------+
+    +-----------+------------+-----+------+-------+-------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave.  |
+    |           |            | 50  | 100  |       |       |
+    +-----------+------------+-----+------+-------+-------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | 86.7% |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | 90.7% |
+    | Richter   | Claudia    | 45  | 29   | 74.0  | 49.3% |
+    +-----------+------------+-----+------+-------+-------+
 
 The total columns have hidden popup menus:
 
@@ -204,14 +204,14 @@ Let's hide both total columns:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+
-    | Name             | HW1 | Quiz |
-    |                  | 50  | 100  |
-    +------------------+-----+------+
-    | Carduner, Paul   | 40  | 90   |
-    | Hoffman, Tom     | 48  | 88   |
-    | Richter, Claudia | 45  | 29   |
-    +------------------+-----+------+
+    +-----------+------------+-----+------+
+    | Last Name | First Name | HW1 | Quiz |
+    |           |            | 50  | 100  |
+    +-----------+------------+-----+------+
+    | Carduner  | Paul       | 40  | 90   |
+    | Hoffman   | Tom        | 48  | 88   |
+    | Richter   | Claudia    | 45  | 29   |
+    +-----------+------------+-----+------+
 
 Hidden columns can be shown again using the Name menu:
 
@@ -251,14 +251,14 @@ Hidden columns can be shown again using the Name menu:
     </ul>
     >>> name_menu.is_displayed()
     False
-    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Last Name').click()
     >>> name_menu.is_displayed()
     True
 
 Let's show both total columns:
 
     >>> stephan.query.link('Show Total').click()
-    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Last Name').click()
     >>> stephan.query.link('Show Ave.').click()
 
 and set the score system we created at the beginning for the Average
@@ -318,14 +318,14 @@ column:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+------+
-    | Name             | HW1 | Quiz | Total | Ave. |
-    |                  | 50  | 100  |       |      |
-    +------------------+-----+------+-------+------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | Good |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | Good |
-    | Richter, Claudia | 45  | 29   | 74.0  | Bad  |
-    +------------------+-----+------+-------+------+
+    +-----------+------------+-----+------+-------+------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave. |
+    |           |            | 50  | 100  |       |      |
+    +-----------+------------+-----+------+-------+------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | Good |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | Good |
+    | Richter   | Claudia    | 45  | 29   | 74.0  | Bad  |
+    +-----------+------------+-----+------+-------+------+
 
 Now, let's change to the extended letter grade scoresystem:
 
@@ -383,14 +383,14 @@ Now, let's change to the extended letter grade scoresystem:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+------+
-    | Name             | HW1 | Quiz | Total | Ave. |
-    |                  | 50  | 100  |       |      |
-    +------------------+-----+------+-------+------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | B    |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | A-   |
-    | Richter, Claudia | 45  | 29   | 74.0  | F    |
-    +------------------+-----+------+-------+------+
+    +-----------+------------+-----+------+-------+------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave. |
+    |           |            | 50  | 100  |       |      |
+    +-----------+------------+-----+------+-------+------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | B    |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | A-   |
+    | Richter   | Claudia    | 45  | 29   | 74.0  | F    |
+    +-----------+------------+-----+------+-------+------+
 
 Now, let's test a corner case. The Gradebook allows extra credits in
 scores, and because of the way the average is calculated, there's a
@@ -405,32 +405,32 @@ scoresystem for the average:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+-------+
-    | Name             | HW1 | Quiz | Total | Ave.  |
-    |                  | 50  | 100  |       |       |
-    +------------------+-----+------+-------+-------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | 86.7% |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | 90.7% |
-    | Richter, Claudia | 45  | 29   | 74.0  | 49.3% |
-    +------------------+-----+------+-------+-------+
+    +-----------+------------+-----+------+-------+-------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave.  |
+    |           |            | 50  | 100  |       |       |
+    +-----------+------------+-----+------+-------+-------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | 86.7% |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | 90.7% |
+    | Richter   | Claudia    | 45  | 29   | 74.0  | 49.3% |
+    +-----------+------------+-----+------+-------+-------+
 
 Let's grade Claudia so we get an average higher than 100%:
 
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW1', '51')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Quiz', '101')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'HW1', '51')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'Quiz', '101')
     >>> stephan.query.name('UPDATE_SUBMIT').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+--------+
-    | Name             | HW1 | Quiz | Total | Ave.   |
-    |                  | 50  | 100  |       |        |
-    +------------------+-----+------+-------+--------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | 86.7%  |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | 90.7%  |
-    | Richter, Claudia | 51  | 101  | 152.0 | 101.3% |
-    +------------------+-----+------+-------+--------+
+    +-----------+------------+-----+------+-------+--------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave.   |
+    |           |            | 50  | 100  |       |        |
+    +-----------+------------+-----+------+-------+--------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | 86.7%  |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | 90.7%  |
+    | Richter   | Claudia    | 51  | 101  | 152.0 | 101.3% |
+    +-----------+------------+-----+------+-------+--------+
 
 Even though this average is higher than 100%, if we convert it back to
 the extended letter grade scoresystem, we should get an A+:
@@ -441,14 +441,14 @@ the extended letter grade scoresystem, we should get an A+:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+------+
-    | Name             | HW1 | Quiz | Total | Ave. |
-    |                  | 50  | 100  |       |      |
-    +------------------+-----+------+-------+------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | B    |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | A-   |
-    | Richter, Claudia | 51  | 101  | 152.0 | A+   |
-    +------------------+-----+------+-------+------+
+    +-----------+------------+-----+------+-------+------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave. |
+    |           |            | 50  | 100  |       |      |
+    +-----------+------------+-----+------+-------+------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | B    |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | A-   |
+    | Richter   | Claudia    | 51  | 101  | 152.0 | A+   |
+    +-----------+------------+-----+------+-------+------+
 
 And if we change to the Good/Bad scoresystem, we should get Good:
 
@@ -458,31 +458,31 @@ And if we change to the Good/Bad scoresystem, we should get Good:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-------+------+
-    | Name             | HW1 | Quiz | Total | Ave. |
-    |                  | 50  | 100  |       |      |
-    +------------------+-----+------+-------+------+
-    | Carduner, Paul   | 40  | 90   | 130.0 | Good |
-    | Hoffman, Tom     | 48  | 88   | 136.0 | Good |
-    | Richter, Claudia | 51  | 101  | 152.0 | Good |
-    +------------------+-----+------+-------+------+
+    +-----------+------------+-----+------+-------+------+
+    | Last Name | First Name | HW1 | Quiz | Total | Ave. |
+    |           |            | 50  | 100  |       |      |
+    +-----------+------------+-----+------+-------+------+
+    | Carduner  | Paul       | 40  | 90   | 130.0 | Good |
+    | Hoffman   | Tom        | 48  | 88   | 136.0 | Good |
+    | Richter   | Claudia    | 51  | 101  | 152.0 | Good |
+    +-----------+------------+-----+------+-------+------+
 
 Users can also hide the total columns from the Name popup menu:
 
-    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Last Name').click()
     >>> stephan.query.link('Hide Total').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+------+
-    | Name             | HW1 | Quiz | Ave. |
-    |                  | 50  | 100  |      |
-    +------------------+-----+------+------+
-    | Carduner, Paul   | 40  | 90   | Good |
-    | Hoffman, Tom     | 48  | 88   | Good |
-    | Richter, Claudia | 51  | 101  | Good |
-    +------------------+-----+------+------+
+    +-----------+------------+-----+------+------+
+    | Last Name | First Name | HW1 | Quiz | Ave. |
+    |           |            | 50  | 100  |      |
+    +-----------+------------+-----+------+------+
+    | Carduner  | Paul       | 40  | 90   | Good |
+    | Hoffman   | Tom        | 48  | 88   | Good |
+    | Richter   | Claudia    | 51  | 101  | Good |
+    +-----------+------------+-----+------+------+
 
 Now, let's insert a few more activities:
 
@@ -499,14 +499,14 @@ Now, let's insert a few more activities:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+------+-----+-------+------+
-    | Name             | HW1 | Quiz | HW2 | Quiz2 | Ave. |
-    |                  | 50  | 100  | 100 | 100   |      |
-    +------------------+-----+------+-----+-------+------+
-    | Carduner, Paul   | 40  | 90   |     |       | Good |
-    | Hoffman, Tom     | 48  | 88   |     |       | Good |
-    | Richter, Claudia | 51  | 101  |     |       | Good |
-    +------------------+-----+------+-----+-------+------+
+    +-----------+------------+-----+------+-----+-------+------+
+    | Last Name | First Name | HW1 | Quiz | HW2 | Quiz2 | Ave. |
+    |           |            | 50  | 100  | 100 | 100   |      |
+    +-----------+------------+-----+------+-----+-------+------+
+    | Carduner  | Paul       | 40  | 90   |     |       | Good |
+    | Hoffman   | Tom        | 48  | 88   |     |       | Good |
+    | Richter   | Claudia    | 51  | 101  |     |       | Good |
+    +-----------+------------+-----+------+-----+-------+------+
 
 Activities also have their own popup menus:
 
@@ -557,14 +557,14 @@ Notice how this activity can be moved to the right. Let's move it:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+------+-----+-----+-------+------+
-    | Name             | Quiz | HW1 | HW2 | Quiz2 | Ave. |
-    |                  | 100  | 50  | 100 | 100   |      |
-    +------------------+------+-----+-----+-------+------+
-    | Carduner, Paul   | 90   | 40  |     |       | Good |
-    | Hoffman, Tom     | 88   | 48  |     |       | Good |
-    | Richter, Claudia | 101  | 51  |     |       | Good |
-    +------------------+------+-----+-----+-------+------+
+    +-----------+------------+------+-----+-----+-------+------+
+    | Last Name | First Name | Quiz | HW1 | HW2 | Quiz2 | Ave. |
+    |           |            | 100  | 50  | 100 | 100   |      |
+    +-----------+------------+------+-----+-----+-------+------+
+    | Carduner  | Paul       | 90   | 40  |     |       | Good |
+    | Hoffman   | Tom        | 88   | 48  |     |       | Good |
+    | Richter   | Claudia    | 101  | 51  |     |       | Good |
+    +-----------+------------+------+-----+-----+-------+------+
 
 Now, let's bring the Quiz2 activity to the left:
 
@@ -578,14 +578,14 @@ Now, let's bring the Quiz2 activity to the left:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+-----+------+
-    | Name             | Quiz2 | Quiz | HW1 | HW2 | Ave. |
-    |                  | 100   | 100  | 50  | 100 |      |
-    +------------------+-------+------+-----+-----+------+
-    | Carduner, Paul   |       | 90   | 40  |     | Good |
-    | Hoffman, Tom     |       | 88   | 48  |     | Good |
-    | Richter, Claudia |       | 101  | 51  |     | Good |
-    +------------------+-------+------+-----+-----+------+
+    +-----------+------------+-------+------+-----+-----+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | HW2 | Ave. |
+    |           |            | 100   | 100  | 50  | 100 |      |
+    +-----------+------------+-------+------+-----+-----+------+
+    | Carduner  | Paul       |       | 90   | 40  |     | Good |
+    | Hoffman   | Tom        |       | 88   | 48  |     | Good |
+    | Richter   | Claudia    |       | 101  | 51  |     | Good |
+    +-----------+------------+-------+------+-----+-----+------+
 
 Activities can be edited:
 
@@ -597,14 +597,14 @@ Activities can be edited:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+------+------+
-    | Name             | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
-    |                  | 100   | 100  | 50  | 100  |      |
-    +------------------+-------+------+-----+------+------+
-    | Carduner, Paul   |       | 90   | 40  |      | Good |
-    | Hoffman, Tom     |       | 88   | 48  |      | Good |
-    | Richter, Claudia |       | 101  | 51  |      | Good |
-    +------------------+-------+------+-----+------+------+
+    +-----------+------------+-------+------+-----+------+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
+    |           |            | 100   | 100  | 50  | 100  |      |
+    +-----------+------------+-------+------+-----+------+------+
+    | Carduner  | Paul       |       | 90   | 40  |      | Good |
+    | Hoffman   | Tom        |       | 88   | 48  |      | Good |
+    | Richter   | Claudia    |       | 101  | 51  |      | Good |
+    +-----------+------------+-------+------+-----+------+------+
 
 Activities can be scored in a separate page:
 
@@ -619,18 +619,13 @@ Activities can be scored in a separate page:
     <tbody>
       <tr>
         <td>
-          <label for="claudia">
-            Richter, Claudia
+          <label for="paul">
+            Carduner
           </label>
         </td>
         <td>
-          <input id="claudia" name="claudia" size="4" type="text" value="" />
-        </td>
-      </tr>
-      <tr>
-        <td>
           <label for="paul">
-            Carduner, Paul
+            Paul
           </label>
         </td>
         <td>
@@ -640,11 +635,31 @@ Activities can be scored in a separate page:
       <tr>
         <td>
           <label for="tom">
-            Hoffman, Tom
+            Hoffman
+          </label>
+        </td>
+        <td>
+          <label for="tom">
+            Tom
           </label>
         </td>
         <td>
           <input id="tom" name="tom" size="4" type="text" value="" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="claudia">
+            Richter
+          </label>
+        </td>
+        <td>
+          <label for="claudia">
+            Claudia
+          </label>
+        </td>
+        <td>
+          <input id="claudia" name="claudia" size="4" type="text" value="" />
         </td>
       </tr>
     </tbody>
@@ -655,14 +670,14 @@ Activities can be scored in a separate page:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+------+------+
-    | Name             | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
-    |                  | 100   | 100  | 50  | 100  |      |
-    +------------------+-------+------+-----+------+------+
-    | Carduner, Paul   |       | 90   | 40  |      | Good |
-    | Hoffman, Tom     |       | 88   | 48  | 70   | Good |
-    | Richter, Claudia |       | 101  | 51  |      | Good |
-    +------------------+-------+------+-----+------+------+
+    +-----------+------------+-------+------+-----+------+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
+    |           |            | 100   | 100  | 50  | 100  |      |
+    +-----------+------------+-------+------+-----+------+------+
+    | Carduner  | Paul       |       | 90   | 40  |      | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | 70   | Good |
+    | Richter   | Claudia    |       | 101  | 51  |      | Good |
+    +-----------+------------+-------+------+-----+------+------+
 
 Or filled with same value for all students:
 
@@ -675,14 +690,14 @@ Or filled with same value for all students:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+------+------+
-    | Name             | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
-    |                  | 100   | 100  | 50  | 100  |      |
-    +------------------+-------+------+-----+------+------+
-    | Carduner, Paul   |       | 90   | 40  | 75   | Good |
-    | Hoffman, Tom     |       | 88   | 48  | 70   | Good |
-    | Richter, Claudia |       | 101  | 51  | 75   | Good |
-    +------------------+-------+------+-----+------+------+
+    +-----------+------------+-------+------+-----+------+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | HW-2 | Ave. |
+    |           |            | 100   | 100  | 50  | 100  |      |
+    +-----------+------------+-------+------+-----+------+------+
+    | Carduner  | Paul       |       | 90   | 40  | 75   | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | 70   | Good |
+    | Richter   | Claudia    |       | 101  | 51  | 75   | Good |
+    +-----------+------------+-------+------+-----+------+------+
 
 Activities can be deleted:
 
@@ -692,14 +707,14 @@ Activities can be deleted:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+------+
-    | Name             | Quiz2 | Quiz | HW1 | Ave. |
-    |                  | 100   | 100  | 50  |      |
-    +------------------+-------+------+-----+------+
-    | Carduner, Paul   |       | 90   | 40  | Good |
-    | Hoffman, Tom     |       | 88   | 48  | Good |
-    | Richter, Claudia |       | 101  | 51  | Good |
-    +------------------+-------+------+-----+------+
+    +-----------+------------+-------+------+-----+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | Ave. |
+    |           |            | 100   | 100  | 50  |      |
+    +-----------+------------+-------+------+-----+------+
+    | Carduner  | Paul       |       | 90   | 40  | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | Good |
+    | Richter   | Claudia    |       | 101  | 51  | Good |
+    +-----------+------------+-------+------+-----+------+
 
 and sorted:
 
@@ -709,43 +724,55 @@ and sorted:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+------+
-    | Name             | Quiz2 | Quiz | HW1 | Ave. |
-    |                  | 100   | 100  | 50  |      |
-    +------------------+-------+------+-----+------+
-    | Richter, Claudia |       | 101  | 51  | Good |
-    | Carduner, Paul   |       | 90   | 40  | Good |
-    | Hoffman, Tom     |       | 88   | 48  | Good |
-    +------------------+-------+------+-----+------+
+    +-----------+------------+-------+------+-----+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | Ave. |
+    |           |            | 100   | 100  | 50  |      |
+    +-----------+------------+-------+------+-----+------+
+    | Richter   | Claudia    |       | 101  | 51  | Good |
+    | Carduner  | Paul       |       | 90   | 40  | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | Good |
+    +-----------+------------+-------+------+-----+------+
 
 Let's sort by student name:
 
-    >>> stephan.query.link('Name').click()
-    >>> stephan.query.link('Sort by').click()
-    >>> stephan.query.link('Name').click()
+    >>> stephan.query.link('Last Name').click()
     >>> stephan.query.link('Sort by').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+-----+------+
-    | Name             | Quiz2 | Quiz | HW1 | Ave. |
-    |                  | 100   | 100  | 50  |      |
-    +------------------+-------+------+-----+------+
-    | Richter, Claudia |       | 101  | 51  | Good |
-    | Hoffman, Tom     |       | 88   | 48  | Good |
-    | Carduner, Paul   |       | 90   | 40  | Good |
-    +------------------+-------+------+-----+------+
+    +-----------+------------+-------+------+-----+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | Ave. |
+    |           |            | 100   | 100  | 50  |      |
+    +-----------+------------+-------+------+-----+------+
+    | Carduner  | Paul       |       | 90   | 40  | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | Good |
+    | Richter   | Claudia    |       | 101  | 51  | Good |
+    +-----------+------------+-------+------+-----+------+
+    >>> stephan.query.link('Last Name').click()
+    >>> stephan.query.link('Sort by').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +-----------+------------+-------+------+-----+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | Ave. |
+    |           |            | 100   | 100  | 50  |      |
+    +-----------+------------+-------+------+-----+------+
+    | Richter   | Claudia    |       | 101  | 51  | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | Good |
+    | Carduner  | Paul       |       | 90   | 40  | Good |
+    +-----------+------------+-------+------+-----+------+
 
 Student names also have popup menus:
 
-    >>> sel = '#students-part tbody a.popup_link'
+    >>> sel = '#students-part tbody td:first-child a.popup_link'
     >>> for link in stephan.query_all.css(sel):
-    ...     print link.text
-    Richter, Claudia
-    Hoffman, Tom
-    Carduner, Paul
-    >>> sel = '#students-part tbody ul.popup_menu'
+    ...     print link.get_attribute('title')
+    Claudia Richter
+    Tom Hoffman
+    Paul Carduner
+    >>> sel = '#students-part tbody td:first-child ul.popup_menu'
     >>> claudia_menu, tom_menu, paul_menu = stephan.query_all.css(sel)
 
 By default, they are hidden:
@@ -759,7 +786,7 @@ By default, they are hidden:
 
 And they appear when the user clicks on the student names:
 
-    >>> stephan.query.link('Hoffman, Tom').click()
+    >>> stephan.query.link('Hoffman').click()
     >>> tom_menu.is_displayed()
     True
 
@@ -768,7 +795,7 @@ These menus contain options related to the student:
     >>> print tom_menu
     <ul class="popup_menu popup_active" ...>
       <li class="header">
-        Hoffman, Tom
+        Tom Hoffman
       </li>
       <li>
         <a href="http://localhost/persons/tom">

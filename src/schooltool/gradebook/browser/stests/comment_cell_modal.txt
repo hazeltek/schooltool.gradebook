@@ -85,7 +85,7 @@ hint is blank.
 
     >>> cells[0].click()
     >>> print stephan.query.css('#comment-cell-dialog-title').text
-    Carduner, Paul
+    Paul Carduner
     >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
     CM1
     >>> stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
@@ -99,7 +99,7 @@ We'll note the contents of the modal for each of the other three cells.
 
     >>> cells[1].click()
     >>> print stephan.query.css('#comment-cell-dialog-title').text
-    Carduner, Paul
+    Paul Carduner
     >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
     CM2
     >>> print stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
@@ -108,7 +108,7 @@ We'll note the contents of the modal for each of the other three cells.
 
     >>> cells[2].click()
     >>> print stephan.query.css('#comment-cell-dialog-title').text
-    Hoffman, Tom
+    Tom Hoffman
     >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
     CM1
     >>> stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text
@@ -117,7 +117,7 @@ We'll note the contents of the modal for each of the other three cells.
 
     >>> cells[3].click()
     >>> print stephan.query.css('#comment-cell-dialog-title').text
-    Hoffman, Tom
+    Tom Hoffman
     >>> print stephan.query.css('#comment-cell-dialog-container .viewspace label span').text
     CM2
     >>> print stephan.query.css('#comment-cell-dialog-container .viewspace p.hint').text

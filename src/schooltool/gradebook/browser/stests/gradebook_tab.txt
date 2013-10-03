@@ -109,13 +109,13 @@ This gives the teacher ability to see other teachers' gradebooks:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    |                  |       |      |
-    +------------------+-------+------+
-    | Tejada, German   | 0.0   | N/A  |
-    | Vividor, Liliana | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Tejada    | German     | 0.0   | N/A  |
+    | Vividor   | Liliana    | 0.0   | N/A  |
+    +-----------+------------+-------+------+
 
 Go to Home page and back to the Gradebook tab. Again, the current
 section should be Math (2), not Baseball (4):
@@ -182,13 +182,13 @@ This gives the gradebook ability to see other section gradebooks:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    |                  |       |      |
-    +------------------+-------+------+
-    | Tejada, German   | 0.0   | N/A  |
-    | Vividor, Liliana | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Tejada    | German     | 0.0   | N/A  |
+    | Vividor   | Liliana    | 0.0   | N/A  |
+    +-----------+------------+-------+------+
 
 Go to Home page and back to the Gradebook tab. Again, the current
 section should be Math (2), not Baseball (4):

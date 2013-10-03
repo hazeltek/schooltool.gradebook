@@ -56,7 +56,7 @@ def table_header(browser):
         'return $(arguments[0])', sel)
     row1.extend([header.text.strip() for header in headers])
     result.append(row1)
-    row2 = ['']
+    row2 = ['', '']
     sel = '#grades-part thead tr:nth-child(2) th'
     headers = browser.driver.execute_script(
         'return $(arguments[0])', sel)
@@ -71,11 +71,16 @@ def table_header(browser):
 
 def table_rows(browser, show_validation):
     rows = []
-    sel = '.students tbody a.popup_link'
-    students = browser.driver.execute_script(
+    sel = '.students tbody tr'
+    student_rows = browser.driver.execute_script(
         'return $(arguments[0])', sel)
-    for student in students:
-        rows.append([student.text.strip()])
+    for row in student_rows:
+        student = []
+        links = browser.driver.execute_script(
+            'return $(arguments[0]).find("a.popup_link")', row)
+        for link in links:
+            student.append(link.text.strip())
+        rows.append(student)
     sel = '.grades tbody tr'
     grade_rows = browser.driver.execute_script(
         'return $(arguments[0])', sel)
@@ -135,9 +140,14 @@ def registerSeleniumSetup():
     def score(browser, student, activity, grade):
         row_index = None
         column_index = None
-        sel = '.students tbody a.popup_link'
+        sel = '.students tbody td:first-child a.popup_link'
+
+        # XXX: reverse in tests
+        if ', ' in student:
+            student = ' '.join(reversed(student.split(', ')))
+
         for index, link in enumerate(browser.query_all.css(sel)):
-            if student == link.text:
+            if student == link.get_attribute('title'):
                 row_index = index
                 break
         sel = '.grades thead a.popup_link'
