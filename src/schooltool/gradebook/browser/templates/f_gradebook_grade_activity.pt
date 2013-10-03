@@ -26,8 +26,7 @@
         <tr tal:repeat="grade view/grades">
           <tal:loop repeat="column view/name_sorting_columns">
             <td>
-              <label tal:attributes="for grade/student/id;
-                                     title grade/student/title"
+              <label tal:attributes="for grade/student/id"
                      tal:content="python:grade['student'][column.name]" />
             </td>
           </tal:loop>

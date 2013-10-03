@@ -56,17 +56,17 @@ We'll add a couple activities with minimum scores.
 We'll score them for the student and see that the total and average have no
 regard for the minimum, the average working off the maximum.
 
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW1', '51')
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW2', '80')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'HW1', '51')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'HW2', '80')
     >>> stephan.query.name('UPDATE_SUBMIT').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-----+-----+-------+-------+
-    | Name           | HW1 | HW2 | Total | Ave.  |
-    |                | 75  | 100 |       |       |
-    +----------------+-----+-----+-------+-------+
-    | Carduner, Paul | 51  | 80  | 131.0 | 74.9% |
-    +----------------+-----+-----+-------+-------+
+    +-----------+------------+-----+-----+-------+-------+
+    | Last Name | First Name | HW1 | HW2 | Total | Ave.  |
+    |           |            | 75  | 100 |       |       |
+    +-----------+------------+-----+-----+-------+-------+
+    | Carduner  | Paul       | 51  | 80  | 131.0 | 74.9% |
+    +-----------+------------+-----+-----+-------+-------+
 
