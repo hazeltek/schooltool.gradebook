@@ -79,7 +79,7 @@
     </div>
   </form>
   <h3 class="done-link" i18n:domain="schooltool">
-    <a tal:attributes="href string:${context/schooltool:app/@@absolute_url}/manage"
+    <a tal:attributes="href view/nextURL"
        i18n:translate="">Done</a>
   </h3>
 </div>

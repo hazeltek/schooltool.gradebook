@@ -1088,8 +1088,8 @@ class LayoutReportCardView(object):
         return absoluteURL(self.context, self.request)
 
 
-class LayoutReportCardLink(
-    ActiveSchoolYearContentMixin, flourish.page.LinkViewlet):
+class LayoutReportCardLink(flourish.page.LinkViewlet,
+                           ActiveSchoolYearContentMixin):
 
     @property
     def title(self):
@@ -1097,16 +1097,19 @@ class LayoutReportCardLink(
             return ''
         return _("Report Card Layout")
 
+    @property
+    def url(self):
+        return self.url_with_schoolyear_id(self.context, view_name=self.link)
 
-class FlourishLayoutReportCardView(
-    ActiveSchoolYearContentMixin, flourish.page.Page):
+
+class FlourishLayoutReportCardView(flourish.page.Page,
+                                   ActiveSchoolYearContentMixin):
     """A flourish view for laying out the columns of the report card"""
 
     def __init__(self, context, request):
         super(FlourishLayoutReportCardView, self).__init__(context, request)
         if self.schoolyear is None:
-            url = absoluteURL(ISchoolToolApplication(None), self.request)
-            self.request.response.redirect(url + '/manage')
+            self.request.response.redirect(self.nextURL())
 
     @property
     def title(self):
@@ -1134,6 +1137,9 @@ class FlourishLayoutReportCardView(
             absoluteURL(self.context, self.request), source_type,
             self.schoolyear.__name__, index + 1)
  
+    def nextURL(self):
+        return self.url_with_schoolyear_id(self.context, view_name='manage')
+
     @property
     def columns(self):
         """Get  a list of the existing layout columns."""
@@ -1379,9 +1385,7 @@ class FlourishReportCardLayoutMixin(ActiveSchoolYearContentMixin):
             self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return '%s/report_card_layout?schoolyear_id=%s' % (
-            absoluteURL(ISchoolToolApplication(None), self.request),
-            self.schoolyear.__name__)
+        return self.url_with_schoolyear_id(self.context, view_name='report_card_layout')
 
 
 class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
