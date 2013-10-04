@@ -21,7 +21,8 @@
           <thead>
             <tr>
               <th rowspan="2" class="name"
-                  tal:repeat="column view/name_sorting_columns">
+                  tal:repeat="column view/name_sorting_columns"
+                  tal:attributes="id column/name">
                 <a class="popup_link" href=""
                    tal:attributes="title column/title"
                    tal:content="column/title" />

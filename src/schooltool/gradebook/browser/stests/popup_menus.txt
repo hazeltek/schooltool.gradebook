@@ -221,10 +221,10 @@ Hidden columns can be shown again using the Name menu:
     >>> print name_menu
     <ul class="popup_menu">
       <li class="header">
-        Name
+        Last Name
       </li>
       <li>
-        <a href="?sort_by=student">
+        <a href="?sort_by=last_name">
           Sort by
         </a>
       </li>
@@ -735,6 +735,20 @@ and sorted:
 
 Let's sort by student name:
 
+    >>> stephan.query.link('First Name').click()
+    >>> stephan.query.link('Sort by').click()
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +-----------+------------+-------+------+-----+------+
+    | Last Name | First Name | Quiz2 | Quiz | HW1 | Ave. |
+    |           |            | 100   | 100  | 50  |      |
+    +-----------+------------+-------+------+-----+------+
+    | Richter   | Claudia    |       | 101  | 51  | Good |
+    | Carduner  | Paul       |       | 90   | 40  | Good |
+    | Hoffman   | Tom        |       | 88   | 48  | Good |
+    +-----------+------------+-------+------+-----+------+
     >>> stephan.query.link('Last Name').click()
     >>> stephan.query.link('Sort by').click()
     >>> stephan.ui.gradebook.worksheet.pprint()

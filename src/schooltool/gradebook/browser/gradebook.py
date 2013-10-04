@@ -53,7 +53,6 @@ import schooltool.skin.flourish.page
 import schooltool.skin.flourish.form
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.interfaces import IApplicationPreferences
-from schooltool.common import SchoolToolMessage
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISection
@@ -68,7 +67,6 @@ from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionAttended)
 from schooltool.person.interfaces import IPerson
 from schooltool.person.interfaces import IPersonFactory
-from schooltool.gradebook.journal import ABSENT, TARDY
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
@@ -531,7 +529,7 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             if sort_by == key:
                 reverse = not reverse
             else:
-                reverse = (sort_by != 'student')
+                reverse = (sort_by not in ('student', 'first_name', 'last_name'))
             gradebook.setSortKey(self.person, (sort_by, reverse))
         self.sortKey = gradebook.getSortKey(self.person)
 
@@ -830,14 +828,20 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
 
         # Do the sorting
         key, reverse = self.sortKey
-        self.collator = ICollator(self.request.locale)
+        collator = ICollator(self.request.locale)
         factory = getUtility(IPersonFactory)
-        sorting_key = lambda x: factory.getSortingKey(x, self.collator)
+        sorting_key = lambda x: factory.getSortingKey(x, collator)
         def generateStudentKey(row):
             return sorting_key(row['student']['object'])
         def generateKey(row):
             if key == 'student':
                 return generateStudentKey(row)
+            elif key == 'last_name':
+                return (collator.key(row['student']['last_name']),
+                        collator.key(row['student']['first_name']))
+            elif key == 'first_name':
+                return (collator.key(row['student']['first_name']),
+                        collator.key(row['student']['last_name']))
             elif key == 'total':
                 return (float(row['total']), generateStudentKey(row))
             elif key == 'average':
@@ -2468,11 +2472,11 @@ class FlourishStudentPopupMenuView(JSONViewBase):
 
 class FlourishNamePopupMenuView(JSONViewBase):
 
-    def options(self, worksheet):
+    def options(self, worksheet, column_id):
         options = [
             {
                 'label': self.translate(_('Sort by')),
-                'url': '?sort_by=student',
+                'url': '?sort_by=%s' % column_id,
                 },
             ]
         if not worksheet.deployed:
@@ -2519,13 +2523,21 @@ class FlourishNamePopupMenuView(JSONViewBase):
                         })
         return options
 
+    @Lazy
+    def name_sorting_columns(self):
+        return getUtility(IPersonFactory).columns()
+
     def result(self):
+        column_id = self.request.get('column_id')
+        for column in self.name_sorting_columns:
+            if column.name == column_id:
+                break
         worksheet = proxy.removeSecurityProxy(self.context).context
         self.deployed = worksheet.deployed
         self.processColumnPreferences()
         result = {
-            'header': translate(_('Name'), context=self.request),
-            'options': self.options(worksheet),
+            'header': column.title,
+            'options': self.options(worksheet, column_id),
             }
         return result
 

@@ -5,7 +5,7 @@ CHANGES
 2.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Split Name column into First Name and Last Name.
 
 
 2.5.3 (2013-09-13)

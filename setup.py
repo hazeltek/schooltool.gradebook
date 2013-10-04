@@ -59,7 +59,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     namespace_packages=["schooltool"],
-    install_requires=['schooltool>=2.5.3dev',
+    install_requires=['schooltool>=2.5.4dev',
                       'lxml',
                       'pytz',
                       'setuptools',
