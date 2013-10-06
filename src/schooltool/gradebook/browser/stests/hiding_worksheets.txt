@@ -98,6 +98,10 @@ course. Let's allow the manager to edit the gradebook:
     >>> manager.query.id('on.administration_can_grade_students').click()
     >>> manager.query.name('UPDATE_SUBMIT').click()
 
+Add to Administrators group, because Clerks cannot see all of this:
+
+    >>> manager.ui.group.members.add('2005-2006', 'School Administrators', ['manager'])
+
 And see the options displayed to him in the gradebook:
 
     >>> manager.ui.section.go('2005-2006', 'Year', 'Math I (1)')

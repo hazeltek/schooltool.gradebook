@@ -2472,7 +2472,7 @@ class FlourishStudentPopupMenuView(JSONViewBase):
 
 class FlourishNamePopupMenuView(JSONViewBase):
 
-    def options(self, worksheet, column_id):
+    def options(self, worksheet, column_id='student'):
         options = [
             {
                 'label': self.translate(_('Sort by')),
