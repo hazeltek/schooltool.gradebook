@@ -159,7 +159,7 @@ def registerSeleniumSetup():
                '//tbody/tr[%s]/td[%s]' % (row_index+1, column_index+1))
         cell = browser.query.xpath(sel)
         cell.click()
-        cell.query.tag('input').type(browser.keys.DELETE, grade)
+        cell.query.tag('input').type(browser.keys.DELETE, grade, browser.keys.ENTER, browser.keys.UP)
 
     registry.register('SeleniumHelpers',
         lambda: schooltool.testing.selenium.registerBrowserUI(
