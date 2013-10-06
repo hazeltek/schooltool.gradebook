@@ -2536,7 +2536,7 @@ class FlourishNamePopupMenuView(JSONViewBase):
         self.deployed = worksheet.deployed
         self.processColumnPreferences()
         result = {
-            'header': column.title,
+            'header': self.translate(column.title),
             'options': self.options(worksheet, column_id),
             }
         return result
