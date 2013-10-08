@@ -22,9 +22,11 @@ from decimal import Decimal, InvalidOperation
 import xlwt
 from StringIO import StringIO
 
+from zope.cachedescriptors.property import Lazy
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.i18n import translate
+from zope.i18n.interfaces.locales import ICollator
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
 import zope.schema
@@ -36,6 +38,7 @@ from zope.browser.interfaces import ITerms
 from zope.schema.vocabulary import SimpleTerm
 from zope.security.proxy import removeSecurityProxy
 from zope.component import queryAdapter, getAdapter, queryUtility
+from zope.component import getUtility
 from zope import interface, schema
 from zope.viewlet.viewlet import ViewletBase
 
@@ -57,6 +60,7 @@ from schooltool.gradebook.activity import LinkedActivity, Activities
 from schooltool.gradebook.activity import Worksheet
 from schooltool.gradebook.gradebook import canAverage
 from schooltool.person.interfaces import IPerson
+from schooltool.person.interfaces import IPersonFactory
 from schooltool.gradebook.browser.gradebook import LinkedActivityGradesUpdater
 from schooltool.requirement.interfaces import IRangedValuesScoreSystem
 from schooltool.requirement.scoresystem import RangedValuesScoreSystem
@@ -734,6 +738,10 @@ class UpdateGradesActionMenuViewlet(ViewletBase):
 class WorksheetsExportView(export.ExcelExportView):
     """A view for exporting worksheets to a XLS file"""
 
+    @Lazy
+    def name_sorting_columns(self):
+        return getUtility(IPersonFactory).columns()
+
     @property
     def base_filename(self):
         section = self.context.__parent__
@@ -746,7 +754,9 @@ class WorksheetsExportView(export.ExcelExportView):
         row = 2
         gradebook = interfaces.IGradebook(worksheet)
         activities = gradebook.getWorksheetActivities(worksheet)
-        header_labels = ['ID', 'First name', 'Last name']
+        header_labels = ['ID']
+        for column in self.name_sorting_columns:
+            header_labels.append(column.title)
         header_labels.extend([activity.title for activity in activities])
         headers = [export.Header(label) for label in header_labels]
         for col, header in enumerate(headers):
@@ -756,12 +766,14 @@ class WorksheetsExportView(export.ExcelExportView):
         gradebook = interfaces.IGradebook(worksheet)
         activities = gradebook.getWorksheetActivities(worksheet)
         starting_row = 3
-        students = sorted(gradebook.students,
-                          key=lambda x:IDemographics(x).get('ID', ''))
+        collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x, collator)
+        students = sorted(gradebook.students, key=sorting_key)
         for row, student in enumerate(students):
-            cells = [export.Text(IDemographics(student).get('ID', '')),
-                     export.Text(student.first_name),
-                     export.Text(student.last_name)]
+            cells = [export.Text(IDemographics(student).get('ID', ''))]
+            for column in self.name_sorting_columns:
+                cells.append(export.Text(getattr(student, column.name)))
             for activity in activities:
                 score = gradebook.getScore(student, activity)
                 if not score:
