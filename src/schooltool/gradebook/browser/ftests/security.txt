@@ -125,6 +125,16 @@ the permission to do it:
     >>> manager.getControl("School administrators can edit a section's gradebook.").click()
     >>> manager.getControl('Apply').click()
 
+Add to Administrators group, manager is not in it by default:
+
+    >>> manager.getLink('2005-2006').click()
+    >>> manager.getLink('Groups').click()
+    >>> manager.getLink('School Administrators').click()
+    >>> manager.getLink('edit members').click()
+    >>> manager.getControl(name='add_item.manager').value = True
+    >>> manager.getControl('Add').click()
+    >>> manager.getControl('OK').click()
+
 And try again:
 
     >>> manager.getLink('2005-2006').click()
