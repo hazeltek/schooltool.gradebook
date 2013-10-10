@@ -35,11 +35,11 @@ from z3c.form import button
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces, scoresystem
+from schooltool.requirement import RequirementMessage as _
 from schooltool.skin.flourish.page import Page
 from schooltool.skin.flourish.page import RefineLinksViewlet
 from schooltool.skin.flourish.page import ModalFormLinkViewlet
 from schooltool.skin.flourish.form import DialogForm
-from schooltool.gradebook import GradebookMessage as _
 
 
 MISSING_TITLE = _('The Title field must not be empty.')

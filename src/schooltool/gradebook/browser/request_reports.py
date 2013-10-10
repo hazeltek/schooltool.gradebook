@@ -157,7 +157,7 @@ class FailingTextScoreValidator(z3c.form.validator.SimpleFieldValidator):
                 _("${value} is not valid in ${scoresystem}.",
                     mapping={
                         'value': value,
-                        'scoresystem': scoresystem.description or scoresystem.title,
+                        'scoresystem': scoresystem.title,
                     }),
                 value)
         return z3c.form.validator.SimpleFieldValidator.validate(self, value)

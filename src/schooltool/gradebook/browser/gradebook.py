@@ -989,8 +989,10 @@ class FlourishGradebookOverview(GradebookOverview,
             'current': not current,
             }]
         for term in vocab:
+            if term.value.hidden:
+                continue
             results.append({
-                'title': term.value.title,
+                'title': translate(term.value.title, context=self.request),
                 'url': '?scoresystem=%s' % term.token,
                 'current': term.value.__name__ == current,
                 })
@@ -2622,8 +2624,10 @@ class FlourishTotalPopupMenuView(JSONViewBase):
             'current': not current,
             }]
         for term in vocab:
+            if term.value.hidden:
+                continue
             results.append({
-                'title': term.value.title,
+                'title': translate(term.value.title, context=self.request),
                 'url': '?scoresystem=%s' % term.token,
                 'current': term.value.__name__ == current,
                 })
