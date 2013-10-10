@@ -9,13 +9,6 @@
       <hr width="100%" thickness="1" cap="square" color="separator"
           spaceAfter="4" spaceBefore="8" align="center" />
       <para style="section-title" i18n:translate="">Absences (continued)</para>
-      <blockTable style="multi-table.header"
-                  tal:attributes="colWidths view/header_widths">
-        <tr>
-          <td />
-          <td i18n:translate="">Period Number</td>
-        </tr>
-      </blockTable>
     </pto_header>
     <pto_trailer>
       <para style="pagesplit-continued">Continued on next page &gt;</para>
@@ -24,14 +17,6 @@
     <hr width="100%" thickness="1" cap="square" color="separator"
         spaceAfter="4" spaceBefore="8" align="center" />
     <para style="section-title" i18n:translate="">Absences</para>
-
-    <blockTable style="multi-table.header"
-                tal:attributes="colWidths view/header_widths">
-      <tr>
-        <td />
-        <td i18n:translate="">Period Number</td>
-     </tr>
-    </blockTable>
 
     <blockTable style="multi-table.subtable"
                 tal:define="periods view/periods"

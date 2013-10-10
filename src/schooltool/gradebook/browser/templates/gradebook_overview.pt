@@ -45,7 +45,7 @@
           tal:attributes="action string:${context/@@absolute_url}">
 
     <tal:if condition="python:not list(view.getSections())">
-      <b i18n:translate="">Term:</b>
+      <b>Term:</b>
       <span tal:content="view/getCurrentTerm" />
     </tal:if>
 
@@ -64,7 +64,7 @@
 
     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <tal:if condition="python:not list(view.getSections())">
-      <b i18n:translate="">Section:</b>
+      <b>Section:</b>
       <span tal:content="view/getCurrentSection" />
     </tal:if>
     <tal:if condition="python:list(view.getSections())">
@@ -127,7 +127,7 @@
 
     <tr>
      <th class="cell header">
-       <div i18n:translate="">Name</div>
+       <div>Name</div>
        <a href="?sort_by=student" i18n:translate="">(sort)</a>
      </th>
      <th tal:condition="not: view/absences_hide" class="cell padded header">
@@ -169,7 +169,7 @@
 
     <tr>
       <td tal:attributes="colspan view/apply_all_colspan"
-          class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
+          class="cell padded fd_cell empty">Apply a grade for all students:</td>
       <td class="cell padded fd_cell" tal:repeat="activity view/activities"
           tal:attributes="id string:fd_${activity/hash}_cell">
         <input type="text" size="4" class="data fd"

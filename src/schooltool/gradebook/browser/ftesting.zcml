@@ -36,16 +36,7 @@
       name="samplesource"
       />
 
-  <interface
-      interface="schooltool.basicperson.ftesting.IBasicPersonFtestingSkin"
-      type="zope.publisher.interfaces.browser.IBrowserSkinType"
-      name="BasicPerson"
-      />
-
-  <!-- Provide local overrides of standard configurations-->
-  <includeOverrides package="schooltool.basicperson" file="overrides.zcml" />
-
-  <browser:defaultSkin name="BasicPerson" />
+  <browser:defaultSkin name="SchoolTool" />
 
   <!-- XXX: include zc.datetimewidget for old skin tests to work -->
   <include package="zc.datetimewidget" file="configure.zcml" />

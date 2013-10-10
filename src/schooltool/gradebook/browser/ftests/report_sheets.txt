@@ -264,13 +264,13 @@ worksheet:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +---------------+-------+------+
+    | Name          | Total | Ave. |
+    +---------------+-------+------+
+    | Camila Cerna  | 0.0   | N/A  |
+    | Nestor Guzman | 0.0   | N/A  |
+    | Mario Tejada  | 0.0   | N/A  |
+    +---------------+-------+------+
 
 Now, let's deploy our report sheet templates so sections can use
 them. Let's deploy the first template in the 2011 schoolyear, the
@@ -322,13 +322,13 @@ for Term1:
     +----------+----------------+----------------+
     | *Sheet1* | Report Sheet 1 | Report Sheet 2 |
     +----------+----------------+----------------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +---------------+-------+------+
+    | Name          | Total | Ave. |
+    +---------------+-------+------+
+    | Camila Cerna  | 0.0   | N/A  |
+    | Nestor Guzman | 0.0   | N/A  |
+    | Mario Tejada  | 0.0   | N/A  |
+    +---------------+-------+------+
 
 The 2011 report sheet, Report Sheet 1, should have three activities,
 and like all deployed sheets it has no totals or average columns:
@@ -338,13 +338,13 @@ and like all deployed sheets it has no totals or average columns:
     +--------+------------------+----------------+
     | Sheet1 | *Report Sheet 1* | Report Sheet 2 |
     +--------+------------------+----------------+
-    +----------------+-------+------+---------+-------+---------+
-    | Name           | Total | Ave. | Repor   | RA1.1 | RA1.4   |
-    +----------------+-------+------+---------+-------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] |       | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] |       | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] |       | [_____] |
-    +----------------+-------+------+---------+-------+---------+
+    +---------------+-------+------+---------+-------+---------+
+    | Name          | Total | Ave. | Repor   | RA1.1 | RA1.4   |
+    +---------------+-------+------+---------+-------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] |       | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] |       | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] |       | [_____] |
+    +---------------+-------+------+---------+-------+---------+
 
 Note that the 'Report Activity 1 (RA1.1)' cannot be graded directly in
 the worksheet nor on it's own. That's because it uses a Comment score
@@ -353,7 +353,7 @@ gradebook. Let's grade Nestor's activities:
 
     >>> teacher.getLink('>', index=1).click()
     >>> teacher.printQuery("id('form')/div[1]/h3")
-    <h3>Enter grades for Guzman, Nestor</h3>
+    <h3>Enter grades for Nestor Guzman</h3>
     >>> teacher.printQuery('id("form")//fieldset//label/span/text()')
     Report Activity 1.2 (A+)
     Report Activity 1.1
@@ -366,7 +366,7 @@ and now for Camila:
     >>> teacher.getControl('Previous').click()
     >>> url = teacher.url
     >>> teacher.printQuery("id('form')/div[1]/h3")
-    <h3>Enter grades for Cerna, Camila</h3>
+    <h3>Enter grades for Camila Cerna</h3>
     >>> teacher.printQuery('id("form")//fieldset//label/span/text()')
     Report Activity 1.2 (A+)
     Report Activity 1.1
@@ -382,13 +382,13 @@ We get back to the 'Report Sheet 1' sheet:
     +--------+------------------+----------------+
     | Sheet1 | *Report Sheet 1* | Report Sheet 2 |
     +--------+------------------+----------------+
-    +----------------+-------+-------+---------+-------+---------+
-    | Name           | Total | Ave.  | Repor   | RA1.1 | RA1.4   |
-    +----------------+-------+-------+---------+-------+---------+
-    | Cerna, Camila  | 81.7  | 78.6% | [A-___] | ...   | [78___] |
-    | Guzman, Nestor | 87.0  | 87.0% | [_____] | ...   | [87___] |
-    | Tejada, Mario  | 0.0   | N/A   | [_____] |       | [_____] |
-    +----------------+-------+-------+---------+-------+---------+
+    +---------------+-------+-------+---------+-------+---------+
+    | Name          | Total | Ave.  | Repor   | RA1.1 | RA1.4   |
+    +---------------+-------+-------+---------+-------+---------+
+    | Camila Cerna  | 81.7  | 78.6% | [A-___] | ...   | [78___] |
+    | Nestor Guzman | 87.0  | 87.0% | [_____] | ...   | [87___] |
+    | Mario Tejada  | 0.0   | N/A   | [_____] |       | [_____] |
+    +---------------+-------+-------+---------+-------+---------+
 
 Let's check the Report Sheet 2 sheet:
 
@@ -397,13 +397,13 @@ Let's check the Report Sheet 2 sheet:
     +--------+----------------+------------------+
     | Sheet1 | Report Sheet 1 | *Report Sheet 2* |
     +--------+----------------+------------------+
-    +----------------+-------+------+---------+---------+
-    | Name           | Total | Ave. | Repor   | Repor   |
-    +----------------+-------+------+---------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
-    +----------------+-------+------+---------+---------+
+    +---------------+-------+------+---------+---------+
+    | Name          | Total | Ave. | Repor   | Repor   |
+    +---------------+-------+------+---------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] | [_____] |
+    +---------------+-------+------+---------+---------+
 
 Now, if we go to the other section in this term, we should see these
 same report sheets and activities deployed:
@@ -421,26 +421,26 @@ same report sheets and activities deployed:
     +------------------+----------------+--------+
     | *Report Sheet 1* | Report Sheet 2 | Sheet1 |
     +------------------+----------------+--------+
-    +----------------+-------+------+---------+-------+---------+
-    | Name           | Total | Ave. | Repor   | RA1.1 | RA1.4   |
-    +----------------+-------+------+---------+-------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] |       | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] |       | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] |       | [_____] |
-    +----------------+-------+------+---------+-------+---------+
+    +---------------+-------+------+---------+-------+---------+
+    | Name          | Total | Ave. | Repor   | RA1.1 | RA1.4   |
+    +---------------+-------+------+---------+-------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] |       | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] |       | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] |       | [_____] |
+    +---------------+-------+------+---------+-------+---------+
 
     >>> teacher.getLink('Report Sheet 2').click()
     >>> printGradebook(teacher.contents)
     +----------------+------------------+--------+
     | Report Sheet 1 | *Report Sheet 2* | Sheet1 |
     +----------------+------------------+--------+
-    +----------------+-------+------+---------+---------+
-    | Name           | Total | Ave. | Repor   | Repor   |
-    +----------------+-------+------+---------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
-    +----------------+-------+------+---------+---------+
+    +---------------+-------+------+---------+---------+
+    | Name          | Total | Ave. | Repor   | Repor   |
+    +---------------+-------+------+---------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] | [_____] |
+    +---------------+-------+------+---------+---------+
 
 And if we go to the other term, Term2, in this schoolyear, we'll see
 that the 'Report Sheet 1' sheet is common for both terms and we'll see
@@ -459,26 +459,26 @@ the other 'Report Sheet 3' deployed only for that term:
     +------------------+----------------+--------+
     | *Report Sheet 1* | Report Sheet 3 | Sheet1 |
     +------------------+----------------+--------+
-    +----------------+-------+------+---------+-------+---------+
-    | Name           | Total | Ave. | Repor   | RA1.1 | RA1.4   |
-    +----------------+-------+------+---------+-------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] |       | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] |       | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] |       | [_____] |
-    +----------------+-------+------+---------+-------+---------+
+    +---------------+-------+------+---------+-------+---------+
+    | Name          | Total | Ave. | Repor   | RA1.1 | RA1.4   |
+    +---------------+-------+------+---------+-------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] |       | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] |       | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] |       | [_____] |
+    +---------------+-------+------+---------+-------+---------+
 
     >>> teacher.getLink('Report Sheet 3').click()
     >>> printGradebook(teacher.contents)
     +----------------+------------------+--------+
     | Report Sheet 1 | *Report Sheet 3* | Sheet1 |
     +----------------+------------------+--------+
-    +----------------+-------+------+---------+
-    | Name           | Total | Ave. | REPAC   |
-    +----------------+-------+------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] |
-    +----------------+-------+------+---------+
+    +---------------+-------+------+---------+
+    | Name          | Total | Ave. | REPAC   |
+    +---------------+-------+------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] |
+    +---------------+-------+------+---------+
 
 And now, if we go to the section in the 2012 schoolyear, we won't see
 any common report sheet deployed, just the default worksheet:
@@ -496,13 +496,13 @@ any common report sheet deployed, just the default worksheet:
     +----------+
     | *Sheet1* |
     +----------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +---------------+-------+------+
+    | Name          | Total | Ave. |
+    +---------------+-------+------+
+    | Camila Cerna  | 0.0   | N/A  |
+    | Nestor Guzman | 0.0   | N/A  |
+    | Mario Tejada  | 0.0   | N/A  |
+    +---------------+-------+------+
 
 Now, let's visit the unreachable 'view.html' view for Camila's Report Sheet 1 grades:
 
@@ -732,13 +732,13 @@ their gradebook for one of the sections in Term1.
     +----------+----------------+
     | *Sheet1* | Report Sheet 1 |
     +----------+----------------+
-    +----------------+-------+------+
-    | Name           | Total | Ave. |
-    +----------------+-------+------+
-    | Cerna, Camila  | 0.0   | N/A  |
-    | Guzman, Nestor | 0.0   | N/A  |
-    | Tejada, Mario  | 0.0   | N/A  |
-    +----------------+-------+------+
+    +---------------+-------+------+
+    | Name          | Total | Ave. |
+    +---------------+-------+------+
+    | Camila Cerna  | 0.0   | N/A  |
+    | Nestor Guzman | 0.0   | N/A  |
+    | Mario Tejada  | 0.0   | N/A  |
+    +---------------+-------+------+
 
 We can also unhide report sheets that we have hidden.  We see that the one
 we just hid is available for unhiding.
@@ -793,13 +793,13 @@ sure it's still ok.
     +--------+----------------+------------------+
     | Sheet1 | Report Sheet 1 | *Report Sheet 2* |
     +--------+----------------+------------------+
-    +----------------+-------+------+---------+---------+
-    | Name           | Total | Ave. | Repor   | Repor   |
-    +----------------+-------+------+---------+---------+
-    | Cerna, Camila  | 0.0   | N/A  | [_____] | [_____] |
-    | Guzman, Nestor | 0.0   | N/A  | [_____] | [_____] |
-    | Tejada, Mario  | 0.0   | N/A  | [_____] | [_____] |
-    +----------------+-------+------+---------+---------+
+    +---------------+-------+------+---------+---------+
+    | Name          | Total | Ave. | Repor   | Repor   |
+    +---------------+-------+------+---------+---------+
+    | Camila Cerna  | 0.0   | N/A  | [_____] | [_____] |
+    | Nestor Guzman | 0.0   | N/A  | [_____] | [_____] |
+    | Mario Tejada  | 0.0   | N/A  | [_____] | [_____] |
+    +---------------+-------+------+---------+---------+
 
 Finally, we need the hide and unhide views to handle the case where there
 are no report sheets to hide or unhide.  Presently there are no report sheets

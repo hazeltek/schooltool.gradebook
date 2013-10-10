@@ -34,7 +34,7 @@
 
     <table class="schooltool_gradebook">
       <tr>
-        <th class="cell header" i18n:translate="">Name</th>
+        <th class="cell header">Name</th>
         <th class="cell header">
           <div tal:content="activity/title">
             HW 1
@@ -44,7 +44,7 @@
       </tr>
 
       <tr>
-        <td class="cell padded fd_cell empty" i18n:translate="">Apply a grade for all students:</td>
+        <td class="cell padded fd_cell empty">Apply a grade for all students:</td>
         <td class="cell padded fd_cell"
             tal:attributes="id string:fd_${activity/hash}_cell">
           <input type="text" size="4"

@@ -3,7 +3,7 @@
      tal:define="sheets view/sheets">
   <h3>
     <a title="Manage Deployed Report Sheets"
-       tal:attributes="href string:${context/@@absolute_url}/report_sheets"
+       tal:attributes="href view/sheets_url"
        i18n:attributes="title"
        i18n:translate="">
       Deployed Report Sheets

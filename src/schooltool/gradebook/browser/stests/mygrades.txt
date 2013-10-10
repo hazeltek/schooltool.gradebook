@@ -50,14 +50,14 @@ Let's add some activities to the default worksheet:
 
 Grade the activities:
 
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Multi', '90')
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', '02', '100')
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', 'Divid', '90')
-    >>> teacher.ui.gradebook.worksheet.score('Cerna, Camila', '04', '80')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'Multi', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', '02', '100')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', 'Divid', '90')
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', '04', '80')
 
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Multi', '80')
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', 'Divid', '75')
-    >>> teacher.ui.gradebook.worksheet.score('Tejada, Mario', '04', '70')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'Multi', '80')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', 'Divid', '75')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', '04', '70')
 
     >>> teacher.query.button('Save').click()
 
@@ -67,14 +67,14 @@ Print the default worksheet:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+-----+-------+-----+-------+-------+
-    | Name             | Multi | 02  | Divid | 04  | Total | Ave.  |
-    |                  | 100   | 100 | 100   | 100 |       |       |
-    +------------------+-------+-----+-------+-----+-------+-------+
-    | Cerna, Camila    | 90    | 100 | 90    | 80  | 360.0 | 90.0% |
-    | Tejada, Mario    | 80    |     | 75    | 70  | 225.0 | 75.0% |
-    | Vividor, Liliana |       |     |       |     | 0.0   | N/A   |
-    +------------------+-------+-----+-------+-----+-------+-------+
+    +-----------+------------+-------+-----+-------+-----+-------+-------+
+    | Last Name | First Name | Multi | 02  | Divid | 04  | Total | Ave.  |
+    |           |            | 100   | 100 | 100   | 100 |       |       |
+    +-----------+------------+-------+-----+-------+-----+-------+-------+
+    | Cerna     | Camila     | 90    | 100 | 90    | 80  | 360.0 | 90.0% |
+    | Tejada    | Mario      | 80    |     | 75    | 70  | 225.0 | 75.0% |
+    | Vividor   | Liliana    |       |     |       |     | 0.0   | N/A   |
+    +-----------+------------+-------+-----+-------+-----+-------+-------+
 
 Log in as Camila and check the default worksheet:
 

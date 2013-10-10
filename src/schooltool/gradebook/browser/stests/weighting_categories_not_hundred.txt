@@ -67,21 +67,21 @@ Add some activities to the default worksheet:
 
 Add grades for the first three activities for Paul:
 
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW1', '40')
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'Quiz1', '90')
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'HW2', '45')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'HW1', '40')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'Quiz1', '90')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'HW2', '45')
 
 Add grades for the first three activities for Tom:
 
-    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'HW1', '45')
-    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'Quiz1', '80')
-    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'HW2', '50')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'HW1', '45')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'Quiz1', '80')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'HW2', '50')
 
 Add grades for the first three activities for Claudia:
 
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW1', '50')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'Quiz1', '95')
-    >>> stephan.ui.gradebook.worksheet.score('Richter, Claudia', 'HW2', '50')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'HW1', '50')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'Quiz1', '95')
+    >>> stephan.ui.gradebook.worksheet.score('Claudia Richter', 'HW2', '50')
 
     >>> stephan.query.name('UPDATE_SUBMIT').click()
 
@@ -91,14 +91,14 @@ By default the Average column is calculated normally:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+-------+-----+-------+-------+-------+
-    | Name             | HW1 | Quiz1 | HW2 | Quiz2 | Total | Ave.  |
-    |                  | 50  | 100   | 50  | 100   |       |       |
-    +------------------+-----+-------+-----+-------+-------+-------+
-    | Carduner, Paul   | 40  | 90    | 45  |       | 175.0 | 87.5% |
-    | Hoffman, Tom     | 45  | 80    | 50  |       | 175.0 | 87.5% |
-    | Richter, Claudia | 50  | 95    | 50  |       | 195.0 | 97.5% |
-    +------------------+-----+-------+-----+-------+-------+-------+
+    +-----------+------------+-----+-------+-----+-------+-------+-------+
+    | Last Name | First Name | HW1 | Quiz1 | HW2 | Quiz2 | Total | Ave.  |
+    |           |            | 50  | 100   | 50  | 100   |       |       |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+
+    | Carduner  | Paul       | 40  | 90    | 45  |       | 175.0 | 87.5% |
+    | Hoffman   | Tom        | 45  | 80    | 50  |       | 175.0 | 87.5% |
+    | Richter   | Claudia    | 50  | 95    | 50  |       | 195.0 | 97.5% |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+
 
 Let's create some category weights for the current worksheet. We'll
 fill in valid values for Assignment, Homework and Exam, even though
@@ -118,14 +118,14 @@ the Average column.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+-------+-----+-------+-------+-------+
-    | Name             | HW1 | Quiz1 | HW2 | Quiz2 | Total | Ave.  |
-    |                  | 50  | 100   | 50  | 100   |       |       |
-    +------------------+-----+-------+-----+-------+-------+-------+
-    | Carduner, Paul   | 40  | 90    | 45  |       | 175.0 | 88.1% |
-    | Hoffman, Tom     | 45  | 80    | 50  |       | 175.0 | 85.6% |
-    | Richter, Claudia | 50  | 95    | 50  |       | 195.0 | 96.9% |
-    +------------------+-----+-------+-----+-------+-------+-------+
+    +-----------+------------+-----+-------+-----+-------+-------+-------+
+    | Last Name | First Name | HW1 | Quiz1 | HW2 | Quiz2 | Total | Ave.  |
+    |           |            | 50  | 100   | 50  | 100   |       |       |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+
+    | Carduner  | Paul       | 40  | 90    | 45  |       | 175.0 | 88.1% |
+    | Hoffman   | Tom        | 45  | 80    | 50  |       | 175.0 | 85.6% |
+    | Richter   | Claudia    | 50  | 95    | 50  |       | 195.0 | 96.9% |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+
 
 Let's add a new Assignment activity:
 
@@ -138,8 +138,8 @@ Let's add a new Assignment activity:
 
 Let's grade the new assignment for Paul and Tom:
 
-    >>> stephan.ui.gradebook.worksheet.score('Carduner, Paul', 'Exper', '9')
-    >>> stephan.ui.gradebook.worksheet.score('Hoffman, Tom', 'Exper', '7')
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'Exper', '9')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'Exper', '7')
     >>> stephan.query.name('UPDATE_SUBMIT').click()
 
 Note how the Average changed for Paul and Tom, but not for Claudia:
@@ -148,14 +148,14 @@ Note how the Average changed for Paul and Tom, but not for Claudia:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+-------+-----+-------+-------+-------+-------+
-    | Name             | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.  |
-    |                  | 50  | 100   | 50  | 100   | 10    |       |       |
-    +------------------+-----+-------+-----+-------+-------+-------+-------+
-    | Carduner, Paul   | 40  | 90    | 45  |       | 9     | 184.0 | 88.5% |
-    | Hoffman, Tom     | 45  | 80    | 50  |       | 7     | 182.0 | 82.5% |
-    | Richter, Claudia | 50  | 95    | 50  |       |       | 195.0 | 96.9% |
-    +------------------+-----+-------+-----+-------+-------+-------+-------+
+    +-----------+------------+-----+-------+-----+-------+-------+-------+-------+
+    | Last Name | First Name | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.  |
+    |           |            | 50  | 100   | 50  | 100   | 10    |       |       |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+-------+
+    | Carduner  | Paul       | 40  | 90    | 45  |       | 9     | 184.0 | 88.5% |
+    | Hoffman   | Tom        | 45  | 80    | 50  |       | 7     | 182.0 | 82.5% |
+    | Richter   | Claudia    | 50  | 95    | 50  |       |       | 195.0 | 96.9% |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+-------+
 
 Now, let's only give Homeworks some weight:
 
@@ -172,14 +172,14 @@ The Averages have changed:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+-------+-----+-------+-------+-------+--------+
-    | Name             | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.   |
-    |                  | 50  | 100   | 50  | 100   | 10    |       |        |
-    +------------------+-----+-------+-----+-------+-------+-------+--------+
-    | Carduner, Paul   | 40  | 90    | 45  |       | 9     | 184.0 | 85.0%  |
-    | Hoffman, Tom     | 45  | 80    | 50  |       | 7     | 182.0 | 95.0%  |
-    | Richter, Claudia | 50  | 95    | 50  |       |       | 195.0 | 100.0% |
-    +------------------+-----+-------+-----+-------+-------+-------+--------+
+    +-----------+------------+-----+-------+-----+-------+-------+-------+--------+
+    | Last Name | First Name | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.   |
+    |           |            | 50  | 100   | 50  | 100   | 10    |       |        |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+--------+
+    | Carduner  | Paul       | 40  | 90    | 45  |       | 9     | 184.0 | 85.0%  |
+    | Hoffman   | Tom        | 45  | 80    | 50  |       | 7     | 182.0 | 95.0%  |
+    | Richter   | Claudia    | 50  | 95    | 50  |       |       | 195.0 | 100.0% |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+--------+
 
 Let's test that explicit zeros are saved:
 
@@ -201,11 +201,11 @@ Since all these weights are zero, they shouldn't affect the averages:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-----+-------+-----+-------+-------+-------+--------+
-    | Name             | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.   |
-    |                  | 50  | 100   | 50  | 100   | 10    |       |        |
-    +------------------+-----+-------+-----+-------+-------+-------+--------+
-    | Carduner, Paul   | 40  | 90    | 45  |       | 9     | 184.0 | 85.0%  |
-    | Hoffman, Tom     | 45  | 80    | 50  |       | 7     | 182.0 | 95.0%  |
-    | Richter, Claudia | 50  | 95    | 50  |       |       | 195.0 | 100.0% |
-    +------------------+-----+-------+-----+-------+-------+-------+--------+
+    +-----------+------------+-----+-------+-----+-------+-------+-------+--------+
+    | Last Name | First Name | HW1 | Quiz1 | HW2 | Quiz2 | Exper | Total | Ave.   |
+    |           |            | 50  | 100   | 50  | 100   | 10    |       |        |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+--------+
+    | Carduner  | Paul       | 40  | 90    | 45  |       | 9     | 184.0 | 85.0%  |
+    | Hoffman   | Tom        | 45  | 80    | 50  |       | 7     | 182.0 | 95.0%  |
+    | Richter   | Claudia    | 50  | 95    | 50  |       |       | 195.0 | 100.0% |
+    +-----------+------------+-----+-------+-----+-------+-------+-------+--------+

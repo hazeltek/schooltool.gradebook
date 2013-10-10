@@ -36,6 +36,7 @@ from zope.security.proxy import removeSecurityProxy
 from schooltool.app.app import StartUpBase
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces
+from schooltool.requirement import RequirementMessage as _
 
 
 SCORESYSTEM_CONTAINER_KEY = 'schooltool.requirement.scoresystem_container'
@@ -160,9 +161,8 @@ class GlobalCommentScoreSystem(AbstractScoreSystem):
         return 'CommentScoreSystem'
 
 
-# Singelton
-CommentScoreSystem = GlobalCommentScoreSystem(
-    u'Comment', u'Scores are commentary text.')
+# Singleton
+CommentScoreSystem = GlobalCommentScoreSystem(_('Comment'))
 
 
 class AbstractValuesScoreSystem(AbstractScoreSystem):
@@ -275,24 +275,24 @@ class GlobalDiscreteValuesScoreSystem(DiscreteValuesScoreSystem):
 
 PassFail = GlobalDiscreteValuesScoreSystem(
     'PassFail',
-    u'Pass/Fail', u'Pass or Fail score system.',
+    _('Pass/Fail'), None,
     [(u'Pass', u'', Decimal(1), Decimal(60)),
      (u'Fail', u'', Decimal(0), Decimal(0))],
-     u'Pass', u'Pass')
+    u'Pass', u'Pass')
 
 AmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'AmericanLetterScoreSystem',
-    u'Letter Grade', u'American Letter Grade',
+    _('Letter Grade'), None,
     [('A', u'', Decimal(4), Decimal(90)),
      ('B', u'', Decimal(3), Decimal(80)),
      ('C', u'', Decimal(2), Decimal(70)),
      ('D', u'', Decimal(1), Decimal(60)),
      ('F', u'', Decimal(0), Decimal(0))],
-     'A', 'D')
+    'A', 'D')
 
 ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
     'ExtendedAmericanLetterScoreSystem',
-    u'Extended Letter Grade', u'American Extended Letter Grade',
+    _('Extended Letter Grade'), None,
     [('A+', u'', Decimal('4.0'), Decimal(98)),
      ('A', u'', Decimal('4.0'), Decimal(93)),
      ('A-', u'', Decimal('3.7'), Decimal(90)),
@@ -306,7 +306,7 @@ ExtendedAmericanLetterScoreSystem = GlobalDiscreteValuesScoreSystem(
      ('D', u'', Decimal('1.0'), Decimal(63)),
      ('D-', u'', Decimal('0.7'), Decimal(60)),
      ('F',  u'', Decimal('0.0'), Decimal(0))],
-     'A+', 'D-')
+    'A+', 'D-')
 
 
 class RangedValuesScoreSystem(AbstractValuesScoreSystem):
@@ -396,11 +396,12 @@ class GlobalRangedValuesScoreSystem(RangedValuesScoreSystem):
 
 PercentScoreSystem = GlobalRangedValuesScoreSystem(
     'PercentScoreSystem',
-    u'Percent', u'Percent Score System', Decimal(0), Decimal(100), Decimal(60))
+    _('Percent'), None,
+    Decimal(0), Decimal(100), Decimal(60))
 
 HundredPointsScoreSystem = GlobalRangedValuesScoreSystem(
     'HundredPointsScoreSystem',
-    u'100 Points', u'100 Points Score System',
+    _('100 Points'), None,
     Decimal(0), Decimal(100), Decimal(60))
 
 

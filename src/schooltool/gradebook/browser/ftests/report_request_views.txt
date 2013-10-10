@@ -43,7 +43,7 @@ request adapters are reflected in the report request views.
 
     >>> manager.getLink('Manage').click()
     >>> manager.getLink('Persons').click()
-    >>> manager.getLink('Administrator').click()
+    >>> manager.getLink(url='manager').click()
     >>> manager.getLink('Reports').click()
     >>> report_names =  manager.queryHTML('//li/a/text()')
     >>> 'Student Report Card' in report_names

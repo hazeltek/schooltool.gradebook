@@ -127,8 +127,6 @@ commentary scoring system, which can have any comment as a score.
   >>> from schooltool.requirement import scoresystem
   >>> scoresystem.CommentScoreSystem.title
   u'Comment'
-  >>> scoresystem.CommentScoreSystem.description
-  u'Scores are commentary text.'
 
 The score system interface requires two methods to be implemented. The first
 methods checks whether a value is a valid score. For the commentary score
@@ -166,7 +164,7 @@ This scoring system can also be efficiently pickled:
   >>> len(pickle.dumps(scoresystem.CommentScoreSystem))
   59
 
-The commentary scoreing system cannot be used for statistical
+The commentary scoring system cannot be used for statistical
 computations. See below for more details.
 
 Since scoring schemes vary widely among schools and even requirements, the
@@ -392,7 +390,7 @@ has a maximum of 21 points:
   <RangedValuesScoreSystem u'Quiz Score'>
 
 Again, the first and second arguments are the title and description. The third
-and forth arguments are the minum and maximum value of the numerical range. by
+and forth arguments are the minimum and maximum value of the numerical range. By
 default the minimum value is 0, so I could have skipped that argument and just
 provide a ``max`` keyword argument.
 
@@ -518,7 +516,7 @@ score system,
   >>> scoresystem.PercentScoreSystem.getFractionalValue(Decimal(42))
   Decimal('0.42')
 
-and the "100 points" score system:
+And the "100 points" score system:
 
   >>> scoresystem.HundredPointsScoreSystem
   <GlobalRangedValuesScoreSystem u'100 Points'>

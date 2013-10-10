@@ -83,11 +83,11 @@ By default the absences and tardies coluns are hidden:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    +------------------+-------+------+
-    | Richter, Claudia | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------------+-------+------+
+    | Name            | Total | Ave. |
+    +-----------------+-------+------+
+    | Claudia Richter | 0.0   | N/A  |
+    +-----------------+-------+------+
 
 We'll go unhide the columns in the prefernces view.
 
@@ -103,11 +103,11 @@ the values are both 0.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+------+------+-------+------+
-    | Name             | Abs. | Trd. | Total | Ave. |
-    +------------------+------+------+-------+------+
-    | Richter, Claudia | 0    | 0    | 0.0   | N/A  |
-    +------------------+------+------+-------+------+
+    +-----------------+------+------+-------+------+
+    | Name            | Abs. | Trd. | Total | Ave. |
+    +-----------------+------+------+-------+------+
+    | Claudia Richter | 0    | 0    | 0.0   | N/A  |
+    +-----------------+------+------+-------+------+
 
 Let's add some attendance data for the student.  This will include some
 absences and tardies as well as present grades:
@@ -131,11 +131,11 @@ left out of the calculation:
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+------+------+-------+------+
-    | Name             | Abs. | Trd. | Total | Ave. |
-    +------------------+------+------+-------+------+
-    | Richter, Claudia | 2    | 1    | 0.0   | N/A  |
-    +------------------+------+------+-------+------+
+    +-----------------+------+------+-------+------+
+    | Name            | Abs. | Trd. | Total | Ave. |
+    +-----------------+------+------+-------+------+
+    | Claudia Richter | 2    | 1    | 0.0   | N/A  |
+    +-----------------+------+------+-------+------+
 
 As with the total and average columns, we can change the label.
 
@@ -147,11 +147,11 @@ As with the total and average columns, we can change the label.
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+----------+---------+-------+------+
-    | Name             | Absences | Tardies | Total | Ave. |
-    +------------------+----------+---------+-------+------+
-    | Richter, Claudia | 2        | 1       | 0.0   | N/A  |
-    +------------------+----------+---------+-------+------+
+    +-----------------+----------+---------+-------+------+
+    | Name            | Absences | Tardies | Total | Ave. |
+    +-----------------+----------+---------+-------+------+
+    | Claudia Richter | 2        | 1       | 0.0   | N/A  |
+    +-----------------+----------+---------+-------+------+
 
 To make sure the gradebook pdf works with the new columns, we will need the
 special xml browser class.
@@ -174,7 +174,7 @@ We'll download the pdf and test its data.
     >>> stephan.getLink('Download PDF').click()
     >>> stephan.printXMLQuery('//blockTable[2]/tr/td[1]/para/text()')
     Student
-    Richter, Claudia
+    Claudia Richter
 
     >>> stephan.printXMLQuery('//blockTable[2]/tr/td[2]/para')
     <para style="grid_heading">Absences</para>

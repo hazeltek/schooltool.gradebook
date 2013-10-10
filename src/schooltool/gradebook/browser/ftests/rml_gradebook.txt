@@ -37,7 +37,7 @@ Set up two courses:
 Set up persons:
 
     >>> from schooltool.basicperson.browser.ftests.setup import addPerson
-    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Paul', 'Carduner', 'paul', 'pwd', browser=manager)
     >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
@@ -142,7 +142,7 @@ Let's go to the Common Worksheet and grade the students:
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Cardune, Paul
+    Enter grades for Paul Carduner
     >>> teacher.printQuery('//label/span/text()')
     First Common Activity (100)
     Second Common Activity
@@ -154,14 +154,14 @@ Let's go to the Common Worksheet and grade the students:
 
     >>> teacher.getControl('Next').click()
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Hoffman, Tom
+    Enter grades for Tom Hoffman
     >>> teacher.getControl('First Common Activity').value = '90'
     >>> teacher.getControl('Second Common Activity').value = '<p>This is the comment grade for:</p><p>&nbsp;</p><p><strong>Tom <em>Hoffman</em></strong></p><p>&nbsp;</p><p>This is his <a href="http://www.google.com">website</a></p>'
     >>> teacher.getControl('Third Common Activity').value = 'C+'
 
     >>> teacher.getControl('Next').click()
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Richter, Claudia
+    Enter grades for Claudia Richter
     >>> teacher.getControl('Third Common Activity').value = 'A-'
     >>> teacher.getControl('Forth Common Activity').value = 'Pass'
     >>> teacher.getControl('Apply').click()
@@ -172,20 +172,20 @@ Now, to the Second Worksheet and enter more grades:
     >>> teacher.getLink('>', index=0).click()
 
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Cardune, Paul
+    Enter grades for Paul Carduner
     >>> teacher.getControl('Geometry').value = '80'
     >>> teacher.getControl('Algebra').value = ''
     >>> teacher.getControl('Logic').value = '90'
 
     >>> teacher.getControl('Next').click()
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Hoffman, Tom
+    Enter grades for Tom Hoffman
     >>> teacher.getControl('Geometry').value = '90'
     >>> teacher.getControl('Algebra').value = '83'
 
     >>> teacher.getControl('Next').click()
     >>> teacher.printQuery('//h3/text()')
-    Enter grades for Richter, Claudia
+    Enter grades for Claudia Richter
     >>> teacher.getControl('Geometry').value = '81'
     >>> teacher.getControl('Algebra').value = '78'
     >>> teacher.getControl('Logic').value = '85'
@@ -212,9 +212,9 @@ Table columns representing student names and grades:
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[1]/para/text()')
     Student
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
+    Paul Carduner
+    Tom Hoffman
+    Claudia Richter
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[2]/para')
     <para style="grid_heading">Total</para>
@@ -273,9 +273,9 @@ Table columns representing student names, total, average and grades:
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[1]/para/text()')
     Student
-    Cardune, Paul
-    Hoffman, Tom
-    Richter, Claudia
+    Paul Carduner
+    Tom Hoffman
+    Claudia Richter
 
     >>> teacher.printXMLQuery('//blockTable[2]/tr/td[2]/para')
     <para style="grid_heading">Total</para>

@@ -24,9 +24,8 @@ import zope.schema
 from zope.container.interfaces import IOrderedContainer, IContainer
 from zope.container.constraints import contains, containers
 from zope.location.interfaces import IContained
-from zope.location.interfaces import ILocation
 
-from schooltool.gradebook import GradebookMessage as _
+from schooltool.requirement import RequirementMessage as _
 
 
 class IRequirement(IOrderedContainer, IContained):
@@ -66,8 +65,9 @@ class IScoreSystem(zope.interface.Interface):
     title = zope.schema.TextLine(
         title=_(u"Title"),
         description=u'A brief title of the score system.',
-        required=False)
+        required=True)
 
+    # XXX: unused
     description = zope.schema.TextLine(
         title=_(u"Description"),
         description=u'A brief description of the score system.',

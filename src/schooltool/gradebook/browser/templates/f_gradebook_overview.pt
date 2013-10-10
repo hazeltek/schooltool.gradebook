@@ -20,8 +20,12 @@
         <table>
           <thead>
             <tr>
-              <th rowspan="2" class="name">
-                <a class="popup_link" href="" i18n:translate="">Name</a>
+              <th rowspan="2" class="name"
+                  tal:repeat="column view/name_sorting_columns"
+                  tal:attributes="id column/name">
+                <a class="popup_link" href=""
+                   tal:attributes="title column/title"
+                   tal:content="column/title" />
               </th>
               <th tal:content="view/labels_row_header" />
             </tr>
@@ -31,12 +35,15 @@
           </thead>
           <tbody>
             <tr tal:repeat="row table">
-              <td colspan="2" tal:attributes="id row/student/id">
-                <a class="popup_link"
-                   href=""
-                   tal:attributes="title row/student/title"
-                   tal:content="row/student/title" />
-              </td>
+              <tal:loop repeat="column view/name_sorting_columns">
+                <td tal:attributes="id row/student/id;
+                                    colspan python:2 if repeat['column'].end() else 1">
+                  <a class="popup_link"
+                     href=""
+                     tal:attributes="title row/student/title"
+                     tal:content="python:row['student'][column.name]" />
+                </td>
+              </tal:loop>
             </tr>
           </tbody>
         </table>
@@ -126,7 +133,7 @@
                i18n:attributes="value; title; accesskey" />
         <input type="submit" class="button-ok" name="CANCEL" value="Done"
                tal:condition="view/readonly"
-               i18n:attributes="value" />
+               i18n:attributes="value" i18n:domain="schooltool"/>
       </div>
       <div class="buttons zoom-buttons">
         <button type="button" class="button-neutral zoom-button expand"
@@ -155,8 +162,11 @@
 </div>
 
 <script>ST.state.push()</script>
-<tal:script tal:replace="structure scriptlocal:readonly view/readonly" />
+<tal:script tal:replace="structure scriptlocal:
+                         readonly view/readonly;
+                         needs_comments view/needs_comments;" />
 <script>ST.gradebook.readonly = ST.local.readonly;</script>
+<script>ST.gradebook.needs_comments = ST.local.needs_comments;</script>
 <script>ST.state.pop()</script>
 
 </tal:block>

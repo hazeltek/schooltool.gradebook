@@ -1,0 +1,42 @@
+<metal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="schooltool.gradebook">
+
+ <blockTableStyle id="table.comments">
+    <blockValign value="TOP" start="0,0" stop="-1,-1"/>
+    <blockFont start="0,0" stop="-1,-1" size="8" name="Ubuntu_Regular" />
+    <blockBackground start="0,0" stop="-1,-1"
+                     colorsByRow="table.row.background" />
+    <blockTextColor  start="0,0" stop="-1,-1" colorName="table.text" />
+  </blockTableStyle>
+
+  <paraStyle
+      name="report_card_comments-header"
+      fontName="Ubuntu_Regular"
+      fontSize="10"
+      spaceBefore="10"
+      spaceAfter="10"
+      />
+
+  <paraStyle
+      name="report_card_comment"
+      fontName="Ubuntu_Regular"
+      fontSize="8"
+      />
+
+  <paraStyle
+      name="report_card-header-title"
+      fontName="Ubuntu_Regular"
+      fontSize="20"
+      spaceAfter="16"
+      />
+
+  <paraStyle
+      name="report_card-header-subtitle"
+      fontName="Ubuntu_Regular"
+      fontSize="12"
+      />
+
+</metal:block>

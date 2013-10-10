@@ -24,7 +24,7 @@ Set up three courses:
 Set up persons:
 
     >>> from schooltool.basicperson.browser.ftests.setup import addPerson
-    >>> addPerson('Paul', 'Cardune', 'paul', 'pwd', browser=manager)
+    >>> addPerson('Paul', 'Carduner', 'paul', 'pwd', browser=manager)
     >>> addPerson('Tom', 'Hoffman', 'tom', 'pwd', browser=manager)
     >>> addPerson('Claudia', 'Richter', 'claudia', 'pwd', browser=manager)
     >>> addPerson('Stephan', 'Richter', 'stephan', 'pwd', browser=manager)
@@ -161,13 +161,13 @@ to the first one.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    +------------------+-------+------+
-    | Cardune, Paul    | 0.0   | N/A  |
-    | Hoffman, Tom     | 0.0   | N/A  |
-    | Richter, Claudia | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------------+-------+------+
+    | Name            | Total | Ave. |
+    +-----------------+-------+------+
+    | Paul Carduner   | 0.0   | N/A  |
+    | Tom Hoffman     | 0.0   | N/A  |
+    | Claudia Richter | 0.0   | N/A  |
+    +-----------------+-------+------+
 
 Now, we'll test the Term and Section dropdowns which allow the
 teachers to navigate through their sections. Lets change to Stephan's
@@ -234,13 +234,13 @@ the gradebook.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+------+---------+
-    | Name             | Total | Ave. | HW1     |
-    +------------------+-------+------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] |
-    +------------------+-------+------+---------+
+    +-----------------+-------+------+---------+
+    | Name            | Total | Ave. | HW1     |
+    +-----------------+-------+------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] |
+    +-----------------+-------+------+---------+
 
 We'll add a second activity.
 
@@ -253,13 +253,13 @@ We'll add a second activity.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | HW1     | Quiz    |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | HW1     | Quiz    |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 We'll test editing an activity's description.  To do this, we need to go to use
 the 'Manage Worksheet' link.  This presents us with a view of the current
@@ -295,13 +295,13 @@ Now let's change the current worksheet to 'Week 2'.
     +--------+----------+
     | Week 1 | *Week 2* |
     +--------+----------+
-    +------------------+-------+------+
-    | Name             | Total | Ave. |
-    +------------------+-------+------+
-    | Cardune, Paul    | 0.0   | N/A  |
-    | Hoffman, Tom     | 0.0   | N/A  |
-    | Richter, Claudia | 0.0   | N/A  |
-    +------------------+-------+------+
+    +-----------------+-------+------+
+    | Name            | Total | Ave. |
+    +-----------------+-------+------+
+    | Paul Carduner   | 0.0   | N/A  |
+    | Tom Hoffman     | 0.0   | N/A  |
+    | Claudia Richter | 0.0   | N/A  |
+    +-----------------+-------+------+
 
 Now we'll add some activities to it.
 
@@ -314,13 +314,13 @@ Now we'll add some activities to it.
     +--------+----------+
     | Week 1 | *Week 2* |
     +--------+----------+
-    +------------------+-------+------+---------+
-    | Name             | Total | Ave. | HW2     |
-    +------------------+-------+------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] |
-    +------------------+-------+------+---------+
+    +-----------------+-------+------+---------+
+    | Name            | Total | Ave. | HW2     |
+    +-----------------+-------+------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] |
+    +-----------------+-------+------+---------+
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
@@ -331,13 +331,13 @@ Now we'll add some activities to it.
     +--------+----------+
     | Week 1 | *Week 2* |
     +--------+----------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | HW2     | Final   |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | HW2     | Final   |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 The 'Manage Worksheet' view allows for reordering the columns of the gradebook.
 We'll switch the order or our two activities.  Since Javascript is not working
@@ -360,13 +360,13 @@ The gradebook shows the new positions:
     +--------+----------+
     | Week 1 | *Week 2* |
     +--------+----------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | Final   | HW2     |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | Final   | HW2     |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 We'll switch them back.
 
@@ -393,13 +393,13 @@ We'll switch to the Spring term and add some activities to the English I section
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+---------+
-    | Name             | Total | Ave. | Lab1    |
-    +------------------+-------+------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] |
-    +------------------+-------+------+---------+
+    +-----------------+-------+------+---------+
+    | Name            | Total | Ave. | Lab1    |
+    +-----------------+-------+------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] |
+    +-----------------+-------+------+---------+
 
     >>> stephan.getLink('New Activity').click()
     >>> stephan.getControl('Title').value = 'Final'
@@ -410,13 +410,13 @@ We'll switch to the Spring term and add some activities to the English I section
     +----------+
     | *Sheet1* |
     +----------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | Lab1    | Final   |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | Lab1    | Final   |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 Finally, we'll change the section back to the Physics section of the
 Fall and the current worksheet back to 'Week 1'.
@@ -428,13 +428,13 @@ Fall and the current worksheet back to 'Week 1'.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | HW1     | Quiz    |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | HW1     | Quiz    |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 
 Grading
@@ -448,13 +448,13 @@ Week 1.  Only the activities for that worksheet should appear.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | HW1     | Quiz    |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | HW1     | Quiz    |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 We can enter a score into any cell.  Let's enter one for Claudia's HW 1
 activity:
@@ -468,13 +468,13 @@ We should see the score reflected in the spreadsheet.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A   | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A   | [_____] | [_____] |
-    | Richter, Claudia | 36.0  | 72.0% | [36___] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A   | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A   | [_____] | [_____] |
+    | Claudia Richter | 36.0  | 72.0% | [36___] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 If we enter an invalid score, we will get an error message.
 
@@ -491,13 +491,13 @@ We can change the score and see the change reflected in the spreadsheet.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+--------+---------+---------+
-    | Name             | Total | Ave.   | HW1     | Quiz    |
-    +------------------+-------+--------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A    | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A    | [_____] | [_____] |
-    | Richter, Claudia | 58.0  | 116.0% | [58___] | [_____] |
-    +------------------+-------+--------+---------+---------+
+    +-----------------+-------+--------+---------+---------+
+    | Name            | Total | Ave.   | HW1     | Quiz    |
+    +-----------------+-------+--------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A    | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A    | [_____] | [_____] |
+    | Claudia Richter | 58.0  | 116.0% | [58___] | [_____] |
+    +-----------------+-------+--------+---------+---------+
 
 Note how the average shows a value greater than 100%. The gradebook
 allows extra credits for ranged score systems (e.g. 0-50).
@@ -510,13 +510,13 @@ Finally, we can remove the score by clearing out the cell.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+------+---------+---------+
-    | Name             | Total | Ave. | HW1     | Quiz    |
-    +------------------+-------+------+---------+---------+
-    | Cardune, Paul    | 0.0   | N/A  | [_____] | [_____] |
-    | Hoffman, Tom     | 0.0   | N/A  | [_____] | [_____] |
-    | Richter, Claudia | 0.0   | N/A  | [_____] | [_____] |
-    +------------------+-------+------+---------+---------+
+    +-----------------+-------+------+---------+---------+
+    | Name            | Total | Ave. | HW1     | Quiz    |
+    +-----------------+-------+------+---------+---------+
+    | Paul Carduner   | 0.0   | N/A  | [_____] | [_____] |
+    | Tom Hoffman     | 0.0   | N/A  | [_____] | [_____] |
+    | Claudia Richter | 0.0   | N/A  | [_____] | [_____] |
+    +-----------------+-------+------+---------+---------+
 
 
 Entering Scores for a Column (Activity)
@@ -534,14 +534,14 @@ click on the activity's name:
 Now we just enter the grades. Let's only enter grades for Paul and
 Tom:
 
-    >>> stephan.getControl('Cardune, Paul').value = u'-1'
-    >>> stephan.getControl('Hoffman, Tom').value = u'42'
+    >>> stephan.getControl('Paul Carduner').value = u'-1'
+    >>> stephan.getControl('Tom Hoffman').value = u'42'
     >>> stephan.getControl('Save').click()
 
 Again, we entered an invalid value, this time for Paul:
 
     >>> stephan.printQuery('//div[@class="message"]/text()')
-    The grade -1 for Cardune, Paul is not valid.
+    The grade -1 for Paul Carduner is not valid.
 
 Also note that all the other entered values should be retained:
 
@@ -549,7 +549,7 @@ Also note that all the other entered values should be retained:
     -1
     >>> stephan.printQuery('id("tom")/@value')
     42
-    >>> stephan.getControl('Cardune, Paul').value = u'32'
+    >>> stephan.getControl('Paul Carduner').value = u'32'
     >>> stephan.getControl('Save').click()
 
 The screen will return to the grade overview, where the grades are now
@@ -559,13 +559,13 @@ visible:
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom     | 42.0  | 84.0% | [42___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman     | 42.0  | 84.0% | [42___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 Now let's modify some grades:
 
@@ -574,20 +574,20 @@ Now let's modify some grades:
     <h3>
       Grade HW 1
     </h3>
-    >>> stephan.getControl('Hoffman, Tom').value = u'40'
-    >>> stephan.getControl('Richter, Claudia').value = u'48'
+    >>> stephan.getControl('Tom Hoffman').value = u'40'
+    >>> stephan.getControl('Claudia Richter').value = u'48'
     >>> stephan.getControl('Save').click()
     >>> printGradebook(stephan.contents)
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 48.0  | 96.0% | [48___] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 48.0  | 96.0% | [48___] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 When you want to delete an evaluation altogether, simply blank the value:
 
@@ -596,19 +596,19 @@ When you want to delete an evaluation altogether, simply blank the value:
     <h3>
       Grade HW 1
     </h3>
-    >>> stephan.getControl('Richter, Claudia').value = u''
+    >>> stephan.getControl('Claudia Richter').value = u''
     >>> stephan.getControl('Save').click()
     >>> printGradebook(stephan.contents)
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 Of course, you can also abort the grading.
 
@@ -621,7 +621,7 @@ Of course, you can also abort the grading.
     'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/gradeActivity.html?activity=Activity'
     >>> stephan.getControl('Cancel').click()
     >>> stephan.url
-    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook/index.html'
+    'http://localhost/schoolyears/2005-2006/fall/sections/1/activities/Worksheet/gradebook'
 
 Let's enter some grades for the second worksheet, 'Week 2', so that we have
 some interesting numbers for the summary view.
@@ -632,21 +632,21 @@ some interesting numbers for the summary view.
     <h3>
       Grade HW 2
     </h3>
-    >>> stephan.getControl('Cardune, Paul').value = u'90'
-    >>> stephan.getControl('Hoffman, Tom').value = u'72'
-    >>> stephan.getControl('Richter, Claudia').value = u'42'
+    >>> stephan.getControl('Paul Carduner').value = u'90'
+    >>> stephan.getControl('Tom Hoffman').value = u'72'
+    >>> stephan.getControl('Claudia Richter').value = u'42'
     >>> stephan.getControl('Save').click()
     >>> printGradebook(stephan.contents)
     +--------+----------+
     | Week 1 | *Week 2* |
     +--------+----------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW2     | Final   |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 90.0  | 90.0% | [90___] | [_____] |
-    | Hoffman, Tom     | 72.0  | 72.0% | [72___] | [_____] |
-    | Richter, Claudia | 42.0  | 42.0% | [42___] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW2     | Final   |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 90.0  | 90.0% | [90___] | [_____] |
+    | Tom Hoffman     | 72.0  | 72.0% | [72___] | [_____] |
+    | Claudia Richter | 42.0  | 42.0% | [42___] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 
 Entering Scores for a Row (Student)
@@ -672,7 +672,7 @@ of students, there will be no 'Previous' button.
     >>> stephan.getLink('Week 1').click()
     >>> stephan.getLink('>', index=0).click()
     >>> stephan.printQuery("id('form')/div[1]/h3")
-    <h3>Enter grades for Cardune, Paul</h3>
+    <h3>Enter grades for Paul Carduner</h3>
     >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
     HW 1 (50)
     Quiz (100)
@@ -686,7 +686,7 @@ Here we will see both a 'Previous' and a 'Next' button.
 
     >>> stephan.getControl('Next').click()
     >>> stephan.printQuery("id('form')/div[1]/h3")
-    <h3>Enter grades for Hoffman, Tom</h3>
+    <h3>Enter grades for Tom Hoffman</h3>
     >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
     HW 1 (50)
     Quiz (100)
@@ -701,7 +701,7 @@ Here we will see no 'Next' button.
 
     >>> stephan.getControl('Next').click()
     >>> stephan.printQuery("id('form')/div[1]/h3")
-    <h3>Enter grades for Richter, Claudia</h3>
+    <h3>Enter grades for Claudia Richter</h3>
     >>> stephan.printQuery('id("form")//fieldset//label/span/text()')
     HW 1 (50)
     Quiz (100)
@@ -719,13 +719,13 @@ Hitting the 'Cancel' button takes the user back to the gradebook.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 Now we'll go change a cell for Paul and come back.
 
@@ -739,13 +739,13 @@ We see the new value where it wasn't before.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 117.0 | 78.0% | [32___] | [85___] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 117.0 | 78.0% | [32___] | [85___] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 Let's change that new value to something else.
 
@@ -756,13 +756,13 @@ Let's change that new value to something else.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 67.0  | 44.7% | [32___] | [35___] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 67.0  | 44.7% | [32___] | [35___] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 Finally, we'll change it back to the way it was, demonstrating that we can
 remove scores in the student gradebook.
@@ -777,13 +777,13 @@ The data cells are set as before.
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 
 Sorting
@@ -798,13 +798,13 @@ By default the student's name is sorted alphabetically:
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +------------------+-------+-------+---------+---------+
-    | Name             | Total | Ave.  | HW1     | Quiz    |
-    +------------------+-------+-------+---------+---------+
-    | Cardune, Paul    | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom     | 40.0  | 80.0% | [40___] | [_____] |
-    | Richter, Claudia | 0.0   | N/A   | [_____] | [_____] |
-    +------------------+-------+-------+---------+---------+
+    +-----------------+-------+-------+---------+---------+
+    | Name            | Total | Ave.  | HW1     | Quiz    |
+    +-----------------+-------+-------+---------+---------+
+    | Paul Carduner   | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman     | 40.0  | 80.0% | [40___] | [_____] |
+    | Claudia Richter | 0.0   | N/A   | [_____] | [_____] |
+    +-----------------+-------+-------+---------+---------+
 
 Let's add some fake students to our section:
 
@@ -836,20 +836,20 @@ And check the gradebook again to see the new sorting:
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +--------------------+-------+-------+---------+---------+
-    | Name               | Total | Ave.  | HW1     | Quiz    |
-    +--------------------+-------+-------+---------+---------+
-    | Alvarado, Fake3    | 0.0   | N/A   | [_____] | [_____] |
-    | ...lvarez, Fake2   | 0.0   | N/A   | [_____] | [_____] |
-    | ...ardune, Fake1   | 0.0   | N/A   | [_____] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0% | [32___] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0% | [40___] | [_____] |
-    | Navarro, Fake6     | 0.0   | N/A   | [_____] | [_____] |
-    | ...o...o, Fake7    | 0.0   | N/A   | [_____] | [_____] |
-    | Richter, Claudia   | 0.0   | N/A   | [_____] | [_____] |
-    | Sandoval, Fake4    | 0.0   | N/A   | [_____] | [_____] |
-    | ...andoval, Fake5  | 0.0   | N/A   | [_____] | [_____] |
-    +--------------------+-------+-------+---------+---------+
+    +-------------------+-------+-------+---------+---------+
+    | Name              | Total | Ave.  | HW1     | Quiz    |
+    +-------------------+-------+-------+---------+---------+
+    | Fake3 Alvarado    | 0.0   | N/A   | [_____] | [_____] |
+    | Fake2 ...lvarez   | 0.0   | N/A   | [_____] | [_____] |
+    | Fake1 ...ardune   | 0.0   | N/A   | [_____] | [_____] |
+    | Paul Carduner     | 32.0  | 64.0% | [32___] | [_____] |
+    | Tom Hoffman       | 40.0  | 80.0% | [40___] | [_____] |
+    | Fake6 Navarro     | 0.0   | N/A   | [_____] | [_____] |
+    | Fake7 ...o...o    | 0.0   | N/A   | [_____] | [_____] |
+    | Claudia Richter   | 0.0   | N/A   | [_____] | [_____] |
+    | Fake4 Sandoval    | 0.0   | N/A   | [_____] | [_____] |
+    | Fake5 ...andoval  | 0.0   | N/A   | [_____] | [_____] |
+    +-------------------+-------+-------+---------+---------+
 
 We can sort by student name in reverse order:
 
@@ -859,49 +859,49 @@ We can sort by student name in reverse order:
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +--------------------+-------+-------+---------+---------+
-    | Name               | Total | Ave.  | HW1     | Quiz    |
-    +--------------------+-------+-------+---------+---------+
-    | ...andoval, Fake5  | 0.0   | N/A   | [_____] | [_____] |
-    | Sandoval, Fake4    | 0.0   | N/A   | [_____] | [_____] |
-    | Richter, Claudia   | 0.0   | N/A   | [_____] | [_____] |
-    | ...o...o, Fake7    | 0.0   | N/A   | [_____] | [_____] |
-    | Navarro, Fake6     | 0.0   | N/A   | [_____] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0% | [40___] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0% | [32___] | [_____] |
-    | ...ardune, Fake1   | 0.0   | N/A   | [_____] | [_____] |
-    | ...lvarez, Fake2   | 0.0   | N/A   | [_____] | [_____] |
-    | Alvarado, Fake3    | 0.0   | N/A   | [_____] | [_____] |
-    +--------------------+-------+-------+---------+---------+
+    +-------------------+-------+-------+---------+---------+
+    | Name              | Total | Ave.  | HW1     | Quiz    |
+    +-------------------+-------+-------+---------+---------+
+    | Fake5 ...andoval  | 0.0   | N/A   | [_____] | [_____] |
+    | Fake4 Sandoval    | 0.0   | N/A   | [_____] | [_____] |
+    | Claudia Richter   | 0.0   | N/A   | [_____] | [_____] |
+    | Fake7 ...o...o    | 0.0   | N/A   | [_____] | [_____] |
+    | Fake6 Navarro     | 0.0   | N/A   | [_____] | [_____] |
+    | Tom Hoffman       | 40.0  | 80.0% | [40___] | [_____] |
+    | Paul Carduner     | 32.0  | 64.0% | [32___] | [_____] |
+    | Fake1 ...ardune   | 0.0   | N/A   | [_____] | [_____] |
+    | Fake2 ...lvarez   | 0.0   | N/A   | [_____] | [_____] |
+    | Fake3 Alvarado    | 0.0   | N/A   | [_____] | [_____] |
+    +-------------------+-------+-------+---------+---------+
 
 Let's add more grades for Homework 1:
 
     >>> stephan.getLink('HW1').click()
-    >>> stephan.getControl('Alvarado, Fake3').value = '44'
-    >>> stephan.getControl('lvarez, Fake2').value = '32'
-    >>> stephan.getControl('ardune, Fake1').value = '50'
-    >>> stephan.getControl('Navarro, Fake6').value = '22'
-    >>> stephan.getControl('andoval, Fake5').value = '39'
-    >>> stephan.getControl('Richter, Claudia').value = '32'
+    >>> stephan.getControl('Fake3 Alvarado').value = '44'
+    >>> stephan.getControl('Fake2').value = '32'
+    >>> stephan.getControl('Fake1').value = '50'
+    >>> stephan.getControl('Fake6 Navarro').value = '22'
+    >>> stephan.getControl('Fake5').value = '39'
+    >>> stephan.getControl('Claudia Richter').value = '32'
     >>> stephan.getControl('Save').click()
     >>> printGradebook(stephan.contents)
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +--------------------+-------+--------+---------+---------+
-    | Name               | Total | Ave.   | HW1     | Quiz    |
-    +--------------------+-------+--------+---------+---------+
-    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
-    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
-    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
-    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
-    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
-    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
-    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
-    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
-    +--------------------+-------+--------+---------+---------+
+    +-------------------+-------+--------+---------+---------+
+    | Name              | Total | Ave.   | HW1     | Quiz    |
+    +-------------------+-------+--------+---------+---------+
+    | Fake5 ...andoval  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Fake4 Sandoval    | 0.0   | N/A    | [_____] | [_____] |
+    | Claudia Richter   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Fake7 ...o...o    | 0.0   | N/A    | [_____] | [_____] |
+    | Fake6 Navarro     | 22.0  | 44.0%  | [22___] | [_____] |
+    | Tom Hoffman       | 40.0  | 80.0%  | [40___] | [_____] |
+    | Paul Carduner     | 32.0  | 64.0%  | [32___] | [_____] |
+    | Fake1 ...ardune   | 50.0  | 100.0% | [50___] | [_____] |
+    | Fake2 ...lvarez   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Fake3 Alvarado    | 44.0  | 88.0%  | [44___] | [_____] |
+    +-------------------+-------+--------+---------+---------+
 
 Then we want to sort by grade in Homework 1 (default is reverse order):
 
@@ -910,20 +910,20 @@ Then we want to sort by grade in Homework 1 (default is reverse order):
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +--------------------+-------+--------+---------+---------+
-    | Name               | Total | Ave.   | HW1     | Quiz    |
-    +--------------------+-------+--------+---------+---------+
-    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
-    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
-    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
-    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
-    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
-    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
-    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
-    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
-    +--------------------+-------+--------+---------+---------+
+    +-------------------+-------+--------+---------+---------+
+    | Name              | Total | Ave.   | HW1     | Quiz    |
+    +-------------------+-------+--------+---------+---------+
+    | Fake1 ...ardune   | 50.0  | 100.0% | [50___] | [_____] |
+    | Fake3 Alvarado    | 44.0  | 88.0%  | [44___] | [_____] |
+    | Tom Hoffman       | 40.0  | 80.0%  | [40___] | [_____] |
+    | Fake5 ...andoval  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Claudia Richter   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Paul Carduner     | 32.0  | 64.0%  | [32___] | [_____] |
+    | Fake2 ...lvarez   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Fake6 Navarro     | 22.0  | 44.0%  | [22___] | [_____] |
+    | Fake4 Sandoval    | 0.0   | N/A    | [_____] | [_____] |
+    | Fake7 ...o...o    | 0.0   | N/A    | [_____] | [_____] |
+    +-------------------+-------+--------+---------+---------+
 
 Note that after sorting by the selected activity, rows are also sorted
 by student.
@@ -935,18 +935,18 @@ Clicking it again, reverses the order:
     +----------+--------+
     | *Week 1* | Week 2 |
     +----------+--------+
-    +--------------------+-------+--------+---------+---------+
-    | Name               | Total | Ave.   | HW1     | Quiz    |
-    +--------------------+-------+--------+---------+---------+
-    | ...o...o, Fake7    | 0.0   | N/A    | [_____] | [_____] |
-    | Sandoval, Fake4    | 0.0   | N/A    | [_____] | [_____] |
-    | Navarro, Fake6     | 22.0  | 44.0%  | [22___] | [_____] |
-    | ...lvarez, Fake2   | 32.0  | 64.0%  | [32___] | [_____] |
-    | Cardune, Paul      | 32.0  | 64.0%  | [32___] | [_____] |
-    | Richter, Claudia   | 32.0  | 64.0%  | [32___] | [_____] |
-    | ...andoval, Fake5  | 39.0  | 78.0%  | [39___] | [_____] |
-    | Hoffman, Tom       | 40.0  | 80.0%  | [40___] | [_____] |
-    | Alvarado, Fake3    | 44.0  | 88.0%  | [44___] | [_____] |
-    | ...ardune, Fake1   | 50.0  | 100.0% | [50___] | [_____] |
-    +--------------------+-------+--------+---------+---------+
+    +-------------------+-------+--------+---------+---------+
+    | Name              | Total | Ave.   | HW1     | Quiz    |
+    +-------------------+-------+--------+---------+---------+
+    | Fake7 ...o...o    | 0.0   | N/A    | [_____] | [_____] |
+    | Fake4 Sandoval    | 0.0   | N/A    | [_____] | [_____] |
+    | Fake6 Navarro     | 22.0  | 44.0%  | [22___] | [_____] |
+    | Fake2 ...lvarez   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Paul Carduner     | 32.0  | 64.0%  | [32___] | [_____] |
+    | Claudia Richter   | 32.0  | 64.0%  | [32___] | [_____] |
+    | Fake5 ...andoval  | 39.0  | 78.0%  | [39___] | [_____] |
+    | Tom Hoffman       | 40.0  | 80.0%  | [40___] | [_____] |
+    | Fake3 Alvarado    | 44.0  | 88.0%  | [44___] | [_____] |
+    | Fake1 ...ardune   | 50.0  | 100.0% | [50___] | [_____] |
+    +-------------------+-------+--------+---------+---------+
 

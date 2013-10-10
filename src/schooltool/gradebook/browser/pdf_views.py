@@ -28,11 +28,13 @@ from zope.component import getUtility, getMultiAdapter
 from zope.i18n.interfaces.locales import ICollator
 from zope.security.proxy import removeSecurityProxy
 
+from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
 from schooltool.course.interfaces import ILearner, ISectionContainer
 from schooltool.course.interfaces import ISection
 from schooltool.person.interfaces import IPerson
+from schooltool.person.interfaces import IPersonFactory
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import ITerm, IDateManager
 
@@ -52,6 +54,13 @@ from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemContainer
 from schooltool.requirement.scoresystem import UNSCORED
+
+
+def getSortingKey(request):
+    collator = ICollator(request.locale)
+    factory = getUtility(IPersonFactory)
+    sorting_key = lambda x: factory.getSortingKey(x, collator)
+    return sorting_key
 
 
 class BasePDFView(ReportPDFView):
@@ -173,12 +182,12 @@ class BaseStudentPDFView(BasePDFView):
 
     def getLayoutActivityHeading(self, layout, truncate=True):
         if layout.source == ABSENT_KEY:
-            return ABSENT_HEADING
+            return layout.heading or ABSENT_HEADING
         if layout.source == TARDY_KEY:
-            return TARDY_HEADING
+            return layout.heading or TARDY_HEADING
         termName, worksheetName, activityName = layout.source.split('|')
         if activityName == AVERAGE_KEY:
-            return AVERAGE_HEADING
+            return layout.heading or AVERAGE_HEADING
         root = IGradebookRoot(ISchoolToolApplication(None))
         heading = root.deployed[worksheetName][activityName].title
         if len(layout.heading):
@@ -195,8 +204,7 @@ class BaseStudentPDFView(BasePDFView):
                     if teacher not in teachers:
                         teachers.append(teacher)
         courseTitles = ', '.join(c.title for c in course)
-        teacherNames = ['%s %s' % (teacher.first_name, teacher.last_name)
-            for teacher in teachers]
+        teacherNames = [teacher.title for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
         return '%s (%s)' % (courseTitles, teacherNames)
 
@@ -288,10 +296,8 @@ class BaseReportCardPDFView(BaseStudentPDFView):
     def students(self):
         results = []
         for student in self.collectStudents():
-            student_name = u'%s %s' % (
-                student.first_name, student.last_name)
             student_title = _('Student: ${student}',
-                              mapping={'student': student_name})
+                              mapping={'student': student.title})
 
             sections = []
             for section in ILearner(student).sections():
@@ -449,14 +455,18 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
             jd = ISectionJournalData(section, None)
             if jd is None:
                 continue
-            for meeting in jd.recordedMeetings(student):
+            for meeting, score in jd.absentMeetings(student):
                 period = self.guessPeriodGroup(meeting)
                 day = meeting.dtstart
-                grade = jd.getGrade(student, meeting)
-                result = ''
-                if grade == 'n':
+                ss = score.scoreSystem
+                if ss.isExcused(score):
+                    continue
+                result = None
+                if ss.isExcused(score):
+                    continue
+                elif ss.isAbsent(score):
                     result = ABSENT_ABBREVIATION
-                if grade == 'p':
+                elif ss.isTardy(score):
                     result = TARDY_ABBREVIATION
                 if result:
                     data.setdefault(day, {})[period] = result
@@ -495,9 +505,8 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
     def students(self):
         results = []
         for student in self.collectStudents():
-            name = u'%s %s' % (student.first_name, student.last_name)
             result = {
-                'name': name,
+                'name': student.title,
                 'userid': student.username,
                 'grades': self.grades(student),
                 'attendance': self.attendance(student),
@@ -632,19 +641,18 @@ class FailingReportPDFView(flourish.report.PlainPDFPage):
                 rows.append(row)
 
         results = []
-        for student in sorted(student_rows,  key=lambda s: s.title):
+        for student in sorted(student_rows,  key=getSortingKey(self.request)):
             rows = []
             for student_row in student_rows[student]:
                 teacher = list(student_row['section'].instructors)[0]
-                name = '%s %s' % (teacher.first_name, teacher.last_name)
                 row = {
                     'course': list(student_row['section'].courses)[0].title,
-                    'teacher': name,
+                    'teacher': teacher.title,
                     'grade': student_row['grade'],
                     }
                 rows.append(row)
             result = {
-                'name': '%s %s' % (student.first_name, student.last_name),
+                'name': student.title,
                 'rows': rows,
                 }
             results.append(result)
@@ -720,15 +728,17 @@ class AbsencesByDayPDFView(TermPDFPage):
             if jd is None:
                 continue
             for student in section.members:
-                for meeting in jd.recordedMeetings(student):
+                for meeting, score in jd.absentMeetings(student):
                     if not self.compareDates(meeting.dtstart, day):
                         continue
                     period = self.guessPeriodGroup(meeting)
-                    grade = jd.getGrade(student, meeting)
-                    result = ''
-                    if grade == 'n':
+                    ss = score.scoreSystem
+                    result = None
+                    if ss.isExcused(score):
+                        continue
+                    elif ss.isAbsent(score):
                         result = ABSENT_ABBREVIATION
-                    if grade == 'p':
+                    elif ss.isTardy(score):
                         result = TARDY_ABBREVIATION
                     if result:
                         data.setdefault(student, {})[period] = result
@@ -766,13 +776,13 @@ class AbsencesByDayPDFView(TermPDFPage):
         periods = self.getPeriods(data)
 
         rows = []
-        for student in sorted(data, key=lambda s: s.title):
+        for student in sorted(data, key=getSortingKey(self.request)):
             scores = [''] * len(periods)
             for period in data[student]:
                 index = periods.index(period)
                 scores[index] = data[student][period]
             row = {
-                'name': '%s %s' % (student.first_name, student.last_name),
+                'name': student.title,
                 'periods': scores,
                 }
             rows.append(row)
@@ -799,7 +809,7 @@ class SectionAbsencesPDFView(TermPDFPage):
 
     @property
     def subtitles_left(self):
-        instructors = ['%s %s' % (teacher.first_name, teacher.last_name)
+        instructors = [teacher.title
                        for teacher in self.section.instructors]
         subtitles = [
             _('Teacher(s): ${instructors}',
@@ -822,11 +832,13 @@ class SectionAbsencesPDFView(TermPDFPage):
         student_data = {}
         student_data['absences'] = 0
         student_data['tardies'] = 0
-        for meeting in jd.recordedMeetings(student):
-            grade = jd.getGrade(student, meeting)
-            if grade == 'n':
+        for meeting, score in jd.absentMeetings(student):
+            ss = score.scoreSystem
+            if ss.isExcused(score):
+                continue
+            elif ss.isAbsent(score):
                 student_data['absences'] += 1
-            if grade == 'p':
+            elif ss.isTardy(score):
                 student_data['tardies'] += 1
         return student_data
 
@@ -840,9 +852,9 @@ class SectionAbsencesPDFView(TermPDFPage):
                     data[student] = student_data
 
         rows = []
-        for student in sorted(data, key=lambda s: s.title):
+        for student in sorted(data, key=getSortingKey(self.request)):
             row = {
-                'name': '%s %s' % (student.first_name, student.last_name),
+                'name': student.title,
                 'absences': data[student]['absences'],
                 'tardies': data[student]['tardies'],
                 'total': data[student]['absences'] + data[student]['tardies'],
@@ -1070,8 +1082,10 @@ class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
     def updateRows(self):
         self.rows = []
         collator = ICollator(self.request.locale)
+        factory = getUtility(IPersonFactory)
+        sorting_key = lambda x: factory.getSortingKey(x['object'], collator)
         for info in sorted(self.gradebook_overview.students_info,
-                           key=lambda info: collator.key(info['title'])):
+                           key=sorting_key):
             self.rows.append(schooltool.table.pdf.GridRow(
                 info['title'], item=info['id']
                 ))
@@ -1102,3 +1116,371 @@ class WorksheetGrid(schooltool.table.pdf.GridContentBlock):
         self.updateColumns()
         self.updateRows()
         self.updateData()
+
+
+# XXX: this is duplicated in CanDo, move to core?
+class NoHeaderPlainPageTemplate(flourish.report.PlainPageTemplate):
+
+    @property
+    def header(self):
+        default = super(NoHeaderPlainPageTemplate, self).header
+        default['height'] = 0
+        return default
+
+
+class FlourishStudentReportCardPDFView(flourish.report.PlainPDFPage,
+                                       ActiveSchoolYearContentMixin,
+                                       BaseStudentPDFView):
+
+    name = _('Report Card')
+
+    def students(self):
+        return [self.context]
+
+    def scope(self):
+        schoolyear = self.schoolyear
+        return schoolyear.title if schoolyear is not None else ''
+
+    @property
+    def base_filename(self):
+        return 'report_card_%s' % self.context.__name__
+
+    @property
+    def message_title(self):
+        return _('${student} report card',
+                 mapping={'student': self.context.title})
+
+
+class FlourishGroupReportCardPDFView(FlourishStudentReportCardPDFView):
+
+    def students(self):
+        return sorted(self.context.members, key=getSortingKey(self.request))
+
+
+class StudentReportCardPDFStory(flourish.report.PDFStory):
+
+    template = flourish.templates.Inline('''
+    <tal:loop repeat="student view/view/students">
+      <tal:block replace="structure student/schooltool:content/report_card" />
+    </tal:loop>
+    ''')
+
+
+class StudentReportCardViewletManager(flourish.viewlet.ViewletManager):
+
+    pass
+
+
+class ReportCardStudentHeaderViewlet(flourish.viewlet.Viewlet):
+
+    template = flourish.templates.XMLFile('rml/report_card_student_header.pt')
+
+
+class ReportCardStudentGradesViewlet(flourish.viewlet.Viewlet):
+
+    template = flourish.templates.Inline('''
+    <tal:block replace="structure view/report_card_grid" />
+    ''')
+
+    @property
+    def report_card_grid(self):
+        view = self.view.view
+        grid = getMultiAdapter((self.context, self.request, view),
+                               name='report_card_grid')
+        grid.update()
+        if grid.rows:
+            return grid
+        return ''
+
+
+class ReportCardStudentGradesMixin(object):
+
+    @property
+    def student(self):
+        return self.context
+
+    @property
+    def term(self):
+        term_id = self.request.get('term_id')
+        if self.schoolyear is not None:
+            return self.schoolyear.get(term_id)
+
+    @Lazy
+    def sections(self):
+        sections = []
+        for section in ILearner(self.student).sections():
+            term = ITerm(section)
+            schoolyear = ISchoolYear(term)
+            if ((schoolyear != self.schoolyear) or
+                (self.term is not None and term != self.term)):
+                continue
+            sections.append(section)
+        return sections
+
+    @Lazy
+    def courses(self):
+        courses = []
+        collator = ICollator(self.request.locale)
+        for section in self.sections:
+            course = tuple(section.courses)
+            if course not in courses:
+                courses.append(course)
+        return sorted(courses,
+                      key=lambda x:collator.key(self.pdf_view.getCourseTitle(x, self.sections)))
+
+    @Lazy
+    def layout_columns(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if (self.schoolyear is not None and
+            self.schoolyear.__name__ in root.layouts):
+            return root.layouts[self.schoolyear.__name__].columns
+        return []
+
+    @Lazy
+    def outline_activities(self):
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        if (self.schoolyear is not None and
+            self.schoolyear.__name__ in root.layouts):
+            return root.layouts[self.schoolyear.__name__].outline_activities
+        return []
+
+
+class ReportCardStudentCommentsViewlet(ReportCardStudentGradesMixin,
+                                       flourish.viewlet.Viewlet):
+
+    template = flourish.templates.XMLFile(
+        'rml/report_card_student_comments.pt')
+
+    @property
+    def pdf_view(self):
+        return self.view.view
+
+    @property
+    def schoolyear(self):
+        return self.pdf_view.schoolyear
+
+    def comments_by_course(self):
+        view = self.pdf_view
+        result = []
+        for course in self.courses:
+            result.append({
+                    'title': view.getCourseTitle(course, self.sections),
+                    'comments': self.getComments(course, self.sections),
+                    })
+        return result
+
+    def getComments(self, course, sections):
+        result = []
+        evaluations = IEvaluations(self.student)
+        for section in sections:
+            if tuple(section.courses) == course:
+                term = ITerm(section)
+                for outline_activity in self.outline_activities:
+                    source = outline_activity.source
+                    termName, worksheetName, activityName = source.split('|')
+                    if termName != term.__name__:
+                        continue
+                    activities = IActivities(section)
+                    if worksheetName not in activities:
+                        continue
+                    if activityName not in activities[worksheetName]:
+                        continue
+                    activity = activities[worksheetName][activityName]
+                    score = evaluations.get(activity, None)
+                    if not score:
+                        continue
+                    heading = self.pdf_view.getLayoutActivityHeading(
+                        outline_activity, truncate=False)
+                    html2rml = getMultiAdapter((score.value, self.request),
+                                               name='html2rml')
+                    html2rml.para_class = 'report_card_comment'
+                    activity_result = {
+                        'heading': heading,
+                        'value': html2rml,
+                        }
+                    result.append(activity_result)
+        return result
+
+
+class ReportCardGrid(ReportCardStudentGradesMixin,
+                     schooltool.table.pdf.GridContentBlock):
+
+    title = None
+
+    @property
+    def pdf_view(self):
+        return self.view
+
+    @property
+    def schoolyear(self):
+        return self.pdf_view.schoolyear
+
+    def updateGrid(self):
+        super(ReportCardGrid, self).updateGrid()
+        self.updateColumns()
+        self.updateRows()
+        self.updateData()
+
+    def updateColumns(self):
+        self.columns = []
+        for i, layout_column in enumerate(self.layout_columns):
+            heading = self.pdf_view.getLayoutActivityHeading(layout_column,
+                                                             truncate=False)
+            self.columns.append(schooltool.table.pdf.GridColumn(
+                    heading, item=i))
+
+    def updateRows(self):
+        self.rows = []
+        for course in self.courses:
+            course_title = self.pdf_view.getCourseTitle(course, self.sections)
+            self.rows.append(schooltool.table.pdf.GridRow(
+                    course_title, item=course))
+
+    def updateData(self):
+        cols_by_id = dict([(col.item, col) for col in self.columns])
+        rows_by_id = dict([(row.item, row) for row in self.rows])
+        self.grid = {}
+        scores = {}
+        evaluations = IEvaluations(self.student)
+        for i, layout in enumerate(self.layout_columns):
+            byCourse = {}
+            for section in self.sections:
+                course = tuple(section.courses)
+                if self.pdf_view.isJournalSource(layout):
+                    score = self.pdf_view.getJournalScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        if course in byCourse:
+                            score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                elif self.pdf_view.isAverageSource(layout):
+                    score = self.pdf_view.getAverageScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        byCourse[course] = unicode(score)
+                else:
+                    activity = self.pdf_view.getActivity(section, layout)
+                    if activity is None:
+                        continue
+                    score = evaluations.get(activity, None)
+                    if score:
+                        byCourse[course] = unicode(score.value)
+            if len(byCourse):
+                scores[layout.source] = byCourse
+        for course in self.courses:
+            for i, layout in enumerate(self.layout_columns):
+                byCourse = scores.get(layout.source)
+                if byCourse is not None:
+                    score = byCourse.get(course, '')
+                    self.grid[rows_by_id[course], cols_by_id[i]] = score
+
+
+class FlourishStudentDetailReportPDFView(flourish.report.PlainPDFPage,
+                                         ActiveSchoolYearContentMixin,
+                                         BaseStudentDetailPDFView):
+
+    name = _('Student Detail Report')
+
+    def students(self):
+        return [self.context]
+
+    def scope(self):
+        schoolyear = self.schoolyear
+        return schoolyear.title if schoolyear is not None else ''
+
+    @property
+    def base_filename(self):
+        return 'student_detail_report_%s' % self.context.__name__
+
+    @property
+    def message_title(self):
+        return _('${student} detail report',
+                 mapping={'student': self.context.title})
+
+
+class FlourishGroupDetailReportPDFView(FlourishStudentDetailReportPDFView):
+
+    def students(self):
+        return sorted(self.context.members, key=getSortingKey(self.request))
+
+
+class StudentDetailReportPDFStory(flourish.report.PDFStory):
+
+    template = flourish.templates.Inline('''
+    <tal:loop repeat="student view/view/students">
+      <tal:block replace="structure student/schooltool:content/detail_report" />
+    </tal:loop>
+    ''')
+
+
+class StudentDetailReportViewletManager(flourish.viewlet.ViewletManager):
+
+    pass
+
+
+class StudentDetailReportAttendanceViewlet(ReportCardStudentGradesMixin,
+                                           flourish.viewlet.Viewlet,
+                                           TermPDFPage):
+
+    template = flourish.templates.XMLFile(
+        'rml/student_detail_report_attendance.pt')
+
+    @property
+    def pdf_view(self):
+        return self.view.view
+
+    @property
+    def schoolyear(self):
+        return self.pdf_view.schoolyear
+
+    def attendance(self):
+        student = self.student
+        data = {}
+        for section in self.sections:
+            jd = ISectionJournalData(section, None)
+            if jd is None:
+                continue
+            for meeting, score in jd.absentMeetings(student):
+                period = self.guessPeriodGroup(meeting)
+                day = meeting.dtstart
+                ss = score.scoreSystem
+                if ss.isExcused(score):
+                    continue
+                result = None
+                if ss.isExcused(score):
+                    continue
+                elif ss.isAbsent(score):
+                    result = ABSENT_ABBREVIATION
+                elif ss.isTardy(score):
+                    result = TARDY_ABBREVIATION
+                if result:
+                    data.setdefault(day, {})[period] = result
+        periods = {}
+        for day in data:
+            for period in data[day]:
+                periods[period] = 0
+        periods = sorted(periods.keys())
+        widths_string = None
+        n_cols = len(periods)
+        if n_cols:
+            col_width = max(int(40./n_cols), 8)
+            widths_string = ' '.join(
+                ['%d%%' % max((100-col_width*n_cols), 10)] +
+                ['%d%%' % col_width] * (n_cols)
+                )
+        rows = []
+        for day in sorted(data):
+            scores = [''] * len(periods)
+            for period in data[day]:
+                index = periods.index(period)
+                scores[index] = data[day][period]
+            row = {
+                'title': day.strftime('%x'),
+                'scores': scores,
+                }
+            rows.append(row)
+        return {
+            'widths': widths_string,
+            'headings': periods,
+            'rows': rows,
+            }

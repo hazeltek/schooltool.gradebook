@@ -24,7 +24,6 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.app.form.browser.add import AddView
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 
-from schooltool.gradebook import GradebookMessage as _
 from schooltool.requirement.interfaces import IRequirement
 from schooltool.skin.containers import ContainerView
 from schooltool.table.batch import IterableBatch
@@ -49,7 +48,7 @@ class RequirementView(ContainerView):
 
     __used_for__ = IRequirement
 
-    index_title = _("Requirement index")
+    index_title = u"Requirement index"
 
     def __init__(self, context, request, depth=None):
         ContainerView.__init__(self, context, request)

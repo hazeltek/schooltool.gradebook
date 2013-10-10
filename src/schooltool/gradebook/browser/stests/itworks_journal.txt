@@ -41,6 +41,6 @@ A section with instructors and students:
 And check its Journal link:
 
     >>> manager.ui.section.go('2012', 'Semester 1', 'Math (1)')
-    >>> manager.query.link('Journal').click()
+    >>> manager.query.xpath('//div[contains(@class, "refine")]//a[text()="Journal"]').click()
     >>> manager.url
     u'http://localhost/schoolyears/2012/semester-1/sections/1/journal'

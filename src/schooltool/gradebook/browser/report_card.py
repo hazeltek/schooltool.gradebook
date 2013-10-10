@@ -35,6 +35,7 @@ from zope.i18n import translate
 
 from z3c.form import form, field, button
 
+from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.common.inlinept import InheritTemplate
@@ -161,25 +162,8 @@ class FlourishReportSheetActionLinks(flourish.page.RefineLinksViewlet):
             return super(FlourishReportSheetActionLinks, self).render()
 
 
-class FlourishSchooYearMixin(object):
-    """A flourish mixin class for any view with schooyear tab"""
-
-    @property
-    def has_schoolyear(self):
-        return self.schoolyear is not None
-
-    @property
-    def schoolyear(self):
-        schoolyears = ISchoolYearContainer(self.context)
-        result = schoolyears.getActiveSchoolYear()
-        if 'schoolyear_id' in self.request:
-            schoolyear_id = self.request['schoolyear_id']
-            result = schoolyears.get(schoolyear_id, result)
-        return result
-
-
 class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
-                                 FlourishSchooYearMixin):
+                                 ActiveSchoolYearContentMixin):
 
     @property
     def enabled(self):
@@ -195,7 +179,7 @@ class HideUnhideReportSheetsLink(flourish.page.LinkViewlet,
         return url
 
 
-class FlourishReportSheetsBase(FlourishSchooYearMixin):
+class FlourishReportSheetsBase(ActiveSchoolYearContentMixin):
 
     def sheets(self):
         return [sheet for sheet in self.all_sheets() if sheet['checked']]
@@ -238,6 +222,10 @@ class FlourishManageReportSheetTemplatesOverview(FlourishReportSheetsBase,
         root = IGradebookRoot(ISchoolToolApplication(None))
         return list(root.templates.values())
 
+    def templates_url(self):
+        return self.url_with_schoolyear_id(self.context,
+                                           view_name='gradebook/templates')
+
 
 class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
                                          flourish.page.Content):
@@ -245,6 +233,10 @@ class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
 
     body_template = ViewPageTemplateFile(
         'templates/f_manage_report_sheets_overview.pt')
+
+    def sheets_url(self):
+        return self.url_with_schoolyear_id(self.context,
+                                           view_name='report_sheets')
 
 
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
@@ -364,11 +356,10 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
                 copyActivities(deployedWorksheet, worksheetCopy)
 
     def nextURL(self):
-        url = absoluteURL(ISchoolToolApplication(None), self.request)
-        return url + '/manage'
+        return self.url_with_schoolyear_id(self.context, view_name='manage')
 
 
-class ReportSheetsTertiaryNavigationManager(FlourishSchooYearMixin,
+class ReportSheetsTertiaryNavigationManager(ActiveSchoolYearContentMixin,
                                             TertiaryNavigationManager):
 
     template = InlineViewPageTemplate("""
@@ -1097,7 +1088,8 @@ class LayoutReportCardView(object):
         return absoluteURL(self.context, self.request)
 
 
-class LayoutReportCardLink(FlourishSchooYearMixin, flourish.page.LinkViewlet):
+class LayoutReportCardLink(flourish.page.LinkViewlet,
+                           ActiveSchoolYearContentMixin):
 
     @property
     def title(self):
@@ -1105,15 +1097,19 @@ class LayoutReportCardLink(FlourishSchooYearMixin, flourish.page.LinkViewlet):
             return ''
         return _("Report Card Layout")
 
+    @property
+    def url(self):
+        return self.url_with_schoolyear_id(self.context, view_name=self.link)
 
-class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
+
+class FlourishLayoutReportCardView(flourish.page.Page,
+                                   ActiveSchoolYearContentMixin):
     """A flourish view for laying out the columns of the report card"""
 
     def __init__(self, context, request):
         super(FlourishLayoutReportCardView, self).__init__(context, request)
         if self.schoolyear is None:
-            url = absoluteURL(ISchoolToolApplication(None), self.request)
-            self.request.response.redirect(url + '/manage')
+            self.request.response.redirect(self.nextURL())
 
     @property
     def title(self):
@@ -1141,6 +1137,9 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
             absoluteURL(self.context, self.request), source_type,
             self.schoolyear.__name__, index + 1)
  
+    def nextURL(self):
+        return self.url_with_schoolyear_id(self.context, view_name='manage')
+
     @property
     def columns(self):
         """Get  a list of the existing layout columns."""
@@ -1208,8 +1207,8 @@ class FlourishLayoutReportCardView(FlourishSchooYearMixin, flourish.page.Page):
                 return
 
 
-class LayoutReportCardTertiaryNavigationManager(FlourishSchooYearMixin,
-    flourish.viewlet.ViewletManager):
+class LayoutReportCardTertiaryNavigationManager(
+    ActiveSchoolYearContentMixin, flourish.viewlet.ViewletManager):
 
     template = InlineViewPageTemplate("""
         <ul tal:attributes="class view/list_class">
@@ -1237,7 +1236,7 @@ class LayoutReportCardTertiaryNavigationManager(FlourishSchooYearMixin,
         return result
 
 
-class ReportCardColumnLinkViewlet(FlourishSchooYearMixin,
+class ReportCardColumnLinkViewlet(ActiveSchoolYearContentMixin,
                                   flourish.page.LinkViewlet):
 
     @property
@@ -1246,7 +1245,7 @@ class ReportCardColumnLinkViewlet(FlourishSchooYearMixin,
             self.schoolyear.__name__)
 
 
-class ReportCardActivityLinkViewlet(FlourishSchooYearMixin,
+class ReportCardActivityLinkViewlet(ActiveSchoolYearContentMixin,
                                     flourish.page.LinkViewlet):
 
     @property
@@ -1255,7 +1254,7 @@ class ReportCardActivityLinkViewlet(FlourishSchooYearMixin,
             self.schoolyear.__name__)
 
 
-class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
+class FlourishReportCardLayoutMixin(ActiveSchoolYearContentMixin):
     """A flourish mixin class for column or activity add/edit views"""
 
     @property
@@ -1386,9 +1385,7 @@ class FlourishReportCardLayoutMixin(FlourishSchooYearMixin):
             self.request.response.redirect(self.nextURL())
 
     def nextURL(self):
-        return '%s/report_card_layout?schoolyear_id=%s' % (
-            absoluteURL(ISchoolToolApplication(None), self.request),
-            self.schoolyear.__name__)
+        return self.url_with_schoolyear_id(self.context, view_name='report_card_layout')
 
 
 class FlourishReportCardColumnBase(FlourishReportCardLayoutMixin):
