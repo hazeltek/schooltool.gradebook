@@ -2,10 +2,17 @@
 CHANGES
 =======
 
-2.5.4 (unreleased)
+2.6.0 (2013-10-10)
 ------------------
 
-- Split Name column into First Name and Last Name.
+- Flourish-style report card and student detail report.
+- Update for the new journal that uses an attendance score system.
+- Split Name column into First Name and Last Name, allow sorting by either.
+- Used name sorting setting in gradebook XLS export
+- Sections in the report card should be sorted (https://launchpad.net/bugs/1154209)
+- Fix navigation in report card layout views  if a non-active school year is selected,
+  or school years title contains accented characters (https://launchpad.net/bugs/1234690)
+- Make default score systems translatable.
 
 
 2.5.3 (2013-09-13)
