@@ -6,21 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-23 12:11+0300\n"
-"PO-Revision-Date: 2013-08-23 09:20+0000\n"
+"POT-Creation-Date: 2013-10-08 02:41+0300\n"
+"PO-Revision-Date: 2013-10-10 01:01+0300\n"
 "Last-Translator: Gediminas Paulauskas <menesis@pov.lt>\n"
 "Language-Team: Lithuanian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-24 05:45+0000\n"
-"X-Generator: Launchpad (build 16738)\n"
+"X-Launchpad-Export-Date: 2013-10-08 06:29+0000\n"
+"X-Generator: Launchpad (build 16799)\n"
 "Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
-msgstr "Lentelė1"
+msgstr "Lakštas1"
 
 #: /src/schooltool/gradebook/activity.py:239
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:8
@@ -31,11 +31,11 @@ msgstr "Veiklos"
 #: /src/schooltool/gradebook/activity.py:301
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:5
 msgid "Course Activities"
-msgstr ""
+msgstr "Dalyko veiklos"
 
 #: /src/schooltool/gradebook/activity.py:317
 msgid "Deployed Worksheets"
-msgstr ""
+msgstr "Išdalinti lakštai"
 
 #: /src/schooltool/gradebook/browser/activity.py:66
 #: /src/schooltool/gradebook/browser/gradebook.py:83
@@ -174,6 +174,7 @@ msgstr "Viso kredito vertė"
 msgid ""
 "This value must be an integer.  You may award extra credit above this value."
 msgstr ""
+"Ši reikšmė turi būti sveikasis skaičius. Galite parašyti ir didesnį pažymį."
 
 #: /src/schooltool/gradebook/browser/activity.py:363
 msgid "Minimum Score"
@@ -186,7 +187,7 @@ msgstr "Ši reikšmė turi būti sveikasis skaičius."
 #: /src/schooltool/gradebook/browser/activity.py:385
 #: /src/schooltool/gradebook/browser/activity.py:536
 msgid "Activity Details"
-msgstr "Veiklos detalės"
+msgstr "Veiklos aprašas"
 
 #: /src/schooltool/gradebook/browser/activity.py:389
 #: /src/schooltool/gradebook/browser/activity.py:486
@@ -223,7 +224,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/activity.py:480
 #: /src/schooltool/gradebook/browser/activity.py:589
 msgid "External Score Details"
-msgstr "Išorinio pažymio detalės"
+msgstr "Išorinio pažymio aprašas"
 
 #: /src/schooltool/gradebook/browser/activity.py:524
 #: /src/schooltool/gradebook/browser/report_card.py:751
@@ -236,7 +237,7 @@ msgstr "Keisti išorinę veiklą"
 
 #: /src/schooltool/gradebook/browser/activity.py:618
 msgid "Category weights for worksheet ${worksheet}"
-msgstr "Kategorijų svoriai lentelėje ${worksheet}"
+msgstr "Kategorijų svoriai lakšte ${worksheet}"
 
 #: /src/schooltool/gradebook/browser/activity.py:640
 msgid "$value is not a valid weight."
@@ -326,19 +327,20 @@ msgstr "Veiklos kategorijos"
 #: /src/schooltool/gradebook/generations/tests/test_evolve3.py:47
 #: /src/schooltool/gradebook/gradebook_init.py:50
 msgid "Report Sheet Templates"
-msgstr "Ataskaitos lentelių šablonai"
+msgstr "Ataskaitos lakštų šablonai"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:134
+#: /src/schooltool/gradebook/browser/configure.zcml:124
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:9
 msgid "Add a Worksheet"
-msgstr "Pridėti lentelę"
+msgstr "Pridėti lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:147
 msgid "Add a Report Sheet"
-msgstr "Pridėti ataskaitos lentelę"
+msgstr "Pridėti ataskaitos lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:159
 msgid "Edit Worksheet"
-msgstr "Keisti lentelę"
+msgstr "Keisti lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:159
 #: /src/schooltool/gradebook/browser/configure.zcml:171
@@ -359,7 +361,7 @@ msgstr "Keisti"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:171
 msgid "Edit Report Sheet"
-msgstr "Keisti ataskaitos lentelę"
+msgstr "Keisti ataskaitos lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:235
 #: /src/schooltool/gradebook/browser/flourish.zcml:492
@@ -391,12 +393,12 @@ msgstr "Pažymių knygelė"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:296
 msgid "New Report Sheet"
-msgstr "Nauja ataskaitos lentelė"
+msgstr "Naujas ataskaitos lakštas"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:303
 #: /src/schooltool/gradebook/browser/flourish.zcml:219
 msgid "New Worksheet"
-msgstr "Nauja lentelė"
+msgstr "Naujas lakštas"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:310
 #: /src/schooltool/gradebook/browser/configure.zcml:419
@@ -412,7 +414,7 @@ msgstr "Grįžti į pažymių knygelę"
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:4
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:8
 msgid "Unhide Worksheets"
-msgstr "Grąžinti paslėptas lenteles"
+msgstr "Grąžinti paslėptus lakštus"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:333
 #: /src/schooltool/gradebook/browser/configure.zcml:377
@@ -441,11 +443,11 @@ msgstr "Naujas susietas stulpelis"
 #: /src/schooltool/gradebook/interfaces.py:214
 #: /src/schooltool/gradebook/interfaces.py:319
 msgid "Worksheets"
-msgstr "Lentelės"
+msgstr "Lakštai"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:398
 msgid "Manage Worksheet"
-msgstr "Tvarkyti lentelę"
+msgstr "Tvarkyti lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:405
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:5
@@ -468,15 +470,15 @@ msgstr "Atnaujinti pažymius"
 #: /src/schooltool/gradebook/browser/configure.zcml:533
 #: /src/schooltool/gradebook/browser/configure.zcml:592
 msgid "Deploy Report Sheet"
-msgstr "Išdalinti ataskaitos lapą"
+msgstr "Išdalinti ataskaitos lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:540
 msgid "Hide Report Sheet"
-msgstr "Paslėpti ataskaitos lapą"
+msgstr "Paslėpti ataskaitos lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:547
 msgid "Unhide Report Sheet"
-msgstr "Sugrąžinti ataskaitos lapą"
+msgstr "Sugrąžinti ataskaitos lakštą"
 
 #: /src/schooltool/gradebook/browser/configure.zcml:599
 #: /src/schooltool/gradebook/browser/flourish.zcml:617
@@ -486,16 +488,16 @@ msgstr "Ataskaitos kortelės išdėstymas"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:76
 msgid "Course Worksheet Details"
-msgstr ""
+msgstr "Dalyko lakšto aprašas"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:115
 msgid "Course Worksheet Template Information"
-msgstr ""
+msgstr "Dalyko lakšto šablono informacija"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:157
 #: /src/schooltool/gradebook/browser/course_worksheets.py:167
 msgid "Course Activity Details"
-msgstr ""
+msgstr "Dalyko veiklos aprašas"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:218
 #: /src/schooltool/gradebook/browser/report_card.py:275
@@ -504,7 +506,7 @@ msgstr "-- Visi metai --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:308
 msgid "Worksheets for ${year}"
-msgstr ""
+msgstr "Lakštai ${year} m.m."
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:329
 #: /src/schooltool/gradebook/browser/report_card.py:290
@@ -513,7 +515,7 @@ msgstr "-- Pasirinkite šabloną --"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:366
 msgid "Hide/unhide Deployed Worksheets for ${year}"
-msgstr ""
+msgstr "Slėpti ${year} m.m. išdalintus lakštus"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:88
 #: /src/schooltool/gradebook/browser/flourish.zcml:601
@@ -559,7 +561,7 @@ msgstr "Veiksmai"
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:15
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:4
 msgid "Worksheet"
-msgstr "Lentelė"
+msgstr "Lakštas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:178
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories.pt:16
@@ -596,7 +598,7 @@ msgstr "Įvertinimas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:382
 msgid "Scores"
-msgstr ""
+msgstr "Įvertinimai"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:396
 msgid "Edit Category Weights"
@@ -605,7 +607,7 @@ msgstr "Keisti kategorijų svorius"
 #: /src/schooltool/gradebook/browser/flourish.zcml:438
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:58
 msgid "Report Sheet Template"
-msgstr "Ataskaitos lapo šablonas"
+msgstr "Ataskaitos lakšto šablonas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:473
 #: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:39
@@ -619,11 +621,11 @@ msgstr "Naujas šablonas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:538
 msgid "Action"
-msgstr ""
+msgstr "Veiksmas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:548
 msgid "Hide/unhide Sheets"
-msgstr ""
+msgstr "Slėpti/rodyti lakštus"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:582
 msgid "My Grades"
@@ -697,17 +699,20 @@ msgstr ""
 msgid ""
 "Export report card data for every student in every section for the term."
 msgstr ""
+"Eksportuoti visų studentų visuose kursuose ataskaitų duomenis šiame semestre."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:894
 #: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid "Report Sheet Data Export"
-msgstr ""
+msgstr "Eksportuoti ataskaitos lakšto duomenis"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:920
 msgid ""
 "Export report card data for every student in every section for the school. "
 "There will be one worksheet for each term in the year."
 msgstr ""
+"Eksportuoti visų studentų visuose kursuose ataskaitų kortelių duomenis. Bus "
+"sukurta atskira skaičialentė kiekvienam semestrui."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:890
 #: /src/schooltool/gradebook/browser/report.zcml:63
@@ -730,35 +735,35 @@ msgstr "Praleista"
 #: /src/schooltool/gradebook/browser/flourish.zcml:1166
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Worksheet Templates"
-msgstr ""
+msgstr "Lakštų šablonai"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1008
 msgid "Course Worksheet"
-msgstr ""
+msgstr "Dalyko lakštas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1017
 msgid "New Course Worksheet"
-msgstr ""
+msgstr "Nauja dalyko lakštas"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1026
 msgid "New Course Activity"
-msgstr ""
+msgstr "Nauja dalyko veikla"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1054
 msgid "Course Activity"
-msgstr ""
+msgstr "Dalyko veikla"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1096
 msgid "Hide/unhide Worksheets"
-msgstr ""
+msgstr "Slėpti/rodyti lakštus"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1137
 msgid "Add to Course Worksheets"
-msgstr ""
+msgstr "Pridėti prie dalyko lakštų"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1145
 msgid "Add as Course Worksheet"
-msgstr ""
+msgstr "Pridėti kaip dalyko lakštą"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1154
 msgid "Reports"
@@ -766,21 +771,22 @@ msgstr "Ataskaitos"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1139
 msgid "Printable Worksheet"
-msgstr ""
+msgstr "Lakštas spausdinimui"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1247
 msgid "The current gradebook worksheet formatted for printing."
-msgstr ""
+msgstr "Rodomas pažymių knygelės lakštas, pritaikyta spausdinimui."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1260
 msgid ""
 "A single Excel-formatted spreadsheet containing all the worksheets for this "
 "gradebook."
 msgstr ""
+"Skaičialentė („Excel“ formato) su visais šios pažymių knygelės lakštais."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1151
 msgid "Gradebook Export"
-msgstr ""
+msgstr "Eksportuoti pažymių knygelę"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:87
 #: /src/schooltool/gradebook/browser/pdf_views.py:730
@@ -830,7 +836,7 @@ msgstr "Taškai"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:834
 msgid "No Visible Worksheets"
-msgstr ""
+msgstr "Nėra matomų lakštų"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:806
 msgid "Enter Grades"
@@ -889,7 +895,7 @@ msgstr "Įvertinti tai"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:2196
 msgid "Fill down"
-msgstr ""
+msgstr "Užpildyti"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:2201
 #: /src/schooltool/gradebook/browser/gradebook.py:2357
@@ -942,11 +948,11 @@ msgstr "Mokinys"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:2331
 msgid "Score History"
-msgstr ""
+msgstr "Vertinimo istorija"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:2335
 msgid "Report"
-msgstr ""
+msgstr "Ataskaita"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:2364
 msgid "Show Total"
@@ -980,14 +986,6 @@ msgstr "Rodyti Vėl."
 msgid "Hide Trd."
 msgstr "Slėpti Vėl."
 
-#: /src/schooltool/gradebook/browser/gradebook.py:2410
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:24
-#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:37
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:130
-msgid "Name"
-msgstr "Vardas"
-
 #: /src/schooltool/gradebook/browser/gradebook.py:2450
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:39
@@ -1009,10 +1007,9 @@ msgstr "Vertinimo sistema"
 
 #: /src/schooltool/gradebook/browser/gradebook.py:2591
 msgid "Value"
-msgstr ""
+msgstr "Reikšmė"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:203
+#: /src/schooltool/gradebook/browser/pdf_views.py:245
 msgid "Report Card: ${schoolyear}"
 msgstr "Ataskaitos kortelė: ${schoolyear}"
 
@@ -1060,15 +1057,15 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:578
 msgid "Report Sheet: ${worksheet}"
-msgstr ""
+msgstr "Ataskaitos lakštas: ${worksheet}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:580
 msgid "Activity: ${activity}"
-msgstr ""
+msgstr "Veikla: ${activity}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:582
 msgid "Passing Score: ${score}"
-msgstr ""
+msgstr "Patenkinamas pažymys: $[score}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:588
 msgid "The following students are at risk of failing the following courses:"
@@ -1076,27 +1073,27 @@ msgstr "Išvardintiems mokiniams gresia neišlaikyti šių dalykų:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:657
 msgid "ABSENCES BY DAY"
-msgstr ""
+msgstr "PRALEISTA NURODYTĄ DIENĄ"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:663
 msgid "absences by day report"
-msgstr ""
+msgstr "ataskaita apie praleistas pamokas nurodytą dieną"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:664
 msgid "absences for ${day}"
-msgstr ""
+msgstr "praleista ${day}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:786
 msgid "SECTION ABSENCES"
-msgstr ""
+msgstr "PRALEISTA KURSE"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:790
 msgid "${section} absence report"
-msgstr ""
+msgstr "${section} praleistų pamokų ataskaita"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:806
 msgid "Teacher(s): ${instructors}"
-msgstr ""
+msgstr "Dėstytojas (-ai): ${instructors}"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:923
 msgid "Gradebook Report"
@@ -1104,26 +1101,38 @@ msgstr "Pažymių knygelės ataskaita"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:968
 msgid "${section} gradebook"
-msgstr ""
+msgstr "${section} pažymių knygelė"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:986
 msgid "Instructors: ${instructors}"
-msgstr ""
+msgstr "Dėstytojai: ${instructors}"
 
-#: /src/schooltool/gradebook/browser/report.zcml:8
+#: /src/schooltool/gradebook/browser/pdf_views.py:1135
+msgid "Report Card"
+msgstr "Ataskaitos kortelė"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:1150
+msgid "${student} report card"
+msgstr "${student} ataskaitos kortelė"
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:1397
+msgid "${student} detail report"
+msgstr "${student} išsami ataskaita"
+
+#: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
-msgstr "Pažymiai iš ataskaitų lentelių. Skirta siųsti tėvams."
+msgstr "Pažymiai iš ataskaitų lakštų. Skirta siųsti tėvams."
 
 #: /src/schooltool/gradebook/browser/report.zcml:20
 msgid ""
 "Contains scores from report sheets and attendance.  For use by school staff."
 msgstr ""
-"Pažymiai iš ataskaitų lentelių ir lankomumo duomenys. Skirta mokyklos "
+"Pažymiai iš ataskaitų lakštų ir lankomumo duomenys. Skirta mokyklos "
 "personalui."
 
 #: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "Student Report Card by Group"
-msgstr "Mokinių grupės ataskaitos kortelės"
+msgstr "Mokinių grupės ataskaitos kortelė"
 
 #: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Student Detail Report by Group"
@@ -1159,7 +1168,7 @@ msgstr "p"
 
 #: /src/schooltool/gradebook/browser/report_card.py:254
 msgid "Report Sheets for ${year}"
-msgstr "Ataskaitos lapai ${year} m. m."
+msgstr "Ataskaitos lakštai ${year} m. m."
 
 #: /src/schooltool/gradebook/browser/report_card.py:399
 msgid "Hide/unhide Report Sheets for ${year}"
@@ -1167,11 +1176,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report_card.py:461
 msgid "Report Sheet Template Details"
-msgstr "Ataskaitos lapo šablono aprašas"
+msgstr "Ataskaitos lakšto šablono aprašas"
 
 #: /src/schooltool/gradebook/browser/report_card.py:351
 msgid "Report Sheet Template Information"
-msgstr "Ataskaitos lapo šablono informacija"
+msgstr "Ataskaitos lakšto šablono informacija"
 
 #: /src/schooltool/gradebook/browser/report_card.py:390
 msgid "-- Use range below --"
@@ -1250,15 +1259,15 @@ msgstr "Sąrašo punkto antraštė"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:66
 msgid "Select a source"
-msgstr ""
+msgstr "Pasirinkite šaltinį"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:110
 msgid "Select a score"
-msgstr ""
+msgstr "Pasirinkite pažymį"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:158
 msgid "${value} is not valid in ${scoresystem}."
-msgstr ""
+msgstr "${value} nėra tinkama reikšmė ${scoresystem}."
 
 #: /src/schooltool/gradebook/browser/request_reports.py:221
 #: /src/schooltool/gradebook/browser/request_reports.py:304
@@ -1279,8 +1288,7 @@ msgstr "Pasirinkite veiklą ataskaitai"
 
 #: /src/schooltool/gradebook/browser/request_reports.py:324
 msgid "You must specify both a report activity and a minimum passing score."
-msgstr ""
-"Turite nurodyti ir ataskaitos veiklą, ir mažiausią patenkinamą įvertį."
+msgstr "Turite nurodyti ir ataskaitos veiklą, ir mažiausią patenkinamą įvertį."
 
 #: /src/schooltool/gradebook/browser/request_reports.py:140
 msgid "Request Absences By Day Report"
@@ -1308,17 +1316,20 @@ msgstr "Data"
 #: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:11
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:11
 msgid "Absences (continued)"
-msgstr ""
+msgstr "Lankomumas (tęsinys)"
 
-#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:16
-#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:32
-msgid "Period Number"
-msgstr ""
+#: /src/schooltool/gradebook/browser/rml/report_card_student_header.pt:9
+msgid "Username: ${username}"
+msgstr "Naudotojas: ${username}"
 
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:17
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:34
 msgid "Tardies"
 msgstr "Pavėluota"
+
+#: /src/schooltool/gradebook/browser/rml/student_detail_report_attendance.pt:8
+msgid "Attendance detail"
+msgstr "Lankomumas išsamiai"
 
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:25
@@ -1376,7 +1387,7 @@ msgstr "Keisti"
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:8
 msgid "Deploy Report Worksheet Template"
-msgstr "Išdalinti ataskaitos lapo šabloną"
+msgstr "Išdalinti ataskaitos lakšto šabloną"
 
 #: /src/schooltool/gradebook/browser/templates/deploy_report_worksheet.pt:16
 msgid "Template"
@@ -1405,7 +1416,7 @@ msgid ""
 "managed from this page."
 msgstr ""
 "Veiklos kategorijos, naudojamos pažymių knygelėse visoje mokykloje, yra "
-"tvarkomos šiame puslapyje."
+"tvarkomos šiame puslakštyje."
 
 #: /src/schooltool/gradebook/browser/templates/f_activity_categories_related.pt:10
 msgid ""
@@ -1428,8 +1439,7 @@ msgstr ""
 "SchoolTool pažymių knygelė."
 
 #: /src/schooltool/gradebook/browser/templates/f_add_linked_activity_related.pt:10
-msgid ""
-"External score sources must be configured by your system administrator"
+msgid "External score sources must be configured by your system administrator"
 msgstr ""
 "Išoriniai pažymių šaltiniai turi būti paruošti sistemos administratoriaus."
 
@@ -1443,27 +1453,27 @@ msgstr "Keisti šią kategoriją"
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 msgid "There are no activity categories."
-msgstr ""
+msgstr "Nėra veiklos kategorijų."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
-msgstr ""
+msgstr "Nėra dalyko veiklų."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
-msgstr ""
+msgstr "Šiam dalykui nėra dalyko lakštų šablonų."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
 msgid "Current Course Worksheets"
-msgstr ""
+msgstr "Esami dalyko lakštai"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:30
 msgid "This year has no course worksheets."
-msgstr ""
+msgstr "Šiais metais nėra dalyko lakštų."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:50
 msgid "Select worksheet to add"
-msgstr ""
+msgstr "Pasirinkite, kurį lakštą pridėti"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:55
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:19
@@ -1475,11 +1485,11 @@ msgstr "Semestras arba metai"
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:58
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:22
 msgid "Add the worksheet to a specific term or the entire year."
-msgstr ""
+msgstr "Pridėti lakštą nurodytam semestrui arba visiems metams."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:73
 msgid "Worksheet Template"
-msgstr ""
+msgstr "Lakšto šablonas"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:77
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:99
@@ -1504,23 +1514,23 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
 msgid "Enter Comment"
-msgstr ""
+msgstr "Įveskite komentarą"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:16
 msgid "Comment"
-msgstr ""
+msgstr "Komentaras"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:19
 msgid "Enter a comment."
-msgstr ""
+msgstr "Įveskite komentarą."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:3
 msgid "You have unsaved changes that will be lost."
-msgstr ""
+msgstr "Yra neišsaugotų pakeitimų, kurie bus prarasti."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:7
 msgid "Fill empty cells"
-msgstr ""
+msgstr "Užpildyti tuščius laukelius"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:16
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:83
@@ -1530,6 +1540,8 @@ msgstr "Pažymys"
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_filldown_dialog.pt:19
 msgid "Choose a grade to apply to all the students in the gradebook column."
 msgstr ""
+"Pasirinkite pažymį, kurį pritaikyti visiems neįvertintiems studentams šiame "
+"lakšto stulpelyje."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:59
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:304
@@ -1542,11 +1554,11 @@ msgstr "Išsaugoti"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:4
 msgid "This section contains only worksheets that are hidden."
-msgstr ""
+msgstr "Šiame kurse yra tik paslėpti lakštai."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:8
 msgid "You can ${unhide_worksheets}, or ${add_worksheet}."
-msgstr ""
+msgstr "Galite ${unhide_worksheets} arba ${add_worksheet}"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:117
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:247
@@ -1560,15 +1572,15 @@ msgstr "Trumpinys: Alt-S"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:127
 msgid "Done"
-msgstr ""
+msgstr "Atlikta"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
 msgid "Expand"
-msgstr ""
+msgstr "Išplėsti"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:126
 msgid "Collapse"
-msgstr ""
+msgstr "Suskleisti"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:130
 msgid "Zoom Out"
@@ -1603,13 +1615,12 @@ msgid ""
 "Report sheets use the SchoolTool gradebook to collect data and commentary "
 "from teachers about students in all sections."
 msgstr ""
-"Ataskaitos lapai iš SchoolTool pažymių knygelės surenka duomenis bei "
+"Ataskaitos lakštai iš SchoolTool pažymių knygelės surenka duomenis bei "
 "mokytojų komentarus apie mokinius."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:10
-msgid ""
-"The first step in the process is to create a new report sheet template."
-msgstr "Pirmas žingsnis yra sukurti naują ataskaitos lapo šabloną."
+msgid "The first step in the process is to create a new report sheet template."
+msgstr "Pirmas žingsnis yra sukurti naują ataskaitos lakšto šabloną."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
 msgid "After you create a template, the next step is to ${deploy-sheet}"
@@ -1617,15 +1628,15 @@ msgstr "Sukūrus šabloną, kitas žingsnis yra ${deploy-sheet}"
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
 msgid "deploy it to teacher gradebooks."
-msgstr "išdalinti lapus į mokytojų pažymių knygeles."
+msgstr "išdalinti lakštus į mokytojų pažymių knygeles."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:3
 msgid "Currently Deployed WorkSheets"
-msgstr ""
+msgstr "Jau išdalyti lakštai"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:9
 msgid "Deployed Worksheet"
-msgstr ""
+msgstr "Išdalintas lakštas"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:10
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:13
@@ -1640,74 +1651,74 @@ msgstr "Matoma"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:32
 msgid "This year has no worksheets deployed."
-msgstr ""
+msgstr "Šiems metams nėra išdalintų lakštų."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:3
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:11
 msgid "Currently Deployed Report Sheets"
-msgstr "Dabar išdalinti ataskaitos lapai"
+msgstr "Dabar išdalinti ataskaitos lakštai"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:12
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:15
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:22
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:22
 msgid "Report Sheet"
-msgstr "Ataskaitos lapas"
+msgstr "Ataskaitos lakštas"
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_report_sheets.pt:35
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:30
 msgid "This year has no report sheets deployed."
-msgstr "Šiais metais nebuvo išdalinta jokių ataskaitos lapų."
+msgstr "Šiais metais nebuvo išdalinta jokių ataskaitos lakštų."
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Manage Worksheet Templates"
-msgstr ""
+msgstr "Tvarkyti lakštų šablonus"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
 msgid "Course Worksheets"
-msgstr ""
+msgstr "Dalyko lakštai"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
 msgid "Manage Course Worksheets"
-msgstr ""
+msgstr "Tvarkyti dalyko lakštus"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
 msgid "There are ${count} course worksheets for ${schoolyear}"
-msgstr ""
+msgstr "${schoolyear} m.m. yra ${count} dalyko lakštų"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
 msgid "There are no course worksheets for ${schoolyear}"
-msgstr ""
+msgstr "${schoolyear} m.m. nėra dalyko lakštų"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:5
 msgid "Manage Report Sheet Templates"
-msgstr ""
+msgstr "Tvarkyti ataskaitos lakštų šablonus"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:14
 msgid "There are ${count} report sheet templates set up."
-msgstr ""
+msgstr "Yra apibrėžti ${count} ataskaitos lakštų šablonai."
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheet_templates_overview.pt:17
 #: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:17
 msgid "There are no report sheet templates set up."
-msgstr ""
+msgstr "Nėra apibrėžtų ataskaitos lakštų šablonų."
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
 msgid "Manage Deployed Report Sheets"
-msgstr ""
+msgstr "Tvarkyti išdalintus ataskaitos lakštus"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:5
 #: /src/schooltool/gradebook/gradebook_init.py:53
 msgid "Deployed Report Sheets"
-msgstr "Išdalinti ataskaitos lapai"
+msgstr "Išdalinti ataskaitos lakštai"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:16
 msgid "There are ${count} report sheets deployed in ${schoolyear}"
-msgstr ""
+msgstr "${schoolyear} m.m. yra išdalinta ${count} ataskaitos lakštų"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_report_sheets_overview.pt:20
 msgid "There are no report sheets deployed in ${schoolyear}"
-msgstr ""
+msgstr "${schoolyear} m.m. nėra išdalinta ataskaitos lakštų"
 
 #: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:6
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
@@ -1729,27 +1740,27 @@ msgstr "Antraštė"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:40
 msgid "This report has no grid columns."
-msgstr ""
+msgstr "Šioje ataskaitoje nėra lentelės stulpelių."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:45
 msgid "Outline Items"
-msgstr ""
+msgstr "Sąrašo punktai"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:76
 msgid "This report has no outline items."
-msgstr ""
+msgstr "Šioje ataskaitoje nėra sąrašo punktų."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid ""
 "Use this page to lay out a standard report card, pulling data from ${report-"
 "sheets} and the attendance journal."
 msgstr ""
-"Šiame puslapyje sudėliokite standartinę ataskaitos kortelę, imančią duomenis "
-"iš ${report-sheets} ir lankomumo žurnalo."
+"Šiame puslakštyje sudėliokite standartinę ataskaitos kortelę, imančią "
+"duomenis iš ${report-sheets} ir lankomumo žurnalo."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:8
 msgid "report sheets"
-msgstr "ataskaitos lapų"
+msgstr "ataskaitos lakštų"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:12
 msgid ""
@@ -1757,7 +1768,7 @@ msgid ""
 "section and the columns as defined on this page."
 msgstr ""
 "Standartinėje ataskaitos kortelėje yra lentelė, kurios eilutėse yra kursai, "
-"o stulpeliai nustatomi šiame puslapyje."
+"o stulpeliai nustatomi šiame puslakštyje."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_card_layout_related.pt:16
 msgid ""
@@ -1787,7 +1798,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:49
 msgid "Select report sheet to deploy"
-msgstr "Pasirinkite ataskaitos lapą išdalinimui"
+msgstr "Pasirinkite ataskaitos lakštą išdalinimui"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets.pt:61
 msgid "Select a term or deploy to the entire year."
@@ -1805,14 +1816,14 @@ msgstr "Pirmas žingsnis yra ${add-sheet}"
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:12
 msgid "create a new report sheet template."
-msgstr "sukurti naują ataskaitos lapo šabloną."
+msgstr "sukurti naują ataskaitos lakšto šabloną."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:15
 msgid ""
 "Once you have a template, use this form to add the report sheet to the "
 "gradebook of every section that meets in the specified term or terms."
 msgstr ""
-"Sukūrę šabloną, naudodamiesi šia forma įdėkite ataskaitos lapą į pažymių "
+"Sukūrę šabloną, naudodamiesi šia forma įdėkite ataskaitos lakštą į pažymių "
 "knygeles visuose kursuose pasirinktame semestre."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:22
@@ -1820,8 +1831,8 @@ msgid ""
 "Data collected through report sheets can be included in the ${report-card-"
 "layout} or custom reports."
 msgstr ""
-"Duomenys, surinkti naudojant ataskaitos lapus, gali būti įtraukti į ${report-"
-"card-layout} arba susikurtas ataskaitas."
+"Duomenys, surinkti naudojant ataskaitos lakštus, gali būti įtraukti į "
+"${report-card-layout} arba susikurtas ataskaitas."
 
 #: /src/schooltool/gradebook/browser/templates/f_report_sheets_related.pt:22
 msgid "standard report card"
@@ -1845,11 +1856,11 @@ msgstr "Atsisiųsti"
 
 #: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:5
 msgid "${student_name} was never scored in this worksheet."
-msgstr ""
+msgstr "${student_name} dar nebuvo įvertintas šiame lakšte."
 
 #: /src/schooltool/gradebook/browser/templates/f_student_grade_history.pt:14
 msgid "Evaluator"
-msgstr ""
+msgstr "Vertintojas"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:6
 msgid "Report Activities"
@@ -1857,21 +1868,22 @@ msgstr "Veiklos ataskaitoje"
 
 #: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:39
 msgid "There are no report activities."
-msgstr ""
+msgstr "Nėra veiklų ataskaitoje."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:6
 msgid ""
 "A report sheet is a special kind of gradebook worksheet that can be deployed "
 "to all teacher gradebooks in the school."
 msgstr ""
-"Ataskaitos lapas yra ypatingas lapas pažymių knygelėje, kuris gali būti "
+"Ataskaitos lakštas yra ypatingas lakštas pažymių knygelėje, kuris gali būti "
 "įdėtas į visų mokytojų pažymių knygeles."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:10
 msgid ""
 "Each deployed worksheet will contain the report activities defined in its "
 "template."
-msgstr "Kiekviename lape bus ataskaitos veiklos, apibrėžtos jo šablone."
+msgstr ""
+"Kiekviename įdėtame lakšte bus ataskaitos veiklos, apibrėžtos jo šablone."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:18
@@ -1880,14 +1892,14 @@ msgid ""
 "average scores within a worksheet."
 msgstr ""
 "Čia galite keisti kategorijų svorius, naudojamus pažymių vidurkio "
-"skaičiavimui."
+"skaičiavimui šiame lakšte."
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
 msgid "Enter numeric values for each relevant category."
 msgstr "Įveskite skaičius prie kiekvienos naudojamos kategorijos."
 
-#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:13
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
@@ -1902,12 +1914,11 @@ msgstr ""
 msgid ""
 "The list of categories can be customized for your school by your system "
 "administrator."
-msgstr ""
-"Kategorijų sąrašas gali būti keičiamas tik sistemos administratoriaus."
+msgstr "Kategorijų sąrašas gali būti keičiamas tik sistemos administratoriaus."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:5
 msgid "Reorder or Hide Worksheets"
-msgstr "Rikiuoti arba slėpti lenteles"
+msgstr "Rikiuoti arba slėpti lakštus"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:9
 msgid "Order"
@@ -1916,16 +1927,16 @@ msgstr "Tvarka"
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:52
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:2
 msgid "Summary Worksheet"
-msgstr "Santraukos lapas"
+msgstr "Santraukos lakštas"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:55
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:86
 msgid "Overwrite existing worksheets titled \"Summary\"."
-msgstr "Perrašyti esamus lapus pavadinimu „Santrauka“."
+msgstr "Perrašyti esamus lakštus pavadinimu „Santrauka“."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:59
 msgid "Create summary worksheet"
-msgstr "Sukurti santraukos lapą"
+msgstr "Sukurti santraukos lakštą"
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_related.pt:6
 msgid ""
@@ -1933,9 +1944,9 @@ msgid ""
 "organize large numbers of activities. You can link columns from one "
 "worksheet to another."
 msgstr ""
-"Naudokite lapus jūsų pažymių knygelėje taip pat, kaip tai darytumėte "
-"skaičiuoklėje tvarkydami didelius kiekius veiklos. Jūs galite susieti "
-"stulpelius tarp vieno lapo ir kito."
+"Naudokite lakštus jūsų pažymių knygelėje taip pat, kaip tai darytumėte "
+"skaičiuoklėje tvarkydami didelius užduočių kiekius. Jūs galite susieti "
+"stulpelius tarp vieno lakšto ir kito."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:76
@@ -1943,8 +1954,8 @@ msgid ""
 "You can add a summary worksheet to each of your gradebooks that "
 "automatically includes a column for the average of all existing worksheets."
 msgstr ""
-"Galite pridėti santraukos lapą prie kiekvienos jūsų pažymių knygelės, "
-"kuriame bus stulpelis su visų lapų vidurkiu."
+"Galite pridėti santraukos lakštą prie kiekvienos jūsų pažymių knygelės, "
+"kuriame bus stulpelis su visų lakštų vidurkiu."
 
 #: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:11
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:79
@@ -1979,11 +1990,16 @@ msgstr "Atnaujinti"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:92
 msgid "Create Summary Worksheets"
-msgstr "Sukurti apžvalgos lenteles"
+msgstr "Sukurti apžvalgos lakštus"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:18
 msgid "Grade ${name}"
 msgstr "Įvertinti ${name}"
+
+#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:37
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:130
+msgid "Name"
+msgstr "Vardas"
 
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:47
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:181
@@ -2013,7 +2029,7 @@ msgstr "(rikiuoti)"
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:8
 msgid "Hide Deployed Report Sheet"
-msgstr "Paslėpti išdalintą ataskaitos lapą"
+msgstr "Paslėpti išdalintą ataskaitos lakštą"
 
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:4
 msgid "Layout Report Card"
@@ -2061,7 +2077,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:4
 msgid "No Report Sheets"
-msgstr "Nėra ataskaitos lentelių"
+msgstr "Nėra ataskaitos lakštų"
 
 #: /src/schooltool/gradebook/browser/templates/no_report_sheets.pt:10
 msgid ""
@@ -2071,12 +2087,12 @@ msgid ""
 "again."
 msgstr ""
 "Jūsų bandytas veiksmas negali būti atliktas, nes kol kas nėra sukurtas nei "
-"vienas ataskaitos lapas. Prašykite naudotojo su administratoriaus teisėmis, "
-"kad sukurtų bent vieną ataskaitos lapą, ir bandykite tada."
+"vienas ataskaitos lakštas. Prašykite naudotojo su administratoriaus "
+"teisėmis, kad sukurtų bent vieną ataskaitos lakštą, ir bandykite tada."
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:4
 msgid "Report Worksheet"
-msgstr "Nauja lentelė"
+msgstr "Naujas lakštas"
 
 #: /src/schooltool/gradebook/browser/templates/report_worksheet_overview.pt:9
 msgid "Activities of ${title}"
@@ -2088,7 +2104,7 @@ msgid ""
 "A report sheet template defines the activities to be included in a report "
 "sheet deployed to each section in a term or year."
 msgstr ""
-"Ataskaitos lapo šablonas nurodo veiklas, kurios bus ataskaitos lapuose, "
+"Ataskaitos lakšto šablonas nurodo veiklas, kurios bus ataskaitos lakštuose, "
 "išdalintuose kiekvienam kursui tam semestre ar metuose."
 
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:25
@@ -2097,7 +2113,7 @@ msgid ""
 "selected activity from a report sheet."
 msgstr ""
 "Tai sąrašas moksleivių, kurie gavo nepatenkinamą pažymį už pasirinktą veiklą "
-"iš ataskaitos lapo."
+"iš ataskaitos lakšto."
 
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:28
 msgid ""
@@ -2115,12 +2131,12 @@ msgstr "Prašyti ataskaitos"
 
 #: /src/schooltool/gradebook/browser/templates/summary.pt:10
 msgid "Section Worksheet Summary"
-msgstr "Kurso lentelės santrauka"
+msgstr "Kurso lakšto santrauka"
 
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:4
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:8
 msgid "Unhide Deployed Report Sheet"
-msgstr "Atslėpti išdalintus ataskaitos lapus"
+msgstr "Atslėpti išdalintus ataskaitos lakštus"
 
 #: /src/schooltool/gradebook/browser/templates/unhide_report_worksheet.pt:39
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:27
@@ -2129,25 +2145,25 @@ msgstr "Atslėpti"
 
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:4
 msgid "Delete Worksheet"
-msgstr "šalinti lentelę"
+msgstr "šalinti lakštą"
 
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:12
 msgid ""
 "Are you sure you want to delete this worksheet together with all its "
 "activities?"
-msgstr "Ar tikrai norite ištrinti šį lapą, įskaitant visas veiklas jame?"
+msgstr "Ar tikrai norite ištrinti šį lakštą, įskaitant visas veiklas jame?"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:106
 msgid "This worksheet has no activities."
-msgstr "Šioje lentelėje nėra nei vienos veiklos."
+msgstr "Šiame lakšte nėra nei vienos veiklos."
 
 #: /src/schooltool/gradebook/browser/worksheet.py:124
 msgid "Worksheet Details"
-msgstr "Lapo aprašas"
+msgstr "Lakšto aprašas"
 
 #: /src/schooltool/gradebook/browser/worksheet.py:181
 msgid "Worksheet Information"
-msgstr "Lentelės informacija"
+msgstr "Lakšto informacija"
 
 #: /src/schooltool/gradebook/browser/xls_views.py:44
 msgid "report sheets export"
@@ -2243,7 +2259,7 @@ msgstr "Stulpeliai"
 
 #: /src/schooltool/gradebook/interfaces.py:177
 msgid "Columns to be printed in the report card."
-msgstr "Stulpeliai, spausdinami ataskaitoje."
+msgstr "Stulpeliai, spausdinami ataskaitos kortelėje."
 
 #: /src/schooltool/gradebook/interfaces.py:181
 msgid "Activities to be printed in the outline section."
@@ -2252,7 +2268,7 @@ msgstr "Veiklos, spausdinamos santraukos skiltyje."
 #: /src/schooltool/gradebook/interfaces.py:215
 #: /src/schooltool/gradebook/interfaces.py:320
 msgid "Worksheets in this gradebook."
-msgstr "Lentelės šioje pažymių knygelėje."
+msgstr "Lakštai šioje pažymių knygelėje."
 
 #: /src/schooltool/gradebook/interfaces.py:219
 msgid "Activities in this gradebook."
@@ -2317,7 +2333,7 @@ msgstr "Dienyno vidurkis"
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Create, edit and deploy report sheet templates."
-msgstr "Kurti, redaguoti, ir išdalinti ataskaitos lapų šablonus."
+msgstr "Kurti, redaguoti, ir išdalinti ataskaitos lakštų šablonus."
 
 #: /src/schooltool/gradebook/security.zcml:10
 msgid "Edit Templates"
@@ -2345,11 +2361,11 @@ msgstr "Tik kurso mokytojas gali keisti jo pažymių knygelę"
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "School administrators can edit a section's gradebook."
-msgstr ""
+msgstr "Mokyklos administratoriai gali redaguoti pažymių knygeles."
 
 #: /src/schooltool/gradebook/security.zcml:55
 msgid "Add Course Worksheet"
-msgstr ""
+msgstr "Pridėti dalyko lakštą"
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/flourish.zcml:10
@@ -2393,20 +2409,20 @@ msgstr "Santrumpa"
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:52
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:16
 msgid "Point Value"
-msgstr ""
+msgstr "Taškai"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:36
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:8
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:53
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:17
 msgid "Low Percentage"
-msgstr ""
+msgstr "Žemiausias procentas"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:75
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:102
 #: /src/schooltool/requirement/browser/f_scoresystem_view.pt:9
 msgid "Passing Score"
-msgstr ""
+msgstr "Patenkinamas"
 
 #: /src/schooltool/requirement/browser/f_scoresystem_add.pt:80
 msgid "Type"
@@ -2475,7 +2491,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/flourish.zcml:109
 msgid "Customize"
-msgstr ""
+msgstr "Redaguoti"
 
 #: /src/schooltool/requirement/browser/requirement.pt:5
 msgid "${requirement} Contents"
@@ -2487,7 +2503,7 @@ msgstr "${requirement} papildomi reikalavimai"
 
 #: /src/schooltool/requirement/browser/requirement.pt:20
 msgid "Find Now"
-msgstr "Surasti"
+msgstr "Rasti"
 
 #: /src/schooltool/requirement/browser/requirement.pt:22
 msgid "Clear"
@@ -2583,7 +2599,7 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:80
 msgid "Add a lower score"
-msgstr ""
+msgstr "Pridėti žemesnį įvertinimą"
 
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:83
 msgid ""
@@ -2599,3 +2615,23 @@ msgstr "patenkinamas pažymys:"
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr "Rodyti vertinimo sistemą"
+
+#: /src/schooltool/requirement/scoresystem.py:277
+msgid "Pass/Fail"
+msgstr "Įskaityta/Neįskaityta"
+
+#: /src/schooltool/requirement/scoresystem.py:284
+msgid "Letter Grade"
+msgstr "Raidės"
+
+#: /src/schooltool/requirement/scoresystem.py:294
+msgid "Extended Letter Grade"
+msgstr "Raidės su ženklais"
+
+#: /src/schooltool/requirement/scoresystem.py:398
+msgid "Percent"
+msgstr "Procentas"
+
+#: /src/schooltool/requirement/scoresystem.py:403
+msgid "100 Points"
+msgstr "100 taškų"
