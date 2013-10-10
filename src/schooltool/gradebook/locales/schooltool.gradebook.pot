@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2013-10-08 02:41+0300\n"
+"POT-Creation-Date: 2013-10-10 13:59+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -1510,11 +1510,7 @@ msgstr ""
 msgid "Shortcut: Alt-S"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:127
-msgid "Done"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:139
 msgid "Expand"
 msgstr ""
 
@@ -1867,27 +1863,7 @@ msgstr ""
 msgid "Grade ${name}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:37
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:130
-msgid "Name"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:47
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:181
-msgid "Apply a grade for all students:"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:48
-#: /src/schooltool/gradebook/browser/templates/mygrades.pt:15
-msgid "Term:"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:77
-#: /src/schooltool/gradebook/browser/templates/mygrades.pt:33
-msgid "Section:"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:98
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:88
 msgid "show only activities due in past ${num_weeks} weeks"
 msgstr ""
 
@@ -2332,11 +2308,7 @@ msgstr ""
 msgid "Showing ${count} of ${total} items"
 msgstr ""
 
-#: /src/schooltool/requirement/browser/requirement.py:55
-msgid "Requirement index"
-msgstr ""
-
-#: /src/schooltool/requirement/browser/scoresystem.py:48
+#: /src/schooltool/requirement/browser/scoresystem.py:45
 msgid "The Title field must not be empty."
 msgstr ""
 
@@ -2426,5 +2398,25 @@ msgstr ""
 
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:278
+msgid "Pass/Fail"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:285
+msgid "Letter Grade"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:295
+msgid "Extended Letter Grade"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:399
+msgid "Percent"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:404
+msgid "100 Points"
 msgstr ""
 
