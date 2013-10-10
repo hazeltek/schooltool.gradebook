@@ -133,7 +133,7 @@
                i18n:attributes="value; title; accesskey" />
         <input type="submit" class="button-ok" name="CANCEL" value="Done"
                tal:condition="view/readonly"
-               i18n:attributes="value" />
+               i18n:attributes="value" i18n:domain="schooltool"/>
       </div>
       <div class="buttons zoom-buttons">
         <button type="button" class="button-neutral zoom-button expand"

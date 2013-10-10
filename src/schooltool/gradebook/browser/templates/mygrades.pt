@@ -12,7 +12,7 @@
   <form method="post"
         tal:attributes="action string:${context/@@absolute_url}">
     <tal:if condition="python:not list(view.getSections())">
-      <b i18n:translate="">Term:</b>
+      <b>Term:</b>
       <span tal:content="view/getCurrentTerm" />
     </tal:if>
     <tal:if condition="python:list(view.getTerms())">
@@ -30,7 +30,7 @@
 
     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <tal:if condition="python:not list(view.getSections())">
-      <b i18n:translate="">Section:</b>
+      <b>Section:</b>
       <span tal:content="view/getCurrentSection" />
     </tal:if>
     <tal:if condition="python:list(view.getSections())">
