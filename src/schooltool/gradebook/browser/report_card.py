@@ -1467,6 +1467,8 @@ class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
         for key in root.deployed:
             if key.startswith(deployedKey):
                 deployedWorksheet = root.deployed[key]
+                if deployedWorksheet.hidden:
+                    continue
                 worksheetCopy = Worksheet(deployedWorksheet.title)
                 worksheetCopy.deployed = True
                 activities[key] = worksheetCopy
