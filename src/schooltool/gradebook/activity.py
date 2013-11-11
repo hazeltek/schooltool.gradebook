@@ -257,7 +257,7 @@ class ReportWorksheet(requirement.Requirement, WorksheetAnnotatableMixin):
     deployed = False
 
 
-class CourseWorksheet(requirement.Requirement):
+class CourseWorksheet(requirement.Requirement, WorksheetAnnotatableMixin):
     zope.interface.implements(interfaces.ICourseWorksheet)
 
     deployed = False
