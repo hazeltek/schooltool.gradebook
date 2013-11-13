@@ -12,7 +12,7 @@ Some helpers:
     >>> def format_navigator(header, option):
     ...     return '%s: %s' % (header, option)
     >>> def format_tab(tab):
-    ...     text = tab.query.tag('a').text
+    ...     text = tab.query.tag('a').get_attribute('title')
     ...     active = tab.get_attribute('class') in ('active',)
     ...     return ['%s', '*%s*'][active] % text
 
