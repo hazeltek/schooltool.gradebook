@@ -1592,7 +1592,7 @@ class LinkedActivityGradesUpdater(object):
         for student in gradebook.students:
             external_grade = external_activity.getGrade(student)
             if external_grade is not None:
-                score = float(external_grade) * float(linked_activity.points)
+                score = external_grade * linked_activity.points
                 score = Decimal("%.2f" % score)
                 gradebook.evaluate(student, linked_activity, score, evaluator)
 

@@ -74,18 +74,21 @@ class JournalExternalActivity(object):
 
     def getGrade(self, student):
         grades = []
+        ss = None
         for meeting, score in self.journal_data.gradedMeetings(student):
             grade = score.value
             if grade is UNSCORED:
                 continue
             try:
                 grade = score.scoreSystem.getNumericalValue(grade)
+                if not ss:
+                    ss = score.scoreSystem
             except ValueError:
                 continue
             grades.append(grade)
         if len(grades):
-            # XXX: should return fractional value of scoresystem max
-            return float(sum(grades)) / float(10 * len(grades))
+            bestScore = ss.getNumericalValue(ss.getBestScore())
+            return sum(grades) / len(grades) / bestScore
 
     def __eq__(self, other):
         return interfaces.IExternalActivity.providedBy(other) and \

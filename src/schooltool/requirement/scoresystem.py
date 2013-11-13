@@ -181,7 +181,7 @@ class AbstractValuesScoreSystem(AbstractScoreSystem):
         """See interfaces.IScoreSystem"""
         raise NotImplementedError
 
-    def getFractionValue(self, score):
+    def getFractionalValue(self, score):
         """See interfaces.IScoreSystem"""
         raise NotImplementedError
 
