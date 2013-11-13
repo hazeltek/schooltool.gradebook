@@ -139,11 +139,11 @@ class BaseStudentPDFView(BasePDFView):
         if jd is None:
             return None
         result = 0
-        for meeting in jd.recordedMeetings(student):
-            grade = jd.getGrade(student, meeting)
-            if grade == 'n' and layout.source == ABSENT_KEY:
+        for meeting, score in jd.absentMeetings(student):
+            ss = score.scoreSystem
+            if ss.isAbsent(score) and layout.source == ABSENT_KEY:
                 result += 1
-            if grade == 'p' and layout.source == TARDY_KEY:
+            elif ss.isTardy(score) and layout.source == TARDY_KEY:
                 result += 1
         return result or None
 
@@ -456,12 +456,8 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
             if jd is None:
                 continue
             for meeting, score in jd.absentMeetings(student):
-                period = self.guessPeriodGroup(meeting)
-                day = meeting.dtstart
-                ss = score.scoreSystem
-                if ss.isExcused(score):
-                    continue
                 result = None
+                ss = score.scoreSystem
                 if ss.isExcused(score):
                     continue
                 elif ss.isAbsent(score):
@@ -469,6 +465,8 @@ class BaseStudentDetailPDFView(BaseStudentPDFView):
                 elif ss.isTardy(score):
                     result = TARDY_ABBREVIATION
                 if result:
+                    day = meeting.dtstart
+                    period = self.guessPeriodGroup(meeting)
                     data.setdefault(day, {})[period] = result
 
         periods = {}

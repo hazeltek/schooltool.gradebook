@@ -20,6 +20,7 @@ from zope.interface import implements
 
 from schooltool.gradebook import interfaces
 from schooltool.gradebook import GradebookMessage as _
+from schooltool.requirement.scoresystem import UNSCORED
 
 try:
     from schooltool.lyceum.journal.interfaces import ISectionJournalData
@@ -73,15 +74,18 @@ class JournalExternalActivity(object):
 
     def getGrade(self, student):
         grades = []
-        for meeting in self.journal_data.recordedMeetings(student):
-            grade = self.journal_data.getGrade(student, meeting)
+        for meeting, score in self.journal_data.gradedMeetings(student):
+            grade = score.value
+            if grade is UNSCORED:
+                continue
             try:
-                grade = int(grade)
+                grade = score.scoreSystem.getNumericalValue(grade)
             except ValueError:
                 continue
             grades.append(grade)
         if len(grades):
-            return sum(grades) / float(10 * len(grades))
+            # XXX: should return fractional value of scoresystem max
+            return float(sum(grades)) / float(10 * len(grades))
 
     def __eq__(self, other):
         return interfaces.IExternalActivity.providedBy(other) and \
