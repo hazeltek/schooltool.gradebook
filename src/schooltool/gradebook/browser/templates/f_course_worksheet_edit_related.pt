@@ -1,0 +1,11 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      The Course Worksheet and activities defined here can be deployed
+      to all the sections of this course for one or more terms.
+    </p>
+  </div>
+</metal:block>

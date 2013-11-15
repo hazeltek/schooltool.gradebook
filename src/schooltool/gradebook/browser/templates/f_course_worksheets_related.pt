@@ -1,0 +1,20 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      This page allows you to manage the Course Worksheets for this
+      course.
+    </p>
+    <p i18n:translate="">
+      The templates are created separately and define what activites
+      will be on the Course Worksheets.  Use this form to deploy the
+      worksheets to the teacher gradebooks of all sections of this
+      course for one or more terms.
+    </p>
+    <p i18n:translate="">
+      You can also hide worksheets if you do not want teachers to see them.
+    </p>
+  </div>
+</metal:block>

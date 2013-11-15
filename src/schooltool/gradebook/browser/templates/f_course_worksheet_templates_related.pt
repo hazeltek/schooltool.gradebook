@@ -1,0 +1,19 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Course Worksheets can be be used to include sets of activities
+      in the gradebooks of all sections of a course.  The activities
+      included in Course Worksheets are defined in templates, shown
+      here.
+    </p>
+    <p i18n:translate="">
+      The templates can be created from this page (see Add: Course
+      Worksheet) or from the individual gradebook of the instructor of
+      a section of this course who is either a "Responsible party" for
+      the course or a member of "Clerks" or "Site Managers."
+    </p>
+  </div>
+</metal:block>

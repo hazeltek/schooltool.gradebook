@@ -1,0 +1,11 @@
+<metal:block i18n:domain="schooltool.gradebook">
+  <div class="header" i18n:translate="">
+    What is This?
+  </div>
+  <div class="body">
+    <p i18n:translate="">
+      Use this form to add the active worksheet in your gradebook to
+      all the sections of the same course in the selected terms.
+    </p>
+  </div>
+</metal:block>

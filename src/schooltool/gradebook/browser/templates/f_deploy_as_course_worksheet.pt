@@ -23,7 +23,7 @@
             Add the worksheet to a specific term or the entire year.
           </p>
           <div class="widget">
-            <select id="term" name="term">
+            <select id="term" name="term" class="select-widget">
               <tal:block repeat="term terms">
                 <option tal:attributes="value term/name; selected term/selected"
                         tal:content="term/title" />
