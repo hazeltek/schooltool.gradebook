@@ -1,0 +1,163 @@
+Default section tests
+=====================
+
+When a person has been added to multiple sections in different school
+years, the default section when they click the Gradebook tab should be
+in the active school year. If possible the section should also be in
+the current term.
+
+Some helpers (XXX: duplicated from navigation.txt):
+
+    >>> # FORMATTERS
+    >>> def format_option(option, selected):
+    ...     return ['%s', '*%s*'][selected] % option
+    >>> def format_navigator(header, option):
+    ...     return '%s: %s' % (header, option)
+    >>> def format_tab(tab):
+    ...     text = tab.query.tag('a').get_attribute('title')
+    ...     active = tab.get_attribute('class') in ('active',)
+    ...     return ['%s', '*%s*'][active] % text
+
+    >>> # GETTERS
+    >>> def get_navigators(browser):
+    ...     return browser.query_all.css('.refine .content')[:3]
+    >>> def get_section_navigator(browser):
+    ...     return get_navigators(browser)[0]
+    >>> def get_term_navigator(browser):
+    ...     return get_navigators(browser)[1]
+    >>> def get_schoolyear_navigator(browser):
+    ...     return get_navigators(browser)[2]
+    >>> def get_navigator_header(navigator):
+    ...     return navigator.query.css('.header').text
+    >>> def get_navigator_options(navigator):
+    ...     result = []
+    ...     for option in navigator.query_all.tag('option'):
+    ...         result.append((option.text, option.is_selected()))
+    ...     return result
+    >>> def get_navigator_selected_option(navigator):
+    ...     options = get_navigator_options(navigator)
+    ...     text, selected = filter(lambda x:x[-1], options)[0]
+    ...     return text
+    >>> def get_tabs(browser):
+    ...     return browser.query_all.css('.third-nav li')  
+
+    >>> # PRINTERS
+    >>> def print_navigator_options(navigator):
+    ...     for text, selected in get_navigator_options(navigator):
+    ...         print format_option(text, selected)
+    >>> def print_navigator(navigator):
+    ...     header = get_navigator_header(navigator)
+    ...     selected = get_navigator_selected_option(navigator)
+    ...     print format_navigator(header, selected)
+    >>> def print_navigators(browser):
+    ...     for navigator in get_navigators(browser):
+    ...         print_navigator(navigator)
+    >>> def print_section_navigator(browser):
+    ...     navigator = get_section_navigator(browser)
+    ...     print_navigator_options(navigator)
+    >>> def print_term_navigator(browser):
+    ...     navigator = get_term_navigator(browser)
+    ...     print_navigator_options(navigator)
+    >>> def print_schoolyear_navigator(browser):
+    ...     navigator = get_schoolyear_navigator(browser)
+    ...     print_navigator_options(navigator)
+    >>> def print_tabs(browser):
+    ...     for tab in get_tabs(browser):
+    ...         print format_tab(tab)
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Set up several school years:
+
+    >>> manager.ui.schoolyear.add('2011', '2011-01-01', '2011-12-31')
+    >>> manager.ui.schoolyear.add('2012', '2012-01-01', '2012-12-31')
+    >>> manager.ui.schoolyear.add('2013', '2013-01-01', '2013-12-31')
+
+Currently, the first school year added is the active one.
+
+Add a couple of terms in each year:
+
+    >>> manager.ui.term.add('2011', 'S1', '2011-01-01', '2011-06-30')
+    >>> manager.ui.term.add('2011', 'S2', '2011-07-01', '2011-12-31')
+
+    >>> manager.ui.term.add('2012', 'S1', '2012-01-01', '2012-06-30')
+    >>> manager.ui.term.add('2012', 'S2', '2012-07-01', '2012-12-31')
+
+And some persons:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Jeff', 'Elkner', 'jeff', 'pwd')
+    >>> manager.ui.person.add('David', 'Welsh', 'david', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'pwd')
+
+We're going to add different courses for each year:
+
+    >>> manager.ui.course.add('2011', 'Math')
+    >>> manager.ui.course.add('2012', 'Baseball')
+    >>> manager.ui.course.add('2013', 'Soccer')
+
+Now sections for each course:
+
+    >>> manager.ui.section.add('2011', 'S1', 'Math', ends='S2')
+    >>> manager.ui.section.instructors.add('2011', 'S1', 'Math (1)',
+    ...                                    ['tom', 'jeff', 'david'])
+    >>> manager.ui.section.students.add('2011', 'S1', 'Math (1)',
+    ...                                 ['camila', 'mario'])
+
+    >>> manager.ui.section.add('2012', 'S1', 'Baseball', ends='S2')
+    >>> manager.ui.section.instructors.add('2012', 'S1', 'Baseball (1)',
+    ...                                    ['tom', 'jeff'])
+    >>> manager.ui.section.students.add('2012', 'S1', 'Baseball (1)',
+    ...                                 ['mario'])
+
+After Tom, Jeff and David have been added as instructors to sections
+in the two years, we'll activate the 2012 year:
+
+    >>> manager.open('http://localhost/schoolyears')
+    >>> manager.query.link('Activate New Year').click()
+    >>> manager.query.css('input[value="2012"]').click()
+    >>> manager.query.name('SUBMIT').click()
+
+We'll check that the first time Tom logs in he's redirected to a 2012
+section:
+
+    >>> tom = browsers.tom
+    >>> tom.ui.login('tom', 'pwd')
+    >>> tom.query.link('Gradebook').click()
+
+    >>> print_navigators(tom)
+    Section: Baseball (1)
+    Term: S1
+    Year: 2012
+
+Now, we'll set the current term to be S2 in 2012:
+
+    >>> manager.open('http://localhost/time?value=2012-08-01')
+
+And get Jeff to log in for the first time. He should be redirected
+to the Soccer S2 section:
+
+    >>> jeff = browsers.jeff
+    >>> jeff.ui.login('jeff', 'pwd')
+    >>> jeff.query.link('Gradebook').click()
+
+    >>> print_navigators(jeff)
+    Section: Baseball (1)
+    Term: S2
+    Year: 2012
+
+If David logs in, he's redirected to his first section in 2011:
+
+    >>> david = browsers.david
+    >>> david.ui.login('david', 'pwd')
+    >>> david.query.link('Gradebook').click()
+
+    >>> print_navigators(david)
+    Section: Math (1)
+    Term: S1
+    Year: 2011
