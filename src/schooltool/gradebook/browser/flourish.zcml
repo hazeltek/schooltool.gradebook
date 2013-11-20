@@ -1460,14 +1460,6 @@
       permission="schooltool.view"
       />
 
-  <page
-      name="request_failing_report.html"
-      for="schooltool.term.interfaces.ITerm"
-      class=".request_reports.RequestFailingReportView"
-      template="templates/request_failing_report.pt"
-      permission="schooltool.edit"
-      />
-
   <flourish:pdf
       name="failures_by_term.pdf"
       for="schooltool.term.interfaces.ITerm"
