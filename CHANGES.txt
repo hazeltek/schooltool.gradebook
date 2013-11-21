@@ -2,10 +2,16 @@
 CHANGES
 =======
 
-2.6.1 (unreleased)
+2.6.1 (2013-11-21)
 ------------------
 
-- Nothing changed yet.
+- Prevented hidden report sheets to be deployed to new sections (https://launchpad.net/bugs/1220211)
+- Fixed error when deploying a course worksheet (https://launchpad.net/bugs/1186231)
+- Added What is This? sidebars to course worksheet views.
+- Fixed attendance calculation in XLS export and reports.
+- Fixed journal average calculation if alternative score system is used.
+- Gradebook tab should display a section in the active school year when first
+  opened (https://launchpad.net/bugs/1243781)
 
 
 2.6.0 (2013-10-10)
