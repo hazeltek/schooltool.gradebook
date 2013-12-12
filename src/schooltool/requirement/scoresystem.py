@@ -27,6 +27,7 @@ from zope.componentvocabulary.vocabulary import UtilityVocabulary
 from zope.container.btree import BTreeContainer
 from zope.container.interfaces import INameChooser
 from zope.interface import implements, Interface
+from zope.cachedescriptors.property import Lazy
 import zope.schema
 from zope.schema.vocabulary import SimpleVocabulary
 import zope.security.checker
@@ -214,7 +215,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
             return None
         if self._minPassingScore is None:
             return None
-        scores = self.scoresDict()
+        scores = self.scoresDict
         if self._isMaxPassingScore:
             return scores[score] <= scores[self._minPassingScore]
         else:
@@ -224,8 +225,10 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if score is UNSCORED:
             return True
-        lower_scores = [s.lower() for s in self.scoresDict().keys()]
-        return score.lower() in lower_scores
+        for s in self.scoresDict.keys():
+            if s.lower() == score.lower():
+                return True
+        return False
 
     def getBestScore(self):
         """See interfaces.IScoreSystem"""
@@ -233,9 +236,9 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
 
     def fromUnicode(self, rawScore):
         """See interfaces.IScoreSystem"""
-        if rawScore == '':
+        if not rawScore:
             return UNSCORED
-        for score in self.scoresDict().keys():
+        for score in self.scoresDict.keys():
             if score.lower() == rawScore.lower():
                 return score
         raise ScoreValidationError(rawScore)
@@ -244,8 +247,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         """See interfaces.IScoreSystem"""
         if score is UNSCORED:
             return None
-        scores = self.scoresDict()
-        return scores[score]
+        return self.scoresDict[score]
 
     def getFractionalValue(self, score):
         """See interfaces.IScoreSystem"""
@@ -256,6 +258,7 @@ class DiscreteValuesScoreSystem(AbstractValuesScoreSystem):
         value = self.getNumericalValue(score) - minimum
         return value / (maximum - minimum)
 
+    @Lazy
     def scoresDict(self):
         scores = [(score, value) for score, abbr, value, percent in self.scores]
         return dict(scores)
