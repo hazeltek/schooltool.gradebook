@@ -792,16 +792,39 @@ class WorksheetsExportView(export.ExcelExportView):
             self.write(ws, row, col, header.data, **header.style)
 
     def export_worksheets(self, wb):
-        for i, worksheet in enumerate(self.context.values()):
+        documents = self.context.values()
+        for i, worksheet in enumerate(documents):
             ws = wb.add_sheet(str(i+1))
             self.print_worksheet_header(ws, worksheet)
             self.print_headers(ws, worksheet)
             self.print_grades(ws, worksheet)
+            self.progress('worksheets', export.normalized_progress(
+                    i, len(documents)))
+        self.finish('worksheets')
+
+    def addImporters(self, progress):
+        progress.add('worksheets', 
+                     title=_('Worksheets'), progress=0.0)
+
+    def render(self, workbook):
+        datafile = StringIO()
+        workbook.save(datafile)
+        data = datafile.getvalue()
+        self.setUpHeaders(data)
+        return data
 
     def __call__(self):
+        self.makeProgress()
+        self.task_progress.title = _("Exporting worksheets")
+        self.addImporters(self.task_progress)
+
         wb = xlwt.Workbook()
         self.export_worksheets(wb)
-        return wb
+
+        self.task_progress.title = _("Export complete")
+        self.task_progress.force('overall', progress=1.0)
+        data = self.render(wb)
+        return data
 
 
 class LinkedColumnBase(BrowserView):
