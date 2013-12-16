@@ -101,7 +101,8 @@ def getColumnKeys(gradebook):
 
 def convertAverage(average, scoresystem):
     """converts average to display value of the given scoresystem"""
-    if scoresystem is None:
+    if (scoresystem is None or
+        not IDiscreteValuesScoreSystem.providedBy(scoresystem)):
         return '%.1f%%' % average
     for score in scoresystem.scores:
         if average >= score[3]:

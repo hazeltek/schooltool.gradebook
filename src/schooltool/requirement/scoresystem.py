@@ -87,6 +87,8 @@ def DiscreteScoreSystemsVocabulary(context):
     terms = []
     container = interfaces.IScoreSystemContainer(ISchoolToolApplication(None))
     for name, ss in sorted(container.items()):
+        if not interfaces.IDiscreteValuesScoreSystem.providedBy(ss):
+            continue
         if not getattr(ss, 'hidden', False):
             token = name.encode('punycode')
             term = SimpleVocabulary.createTerm(ss, token, ss.title)
