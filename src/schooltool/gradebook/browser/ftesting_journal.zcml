@@ -1,7 +1,17 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:flourish="http://schooltool.org/flourish">
 
   <include package="schooltool.lyceum.journal" file="meta.zcml" />
   <include file="ftesting.zcml" />
   <include package="schooltool.lyceum.journal" />
+
+  <flourish:pdf
+      name="section_absences.pdf"
+      for="schooltool.course.interfaces.ISection"
+      class="schooltool.gradebook.browser.pdf_views.SectionAbsencesPDFView"
+      permission="schooltool.edit"
+      attribute="render"
+      />
 
 </configure>

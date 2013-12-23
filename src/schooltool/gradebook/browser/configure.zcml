@@ -5,6 +5,8 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="schooltool.gradebook">
 
+  <include package="schooltool.skin.flourish" file="report.zcml" />
+
   <!-- Gradebook Root Traverser -->
   <zope:view
       for="schooltool.gradebook.interfaces.IGradebookRoot"
