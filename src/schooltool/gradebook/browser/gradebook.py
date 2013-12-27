@@ -43,6 +43,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.viewlet import viewlet
 from zope.i18n.interfaces.locales import ICollator
 from zope.i18n import translate
+from zope.authentication.interfaces import IUnauthenticatedPrincipal
 
 import zc.resourcelibrary
 from zc.table.column import GetterColumn
@@ -1492,6 +1493,8 @@ class FlourishMyGradesView(MyGradesView, flourish.page.Page):
 
     def update(self):
         """Handle change of year."""
+        if IUnauthenticatedPrincipal.providedBy(self.request.principal):
+            raise Unauthorized("user not logged in")
         self.person = IPerson(self.request.principal)
         if self.handleYearChange():
             return
