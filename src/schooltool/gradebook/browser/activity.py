@@ -823,8 +823,8 @@ class WorksheetsExportView(export.ExcelExportView):
 
         self.task_progress.title = _("Export complete")
         self.task_progress.force('overall', progress=1.0)
-        data = self.render(wb)
-        return data
+
+        return wb
 
 
 class LinkedColumnBase(BrowserView):
