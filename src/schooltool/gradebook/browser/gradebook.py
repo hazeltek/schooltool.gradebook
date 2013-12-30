@@ -62,7 +62,6 @@ from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Worksheet, LinkedColumnActivity
-from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionTaught, getCurrentSectionAttended,
     setCurrentSectionAttended)
@@ -79,6 +78,7 @@ from schooltool import table
 from schooltool.term.interfaces import ITerm, IDateManager
 from schooltool.report.report import ReportLinkViewlet
 from schooltool.skin import flourish
+from schooltool.skin.flourish.report import buildHTMLParagraphs
 
 from schooltool.gradebook import GradebookMessage as _
 

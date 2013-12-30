@@ -40,13 +40,13 @@ from schooltool.term.interfaces import ITerm, IDateManager
 
 import schooltool.table
 from schooltool.skin import flourish
+from schooltool.skin.flourish.report import buildHTMLParagraphs
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook.browser.gradebook import GradebookOverview
 from schooltool.gradebook.browser.gradebook import convertAverage
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
     TARDY_KEY, AVERAGE_KEY, AVERAGE_HEADING)
-from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
 from schooltool.gradebook.interfaces import ISectionJournalData
