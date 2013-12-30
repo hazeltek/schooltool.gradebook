@@ -672,7 +672,7 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
 
         if ICommentScoreSystem.providedBy(insecure_activity.scoresystem):
             self.needs_comments = True
-            zc.resourcelibrary.need("fckeditor")
+            zc.resourcelibrary.need("ckeditor")
 
         return {
             'linked_source': None,
