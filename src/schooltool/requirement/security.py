@@ -24,6 +24,7 @@ from schooltool.course.interfaces import ISection
 from schooltool.course.section import LearnersCrowd
 from schooltool.course.section import InstructorsCrowd
 from schooltool.course.section import SectionCalendarSettingCrowd
+from schooltool.course.parent import ParentsOfLearnersCrowd
 from schooltool.requirement.interfaces import IRequirement
 from schooltool.securitypolicy.crowds import ParentCrowd
 from schooltool.securitypolicy.crowds import AggregateCrowd
@@ -101,4 +102,5 @@ class SectionRequirementViewersCrowd(AggregateCrowd):
     implements(IRequirementParentCrowd)
 
     def crowdFactories(self):
-        return [SectionCalendarSettingCrowd, InstructorsCrowd, LearnersCrowd]
+        return [SectionCalendarSettingCrowd, InstructorsCrowd, LearnersCrowd,
+                ParentsOfLearnersCrowd]

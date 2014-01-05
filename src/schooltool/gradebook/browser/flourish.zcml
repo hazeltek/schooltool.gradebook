@@ -1660,4 +1660,14 @@
       handler=".course_worksheets.DeployCourseWorksheetsOnSectionAdded"
       />
 
+  <flourish:viewlet
+      after="children-overview"
+      name="children-gradebook"
+      view="schooltool.contact.browser.parent.ParentHome"
+      permission="schooltool.view"
+      template="templates/f_children_gradebooks.pt"
+      manager="schooltool.skin.flourish.page.IPageContentManager"
+      class=".gradebook.ChildrenGradebookOverview"
+      />
+
 </configure>

@@ -1,0 +1,12 @@
+<div class="manage-view" i18n:domain="schooltool.gradebook">
+  <h3 i18n:translate="">
+    Gradebooks
+  </h3>
+  <tal:block tal:repeat="gradebook view/gradebooks">
+    <p i18n:translate="">
+      <span tal:content="gradebook/student/@@title" />
+      <a tal:attributes="href string:${gradebook/@@absolute_url}/view.html"
+         tal:content="gradebook/gradebook/section/@@title" />
+    </p>
+  </tal:block>
+</div>

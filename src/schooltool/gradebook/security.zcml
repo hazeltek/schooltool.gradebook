@@ -39,6 +39,11 @@
   <crowd
       name="grade_editors"
       factory=".gradebook.GradebookEditorsCrowd" />
+
+  <crowd
+      name="parents_of_student_gb"
+      factory=".gradebook.ParentOfStudentGradebookCrowd" />
+
   <allow
       interface="schooltool.gradebook.interfaces.IGradebookRoot"
       permission="schooltool.edit"
@@ -47,6 +52,10 @@
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.view"
       crowds="administrators clerks section_instructors" />
+  <allow
+      interface="schooltool.gradebook.interfaces.IStudentGradebook"
+      permission="schooltool.view"
+      crowds="administrators clerks section_instructors parents_of_student_gb" />
   <allow
       interface="schooltool.gradebook.interfaces.IGradebook"
       permission="schooltool.edit"

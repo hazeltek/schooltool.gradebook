@@ -313,6 +313,11 @@
       factory=".gradebook.getGradebookSection"
       />
   <adapter
+      for=".interfaces.IStudentGradebook"
+      provides="schooltool.course.interfaces.ISection"
+      factory=".gradebook.getStudentGradebookSection"
+      />
+  <adapter
       for=".interfaces.IMyGrades"
       provides="schooltool.course.interfaces.ISection"
       factory=".gradebook.getMyGradesSection"

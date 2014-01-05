@@ -46,6 +46,7 @@ from schooltool.securitypolicy.crowds import AdministratorsCrowd
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import getSourceObj
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
+from schooltool.contact.contact import ParentOfCrowd
 from schooltool.requirement.evaluation import Score
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
@@ -559,6 +560,11 @@ def getGradebookSection(gradebook):
     return course.interfaces.ISection(gradebook.context)
 
 
+def getStudentGradebookSection(gradebook):
+    """Adapt IGradebook to ISection."""
+    return course.interfaces.ISection(gradebook.gradebook.context)
+
+
 def getMyGradesSection(gradebook):
     """Adapt IMyGrades to ISection."""
     return course.interfaces.ISection(gradebook.context)
@@ -616,3 +622,10 @@ class TraversableXLSReportTask(XLSReportTask):
         int_ids = getUtility(IIntIds)
         self.traverse_intid = int_ids.getId(target)
         self.traverse_name = name
+
+
+class ParentOfStudentGradebookCrowd(ParentOfCrowd):
+
+    @property
+    def child(self):
+        return self.context.student

@@ -44,6 +44,8 @@ from zope.viewlet import viewlet
 from zope.i18n.interfaces.locales import ICollator
 from zope.i18n import translate
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
+from zope.component import queryMultiAdapter
+from zope.location.location import LocationProxy
 
 import zc.resourcelibrary
 from zc.table.column import GetterColumn
@@ -52,10 +54,13 @@ from z3c.form import field, button
 
 import schooltool.skin.flourish.page
 import schooltool.skin.flourish.form
+import schooltool.contact.contact
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.interfaces import IApplicationPreferences
+from schooltool.app.membership import Membership
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
+from schooltool.contact.interfaces import IContact
 from schooltool.course.interfaces import ISection
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
@@ -2235,6 +2240,8 @@ class SectionGradebookLinkViewlet(flourish.page.LinkViewlet):
         activities = self.activities
         if flourish.canEdit(activities):
             ensureAtLeastOneWorksheet(activities)
+        if not flourish.canView(activities):
+            return None
         if not len(activities):
             return None
         current_worksheet = activities.getCurrentWorksheet(person)
@@ -2693,3 +2700,35 @@ class FlourishGradebookCommentCell(flourish.form.Form):
 
 class TermReportLinkViewlet(ReportLinkViewlet):
     pass
+
+
+class ChildrenGradebookOverview(flourish.viewlet.Viewlet):
+
+    @property
+    def person(self):
+        return IPerson(self.context, None)
+
+    def gradebooks(self):
+        contact = IContact(self.person)
+        relationships = schooltool.contact.contact.ContactRelationship.bind(
+            contact=contact)
+        children = list(relationships.any(
+                schooltool.contact.contact.ACTIVE+
+                schooltool.contact.contact.PARENT))
+
+        gradebooks = []
+        for child in children:
+            relationships = Membership.bind(member=child)
+            for section in relationships:
+                try:
+                    activities = interfaces.IActivities(section)
+                except:
+                    continue
+                for worksheet in activities.values():
+                    gb = interfaces.IGradebook(worksheet)
+                    stud_gb = queryMultiAdapter(
+                        (child, gb), interfaces.IStudentGradebook)
+                    if stud_gb is None:
+                        continue
+                    gradebooks.append(LocationProxy(stud_gb, gb, child.__name__))
+        return gradebooks
