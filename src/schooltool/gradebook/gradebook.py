@@ -58,6 +58,7 @@ CURRENT_SECTION_TAUGHT_KEY = 'schooltool.gradebook.currentsectiontaught'
 CURRENT_SECTION_ATTENDED_KEY = 'schooltool.gradebook.currentsectionattended'
 DUE_DATE_FILTER_KEY = 'schooltool.gradebook.duedatefilter'
 COLUMN_PREFERENCES_KEY = 'schooltool.gradebook.columnpreferences'
+CURRENT_ENROLLMENT_MODE_KEY = 'schooltool.gradebook.currentenrollmentmode'
 
 
 def getInstructorSections(person):
@@ -112,6 +113,18 @@ def setCurrentSectionAttended(person, section):
     ann = annotation.interfaces.IAnnotations(person)
     if section in getLearnerSections(person):
         ann[CURRENT_SECTION_ATTENDED_KEY] = section
+
+
+def getCurrentEnrollmentMode(person):
+    ann = annotation.interfaces.IAnnotations(removeSecurityProxy(person))
+    if CURRENT_ENROLLMENT_MODE_KEY not in ann:
+        ann[CURRENT_ENROLLMENT_MODE_KEY] = None
+    return ann.get(CURRENT_ENROLLMENT_MODE_KEY, None)
+
+
+def setCurrentEnrollmentMode(person, mode):
+    ann = annotation.interfaces.IAnnotations(removeSecurityProxy(person))
+    ann[CURRENT_ENROLLMENT_MODE_KEY] = mode
 
 
 class WorksheetGradebookTraverser(object):
@@ -241,7 +254,7 @@ class GradebookBase(object):
         self.activities = []
         for activity in context.values():
             self.activities.append(activity)
-        self.students = list(self.section.members)
+        self.students = self.section.members.all()
 
     def _checkStudent(self, student):
         if student not in self.students:

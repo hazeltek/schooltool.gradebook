@@ -57,7 +57,9 @@ import schooltool.skin.flourish.form
 import schooltool.contact.contact
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.interfaces import IApplicationPreferences
+from schooltool.app.interfaces import IRelationshipStateContainer
 from schooltool.app.membership import Membership
+from schooltool.app.states import ACTIVE
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.contact.interfaces import IContact
@@ -71,6 +73,8 @@ from schooltool.gradebook.browser.report_utils import buildHTMLParagraphs
 from schooltool.gradebook.gradebook import (getCurrentSectionTaught,
     setCurrentSectionTaught, getCurrentSectionAttended,
     setCurrentSectionAttended)
+from schooltool.gradebook.gradebook import getCurrentEnrollmentMode
+from schooltool.gradebook.gradebook import setCurrentEnrollmentMode
 from schooltool.person.interfaces import IPerson
 from schooltool.person.interfaces import IPersonFactory
 from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
@@ -497,22 +501,48 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
     isTeacher = True
     needs_comments = False
 
+    def getTodayState(self, student, section):
+        relationships = Membership.bind(member=student).all().relationships
+        for link_info in relationships:
+            if link_info.target is section:
+                return link_info.state.today
+
     @Lazy
+    def app_states(self):
+        app = ISchoolToolApplication(None)
+        return IRelationshipStateContainer(app)['section-membership']
+
+    @property
     def students_info(self):
         result = []
-        for student in self.context.students:
+        students = self.students
+        section = proxy.removeSecurityProxy(self.context).section
+        active_students = students.on(self.request.util.today).any(ACTIVE)
+        current_mode = getCurrentEnrollmentMode(self.person)
+        if current_mode == 'gradebook-enrollment-mode-enrolled':
+            students = active_students
+        for student in students:
+            css_class = ['popup_link']
             insecure_student = proxy.removeSecurityProxy(student)
+            title = insecure_student.title
+            if insecure_student not in active_students:
+                css_class.append('inactive-student')
+                meaning, code = self.getTodayState(insecure_student, section)
+                state = self.app_states.states.get(code)
+                if state is not None:
+                    title = '%s (%s)' % (title, state.title)
             result.append({
-                    'title': student.title,
-                    'first_name': student.first_name,
-                    'last_name': student.last_name,
+                    'title': title,
+                    'css_class': ' '.join(css_class),
+                    'first_name': insecure_student.first_name,
+                    'last_name': insecure_student.last_name,
                     'username': insecure_student.username,
                     'id': insecure_student.username,
-                    'url': absoluteURL(student, self.request),
+                    'url': absoluteURL(insecure_student, self.request),
                     'gradeurl': '%s/%s' % (
                         absoluteURL(self.context, self.request),
                         insecure_student.username),
-                    'object': student,
+                    'object': insecure_student,
                     })
         return result
 
@@ -2732,3 +2762,117 @@ class ChildrenGradebookOverview(flourish.viewlet.Viewlet):
                         continue
                     gradebooks.append(LocationProxy(stud_gb, gb, child.__name__))
         return gradebooks
+
+
+class EnrollmentModes(flourish.page.RefineLinksViewlet):
+
+    pass
+
+
+class EnrollmentModeContent(flourish.content.ContentProvider):
+
+    enrollment_mode_name = 'gradebook-enrollment-mode'
+    enrolled_mode = 'gradebook-enrollment-mode-enrolled'
+    all_mode = 'gradebook-enrollment-mode-all'
+
+    @Lazy
+    def default_mode(self):
+        return self.enrolled_mode
+
+    @Lazy
+    def enrollment_modes(self):
+        return (self.enrolled_mode, self.all_mode)
+
+    @Lazy
+    def modes(self):
+        person = self.person
+        if person is None:
+            return []
+        gradebook_url = absoluteURL(self.context, self.request)
+        result = []
+        result.append({
+                'id': self.enrolled_mode,
+                'label': _('Enrolled'),
+                'url': '%s?%s' % (
+                    gradebook_url,
+                    urllib.urlencode({
+                            self.enrollment_mode_name: self.enrolled_mode,
+                            }))
+                })
+        result.append({
+                'id': self.all_mode,
+                'label': _('All'),
+                'url': '%s?%s' % (
+                    gradebook_url,
+                    urllib.urlencode({
+                            self.enrollment_mode_name: self.all_mode,
+                            }))
+                })
+        return result
+
+    @Lazy
+    def person(self):
+        person = IPerson(self.request.principal, None)
+        return person
+
+    def render(self):
+        return ''
+
+
+class EnrollmentModesSelector(flourish.viewlet.Viewlet):
+
+    list_class = 'filter'
+
+    template = InlineViewPageTemplate('''
+        <ul tal:attributes="class view/list_class"
+            tal:condition="view/items">
+          <li tal:repeat="item view/items">
+            <input type="radio"
+                   onclick="ST.redirect($(this).context.value)"
+                   tal:attributes="value item/url;
+                                   id item/id;
+                                   checked item/selected;" />
+            <label tal:content="item/label"
+                   tal:attributes="for item/id" />
+          </li>
+        </ul>
+    ''')
+
+    @Lazy
+    def content(self):
+        return self.manager.view.providers.get('gradebook-enrollment-modes')
+
+    @Lazy
+    def items(self):
+        if not self.content:
+            return []
+        result = list(self.content.modes)
+        for mode in result:
+            mode['selected'] = bool(mode['id'] == self.current_mode)
+        return result
+
+    @Lazy
+    def person(self):
+        person = IPerson(self.request.principal, None)
+        return person
+
+    @property
+    def current_mode(self):
+        mode = getCurrentEnrollmentMode(self.person)
+        if mode is None:
+            mode = self.content.default_mode
+            setCurrentEnrollmentMode(self.person, mode)
+        return mode
+
+    def update(self):
+        if self.content:
+            name = self.content.enrollment_mode_name
+            requested_mode = self.request.get(name)
+            if (requested_mode in self.content.enrollment_modes and
+                requested_mode != self.current_mode):
+                setCurrentEnrollmentMode(self.person, requested_mode)
+
+    def render(self, *args, **kw):
+        if len(self.items) < 2:
+            return ''
+        return self.template(*args, **kw)

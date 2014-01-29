@@ -38,9 +38,9 @@
               <tal:loop repeat="column view/name_sorting_columns">
                 <td tal:attributes="id row/student/id;
                                     colspan python:2 if repeat['column'].end() else 1">
-                  <a class="popup_link"
-                     href=""
-                     tal:attributes="title row/student/title"
+                  <a href=""
+                     tal:attributes="title row/student/title;
+                                     class row/student/css_class"
                      tal:content="python:row['student'][column.name]" />
                 </td>
               </tal:loop>

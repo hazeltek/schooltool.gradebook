@@ -1670,4 +1670,29 @@
       class=".gradebook.ChildrenGradebookOverview"
       />
 
+  <flourish:viewlet
+      name="gradebook_enrollment_modes"
+      after="gradebook_year_navigation"
+      before="*"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.EnrollmentModes"
+      view=".gradebook.FlourishGradebookOverview"
+      title="View Students"
+      permission="schooltool.view"
+      />
+
+  <flourish:content
+      name="gradebook-enrollment-modes"
+      class=".gradebook.EnrollmentModeContent"
+      render="render"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="enrollment_modes_selector"
+      manager=".gradebook.EnrollmentModes"
+      class=".gradebook.EnrollmentModesSelector"
+      permission="schooltool.edit"
+      />
+
 </configure>
