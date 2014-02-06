@@ -126,52 +126,34 @@ The total columns have hidden popup menus:
 
     >>> average_menu = stephan.query.css('#column_average ul.popup_menu')
     >>> stephan.wait_no(lambda:average_menu.query.tag('img'))
-    >>> print average_menu
-    <ul class="popup_menu">
-      <li class="header">
-        Ave.
-      </li>
-      <li>
-        <a href="?hide=average">
-          Hide
-        </a>
-      </li>
-      <li>
-        <a href="?sort_by=average">
-          Sort by
-        </a>
-      </li>
-      <li>
-        <span class="hover_link">
-          Score System
-        </span>
-        <ul class="hover_menu">
-          <li class="current">
-            No score system
-          </li>
-          <li>
-            <a href="?scoresystem=extended-letter-grade-">
-              Extended Letter Grade
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=goodbad-">
-              Good/Bad
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=letter-grade-">
-              Letter Grade
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=passfail-">
-              Pass/Fail
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    >>> print average_menu.query.css('li.header')
+    <li class="header">
+      Ave.
+    </li>
+    >>> for link in average_menu.query_all.css('.popup_menu > li > a'):
+    ...     print link
+    <a href="?hide=average">
+      Hide
+    </a>
+    <a href="?sort_by=average">
+      Sort by
+    </a>
+    >>> print average_menu.query.css('.hover_menu > li.current')
+    <li class="current">
+      No score system
+    </li>
+    >>> sel = '.hover_menu > li > a'
+    >>> #XXX: innerText is used here because the menu is not displayed yet
+    >>> scoresystems = [s.get_attribute('innerText')
+    ...                 for s in average_menu.query_all.css(sel)]
+    >>> 'Extended Letter Grade' in scoresystems
+    True
+    >>> 'Letter Grade' in scoresystems
+    True
+    >>> 'Pass/Fail' in scoresystems
+    True
+    >>> 'Good/Bad' in scoresystems
+    True
     >>> average_menu.is_displayed()
     False
 
@@ -268,52 +250,34 @@ column:
     >>> stephan.query.link('Good/Bad').click()
     >>> average_menu = stephan.query.css('#column_average ul.popup_menu')
     >>> stephan.wait_no(lambda:average_menu.query.tag('img'))
-    >>> print average_menu
-    <ul class="popup_menu">
-      <li class="header">
-        Ave.
-      </li>
-      <li>
-        <a href="?hide=average">
-          Hide
-        </a>
-      </li>
-      <li>
-        <a href="?sort_by=average">
-          Sort by
-        </a>
-      </li>
-      <li>
-        <span class="hover_link">
-          Score System
-        </span>
-        <ul class="hover_menu">
-          <li>
-            <a href="?scoresystem">
-              No score system
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=extended-letter-grade-">
-              Extended Letter Grade
-            </a>
-          </li>
-          <li class="current">
-            Good/Bad
-          </li>
-          <li>
-            <a href="?scoresystem=letter-grade-">
-              Letter Grade
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=passfail-">
-              Pass/Fail
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    >>> print average_menu.query.css('li.header')
+    <li class="header">
+      Ave.
+    </li>
+    >>> for link in average_menu.query_all.css('.popup_menu > li > a'):
+    ...     print link
+    <a href="?hide=average">
+      Hide
+    </a>
+    <a href="?sort_by=average">
+      Sort by
+    </a>
+    >>> print average_menu.query.css('.hover_menu > li.current')
+    <li class="current">
+      Good/Bad
+    </li>
+    >>> sel = '.hover_menu > li > a'
+    >>> #XXX: innerText is used here because the menu is not displayed yet
+    >>> scoresystems = [s.get_attribute('innerText')
+    ...                 for s in average_menu.query_all.css(sel)]
+    >>> 'No score system' in scoresystems
+    True
+    >>> 'Extended Letter Grade' in scoresystems
+    True
+    >>> 'Letter Grade' in scoresystems
+    True
+    >>> 'Pass/Fail' in scoresystems
+    True
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |
@@ -333,52 +297,34 @@ Now, let's change to the extended letter grade scoresystem:
     >>> stephan.query.link('Extended Letter Grade').click()
     >>> average_menu = stephan.query.css('#column_average ul.popup_menu')
     >>> stephan.wait_no(lambda:average_menu.query.tag('img'))
-    >>> print average_menu
-    <ul class="popup_menu">
-      <li class="header">
-        Ave.
-      </li>
-      <li>
-        <a href="?hide=average">
-          Hide
-        </a>
-      </li>
-      <li>
-        <a href="?sort_by=average">
-          Sort by
-        </a>
-      </li>
-      <li>
-        <span class="hover_link">
-          Score System
-        </span>
-        <ul class="hover_menu">
-          <li>
-            <a href="?scoresystem">
-              No score system
-            </a>
-          </li>
-          <li class="current">
-            Extended Letter Grade
-          </li>
-          <li>
-            <a href="?scoresystem=goodbad-">
-              Good/Bad
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=letter-grade-">
-              Letter Grade
-            </a>
-          </li>
-          <li>
-            <a href="?scoresystem=passfail-">
-              Pass/Fail
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    >>> print average_menu.query.css('li.header')
+    <li class="header">
+      Ave.
+    </li>
+    >>> for link in average_menu.query_all.css('.popup_menu > li > a'):
+    ...     print link
+    <a href="?hide=average">
+      Hide
+    </a>
+    <a href="?sort_by=average">
+      Sort by
+    </a>
+    >>> print average_menu.query.css('.hover_menu > li.current')
+    <li class="current">
+      Extended Letter Grade
+    </li>
+    >>> sel = '.hover_menu > li > a'
+    >>> #XXX: innerText is used here because the menu is not displayed yet
+    >>> scoresystems = [s.get_attribute('innerText')
+    ...                 for s in average_menu.query_all.css(sel)]
+    >>> 'No score system' in scoresystems
+    True
+    >>> 'Good/Bad' in scoresystems
+    True
+    >>> 'Letter Grade' in scoresystems
+    True
+    >>> 'Pass/Fail' in scoresystems
+    True
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |

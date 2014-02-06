@@ -32,7 +32,9 @@ Helpers:
     >>> def print_menus(browser, navigators=True):
     ...     menus = browser.query_all.css('.refine .content')
     ...     if navigators:
-    ...         menus = menus[3:]
+    ...         menus = menus[4:]
+    ...     else:
+    ...         menus = menus[1:]
     ...     for menu in menus:
     ...         print format_menu(menu), '\n'
 

@@ -92,28 +92,25 @@ And some persons:
     >>> manager.ui.person.add('Jeff', 'Elkner', 'jeff', 'pwd')
     >>> manager.ui.person.add('David', 'Welsh', 'david', 'pwd')
     >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
-    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
-    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'pwd')
 
 We're going to add different courses for each year:
 
     >>> manager.ui.course.add('2011', 'Math')
     >>> manager.ui.course.add('2012', 'Baseball')
-    >>> manager.ui.course.add('2013', 'Soccer')
 
 Now sections for each course:
 
     >>> manager.ui.section.add('2011', 'S1', 'Math', ends='S2')
-    >>> manager.ui.section.instructors.add('2011', 'S1', 'Math (1)',
-    ...                                    ['tom', 'jeff', 'david'])
-    >>> manager.ui.section.students.add('2011', 'S1', 'Math (1)',
-    ...                                 ['camila', 'mario'])
+    >>> manager.ui.section.instructors.add(
+    ...     '2011', 'S1', 'Math (1)', ['tom', 'jeff', 'david'])
+    >>> manager.ui.section.students.add(
+    ...     '2011', 'S1', 'Math (1)', ['camila'])
 
     >>> manager.ui.section.add('2012', 'S1', 'Baseball', ends='S2')
-    >>> manager.ui.section.instructors.add('2012', 'S1', 'Baseball (1)',
-    ...                                    ['tom', 'jeff'])
-    >>> manager.ui.section.students.add('2012', 'S1', 'Baseball (1)',
-    ...                                 ['mario'])
+    >>> manager.ui.section.instructors.add(
+    ...     '2012', 'S1', 'Baseball (1)', ['tom', 'jeff'])
+    >>> manager.ui.section.students.add(
+    ...     '2012', 'S1', 'Baseball (1)', ['camila'])
 
 After Tom, Jeff and David have been added as instructors to sections
 in the two years, we'll activate the 2012 year:
