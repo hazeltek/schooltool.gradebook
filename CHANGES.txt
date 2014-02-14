@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - Removed attendance score systems from Average column's menu (https://launchpad.net/bugs/1258939)
+- Updated translations
 
 
 2.6.1 (2013-11-21)
