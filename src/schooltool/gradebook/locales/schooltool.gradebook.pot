@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2013-10-10 13:59+0300\n"
+"POT-Creation-Date: 2013-11-21 02:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -1405,8 +1405,20 @@ msgstr ""
 msgid "There are no course activities."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit_related.pt:6
+msgid "The Course Worksheet and activities defined here can be deployed to all the sections of this course for one or more terms."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:6
+msgid "Course Worksheets can be be used to include sets of activities in the gradebooks of all sections of a course. The activities included in Course Worksheets are defined in templates, shown here."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:12
+msgid "The templates can be created from this page (see Add: Course Worksheet) or from the individual gradebook of the instructor of a section of this course who is either a \"Responsible party\" for the course or a member of \"Clerks\" or \"Site Managers.\""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
@@ -1450,11 +1462,27 @@ msgstr ""
 msgid "If you add the same template multiple times, give each version an easily distinguishable name."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:6
+msgid "This page allows you to manage the Course Worksheets for this course."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:10
+msgid "The templates are created separately and define what activites will be on the Course Worksheets. Use this form to deploy the worksheets to the teacher gradebooks of all sections of this course for one or more terms."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:16
+msgid "You can also hide worksheets if you do not want teachers to see them."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:62
 msgid "If you add the same worksheet multiple times, give each version an easily distinguishable name."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet_related.pt:6
+msgid "Use this form to add the active worksheet in your gradebook to all the sections of the same course in the selected terms."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:3
 msgid "Enter Comment"
 msgstr ""
 

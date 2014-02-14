@@ -71,6 +71,7 @@ from schooltool.requirement.scoresystem import UNSCORED, ScoreValidationError
 from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IValuesScoreSystem, IDiscreteValuesScoreSystem, IRangedValuesScoreSystem,
     IScoreSystemContainer, IEvaluations, IScore)
+from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.table.table import simple_form_key
 from schooltool import table
@@ -131,14 +132,26 @@ class GradebookStartup(object):
     def sectionsAttended(self):
         return list(ILearner(self.person).sections())
 
+    def getFromYear(self, sections, active):
+        in_active = filter(lambda x: ISchoolYear(x) is active, sections)
+        if not in_active:
+            return sections[0]
+        current_term = getUtility(IDateManager).current_term
+        in_current_term = filter(lambda x: ITerm(x) is current_term, in_active)
+        if in_current_term:
+            return in_current_term[0]
+        return in_active[0]
+
     def update(self):
+        schoolyears = ISchoolYearContainer(ISchoolToolApplication(None))
+        active = schoolyears.getActiveSchoolYear()
         self.person = IPerson(self.request.principal)
         if not self.sectionsTaught and not self.sectionsAttended:
             self.noSections = True
         if self.sectionsTaught:
             section = getCurrentSectionTaught(self.person)
             if section is None or section.__parent__ is None:
-                section = self.sectionsTaught[0]
+                section = self.getFromYear(self.sectionsTaught, active)
             self.gradebookURL = '%s/%s' % (absoluteURL(section, self.request),
                                            self.teacher_gradebook_view_name)
             if not self.sectionsAttended:
@@ -146,7 +159,7 @@ class GradebookStartup(object):
         if self.sectionsAttended:
             section = getCurrentSectionAttended(self.person)
             if section is None or section.__parent__ is None:
-                section = self.sectionsAttended[0]
+                section = self.getFromYear(self.sectionsAttended, active)
             self.mygradesURL = '%s/%s' % (absoluteURL(section, self.request),
                                           self.student_gradebook_view_name)
             if not self.sectionsTaught:
@@ -1592,7 +1605,7 @@ class LinkedActivityGradesUpdater(object):
         for student in gradebook.students:
             external_grade = external_activity.getGrade(student)
             if external_grade is not None:
-                score = float(external_grade) * float(linked_activity.points)
+                score = external_grade * linked_activity.points
                 score = Decimal("%.2f" % score)
                 gradebook.evaluate(student, linked_activity, score, evaluator)
 

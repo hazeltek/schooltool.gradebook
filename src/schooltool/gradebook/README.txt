@@ -431,7 +431,7 @@ Let's look again at our current worksheet for our gradebook.  We see that
 there's a homework assignment with 10 possible points, a project with 4 possible
 points, and an exam with 100.  Paul got a 10 out of 10 on the homework, a 2 out
 of 4 for the project, and an 80 out of 100 on the quiz.  The default calculation
-of the average would be (10 + 2 + 80) / (10 + 4 + 100) = 80.7%.
+of the average would be ``(10 + 2 + 80) / (10 + 4 + 100) = 80.7%``.
 
     >>> sorted(gradebook.getCurrentEvaluationsForStudent(stephan, paul),
     ...        key=lambda x: x[0].title)
@@ -457,8 +457,8 @@ where the user creates an activity with a category that is not weighted.
 We will deal with this case by ignoring the activity while calulating
 the average.
 
-Now we will see that the average for paul will change to reflect the new
-calculation of ((10/10) * 0.38) + ((80/100) * 0.62) = 87.6% which rounds up
+Now we will see that the average for Paul will change to reflect the new
+calculation of ``((10/10) * 0.38) + ((80/100) * 0.62) = 87.6%`` which rounds up
 to 88%.  Once again, the total is 92 even though only 90 points will factor
 into the average.
 
@@ -472,7 +472,7 @@ evaluations for Paul, say, the grade for HW 1.
 
     >>> gradebook.removeEvaluation(student=paul, activity=hw1)
 
-Now, the calculation will be (80/100) * 100% = 80% because the other
+Now, the calculation will be ``(80/100) * 100% = 80%`` because the other
 category, assignment, is no longer represented with a score.  As above, the
 project score of 2 is included in the total, but not the average.
 
@@ -495,8 +495,8 @@ so let's add another homework assignment and an evaluation for it.
     >>> gradebook = interfaces.IGradebook(week1)
     >>> gradebook.evaluate(student=paul, activity=hw3, score=9)
 
-Now we will see that the average for paul will change to reflect the new
-calculation of (((10 + 9)/(10 + 10)) * 0.38) + ((80/100) * 0.62) = 85.7%.
+Now we will see that the average for Paul will change to reflect the new
+calculation of ``(((10 + 9)/(10 + 10)) * 0.38) + ((80/100) * 0.62) = 85.7%``.
 Once again, the total is 101 even though only 99 points will factor
 into the average.
 

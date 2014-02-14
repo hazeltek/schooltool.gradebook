@@ -33,7 +33,7 @@ def tertiary_navigation(browser):
     result = []
     sel = 'ul.third-nav li'
     for tab in browser.query_all.css(sel):
-        text = tab.text.strip()
+        text = tab.query.tag('a').get_attribute('title').strip()
         css_class = tab.get_attribute('class')
         if css_class is not None and 'active' in css_class:
             text = '*%s*' % text
@@ -159,7 +159,10 @@ def registerSeleniumSetup():
                '//tbody/tr[%s]/td[%s]' % (row_index+1, column_index+1))
         cell = browser.query.xpath(sel)
         cell.click()
-        cell.query.tag('input').type(browser.keys.DELETE, grade, browser.keys.ENTER, browser.keys.UP)
+        cell.query.tag('input').type(browser.keys.DELETE, grade)
+        sel = 'ul.ui-autocomplete'
+        browser.driver.execute_script(
+            '$(arguments[0]).find(arguments[1]).hide()', cell, sel)
 
     registry.register('SeleniumHelpers',
         lambda: schooltool.testing.selenium.registerBrowserUI(

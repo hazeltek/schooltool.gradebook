@@ -24,14 +24,12 @@ from decimal import Decimal, InvalidOperation
 from persistent import Persistent
 
 from zope.componentvocabulary.vocabulary import UtilityVocabulary
-from zope.component import adapts
 from zope.container.btree import BTreeContainer
 from zope.container.interfaces import INameChooser
 from zope.interface import implements, Interface
 import zope.schema
 from zope.schema.vocabulary import SimpleVocabulary
 import zope.security.checker
-from zope.security.proxy import removeSecurityProxy
 
 from schooltool.app.app import StartUpBase
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -73,10 +71,9 @@ class ScoreValidationError(zope.schema.ValidationError):
 
     def __init__(self, score):
         super(zope.schema.ValidationError, self).__init__(score)
-        self.score = score
 
     def doc(self):
-        return "'%s' is not a valid score." % self.score
+        return "'%s' is not a valid score." % self.args
 
 
 def ScoreSystemsVocabulary(context):
@@ -184,7 +181,7 @@ class AbstractValuesScoreSystem(AbstractScoreSystem):
         """See interfaces.IScoreSystem"""
         raise NotImplementedError
 
-    def getFractionValue(self, score):
+    def getFractionalValue(self, score):
         """See interfaces.IScoreSystem"""
         raise NotImplementedError
 

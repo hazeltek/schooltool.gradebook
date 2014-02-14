@@ -1,0 +1,121 @@
+Hiding report worksheets
+========================
+
+We'll test that new sections don't get hidden deployed report sheets
+(https://bugs.launchpad.net/bugs/1220211)
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Add a school year with a single term:
+
+    >>> manager.ui.schoolyear.add('2013', '2013-01-01', '2013-12-31')
+    >>> manager.ui.term.add('2013', 'Year', '2013-01-01', '2013-12-31')
+
+Set up and deploy two report sheets:
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Report Sheet Templates').click()
+    >>> manager.query.link('Report Sheet Template').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('RS1')
+    >>> manager.query.id('form-buttons-add').click()
+    >>> manager.query.link('Report Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('A')
+    >>> manager.query.id('form-buttons-add').click()
+    >>> manager.query.link('Report Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('B')
+    >>> manager.query.id('form-buttons-add').click()
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Report Sheet Templates').click()
+    >>> manager.query.link('Report Sheet Template').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('RS2')
+    >>> manager.query.id('form-buttons-add').click()
+    >>> manager.query.link('Report Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('C')
+    >>> manager.query.id('form-buttons-add').click()
+    >>> manager.query.link('Report Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('D')
+    >>> manager.query.id('form-buttons-add').click()
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Deployed Report Sheets').click()
+    >>> manager.query.id('template').ui.set_value('RS1')
+    >>> manager.query.name('SUBMIT').click()
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Deployed Report Sheets').click()
+    >>> manager.query.id('template').ui.set_value('RS2')
+    >>> manager.query.name('SUBMIT').click()
+
+Add two courses:
+
+    >>> manager.ui.course.add('2013', 'Math')
+    >>> manager.ui.course.add('2013', 'Physics')
+
+Add some people:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+
+Add a section:
+
+    >>> manager.ui.section.add('2013', 'Year', 'Math')
+    >>> manager.ui.section.instructors.add('2013', 'Year', 'Math (1)',
+    ...                                    ['tom'])
+    >>> manager.ui.section.students.add('2013', 'Year', 'Math (1)',
+    ...                                 ['camila', 'mario'])
+
+The section should get both report sheets:
+
+    >>> tom = browsers.tom
+    >>> tom.ui.login('tom', 'pwd')
+    >>> tom.query.link('Gradebook').click()
+    >>> tom.ui.gradebook.worksheet.pprint()
+    +-----+-----+----------+
+    | RS1 | RS2 | *Sheet1* |
+    +-----+-----+----------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Cerna     | Camila     | 0.0   | N/A  |
+    | Tejada    | Mario      | 0.0   | N/A  |
+    +-----------+------------+-------+------+
+
+Let's hide one report sheet template:
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Deployed Report Sheets').click()
+    >>> manager.query.link('Hide/unhide Sheets').click()
+    >>> manager.query.css('input[value="1"]').click()
+    >>> manager.query.name('SUBMIT').click()
+
+And add a new section:
+
+    >>> manager.ui.section.add('2013', 'Year', 'Physics')
+    >>> manager.ui.section.instructors.add('2013', 'Year', 'Physics (2)',
+    ...                                    ['jeffrey'])
+    >>> manager.ui.section.students.add('2013', 'Year', 'Physics (2)',
+    ...                                 ['camila', 'mario'])
+
+The new section should only get the visible report sheets:
+
+    >>> jeffrey = browsers.jeffrey
+    >>> jeffrey.ui.login('jeffrey', 'pwd')
+    >>> jeffrey.query.link('Gradebook').click()
+    >>> jeffrey.ui.gradebook.worksheet.pprint()
+    +-----+----------+
+    | RS2 | *Sheet1* |
+    +-----+----------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Cerna     | Camila     | 0.0   | N/A  |
+    | Tejada    | Mario      | 0.0   | N/A  |
+    +-----------+------------+-------+------+

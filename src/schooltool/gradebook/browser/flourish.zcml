@@ -1200,6 +1200,15 @@
       />
 
   <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_course_worksheet_templates_related.pt"
+      view=".course_worksheets.FlourishCourseTemplatesView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="course-worksheets"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".course_worksheets.FlourishCourseWorksheetsLinks"
@@ -1247,6 +1256,15 @@
       />
 
   <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_course_worksheet_edit_related.pt"
+      view=".course_worksheets.FlourishCourseWorksheetEditView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="course-worksheet-add-links"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".course_worksheets.CourseWorksheetAddLinks"
@@ -1289,6 +1307,15 @@
       />
 
   <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_course_worksheets_related.pt"
+      view=".course_worksheets.FlourishCourseWorksheetsView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
       name="course-worksheets-action-links"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".course_worksheets.CourseWorksheetsActionLinks"
@@ -1327,6 +1354,15 @@
       subtitle="Add as Course Worksheet"
       class=".course_worksheets.FlourishDeployAsCourseWorksheetView"
       content_template="templates/f_deploy_as_course_worksheet.pt"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="what-is-this"
+      class="schooltool.skin.flourish.page.Related"
+      template="templates/f_deploy_as_course_worksheet_related.pt"
+      view=".course_worksheets.FlourishDeployAsCourseWorksheetView"
+      manager="schooltool.skin.flourish.page.IPageRelatedManager"
       permission="schooltool.edit"
       />
 
@@ -1422,14 +1458,6 @@
       for="schooltool.gradebook.interfaces.IActivityWorksheet"
       class=".pdf_views.WorksheetGrid"
       permission="schooltool.view"
-      />
-
-  <page
-      name="request_failing_report.html"
-      for="schooltool.term.interfaces.ITerm"
-      class=".request_reports.RequestFailingReportView"
-      template="templates/request_failing_report.pt"
-      permission="schooltool.edit"
       />
 
   <flourish:pdf

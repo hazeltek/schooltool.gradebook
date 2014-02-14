@@ -186,10 +186,8 @@ Layout a report card:
     >>> manager.getControl(name='Heading6').value = 'ST-4'
     >>> manager.getControl('New Column').displayValue = ['Tardy']
     >>> manager.getControl('Add', index=0).click()
-    >>> manager.getControl(name='Heading7').value = 'T'
     >>> manager.getControl('New Column').displayValue = ['Absent']
     >>> manager.getControl('Add', index=0).click()
-    >>> manager.getControl(name='Heading8').value = 'A'
     >>> manager.getControl('New Activity').displayValue = ['First Term - Report Sheet One - Report Activity 1.2']
     >>> manager.getControl('Add', index=1).click()
     >>> manager.getControl(name='ActivityHeading1').value = 'FT-2'
@@ -1958,6 +1956,7 @@ section of the First Term of 2010:
 
 Header:
 
+    >>> print teacher.contents
     >>> teacher.printXMLQuery('//pageTemplate//drawCenteredString/text()')
     Absences by Section Report
     >>> teacher.printXMLQuery('//story/blockTable[@style="headings_table"][1]//td/para/text()')

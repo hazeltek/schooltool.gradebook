@@ -56,11 +56,13 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
 
         if jd is not None:
             absences, tardies = 0, 0
-            for meeting in jd.recordedMeetings(student):
-                grade = jd.getGrade(student, meeting)
-                if grade == 'n':
+            for meeting, score in jd.absentMeetings(student):
+                ss = score.scoreSystem
+                if ss.isExcused(score):
+                    continue
+                elif ss.isAbsent(score):
                     absences += 1
-                if grade == 'p':
+                elif ss.isTardy(score):
                     tardies += 1
             if absences:
                 self.write(ws, row, 2, unicode(absences))
