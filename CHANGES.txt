@@ -2,10 +2,12 @@
 CHANGES
 =======
 
-2.6.2 (unreleased)
+2.6.2 (2014-02-15)
 ------------------
 
+- Deploy course worksheets on new sections.
 - Removed attendance score systems from Average column's menu (https://launchpad.net/bugs/1258939)
+- Fix exception in mygrades view after timeout.
 - Updated translations
 
 
