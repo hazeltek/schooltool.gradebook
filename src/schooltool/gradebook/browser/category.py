@@ -134,6 +134,8 @@ class ICategoryForm(zope.interface.Interface):
 
 
 class FlourishCategoryAddView(flourish.form.AddForm):
+
+    template = flourish.templates.Inherit(flourish.page.Page.template)
     legend = _('Category')
     fields = field.Fields(ICategoryForm)
 
