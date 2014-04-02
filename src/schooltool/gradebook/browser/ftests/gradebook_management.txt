@@ -657,7 +657,7 @@ with a way of entering comments into the gradebook.  Since comments have
 arbitrary length, we need a special view for entering them.  We will provide
 a row view (by student) for this purpose.  When the user clicks on a student,
 they will see a form with one field for each activity, comments having the
-fckEditor widget, the rest of the score system types just having a TextLine
+CKEditor widget, the rest of the score system types just having a TextLine
 widget.
 
 Additionally, the user will have two special buttons, 'Previous' and 'Next',
