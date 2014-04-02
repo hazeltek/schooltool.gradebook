@@ -18,46 +18,6 @@
 """
 Utilities used in report views.
 """
-import cgi
-import re
 
-
-def _unescape_FCKEditor_HTML(text):
-    text = text.replace(u'&amp;', u'&')
-    text = text.replace(u'&lt;', u'<')
-    text = text.replace(u'&gt;', u'>')
-    text = text.replace(u'&quot;', u'"')
-    text = text.replace(u'&#39;', u"'")
-    text = text.replace(u'&rsquo;', u"'")
-    text = text.replace(u'&nbsp;', u' ')
-    return text
-
-
-escaped_reportlab_tags_re = re.compile(
-    r'&lt;(/?((strong)|(b)|(em)|(i)))&gt;')
-
-html_p_tag_re = re.compile(r'</?p[^>]*>')
-html_br_tag_re = re.compile(r'</?br[^>]*>')
-
-
-def buildHTMLParagraphs(snippet):
-    """Build a list of paragraphs from an HTML snippet."""
-    if not snippet:
-        return []
-    paragraphs = []
-    tokens = []
-    for token in html_p_tag_re.split(snippet):
-        if not token or token.isspace():
-            continue
-        tokens.extend(html_br_tag_re.split(token))
-    for token in tokens:
-        if not token or token.isspace():
-            continue
-        # Reportlab is very sensitive to unknown tags and escaped symbols.
-        # In case of invalid HTML, ensure correct escaping.
-        fixed_escaping = cgi.escape(_unescape_FCKEditor_HTML(unicode(token)))
-        # Unescape some of the tags which are also valid in Reportlab
-        valid_text = escaped_reportlab_tags_re.sub(u'<\g<1>>', fixed_escaping)
-        paragraphs.append(valid_text)
-    return paragraphs
-
+# BBB
+from schooltool.skin.flourish.report import buildHTMLParagraphs
