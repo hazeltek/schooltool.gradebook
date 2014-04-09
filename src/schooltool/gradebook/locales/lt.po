@@ -13,8 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-22 06:05+0000\n"
-"X-Generator: Launchpad (build 16831)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:42+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 "Language: lt\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -2634,22 +2634,44 @@ msgstr "patenkinamas pažymys:"
 msgid "View Score System"
 msgstr "Rodyti vertinimo sistemą"
 
-#: /src/schooltool/requirement/scoresystem.py:277
+#: /src/schooltool/requirement/scoresystem.py:278
 msgid "Pass/Fail"
 msgstr "Įskaityta/Neįskaityta"
 
-#: /src/schooltool/requirement/scoresystem.py:284
+#: /src/schooltool/requirement/scoresystem.py:285
 msgid "Letter Grade"
 msgstr "Raidės"
 
-#: /src/schooltool/requirement/scoresystem.py:294
+#: /src/schooltool/requirement/scoresystem.py:295
 msgid "Extended Letter Grade"
 msgstr "Raidės su ženklais"
 
-#: /src/schooltool/requirement/scoresystem.py:398
+#: /src/schooltool/requirement/scoresystem.py:399
 msgid "Percent"
 msgstr "Procentas"
 
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr "100 taškų"
+
+#~ msgid "Name"
+#~ msgstr "Vardas"
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "Parašyti pažymį visiems mokiniams:"
+
+#~ msgid "Term:"
+#~ msgstr "Semestras:"
+
+#~ msgid "Section:"
+#~ msgstr "Kursas:"
+
+#~ msgid "Requirement index"
+#~ msgstr "Reikalavimų indeksas"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr ""
+#~ "Įveskite skaičius prie kiekvienos naudojamos kategorijos. Visų skaičių suma "
+#~ "turi būti lygi 100."

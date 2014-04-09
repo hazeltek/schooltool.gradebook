@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-22 06:05+0000\n"
-"X-Generator: Launchpad (build 16831)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:42+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 "X-Rosetta-Version: 0.1\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -1958,7 +1958,7 @@ msgstr ""
 msgid "Enter numeric values for each relevant category."
 msgstr "Insira valores numéricos para cada categoria."
 
-#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:13
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
@@ -2721,3 +2721,28 @@ msgstr ""
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr ""
+
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "Aplicar uma única nota para todos os estudantes:"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr ""
+#~ "Insira valores numéricos para cada categoria. O total dos valores deve ser "
+#~ "100."
+
+#~ msgid "Period Number"
+#~ msgstr "Número do Tempo"
+
+#~ msgid "Requirement index"
+#~ msgstr "Índice de Requisitos"
+
+#~ msgid "Section:"
+#~ msgstr "Turma:"
+
+#~ msgid "Term:"
+#~ msgstr "Período:"

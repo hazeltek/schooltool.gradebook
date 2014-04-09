@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-22 06:06+0000\n"
-"X-Generator: Launchpad (build 16831)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:42+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
@@ -1925,6 +1925,7 @@ msgstr ""
 "ายในแผ่นงาน"
 
 #: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:10
+#: /src/schooltool/gradebook/browser/templates/weight_categories.pt:21
 msgid "Enter numeric values for each relevant category."
 msgstr ""
 
@@ -2671,3 +2672,26 @@ msgstr ""
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr ""
+
+#~ msgid "Period Number"
+#~ msgstr "ช่วงตัวเลข"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr "กรอกค่าที่เป็นตัวเลขให้สัมพันธ์กับหมวดหมู่ ค่าทั้งหมดต้องรวมได้ 100"
+
+#~ msgid "Name"
+#~ msgstr "ชื่อ"
+
+#~ msgid "Term:"
+#~ msgstr "ภาคเรียน"
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "ยืนยันระดับผลการเรียนของนักเรียนทุกคน"
+
+#~ msgid "Section:"
+#~ msgstr "เซกชั่น"
+
+#~ msgid "Requirement index"
+#~ msgstr "ต้องการตัวชี้/เลขดัชนี"

@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-22 06:06+0000\n"
-"X-Generator: Launchpad (build 16831)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:43+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 "Language: \n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -333,7 +333,8 @@ msgstr "Categorias de Atividades"
 msgid "Report Sheet Templates"
 msgstr "Modelo da folha de relatório"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:134
+#: /src/schooltool/gradebook/browser/configure.zcml:124
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:9
 msgid "Add a Worksheet"
 msgstr "Adicione uma Planilha de Trabalho"
 
@@ -1017,8 +1018,7 @@ msgstr "Sistema de Notas"
 msgid "Value"
 msgstr ""
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:203
+#: /src/schooltool/gradebook/browser/pdf_views.py:245
 msgid "Report Card: ${schoolyear}"
 msgstr "Boletim: ${schoolyear}"
 
@@ -1961,7 +1961,7 @@ msgstr ""
 msgid "Enter numeric values for each relevant category."
 msgstr "Entre valores numéricos para cada categoria relevante."
 
-#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:13
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
@@ -2722,3 +2722,28 @@ msgstr ""
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr ""
+
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgid "Period Number"
+#~ msgstr "Número do período"
+
+#~ msgid "Section:"
+#~ msgstr "Seção:"
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "Aplicar uma única nota para todos os estudantes:"
+
+#~ msgid "Term:"
+#~ msgstr "Período:"
+
+#~ msgid "Requirement index"
+#~ msgstr "Índice de Requisitos"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr ""
+#~ "Entre valores numéricos para cada categoria relevante. O total de todos os "
+#~ "valores deve ser exatamente 100."

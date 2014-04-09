@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-01-10 05:35+0000\n"
-"X-Generator: Launchpad (build 16884)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:41+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 "Language: nl\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -2731,3 +2731,28 @@ msgstr "Procent"
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr "100 punten"
+
+#~ msgid "Name"
+#~ msgstr "Naam"
+
+#~ msgid "Requirement index"
+#~ msgstr "Index van vereisten"
+
+#~ msgid "Section:"
+#~ msgstr "Sectie:"
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "Een cijfer geven aan alle leerlingen:"
+
+#~ msgid "Period Number"
+#~ msgstr "Periodenummer"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr ""
+#~ "Voer numerieke waardes in voor elke relevante categorie. De som van alle "
+#~ "waardes moet precies 100 zijn."
+
+#~ msgid "Term:"
+#~ msgstr "Termijn:"

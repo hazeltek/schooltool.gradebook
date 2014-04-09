@@ -14,16 +14,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-22 06:05+0000\n"
-"X-Generator: Launchpad (build 16831)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:42+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 
 #: /src/schooltool/gradebook/activity.py:52
 msgid "Sheet1"
 msgstr "පත්‍රය 1"
 
-#: /src/schooltool/gradebook/activity.py:235
+#: /src/schooltool/gradebook/activity.py:239
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:8
-#: /src/schooltool/gradebook/interfaces.py:202
+#: /src/schooltool/gradebook/interfaces.py:218
 msgid "Activities"
 msgstr "ක්‍රියාකාරකම්"
 
@@ -36,50 +36,89 @@ msgstr "පාඨමාලා ක්‍රියාකාරකම්"
 msgid "Deployed Worksheets"
 msgstr "යෙදවීම් වැඩපත"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:76
+#: /src/schooltool/gradebook/browser/activity.py:66
+#: /src/schooltool/gradebook/browser/gradebook.py:83
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:74
 msgid "Summary"
 msgstr "සාරාංශය"
 
-#: /src/schooltool/gradebook/browser/activity.py:68
+#: /src/schooltool/gradebook/browser/activity.py:71
 msgid "External Activity"
 msgstr "බාහිර ක්‍රියාකාරකම්"
 
-#: /src/schooltool/gradebook/browser/activity.py:69
+#: /src/schooltool/gradebook/browser/activity.py:72
 msgid "The external activity"
 msgstr "බාහිර ක්‍රියාකාරකම"
 
-#: /src/schooltool/gradebook/browser/activity.py:169
+#: /src/schooltool/gradebook/browser/activity.py:277
 msgid "Add new activity"
 msgstr "නව ක්‍රියාකාරකමක් එක්කරන්න"
 
-#: /src/schooltool/gradebook/browser/activity.py:182
-#: /src/schooltool/gradebook/browser/activity.py:233
-#: /src/schooltool/gradebook/browser/report_card.py:231
+#: /src/schooltool/gradebook/browser/activity.py:290
+#: /src/schooltool/gradebook/browser/activity.py:415
+#: /src/schooltool/gradebook/browser/category.py:146
+#: /src/schooltool/gradebook/browser/flourish.zcml:112
+#: /src/schooltool/gradebook/browser/flourish.zcml:381
+#: /src/schooltool/gradebook/browser/flourish.zcml:464
+#: /src/schooltool/gradebook/browser/flourish.zcml:652
+#: /src/schooltool/gradebook/browser/flourish.zcml:885
+#: /src/schooltool/gradebook/browser/flourish.zcml:905
+#: /src/schooltool/gradebook/browser/report_card.py:497
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:69
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:131
+#: /src/schooltool/requirement/browser/f_scoresystem_add.pt:65
+#: /src/schooltool/requirement/browser/flourish.zcml:82
 msgid "Add"
 msgstr "එක් කරන්න"
 
-#: /src/schooltool/gradebook/browser/activity.py:193
-#: /src/schooltool/gradebook/browser/activity.py:244
-#: /src/schooltool/gradebook/browser/activity.py:282
-#: /src/schooltool/gradebook/browser/activity.py:318
-#: /src/schooltool/gradebook/browser/gradebook.py:1041
-#: /src/schooltool/gradebook/browser/report_card.py:242
-#: /src/schooltool/gradebook/browser/report_card.py:285
+#: /src/schooltool/gradebook/browser/activity.py:301
+#: /src/schooltool/gradebook/browser/activity.py:393
+#: /src/schooltool/gradebook/browser/activity.py:426
+#: /src/schooltool/gradebook/browser/activity.py:490
+#: /src/schooltool/gradebook/browser/activity.py:505
+#: /src/schooltool/gradebook/browser/activity.py:548
+#: /src/schooltool/gradebook/browser/activity.py:566
+#: /src/schooltool/gradebook/browser/activity.py:605
+#: /src/schooltool/gradebook/browser/category.py:150
+#: /src/schooltool/gradebook/browser/category.py:214
+#: /src/schooltool/gradebook/browser/gradebook.py:1559
+#: /src/schooltool/gradebook/browser/gradebook.py:1661
+#: /src/schooltool/gradebook/browser/report_card.py:322
+#: /src/schooltool/gradebook/browser/report_card.py:375
+#: /src/schooltool/gradebook/browser/report_card.py:508
+#: /src/schooltool/gradebook/browser/report_card.py:555
+#: /src/schooltool/gradebook/browser/report_card.py:572
+#: /src/schooltool/gradebook/browser/report_card.py:611
+#: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:44
+#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:76
+#: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:38
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:69
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:20
+#: /src/schooltool/gradebook/browser/worksheet.py:130
+#: /src/schooltool/gradebook/browser/worksheet.py:200
+#: /src/schooltool/requirement/browser/f_scoresystem_add.pt:120
+#: /src/schooltool/requirement/browser/scoresystem.py:523
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:112
 msgid "Cancel"
 msgstr "අවලංගු"
 
+#: /src/schooltool/gradebook/browser/activity.py:329
+#: /src/schooltool/gradebook/browser/category.py:135
+#: /src/schooltool/gradebook/browser/category.py:170
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:15
-#: /src/schooltool/gradebook/interfaces.py:359
-#: /src/schooltool/gradebook/interfaces.py:387
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:13
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:6
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:9
+#: /src/schooltool/gradebook/browser/templates/f_templates_overview.pt:8
+#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:10
+#: /src/schooltool/gradebook/interfaces.py:125
+#: /src/schooltool/gradebook/interfaces.py:375
+#: /src/schooltool/gradebook/interfaces.py:403
+#: /src/schooltool/requirement/browser/f_scoresystem_add.pt:18
+#: /src/schooltool/requirement/browser/f_scoresystems_overview.pt:9
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:43
 #: /src/schooltool/requirement/interfaces.py:48
-#: /src/schooltool/requirement/interfaces.py:64
+#: /src/schooltool/requirement/interfaces.py:70
 msgid "Title"
 msgstr "මාතෘකාව"
 
@@ -91,18 +130,27 @@ msgstr "තීරැව නම් කරනවා"
 msgid "Limit to 5 characters or less."
 msgstr "අකුරැ 5 ට හෝ ඊට අඞුවෙන්"
 
-#: /src/schooltool/gradebook/interfaces.py:117
+#: /src/schooltool/gradebook/browser/activity.py:339
+#: /src/schooltool/gradebook/interfaces.py:133
 msgid "Due Date"
 msgstr "නියමිත දිනය තුල"
 
-#: /src/schooltool/gradebook/interfaces.py:127
-#: /src/schooltool/gradebook/interfaces.py:392
-#: /src/schooltool/requirement/interfaces.py:69
+#: /src/schooltool/gradebook/browser/activity.py:343
+#: /src/schooltool/gradebook/browser/templates/f_request_absences_by_day.pt:20
+#: /src/schooltool/gradebook/browser/templates/f_request_student_report.pt:5
+#: /src/schooltool/gradebook/interfaces.py:143
+#: /src/schooltool/gradebook/interfaces.py:408
+#: /src/schooltool/requirement/interfaces.py:75
 msgid "Description"
 msgstr "විස්තරය"
 
+#: /src/schooltool/gradebook/browser/activity.py:347
+#: /src/schooltool/gradebook/browser/category.py:140
+#: /src/schooltool/gradebook/browser/category.py:174
+#: /src/schooltool/gradebook/browser/category.py:179
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:21
-#: /src/schooltool/gradebook/interfaces.py:132
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:35
+#: /src/schooltool/gradebook/interfaces.py:148
 msgid "Category"
 msgstr "ප්‍රභේද"
 
@@ -155,7 +203,7 @@ msgstr "ක්‍රියාකාරකම් පිළිබද විස්�
 msgid "Submit"
 msgstr "ලබා දෙන්න"
 
-#: /src/schooltool/gradebook/browser/activity.py:220
+#: /src/schooltool/gradebook/browser/activity.py:402
 msgid "Add an External Activity"
 msgstr "අතිරේක ක්‍රියාකාරකම් එක් කරන්න"
 
@@ -176,23 +224,20 @@ msgstr ""
 msgid "External Score Details"
 msgstr "අතිරේක ප්‍රභව පිළිබද විස්තර"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/activity.py:297
-#: /src/schooltool/gradebook/browser/report_card.py:300
+#: /src/schooltool/gradebook/browser/activity.py:524
+#: /src/schooltool/gradebook/browser/report_card.py:751
 msgid "Change information for ${fullname}"
 msgstr "${fullname} සඳහා තොරතුරු වෙනස් කිරීම"
 
-#: /src/schooltool/gradebook/browser/activity.py:310
+#: /src/schooltool/gradebook/browser/activity.py:558
 msgid "Edit External Activity"
 msgstr "අතිරේක ක්‍රියාකාරකම් සංස්කරණය කරන්න"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/activity.py:340
+#: /src/schooltool/gradebook/browser/activity.py:618
 msgid "Category weights for worksheet ${worksheet}"
 msgstr "ප්‍රවර්ග වැඞපත සඳහ බරතැබීම ${වැඞපත}"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/activity.py:362
+#: /src/schooltool/gradebook/browser/activity.py:640
 msgid "$value is not a valid weight."
 msgstr "$වටිනාකම බරතැබීම වලංගු නැත"
 
@@ -200,19 +245,26 @@ msgstr "$වටිනාකම බරතැබීම වලංගු නැත"
 msgid "The external activity couldn't be found"
 msgstr "අතිරේක ක්‍රියාකාරකම් සොයාගත නොහැකියි"
 
-#: /src/schooltool/gradebook/browser/activity.py:578
-#: /src/schooltool/gradebook/browser/activity.py:646
+#: /src/schooltool/gradebook/browser/activity.py:856
+#: /src/schooltool/gradebook/browser/activity.py:938
 msgid "Average"
 msgstr "සාමාන්‍ය්‍යය"
 
-#: /src/schooltool/gradebook/browser/activity.py:616
+#: /src/schooltool/gradebook/browser/activity.py:895
 msgid "Add Linked Column"
 msgstr "සම්බන්ධිත තීරය එක්කරන්න"
 
-#: /src/schooltool/gradebook/browser/activity.py:655
+#: /src/schooltool/gradebook/browser/activity.py:947
+#: /src/schooltool/gradebook/browser/flourish.zcml:307
 msgid "Edit Linked Column"
 msgstr "සම්බන්ධිත තීරය සංස්කරණය කරන්න"
 
+#: /src/schooltool/gradebook/browser/activity.py:1032
+#: /src/schooltool/gradebook/browser/gradebook.py:1023
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:54
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:75
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:10
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:5
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:80
 msgid "Activity"
 msgstr "ක්‍රියාකාරිත්වය"
@@ -225,27 +277,28 @@ msgstr "සම්බන්ධිත තීරය"
 msgid "External Score"
 msgstr "අතිරේක ලකුණු"
 
-#: /src/schooltool/gradebook/browser/category.py:44
+#: /src/schooltool/gradebook/browser/category.py:57
 msgid "Categories"
 msgstr "ප්‍රභේද"
 
-#: /src/schooltool/gradebook/browser/category.py:50
+#: /src/schooltool/gradebook/browser/category.py:63
+#: /src/schooltool/gradebook/browser/flourish.zcml:894
 msgid "New Category"
 msgstr "නව ප්‍රභේද"
 
-#: /src/schooltool/gradebook/browser/category.py:54
+#: /src/schooltool/gradebook/browser/category.py:67
 msgid "Default Category"
 msgstr "ස්වයං ප්‍රභේද"
 
-#: /src/schooltool/gradebook/browser/category.py:79
+#: /src/schooltool/gradebook/browser/category.py:92
 msgid "Categories successfully deleted."
 msgstr "ප්‍රභේද සාර්ඵකව මකා දමන ලදි"
 
-#: /src/schooltool/gradebook/browser/category.py:87
+#: /src/schooltool/gradebook/browser/category.py:101
 msgid "Category successfully added."
 msgstr "ප්‍රභේද සාර්ඵකව එක් කරන ලදි"
 
-#: /src/schooltool/gradebook/browser/category.py:93
+#: /src/schooltool/gradebook/browser/category.py:107
 msgid "Default category successfully changed."
 msgstr "ස්වයං ප්‍රභේද සාර්ඵකව වෙනස් කරන ලදි"
 
@@ -253,46 +306,79 @@ msgstr "ස්වයං ප්‍රභේද සාර්ඵකව වෙනස
 msgid "Make Default"
 msgstr "පෙරනිමි ලෙස සකසන්න"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:52
-#: /src/schooltool/gradebook/browser/configure.zcml:86
+#: /src/schooltool/gradebook/browser/configure.zcml:53
+#: /src/schooltool/gradebook/browser/configure.zcml:87
+#: /src/schooltool/gradebook/browser/flourish.zcml:841
+#: /src/schooltool/gradebook/browser/flourish.zcml:846
+#: /src/schooltool/gradebook/browser/flourish.zcml:857
+#: /src/schooltool/gradebook/browser/flourish.zcml:866
+#: /src/schooltool/gradebook/browser/flourish.zcml:905
+#: /src/schooltool/gradebook/browser/flourish.zcml:914
 msgid "Activity Categories"
 msgstr "ක්‍රියාකාරකම් ප්‍රභේද"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:75
+#: /src/schooltool/gradebook/browser/configure.zcml:76
+#: /src/schooltool/gradebook/browser/flourish.zcml:482
+#: /src/schooltool/gradebook/browser/flourish.zcml:511
 #: /src/schooltool/gradebook/browser/templates/templates_overview.pt:4
 #: /src/schooltool/gradebook/browser/templates/templates_overview.pt:8
-#: /src/schooltool/gradebook/gradebook_init.py:48
+#: /src/schooltool/gradebook/generations/tests/test_evolve3.py:47
+#: /src/schooltool/gradebook/gradebook_init.py:50
 msgid "Report Sheet Templates"
 msgstr "වාර්තා පත්‍රර ආකෘතිය"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:134
+#: /src/schooltool/gradebook/browser/configure.zcml:124
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:9
 msgid "Add a Worksheet"
 msgstr "වැඞපත  එක් කරන්න"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:146
+#: /src/schooltool/gradebook/browser/configure.zcml:147
 msgid "Add a Report Sheet"
 msgstr "වාර්තා පත්‍රරය එක් කරන්න"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:158
+#: /src/schooltool/gradebook/browser/configure.zcml:159
 msgid "Edit Worksheet"
 msgstr "සංස්කරණය කරන ලද වැඞ වාර්තා පත"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:158
-#: /src/schooltool/gradebook/browser/configure.zcml:170
-#: /src/schooltool/gradebook/browser/configure.zcml:218
-#: /src/schooltool/gradebook/browser/configure.zcml:241
+#: /src/schooltool/gradebook/browser/configure.zcml:159
+#: /src/schooltool/gradebook/browser/configure.zcml:171
+#: /src/schooltool/gradebook/browser/configure.zcml:219
+#: /src/schooltool/gradebook/browser/configure.zcml:242
+#: /src/schooltool/gradebook/browser/flourish.zcml:229
+#: /src/schooltool/gradebook/browser/flourish.zcml:446
+#: /src/schooltool/gradebook/browser/flourish.zcml:501
+#: /src/schooltool/gradebook/browser/flourish.zcml:914
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:20
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:116
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:18
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:21
+#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:34
+#: /src/schooltool/gradebook/browser/templates/f_worksheets.pt:37
 msgid "Edit"
 msgstr "සංස්කරණය කරන්න"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:170
+#: /src/schooltool/gradebook/browser/configure.zcml:171
 msgid "Edit Report Sheet"
 msgstr "සංස්කරණය කරනලද වාර්තා පත"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:234
+#: /src/schooltool/gradebook/browser/configure.zcml:235
+#: /src/schooltool/gradebook/browser/flourish.zcml:492
 msgid "New Report Activity"
 msgstr "නව වාර්තා ක්‍රියාකාරකම්"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:286
+#: /src/schooltool/gradebook/browser/configure.zcml:287
+#: /src/schooltool/gradebook/browser/flourish.zcml:20
+#: /src/schooltool/gradebook/browser/flourish.zcml:61
+#: /src/schooltool/gradebook/browser/flourish.zcml:219
+#: /src/schooltool/gradebook/browser/flourish.zcml:239
+#: /src/schooltool/gradebook/browser/flourish.zcml:249
+#: /src/schooltool/gradebook/browser/flourish.zcml:259
+#: /src/schooltool/gradebook/browser/flourish.zcml:269
+#: /src/schooltool/gradebook/browser/flourish.zcml:297
+#: /src/schooltool/gradebook/browser/flourish.zcml:307
+#: /src/schooltool/gradebook/browser/flourish.zcml:317
+#: /src/schooltool/gradebook/browser/flourish.zcml:344
+#: /src/schooltool/gradebook/browser/gradebook.py:169
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:5
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:5
 #: /src/schooltool/gradebook/browser/templates/gradebook_startup.pt:5
@@ -303,91 +389,97 @@ msgstr "නව වාර්තා ක්‍රියාකාරකම්"
 msgid "Gradebook"
 msgstr "ශ්‍රේණිපොත"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:295
+#: /src/schooltool/gradebook/browser/configure.zcml:296
 msgid "New Report Sheet"
 msgstr "නව වාර්තා පත"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:302
+#: /src/schooltool/gradebook/browser/configure.zcml:303
+#: /src/schooltool/gradebook/browser/flourish.zcml:219
 msgid "New Worksheet"
 msgstr "නව වැඩ වාර්තාසටහන"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:309
-#: /src/schooltool/gradebook/browser/configure.zcml:418
+#: /src/schooltool/gradebook/browser/configure.zcml:310
+#: /src/schooltool/gradebook/browser/configure.zcml:419
 msgid "Export XLS"
 msgstr "නිර්යාත XLS"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:316
-#: /src/schooltool/gradebook/browser/configure.zcml:353
+#: /src/schooltool/gradebook/browser/configure.zcml:317
+#: /src/schooltool/gradebook/browser/configure.zcml:354
 msgid "Return to Gradebook"
 msgstr "ශ්‍රේණිපොත වෙත ආපසු යැවීම"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:323
+#: /src/schooltool/gradebook/browser/configure.zcml:324
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:4
 #: /src/schooltool/gradebook/browser/templates/unhide_worksheets.pt:8
 msgid "Unhide Worksheets"
 msgstr "නොසැගවූ වැඩ පත"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:332
-#: /src/schooltool/gradebook/browser/configure.zcml:376
+#: /src/schooltool/gradebook/browser/configure.zcml:333
+#: /src/schooltool/gradebook/browser/configure.zcml:377
+#: /src/schooltool/gradebook/browser/flourish.zcml:239
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:119
 msgid "New Activity"
 msgstr "නව ක්‍රියාකාරකම"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:339
-#: /src/schooltool/gradebook/browser/configure.zcml:383
+#: /src/schooltool/gradebook/browser/configure.zcml:340
+#: /src/schooltool/gradebook/browser/configure.zcml:384
 msgid "New External Activity"
 msgstr "නව අතිරේක ක්‍රියාකාරකම"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:346
-#: /src/schooltool/gradebook/browser/configure.zcml:390
+#: /src/schooltool/gradebook/browser/configure.zcml:347
+#: /src/schooltool/gradebook/browser/configure.zcml:391
+#: /src/schooltool/gradebook/browser/flourish.zcml:259
 msgid "New Linked Column"
 msgstr "නව සම්බන්ධිත තීරය"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:360
-#: /src/schooltool/gradebook/browser/configure.zcml:369
+#: /src/schooltool/gradebook/browser/configure.zcml:361
+#: /src/schooltool/gradebook/browser/configure.zcml:370
+#: /src/schooltool/gradebook/browser/flourish.zcml:169
+#: /src/schooltool/gradebook/browser/flourish.zcml:354
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:4
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:8
-#: /src/schooltool/gradebook/interfaces.py:198
-#: /src/schooltool/gradebook/interfaces.py:303
+#: /src/schooltool/gradebook/interfaces.py:214
+#: /src/schooltool/gradebook/interfaces.py:319
 msgid "Worksheets"
 msgstr "වැඩ වාර්තාසටහන"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:397
+#: /src/schooltool/gradebook/browser/configure.zcml:398
 msgid "Manage Worksheet"
 msgstr "කලමනාකරණය කරනලද වැඩ වාර්තාසටහන"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:404
+#: /src/schooltool/gradebook/browser/configure.zcml:405
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:5
 msgid "Weight Categories"
 msgstr "බරතැබූ ප්‍රභේදයන්"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:411
+#: /src/schooltool/gradebook/browser/configure.zcml:412
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:16
 msgid "Preferences"
 msgstr "අභිප්‍රේත"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:425
+#: /src/schooltool/gradebook/browser/configure.zcml:426
 msgid "Download PDF"
 msgstr "භාගත කරනලද PDF"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:434
+#: /src/schooltool/gradebook/browser/configure.zcml:435
 msgid "Update Grades"
 msgstr "ශ්‍රේණී යාවත්කාලීන කරන්න"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:531
-#: /src/schooltool/gradebook/browser/configure.zcml:575
+#: /src/schooltool/gradebook/browser/configure.zcml:533
+#: /src/schooltool/gradebook/browser/configure.zcml:592
 msgid "Deploy Report Sheet"
 msgstr "යෙදවු වාර්තාසටහන"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:539
+#: /src/schooltool/gradebook/browser/configure.zcml:540
 msgid "Hide Report Sheet"
 msgstr "සැගවූ වාර්තාසටහන"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:546
+#: /src/schooltool/gradebook/browser/configure.zcml:547
 msgid "Unhide Report Sheet"
 msgstr "නොසැගවූ වාර්තාසටහන"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:598
+#: /src/schooltool/gradebook/browser/configure.zcml:599
+#: /src/schooltool/gradebook/browser/flourish.zcml:617
 #: /src/schooltool/gradebook/browser/templates/layout_report_card.pt:13
 msgid "Report Card Layout"
 msgstr "වාර්තාපත් සැලැස්ම"
@@ -423,13 +515,25 @@ msgstr "--ආකෘතියක් තෝරාගැනීම--"
 msgid "Hide/unhide Deployed Worksheets for ${year}"
 msgstr "සැගවූ/නොසැගවූ වැඞපත වෙනුවෙන් ${වසර}"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:782
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:81
+#: /src/schooltool/gradebook/browser/flourish.zcml:88
+#: /src/schooltool/gradebook/browser/flourish.zcml:601
+#: /src/schooltool/gradebook/browser/flourish.zcml:852
+#: /src/schooltool/gradebook/browser/flourish.zcml:1139
+#: /src/schooltool/gradebook/browser/flourish.zcml:1151
+#: /src/schooltool/gradebook/browser/pdf_views.py:839
+#: /src/schooltool/gradebook/browser/report.zcml:73
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:52
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:71
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:37
 msgid "Section"
 msgstr "අංශය"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:779
+#: /src/schooltool/gradebook/browser/flourish.zcml:90
+#: /src/schooltool/gradebook/browser/flourish.zcml:566
+#: /src/schooltool/gradebook/browser/flourish.zcml:780
+#: /src/schooltool/gradebook/browser/pdf_views.py:796
+#: /src/schooltool/gradebook/browser/report.zcml:50
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:51
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:63
 #: /src/schooltool/gradebook/browser/templates/mygrades.pt:19
 msgid "Term"
@@ -449,11 +553,16 @@ msgstr "සැකසුම්"
 msgid "Actions"
 msgstr "ක්‍රියාවන්"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:785
+#: /src/schooltool/gradebook/browser/flourish.zcml:180
+#: /src/schooltool/gradebook/browser/pdf_views.py:842
+#: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:53
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:15
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:4
 msgid "Worksheet"
 msgstr "වැඩකොලය"
 
+#: /src/schooltool/gradebook/browser/flourish.zcml:178
+#: /src/schooltool/gradebook/browser/templates/f_weight_categories.pt:16
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:30
 msgid "Category Weights"
 msgstr "බරතැබු ප්‍රභේදයන්"
@@ -474,6 +583,12 @@ msgstr "සංස්කරණය කරනලද අතිරේක ලකුණ
 msgid "Grade Activity"
 msgstr "වර්ග ක්‍රියාකාරකම්"
 
+#: /src/schooltool/gradebook/browser/flourish.zcml:327
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:89
+#: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:11
+#: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:6
+#: /src/schooltool/requirement/browser/f_scoresystem_add.pt:33
+#: /src/schooltool/requirement/browser/f_scoresystem_view.pt:5
 #: /src/schooltool/requirement/browser/scoresystem_add.pt:50
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:14
 msgid "Score"
@@ -492,6 +607,8 @@ msgstr "සංස්කරණය කරනලද බරතැබු ප්‍ර
 msgid "Report Sheet Template"
 msgstr "වාර්තා ආකෘති"
 
+#: /src/schooltool/gradebook/browser/flourish.zcml:473
+#: /src/schooltool/gradebook/browser/templates/f_request_failing_report.pt:39
 #: /src/schooltool/gradebook/browser/templates/request_failing_report.pt:42
 msgid "Report Activity"
 msgstr "වාර්තා  ක්‍රියාකාරකම්"
@@ -536,25 +653,31 @@ msgstr "කොටුසැලසුම් තීරැව සංස්කරණ�
 msgid "Edit Outline Item"
 msgstr "සංස්කරණය කරනලද සංකශිප්ත අයිතම"
 
-#: /src/schooltool/gradebook/browser/report.zcml:26
-#: /src/schooltool/gradebook/browser/report.zcml:35
+#: /src/schooltool/gradebook/browser/flourish.zcml:756
+#: /src/schooltool/gradebook/browser/flourish.zcml:768
+#: /src/schooltool/gradebook/browser/report.zcml:30
+#: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Group"
 msgstr "සමූහය"
 
-#: /src/schooltool/gradebook/browser/report.zcml:17
+#: /src/schooltool/gradebook/browser/flourish.zcml:756
+#: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student Detail Report"
 msgstr "ශිෂ්‍යය වාර්තා තොරතුරැ"
 
-#: /src/schooltool/gradebook/browser/report.zcml:35
+#: /src/schooltool/gradebook/browser/flourish.zcml:756
+#: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "A single PDF containing detail reports for all students in the group."
 msgstr ""
 "කණ්ඞායමේ සියලුම ශිෂ්‍යයන්ගේ තොරතුරැ වාර්තා තනි පීඩීඑෆ් එකක අඬංගු වෙනවා"
 
-#: /src/schooltool/gradebook/browser/report.zcml:8
+#: /src/schooltool/gradebook/browser/flourish.zcml:768
+#: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Student Report Card"
 msgstr "ශිෂ්‍යය වාර්තා පත"
 
-#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/flourish.zcml:768
+#: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "A single PDF containing report cards for all students in the group."
 msgstr "කණ්ඞායමේ සියලුම ශිෂ්‍යයන්ගේ වාර්තා පත් තනි පීඩීඑෆ් එකක අඬංගු වෙනවා"
 
@@ -562,7 +685,8 @@ msgstr "කණ්ඞායමේ සියලුම ශිෂ්‍යයන්�
 msgid "Failures"
 msgstr "වැරදි"
 
-#: /src/schooltool/gradebook/browser/report.zcml:45
+#: /src/schooltool/gradebook/browser/flourish.zcml:780
+#: /src/schooltool/gradebook/browser/report.zcml:50
 msgid ""
 "Shows all students receiving failing scores in the selected report activity "
 "and term."
@@ -587,7 +711,8 @@ msgstr ""
 "පාසලේ සෑම ශිෂ්‍යයකුටම දත්ත වාර්තා නිර්යාත කරන්න. එක් දත්ත පත්‍රයක් පමණයි "
 "පවතින්නේ වසරේ සෑම වාරයටම."
 
-#: /src/schooltool/gradebook/browser/report.zcml:57
+#: /src/schooltool/gradebook/browser/flourish.zcml:890
+#: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "School Year"
 msgstr "පාසල් වර්ෂය"
 
@@ -661,12 +786,16 @@ msgstr "මෙම ශේෂ්ඨ පොත් පැතුරැම්පතේ
 msgid "Gradebook Export"
 msgstr "ශේෂ්ඨ පොත නිර්යාතය"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:78
-#: /src/schooltool/gradebook/browser/pdf_views.py:683
+#: /src/schooltool/gradebook/browser/gradebook.py:87
+#: /src/schooltool/gradebook/browser/pdf_views.py:730
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:242
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:252
 msgid "Total"
 msgstr "එකතුව"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:78
+#: /src/schooltool/gradebook/browser/gradebook.py:87
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:259
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:285
 msgid "Ave."
 msgstr "සාමාන්‍යය"
 
@@ -690,15 +819,16 @@ msgstr ""
 "ඔබ වෙනස් කිරීමට පෙර පිටුව සුරකින්න.සුරකීම සඳහා ඕකේ බොත්තම ඹබන්න.සුරකීම සිදු "
 "නොකිරීමට අවලංගූ කිරීමේ බොත්තම ඹබන්න."
 
-#: /src/schooltool/gradebook/browser/gradebook.py:438
+#: /src/schooltool/gradebook/browser/gradebook.py:509
 msgid "Invalid scores (highlighted in red) were not saved."
 msgstr "වැරදි ලකුණු සුරකීම සිදු නොකරන්න.(රතු පාටින් ලකුණු කල)"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:592
+#: /src/schooltool/gradebook/browser/gradebook.py:671
 msgid "N/A"
 msgstr "අදාළ නොවේ"
 
-#: /src/schooltool/gradebook/interfaces.py:333
+#: /src/schooltool/gradebook/browser/gradebook.py:822
+#: /src/schooltool/gradebook/interfaces.py:394
 msgid "Points"
 msgstr "ලකුණු"
 
@@ -714,25 +844,25 @@ msgstr "ශේණිය ඇතුලත් කරන්න"
 msgid "No score system"
 msgstr "ලකුණු ක්‍රමයක් නොමැත"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:683
+#: /src/schooltool/gradebook/browser/gradebook.py:1165
 msgid "The grade $value for $name is not valid."
 msgstr "එස් නම සදහා එස් වටිනාකම වලංගු නොවේ"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:955
+#: /src/schooltool/gradebook/browser/gradebook.py:1481
 msgid "-- No score system --"
 msgstr "--ලකුණු ක්‍රමයක් නොමැත--"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:1021
+#: /src/schooltool/gradebook/browser/gradebook.py:1539
+#: /src/schooltool/gradebook/browser/gradebook.py:1651
 msgid "Previous"
 msgstr "පෙර"
 
-#: /src/schooltool/gradebook/browser/gradebook.py:1031
+#: /src/schooltool/gradebook/browser/gradebook.py:1549
+#: /src/schooltool/gradebook/browser/gradebook.py:1656
 msgid "Next"
 msgstr "ඊලඟ"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:1111
+#: /src/schooltool/gradebook/browser/gradebook.py:1691
 msgid "Enter grades for ${fullname}"
 msgstr "සදහා ශේණිය ඇතුලත් කරන්න ${සම්පූර්ණ නම}"
 
@@ -749,8 +879,7 @@ msgstr "${වැඩපත} ශේණි ඉතිහාසය සදහා ${ශ
 msgid "Removed score"
 msgstr "ලකුණු ඉවත් කරන්න"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/gradebook.py:1136
+#: /src/schooltool/gradebook/browser/gradebook.py:1945
 msgid "$worksheet for $student in $section"
 msgstr "අංශයේ $ශිෂ්‍යයන් සදහා $වැඩපත"
 
@@ -772,7 +901,24 @@ msgstr "පහතට පුරවන්න"
 msgid "Sort by"
 msgstr "චිසින් වර්ග කිරීම"
 
+#: /src/schooltool/gradebook/browser/gradebook.py:2206
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:9
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:31
+#: /src/schooltool/gradebook/browser/templates/f_categories.pt:34
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:12
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:29
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:32
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:15
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:31
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:34
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:51
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:67
+#: /src/schooltool/gradebook/browser/templates/f_report_card_layout.pt:70
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:12
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:29
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:32
 #: /src/schooltool/gradebook/browser/templates/worksheet_delete.pt:18
+#: /src/schooltool/requirement/browser/scoresystems_overview.pt:20
 msgid "Delete"
 msgstr "මකන්න"
 
@@ -788,10 +934,13 @@ msgstr "දකුණට ගෙනයන්න"
 msgid "Update grades"
 msgstr "සංස්කරණය කරනලද ශේණි"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:472
-#: /src/schooltool/gradebook/browser/pdf_views.py:619
-#: /src/schooltool/gradebook/browser/pdf_views.py:674
-#: /src/schooltool/gradebook/browser/pdf_views.py:788
+#: /src/schooltool/gradebook/browser/gradebook.py:2323
+#: /src/schooltool/gradebook/browser/pdf_views.py:507
+#: /src/schooltool/gradebook/browser/pdf_views.py:661
+#: /src/schooltool/gradebook/browser/pdf_views.py:721
+#: /src/schooltool/gradebook/browser/pdf_views.py:845
+#: /src/schooltool/gradebook/browser/report.zcml:10
+#: /src/schooltool/gradebook/browser/report.zcml:20
 msgid "Student"
 msgstr "සිසුවා"
 
@@ -843,10 +992,14 @@ msgstr "සගවන්න Trd"
 msgid "Hide"
 msgstr "සඟවන්න"
 
-#: /src/schooltool/gradebook/browser/report_card.py:138
+#: /src/schooltool/gradebook/browser/gradebook.py:2467
+#: /src/schooltool/gradebook/browser/report_card.py:568
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:11
+#: /src/schooltool/gradebook/browser/templates/f_template_manage.pt:11
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:22
+#: /src/schooltool/requirement/browser/flourish.zcml:109
 #: /src/schooltool/requirement/browser/scoresystems_overview.pt:21
-#: /src/schooltool/requirement/interfaces.py:167
+#: /src/schooltool/requirement/interfaces.py:171
 msgid "Score System"
 msgstr "ලකුණු ක්‍රමය"
 
@@ -854,43 +1007,40 @@ msgstr "ලකුණු ක්‍රමය"
 msgid "Value"
 msgstr "අගය"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:203
+#: /src/schooltool/gradebook/browser/pdf_views.py:245
 msgid "Report Card: ${schoolyear}"
 msgstr "වාර්තා පත: ${පාසල් වර්ශය}"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:207
-#: /src/schooltool/gradebook/browser/pdf_views.py:323
+#: /src/schooltool/gradebook/browser/pdf_views.py:209
+#: /src/schooltool/gradebook/browser/pdf_views.py:326
 msgid "Courses"
 msgstr "පාඨමාලාවන්"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:214
+#: /src/schooltool/gradebook/browser/pdf_views.py:220
 msgid "Student: ${student}"
 msgstr "ශිෂ්‍යයා: ${ශිෂ්‍යයා}"
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:316
+#: /src/schooltool/gradebook/browser/pdf_views.py:331
 msgid "Detailed Student Report: ${schoolyear}"
 msgstr "ශිෂ්‍යය වාර්තා තොරතුරු: ${පාසල් වර්ශය}"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:320
+#: /src/schooltool/gradebook/browser/pdf_views.py:323
 msgid "Grade Detail"
 msgstr "ශේණිය පිළිබඳ තොරතුරු"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:326
+#: /src/schooltool/gradebook/browser/pdf_views.py:329
 msgid "Attendance Detail"
 msgstr "පැමිණීම පිළිබඳ තොරතුරු"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:329
+#: /src/schooltool/gradebook/browser/pdf_views.py:332
 msgid "Dates"
 msgstr "දින"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:332
+#: /src/schooltool/gradebook/browser/pdf_views.py:335
 msgid "Student Name"
 msgstr "ශිෂ්‍යය නම"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:335
+#: /src/schooltool/gradebook/browser/pdf_views.py:338
 msgid "User Id"
 msgstr "භාවිතා කරන්නාගේ අයි.ඩී එක"
 
@@ -971,17 +1121,17 @@ msgstr ""
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr "වාර්තා ලකුණු ඇතුලත් වාර්තා සියලුම දෙමාපියන්ට යැවන ලදි"
 
-#: /src/schooltool/gradebook/browser/report.zcml:17
+#: /src/schooltool/gradebook/browser/report.zcml:20
 msgid ""
 "Contains scores from report sheets and attendance.  For use by school staff."
 msgstr ""
 "පාසල් කාර්යමණ්ඞල භාවිතය සදහා වූ වාර්තාවේ පැමිණීමේ සහ වාර්තා ලකුණු ඇතුලත් වේ"
 
-#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:30
 msgid "Student Report Card by Group"
 msgstr "කණ්ඞායම් සදහා වූ ශිෂ්‍යය වාර්තාව"
 
-#: /src/schooltool/gradebook/browser/report.zcml:35
+#: /src/schooltool/gradebook/browser/report.zcml:40
 msgid "Student Detail Report by Group"
 msgstr "කණ්ඞායම් සදහා වූ ශිෂ්‍යය විස්තර වාර්තාව"
 
@@ -989,27 +1139,27 @@ msgstr "කණ්ඞායම් සදහා වූ ශිෂ්‍යය ව�
 msgid "Absences By Day"
 msgstr "දෛනික නොපැමිණීම"
 
-#: /src/schooltool/gradebook/browser/report.zcml:57
+#: /src/schooltool/gradebook/browser/report.zcml:63
 msgid "Lists students absent on a given day."
 msgstr "අදාල දින තුල නොපැමිණි සිසුන් සංඛ්‍යාව"
 
-#: /src/schooltool/gradebook/browser/report.zcml:66
+#: /src/schooltool/gradebook/browser/report.zcml:73
 msgid "Absences by Section"
 msgstr "ආංශික නොපැමිණිම"
 
-#: /src/schooltool/gradebook/browser/report_card.py:58
+#: /src/schooltool/gradebook/browser/report_card.py:66
 msgid "Absent"
 msgstr "නොපැමිණිම"
 
-#: /src/schooltool/gradebook/browser/report_card.py:59
+#: /src/schooltool/gradebook/browser/report_card.py:67
 msgid "Tardy"
 msgstr "ප්‍රමාදී"
 
-#: /src/schooltool/gradebook/browser/report_card.py:60
+#: /src/schooltool/gradebook/browser/report_card.py:68
 msgid "A"
 msgstr "A"
 
-#: /src/schooltool/gradebook/browser/report_card.py:61
+#: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "T"
 msgstr "T"
 
@@ -1029,35 +1179,35 @@ msgstr "වාර්තාආකෘති පිළිබද විස්තර"
 msgid "Report Sheet Template Information"
 msgstr "වාර්තාආකෘති පිළිබද තොරතුරු"
 
-#: /src/schooltool/gradebook/browser/report_card.py:122
+#: /src/schooltool/gradebook/browser/report_card.py:390
 msgid "-- Use range below --"
 msgstr "--භාවිත අගය පහල ගොස් ඇත--"
 
-#: /src/schooltool/gradebook/browser/report_card.py:139
+#: /src/schooltool/gradebook/browser/report_card.py:569
 msgid "Choose an existing score system or use range below"
 msgstr "දැනට පවතින පද්ධතිය හෝ පහත පද්ධතිය භාවිත කරන්න"
 
-#: /src/schooltool/gradebook/browser/report_card.py:150
-#: /src/schooltool/requirement/browser/scoresystem.py:226
+#: /src/schooltool/gradebook/browser/report_card.py:574
+#: /src/schooltool/requirement/browser/scoresystem.py:235
 #: /src/schooltool/requirement/interfaces.py:151
 msgid "Maximum"
 msgstr "උපරිම"
 
-#: /src/schooltool/gradebook/browser/report_card.py:151
+#: /src/schooltool/gradebook/browser/report_card.py:575
 msgid "Highest integer score value possible"
 msgstr "වැඞිම නිඛිල අගය වලංගුවේ"
 
-#: /src/schooltool/gradebook/browser/report_card.py:144
-#: /src/schooltool/requirement/browser/scoresystem.py:226
-#: /src/schooltool/requirement/interfaces.py:145
+#: /src/schooltool/gradebook/browser/report_card.py:580
+#: /src/schooltool/requirement/browser/scoresystem.py:235
+#: /src/schooltool/requirement/interfaces.py:157
 msgid "Minimum"
 msgstr "අවම"
 
-#: /src/schooltool/gradebook/browser/report_card.py:145
+#: /src/schooltool/gradebook/browser/report_card.py:581
 msgid "Lowest integer score value possible"
 msgstr "අඩුම නිඛිල අගය වලංගුවේ"
 
-#: /src/schooltool/gradebook/browser/report_card.py:219
+#: /src/schooltool/gradebook/browser/report_card.py:649
 msgid "Add new report activity"
 msgstr "නව  වාර්තා ක්‍රියාකාරකම් එක් කරන්න"
 
@@ -1071,7 +1221,7 @@ msgstr "වාර්තා ක්‍රියාකාරකම් පිළි�
 msgid "Please correct the marked fields below."
 msgstr "කරුණාකර පහත තීරු නිවැරදි කරන්න"
 
-#: /src/schooltool/gradebook/browser/report_card.py:308
+#: /src/schooltool/gradebook/browser/report_card.py:620
 msgid "Apply"
 msgstr "යොදන්න"
 
@@ -1121,7 +1271,7 @@ msgstr ""
 msgid "Maximum Passing Score"
 msgstr "උපරිම සමත්වීමේ ලකුණු"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:191
+#: /src/schooltool/gradebook/browser/request_reports.py:97
 msgid "Minimum Passing Score"
 msgstr "අවම සමත්වීමේ ලකුණු"
 
@@ -1139,19 +1289,19 @@ msgstr ""
 "ඔබ විසින් පිළියල කරන දෛනික වාර්තා සඳහා නොපැණීමේ ඉල්ලීමක් වාර්තා "
 "ක්‍රියාකාරමක් සහ අවම සමත් වීමේ ලකුණක් නියම කරනන්න"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:234
+#: /src/schooltool/gradebook/browser/request_reports.py:140
 msgid "Request Absences By Day Report"
 msgstr "දෛනික වාර්තා සඳහා නොපැණීමේ ඉල්ලීමක්"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:254
+#: /src/schooltool/gradebook/browser/request_reports.py:161
 msgid "You must specify a valid date within the school year."
 msgstr "ඔබ විසින් පාසල් වසර තුල වලංගු දිනයක් නියම කරගන්න"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:201
+#: /src/schooltool/gradebook/browser/request_reports.py:198
 msgid "Request Report Card"
 msgstr "ඉල්ලීම් වාර්තා පත"
 
-#: /src/schooltool/gradebook/browser/request_reports.py:203
+#: /src/schooltool/gradebook/browser/request_reports.py:200
 msgid "Request Detailed Student Report"
 msgstr "සිසුන්ගේ ඉල්ලීම් පිලිබඳ විස්තර වාර්තා"
 
@@ -1766,7 +1916,7 @@ msgstr ""
 msgid "Enter numeric values for each relevant category."
 msgstr "සංඛ්‍යාත්මක අගයන් සෑම කොටසකටම එක්කරන්න."
 
-#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:14
+#: /src/schooltool/gradebook/browser/templates/f_weight_categories_related.pt:13
 #: /src/schooltool/gradebook/browser/templates/weight_categories.pt:24
 msgid ""
 "For example, to weight exams as 60% of the grade, homework as 20% and "
@@ -1812,6 +1962,7 @@ msgid ""
 "worksheet to another."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_worksheets_summary_related.pt:6
 #: /src/schooltool/gradebook/browser/templates/gradebook_column_preferences.pt:76
 msgid ""
 "You can add a summary worksheet to each of your gradebooks that "
@@ -2493,3 +2644,27 @@ msgstr ""
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr ""
+
+#~ msgid "Period Number"
+#~ msgstr "පරිච්ඡේද අංකය"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr ""
+#~ "සංඛ්‍යාත්මක අගයන් සෑම කොටසකටම එක්කරන්න. මුලු අගය හරියටම 100ක් විය යුතුයි."
+
+#~ msgid "Section:"
+#~ msgstr "අංශය."
+
+#~ msgid "Term:"
+#~ msgstr "වාරය."
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "සෑම ශිෂ්‍යයෙකුගේම ශේණියන් ඉල්ලුම් කරන්න."
+
+#~ msgid "Requirement index"
+#~ msgstr "අවශ්‍යතා දර්ශක."
+
+#~ msgid "Name"
+#~ msgstr "නම"
