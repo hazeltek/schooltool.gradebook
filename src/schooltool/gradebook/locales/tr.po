@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-23 12:11+0300\n"
+"POT-Creation-Date: 2013-11-21 02:52+0200\n"
 "PO-Revision-Date: 2013-08-23 09:20+0000\n"
 "Last-Translator: Bekir DURAK <by.jigs4w@gmail.com>\n"
 "Language-Team: Turkish <by.jigs4w@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-24 05:46+0000\n"
-"X-Generator: Launchpad (build 16738)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:42+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 "Language: tr\n"
 "X-Rosetta-Version: 0.1\n"
 
@@ -327,7 +327,8 @@ msgstr "Faaliyet Kategorileri"
 msgid "Report Sheet Templates"
 msgstr "Rapor Sayfası Şablonları"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:134
+#: /src/schooltool/gradebook/browser/configure.zcml:124
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:9
 msgid "Add a Worksheet"
 msgstr "Çalışma Sayfası ekle"
 
@@ -975,14 +976,6 @@ msgstr ""
 msgid "Hide Trd."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:2410
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_grade_activity.pt:15
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:24
-#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:37
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:130
-msgid "Name"
-msgstr "Ad"
-
 #: /src/schooltool/gradebook/browser/gradebook.py:2450
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:39
@@ -1006,8 +999,7 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#. Default: ""
-#: /src/schooltool/gradebook/browser/pdf_views.py:203
+#: /src/schooltool/gradebook/browser/pdf_views.py:245
 msgid "Report Card: ${schoolyear}"
 msgstr ""
 
@@ -1105,7 +1097,19 @@ msgstr ""
 msgid "Instructors: ${instructors}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report.zcml:8
+#: /src/schooltool/gradebook/browser/pdf_views.py:1135
+msgid "Report Card"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:1150
+msgid "${student} report card"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:1397
+msgid "${student} detail report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:10
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
 
@@ -1302,14 +1306,17 @@ msgstr "Tarih"
 msgid "Absences (continued)"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:16
-#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:32
-msgid "Period Number"
+#: /src/schooltool/gradebook/browser/rml/report_card_student_header.pt:9
+msgid "Username: ${username}"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:17
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:34
 msgid "Tardies"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/rml/student_detail_report_attendance.pt:8
+msgid "Attendance detail"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
@@ -1425,8 +1432,29 @@ msgstr ""
 msgid "There are no course activities."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit_related.pt:6
+msgid ""
+"The Course Worksheet and activities defined here can be deployed to all the "
+"sections of this course for one or more terms."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:6
+msgid ""
+"Course Worksheets can be be used to include sets of activities in the "
+"gradebooks of all sections of a course. The activities included in Course "
+"Worksheets are defined in templates, shown here."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:12
+msgid ""
+"The templates can be created from this page (see Add: Course Worksheet) or "
+"from the individual gradebook of the instructor of a section of this course "
+"who is either a \"Responsible party\" for the course or a member of "
+"\"Clerks\" or \"Site Managers.\""
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
@@ -1472,13 +1500,34 @@ msgid ""
 "distinguishable name."
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:6
+msgid "This page allows you to manage the Course Worksheets for this course."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:10
+msgid ""
+"The templates are created separately and define what activites will be on "
+"the Course Worksheets. Use this form to deploy the worksheets to the teacher "
+"gradebooks of all sections of this course for one or more terms."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:16
+msgid "You can also hide worksheets if you do not want teachers to see them."
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:62
 msgid ""
 "If you add the same worksheet multiple times, give each version an easily "
 "distinguishable name."
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:5
+#: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet_related.pt:6
+msgid ""
+"Use this form to add the active worksheet in your gradebook to all the "
+"sections of the same course in the selected terms."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:3
 msgid "Enter Comment"
 msgstr ""
 
@@ -1534,11 +1583,7 @@ msgstr ""
 msgid "Shortcut: Alt-S"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:127
-msgid "Done"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:132
+#: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:139
 msgid "Expand"
 msgstr ""
 
@@ -1931,22 +1976,7 @@ msgstr ""
 msgid "Grade ${name}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:47
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:181
-msgid "Apply a grade for all students:"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:48
-#: /src/schooltool/gradebook/browser/templates/mygrades.pt:15
-msgid "Term:"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:77
-#: /src/schooltool/gradebook/browser/templates/mygrades.pt:33
-msgid "Section:"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:98
+#: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:88
 msgid "show only activities due in past ${num_weeks} weeks"
 msgstr ""
 
@@ -2433,11 +2463,7 @@ msgstr "Temizle"
 msgid "Showing ${count} of ${total} items"
 msgstr "${count} / ${total} öge gösteriliyor"
 
-#: /src/schooltool/requirement/browser/requirement.py:55
-msgid "Requirement index"
-msgstr ""
-
-#: /src/schooltool/requirement/browser/scoresystem.py:48
+#: /src/schooltool/requirement/browser/scoresystem.py:45
 msgid "The Title field must not be empty."
 msgstr ""
 
@@ -2535,3 +2561,26 @@ msgstr ""
 #: /src/schooltool/requirement/browser/scoresystem_view.pt:3
 msgid "View Score System"
 msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:278
+msgid "Pass/Fail"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:285
+msgid "Letter Grade"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:295
+msgid "Extended Letter Grade"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:399
+msgid "Percent"
+msgstr ""
+
+#: /src/schooltool/requirement/scoresystem.py:404
+msgid "100 Points"
+msgstr ""
+
+#~ msgid "Name"
+#~ msgstr "Ad"

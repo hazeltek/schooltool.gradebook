@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-01-07 05:32+0000\n"
-"X-Generator: Launchpad (build 16877)\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:43+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 "Language: es\n"
 
 #: /src/schooltool/gradebook/activity.py:52
@@ -2657,3 +2657,28 @@ msgstr ""
 #: /src/schooltool/requirement/scoresystem.py:404
 msgid "100 Points"
 msgstr ""
+
+#~ msgid "Name"
+#~ msgstr "Nombre"
+
+#~ msgid "Period Number"
+#~ msgstr "Número de periodo"
+
+#~ msgid "Apply a grade for all students:"
+#~ msgstr "Aplicar una nota a todos los estudiantes:"
+
+#~ msgid "Section:"
+#~ msgstr "Sección:"
+
+#~ msgid "Requirement index"
+#~ msgstr "Índice de requisitos"
+
+#~ msgid "Term:"
+#~ msgstr "Período:"
+
+#~ msgid ""
+#~ "Enter numeric values for each relevant category. The total of all values "
+#~ "must be exactly 100."
+#~ msgstr ""
+#~ "Introduzca valores numéricos para cada categoría relevante. El total de "
+#~ "todos los valores debe ser exactamente 100."
