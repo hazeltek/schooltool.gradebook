@@ -1,0 +1,94 @@
+Course worksheets deployed to new sections
+==========================================
+
+We'll test that existing course worksheets are deployed to new
+sections.
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Add a course with one section:
+
+    >>> manager.ui.person.add('Tom', 'Hoffman', 'tom', 'pwd')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'pwd')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'pwd')
+    >>> manager.ui.schoolyear.add('2013', '2013-01-01', '2013-12-31')
+    >>> manager.ui.term.add('2013', '2013', '2013-01-01', '2013-12-31')
+    >>> manager.ui.course.add('2013', 'Math')
+    >>> manager.ui.section.add('2013', '2013', 'Math')
+    >>> manager.ui.section.instructors.add('2013', '2013', 'Math (1)',
+    ...                                    ['tom'])
+    >>> manager.ui.section.students.add('2013', '2013', 'Math (1)',
+    ...                                 ['camila'])
+
+Add a course worksheet:
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Courses').click()
+    >>> manager.query.link('Math').click()
+    >>> manager.query.link('Worksheet Templates').click()
+    >>> manager.query.link('Course Worksheet').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('Math sheet')
+    >>> manager.query.id('form-buttons-add').click()
+
+    >>> manager.query.link('Course Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('A')
+    >>> manager.query.id('form-buttons-add').click()
+
+    >>> manager.query.link('Course Activity').click()
+    >>> manager.query.id('form-widgets-title').ui.set_value('B')
+    >>> manager.query.id('form-buttons-add').click()
+
+    >>> manager.query.link('Done').click()
+    >>> manager.query.link('Done').click()
+    >>> manager.query.link('Course Worksheets').click()
+    >>> manager.query.id('template').ui.set_value('Math sheet')
+    >>> manager.query.name('SUBMIT').click()
+    >>> manager.query.link('Done').click()
+
+Add a new section:
+
+    >>> manager.ui.section.add('2013', '2013', 'Math')
+    >>> manager.ui.section.instructors.add('2013', '2013', 'Math (2)',
+    ...                                    ['tom'])
+    >>> manager.ui.section.students.add('2013', '2013', 'Math (2)',
+    ...                                 ['mario'])
+
+Log in as instructor:
+
+    >>> tom = browsers.tom
+    >>> tom.ui.login('tom', 'pwd')
+
+Go to the first section and print the deployed worksheet:
+
+    >>> tom.ui.section.go('2013', '2013', 'Math (1)')
+    >>> tom.query.xpath('//div[contains(@class, "refine")]//a[text()="Gradebook"]').click()
+    >>> tom.query.link('Math sheet').click()
+    >>> tom.ui.gradebook.worksheet.pprint()
+    +--------+--------------+
+    | Sheet1 | *Math sheet* |
+    +--------+--------------+
+    +-----------+------------+-----+-----+-------+------+
+    | Last Name | First Name | A   | B   | Total | Ave. |
+    |           |            | 100 | 100 |       |      |
+    +-----------+------------+-----+-----+-------+------+
+    | Cerna     | Camila     |     |     | 0.0   | N/A  |
+    +-----------+------------+-----+-----+-------+------+
+
+Go to the second section and print the deployed worksheet:
+
+    >>> tom.ui.section.go('2013', '2013', 'Math (2)')
+    >>> tom.query.xpath('//div[contains(@class, "refine")]//a[text()="Gradebook"]').click()
+    >>> tom.query.link('Math sheet').click()
+    >>> tom.ui.gradebook.worksheet.pprint()
+    +--------------+--------+
+    | *Math sheet* | Sheet1 |
+    +--------------+--------+
+    +-----------+------------+-----+-----+-------+------+
+    | Last Name | First Name | A   | B   | Total | Ave. |
+    |           |            | 100 | 100 |       |      |
+    +-----------+------------+-----+-----+-------+------+
+    | Tejada    | Mario      |     |     | 0.0   | N/A  |
+    +-----------+------------+-----+-----+-------+------+

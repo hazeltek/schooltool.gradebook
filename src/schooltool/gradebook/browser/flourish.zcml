@@ -1655,4 +1655,9 @@
       permission="schooltool.view"
       />
 
+  <zope:subscriber
+      for="schooltool.relationship.interfaces.IRelationshipAddedEvent"
+      handler=".course_worksheets.DeployCourseWorksheetsOnSectionAdded"
+      />
+
 </configure>

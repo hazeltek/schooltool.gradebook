@@ -31,6 +31,8 @@ from zope.i18n import translate
 from z3c.form import form, field, button
 
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.app.relationships import URICourseSections
+from schooltool.app.relationships import URISectionOfCourse, URICourse
 from schooltool.gradebook import GradebookMessage as _
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
@@ -498,3 +500,19 @@ class FlourishDeployAsCourseWorksheetView(FlourishCourseWorksheetsBase,
     def nextURL(self):
         return absoluteURL(self.context, self.request) + '/gradebook'
 
+
+def DeployCourseWorksheetsOnSectionAdded(event):
+    if event.rel_type != URICourseSections:
+        return
+    section = event[URISectionOfCourse]
+    term = ITerm(section)
+    course = event[URICourse]
+    prefix = 'course_%s_%s' % (course.__name__, term.__name__)
+    for deployedWorksheet in ICourseDeployedWorksheets(course).values():
+        name = deployedWorksheet.__name__
+        sheetPrefix = name[:name.rfind('_')]
+        if sheetPrefix == prefix:
+            worksheetCopy = Worksheet(deployedWorksheet.title)
+            worksheetCopy.deployed = True
+            IActivities(section)[deployedWorksheet.__name__] = worksheetCopy
+            copyActivities(deployedWorksheet, worksheetCopy)

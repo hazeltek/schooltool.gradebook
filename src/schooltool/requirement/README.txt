@@ -281,7 +281,7 @@ better than implicit anyways:
   ...    u'Check', u'Check-mark score system',
   ...    [('+', '', Decimal(1), Decimal(80)),
   ...     ('v', '', Decimal(0), Decimal(60)), 
-  ...     ('-', '', Decimal(-1)), Decimal(0)],
+  ...     ('-', '', Decimal(-1), Decimal(0))],
   ...    bestScore='+', minPassingScore='v')
 
   >>> check.getBestScore()

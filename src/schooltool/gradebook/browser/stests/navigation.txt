@@ -238,37 +238,36 @@ Let's create browsers for both teachers and go to their gradebooks:
     >>> tom.query.link('Gradebook').click()
 
 The first time the user visits the gradebook, the selected section in
-the navigators will be the first section the teacher was added to:
+the navigators will be a section in the active school year:
 
-In Jeffrey's case that's the Soccer Q2 section:
+In Jeffrey's case that's the Math Q1 section:
 
     >>> print_navigators(jeffrey)
-    Section: Soccer Q2
-    Term: Q2
+    Section: Math Q1
+    Term: Q1
     Year: 2012
 
-In Tom's case it's Baseball Q3:
+In Tom's case it's Soccer Q1:
 
     >>> print_navigators(tom)
-    Section: Baseball Q3
-    Term: Q3
+    Section: Soccer Q1
+    Term: Q1
     Year: 2012
 
 Users have access to all of their sections in that term through the
 Section navigator. Sections are sorted alphabetically:
 
     >>> print_section_navigator(jeffrey)
-    Math Q2
-    *Soccer Q2*
+    *Math Q1*
 
     >>> print_section_navigator(tom)
-    *Baseball Q3*
+    *Soccer Q1*
 
 Let's move Jeffrey to his Math Q2 section:
 
-    >>> navigator = jeffrey.query_all.css('.refine .navigator')[0]
+    >>> navigator = jeffrey.query_all.css('.refine .navigator')[1]
     >>> page = jeffrey.query.tag('html')
-    >>> navigator.ui.set_value('Math Q2')
+    >>> navigator.ui.set_value('Q2')
     >>> jeffrey.wait(lambda: page.expired)
     >>> print_navigators(jeffrey)
     Section: Math Q2
@@ -286,9 +285,9 @@ term. Terms are sorted chronologically:
     Q4
 
     >>> print_term_navigator(tom)
-    Q1
+    *Q1*
     Q2
-    *Q3*
+    Q3
 
 The Term navigator has another feature, it takes the user to a section
 of the matching course (if any exists). For example, if Jeffrey
