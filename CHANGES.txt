@@ -5,6 +5,8 @@ CHANGES
 2.7.0 (unreleased)
 ------------------
 
+- Switch to CKEditor
+- Latest translations from Launchpad
 
 
 2.6.2 (2014-02-15)
