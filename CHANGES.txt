@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.6.3 (unreleased)
+2.6.3 (2014-04-12)
 ------------------
 
-- Switch to CKEditor
+- Switch to CKEditor (https://bugs.launchpad.net/bugs/485898)
 - Latest translations from Launchpad
 
 
