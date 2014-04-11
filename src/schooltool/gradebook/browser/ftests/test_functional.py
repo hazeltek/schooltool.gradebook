@@ -32,14 +32,18 @@ journal_filename = os.path.join(dir, '../ftesting_journal.zcml')
 need_journal = ('absences_tardies.txt',
                 'journal_average.txt',
                 'journal_reports.txt',
-                'rml_student.txt',
                 )
+
+skip_tests = ('export.txt',
+              'rml_student.txt',
+             )
 
 testdir = os.path.dirname(__file__)
 ftests = [fn for fn in os.listdir(testdir)
           if (fn.endswith('.txt') and
               not fn.startswith('.') and
-              not fn in need_journal)]
+              not fn in need_journal and
+              not fn in skip_tests)]
 
 gradebook_functional_layer = ZCMLLayer(filename,
                                        __name__,
