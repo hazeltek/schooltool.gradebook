@@ -4,7 +4,7 @@ PACKAGE=schooltool.gradebook
 LOCALES=src/schooltool/gradebook/locales
 TRANSLATIONS_ZCML=schooltool/gradebook/translations.zcml
 
-DIST=/home/ftp/pub/schooltool/2.6
+DIST=/home/ftp/pub/schooltool/trunk
 PYTHON=python
 
 INSTANCE_TYPE=schooltool
