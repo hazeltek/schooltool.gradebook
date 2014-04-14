@@ -1660,4 +1660,9 @@
       handler=".course_worksheets.DeployCourseWorksheetsOnSectionAdded"
       />
 
+  <zope:adapter
+      factory=".report_card.RemoveLayoutColumnsWhenTermIsRemoved"
+      name="remove_layout_columns_when_term_is_removed"
+      />
+
 </configure>

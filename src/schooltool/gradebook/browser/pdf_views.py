@@ -1231,7 +1231,8 @@ class ReportCardStudentGradesMixin(object):
         root = IGradebookRoot(ISchoolToolApplication(None))
         if (self.schoolyear is not None and
             self.schoolyear.__name__ in root.layouts):
-            return root.layouts[self.schoolyear.__name__].columns
+            columns = root.layouts[self.schoolyear.__name__].columns
+            return self.filter_invalid(columns)
         return []
 
     @Lazy
@@ -1239,8 +1240,20 @@ class ReportCardStudentGradesMixin(object):
         root = IGradebookRoot(ISchoolToolApplication(None))
         if (self.schoolyear is not None and
             self.schoolyear.__name__ in root.layouts):
-            return root.layouts[self.schoolyear.__name__].outline_activities
+            columns = root.layouts[self.schoolyear.__name__].outline_activities
+            return self.filter_invalid(columns)
         return []
+
+    def filter_invalid(self, columns):
+        return [column for column in columns
+                if self.is_valid_source(column.source)]
+
+    def is_valid_source(self, source):
+        if source in (ABSENT_KEY, TARDY_KEY):
+            return True
+        termName, worksheetName, activityName = source.split('|')
+        term = self.schoolyear.get(termName)
+        return term is not None # maybe term was deleted
 
 
 class ReportCardStudentCommentsViewlet(ReportCardStudentGradesMixin,
@@ -1289,8 +1302,9 @@ class ReportCardStudentCommentsViewlet(ReportCardStudentGradesMixin,
                         continue
                     heading = self.pdf_view.getLayoutActivityHeading(
                         outline_activity, truncate=False)
-                    html2rml = getMultiAdapter((score.value, self.request),
-                                               name='html2rml')
+                    html2rml = getMultiAdapter(
+                        (unicode(score.value), self.request),
+                        name='html2rml')
                     html2rml.para_class = 'report_card_comment'
                     activity_result = {
                         'heading': heading,

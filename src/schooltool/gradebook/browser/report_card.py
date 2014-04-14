@@ -25,6 +25,7 @@ from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import adapts
 from zope.interface import Interface, implements
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 from zope.schema import Choice, Int
 from zope.security.checker import canWrite
 from zope.security.interfaces import Unauthorized
@@ -1123,7 +1124,9 @@ class FlourishLayoutReportCardView(flourish.page.Page,
         if source == TARDY_KEY:
             return TARDY_HEADING
         termName, worksheetName, activityName = source.split('|')
-        term = self.schoolyear[termName]
+        term = self.schoolyear.get(termName)
+        if term is None: # maybe term was deleted
+            return
         root = IGradebookRoot(ISchoolToolApplication(None))
         worksheet = root.deployed[worksheetName]
         if activityName == AVERAGE_KEY:
@@ -1151,9 +1154,12 @@ class FlourishLayoutReportCardView(flourish.page.Page,
         else:
             current_columns  = []
         for index, column in enumerate(current_columns):
+            sourceName = self.getSourceName(column.source)
+            if sourceName is None:
+                continue
             result = {
                 'source_index': index + 1,
-                'source_value': self.getSourceName(column.source),
+                'source_value': sourceName,
                 'source_edit': self.getEditURL('Column', index),
                 'heading_value': column.heading,
                 }
@@ -1171,9 +1177,12 @@ class FlourishLayoutReportCardView(flourish.page.Page,
         else:
             current_activities  = []
         for index, activity in enumerate(current_activities):
+            sourceName = self.getSourceName(activity.source)
+            if sourceName is None:
+                continue
             result = {
                 'source_index': index + 1,
-                'source_value': self.getSourceName(activity.source),
+                'source_value': sourceName,
                 'source_edit': self.getEditURL('Activity', index),
                 'heading_value': activity.heading,
                 }
@@ -1473,3 +1482,27 @@ class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
                 worksheetCopy.deployed = True
                 activities[key] = worksheetCopy
                 copyActivities(deployedWorksheet, worksheetCopy)
+
+
+class RemoveLayoutColumnsWhenTermIsRemoved(ObjectEventAdapterSubscriber):
+
+    adapts(IObjectRemovedEvent, ITerm)
+
+    def __call__(self):
+        return
+        root = IGradebookRoot(ISchoolToolApplication(None))
+        schoolyear = ISchoolYear(self.object)
+        layout = root.layouts.get(schoolyear.__name__)
+        if layout is not None:
+            self.remove_term_columns(layout.columns)
+            self.remove_term_columns(layout.outline_activities)
+
+    def remove_term_columns(self, layout_columns):
+        columns = layout_columns[:]
+        for column in columns:
+            source = column.source
+            if source in (ABSENT_KEY, TARDY_KEY):
+                continue
+            termName, worksheetName, activityName = source.split('|')
+            if termName == self.object.__name__:
+                layout_columns.remove(column)
