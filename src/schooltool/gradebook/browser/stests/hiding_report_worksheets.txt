@@ -50,6 +50,11 @@ Set up and deploy two report sheets:
     >>> manager.query.id('template').ui.set_value('RS2')
     >>> manager.query.name('SUBMIT').click()
 
+    >>> for tr in manager.query_all.css('table tbody tr'):
+    ...     print tr.query_all.tag('td')[0].text
+    RS1
+    RS2
+
 Add two courses:
 
     >>> manager.ui.course.add('2013', 'Math')
@@ -95,6 +100,10 @@ Let's hide one report sheet template:
     >>> manager.query.css('input[value="1"]').click()
     >>> manager.query.name('SUBMIT').click()
 
+    >>> for tr in manager.query_all.css('table tbody tr'):
+    ...     print tr.query_all.tag('td')[0].text
+    RS2
+
 And add a new section:
 
     >>> manager.ui.section.add('2013', 'Year', 'Physics')
@@ -112,6 +121,34 @@ The new section should only get the visible report sheets:
     +-----+----------+
     | RS2 | *Sheet1* |
     +-----+----------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Cerna     | Camila     | 0.0   | N/A  |
+    | Tejada    | Mario      | 0.0   | N/A  |
+    +-----------+------------+-------+------+
+
+Now, let's unhide the hidden report sheet:
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('Deployed Report Sheets').click()
+    >>> manager.query.link('Hide/unhide Sheets').click()
+    >>> manager.query.css('input[value="1"]').click()
+    >>> manager.query.name('SUBMIT').click()
+
+    >>> for tr in manager.query_all.css('table tbody tr'):
+    ...     print tr.query_all.tag('td')[0].text
+    RS1
+    RS2
+
+The new section should now show both sheets:
+
+    >>> jeffrey.query.link('Gradebook').click()
+    >>> jeffrey.ui.gradebook.worksheet.pprint()
+    +-----+-----+----------+
+    | RS1 | RS2 | *Sheet1* |
+    +-----+-----+----------+
     +-----------+------------+-------+------+
     | Last Name | First Name | Total | Ave. |
     |           |            |       |      |

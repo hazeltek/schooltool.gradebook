@@ -425,7 +425,8 @@ class FlourishHideUnhideReportSheetsView(FlourishReportSheetsBase,
             if sheet.__name__ == deployedKey:
                 for section in ISectionContainer(term).values():
                     activities = IActivities(section)
-                    activities[deployedKey].hidden = sheet.hidden
+                    if deployedKey in activities:
+                        activities[deployedKey].hidden = sheet.hidden
                 return
 
     def nextURL(self):
@@ -1476,10 +1477,9 @@ class SectionAddedSubscriber(ObjectEventAdapterSubscriber):
         for key in root.deployed:
             if key.startswith(deployedKey):
                 deployedWorksheet = root.deployed[key]
-                if deployedWorksheet.hidden:
-                    continue
                 worksheetCopy = Worksheet(deployedWorksheet.title)
                 worksheetCopy.deployed = True
+                worksheetCopy.hidden = deployedWorksheet.hidden
                 activities[key] = worksheetCopy
                 copyActivities(deployedWorksheet, worksheetCopy)
 
