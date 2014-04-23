@@ -5,7 +5,7 @@ CHANGES
 2.6.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Sort terms by date in course/report worksheet views
 
 
 2.6.3 (2014-04-12)

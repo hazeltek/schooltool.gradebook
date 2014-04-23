@@ -21,10 +21,7 @@ Course Worksheet Views
 
 from zope.container.interfaces import INameChooser
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.security.checker import canWrite
-from zope.security.interfaces import Unauthorized
 from zope.security.proxy import removeSecurityProxy
-from zope.traversing.api import getName
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.i18n import translate
 
@@ -37,16 +34,14 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISectionContainer, ISection
-from schooltool.person.interfaces import IPerson
 from schooltool.schoolyear.interfaces import ISchoolYear
-from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
-from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
+from schooltool.term.term import listTerms
 
 from schooltool.gradebook.interfaces import (IActivities, ICourseActivities,
      ICourseWorksheet, ICourseDeployedWorksheets, IGradebookRoot)
-from schooltool.gradebook.activity import CourseWorksheet, Activity, Worksheet
+from schooltool.gradebook.activity import CourseWorksheet, Worksheet
 from schooltool.gradebook.browser.activity import (FlourishActivityAddView,
     FlourishActivityEditView)
 from schooltool.gradebook.browser.report_card import copyActivities
@@ -202,7 +197,7 @@ class FlourishCourseWorksheetsBase(object):
                 'checked': not sheet.hidden,
                 'terms': [False] * len(schoolyear),
                 })
-            for index, term in enumerate(schoolyear.values()):
+            for index, term in enumerate(listTerms(schoolyear)):
                 prefix = 'course_%s_%s' % (self.course.__name__, term.__name__)
                 if sheet.__name__.startswith(prefix):
                     deployment['terms'][index] = True
@@ -217,7 +212,7 @@ class FlourishCourseWorksheetsBase(object):
             'title': _('-- Entire year --'),
             'selected': 'selected',
             }]
-        for term in self.schoolyear.values():
+        for term in listTerms(self.schoolyear):
             result.append({
                 'name': term.__name__,
                 'title': term.title,
@@ -372,7 +367,6 @@ class FlourishHideUnhideCourseWorkheetsView(FlourishCourseWorksheetsBase,
             self.request.response.redirect(self.nextURL())
         elif 'SUBMIT' in self.request:
             visible = self.request.get('visible', [])
-            schoolyear = self.schoolyear
             for nm, sheet in self.deployed(self.course).items():
                 sheet = removeSecurityProxy(sheet)
                 index = sheet.__name__[sheet.__name__.rfind('_') + 1:]

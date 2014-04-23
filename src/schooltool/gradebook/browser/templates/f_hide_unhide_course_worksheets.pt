@@ -8,8 +8,8 @@
         <tr>
           <th i18n:translate="">Deployed Worksheet</th>
           <th i18n:translate="">Index</th>
-          <tal:block repeat="term schoolyear/values">
-            <th tal:content="term/title" />
+          <tal:block repeat="term view/terms">
+            <th tal:condition="term/name" tal:content="term/title" />
           </tal:block>
           <th i18n:translate="">Visible</th>
         </tr>
