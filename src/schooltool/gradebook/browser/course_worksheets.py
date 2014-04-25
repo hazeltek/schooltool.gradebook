@@ -38,6 +38,8 @@ from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.course.interfaces import ISectionContainer, ISection
 from schooltool.person.interfaces import IPerson
+from schooltool.requirement.interfaces import IRangedValuesScoreSystem
+from schooltool.requirement.scoresystem import RangedValuesScoreSystem
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
@@ -46,6 +48,7 @@ from schooltool.term.interfaces import ITerm
 
 from schooltool.gradebook.interfaces import (IActivities, ICourseActivities,
      ICourseWorksheet, ICourseDeployedWorksheets, IGradebookRoot)
+from schooltool.gradebook.browser.report_card import IReportScoreSystem
 from schooltool.gradebook.activity import CourseWorksheet, Activity, Worksheet
 from schooltool.gradebook.browser.activity import (FlourishActivityAddView,
     FlourishActivityEditView)
@@ -149,6 +152,12 @@ class FlourishCourseWorksheetEditView(flourish.form.Form, form.EditForm):
         self.actions['apply'].addClass('button-ok')
         self.actions['cancel'].addClass('button-cancel')
 
+    def display_scoresystem(self, activity):
+        ss = activity.scoresystem
+        if IRangedValuesScoreSystem.providedBy(ss):
+            return '%s - %s' % (ss.min, ss.max)
+        return ss.title
+
 
 class CourseWorksheetAddLinks(flourish.page.RefineLinksViewlet):
     """Course worksheet add links viewlet."""
@@ -156,6 +165,38 @@ class CourseWorksheetAddLinks(flourish.page.RefineLinksViewlet):
 
 class FlourishCourseActivityAddView(FlourishActivityAddView):
     legend = _('Course Activity Details')
+
+    @property
+    def fields(self):
+        default = FlourishActivityAddView.fields
+        default += field.Fields(IReportScoreSystem).select('scoresystem')
+        return default.select(
+            'title',
+            'label',
+            'due_date',
+            'description',
+            'category',
+            'scoresystem',
+            'max', 
+            'min',
+        )
+
+    def create(self, data):
+        if data['scoresystem'] == 'ranged':
+            minimum = data['min']
+            if minimum is None:
+                minimum = 0
+            maximum = data['max']
+            if maximum is None:
+                maximum = 100
+            scoresystem = RangedValuesScoreSystem(u'generated', 
+                min=minimum, max=maximum)
+        else:
+            scoresystem = data['scoresystem']
+        activity = Activity(data['title'], data['category'], scoresystem,
+                            data['description'], data['label'],
+                            data.get('due_date'))
+        return activity
 
 
 class CourseActivityAddTertiaryNavigationManager(
