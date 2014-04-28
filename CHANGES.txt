@@ -5,6 +5,9 @@ CHANGES
 2.6.4 (unreleased)
 ------------------
 
+- Deploy hidden report sheets to new sections, fix hide/unhide report
+  sheets view for sections that don't have them (https://launchpad.net/bugs/1261992)
+- Fix report cards broken after deleting a term (https://launchpad.net/bugs/1065381)
 - Sort terms by date in course/report worksheet views (https://launchpad.net/bugs/1311818)
 - Fix deploying report sheet using a shortened template title (https://launchpad.net/bugs/1290167)
 
