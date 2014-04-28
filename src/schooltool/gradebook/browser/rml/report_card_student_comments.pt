@@ -17,5 +17,5 @@
       </tal:block>
     </tal:loop>
   </pto>
-  <nextPage />
+  <nextPage tal:condition="view/insert_page_break" />
 </metal:block>

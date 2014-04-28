@@ -37,6 +37,7 @@ from schooltool.course.interfaces import ISection
 from schooltool.person.interfaces import IPerson
 from schooltool.person.interfaces import IPersonFactory
 from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.term.interfaces import ITerm, IDateManager
 
 import schooltool.table
@@ -208,7 +209,8 @@ class BaseStudentPDFView(BasePDFView):
         courseTitles = ', '.join(c.title for c in course)
         teacherNames = [teacher.title for teacher in teachers]
         teacherNames = ', '.join(teacherNames)
-        return '%s (%s)' % (courseTitles, teacherNames)
+        return (courseTitles, teacherNames)
+
 
     def getGrid(self, student, sections):
         root = IGradebookRoot(ISchoolToolApplication(None))
@@ -264,7 +266,7 @@ class BaseStudentPDFView(BasePDFView):
                 grid_scores.append(score)
 
             row = {
-                'title': self.getCourseTitle(course, sections),
+                'title': '%s, %s' % self.getCourseTitle(course, sections),
                 'scores': grid_scores,
                 }
             rows.append(row)
@@ -1205,16 +1207,20 @@ class ReportCardStudentGradesMixin(object):
         if self.schoolyear is not None:
             return self.schoolyear.get(term_id)
 
+    def includeSection(self, section):
+        term = ITerm(section)
+        schoolyear = ISchoolYear(term)
+        if ((schoolyear != self.schoolyear) or
+            (self.term is not None and term != self.term)):
+            return False
+        return True
+
     @Lazy
     def sections(self):
         sections = []
         for section in ILearner(self.student).sections():
-            term = ITerm(section)
-            schoolyear = ISchoolYear(term)
-            if ((schoolyear != self.schoolyear) or
-                (self.term is not None and term != self.term)):
-                continue
-            sections.append(section)
+            if self.includeSection(section):
+                sections.append(section)
         return sections
 
     @Lazy
@@ -1226,7 +1232,7 @@ class ReportCardStudentGradesMixin(object):
             if course not in courses:
                 courses.append(course)
         return sorted(courses,
-                      key=lambda x:collator.key(self.pdf_view.getCourseTitle(x, self.sections)))
+                      key=lambda x:collator.key('%s, %s' % self.pdf_view.getCourseTitle(x, self.sections)))
 
     @Lazy
     def layout_columns(self):
@@ -1264,20 +1270,27 @@ class ReportCardStudentCommentsViewlet(ReportCardStudentGradesMixin,
     template = flourish.templates.XMLFile(
         'rml/report_card_student_comments.pt')
 
+    insert_page_break = True
+
+    def __init__(self, *args, **kw):
+        super(ReportCardStudentCommentsViewlet, self).__init__(*args, **kw)
+        self.schoolyear = self.pdf_view.schoolyear
+
     @property
     def pdf_view(self):
         return self.view.view
-
-    @property
-    def schoolyear(self):
-        return self.pdf_view.schoolyear
 
     def comments_by_course(self):
         view = self.pdf_view
         result = []
         for course in self.courses:
+            courseTitles, teacherNames = view.getCourseTitle(
+                course, self.sections)
+            title = '%s, %s' % (courseTitles, teacherNames)
+            if getattr(self.pdf_view, 'hide_teachers', False):
+                title = courseTitles
             result.append({
-                    'title': view.getCourseTitle(course, self.sections),
+                    'title': title,
                     'comments': self.getComments(course, self.sections),
                     })
         return result
@@ -1321,13 +1334,13 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
 
     title = None
 
+    def __init__(self, *args, **kw):
+        super(ReportCardGrid, self).__init__(*args, **kw)
+        self.schoolyear = self.pdf_view.schoolyear
+
     @property
     def pdf_view(self):
         return self.view
-
-    @property
-    def schoolyear(self):
-        return self.pdf_view.schoolyear
 
     def updateGrid(self):
         super(ReportCardGrid, self).updateGrid()
@@ -1345,8 +1358,13 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
 
     def updateRows(self):
         self.rows = []
+        view = self.pdf_view
         for course in self.courses:
-            course_title = self.pdf_view.getCourseTitle(course, self.sections)
+            courseTitles, teacherNames = view.getCourseTitle(
+                course, self.sections)
+            course_title = '%s, %s' % (courseTitles, teacherNames)
+            if getattr(self.pdf_view, 'hide_teachers', False):
+                course_title = courseTitles
             self.rows.append(schooltool.table.pdf.GridRow(
                     course_title, item=course))
 
@@ -1623,3 +1641,95 @@ class PersonCourseWorksheetsReportPDFView(CourseWorksheetsReportPDFView):
             _(u'Username: ${username}',
               mapping={'username': self.context.username})
             ]
+
+
+class FlourishTranscriptPDFView(flourish.report.PlainPDFPage,
+                                BaseStudentPDFView):
+
+    name = _('Transcript')
+
+    def __init__(self, *args, **kw):
+        super(FlourishTranscriptPDFView, self).__init__(*args, **kw)
+        self.hide_teachers = self.request.get('hide_teachers', False)
+
+    def students(self):
+        return [self.context]
+
+    @property
+    def base_filename(self):
+        return 'transcript_%s' % self.context.__name__
+
+    @property
+    def message_title(self):
+        return _('${student} transcript',
+                 mapping={'student': self.context.title})
+
+
+class FlourishGroupTranscriptView(FlourishTranscriptPDFView):
+
+    def students(self):
+        return sorted(self.context.members, key=getSortingKey(self.request))
+
+
+class TranscriptPDFStory(flourish.report.PDFStory):
+
+    template = flourish.templates.Inline('''
+    <tal:loop repeat="student view/view/students">
+      <tal:block replace="structure student/schooltool:content/transcript" />
+    </tal:loop>
+    ''')
+
+
+class TranscriptViewletManager(flourish.viewlet.ViewletManager):
+
+    pass
+
+
+class TranscriptGradesViewlet(flourish.viewlet.Viewlet):
+
+    template = flourish.templates.Inline('''
+    <tal:loop repeat="year view/years">
+      <tal:block define="grid python:view.report_card_grid(year);
+                         comments python:view.comments(year);"
+                 condition="python: grid is not '' or comments is not ''">
+        <para style="transcript-year-title" tal:content="year/title" />
+        <tal:block replace="structure grid" tal:condition="python: grid is not ''"/>
+        <tal:block replace="structure comments" tal:condition="python: comments is not ''" />
+      </tal:block>
+    </tal:loop>
+    ''')
+
+    def report_card_grid(self, year):
+        view = self.view.view
+        grid = getMultiAdapter((self.context, self.request, view),
+                               name='report_card_grid')
+        grid.schoolyear = year
+        grid.update()
+        if grid.rows:
+            return grid
+        return ''
+
+    def comments(self, year):
+        view = self.view.view
+        comments = getMultiAdapter((self.context, self.request, view),
+                                   name='transcript_comments')
+        comments.schoolyear = year
+        comments.insert_page_break = False
+        comments.update()
+        if comments.comments_by_course:
+            return comments
+        return ''
+
+    def years(self):
+        app = ISchoolToolApplication(None)
+        return sorted(ISchoolYearContainer(app).values(), key=lambda s:s.first)
+
+
+class TranscriptComments(ReportCardStudentCommentsViewlet):
+
+    @property
+    def pdf_view(self):
+        return self.view
+
+    def render(self):
+        return self.template(self)

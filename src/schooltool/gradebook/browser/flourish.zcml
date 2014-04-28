@@ -1738,4 +1738,133 @@
       permission="zope.Public"
       />
 
+  <report:reportLink
+      name="student_transcript"
+      after="student_report_card"
+      for="schooltool.basicperson.interfaces.IBasicPerson"
+      permission="schooltool.edit"
+      group="Student"
+      description="Courses completed by a student, with scores from section report sheets, including multiple years of data."
+      title="Transcript"
+      file_type="pdf"
+      link="request_transcript.html"
+      />
+
+  <report:reportLink
+       name="group_transcript"
+       after="group_report_card"
+       for="schooltool.group.interfaces.IGroup"
+       layer="schooltool.skin.flourish.IFlourishLayer"
+       permission="schooltool.edit"
+       group="Group"
+       description="Courses completed by a student, with scores from section report sheets, including multiple years of data."
+       title="Transcript"
+       file_type="pdf"
+       link="request_transcript.html"
+       />
+
+  <flourish:page
+      name="request_transcript.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.FlourishRequestTranscriptView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="request_transcript.html"
+      for="schooltool.group.interfaces.IGroup"
+      class=".request_reports.FlourishRequestTranscriptView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:page
+      name="transcript.pdf"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.FlourishTranscriptPDFView"
+      permission="schooltool.view"
+      />
+
+  <flourish:page
+      name="transcript.pdf"
+      for="schooltool.group.interfaces.IGroup"
+      class=".pdf_views.FlourishGroupTranscriptView"
+      permission="schooltool.view"
+      />
+
+  <configure package="schooltool.skin.flourish">
+
+    <flourish:viewlet
+        name="default"
+        manager="schooltool.skin.flourish.report.PDFTemplateSection"
+        class="schooltool.gradebook.browser.pdf_views.NoHeaderPlainPageTemplate"
+        view="schooltool.gradebook.browser.pdf_views.FlourishTranscriptPDFView"
+        render="template"
+        template="rml/pdf_plain_page_template.pt"
+        permission="zope.Public"
+        />
+
+  </configure>
+
+  <flourish:content
+      name="story"
+      class=".pdf_views.TranscriptPDFStory"
+      view=".pdf_views.FlourishTranscriptPDFView"
+      permission="zope.Public"
+      />
+
+  <flourish:viewlet
+      name="report_card_styles"
+      after="*"
+      manager="schooltool.skin.flourish.report.PDFStylesheetSection"
+      view=".pdf_views.FlourishTranscriptPDFView"
+      class="schooltool.skin.flourish.report.PDFPart"
+      template="rml/report_card_styles.pt"
+      permission="zope.Public"
+      />
+
+  <flourish:viewlet
+      name="transcript_styles"
+      after="report_card_styles"
+      manager="schooltool.skin.flourish.report.PDFStylesheetSection"
+      view=".pdf_views.FlourishTranscriptPDFView"
+      class="schooltool.skin.flourish.report.PDFPart"
+      template="rml/transcript_styles.pt"
+      permission="zope.Public"
+      />
+
+  <flourish:content
+      name="transcript"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.TranscriptViewletManager"
+      view=".pdf_views.TranscriptPDFStory"
+      permission="zope.Public"
+      />
+
+  <flourish:viewlet
+      name="transcript_header"
+      before="transcript_grades"
+      for="schooltool.person.interfaces.IPerson"
+      manager=".pdf_views.TranscriptViewletManager"
+      class=".pdf_views.ReportCardStudentHeaderViewlet"
+      render="template"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
+      name="transcript_grades"
+      after="transcript_header"
+      for="schooltool.person.interfaces.IPerson"
+      manager=".pdf_views.TranscriptViewletManager"
+      class=".pdf_views.TranscriptGradesViewlet"
+      render="template"
+      permission="schooltool.view"
+      />
+
+  <flourish:content
+      name="transcript_comments"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.TranscriptComments"
+      permission="schooltool.view"
+      />
+
 </configure>

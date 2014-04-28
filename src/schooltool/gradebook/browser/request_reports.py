@@ -27,6 +27,7 @@ import zope.schema.vocabulary
 import zope.schema.interfaces
 import z3c.form
 import z3c.form.validator
+from z3c.form.browser.checkbox import SingleCheckBoxFieldWidget
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.i18n import translate
@@ -557,3 +558,23 @@ class FlourishRequestStudentDetailReportView(RequestRemoteReportDialog):
 class RequestCourseWorksheetsReportView(RequestRemoteReportDialog):
 
     report_builder = 'course_worksheets_report.pdf'
+
+
+class IRequestTranscriptForm(Interface):
+
+    show_teachers = zope.schema.Bool(
+        title=_(u'Include Teachers names'),
+        default=False,
+        required=False)
+
+
+class FlourishRequestTranscriptView(RequestRemoteReportDialog):
+
+    fields = z3c.form.field.Fields(IRequestTranscriptForm)
+    fields['show_teachers'].widgetFactory = SingleCheckBoxFieldWidget
+
+    report_builder = 'transcript.pdf'
+
+    def updateTaskParams(self, task):
+        hide_teachers = not bool(self.form_params.get('show_teachers'))
+        task.request_params['hide_teachers'] = hide_teachers

@@ -1,0 +1,15 @@
+<metal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="schooltool.gradebook">
+
+  <paraStyle
+      name="transcript-year-title"
+      fontName="Ubuntu_Regular"
+      fontSize="16"
+      spaceBefore="20"
+      spaceAfter="16"
+      />
+
+</metal:block>
