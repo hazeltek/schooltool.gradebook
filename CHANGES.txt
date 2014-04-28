@@ -5,7 +5,8 @@ CHANGES
 2.6.4 (unreleased)
 ------------------
 
-- Sort terms by date in course/report worksheet views
+- Sort terms by date in course/report worksheet views (https://launchpad.net/bugs/1311818)
+- Fix deploying report sheet using a shortened template title (https://launchpad.net/bugs/1290167)
 
 
 2.6.3 (2014-04-12)

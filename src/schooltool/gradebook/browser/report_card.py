@@ -328,10 +328,10 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
                     new_index = 1
                 elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
                     new_index = int(rest[1:])
-            else:
-                new_index = 0
-            if new_index > title_index:
-                title_index = new_index
+                else:
+                    new_index = 0
+                if new_index > title_index:
+                    title_index = new_index
 
         # copy worksheet template to the term or whole year
         if term:
