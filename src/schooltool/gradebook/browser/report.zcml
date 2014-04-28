@@ -90,5 +90,18 @@
          />
   </configure>
 
+  <report:reportLink
+      name="course_worksheets_report"
+      after="student_report_card"
+      for="schooltool.person.interfaces.IPerson"
+      layer="schooltool.skin.flourish.IFlourishLayer"
+      group="Student"
+      description="Contains scores from course worksheets."
+      title="Course Worksheets Report"
+      file_type="pdf"
+      link="request_course_worksheets_report.html"
+      permission="schooltool.edit"
+      />
+
 </configure>
 

@@ -1,0 +1,42 @@
+<metal:block
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+  <paraStyle
+      name="table-header"
+      fontName="Ubuntu_Bold"
+      fontSize="8"
+      leading="8"
+      />
+
+  <paraStyle
+      name="table-header-center"
+      parent="table-header"
+      alignment="center"
+      />
+
+  <paraStyle
+      name="table-cell"
+      fontName="Ubuntu_Regular"
+      fontSize="8"
+      leading="8"
+      />
+
+  <paraStyle
+      name="table-cell-center"
+      parent="table-cell"
+      alignment="center"
+      />
+
+  <blockTableStyle id="grades-table">
+    <blockValign value="top" start="0,0" stop="-1,-1"/>
+    <blockAlignment value="center" start="-1,0" stop="-1,-1"/>
+    <blockFont start="0,0" stop="-1,-1" size="8" name="Ubuntu_Regular" />
+    <lineStyle kind="grid" colorName="grade.table.grades-line"
+               start="0,0" stop="-1,-1" thickness="0.25" />
+    <blockBackground start="0,0" stop="-1,0"
+                     colorName="table.header.background" />
+  </blockTableStyle>
+
+</metal:block>

@@ -27,6 +27,7 @@ from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility, getMultiAdapter
 from zope.i18n.interfaces.locales import ICollator
 from zope.security.proxy import removeSecurityProxy
+from reportlab.lib import units
 
 from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.app.interfaces import ISchoolToolApplication
@@ -47,6 +48,7 @@ from schooltool.gradebook.browser.gradebook import convertAverage
 from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
     TARDY_HEADING, ABSENT_ABBREVIATION, TARDY_ABBREVIATION, ABSENT_KEY,
     TARDY_KEY, AVERAGE_KEY, AVERAGE_HEADING)
+from schooltool.gradebook.interfaces import ICourseDeployedWorksheets
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
 from schooltool.gradebook.interfaces import ISectionJournalData
@@ -1496,3 +1498,128 @@ class StudentDetailReportAttendanceViewlet(ReportCardStudentGradesMixin,
             'headings': periods,
             'rows': rows,
             }
+
+
+class CourseWorksheetsReportPDFView(flourish.report.PlainPDFPage,
+                                    ActiveSchoolYearContentMixin):
+
+    name = _(u'Report Card')
+    title_column_width = 7 * units.cm
+
+    def update(self):
+        super(CourseWorksheetsReportPDFView, self).update()
+        self.terms = sorted(self.schoolyear.values(),
+                            key=lambda term: term.first)
+        self.colWidths = self.column_widths(len(self.terms))
+
+    def column_widths(self, score_columns_count):
+        widths = [self.title_column_width]
+        doc_w, doc_h = self.page_size
+        score_columns_available_width = (
+            doc_w -
+            self.margin.left -
+            self.margin.right -
+            self.title_column_width)
+        score_columns_width = (
+            float(score_columns_available_width) /
+            score_columns_count)
+        widths.extend([score_columns_width
+                       for i in range(score_columns_count)])
+        return ','.join(map(str, widths))
+
+    @property
+    def scope(self):
+        schoolyear = self.schoolyear
+        return schoolyear.title if schoolyear is not None else ''
+
+    @property
+    def base_filename(self):
+        return 'course_worksheets_report_%s' % self.context.__name__
+
+    @property
+    def message_title(self):
+        return '%s course worksheets report' % self.context.title
+
+    def learner_sections(self, student):
+        sections = []
+        for section in ILearner(student).sections():
+            schoolyear = ISchoolYear(section)
+            if schoolyear != self.schoolyear:
+                continue
+            sections.append(section)
+        return sections
+
+    def group_by(self, iterable, keyfunc):
+        result = {}
+        for item in iterable:
+            key = keyfunc(item)
+            result.setdefault(key, [])
+            result[key].append(item)
+        return result
+
+    def get_course_activities(self, courses):
+        activities = []
+        for course in courses:
+            for worksheet in ICourseDeployedWorksheets(course).values():
+                for activity in worksheet.values():
+                    info = activity.__name__, activity.title
+                    if info not in activities:
+                        activities.append(info)
+        return activities
+
+    def tables(self, student):
+        result = []
+        by_course = lambda section: tuple(section.courses)
+        by_term = lambda section: ITerm(section)
+        student_sections = self.learner_sections(student)
+        sections_by_course = self.group_by(student_sections, by_course)
+        for courses, course_sections in sections_by_course.items():
+            course_activities = self.get_course_activities(courses)
+            sections_by_term = self.group_by(course_sections, by_term)
+            info = {
+                'title': ','.join([course.title for course in courses]),
+                'rows': self.score_rows(
+                    student, sections_by_term, course_activities),
+                }
+            result.append(info)
+        return sorted(result, key=lambda info: info['title'])
+
+    def score_rows(self, student, sections_by_term, course_activities):
+        result = []
+        evaluations = IEvaluations(student)
+        for activity_name, activity_title in course_activities:
+            row = [activity_title]
+            for term in self.terms:
+                term_scores = []
+                for section in sections_by_term.get(term, []):
+                    course_name = ''.join([course.__name__
+                                           for course in section.courses])
+                    prefix = 'course_%s_%s' % (course_name, term.__name__)
+                    for section_worksheet in IActivities(section).values():
+                        sheetName = section_worksheet.__name__
+                        sheetPrefix = sheetName[:sheetName.rfind('_')]
+                        if sheetPrefix == prefix:
+                            activity = section_worksheet[activity_name]
+                            score = evaluations.get(activity)
+                            if score:
+                                term_scores.append(unicode(score.value))
+                row.append(','.join(term_scores) or None)
+            result.append(row)
+        return result
+
+
+class PersonCourseWorksheetsReportPDFView(CourseWorksheetsReportPDFView):
+
+    content_template = flourish.templates.XMLFile(
+        'rml/person_course_worksheets_report.pt')
+
+    @property
+    def title(self):
+        return self.context.title
+
+    @property
+    def subtitles_left(self):
+        return [
+            _(u'Username: ${username}',
+              mapping={'username': self.context.username})
+            ]

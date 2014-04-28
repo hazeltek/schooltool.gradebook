@@ -1,0 +1,30 @@
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <pto>
+    <pto_header>
+      <hr width="100%" thickness="1" cap="square" color="separator"
+          spaceAfter="4" spaceBefore="8" align="center" />
+    </pto_header>
+    <hr width="100%" thickness="1" cap="square" color="separator"
+        spaceAfter="4" spaceBefore="8" align="center" />
+    <tal:block repeat="table python:view.tables(context)">
+      <blockTable style="grades-table" repeatRows="1" alignment="left"
+                  tal:attributes="colWidths view/colWidths">
+        <tr>
+          <td>
+            <para style="table-header" tal:content="table/title" />
+          </td>
+          <td tal:repeat="term view/terms">
+            <para style="table-header-center" tal:content="term/title" />
+          </td>
+        </tr>
+        <tr tal:repeat="row table/rows">
+          <td tal:repeat="column row">
+            <para tal:content="column"
+                  tal:attributes="style python:'table-cell-center' if repeat['column'].number() > 1 else 'table-cell'"/>
+          </td>
+        </tr>
+      </blockTable>
+      <spacer length="0.25cm" />
+    </tal:block>
+  </pto>
+</tal:block>

@@ -552,3 +552,8 @@ class FlourishRequestReportCardView(RequestRemoteReportDialog):
 class FlourishRequestStudentDetailReportView(RequestRemoteReportDialog):
 
     report_builder = 'student_detail.pdf'
+
+
+class RequestCourseWorksheetsReportView(RequestRemoteReportDialog):
+
+    report_builder = 'course_worksheets_report.pdf'

@@ -1700,4 +1700,42 @@
       name="remove_layout_columns_when_term_is_removed"
       />
 
+  <flourish:page
+      name="request_course_worksheets_report.html"
+      for="schooltool.person.interfaces.IPerson"
+      class=".request_reports.RequestCourseWorksheetsReportView"
+      permission="schooltool.edit"
+      />
+
+  <flourish:pdf
+      name="course_worksheets_report.pdf"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.PersonCourseWorksheetsReportPDFView"
+      permission="schooltool.view"
+      />
+
+  <configure package="schooltool.gradebook.browser">
+
+    <flourish:viewlet
+        name="report_card_styles"
+        after="*"
+        manager="schooltool.skin.flourish.report.PDFStylesheetSection"
+        view="schooltool.gradebook.browser.pdf_views.CourseWorksheetsReportPDFView"
+        class="schooltool.skin.flourish.report.PDFPart"
+        template="rml/report_card_styles.pt"
+        permission="zope.Public"
+        />
+
+  </configure>
+
+  <flourish:viewlet
+      name="course_worksheets_report_styles"
+      after="report_card_styles"
+      manager="schooltool.skin.flourish.report.PDFStylesheetSection"
+      view=".pdf_views.CourseWorksheetsReportPDFView"
+      class="schooltool.skin.flourish.report.PDFPart"
+      template="rml/course_worksheets_report_styles.pt"
+      permission="zope.Public"
+      />
+
 </configure>
