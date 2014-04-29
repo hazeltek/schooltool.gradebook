@@ -747,13 +747,12 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
         """Get  a list of all activities."""
         self.person = IPerson(self.request.principal)
         results = []
-        deployed = proxy.removeSecurityProxy(self.context).context.deployed
         for activity_info in self.filtered_activity_info:
             result = dict(activity_info)
             result.update({
-                'canDelete': not deployed,
-                'moveLeft': not deployed,
-                'moveRight': not deployed,
+                'canDelete': not self.deployed,
+                'moveLeft': not self.deployed,
+                'moveRight': not self.deployed,
                 })
             results.append(result)
         if results:
@@ -929,10 +928,26 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             results.append(result)
         return results
 
-    @property
+    @Lazy
     def deployed(self):
         gradebook = proxy.removeSecurityProxy(self.context)
         return gradebook.context.deployed
+
+    @property
+    def show_absences_column(self):
+        return self.journal_present and not self.absences_hide
+
+    @property
+    def show_tardies_column(self):
+        return self.journal_present and not self.tardies_hide
+
+    @property
+    def show_total_column(self):
+        return not self.deployed and not self.total_hide
+
+    @property
+    def show_average_column(self):
+        return not self.deployed and not self.average_hide
 
 
 class FlourishGradebookOverview(GradebookOverview,
@@ -2876,3 +2891,55 @@ class EnrollmentModesSelector(flourish.viewlet.Viewlet):
         if len(self.items) < 2:
             return ''
         return self.template(*args, **kw)
+
+
+class ColumnPreferencesMenu(flourish.page.RefineLinksViewlet):
+
+    pass
+
+
+class ColumnPreferencesMenuOptions(flourish.viewlet.Viewlet):
+
+    prefix = '__GRADEBOOK-COLUMN-PREFERENCES__'
+    list_class = 'filter'
+    template = InlineViewPageTemplate('''
+        <ul tal:attributes="class view/list_class"
+            tal:condition="view/items">
+          <li tal:repeat="item view/items">
+            <input type="checkbox"
+                   onclick="ST.redirect($(this).context.value)"
+                   tal:attributes="value item/url;
+                                   id item/id;
+                                   checked item/checked;" />
+            <label tal:content="item/label"
+                   tal:attributes="for item/id" />
+          </li>
+        </ul>
+    ''')
+
+    @property
+    def columns(self):
+        result = []
+        if not self.view.deployed:
+            result.append(('total', _('Total')))
+            result.append(('average' , _('Average')))
+        if self.view.journal_present:
+            result.insert(0, ('tardies' , _('Tardies')))
+            result.insert(0, ('absences', _('Absences')))
+        return result
+
+    @property
+    def items(self):
+        result = []
+        for name, label in self.columns:
+            hide_column = getattr(self.view, '%s_hide' % name)
+            result.append({
+                'url': '%s?%s=%s' % (
+                    absoluteURL(self.context, self.request),
+                    ['hide', 'show'][hide_column],
+                    name),
+                'id': '%s%s' % (self.prefix, name),
+                'checked': None if hide_column else 'checked',
+                'label': label,
+                })
+        return result

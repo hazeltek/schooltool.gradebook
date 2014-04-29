@@ -1867,4 +1867,22 @@
       permission="schooltool.view"
       />
 
+  <flourish:viewlet
+      name="gradebook_column_preferences_menu"
+      after="gradebook_enrollment_modes"
+      manager="schooltool.skin.flourish.page.IPageRefineManager"
+      class=".gradebook.ColumnPreferencesMenu"
+      view=".gradebook.FlourishGradebookOverview"
+      title="Columns"
+      permission="schooltool.edit"
+      />
+
+  <flourish:viewlet
+      name="gradebook_column_preferences_menu_options"
+      manager=".gradebook.ColumnPreferencesMenu"
+      class=".gradebook.ColumnPreferencesMenuOptions"
+      permission="schooltool.edit"
+      render="template"
+      />
+
 </configure>

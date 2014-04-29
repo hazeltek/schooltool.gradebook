@@ -93,32 +93,32 @@
           <thead>
             <tr>
               <th id="column_absences"
-                  tal:condition="not: view/absences_hide">
+                  tal:condition="view/show_absences_column">
                 <a class="popup_link" href="" i18n:translate="">Abs.</a>
               </th>
               <th id="column_tardies"
-                  tal:condition="not: view/tardies_hide">
+                  tal:condition="view/show_tardies_column">
                 <a class="popup_link" href="" i18n:translate="">Trd.</a>
               </th>
               <th id="column_total"
-                  tal:condition="not: view/total_hide">
+                  tal:condition="view/show_total_column">
                 <a class="popup_link" href="" i18n:translate="">Total</a>
               </th>
               <th id="column_average"
-                  tal:condition="not: view/average_hide">
+                  tal:condition="view/show_average_column">
                 <a class="popup_link" href="" i18n:translate="">Ave.</a>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr tal:repeat="row table">
-              <td tal:condition="not: view/absences_hide"
+              <td tal:condition="view/show_absences_column"
                   tal:content="row/absences|nothing" />
-              <td tal:condition="not: view/tardies_hide"
+              <td tal:condition="view/show_tardies_column"
                   tal:content="row/tardies|nothing" />
-              <td tal:condition="not: view/total_hide"
+              <td tal:condition="view/show_total_column"
                   tal:content="row/total|nothing" />
-              <td tal:condition="not: view/average_hide"
+              <td tal:condition="view/show_average_column"
                   tal:content="row/average|nothing" />
             </tr>
           </tbody>
