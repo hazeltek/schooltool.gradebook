@@ -2550,48 +2550,6 @@ class FlourishNamePopupMenuView(JSONViewBase):
                 'url': '?sort_by=%s' % column_id,
                 },
             ]
-        if not worksheet.deployed:
-            if self.total_hide:
-                options.append({
-                        'label': self.translate(_('Show Total')),
-                        'url': '?show=total',
-                        })
-            else:
-                options.append({
-                        'label': self.translate(_('Hide Total')),
-                        'url': '?hide=total',
-                        })
-            if self.average_hide:
-                options.append({
-                        'label': self.translate(_('Show Ave.')),
-                        'url': '?show=average',
-                        })
-            else:
-                options.append({
-                        'label': self.translate(_('Hide Ave.')),
-                        'url': '?hide=average',
-                        })
-        if self.journal_present:
-            if self.absences_hide:
-                options.append({
-                        'label': self.translate(_('Show Abs.')),
-                        'url': '?show=absences',
-                        })
-            else:
-                options.append({
-                        'label': self.translate(_('Hide Abs.')),
-                        'url': '?hide=absences',
-                        })
-            if self.tardies_hide:
-                options.append({
-                        'label': self.translate(_('Show Trd.')),
-                        'url': '?show=tardies',
-                        })
-            else:
-                options.append({
-                        'label': self.translate(_('Hide Trd.')),
-                        'url': '?hide=tardies',
-                        })
         return options
 
     @Lazy
