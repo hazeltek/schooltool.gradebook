@@ -1,8 +1,9 @@
 <tal:block replace="resource_library:schooltool.gradebook.flourish" />
 <div i18n:domain="schooltool.gradebook">
   <tal:block condition="not: view/average_hide">
-    <h3 tal:condition="view/average"
-        tal:content="string: ${view/average_label}: ${view/average}" />
+    <h3 tal:condition="view/average">
+      <tal:block replace="view/average_label" />: <tal:block replace="view/average" />
+    </h3>
     <h3 tal:condition="not: view/average" i18n:translate="">Nothing Graded</h3>
   </tal:block>
   <div tal:content="structure context/schooltool:content/ajax/view/context/grades_table" />
