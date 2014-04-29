@@ -132,6 +132,7 @@
 
   <flourish:viewlet
       name="gradebook_term_navigation"
+      after="gradebook_section_navigation"
       before="gradebook_year_navigation"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.FlourishGradebookTermNavigation"
@@ -143,6 +144,7 @@
 
   <flourish:viewlet
       name="gradebook_year_navigation"
+      after="gradebook_term_navigation"
       before="gradebook_overview"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.FlourishGradebookYearNavigation"
@@ -154,6 +156,8 @@
 
   <flourish:viewlet
       name="gradebook_overview"
+      after="gradebook_year_navigation"
+      before="gradebook_actions"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.FlourishGradebookOverviewLinks"
       for="..interfaces.IGradebook"
@@ -164,6 +168,8 @@
 
   <flourish:viewlet
       name="gradebook_settings"
+      after="gradebook-reports-links"
+      before="gradebook_enrollment_modes"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.FlourishGradebookSettingsLinks"
       for="..interfaces.IGradebook"
@@ -174,7 +180,8 @@
 
   <flourish:viewlet
       name="gradebook_actions"
-      after="gradebook_settings"
+      after="gradebook_overview"
+      before="gradebook-reports-links"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.FlourishGradebookActionsLinks"
       for="..interfaces.IGradebook"
@@ -1369,6 +1376,7 @@
   <flourish:viewlet
       name="gradebook-reports-links"
       after="gradebook_actions"
+      before="gradebook_settings"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class="schooltool.report.browser.report.ReportsLinks"
       title="Reports"
@@ -1672,8 +1680,8 @@
 
   <flourish:viewlet
       name="gradebook_enrollment_modes"
-      after="gradebook_year_navigation"
-      before="*"
+      after="gradebook_settings"
+      before="gradebook_column_preferences_menu"
       manager="schooltool.skin.flourish.page.IPageRefineManager"
       class=".gradebook.EnrollmentModes"
       view=".gradebook.FlourishGradebookOverview"
