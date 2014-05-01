@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-2.6.4 (unreleased)
+2.6.4 (2014-05-01)
 ------------------
 
 - Deploy hidden report sheets to new sections, fix hide/unhide report
@@ -11,12 +11,13 @@ CHANGES
 - Sort terms by date in course/report worksheet views (https://launchpad.net/bugs/1311818)
 - Fix deploying report sheet using a shortened template title (https://launchpad.net/bugs/1290167)
 - Translate "Ave." string in student's gradebook (https://launchpad.net/bugs/1307136)
+- Update Dutch translation
 
 
 2.6.3 (2014-04-12)
 ------------------
 
-- Switch to CKEditor (https://bugs.launchpad.net/bugs/485898)
+- Switch to CKEditor (https://launchpad.net/bugs/485898)
 - Latest translations from Launchpad
 
 
