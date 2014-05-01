@@ -3,7 +3,7 @@
     Gradebooks
   </h3>
   <tal:block tal:repeat="gradebook view/gradebooks">
-    <p i18n:translate="">
+    <p>
       <span tal:content="gradebook/student/@@title" />
       <a tal:attributes="href string:${gradebook/@@absolute_url}/view.html"
          tal:content="gradebook/gradebook/section/@@title" />

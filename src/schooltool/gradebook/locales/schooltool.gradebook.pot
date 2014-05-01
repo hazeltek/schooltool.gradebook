@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2014-04-09 13:33+0300\n"
+"POT-Creation-Date: 2014-05-01 22:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -756,12 +756,8 @@ msgstr ""
 msgid "School Year"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1056
-#: /src/schooltool/gradebook/browser/report.zcml:81
-msgid "Summary of absences and tardies from a single section and term."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/flourish.zcml:1056
+#: /src/schooltool/gradebook/browser/flourish.zcml:1063
+#: /src/schooltool/gradebook/browser/gradebook.py:2886
 #: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:19
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:16
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:28
@@ -769,7 +765,12 @@ msgstr ""
 msgid "Absences"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/flourish.zcml:1193
+#: /src/schooltool/gradebook/browser/flourish.zcml:1063
+#: /src/schooltool/gradebook/browser/report.zcml:81
+msgid "Summary of absences and tardies from a single section and term."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1200
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheet_templates.pt:3
 msgid "Worksheet Templates"
 msgstr ""
@@ -822,8 +823,41 @@ msgstr ""
 msgid "Gradebook Export"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:95
-#: /src/schooltool/gradebook/browser/gradebook.py:2589
+#: /src/schooltool/gradebook/browser/flourish.zcml:1681
+msgid "View Students"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1749
+#: /src/schooltool/gradebook/browser/flourish.zcml:1761
+msgid "Courses completed by a student, with scores from section report sheets, including multiple years of data."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1749
+#: /src/schooltool/gradebook/browser/flourish.zcml:1761
+#: /src/schooltool/gradebook/browser/pdf_views.py:1649
+msgid "Transcript"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1749
+#: /src/schooltool/gradebook/browser/gradebook.py:2514
+#: /src/schooltool/gradebook/browser/pdf_views.py:948
+#: /src/schooltool/gradebook/browser/report.zcml:16
+#: /src/schooltool/gradebook/browser/report.zcml:26
+#: /src/schooltool/gradebook/browser/report.zcml:93
+#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:26
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:15
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:32
+msgid "Student"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/flourish.zcml:1878
+#: /src/schooltool/gradebook/interfaces.py:222
+msgid "Columns"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:104
+#: /src/schooltool/gradebook/browser/gradebook.py:2599
+#: /src/schooltool/gradebook/browser/gradebook.py:2882
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:18
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:35
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_overview.pt:105
@@ -968,17 +1002,7 @@ msgstr ""
 msgid "Update grades"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:2462
-#: /src/schooltool/gradebook/browser/pdf_views.py:944
-#: /src/schooltool/gradebook/browser/report.zcml:16
-#: /src/schooltool/gradebook/browser/report.zcml:26
-#: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:26
-#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:15
-#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:32
-msgid "Student"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2471
+#: /src/schooltool/gradebook/browser/gradebook.py:2523
 msgid "Score History"
 msgstr ""
 
@@ -986,39 +1010,7 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/gradebook.py:2504
-msgid "Show Total"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2509
-msgid "Hide Total"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2514
-msgid "Show Ave."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2519
-msgid "Hide Ave."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2525
-msgid "Show Abs."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2530
-msgid "Hide Abs."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2535
-msgid "Show Trd."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2540
-msgid "Hide Trd."
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/gradebook.py:2598
+#: /src/schooltool/gradebook/browser/gradebook.py:2608
 #: /src/schooltool/gradebook/browser/templates/activities_overview.pt:47
 #: /src/schooltool/gradebook/browser/templates/hide_report_worksheet.pt:39
 #: /src/schooltool/requirement/browser/flourish.zcml:136
@@ -1041,12 +1033,26 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:290
-msgid "Report Card: ${schoolyear}"
+#: /src/schooltool/gradebook/browser/gradebook.py:2768
+msgid "Active"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2777
+msgid "All"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/gradebook.py:2885
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:17
+#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:34
+msgid "Tardies"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:294
-#: /src/schooltool/gradebook/browser/pdf_views.py:417
+msgid "Report Card: ${schoolyear}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:298
+#: /src/schooltool/gradebook/browser/pdf_views.py:421
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:37
 msgid "Courses"
 msgstr ""
@@ -1152,6 +1158,15 @@ msgstr ""
 msgid "${student} detail report"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/pdf_views.py:1641
+#: /src/schooltool/gradebook/browser/rml/report_card_student_header.pt:9
+msgid "Username: ${username}"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/pdf_views.py:1664
+msgid "${student} transcript"
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/report.zcml:16
 msgid "Contains scores from report sheets.  Formatted to be sent to parents."
 msgstr ""
@@ -1180,7 +1195,15 @@ msgstr ""
 msgid "Absences by Section"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/report_card.py:67
+#: /src/schooltool/gradebook/browser/report.zcml:93
+msgid "Contains scores from course worksheets."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report.zcml:93
+msgid "Course Worksheets Report"
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "Absent"
 msgstr ""
 
@@ -1347,18 +1370,13 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
+#: /src/schooltool/gradebook/browser/request_reports.py:566
+msgid "Include Teachers names"
+msgstr ""
+
 #: /src/schooltool/gradebook/browser/rml/absences_by_day_rml.pt:11
 #: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:11
 msgid "Absences (continued)"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/rml/report_card_student_header.pt:9
-msgid "Username: ${username}"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:17
-#: /src/schooltool/gradebook/browser/rml/section_absences_rml.pt:34
-msgid "Tardies"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/rml/student_detail_report_attendance.pt:8
@@ -1460,6 +1478,10 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_categories.pt:41
 msgid "There are no activity categories."
+msgstr ""
+
+#: /src/schooltool/gradebook/browser/templates/f_children_gradebooks.pt:2
+msgid "Gradebooks"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
@@ -2152,10 +2174,6 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:206
 msgid "The date the activity was created."
-msgstr ""
-
-#: /src/schooltool/gradebook/interfaces.py:222
-msgid "Columns"
 msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:223
