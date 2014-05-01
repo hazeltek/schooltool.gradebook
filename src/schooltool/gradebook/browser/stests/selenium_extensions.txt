@@ -2,11 +2,10 @@ Selenium browser extensions tests
 =================================
 
 Let's test the selenium extensions created in the
-schooltool.gradebook.stesting module.
+schooltool.app.stesting module.
 
-See the README.selenium.txt file in the
-schooltool/gradebook/browser/stests directory for instructions on how
-to use them.
+See the README.selenium.txt file in the schooltool/testing directory
+for instructions on how to use them.
 
 Log in as manager:
 

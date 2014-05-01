@@ -210,26 +210,6 @@ Hidden columns can be shown again using the Name menu:
           Sort by
         </a>
       </li>
-      <li>
-        <a href="?show=total">
-          Show Total
-        </a>
-      </li>
-      <li>
-        <a href="?show=average">
-          Show Ave.
-        </a>
-      </li>
-      <li>
-        <a href="?show=absences">
-          Show Abs.
-        </a>
-      </li>
-      <li>
-        <a href="?show=tardies">
-          Show Trd.
-        </a>
-      </li>
     </ul>
     >>> name_menu.is_displayed()
     False
@@ -239,9 +219,8 @@ Hidden columns can be shown again using the Name menu:
 
 Let's show both total columns:
 
-    >>> stephan.query.link('Show Total').click()
-    >>> stephan.query.link('Last Name').click()
-    >>> stephan.query.link('Show Ave.').click()
+    >>> stephan.query.id('__GRADEBOOK-COLUMN-PREFERENCES__total').click()
+    >>> stephan.query.id('__GRADEBOOK-COLUMN-PREFERENCES__average').click()
 
 and set the score system we created at the beginning for the Average
 column:
@@ -413,10 +392,9 @@ And if we change to the Good/Bad scoresystem, we should get Good:
     | Richter   | Claudia    | 51  | 101  | 152.0 | Good |
     +-----------+------------+-----+------+-------+------+
 
-Users can also hide the total columns from the Name popup menu:
+Users can also hide the total columns from the sidebar:
 
-    >>> stephan.query.link('Last Name').click()
-    >>> stephan.query.link('Hide Total').click()
+    >>> stephan.query.id('__GRADEBOOK-COLUMN-PREFERENCES__total').click()
     >>> stephan.ui.gradebook.worksheet.pprint()
     +----------+
     | *Sheet1* |

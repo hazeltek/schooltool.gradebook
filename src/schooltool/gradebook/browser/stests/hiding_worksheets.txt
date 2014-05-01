@@ -8,35 +8,38 @@ database, but it will be ignored in all areas of gradebook management.
 Helpers:
 
     >>> # FORMATTERS
-    >>> def format_tab(tab):
-    ...     text = tab.query.tag('a').text
+    >>> def format_tab(tab, driver):
+    ...     text = driver.execute_script(
+    ...               'return $(arguments[0]).find("a")', tab)[0].text
     ...     active = tab.get_attribute('class') in ('active',)
     ...     return ['%s', '*%s*'][active] % text
-    >>> def format_menu(menu):
+    >>> def format_menu(menu, driver):
     ...     result = []
-    ...     header = menu.query.css('.header').text
+    ...     header = driver.execute_script('return $(arguments[0]).find(".header")', menu)[0].text
     ...     result.append(header)
     ...     result.append('-'*len(header))
-    ...     options = [a.text for a in menu.query_all.tag('a')]
+    ...     options = [a.text
+    ...                for a in driver.execute_script('return $(arguments[0]).find("a")', menu)]
     ...     result.extend(options)
     ...     return '\n'.join(result)
 
     >>> # GETTERS
     >>> def get_tabs(browser):
-    ...     return browser.query_all.css('.third-nav li')
+    ...     return browser.driver.execute_script('return $(".third-nav li")')
 
     >>> # PRINTERS
     >>> def print_tabs(browser):
     ...     for tab in get_tabs(browser):
-    ...         print format_tab(tab)
+    ...         print format_tab(tab, browser.driver)
     >>> def print_menus(browser, navigators=True):
-    ...     menus = browser.query_all.css('.refine .content')
+    ...     driver = browser.driver
+    ...     menus = driver.execute_script('return $(".refine .content")')
     ...     if navigators:
     ...         menus = menus[4:]
     ...     else:
     ...         menus = menus[1:]
     ...     for menu in menus:
-    ...         print format_menu(menu), '\n'
+    ...         print format_menu(menu, browser.driver), '\n'
 
 Log in as manager:
 
@@ -76,20 +79,18 @@ worksheet being viewed and other that act on the gradebook. Let's
 print the worksheet menus in the sidebar:
 
     >>> print_menus(stephan)
-    Add
-    ---
-    Worksheet
-    Activity
-    <BLANKLINE>
-    Settings
-    --------
-    Worksheets
-    Category Weights
-    <BLANKLINE>
     Reports
     -------
     Gradebook Export
     Printable Worksheet
+    Settings
+    --------
+    Worksheets
+    Category Weights
+    View Students
+    -------------
+    Columns
+    -------
 
 The sidebar shows additional options for users that can modify the
 course. Let's allow the manager to edit the gradebook:
@@ -109,24 +110,21 @@ And see the options displayed to him in the gradebook:
     >>> manager.ui.section.go('2005-2006', 'Year', 'Math I (1)')
     >>> manager.query.link('Gradebook').click()
     >>> print_menus(manager, navigators=False)
-    Add
-    ---
-    Worksheet
-    Activity
-    <BLANKLINE>
-    Settings
-    --------
-    Worksheets
-    Category Weights
-    <BLANKLINE>
     Actions
     -------
     Add to Course Worksheets
-    <BLANKLINE>
     Reports
     -------
     Gradebook Export
     Printable Worksheet
+    Settings
+    --------
+    Worksheets
+    Category Weights
+    View Students
+    -------------
+    Columns
+    -------
 
 We'll add two new worksheets, Sheet2 and Sheet3, and will make Sheet2
 the current worksheet:
@@ -205,13 +203,13 @@ When all the worksheets are hidden, the menus only show options that
 act on the gradebook:
 
     >>> print_menus(stephan)
-    Add
-    ---
-    Worksheet
-    <BLANKLINE>
     Settings
     --------
     Worksheets
+    View Students
+    -------------
+    Columns
+    -------
 
 The behavior is the same for the manager:
 
@@ -224,10 +222,10 @@ The behavior is the same for the manager:
     >>> print manager.query_all.css('.container p')[0].text
     This section contains only worksheets that are hidden.
     >>> print_menus(manager, navigators=False)
-    Add
-    ---
-    Worksheet
-    <BLANKLINE>
     Settings
     --------
     Worksheets
+    View Students
+    -------------
+    Columns
+    -------

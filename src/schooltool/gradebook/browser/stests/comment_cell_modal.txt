@@ -126,14 +126,19 @@ We'll note the contents of the modal for each of the other three cells.
 For the fouth cell, we'll go through the trouble of entering data and hitting
 the submit button.
 
-XXX these tests should work, and the clicking does give focus to the editor
-element, but the set_value doesn't work.  For now, the submit does at least
-return to the gradebook.
-
-    >>> editor = stephan.query.id('form-widgets-value___Frame')
-    >>> editor.click()
-    >>> editor.ui.set_value('123')
-    >>> stephan.query.css('.comment-cell-submit').click()
+    >>> stephan.query.css('.comment-cell-cancel').click()
+    >>> stephan.ui.gradebook.worksheet.score('Paul Carduner', 'CM2', '123')
+    >>> stephan.ui.gradebook.worksheet.score('Tom Hoffman', 'CM2', '456')
     >>> stephan.url
     u'http://localhost/schoolyears/2005-2006/year/sections/1/activities/2005-2006_year_1/gradebook'
-
+    >>> stephan.ui.gradebook.worksheet.pprint()
+    +--------+------------+
+    | Sheet1 | *Comments* |
+    +--------+------------+
+    +-----------+------------+-----+-----+
+    | Last Name | First Name | CM1 | CM2 |
+    |           |            |     |     |
+    +-----------+------------+-----+-----+
+    | Carduner  | Paul       |     | 123 |
+    | Hoffman   | Tom        |     | 456 |
+    +-----------+------------+-----+-----+
