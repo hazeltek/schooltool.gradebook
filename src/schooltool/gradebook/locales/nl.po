@@ -7,18 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schooltool\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-11-21 02:52+0200\n"
-"PO-Revision-Date: 2014-01-09 20:50+0000\n"
+"POT-Creation-Date: 2014-04-09 13:33+0300\n"
+"PO-Revision-Date: 2014-04-19 13:02+0000\n"
 "Last-Translator: rob <linuxned@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-02-15 07:41+0000\n"
-"X-Generator: Launchpad (build 16916)\n"
+"X-Launchpad-Export-Date: 2014-04-20 06:00+0000\n"
+"X-Generator: Launchpad (build 16985)\n"
 "Language: nl\n"
 
-#: /src/schooltool/gradebook/activity.py:52
+#: /src/schooltool/gradebook/activity.py:55
 msgid "Sheet1"
 msgstr "Blad1"
 
@@ -251,8 +251,31 @@ msgstr "$value is niet geldig."
 msgid "The external activity couldn't be found"
 msgstr "De externe activiteit werd niet gevonden"
 
-#: /src/schooltool/gradebook/browser/activity.py:856
-#: /src/schooltool/gradebook/browser/activity.py:938
+#: /src/schooltool/gradebook/browser/activity.py:807
+#: /src/schooltool/gradebook/browser/configure.zcml:353
+#: /src/schooltool/gradebook/browser/configure.zcml:362
+#: /src/schooltool/gradebook/browser/flourish.zcml:222
+#: /src/schooltool/gradebook/browser/flourish.zcml:421
+#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:4
+#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:8
+#: /src/schooltool/gradebook/interfaces.py:260
+#: /src/schooltool/gradebook/interfaces.py:365
+msgid "Worksheets"
+msgstr "Werkbladen"
+
+#: /src/schooltool/gradebook/browser/activity.py:818
+#: /src/schooltool/gradebook/browser/xls_views.py:153
+msgid "Exporting worksheets"
+msgstr "Werkbladen exporteren"
+
+#: /src/schooltool/gradebook/browser/activity.py:824
+#: /src/schooltool/gradebook/browser/xls_views.py:160
+msgid "Export complete"
+msgstr "Exporteren voltooid"
+
+#: /src/schooltool/gradebook/browser/activity.py:910
+#: /src/schooltool/gradebook/browser/activity.py:992
+#: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "Average"
 msgstr "Gemiddelde"
 
@@ -438,18 +461,7 @@ msgstr "Nieuwe externe activiteit"
 msgid "New Linked Column"
 msgstr "Nieuwe gekoppelde kolom"
 
-#: /src/schooltool/gradebook/browser/configure.zcml:361
-#: /src/schooltool/gradebook/browser/configure.zcml:370
-#: /src/schooltool/gradebook/browser/flourish.zcml:169
-#: /src/schooltool/gradebook/browser/flourish.zcml:354
-#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:4
-#: /src/schooltool/gradebook/browser/templates/activities_overview.pt:8
-#: /src/schooltool/gradebook/interfaces.py:214
-#: /src/schooltool/gradebook/interfaces.py:319
-msgid "Worksheets"
-msgstr "Werkbladen"
-
-#: /src/schooltool/gradebook/browser/configure.zcml:398
+#: /src/schooltool/gradebook/browser/configure.zcml:390
 msgid "Manage Worksheet"
 msgstr "Werkblad beheren"
 
@@ -1039,11 +1051,11 @@ msgstr "Gedetailleerd leerlingenrapport: ${schoolyear}"
 msgid "Grade Detail"
 msgstr "Cijferdetail"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:329
+#: /src/schooltool/gradebook/browser/pdf_views.py:420
 msgid "Attendance Detail"
-msgstr "Details aanwezigheid"
+msgstr "Aanwezigheidsdetails"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:332
+#: /src/schooltool/gradebook/browser/pdf_views.py:423
 msgid "Dates"
 msgstr "Datums"
 
@@ -1121,11 +1133,11 @@ msgstr "Instructeurs: ${instructors}"
 msgid "Report Card"
 msgstr "Rapportkaart"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1150
+#: /src/schooltool/gradebook/browser/pdf_views.py:1148
 msgid "${student} report card"
-msgstr ""
+msgstr "Rapportkaart ${student}"
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1397
+#: /src/schooltool/gradebook/browser/pdf_views.py:1395
 msgid "${student} detail report"
 msgstr ""
 
@@ -1185,11 +1197,11 @@ msgstr "Rapportblad van ${year}"
 msgid "Hide/unhide Report Sheets for ${year}"
 msgstr "Rapportbladen van ${year} tonen/verbergen"
 
-#: /src/schooltool/gradebook/browser/report_card.py:461
+#: /src/schooltool/gradebook/browser/report_card.py:481
 msgid "Report Sheet Template Details"
-msgstr "Details rapportbladsjabloon"
+msgstr "Rapportbladsjabloondetails"
 
-#: /src/schooltool/gradebook/browser/report_card.py:351
+#: /src/schooltool/gradebook/browser/report_card.py:516
 msgid "Report Sheet Template Information"
 msgstr "Informatie rapportbladsjabloon"
 
@@ -1256,11 +1268,11 @@ msgstr "Rasterkolombron"
 msgid "Grid column heading"
 msgstr "Koptekst rasterkolom"
 
-#: /src/schooltool/gradebook/browser/report_card.py:1212
+#: /src/schooltool/gradebook/browser/report_card.py:1420
 msgid "Outline Item Details"
-msgstr "Details overzichtsitem"
+msgstr "Overzichtsitemdetails"
 
-#: /src/schooltool/gradebook/browser/report_card.py:1216
+#: /src/schooltool/gradebook/browser/report_card.py:1424
 msgid "Outline item source"
 msgstr "Bron overzichtsitem"
 
@@ -1341,7 +1353,7 @@ msgstr "Laatkomers"
 
 #: /src/schooltool/gradebook/browser/rml/student_detail_report_attendance.pt:8
 msgid "Attendance detail"
-msgstr "Details aanwezigheid"
+msgstr "Aanwezigheidsdetail"
 
 #: /src/schooltool/gradebook/browser/templates/add_edit_linked_column.pt:18
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:25
@@ -1478,6 +1490,8 @@ msgid ""
 "The Course Worksheet and activities defined here can be deployed to all the "
 "sections of this course for one or more terms."
 msgstr ""
+"Het hier ingestelde vak-werkblad en activiteiten kunnen op alle secties van "
+"dit vak toegepast worden voor een of meer termijnen."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
@@ -1489,6 +1503,9 @@ msgid ""
 "gradebooks of all sections of a course. The activities included in Course "
 "Worksheets are defined in templates, shown here."
 msgstr ""
+"Vak-werkbladen kunnen gebruikt worden om diverse activiteiten te bevatten in "
+"de cijferlijsten van alle secties van een vak. De activiteiten in vak-"
+"werkbladen worden ingesteld in sjablonen, zoals hier getoond wordt."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:12
 msgid ""
@@ -1556,6 +1573,10 @@ msgid ""
 "the Course Worksheets. Use this form to deploy the worksheets to the teacher "
 "gradebooks of all sections of this course for one or more terms."
 msgstr ""
+"Sjablonen worden apart aangemaakt en bepalen welke activiteiten op de vak-"
+"werkbladen zichtbaar zullen zijn. Gebruik dit formulier om de werkbladen toe "
+"te passen op de cijferlijsten van de leraar voor alle secties van dit vak "
+"voor een of meerdere termijnen."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:16
 msgid "You can also hide worksheets if you do not want teachers to see them."
@@ -1575,6 +1596,8 @@ msgid ""
 "Use this form to add the active worksheet in your gradebook to all the "
 "sections of the same course in the selected terms."
 msgstr ""
+"Gebruik dit formulier om het actieve werkblad in uw cijferlijst toe te "
+"voegen aan alle secties van hetzelfde vak in de geselcteerde termijnen."
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:3
 msgid "Enter Comment"
@@ -1692,7 +1715,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_templates_related.pt:15
 msgid "deploy it to teacher gradebooks."
-msgstr "het toe te passen in cijferlijsten van leraar."
+msgstr "het toe te passen op cijferlijsten van de leraar."
 
 #: /src/schooltool/gradebook/browser/templates/f_hide_unhide_course_worksheets.pt:3
 msgid "Currently Deployed WorkSheets"
@@ -1945,7 +1968,7 @@ msgid ""
 "to all teacher gradebooks in the school."
 msgstr ""
 "Een rapportblad is een speciaal soort cijferlijstwerkblad  dat toegepast kan "
-"worden voor alle cijferlijsten van leraren in de hele school."
+"worden op alle cijferlijsten van leraren in de hele school."
 
 #: /src/schooltool/gradebook/browser/templates/f_template_related.pt:10
 msgid ""
@@ -2239,15 +2262,7 @@ msgstr "Rapportbladen exporteren"
 msgid "Term Worksheets"
 msgstr "Termijnwerkbladen"
 
-#: /src/schooltool/gradebook/browser/xls_views.py:152
-msgid "Exporting worksheets"
-msgstr "Werkbladen exporteren"
-
-#: /src/schooltool/gradebook/browser/xls_views.py:159
-msgid "Export complete"
-msgstr "Exporteren voltooid"
-
-#: /src/schooltool/gradebook/browser/xls_views.py:180
+#: /src/schooltool/gradebook/browser/xls_views.py:181
 msgid "School Year Worksheets"
 msgstr "Schooljaarwerkbladen"
 
@@ -2287,11 +2302,11 @@ msgstr "Presentatie"
 msgid "Project"
 msgstr "Project"
 
-#: /src/schooltool/gradebook/interfaces.py:126
+#: /src/schooltool/gradebook/interfaces.py:163
 msgid "Identifies the report sheet in teacher gradebooks."
-msgstr "Identificeert het rapportblad in cijferlijsten van leraar."
+msgstr "Identificeert het rapportblad in cijferlijsten van de leraar."
 
-#: /src/schooltool/gradebook/interfaces.py:158
+#: /src/schooltool/gradebook/interfaces.py:173
 msgid "Identifies the course worksheet in gradebooks."
 msgstr "Identificeert het vak-werkblad in cijferlijsten."
 
@@ -2427,7 +2442,7 @@ msgstr "Alleen de leraar van een sectie kan zijn cijferlijst bewerken"
 
 #: /src/schooltool/gradebook/security.zcml:33
 msgid "School administrators can edit a section's gradebook."
-msgstr ""
+msgstr "Schoolbeheerders kunnen een cijferlijst van een sectie bewerken."
 
 #: /src/schooltool/gradebook/security.zcml:55
 msgid "Add Course Worksheet"
