@@ -48,6 +48,7 @@ from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.skin import flourish
 from schooltool.skin.flourish.page import TertiaryNavigationManager
 from schooltool.term.interfaces import ITerm
+from schooltool.term.term import listTerms
 from schooltool.schoolyear.subscriber import ObjectEventAdapterSubscriber
 
 from schooltool.gradebook.interfaces import (IGradebookRoot,
@@ -200,7 +201,7 @@ class FlourishReportSheetsBase(ActiveSchoolYearContentMixin):
                     'checked': not sheet.hidden,
                     'terms': [False] * len(schoolyear),
                     })
-                for index, term in enumerate(schoolyear.values()):
+                for index, term in enumerate(listTerms(schoolyear)):
                     deployedKey = '%s_%s' % (schoolyear.__name__, term.__name__)
                     if sheet.__name__.startswith(deployedKey):
                         deployment['terms'][index] = True
@@ -273,7 +274,7 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
             'title': _('-- Entire year --'),
             'selected': 'selected',
             }]
-        for term in self.schoolyear.values():
+        for term in listTerms(self.schoolyear):
             result.append({
                 'name': term.__name__,
                 'title': term.title,
@@ -327,10 +328,10 @@ class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
                     new_index = 1
                 elif len(rest) > 1 and rest[0] == '-' and rest[1:].isdigit():
                     new_index = int(rest[1:])
-            else:
-                new_index = 0
-            if new_index > title_index:
-                title_index = new_index
+                else:
+                    new_index = 0
+                if new_index > title_index:
+                    title_index = new_index
 
         # copy worksheet template to the term or whole year
         if term:
@@ -397,6 +398,10 @@ class FlourishHideUnhideReportSheetsView(FlourishReportSheetsBase,
                   mapping={'year': self.schoolyear.title})
         return translate(title, context=self.request)
 
+    @property
+    def terms(self):
+        return listTerms(self.schoolyear)
+
     def update(self):
         if 'CANCEL' in self.request:
             self.request.response.redirect(self.nextURL())
@@ -430,7 +435,8 @@ class FlourishHideUnhideReportSheetsView(FlourishReportSheetsBase,
                 return
 
     def nextURL(self):
-        return absoluteURL(self.context, self.request) + '/report_sheets'
+        return self.url_with_schoolyear_id(self.context,
+                                           view_name='report_sheets')
 
 
 class FlourishTemplatesView(flourish.page.Page):
@@ -1305,7 +1311,7 @@ class FlourishReportCardLayoutMixin(ActiveSchoolYearContentMixin):
         else:
             source = source_obj.source
         root = IGradebookRoot(ISchoolToolApplication(None))
-        for term in self.schoolyear.values():
+        for term in listTerms(self.schoolyear):
             deployedKey = '%s_%s' % (self.schoolyear.__name__, term.__name__)
             for key in root.deployed:
                 if key.startswith(deployedKey):

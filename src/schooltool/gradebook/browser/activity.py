@@ -56,7 +56,7 @@ from schooltool.gradebook import GradebookMessage as _
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import createSourceString, getSourceObj
 from schooltool.gradebook.activity import Activity, LinkedColumnActivity
-from schooltool.gradebook.activity import LinkedActivity, Activities
+from schooltool.gradebook.activity import LinkedActivity
 from schooltool.gradebook.activity import Worksheet
 from schooltool.gradebook.gradebook import canAverage
 from schooltool.person.interfaces import IPerson
@@ -792,12 +792,14 @@ class WorksheetsExportView(export.ExcelExportView):
             self.write(ws, row, col, header.data, **header.style)
 
     def export_worksheets(self, wb):
+        self.task_progress.force('worksheets', active=True)
         documents = self.context.values()
         for i, worksheet in enumerate(documents):
             ws = wb.add_sheet(str(i+1))
             self.print_worksheet_header(ws, worksheet)
             self.print_headers(ws, worksheet)
             self.print_grades(ws, worksheet)
+            
             self.progress('worksheets', export.normalized_progress(
                     i, len(documents)))
         self.finish('worksheets')
@@ -822,8 +824,6 @@ class WorksheetsExportView(export.ExcelExportView):
         self.export_worksheets(wb)
 
         self.task_progress.title = _("Export complete")
-        self.task_progress.force('overall', progress=1.0)
-
         return wb
 
 

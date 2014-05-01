@@ -13,8 +13,8 @@
     <thead>
       <tr>
         <th i18n:translate="">Report Sheet</th>
-        <tal:block repeat="term schoolyear/values">
-          <th tal:content="term/title" />
+        <tal:block repeat="term view/terms">
+          <th tal:condition="term/name" tal:content="term/title" />
         </tal:block>
       </tr>
     </thead>

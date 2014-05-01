@@ -20,13 +20,11 @@ XLS Views
 """
 
 import xlwt
-from StringIO import StringIO
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.course.interfaces import ISectionContainer
 from schooltool.export import export
 from schooltool.schoolyear.interfaces import ISchoolYear
-from schooltool.skin import flourish
 from schooltool.task.progress import normalized_progress
 
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
@@ -36,8 +34,7 @@ from schooltool.requirement.interfaces import IEvaluations
 from schooltool.gradebook import GradebookMessage as _
 
 
-class FlourishReportSheetsExportTermView(export.ExcelExportView,
-                                         flourish.page.Page):
+class FlourishReportSheetsExportTermView(export.ExcelExportView):
     """A view for exporting report sheets to an XLS file"""
 
     message_title = _('report sheets export')
@@ -135,6 +132,8 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
         return activities
 
     def export_terms(self, workbook, terms):
+        self.task_progress.force('worksheets', active=True)
+
         terms = list(terms)
         for nt, self.term in enumerate(terms):
             self.schoolyear = ISchoolYear(self.term)
@@ -154,11 +153,9 @@ class FlourishReportSheetsExportTermView(export.ExcelExportView,
         self.addImporters(self.task_progress)
 
         wb = xlwt.Workbook()
-
         self.export_terms(wb, self.getTerms())
 
         self.task_progress.title = _("Export complete")
-        self.task_progress.force('worksheets', progress=1.0)
         return wb
 
 

@@ -11,7 +11,7 @@
         <tr>
           <th i18n:translate="">Report Sheet</th>
           <th i18n:translate="">Index</th>
-          <tal:block repeat="term schoolyear/values">
+          <tal:block repeat="term view/terms">
             <th tal:content="term/title" />
           </tal:block>
           <th i18n:translate="">Visible</th>

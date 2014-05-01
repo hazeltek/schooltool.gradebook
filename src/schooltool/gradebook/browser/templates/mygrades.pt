@@ -70,8 +70,8 @@
   <table class="student_gradebook">
     <tr tal:condition="not: view/average_hide">
       <td colspan="2" class="odd student_cell">
-        <div tal:condition="view/average"
-             tal:content="string: ${view/average_label}: ${view/average}">Average</div>
+        <div tal:condition="view/average">
+          <tal:block replace="view/average_label" />: <tal:block replace="view/average" /></div>
         <div tal:condition="not: view/average" i18n:translate="">Nothing Graded</div>
       </td>
     </tr>
