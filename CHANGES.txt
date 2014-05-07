@@ -2,10 +2,13 @@
 CHANGES
 =======
 
-2.7.1 (unreleased)
+2.8.0 (2014-05-08)
 ------------------
 
-- Nothing changed yet.
+- Added scoresystem field to course worksheet activity add view
+- Added course worksheets report
+- Added transcript report
+- Added checkboxes for column preferences to the sidebar (https://launchpad.net/bugs/1288274)
 
 
 2.6.4 (2014-05-01)
