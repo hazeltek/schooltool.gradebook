@@ -2,10 +2,13 @@
 CHANGES
 =======
 
-2.8.1 (unreleased)
+2.8.1 (2014-05-29)
 ------------------
 
-- Nothing changed yet.
+Initial ARK release
++++++++++++++++++++
+
+- No changes from 2.8.0
 
 
 2.8.0 (2014-05-08)
