@@ -2,10 +2,13 @@
 CHANGES
 =======
 
-2.8.1 (unreleased)
+2.8.1 (2014-08-25)
 ------------------
 
-- Nothing changed yet.
+- Added per activity averages row (https://launchpad.net/bugs/1271867)
+- Fixed printable worksheet report (https://launchpad.net/bugs/1358878)
+- Allowed administrative users to access the request view for the
+  absences by day report
 
 
 2.8.0 (2014-05-08)
