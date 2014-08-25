@@ -517,7 +517,8 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
         result = []
         students = self.students
         section = proxy.removeSecurityProxy(self.context).section
-        active_students = students.on(self.request.util.today).any(ACTIVE)
+        today = queryUtility(IDateManager).today
+        active_students = students.on(today).any(ACTIVE)
         current_mode = getCurrentEnrollmentMode(self.person)
         if current_mode == 'gradebook-enrollment-mode-enrolled':
             students = active_students
