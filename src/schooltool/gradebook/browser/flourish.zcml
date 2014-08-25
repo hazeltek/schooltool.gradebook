@@ -1054,6 +1054,10 @@
         class=".request_reports.FlourishRequestAbsencesByDayView"
         permission="schooltool.edit"
         />
+    <security:allow
+        interface=".request_reports.FlourishRequestAbsencesByDayView"
+        crowds="managers administrators clerks"
+        permission="schooltool.edit" />
     <flourish:page
         name="request_section_absences.html"
         for="schooltool.course.interfaces.ISection"
