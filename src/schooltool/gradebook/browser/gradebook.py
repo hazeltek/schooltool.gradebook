@@ -25,6 +25,7 @@ import pytz
 from collections import OrderedDict
 import datetime
 from decimal import Decimal
+from decimal import InvalidOperation
 import urllib
 from lxml import html
 
@@ -950,8 +951,12 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
                 for grade in column['grades']:
                     # XXX: why decimals are str and not Decimal?
                     if grade != '':
-                        average_grades.append(Decimal(grade))
-                        count += column['max']
+                        try:
+                            average_grades.append(Decimal(grade))
+                            count += int(column['max'])
+                        except (InvalidOperation,):
+                            # ignore invalid grades
+                            pass
                 if count:
                     average = convertAverage(
                         (100 * sum(average_grades))/Decimal(count), None)

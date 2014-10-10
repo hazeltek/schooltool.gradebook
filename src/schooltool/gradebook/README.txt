@@ -10,7 +10,7 @@ little bit different and to provide some unique features.
 First we'll set up the site and initialize the gradebook related data.
 
     >>> from schooltool.testing import setup
-    >>> school = setup.setUpSchoolToolSite()
+    >>> school = app
     >>> from schooltool.gradebook.gradebook_init import GradebookInit
     >>> plugin = GradebookInit(school)
     >>> plugin()
@@ -124,12 +124,15 @@ Let's create some people, a course and a section:
 
     >>> from schooltool.person import person
     >>> from schooltool.course import course, section
-    >>> tom = person.Person('tom', 'Tom Hoffman')
-    >>> paul = person.Person('paul', 'Paul Cardune')
-    >>> claudia = person.Person('claudia', 'Claudia Richter')
-    >>> stephan = person.Person('stephan', 'Stephan Richter')
-    >>> alg1 = course.Course('Alg1', 'Algebra 1')
-    >>> sectionA = section.Section('Alg1-A')
+    >>> persons = app['persons']
+    >>> tom = persons['tom'] = person.Person('tom', 'Tom Hoffman')
+    >>> paul = persons['paul'] = person.Person('paul', 'Paul Cardune')
+    >>> claudia = persons['claudia'] = person.Person('claudia', 'Claudia Richter')
+    >>> stephan = persons['stephan'] = person.Person('stephan', 'Stephan Richter')
+    >>> courses = app['courses']
+    >>> sections = app['sections']
+    >>> alg1 = courses['alg1'] = course.Course('Alg1', 'Algebra 1')
+    >>> sectionA = sections['A'] = section.Section('Alg1-A')
     >>> alg1.sections.add(sectionA)
 
 We add some students and a teacher to the class,
@@ -291,7 +294,7 @@ Of course there are some safety precautions:
 
 1. You cannot add a grade for someone who is not in the section:
 
-    >>> marius = person.Person('marius', 'Marius Gedminas')
+    >>> marius = persons['marius'] = person.Person('marius', 'Marius Gedminas')
     >>> gradebook.evaluate(student=marius, activity=final, score=99)
     Traceback (most recent call last):
     ...

@@ -21,16 +21,23 @@ Gradebook-related Tests
 import unittest, doctest
 from pprint import pprint
 
+from transaction import abort
 from zope.app.testing import setup
 from zope.component import provideAdapter, provideUtility
+from zope.container.btree import BTreeContainer
 from zope.interface import classImplements
+from zope.interface import Interface
 
 from schooltool.course.interfaces import ICourse, ISection
-from schooltool.relationship.tests import setUpRelationships
 from schooltool.person.person import Person
 from schooltool.requirement import testing
+from schooltool.requirement import evaluation
 from schooltool.requirement.interfaces import IHaveEvaluations
+from schooltool.requirement.interfaces import IEvaluations
 from schooltool.term.interfaces import IDateManager
+from schooltool.testing.setup import getIntegrationTestZCML
+from schooltool.testing.stubs import AppStub
+
 from schooltool.gradebook import activity, gradebook, interfaces
 from schooltool.gradebook import category
 from schooltool.gradebook.tests import stubs
@@ -38,8 +45,9 @@ from schooltool.gradebook.tests import stubs
 
 def setUp(test):
     setup.placefulSetUp()
-    setUpRelationships()
-    testing.setUpEvaluation()
+    provideAdapter(evaluation.getEvaluations,
+                   (Interface,),
+                   IEvaluations)
     testing.fixDecimal()
 
     provideAdapter(
@@ -73,10 +81,17 @@ def setUp(test):
     provideAdapter(gradebook.getWorksheetAverageScore)  
 
     provideUtility(stubs.DateManagerStub(), IDateManager, '')
+    zcml = getIntegrationTestZCML()
+    zcml.include('schooltool.schoolyear', file='schoolyear.zcml')
+    app = test.globs['app'] = AppStub()
+    app['persons'] = BTreeContainer()
+    app['courses'] = BTreeContainer()
+    app['sections'] = BTreeContainer()
 
 
 def tearDown(test):
     setup.placefulTearDown()
+    abort()
 
 
 def test_suite():

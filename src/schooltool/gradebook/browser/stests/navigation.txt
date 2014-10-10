@@ -425,7 +425,7 @@ Some of the arrows are now enabled:
     >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
     ...     print arrow.get_attribute('class')
     navbar-arrow navbar-go-previous
-    navbar-arrow navbar-go-next navbar-arrow-inactive
+    navbar-arrow navbar-go-next
     navbar-arrow navbar-list-worksheets
 
 We can display the worksheets list menu by clicking on the last arrow:
@@ -475,6 +475,10 @@ Now, all the arrows are enabled:
     navbar-arrow navbar-go-next
     navbar-arrow navbar-list-worksheets
 
+We'll display the Sheet7 tab:
+
+    >>> jeffrey.query.css('.navbar-go-next').click()
+
 If we click the right arrow once, it gets disabled because there are
 no more worksheets to show:
 
@@ -487,6 +491,7 @@ no more worksheets to show:
 
 Same happens with the right arrow:
 
+    >>> jeffrey.query.css('.navbar-go-previous').click()
     >>> jeffrey.query.css('.navbar-go-previous').click()
     >>> jeffrey.query.css('.navbar-go-previous').click()
     >>> for arrow in jeffrey.query_all.css('.navbar-arrow'):
