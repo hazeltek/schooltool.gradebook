@@ -1,0 +1,92 @@
+Enrollments with future dates
+-----------------------------
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Set today's date:
+
+    >>> manager.open('http://localhost/time?value=2014-04-01')
+
+Set up a school year with a term:
+
+    >>> manager.ui.schoolyear.add('2014', '2014-01-01', '2014-12-31')
+    >>> manager.ui.term.add('2014', '2014', '2014-01-01', '2014-12-31')
+
+Set up a course:
+
+    >>> manager.ui.course.add('2014', 'Math')
+
+Set up persons:
+
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'schooltool')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'schooltool')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'schooltool')
+    >>> manager.ui.person.add('Nestor', 'Guzman', 'nestor', 'schooltool')
+    >>> manager.ui.person.add('Liliana', 'Vividor', 'liliana', 'schooltool')
+
+Set up a section with an instructor:
+
+    >>> manager.ui.section.add('2014', '2014', 'Math')
+    >>> manager.ui.section.instructors.add('2014', '2014', 'Math (1)',
+    ...                                    ['jeffrey'])
+
+Set student enrollment using some dates in the future:
+
+    >>> manager.ui.section.students.add('2014', '2014', 'Math (1)',
+    ...                                 ['camila'])
+    >>> manager.ui.section.students.add('2014', '2014', 'Math (1)',
+    ...                                 ['liliana'], state='Pending')
+    >>> manager.ui.section.students.add('2014', '2014', 'Math (1)',
+    ...                                 ['mario'], date='2014-08-01')
+    >>> manager.ui.section.students.add('2014', '2014', 'Math (1)',
+    ...                                 ['nestor'], state='Pending',
+    ...                                 date='2014-09-01')
+
+Log in as the instructor:
+
+    >>> teacher = browsers.teacher
+    >>> teacher.ui.login('jeffrey', 'schooltool')
+
+Check the gradebook using the default active students:
+
+    >>> teacher.query.link('Gradebook').click()
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Cerna     | Camila     | 0.0   | N/A  |
+    +-----------+------------+-------+------+
+
+Now display all students:
+
+    >>> teacher.query.id('gradebook-enrollment-mode-all').click()
+    >>> teacher.ui.gradebook.worksheet.pprint()
+    +----------+
+    | *Sheet1* |
+    +----------+
+    +-----------+------------+-------+------+
+    | Last Name | First Name | Total | Ave. |
+    |           |            |       |      |
+    +-----------+------------+-------+------+
+    | Cerna     | Camila     | 0.0   | N/A  |
+    | Guzman    | Nestor     | 0.0   | N/A  |
+    | Tejada    | Mario      | 0.0   | N/A  |
+    | Vividor   | Liliana    | 0.0   | N/A  |
+    +-----------+------------+-------+------+
+
+Print the title attributes for the student links:
+
+    >>> for row in teacher.query_all.css('#students-part tbody tr'):
+    ...     cells = row.query_all.tag('td')
+    ...     print cells[0].query.css('a.popup_link').get_attribute('title')
+    Camila Cerna
+    Nestor Guzman (Pending - 2014-09-01)
+    Mario Tejada (Enrolled - 2014-08-01)
+    Liliana Vividor (Pending)

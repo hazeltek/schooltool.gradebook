@@ -509,7 +509,19 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
         relationships = Membership.bind(member=student).all().relationships
         for link_info in relationships:
             if link_info.target is section:
-                return link_info.state.today
+                today = link_info.state.today
+                if today is not None:
+                    meaning, code = today
+                    state = self.app_states.states.get(code)
+                    if state is not None:
+                        return state.title
+                else:
+                    all = link_info.state.all()
+                    if all:
+                        date, meaning, code = all[0]
+                        state = self.app_states.states.get(code)
+                        if state is not None:
+                            return '%s - %s' % (state.title, date)
 
     @Lazy
     def app_states(self):
@@ -532,10 +544,9 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             title = insecure_student.title
             if insecure_student not in active_students:
                 css_class.append('inactive-student')
-                meaning, code = self.getTodayState(insecure_student, section)
-                state = self.app_states.states.get(code)
+                state = self.getTodayState(insecure_student, section)
                 if state is not None:
-                    title = '%s (%s)' % (title, state.title)
+                    title = '%s (%s)' % (title, state)
             result.append({
                     'title': title,
                     'css_class': ' '.join(css_class),
