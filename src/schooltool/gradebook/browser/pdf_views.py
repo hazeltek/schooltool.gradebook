@@ -665,6 +665,9 @@ class AbsencesByDayPDFView(TermPDFPage):
 
     name = _('ABSENCES BY DAY')
 
+    def updateTimespan(self):
+        self.schoolyear = self.context
+
     @property
     def message_title(self):
         day = self.getDay()

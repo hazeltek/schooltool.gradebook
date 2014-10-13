@@ -12,9 +12,15 @@
   <!--- XXX: we need a FlourishDateManagementView -->
   <include package="schooltool.term" file="time_machine.zcml" />
   <flourish:page
-     name="index.html"
-     for="schooltool.term.interfaces.IDateManager"
-     class="schooltool.resource.browser.stests.test_selenium.DateManagementView"
-     permission="schooltool.view" />
+      name="index.html"
+      for="schooltool.term.interfaces.IDateManager"
+      class="schooltool.resource.browser.stests.test_selenium.DateManagementView"
+      permission="schooltool.view" />
+  <flourish:page
+      name="rml"
+      for="schooltool.skin.flourish.report.PDFPage"
+      class="schooltool.skin.flourish.report.PDFPage2RML"
+      permission="zope.Public"
+      />
 
 </configure>

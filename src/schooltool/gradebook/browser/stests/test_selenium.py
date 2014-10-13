@@ -22,8 +22,25 @@ Functional selenium tests for schooltool.gradebook
 import unittest
 import os
 
-from schooltool.testing.selenium import collect_ftests
+from schooltool.testing.analyze import etree, to_string
 from schooltool.testing.selenium import SeleniumLayer
+from schooltool.testing.selenium import collect_ftests
+from schooltool.testing.util import format_table
+
+
+def queryXML(xpath, response):
+    doc = etree.XML(response)
+    return [to_string(node).strip() for node in doc.xpath(xpath)]
+
+
+def print_rml_table(browser):
+    story = browser.query.tag('story').getHTML()
+    table = []
+    for row in queryXML('//blocktable/tr', story):
+        cells = queryXML('//td/text()', row)
+        table.append(cells)
+    print format_table(table, header_rows=1)
+
 
 dir = os.path.abspath(os.path.dirname(__file__))
 filename = os.path.join(dir, '../stesting.zcml')
@@ -31,6 +48,7 @@ journal_filename = os.path.join(dir, '../stesting_journal.zcml')
 
 need_journal = (
     'itworks_journal.txt',
+    'absences_by_day_report.txt',
     )
 
 testdir = os.path.dirname(__file__)
@@ -50,7 +68,8 @@ journal_selenium_layer = SeleniumLayer(journal_filename,
 def test_suite():
     return unittest.TestSuite([
         collect_ftests(layer=gradebook_selenium_layer, filenames=ftests),
-        collect_ftests(layer=journal_selenium_layer, filenames=need_journal)
+        collect_ftests(layer=journal_selenium_layer, filenames=need_journal,
+                       extra_globs={'print_rml_table': print_rml_table})
         ])
 
 if __name__ == '__main__':
