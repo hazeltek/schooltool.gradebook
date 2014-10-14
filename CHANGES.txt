@@ -2,10 +2,12 @@
 CHANGES
 =======
 
-2.8.2 (unreleased)
+2.8.2 (2014-10-14)
 ------------------
 
-- Nothing changed yet.
+- Fixed gradebook view when future dates are used for section enrollment
+- Fixed absences by day report to work with multiple years
+- Added absences for range of dates schoolyear report
 
 
 2.8.1 (2014-08-25)
