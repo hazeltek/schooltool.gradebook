@@ -794,6 +794,112 @@ class AbsencesByDayPDFView(TermPDFPage):
         return rows
 
 
+class AbsencesByDateRangePDFView(AbsencesByDayPDFView):
+
+    name = _('Absences for Range of Dates')
+
+    @property
+    def message_title(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            return _('absences by range of dates report')
+        return _('absences for ${start} to ${end}',
+                 mapping={'start': self.formatDate(start),
+                          'end': self.formatDate(end)})
+
+    @property
+    def title(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            return None
+        return '%s - %s' % (self.formatDate(start, format='mediumDate'),
+                            self.formatDate(end, format='mediumDate'))
+
+    @property
+    def base_filename(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            filename = 'abs_range_of_dates_' + self.context.__name__
+        else:
+            filename = 'abs_range_of_dates_%d_%02d_%02d_to_%d_%02d_%02d' % (
+                start.year, start.month, start.day,
+                end.year, end.month, end.day)
+        return filename
+
+    def inRange(self, value, start, end):
+        return start <= value.date() <= end
+
+    def getRangeDay(self, name):
+        day = self.request.get(name, None)
+        if day is None:
+            return datetime.date(datetime.now())
+        try:
+            year, month, day = [int(part) for part in day.split('-')]
+            return datetime.date(datetime(year, month, day))
+        except (TypeError, ValueError):
+            pass
+        try:
+            return datetime.date(day)
+        except (TypeError, ValueError):
+            return None
+
+    def getData(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            return {}
+        terms = []
+        for term in self.schoolyear.values():
+            if start in term or end in term:
+                terms.append(term)
+        if not terms:
+            return {}
+        data = {}
+        for term in terms:
+            for section in ISectionContainer(term).values():
+                jd = ISectionJournalData(section, None)
+                if jd is None:
+                    continue
+                for student in section.members:
+                    for meeting, score in jd.absentMeetings(student):
+                        if not self.inRange(meeting.dtstart, start, end):
+                            continue
+                        period = self.guessPeriodGroup(meeting)
+                        ss = score.scoreSystem
+                        result = None
+                        if ss.isExcused(score):
+                            continue
+                        elif ss.isAbsent(score):
+                            result = ABSENT_ABBREVIATION
+                        if result:
+                            if student not in data:
+                                data[student] = {}
+                            if period not in data[student]:
+                                data[student][period] = []
+                            data[student][period].append(result)
+        return data
+
+    def students(self):
+        data = self.getData()
+        periods = self.getPeriods(data)
+
+        rows = []
+        for student in sorted(data, key=getSortingKey(self.request)):
+            scores = [''] * len(periods)
+            for period in data[student]:
+                index = periods.index(period)
+                scores[index] = len(data[student][period])
+            row = {
+                'name': student.title,
+                'periods': scores,
+                }
+            rows.append(row)
+        return rows
+
+
 class SectionAbsencesPDFView(TermPDFPage):
     """A view for printing a report with absences for a given section"""
 

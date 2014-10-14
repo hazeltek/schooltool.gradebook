@@ -36,6 +36,7 @@ from zope.publisher.browser import BrowserView
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 from schooltool.app.interfaces import ISchoolToolApplication
+from schooltool.common import SchoolToolMessage as STMessage
 from schooltool.schoolyear.interfaces import ISchoolYear
 from schooltool.term.interfaces import IDateManager, ITerm
 from schooltool.export.export import RequestXLSReportDialog
@@ -515,6 +516,58 @@ z3c.form.validator.WidgetValidatorDiscriminators(
     AbsenceByDayValidator,
     view=FlourishRequestAbsencesByDayView,
     field=IRequestAbsencesByDayForm['date'])
+
+
+class IRequestAbsencesByDateRangeForm(Interface):
+
+    start = zope.schema.Date(
+        title=STMessage(u'Start date'),
+        required=True)
+
+    end = zope.schema.Date(
+        title=STMessage(u'End date'),
+        required=True)
+
+
+class AbsencesByDateRangeRequestView(RequestRemoteReportDialog):
+
+    fields = z3c.form.field.Fields(IRequestAbsencesByDateRangeForm)
+
+    report_builder = 'absences_by_date_range.pdf'
+
+    title = _('Request Absences for Range of Dates Report')
+
+    @property
+    def schoolyear(self):
+        return self.context
+
+    def update(self):
+        self.message = ''
+        RequestRemoteReportDialog.update(self)
+
+    def updateTaskParams(self, task):
+        start = self.form_params.get('start')
+        end = self.form_params.get('end')
+        if start > end:
+            start, end = end, start
+        if start is not None:
+            day = '%d-%02d-%02d' % (start.year, start.month, start.day)
+            task.request_params['start'] = day
+        if end is not None:
+            day = '%d-%02d-%02d' % (end.year, end.month, end.day)
+            task.request_params['end'] = day
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    AbsenceByDayValidator,
+    view=AbsencesByDateRangeRequestView,
+    field=IRequestAbsencesByDateRangeForm['start'])
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    AbsenceByDayValidator,
+    view=AbsencesByDateRangeRequestView,
+    field=IRequestAbsencesByDateRangeForm['end'])
 
 
 class FlourishRequestSectionAbsencesView(RequestRemoteReportDialog):

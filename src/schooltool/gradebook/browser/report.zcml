@@ -79,6 +79,17 @@
          link="request_absences_by_day.html"
          />
     <report:reportLink
+         name="absences_by_date_range"
+         for="schooltool.schoolyear.interfaces.ISchoolYear"
+         class="schooltool.gradebook.browser.gradebook.TermReportLinkViewlet"
+         permission="schooltool.view"
+         group="School Year"
+         description="xxx descrition xxx"
+         title="Absences for Range of Dates"
+         file_type="pdf"
+         link="request_absences_by_date_range.html"
+         />
+    <report:reportLink
          name="absences_by_section"
          for="schooltool.course.interfaces.ISection"
          permission="schooltool.edit"
