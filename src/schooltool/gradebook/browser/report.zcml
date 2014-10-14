@@ -84,7 +84,7 @@
          class="schooltool.gradebook.browser.gradebook.TermReportLinkViewlet"
          permission="schooltool.view"
          group="School Year"
-         description="xxx descrition xxx"
+         description="Absence totals per student, per period, for a range of dates."
          title="Absences for Range of Dates"
          file_type="pdf"
          link="request_absences_by_date_range.html"
