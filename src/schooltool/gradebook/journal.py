@@ -24,9 +24,15 @@ from schooltool.requirement.scoresystem import UNSCORED
 
 try:
     from schooltool.lyceum.journal.interfaces import ISectionJournalData
+    from schooltool.lyceum.journal.interfaces import ISectionJournal
+    from schooltool.lyceum.journal.interfaces import IJournalScoreSystemPreferences
     from schooltool.lyceum.journal.journal import ABSENT, TARDY
 except ImportError:
     def ISectionJournalData(section):
+        return None
+    def ISectionJournal(section):
+        return None
+    def IJournalScoreSystemPreferences(context):
         return None
     ABSENT = 'n'
     TARDY = 'p'
@@ -36,6 +42,14 @@ except ImportError:
 # real ISectionJournalData
 def getSectionJournalData(section):
     return ISectionJournalData(section)
+
+
+def getSectionJournal(section):
+    return ISectionJournal(section)
+
+
+def getJournalScoreSystemPreferences(context):
+    return IJournalScoreSystemPreferences(context)
 
 
 class JournalSource(object):

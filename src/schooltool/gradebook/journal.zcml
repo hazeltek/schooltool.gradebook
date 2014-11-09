@@ -11,6 +11,18 @@
       factory=".journal.getSectionJournalData"
       />
 
+  <adapter
+      for="schooltool.course.interfaces.ISection"
+      provides="schooltool.gradebook.interfaces.ISectionJournal"
+      factory=".journal.getSectionJournal"
+      />
+
+  <adapter
+      for="*"
+      provides="schooltool.gradebook.interfaces.IJournalScoreSystemPreferences"
+      factory=".journal.getJournalScoreSystemPreferences"
+      />
+
   <!-- external activities source adapter for journal data -->
   <adapter
       for="schooltool.course.interfaces.ISection"

@@ -52,7 +52,9 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
 from schooltool.gradebook.interfaces import ICourseDeployedWorksheets
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
+from schooltool.gradebook.interfaces import ISectionJournal
 from schooltool.gradebook.interfaces import ISectionJournalData
+from schooltool.gradebook.interfaces import IJournalScoreSystemPreferences
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemContainer
@@ -1458,7 +1460,9 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
         self.updateData()
 
     def updateColumns(self):
-        self.columns = []
+        self.columns = [schooltool.table.pdf.GridColumn(
+            _('Total periods'), item='periods')]
+        self.columns.extend(self.absent_columns[:] + self.tardy_columns[:])
         for i, layout_column in enumerate(self.layout_columns):
             heading = self.pdf_view.getLayoutActivityHeading(layout_column,
                                                              truncate=False)
@@ -1514,6 +1518,88 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
                 if byCourse is not None:
                     score = byCourse.get(course, '')
                     self.grid[rows_by_id[course], cols_by_id[i]] = score
+            periods = []
+            for section in self.sections:
+                if tuple(section.courses) == course:
+                    jd = ISectionJournal(section, None)
+                    if jd is None:
+                        continue
+                    periods.append(len(jd.meetings))
+            self.grid[rows_by_id[course], cols_by_id['periods']] = sum(periods)
+            columns = self.absent_columns[:] + self.tardy_columns[:]
+            for column in columns:
+                tag = column.item
+                score = self.journal_scores[course].get(tag)
+                if score is not None:
+                    self.grid[rows_by_id[course], cols_by_id[tag]] = sum(score)
+
+    @Lazy
+    def journal_scores(self):
+        result = {}
+        for course in self.courses:
+            result[course] = {}
+            for section in self.sections:
+                if tuple(section.courses) == course:
+                    journal = ISectionJournal(section, None)
+                    if journal is None:
+                        continue
+                    for meeting, score in journal.absentMeetings(self.context):
+                        if (score is not None and
+                            score is not UNSCORED and
+                            score.value is not UNSCORED):
+                            tag = score.value.lower()
+                            if tag not in result[course]:
+                                result[course][tag] = []
+                            result[course][tag].append(1)
+        return result
+
+    @Lazy
+    def scoresystem(self):
+        app = ISchoolToolApplication(None)
+        prefs = IJournalScoreSystemPreferences(app)
+        ss = prefs.attendance_scoresystem
+        if ss is not None:
+            return ss
+            
+    @Lazy
+    def absent_columns(self):
+        ss = self.scoresystem
+        result = []
+        absent_excused = []
+        absent = []
+        collator = ICollator(self.request.locale)
+        sorting_key = lambda tag: collator.key(tag)
+        for tag in ss.tag_absent:
+            if tag in ss.tag_excused:
+                absent_excused.append(tag)
+            else:
+                absent.append(tag)
+        absent_excused.sort(key=sorting_key)
+        absent.sort(key=sorting_key)
+        for tag in (absent_excused + absent):
+            tag = tag.lower()
+            result.append(schooltool.table.pdf.GridColumn(tag, item=tag))
+        return result
+
+    @Lazy
+    def tardy_columns(self):
+        ss = self.scoresystem
+        result = []
+        tardy_excused = []
+        tardy = []
+        collator = ICollator(self.request.locale)
+        sorting_key = lambda tag: collator.key(tag)
+        for tag in ss.tag_tardy:
+            if tag in ss.tag_excused:
+                tardy_excused.append(tag)
+            else:
+                tardy.append(tag)
+        tardy_excused.sort(key=sorting_key)
+        tardy.sort(key=sorting_key)
+        for tag in (tardy_excused + tardy):
+            tag = tag.lower()
+            result.append(schooltool.table.pdf.GridColumn(tag, item=tag))
+        return result
 
 
 class FlourishStudentDetailReportPDFView(flourish.report.PlainPDFPage,
