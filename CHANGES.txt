@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.8.3 (unreleased)
+2.8.3 (2014-11-11)
 ------------------
 
-- Nothing changed yet.
+- Added journal scores to student detail report
 
 
 2.8.2 (2014-10-14)
