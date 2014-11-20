@@ -99,6 +99,45 @@
          file_type="pdf"
          link="section_absences.pdf"
          />
+
+
+
+
+
+
+    <report:reportLink
+         name="absences_by_day"
+         class="schooltool.gradebook.browser.gradebook.YearReportLinkViewlet"
+         manager="schooltool.report.browser.report.IFlourishYearReportLinkViewletManager"
+         view="schooltool.app.browser.app.ManageSchool"
+         permission="schooltool.view"
+         group="School Year"
+         description="Lists students absent on a given day."
+         title="Absences By Day"
+         file_type="pdf"
+         link="request_absences_by_day.html"
+         />
+    <report:reportLink
+         name="absences_by_date_range"
+         class="schooltool.gradebook.browser.gradebook.YearReportLinkViewlet"
+         manager="schooltool.report.browser.report.IFlourishYearReportLinkViewletManager"
+         view="schooltool.app.browser.app.ManageSchool"
+         permission="schooltool.view"
+         group="School Year"
+         description="Absence totals per student, per period, for a range of dates."
+         title="Absences for Range of Dates"
+         file_type="pdf"
+         link="request_absences_by_date_range.html"
+         />
+
+
+
+
+
+
+
+
+
   </configure>
 
   <report:reportLink

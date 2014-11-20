@@ -212,35 +212,6 @@ class FlourishReportSheetsBase(ActiveSchoolYearContentMixin):
             return []
 
 
-class FlourishManageReportSheetTemplatesOverview(FlourishReportSheetsBase,
-                                                 flourish.page.Content):
-    """A flourish viewlet for showing report sheet templates in school view"""
-
-    body_template = ViewPageTemplateFile(
-        'templates/f_manage_report_sheet_templates_overview.pt')
-
-    @property
-    def templates(self):
-        root = IGradebookRoot(ISchoolToolApplication(None))
-        return list(root.templates.values())
-
-    def templates_url(self):
-        return self.url_with_schoolyear_id(self.context,
-                                           view_name='gradebook/templates')
-
-
-class FlourishManageReportSheetsOverview(FlourishReportSheetsBase,
-                                         flourish.page.Content):
-    """A flourish viewlet for showing deployed report sheets in school view"""
-
-    body_template = ViewPageTemplateFile(
-        'templates/f_manage_report_sheets_overview.pt')
-
-    def sheets_url(self):
-        return self.url_with_schoolyear_id(self.context,
-                                           view_name='report_sheets')
-
-
 class FlourishReportSheetsView(FlourishReportSheetsBase, flourish.page.Page):
     """A flourish view for managing report sheet deployment"""
 
@@ -1094,20 +1065,6 @@ class LayoutReportCardView(object):
 
     def nextURL(self):
         return absoluteURL(self.context, self.request)
-
-
-class LayoutReportCardLink(flourish.page.LinkViewlet,
-                           ActiveSchoolYearContentMixin):
-
-    @property
-    def title(self):
-        if self.schoolyear is None:
-            return ''
-        return _("Report Card Layout")
-
-    @property
-    def url(self):
-        return self.url_with_schoolyear_id(self.context, view_name=self.link)
 
 
 class FlourishLayoutReportCardView(flourish.page.Page,

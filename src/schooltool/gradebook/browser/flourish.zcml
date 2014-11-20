@@ -435,33 +435,15 @@
       />
 
   <!-- Report Sheets -->
-  <flourish:viewlet
-      name="manage-report-sheet-templates-overview"
-      after="manage-resources-overview"
-      view="schooltool.app.browser.app.ManageSchool"
-      permission="schooltool.view"
-      manager="schooltool.skin.flourish.page.IPageContentManager"
-      class=".report_card.FlourishManageReportSheetTemplatesOverview"
-      />
-
-  <security:allow
-     interface=".report_card.FlourishManageReportSheetTemplatesOverview"
-     crowds="administrators clerks"
-     permission="schooltool.view" />
 
   <flourish:viewlet
-      name="manage-report-sheets-overview"
-      after="manage-report-sheet-templates-overview"
-      view="schooltool.app.browser.app.ManageSchool"
+      name="report_sheets"
+      after="timetables"
+      title="Deployed Report Sheets"
+      class="schooltool.app.browser.app.YearLinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeYearLinks"
       permission="schooltool.view"
-      manager="schooltool.skin.flourish.page.IPageContentManager"
-      class=".report_card.FlourishManageReportSheetsOverview"
       />
-
-  <security:allow
-     interface=".report_card.FlourishManageReportSheetsOverview"
-     crowds="administrators clerks"
-     permission="schooltool.view" />
 
   <flourish:page
       name="index.html"
@@ -801,9 +783,10 @@
   <!-- Report Card Layouts -->
   <flourish:viewlet
       name="report_card_layout"
-      after="gradebook/templates"
-      class=".report_card.LayoutReportCardLink"
-      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      after="report_sheets"
+      title="Report Card Layout"
+      class="schooltool.app.browser.app.YearLinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeYearLinks"
       permission="schooltool.edit"
       />
 
