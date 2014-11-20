@@ -99,12 +99,6 @@
          file_type="pdf"
          link="section_absences.pdf"
          />
-
-
-
-
-
-
     <report:reportLink
          name="absences_by_day"
          class="schooltool.gradebook.browser.gradebook.YearReportLinkViewlet"
