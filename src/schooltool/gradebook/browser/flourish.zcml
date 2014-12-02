@@ -437,6 +437,14 @@
   <!-- Report Sheets -->
 
   <flourish:viewlet
+      name="report-sheet-templates"
+      title="Report Sheet Templates"
+      class=".report_card.ReportSheetTemplatesLinkViewlet"
+      manager="schooltool.app.browser.app.CustomizeSchoolLinks"
+      permission="schooltool.view"
+      />
+
+  <flourish:viewlet
       name="report_sheets"
       after="timetables"
       title="Deployed Report Sheets"

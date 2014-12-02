@@ -1469,3 +1469,12 @@ class RemoveLayoutColumnsWhenTermIsRemoved(ObjectEventAdapterSubscriber):
             termName, worksheetName, activityName = source.split('|')
             if termName == self.object.__name__:
                 layout_columns.remove(column)
+
+
+class ReportSheetTemplatesLinkViewlet(flourish.page.LinkViewlet,
+                                      ActiveSchoolYearContentMixin):
+
+    @property
+    def url(self):
+        root = IGradebookRoot(self.context)
+        return self.url_with_schoolyear_id(root, view_name='templates')
