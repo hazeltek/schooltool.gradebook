@@ -1460,9 +1460,7 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
         self.updateData()
 
     def updateColumns(self):
-        self.columns = [schooltool.table.pdf.GridColumn(
-            _('Total periods'), item='periods')]
-        self.columns.extend(self.absent_columns[:] + self.tardy_columns[:])
+        self.columns = []
         for i, layout_column in enumerate(self.layout_columns):
             heading = self.pdf_view.getLayoutActivityHeading(layout_column,
                                                              truncate=False)
@@ -1480,6 +1478,57 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
                 course_title = courseTitles
             self.rows.append(schooltool.table.pdf.GridRow(
                     course_title, item=course))
+
+    def updateData(self):
+        cols_by_id = dict([(col.item, col) for col in self.columns])
+        rows_by_id = dict([(row.item, row) for row in self.rows])
+        self.grid = {}
+        scores = {}
+        evaluations = IEvaluations(self.student)
+        for i, layout in enumerate(self.layout_columns):
+            byCourse = {}
+            for section in self.sections:
+                course = tuple(section.courses)
+                if self.pdf_view.isJournalSource(layout):
+                    score = self.pdf_view.getJournalScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        if course in byCourse:
+                            score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                elif self.pdf_view.isAverageSource(layout):
+                    score = self.pdf_view.getAverageScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        byCourse[course] = unicode(score)
+                else:
+                    activity = self.pdf_view.getActivity(section, layout)
+                    if activity is None:
+                        continue
+                    score = evaluations.get(activity, None)
+                    if score:
+                        byCourse[course] = unicode(score.value)
+            if len(byCourse):
+                scores[layout.source] = byCourse
+        for course in self.courses:
+            for i, layout in enumerate(self.layout_columns):
+                byCourse = scores.get(layout.source)
+                if byCourse is not None:
+                    score = byCourse.get(course, '')
+                    self.grid[rows_by_id[course], cols_by_id[i]] = score
+
+
+class StudentDetailReportCardGrid(ReportCardGrid):
+
+    def updateColumns(self):
+        self.columns = [schooltool.table.pdf.GridColumn(
+            _('Total periods'), item='periods')]
+        self.columns.extend(self.absent_columns[:] + self.tardy_columns[:])
+        for i, layout_column in enumerate(self.layout_columns):
+            heading = self.pdf_view.getLayoutActivityHeading(layout_column,
+                                                             truncate=False)
+            self.columns.append(schooltool.table.pdf.GridColumn(
+                    heading, item=i))
 
     def updateData(self):
         cols_by_id = dict([(col.item, col) for col in self.columns])

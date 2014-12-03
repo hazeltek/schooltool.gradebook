@@ -1580,6 +1580,14 @@
       permission="schooltool.view"
       />
 
+  <flourish:content
+      name="report_card_grid"
+      for="schooltool.person.interfaces.IPerson"
+      class=".pdf_views.StudentDetailReportCardGrid"
+      view=".pdf_views.FlourishStudentDetailReportPDFView"
+      permission="schooltool.view"
+      />
+
   <flourish:viewlet
       name="report_card_comments"
       after="report_card_grades"
