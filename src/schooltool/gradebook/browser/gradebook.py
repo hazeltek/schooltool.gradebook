@@ -2792,6 +2792,14 @@ class TermReportLinkViewlet(ReportLinkViewlet):
     pass
 
 
+class YearReportLinkViewlet(TermReportLinkViewlet):
+
+    @property
+    def report_link(self):
+        return '%s/%s' % (absoluteURL(self.manager.schoolyear, self.request),
+                          self.link)
+
+
 class ChildrenGradebookOverview(flourish.viewlet.Viewlet):
 
     @property
