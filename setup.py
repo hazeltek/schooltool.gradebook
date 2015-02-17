@@ -98,6 +98,7 @@ setup(
                              'zope.testbrowser',
                              'zope.ucol',
                              'zc.datetimewidget',
+                             'schooltool>=2.8',
                              'schooltool.lyceum.journal>=2.5.2',
                              'schooltool.devtools>=0.6'],
                     'journal': ['schooltool.lyceum.journal>=2.5.2'],

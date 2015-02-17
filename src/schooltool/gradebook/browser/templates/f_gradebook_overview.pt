@@ -45,6 +45,11 @@
                 </td>
               </tal:loop>
             </tr>
+            <tr tal:condition="view/column_averages">
+              <td colspan="3" i18n:translate="">
+                Average
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -85,6 +90,10 @@
               </tal:block>
               <td class="placeholder">&nbsp;</td>
             </tr>
+            <tr tal:condition="view/column_averages">
+              <td tal:repeat="grade view/column_averages" tal:content="grade" />
+              <td class="placeholder">&nbsp;</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -120,6 +129,16 @@
                   tal:content="row/total|nothing" />
               <td tal:condition="view/show_average_column"
                   tal:content="row/average|nothing" />
+            </tr>
+            <tr tal:condition="view/column_averages">
+              <td tal:condition="view/show_absences_column"
+                  tal:content="view/total_column_averages/absences|nothing" />
+              <td tal:condition="view/show_tardies_column"
+                  tal:content="view/total_column_averages/tardies|nothing" />
+              <td tal:condition="view/show_total_column"
+                  tal:content="view/total_column_averages/total|nothing" />
+              <td tal:condition="view/show_average_column"
+                  tal:content="view/total_column_averages/average|nothing" />
             </tr>
           </tbody>
         </table>

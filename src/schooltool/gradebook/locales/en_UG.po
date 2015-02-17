@@ -38,7 +38,7 @@ msgstr ""
 #: /src/schooltool/gradebook/activity.py:313
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:6
 msgid "Course Activities"
-msgstr ""
+msgstr "Subject Activities"
 
 #: /src/schooltool/gradebook/activity.py:329
 msgid "Deployed Worksheets"
@@ -529,16 +529,16 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/course_worksheets.py:75
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:14
 msgid "Course Worksheet Details"
-msgstr ""
+msgstr "Subject Worksheet Details"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:114
 msgid "Course Worksheet Template Information"
-msgstr ""
+msgstr "Subject Worksheet Template Information"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:162
 #: /src/schooltool/gradebook/browser/course_worksheets.py:204
 msgid "Course Activity Details"
-msgstr ""
+msgstr "Subject Activity Details"
 
 #: /src/schooltool/gradebook/browser/course_worksheets.py:253
 #: /src/schooltool/gradebook/browser/report_card.py:245
@@ -791,19 +791,19 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1243
 msgid "Course Worksheet"
-msgstr ""
+msgstr "Subject Worksheet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1252
 msgid "New Course Worksheet"
-msgstr ""
+msgstr "New Subject Worksheet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1261
 msgid "New Course Activity"
-msgstr ""
+msgstr "New Subject Activity"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1298
 msgid "Course Activity"
-msgstr ""
+msgstr "Subject Activity"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1349
 msgid "Hide/unhide Worksheets"
@@ -811,11 +811,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1365
 msgid "Add to Course Worksheets"
-msgstr ""
+msgstr "Add to Subject Worksheets"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1373
 msgid "Add as Course Worksheet"
-msgstr ""
+msgstr "Add as Subject Worksheet"
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1391
 msgid "Reports"
@@ -844,7 +844,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:1772
 #: /src/schooltool/gradebook/browser/flourish.zcml:1784
 msgid "Courses completed by a student, with scores from section report sheets, including multiple years of data."
-msgstr ""
+msgstr "Subjects completed by a student, with scores from section report sheets, including multiple years of data."
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1772
 #: /src/schooltool/gradebook/browser/flourish.zcml:1784
@@ -1069,7 +1069,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/pdf_views.py:423
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:37
 msgid "Courses"
-msgstr ""
+msgstr "Subjects"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:305
 msgid "Student: ${student}"
@@ -1122,7 +1122,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:600
 msgid "The following students are at risk of failing the following courses:"
-msgstr ""
+msgstr "The following students are at risk of failing the following subjects:"
 
 #: /src/schooltool/gradebook/browser/pdf_views.py:668
 msgid "ABSENCES BY DAY"
@@ -1237,11 +1237,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/report.zcml:137
 msgid "Contains scores from course worksheets."
-msgstr ""
+msgstr "Contains scores from subject worksheets."
 
 #: /src/schooltool/gradebook/browser/report.zcml:137
 msgid "Course Worksheets Report"
-msgstr ""
+msgstr "Subject Worksheets Report"
 
 #: /src/schooltool/gradebook/browser/report_card.py:69
 msgid "Absent"
@@ -1530,31 +1530,31 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit.pt:39
 msgid "There are no course activities."
-msgstr ""
+msgstr "There are no subject activities."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_edit_related.pt:6
 msgid "The Course Worksheet and activities defined here can be deployed to all the sections of this course for one or more terms."
-msgstr ""
+msgstr "The Subject Worksheet and activities defined here can be deployed to all the sections of this subject for one or more terms."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates.pt:17
 msgid "This course has no course worksheet templates."
-msgstr ""
+msgstr "This subject has no subject worksheet templates."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:6
 msgid "Course Worksheets can be be used to include sets of activities in the gradebooks of all sections of a course. The activities included in Course Worksheets are defined in templates, shown here."
-msgstr ""
+msgstr "Subject Worksheets can be be used to include sets of activities in the gradebooks of all sections of a subject. The activities included in Subject Worksheets are defined in templates, shown here."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheet_templates_related.pt:12
 msgid "The templates can be created from this page (see Add: Course Worksheet) or from the individual gradebook of the instructor of a section of this course who is either a \"Responsible party\" for the course or a member of \"Clerks\" or \"Site Managers.\""
-msgstr ""
+msgstr "The templates can be created from this page (see Add: Subject Worksheet) or from the individual gradebook of the instructor of a section of this subject who is either a \"Responsible party\" for the subject or a member of \"Clerks\" or \"Site Managers.\""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:11
 msgid "Current Course Worksheets"
-msgstr ""
+msgstr "Current Subject Worksheets"
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:30
 msgid "This year has no course worksheets."
-msgstr ""
+msgstr "This year has no subject worksheets."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:50
 msgid "Select worksheet to add"
@@ -1592,11 +1592,11 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:6
 msgid "This page allows you to manage the Course Worksheets for this course."
-msgstr ""
+msgstr "This page allows you to manage the Subject Worksheets for this subject."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:10
 msgid "The templates are created separately and define what activites will be on the Course Worksheets. Use this form to deploy the worksheets to the teacher gradebooks of all sections of this course for one or more terms."
-msgstr ""
+msgstr "The templates are created separately and define what activites will be on the Subject Worksheets. Use this form to deploy the worksheets to the teacher gradebooks of all sections of this subject for one or more terms."
 
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets_related.pt:16
 msgid "You can also hide worksheets if you do not want teachers to see them."
@@ -1607,7 +1607,7 @@ msgid "If you add the same worksheet multiple times, give each version an easily
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet_related.pt:6
-msgid "Use this form to add the active worksheet in your gradebook to all the sections of the same course in the selected terms."
+msgid "Use this form to add the active worksheet in your gradebook to all the sections of the same subject in the selected terms."
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_gradebook_comment_cell_dialog.pt:3
@@ -1765,19 +1765,19 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
 msgid "Course Worksheets"
-msgstr ""
+msgstr "Subject Worksheets"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:4
 msgid "Manage Course Worksheets"
-msgstr ""
+msgstr "Manage Subject Worksheets"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:15
 msgid "There are ${count} course worksheets for ${schoolyear}"
-msgstr ""
+msgstr "There are ${count} subject worksheets for ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/templates/f_manage_course_worksheets.pt:19
 msgid "There are no course worksheets for ${schoolyear}"
-msgstr ""
+msgstr "There are no subject worksheets for ${schoolyear}"
 
 #: /src/schooltool/gradebook/browser/templates/f_mygrades.pt:7
 #: /src/schooltool/gradebook/browser/templates/f_student_gradebook.pt:6
@@ -2168,7 +2168,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/interfaces.py:173
 msgid "Identifies the course worksheet in gradebooks."
-msgstr ""
+msgstr "Identifies the subject worksheet in gradebooks."
 
 #: /src/schooltool/gradebook/interfaces.py:181
 msgid "The date the activity is due to be graded."
@@ -2302,7 +2302,7 @@ msgstr ""
 
 #: /src/schooltool/gradebook/security.zcml:64
 msgid "Add Course Worksheet"
-msgstr ""
+msgstr "Add Subject Worksheet"
 
 #: /src/schooltool/requirement/browser/configure.zcml:8
 #: /src/schooltool/requirement/browser/flourish.zcml:10

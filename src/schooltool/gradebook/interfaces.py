@@ -478,5 +478,15 @@ class ISectionJournalData(Interface):
     """Bridge interface to remove gradebook dependency on lyceum journal."""
 
 
+class ISectionJournal(Interface):
+
+    pass
+
+
+class IJournalScoreSystemPreferences(Interface):
+
+    pass
+
+
 class IGradebookReportTask(IReportTask):
     pass

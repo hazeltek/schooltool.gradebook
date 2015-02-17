@@ -1,0 +1,123 @@
+Absences By Day report
+----------------------
+
+Log in as manager:
+
+    >>> manager = browsers.manager
+    >>> manager.ui.login('manager', 'schooltool')
+
+Set today's date:
+
+    >>> manager.open('http://localhost/time?value=2014-10-01')
+
+Add people:
+
+    >>> manager.ui.person.add('Jeffrey', 'Elkner', 'jeffrey', 'schooltool')
+    >>> manager.ui.person.add('Camila', 'Cerna', 'camila', 'schooltool')
+    >>> manager.ui.person.add('Mario', 'Tejada', 'mario', 'schooltool')
+
+Add a scheduled section for 2013:
+
+    >>> manager.ui.schoolyear.add('2013', '2013-01-01', '2013-12-31')
+    >>> manager.ui.term.add('2013', '2013', '2013-01-01', '2013-12-31')
+    >>> manager.ui.course.add('2013', 'Math')
+    >>> manager.ui.section.add('2013', '2013', 'Math')
+    >>> manager.ui.section.instructors.add('2013', '2013', 'Math (1)',
+    ...                                    ['jeffrey'], date='2013-01-01')
+    >>> manager.ui.section.students.add('2013', '2013', 'Math (1)',
+    ...                                 ['camila', 'mario'], date='2013-01-01')
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('2013').click()
+    >>> manager.query.link('Timetables').click()
+    >>> manager.query.link('Timetable').click()
+    >>> manager.query.button('Next').click()
+    >>> manager.query.button('Days of the week').click()
+    >>> manager.query.button('Same time each day').click()
+    >>> manager.query.button('Next').click()
+    >>> manager.query.button('Designated by time').click()
+    >>> manager.query.button('No').click()
+
+    >>> manager.ui.section.go('2013', '2013', 'Math (1)')
+    >>> manager.query.link('Schedule').click()
+    >>> sel = '//div[contains(@class, "sidebar")]//a[text()="Schedule"]'
+    >>> manager.query.xpath(sel).click()
+    >>> manager.query.id('form-buttons-add').click()
+    >>> # Monday and Friday at 9:30-10:25
+    >>> manager.query.id('period.0-.Period-').click()
+    >>> manager.query.id('period.4-.Period-').click()
+    >>> manager.query.id('form-buttons-apply').click()
+
+Add some attendance:
+
+    >>> teacher = browsers.teacher
+    >>> teacher.ui.login('jeffrey', 'schooltool')
+    >>> teacher.query.link('Journal').click()
+    >>> teacher.query.link('March').click()
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', '15', 'a')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', '18', 't')
+    >>> teacher.query.button('Save').click()
+
+Add a scheduled section for 2014:
+
+    >>> manager.ui.schoolyear.add('2014', '2014-01-01', '2014-12-31')
+    >>> manager.ui.term.add('2014', '2014', '2014-01-01', '2014-12-31')
+    >>> manager.ui.course.add('2014', 'Physics')
+    >>> manager.ui.section.add('2014', '2014', 'Physics')
+    >>> manager.ui.section.instructors.add('2014', '2014', 'Physics (1)',
+    ...                                    ['jeffrey'], date='2014-01-01')
+    >>> manager.ui.section.students.add('2014', '2014', 'Physics (1)',
+    ...                                 ['camila', 'mario'], date='2014-01-01')
+
+    >>> manager.query.link('School').click()
+    >>> manager.query.link('2014').click()
+    >>> manager.query.link('Timetables').click()
+    >>> manager.query.link('Timetable').click()
+    >>> manager.query.button('Next').click()
+    >>> manager.query.button('Days of the week').click()
+    >>> manager.query.button('Same time each day').click()
+    >>> manager.query.button('Next').click()
+    >>> manager.query.button('Designated by time').click()
+    >>> manager.query.button('No').click()
+
+    >>> manager.ui.section.go('2014', '2014', 'Physics (1)')
+    >>> manager.query.link('Schedule').click()
+    >>> sel = '//div[contains(@class, "sidebar")]//a[text()="Schedule"]'
+    >>> manager.query.xpath(sel).click()
+    >>> manager.query.id('form-buttons-add').click()
+    >>> # Tuesday and Thursday at 10:30-11:25
+    >>> manager.query.id('period.1-.Period-2-').click()
+    >>> manager.query.id('period.3-.Period-2-').click()
+    >>> manager.query.id('form-buttons-apply').click()
+
+Add some attendance:
+
+    >>> teacher.ui.section.go('2014', '2014', 'Physics (1)')
+    >>> sel = '//div[contains(@class, "sidebar")]//a[text()="Journal"]'
+    >>> teacher.query.xpath(sel).click()
+    >>> teacher.query.link('March').click()
+    >>> teacher.ui.gradebook.worksheet.score('Camila Cerna', '18', 'a')
+    >>> teacher.ui.gradebook.worksheet.score('Mario Tejada', '18', 'ae')
+    >>> teacher.query.button('Save').click()
+
+Get the absences by day report for March 18th, 2013:
+
+    >>> url = 'http://localhost/schoolyears/2013/absences_by_day.pdf/@@rml?day=2013-03-18'
+    >>> manager.open(url)
+    >>> print_rml_table(manager)
+    +--------------+-------------+
+    | Student      | 09:30-10:25 |
+    +--------------+-------------+
+    | Mario Tejada | T           |
+    +--------------+-------------+
+
+Get the absences by day report for March 18th, 2014:
+
+    >>> url = 'http://localhost/schoolyears/2014/absences_by_day.pdf/@@rml?day=2014-03-18'
+    >>> manager.open(url)
+    >>> print_rml_table(manager)
+    +--------------+-------------+
+    | Student      | 10:30-11:25 |
+    +--------------+-------------+
+    | Camila Cerna | A           |
+    +--------------+-------------+

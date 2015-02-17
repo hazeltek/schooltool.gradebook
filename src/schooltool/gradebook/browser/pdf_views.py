@@ -52,7 +52,9 @@ from schooltool.gradebook.browser.report_card import (ABSENT_HEADING,
 from schooltool.gradebook.interfaces import ICourseDeployedWorksheets
 from schooltool.gradebook.interfaces import IGradebookRoot, IActivities
 from schooltool.gradebook.interfaces import IGradebook
+from schooltool.gradebook.interfaces import ISectionJournal
 from schooltool.gradebook.interfaces import ISectionJournalData
+from schooltool.gradebook.interfaces import IJournalScoreSystemPreferences
 from schooltool.requirement.interfaces import IEvaluations
 from schooltool.requirement.interfaces import IDiscreteValuesScoreSystem
 from schooltool.requirement.interfaces import IScoreSystemContainer
@@ -665,6 +667,9 @@ class AbsencesByDayPDFView(TermPDFPage):
 
     name = _('ABSENCES BY DAY')
 
+    def updateTimespan(self):
+        self.schoolyear = self.context
+
     @property
     def message_title(self):
         day = self.getDay()
@@ -783,6 +788,112 @@ class AbsencesByDayPDFView(TermPDFPage):
             for period in data[student]:
                 index = periods.index(period)
                 scores[index] = data[student][period]
+            row = {
+                'name': student.title,
+                'periods': scores,
+                }
+            rows.append(row)
+        return rows
+
+
+class AbsencesByDateRangePDFView(AbsencesByDayPDFView):
+
+    name = _('Absences for Range of Dates')
+
+    @property
+    def message_title(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            return _('absences by range of dates report')
+        return _('absences for ${start} to ${end}',
+                 mapping={'start': self.formatDate(start),
+                          'end': self.formatDate(end)})
+
+    @property
+    def title(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            return None
+        return '%s - %s' % (self.formatDate(start, format='mediumDate'),
+                            self.formatDate(end, format='mediumDate'))
+
+    @property
+    def base_filename(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            filename = 'abs_range_of_dates_' + self.context.__name__
+        else:
+            filename = 'abs_range_of_dates_%d_%02d_%02d_to_%d_%02d_%02d' % (
+                start.year, start.month, start.day,
+                end.year, end.month, end.day)
+        return filename
+
+    def inRange(self, value, start, end):
+        return start <= value.date() <= end
+
+    def getRangeDay(self, name):
+        day = self.request.get(name, None)
+        if day is None:
+            return datetime.date(datetime.now())
+        try:
+            year, month, day = [int(part) for part in day.split('-')]
+            return datetime.date(datetime(year, month, day))
+        except (TypeError, ValueError):
+            pass
+        try:
+            return datetime.date(day)
+        except (TypeError, ValueError):
+            return None
+
+    def getData(self):
+        start = self.getRangeDay('start')
+        end = self.getRangeDay('end')
+        if start is None or end is None:
+            return {}
+        terms = []
+        for term in self.schoolyear.values():
+            if start in term or end in term:
+                terms.append(term)
+        if not terms:
+            return {}
+        data = {}
+        for term in terms:
+            for section in ISectionContainer(term).values():
+                jd = ISectionJournalData(section, None)
+                if jd is None:
+                    continue
+                for student in section.members:
+                    for meeting, score in jd.absentMeetings(student):
+                        if not self.inRange(meeting.dtstart, start, end):
+                            continue
+                        period = self.guessPeriodGroup(meeting)
+                        ss = score.scoreSystem
+                        result = None
+                        if ss.isExcused(score):
+                            continue
+                        elif ss.isAbsent(score):
+                            result = ABSENT_ABBREVIATION
+                        if result:
+                            if student not in data:
+                                data[student] = {}
+                            if period not in data[student]:
+                                data[student][period] = []
+                            data[student][period].append(result)
+        return data
+
+    def students(self):
+        data = self.getData()
+        periods = self.getPeriods(data)
+
+        rows = []
+        for student in sorted(data, key=getSortingKey(self.request)):
+            scores = [''] * len(periods)
+            for period in data[student]:
+                index = periods.index(period)
+                scores[index] = len(data[student][period])
             row = {
                 'name': student.title,
                 'periods': scores,
@@ -1405,6 +1516,139 @@ class ReportCardGrid(ReportCardStudentGradesMixin,
                 if byCourse is not None:
                     score = byCourse.get(course, '')
                     self.grid[rows_by_id[course], cols_by_id[i]] = score
+
+
+class StudentDetailReportCardGrid(ReportCardGrid):
+
+    def updateColumns(self):
+        self.columns = [schooltool.table.pdf.GridColumn(
+            _('Total periods'), item='periods')]
+        self.columns.extend(self.absent_columns[:] + self.tardy_columns[:])
+        for i, layout_column in enumerate(self.layout_columns):
+            heading = self.pdf_view.getLayoutActivityHeading(layout_column,
+                                                             truncate=False)
+            self.columns.append(schooltool.table.pdf.GridColumn(
+                    heading, item=i))
+
+    def updateData(self):
+        cols_by_id = dict([(col.item, col) for col in self.columns])
+        rows_by_id = dict([(row.item, row) for row in self.rows])
+        self.grid = {}
+        scores = {}
+        evaluations = IEvaluations(self.student)
+        for i, layout in enumerate(self.layout_columns):
+            byCourse = {}
+            for section in self.sections:
+                course = tuple(section.courses)
+                if self.pdf_view.isJournalSource(layout):
+                    score = self.pdf_view.getJournalScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        if course in byCourse:
+                            score += int(byCourse[course])
+                        byCourse[course] = unicode(score)
+                elif self.pdf_view.isAverageSource(layout):
+                    score = self.pdf_view.getAverageScore(
+                        self.student, section, layout)
+                    if score is not None:
+                        byCourse[course] = unicode(score)
+                else:
+                    activity = self.pdf_view.getActivity(section, layout)
+                    if activity is None:
+                        continue
+                    score = evaluations.get(activity, None)
+                    if score:
+                        byCourse[course] = unicode(score.value)
+            if len(byCourse):
+                scores[layout.source] = byCourse
+        for course in self.courses:
+            for i, layout in enumerate(self.layout_columns):
+                byCourse = scores.get(layout.source)
+                if byCourse is not None:
+                    score = byCourse.get(course, '')
+                    self.grid[rows_by_id[course], cols_by_id[i]] = score
+            periods = []
+            for section in self.sections:
+                if tuple(section.courses) == course:
+                    jd = ISectionJournal(section, None)
+                    if jd is None:
+                        continue
+                    periods.append(len(jd.meetings))
+            self.grid[rows_by_id[course], cols_by_id['periods']] = sum(periods)
+            columns = self.absent_columns[:] + self.tardy_columns[:]
+            for column in columns:
+                tag = column.item
+                score = self.journal_scores[course].get(tag)
+                if score is not None:
+                    self.grid[rows_by_id[course], cols_by_id[tag]] = sum(score)
+
+    @Lazy
+    def journal_scores(self):
+        result = {}
+        for course in self.courses:
+            result[course] = {}
+            for section in self.sections:
+                if tuple(section.courses) == course:
+                    journal = ISectionJournal(section, None)
+                    if journal is None:
+                        continue
+                    for meeting, score in journal.absentMeetings(self.context):
+                        if (score is not None and
+                            score is not UNSCORED and
+                            score.value is not UNSCORED):
+                            tag = score.value.lower()
+                            if tag not in result[course]:
+                                result[course][tag] = []
+                            result[course][tag].append(1)
+        return result
+
+    @Lazy
+    def scoresystem(self):
+        app = ISchoolToolApplication(None)
+        prefs = IJournalScoreSystemPreferences(app)
+        ss = prefs.attendance_scoresystem
+        if ss is not None:
+            return ss
+            
+    @Lazy
+    def absent_columns(self):
+        ss = self.scoresystem
+        result = []
+        absent_excused = []
+        absent = []
+        collator = ICollator(self.request.locale)
+        sorting_key = lambda tag: collator.key(tag)
+        for tag in ss.tag_absent:
+            if tag in ss.tag_excused:
+                absent_excused.append(tag)
+            else:
+                absent.append(tag)
+        absent_excused.sort(key=sorting_key)
+        absent.sort(key=sorting_key)
+        for tag in (absent_excused + absent):
+            tag = tag.lower()
+            result.append(schooltool.table.pdf.GridColumn(tag, item=tag))
+        return result
+
+    @Lazy
+    def tardy_columns(self):
+        ss = self.scoresystem
+        result = []
+        tardy_excused = []
+        tardy = []
+        collator = ICollator(self.request.locale)
+        sorting_key = lambda tag: collator.key(tag)
+        for tag in ss.tag_tardy:
+            if tag in ss.tag_excused:
+                tardy_excused.append(tag)
+            else:
+                tardy.append(tag)
+        tardy_excused.sort(key=sorting_key)
+        tardy.sort(key=sorting_key)
+        for tag in (tardy_excused + tardy):
+            tag = tag.lower()
+            result.append(schooltool.table.pdf.GridColumn(tag, item=tag))
+        return result
 
 
 class FlourishStudentDetailReportPDFView(flourish.report.PlainPDFPage,

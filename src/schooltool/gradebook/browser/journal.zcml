@@ -23,6 +23,13 @@
       permission="schooltool.edit"
       />
   <flourish:pdf
+      name="absences_by_date_range.pdf"
+      for="schooltool.schoolyear.interfaces.ISchoolYear"
+      class=".pdf_views.AbsencesByDateRangePDFView"
+      content_template="rml/absences_by_day_rml.pt"
+      permission="schooltool.edit"
+      />
+  <flourish:pdf
       name="section_absences.pdf"
       for="schooltool.course.interfaces.ISection"
       class=".pdf_views.SectionAbsencesPDFView"

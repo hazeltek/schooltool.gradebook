@@ -22,8 +22,10 @@ Gradebook Views
 __docformat__ = 'reStructuredText'
 
 import pytz
+from collections import OrderedDict
 import datetime
 from decimal import Decimal
+from decimal import InvalidOperation
 import urllib
 from lxml import html
 
@@ -500,12 +502,26 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
 
     isTeacher = True
     needs_comments = False
+    column_averages = None
+    total_column_averages = None
 
     def getTodayState(self, student, section):
         relationships = Membership.bind(member=student).all().relationships
         for link_info in relationships:
             if link_info.target is section:
-                return link_info.state.today
+                today = link_info.state.today
+                if today is not None:
+                    meaning, code = today
+                    state = self.app_states.states.get(code)
+                    if state is not None:
+                        return state.title
+                else:
+                    all = link_info.state.all()
+                    if all:
+                        date, meaning, code = all[0]
+                        state = self.app_states.states.get(code)
+                        if state is not None:
+                            return '%s - %s' % (state.title, date)
 
     @Lazy
     def app_states(self):
@@ -517,7 +533,8 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
         result = []
         students = self.students
         section = proxy.removeSecurityProxy(self.context).section
-        active_students = students.on(self.request.util.today).any(ACTIVE)
+        today = queryUtility(IDateManager).today
+        active_students = students.on(today).any(ACTIVE)
         current_mode = getCurrentEnrollmentMode(self.person)
         if current_mode == 'gradebook-enrollment-mode-enrolled':
             students = active_students
@@ -527,10 +544,9 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
             title = insecure_student.title
             if insecure_student not in active_students:
                 css_class.append('inactive-student')
-                meaning, code = self.getTodayState(insecure_student, section)
-                state = self.app_states.states.get(code)
+                state = self.getTodayState(insecure_student, section)
                 if state is not None:
-                    title = '%s (%s)' % (title, state.title)
+                    title = '%s (%s)' % (title, state)
             result.append({
                     'title': title,
                     'css_class': ' '.join(css_class),
@@ -815,7 +831,6 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
 
         section = ISection(worksheet, None)
         journal_data = interfaces.ISectionJournalData(section, None)
-
         rows = []
         for student_info in self.students_info:
             grades = []
@@ -833,19 +848,23 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
                 if source is not None:
                     if value and interfaces.IActivityWorksheet.providedBy(source):
                         value = '%.1f' % value
+                is_discrete = IDiscreteValuesScoreSystem.providedBy(
+                    activity.scoresystem)
                 grade = {
                     'activity': activity_info['hash'],
                     'editable': activity_info['scorable'],
                     'value': value,
                     'is_comment': is_comment,
+                    'is_discrete': is_discrete,
+                    'max': activity_info['max'],
                     'hidden_value': hidden_value,
                     }
                 grades.append(grade)
 
-            total, raw_average = gradebook.getWorksheetTotalAverage(
+            raw_total, raw_average = gradebook.getWorksheetTotalAverage(
                 worksheet, student_info['object'])
 
-            total = "%.1f" % total
+            total = "%.1f" % raw_total
 
             if raw_average is UNSCORED:
                 average = _('N/A')
@@ -873,6 +892,9 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
                  'total': total,
                  'average': average,
                  'raw_average': raw_average,
+                 'raw_total': raw_total,
+                 'raw_absences': absences,
+                 'raw_tardies': tardies,
                 })
 
         # Do the sorting
@@ -913,7 +935,72 @@ class GradebookOverview(SectionFinder, JSONScoresBase):
                             pass
                         break
                 return (value, generateStudentKey(row))
-        return sorted(rows, key=generateKey, reverse=reverse)
+        result = sorted(rows, key=generateKey, reverse=reverse)
+        self.column_averages = self.getColumnAverages(result)
+        self.total_column_averages = self.getTotalColumnAverages(
+            result, journal_data)
+        return result
+
+    def getColumnAverages(self, table):
+        result = []
+        columns = OrderedDict()
+        for student_info in table:
+            for i, grade in enumerate(student_info['grades']):
+                if i not in columns:
+                    columns[i] = {
+                        'grades': [],
+                        'is_comment': grade['is_comment'],
+                        'is_discrete': grade['is_discrete'],
+                        'max': grade['max'],
+                    }
+                columns[i]['grades'].append(grade['value'])
+        for column in columns.values():
+            average = ''
+            if not column['is_comment'] and not column['is_discrete']:
+                average_grades = []
+                count = 0
+                for grade in column['grades']:
+                    # XXX: why decimals are str and not Decimal?
+                    if grade != '':
+                        try:
+                            average_grades.append(Decimal(grade))
+                            count += int(column['max'])
+                        except (InvalidOperation,):
+                            # ignore invalid grades
+                            pass
+                if count:
+                    average = convertAverage(
+                        (100 * sum(average_grades))/Decimal(count), None)
+            result.append(average)
+        return result
+
+    def getTotalColumnAverages(self, table, journal_data):
+        result = {}
+        graded_student_count = 0
+        absences = []
+        tardies = []
+        total = []
+        average = []
+        formatDecimal = lambda x: '%.1f' % x
+        for student_info in table:
+            absences.append(student_info['raw_absences'])
+            tardies.append(student_info['raw_tardies'])
+            student_average = student_info['raw_average']
+            if student_average is not UNSCORED:
+                graded_student_count += 1
+                total.append(student_info['raw_total'])
+                average.append(student_average)
+        if journal_data is not None:
+            row_count = len(table)
+            if row_count:
+                result['absences'] = formatDecimal(sum(absences) / row_count)
+                result['tardies'] = formatDecimal(sum(tardies) / row_count)
+        if graded_student_count:
+            result['total'] = formatDecimal(
+                sum(total) / graded_student_count)
+            result['average'] = convertAverage(
+                sum(average) / graded_student_count, self.average_scoresystem)
+        return result
 
     @property
     def descriptions(self):
@@ -2703,6 +2790,14 @@ class FlourishGradebookCommentCell(flourish.form.Form):
 
 class TermReportLinkViewlet(ReportLinkViewlet):
     pass
+
+
+class YearReportLinkViewlet(TermReportLinkViewlet):
+
+    @property
+    def report_link(self):
+        return '%s/%s' % (absoluteURL(self.manager.schoolyear, self.request),
+                          self.link)
 
 
 class ChildrenGradebookOverview(flourish.viewlet.Viewlet):
