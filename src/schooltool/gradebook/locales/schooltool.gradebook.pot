@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: schooltool.gradebook\n"
-"POT-Creation-Date: 2015-02-14 02:14-0600\n"
+"POT-Creation-Date: 2015-02-22 06:18-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Schooltool Development Team <schooltool-dev@schooltool.org>\n"
@@ -430,7 +430,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:367
 #: /src/schooltool/gradebook/browser/flourish.zcml:377
 #: /src/schooltool/gradebook/browser/flourish.zcml:418
-#: /src/schooltool/gradebook/browser/pdf_views.py:1077
+#: /src/schooltool/gradebook/browser/pdf_views.py:1078
 #: /src/schooltool/gradebook/browser/templates/gradebook_grade_activity.pt:5
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:5
 #: /src/schooltool/gradebook/browser/templates/gradebook_startup.pt:5
@@ -563,7 +563,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:1078
 #: /src/schooltool/gradebook/browser/flourish.zcml:1402
 #: /src/schooltool/gradebook/browser/flourish.zcml:1415
-#: /src/schooltool/gradebook/browser/pdf_views.py:1053
+#: /src/schooltool/gradebook/browser/pdf_views.py:1054
 #: /src/schooltool/gradebook/browser/report.zcml:92
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:53
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:71
@@ -576,7 +576,7 @@ msgstr ""
 #: /src/schooltool/gradebook/browser/flourish.zcml:976
 #: /src/schooltool/gradebook/browser/flourish.zcml:989
 #: /src/schooltool/gradebook/browser/flourish.zcml:1001
-#: /src/schooltool/gradebook/browser/pdf_views.py:1050
+#: /src/schooltool/gradebook/browser/pdf_views.py:1051
 #: /src/schooltool/gradebook/browser/report.zcml:56
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:52
 #: /src/schooltool/gradebook/browser/templates/gradebook_overview.pt:53
@@ -600,7 +600,7 @@ msgid "Actions"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:221
-#: /src/schooltool/gradebook/browser/pdf_views.py:1056
+#: /src/schooltool/gradebook/browser/pdf_views.py:1057
 #: /src/schooltool/gradebook/browser/templates/f_add_edit_linked_column.pt:54
 #: /src/schooltool/gradebook/browser/templates/f_course_worksheets.pt:15
 #: /src/schooltool/gradebook/browser/templates/worksheet_overview.pt:4
@@ -718,7 +718,7 @@ msgid "Group"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:952
-#: /src/schooltool/gradebook/browser/pdf_views.py:1658
+#: /src/schooltool/gradebook/browser/pdf_views.py:1659
 #: /src/schooltool/gradebook/browser/report.zcml:26
 msgid "Student Detail Report"
 msgstr ""
@@ -848,13 +848,13 @@ msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1772
 #: /src/schooltool/gradebook/browser/flourish.zcml:1784
-#: /src/schooltool/gradebook/browser/pdf_views.py:1893
+#: /src/schooltool/gradebook/browser/pdf_views.py:1894
 msgid "Transcript"
 msgstr ""
 
 #: /src/schooltool/gradebook/browser/flourish.zcml:1772
 #: /src/schooltool/gradebook/browser/gradebook.py:2601
-#: /src/schooltool/gradebook/browser/pdf_views.py:1059
+#: /src/schooltool/gradebook/browser/pdf_views.py:1060
 #: /src/schooltool/gradebook/browser/report.zcml:16
 #: /src/schooltool/gradebook/browser/report.zcml:26
 #: /src/schooltool/gradebook/browser/report.zcml:137
@@ -1061,142 +1061,137 @@ msgstr ""
 msgid "Tardies"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:296
+#: /src/schooltool/gradebook/browser/pdf_views.py:297
 msgid "Report Card: ${schoolyear}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:300
-#: /src/schooltool/gradebook/browser/pdf_views.py:423
+#: /src/schooltool/gradebook/browser/pdf_views.py:301
+#: /src/schooltool/gradebook/browser/pdf_views.py:424
 #: /src/schooltool/gradebook/browser/templates/f_deploy_as_course_worksheet.pt:37
 msgid "Courses"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:305
+#: /src/schooltool/gradebook/browser/pdf_views.py:306
 msgid "Student: ${student}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:416
+#: /src/schooltool/gradebook/browser/pdf_views.py:417
 msgid "Detailed Student Report: ${schoolyear}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:420
+#: /src/schooltool/gradebook/browser/pdf_views.py:421
 msgid "Grade Detail"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:426
+#: /src/schooltool/gradebook/browser/pdf_views.py:427
 msgid "Attendance Detail"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:429
+#: /src/schooltool/gradebook/browser/pdf_views.py:430
 msgid "Dates"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:432
+#: /src/schooltool/gradebook/browser/pdf_views.py:433
 msgid "Student Name"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:435
+#: /src/schooltool/gradebook/browser/pdf_views.py:436
 msgid "User Id"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:549
+#: /src/schooltool/gradebook/browser/pdf_views.py:550
 #: /src/schooltool/gradebook/browser/report.zcml:56
 msgid "Failures by Term"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:553
+#: /src/schooltool/gradebook/browser/pdf_views.py:554
 msgid "term ${term} failures"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:590
+#: /src/schooltool/gradebook/browser/pdf_views.py:591
 msgid "Report Sheet: ${worksheet}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:592
+#: /src/schooltool/gradebook/browser/pdf_views.py:593
 msgid "Activity: ${activity}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:594
+#: /src/schooltool/gradebook/browser/pdf_views.py:595
 msgid "Passing Score: ${score}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:600
+#: /src/schooltool/gradebook/browser/pdf_views.py:601
 msgid "The following students are at risk of failing the following courses:"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:668
+#: /src/schooltool/gradebook/browser/pdf_views.py:669
 msgid "ABSENCES BY DAY"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:677
+#: /src/schooltool/gradebook/browser/pdf_views.py:678
 msgid "absences by day report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:678
+#: /src/schooltool/gradebook/browser/pdf_views.py:679
 msgid "absences for ${day}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:801
+#: /src/schooltool/gradebook/browser/pdf_views.py:802
 #: /src/schooltool/gradebook/browser/report.zcml:81
 #: /src/schooltool/gradebook/browser/report.zcml:114
 msgid "Absences for Range of Dates"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:808
+#: /src/schooltool/gradebook/browser/pdf_views.py:809
 msgid "absences by range of dates report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:809
+#: /src/schooltool/gradebook/browser/pdf_views.py:810
 msgid "absences for ${start} to ${end}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:908
+#: /src/schooltool/gradebook/browser/pdf_views.py:909
 msgid "SECTION ABSENCES"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:912
+#: /src/schooltool/gradebook/browser/pdf_views.py:913
 msgid "${section} absence report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:928
+#: /src/schooltool/gradebook/browser/pdf_views.py:929
 msgid "Teacher(s): ${instructors}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1047
+#: /src/schooltool/gradebook/browser/pdf_views.py:1048
 msgid "Gradebook Report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1092
+#: /src/schooltool/gradebook/browser/pdf_views.py:1093
 msgid "${section} gradebook"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1110
+#: /src/schooltool/gradebook/browser/pdf_views.py:1111
 msgid "Instructors: ${instructors}"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1248
-#: /src/schooltool/gradebook/browser/pdf_views.py:1768
+#: /src/schooltool/gradebook/browser/pdf_views.py:1249
+#: /src/schooltool/gradebook/browser/pdf_views.py:1769
 msgid "Report Card"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1263
+#: /src/schooltool/gradebook/browser/pdf_views.py:1264
 msgid "${student} report card"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1525
+#: /src/schooltool/gradebook/browser/pdf_views.py:1526
 msgid "Total periods"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1673
+#: /src/schooltool/gradebook/browser/pdf_views.py:1674
 msgid "${student} detail report"
 msgstr ""
 
-#: /src/schooltool/gradebook/browser/pdf_views.py:1885
-#: /src/schooltool/gradebook/browser/rml/report_card_student_header.pt:9
-msgid "Username: ${username}"
-msgstr ""
-
-#: /src/schooltool/gradebook/browser/pdf_views.py:1908
+#: /src/schooltool/gradebook/browser/pdf_views.py:1909
 msgid "${student} transcript"
 msgstr ""
 

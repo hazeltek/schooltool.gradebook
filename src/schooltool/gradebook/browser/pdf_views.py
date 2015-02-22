@@ -32,6 +32,7 @@ from reportlab.lib import units
 from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.app.browser.report import ReportPDFView
+from schooltool.common import SchoolToolMessage as STMessage
 from schooltool.course.interfaces import ILearner, ISectionContainer
 from schooltool.course.interfaces import ISection
 from schooltool.person.interfaces import IPerson
@@ -1882,9 +1883,9 @@ class PersonCourseWorksheetsReportPDFView(CourseWorksheetsReportPDFView):
     @property
     def subtitles_left(self):
         return [
-            _(u'Username: ${username}',
-              mapping={'username': self.context.username})
-            ]
+            STMessage(u'Username: ${username}',
+                      mapping={'username': self.context.username})
+        ]
 
 
 class FlourishTranscriptPDFView(flourish.report.PlainPDFPage,
