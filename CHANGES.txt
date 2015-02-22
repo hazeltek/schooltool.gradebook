@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.9.1 (unreleased)
+2.9.1 (2015-02-22)
 ------------------
 
-Nothing changed yet.
+- Changed Username to ID in the Uganda locale
 
 
 2.9.0 (2015-02-17)
