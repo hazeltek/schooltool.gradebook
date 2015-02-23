@@ -90,7 +90,7 @@
               </tal:block>
               <td class="placeholder">&nbsp;</td>
             </tr>
-            <tr tal:condition="view/column_averages">
+            <tr tal:condition="view/column_averages" class="column-averages">
               <td tal:repeat="grade view/column_averages" tal:content="grade" />
               <td class="placeholder">&nbsp;</td>
             </tr>
