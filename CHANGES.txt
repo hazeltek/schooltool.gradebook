@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.9.3 (unreleased)
+2.9.3 (2015-03-21)
 ------------------
 
-- Nothing changed yet
+- Changed Ave. to % in gradebook view
 
 
 2.9.2 (2015-02-23)
