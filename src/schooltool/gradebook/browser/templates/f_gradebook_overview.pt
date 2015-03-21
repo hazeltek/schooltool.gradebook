@@ -115,7 +115,7 @@
               </th>
               <th id="column_average"
                   tal:condition="view/show_average_column">
-                <a class="popup_link" href="" i18n:translate="">Ave.</a>
+                <a class="popup_link" href="" i18n:translate="">%</a>
               </th>
             </tr>
           </thead>

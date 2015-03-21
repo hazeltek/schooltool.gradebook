@@ -103,7 +103,7 @@ SUMMARY_TITLE = _('Summary')
 
 
 def getColumnKeys(gradebook):
-    column_keys =  [('total', _("Total")), ('average', _("Ave."))]
+    column_keys =  [('total', _("Total")), ('average', _("%"))]
     journal_data = interfaces.ISectionJournalData(ISection(gradebook), None)
     if journal_data is not None:
         column_keys = ([('absences', _("Abs.")), ('tardies', _("Trd."))] +
@@ -2684,7 +2684,7 @@ class FlourishTotalPopupMenuView(JSONViewBase):
 
     titles = {
         'total': _('Total'),
-        'average': _('Ave.'),
+        'average': _('%'),
         'tardies': _('Trd.'),
         'absences': _('Abs.'),
         }
