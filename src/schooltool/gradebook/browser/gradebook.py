@@ -2975,7 +2975,7 @@ class ColumnPreferencesMenuOptions(flourish.viewlet.Viewlet):
         result = []
         if not self.view.deployed:
             result.append(('total', _('Total')))
-            result.append(('average' , _('Average')))
+            result.append(('average' , _('%')))
         if self.view.journal_present:
             result.insert(0, ('tardies' , _('Tardies')))
             result.insert(0, ('absences', _('Absences')))
