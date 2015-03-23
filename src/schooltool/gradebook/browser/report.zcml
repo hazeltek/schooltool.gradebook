@@ -124,14 +124,6 @@
          link="request_absences_by_date_range.html"
          />
 
-
-
-
-
-
-
-
-
   </configure>
 
   <report:reportLink
