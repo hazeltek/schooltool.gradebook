@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.9.4 (unreleased)
+2.9.4 (2015-04-07)
 ------------------
 
-- Nothing changed yet
+- Changed Average to % in Columns preferences sidebar
 
 
 2.9.3 (2015-03-21)
