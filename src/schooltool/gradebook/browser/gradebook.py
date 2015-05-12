@@ -66,6 +66,7 @@ from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.contact.interfaces import IContact
 from schooltool.course.interfaces import ISection
+from schooltool.course.interfaces import ISectionContainer
 from schooltool.course.interfaces import ILearner, IInstructor
 from schooltool.gradebook import interfaces
 from schooltool.gradebook.activity import ensureAtLeastOneWorksheet
@@ -84,6 +85,7 @@ from schooltool.requirement.interfaces import (ICommentScoreSystem,
     IScoreSystemContainer, IEvaluations, IScore)
 from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.securitypolicy.crowds import inCrowd
 from schooltool.table.table import simple_form_key
 from schooltool import table
 from schooltool.term.interfaces import ITerm, IDateManager
@@ -159,7 +161,9 @@ class GradebookStartup(object):
         schoolyears = ISchoolYearContainer(ISchoolToolApplication(None))
         active = schoolyears.getActiveSchoolYear()
         self.person = IPerson(self.request.principal)
-        if not self.sectionsTaught and not self.sectionsAttended:
+        if (not self.sectionsTaught and
+            not self.sectionsAttended and
+            not is_admin(self.request)):
             self.noSections = True
         if self.sectionsTaught:
             section = getCurrentSectionTaught(self.person)
@@ -177,6 +181,15 @@ class GradebookStartup(object):
                                           self.student_gradebook_view_name)
             if not self.sectionsTaught:
                 self.request.response.redirect(self.mygradesURL)
+        if is_admin(self.request):
+            sections = []
+            for term in active.values():
+                sections.extend(ISectionContainer(term).values())
+            section = self.getFromYear(
+                sorted(sections, key=lambda s: s.title), active)
+            url = '%s/%s' % (absoluteURL(section, self.request),
+                             self.teacher_gradebook_view_name)
+            self.request.response.redirect(url)
 
 
 class FlourishGradebookStartup(flourish.page.Page, GradebookStartup):
@@ -187,6 +200,11 @@ class FlourishGradebookStartup(flourish.page.Page, GradebookStartup):
         if IPerson(self.request.principal, None) is None:
             raise Unauthorized("user not logged in")
         GradebookStartup.update(self)
+
+
+def is_admin(request):
+    app = ISchoolToolApplication(None)
+    return inCrowd(request.principal, 'administration', context=app)
 
 
 class GradebookStartupNavLink(flourish.page.LinkViewlet):
@@ -201,7 +219,7 @@ class GradebookStartupNavLink(flourish.page.LinkViewlet):
 
         sectionsTaught = list(IInstructor(person).sections())
         sectionsAttended = list(ILearner(person).sections())
-        return sectionsTaught or sectionsAttended
+        return sectionsTaught or sectionsAttended or is_admin(self.request)
 
     @property
     def url(self):
@@ -295,7 +313,15 @@ class SectionFinder(GradebookBase):
 
     def getUserSections(self):
         if self.isTeacher:
-            return list(IInstructor(self.person).sections())
+            if is_admin(self.request):
+                sections = []
+                schoolyears = ISchoolYearContainer(ISchoolToolApplication(None))
+                active = schoolyears.getActiveSchoolYear()
+                for term in active.values():
+                    sections.extend(ISectionContainer(term).values())
+                return sorted(sections, key=lambda s: s.title)
+            else:
+                return list(IInstructor(self.person).sections())
         else:
             return list(ILearner(self.person).sections())
 
@@ -1184,7 +1210,8 @@ class TeacherNavigationViewletBase(flourish.page.RefineLinksViewlet):
         return proxy.removeSecurityProxy(self.context).section
 
     def render(self, *args, **kw):
-        if self.person in self.section.instructors:
+        if (self.person in self.section.instructors or
+            is_admin(self.request)):
             return super(TeacherNavigationViewletBase,
                          self).render(*args, **kw)
 
