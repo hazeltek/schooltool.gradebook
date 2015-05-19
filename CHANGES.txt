@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.9.5 (unreleased)
+2.9.5 (2015-05-18)
 ------------------
 
-- Nothing changed yet
+- Displayed gradebook tab and selectors for administration crowd
 
 
 2.9.4 (2015-04-07)
