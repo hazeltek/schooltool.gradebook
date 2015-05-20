@@ -24,7 +24,6 @@ from decimal import Decimal
 
 import zope.interface
 from zope import annotation
-from zope.container.interfaces import INameChooser
 from zope.keyreference.interfaces import IKeyReference
 from zope.security import proxy
 from zope.component import queryAdapter, getAdapters, getUtility
@@ -44,19 +43,7 @@ COURSE_DEPLOYED_WORKSHEETS_KEY = 'schooltool.gradebook.course_deployed'
 
 
 def ensureAtLeastOneWorksheet(worksheets, factory=None, title=None):
-    # only create new worksheet if no personal
-    # worksheet (hidden or not) is found
-    for worksheet in worksheets.all_worksheets:
-        if not worksheet.deployed:
-            return
-    if factory is None:
-        factory = Worksheet
-    if title is None:
-        title = _('Sheet1')
-    sheet1 = factory(title)
-    chooser = INameChooser(worksheets)
-    name = chooser.chooseName('', sheet1)
-    worksheets[name] = sheet1
+    return
 
 
 def createSourceString(sourceObj):
