@@ -119,6 +119,13 @@
       permission="schooltool.view"
       />
 
+  <flourish:page
+      name="copy_paste_dialog"
+      for="schooltool.gradebook.interfaces.IGradebook"
+      template="templates/f_gradebook_copy_paste_dialog.pt"
+      permission="schooltool.view"
+      />
+
   <flourish:viewlet
       name="gradebook_section_navigation"
       before="gradebook_term_navigation"

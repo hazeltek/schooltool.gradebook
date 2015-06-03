@@ -2478,7 +2478,17 @@ class FlourishActivityPopupMenuView(JSONViewBase, JSONScoresBase):
                     'label': self.translate(_('Edit')),
                     'url': absoluteURL(info['object'], self.request),
                     })
+        options.append({
+            'label': self.translate(_('Copy')),
+            'url': '#',
+            'css_class': 'copy',
+        })
         if info['scorable']:
+            options.append({
+                'label': self.translate(_('Paste')),
+                'url': '#',
+                'css_class': 'paste',
+            })
             options.append({
                     'label': self.translate(_('Score this')),
                     'url': '%s/gradeActivity.html?activity=%s' % (

@@ -1,0 +1,9 @@
+<div class="hidden-dialog" id="copy-paste-dialog-container"
+     i18n:domain="schooltool.gradebook">
+  <div id="copy-paste-dialog-title" dialog_title="Error"
+       i18n:attributes="dialog_title">
+  </div>
+  <h3 i18n:translate="">
+    The number of pasted values must match the number of rows in this sheet.
+  </h3>
+</div>
