@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-2.9.8 (unreleased)
+2.9.8 (2015-06-25)
 ------------------
 
-- Nothing changed yet
+- Added English India translation template.
 
 
 2.9.7 (2015-06-03)
