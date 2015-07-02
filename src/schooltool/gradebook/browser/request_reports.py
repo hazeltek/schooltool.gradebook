@@ -38,6 +38,7 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.common import SchoolToolMessage as STMessage
 from schooltool.schoolyear.interfaces import ISchoolYear
+from schooltool.schoolyear.interfaces import ISchoolYearContainer
 from schooltool.term.interfaces import IDateManager, ITerm
 from schooltool.export.export import RequestXLSReportDialog
 from schooltool.report.browser.report import RequestRemoteReportDialog
@@ -598,9 +599,27 @@ class FlourishRequestReportSheetsExportView(RequestXLSReportDialog):
     report_builder = 'export_report_sheets.xls'
 
 
+class IRequestYearlyReport(Interface):
+
+    schoolyear = zope.schema.Choice(
+        title=STMessage(u'School Year'),
+        source='schooltool.gradebook.schoolyears',
+        required=True)
+
+
 class FlourishRequestReportCardView(RequestRemoteReportDialog):
 
     report_builder = 'report_card.pdf'
+
+    fields = z3c.form.field.Fields(IRequestYearlyReport)
+
+    def updateTaskParams(self, task):
+        schoolyear = self.form_params.get('schoolyear')
+        task.request_params['schoolyear_id'] = schoolyear.__name__
+
+    def updateWidgets(self, *args, **kw):
+        super(FlourishRequestReportCardView, self).updateWidgets(*args, **kw)
+        self.widgets['schoolyear'].prompt = True
 
 
 class FlourishRequestStudentDetailReportView(RequestRemoteReportDialog):
@@ -631,3 +650,54 @@ class FlourishRequestTranscriptView(RequestRemoteReportDialog):
     def updateTaskParams(self, task):
         hide_teachers = not bool(self.form_params.get('show_teachers'))
         task.request_params['hide_teachers'] = hide_teachers
+
+
+class SchoolYearsVocabulary(zope.schema.vocabulary.SimpleVocabulary):
+
+    implements(zope.schema.interfaces.IContextSourceBinder)
+
+    def __init__(self, context):
+        self.context = context
+        terms = self.createTerms()
+        zope.schema.vocabulary.SimpleVocabulary.__init__(self, terms)
+
+    def createTerms(self):
+        result = []
+        app = ISchoolToolApplication(None)
+        container = ISchoolYearContainer(app)
+        for schoolyear_id, schoolyear in container.items():
+            result.append(self.createTerm(
+                schoolyear,
+                schoolyear_id.encode('utf-8'),
+                schoolyear.title,
+            ))
+        return result
+
+
+def SchoolYearsVocabularyFactory():
+    return SchoolYearsVocabulary
+
+
+class NoSchoolYearLayout(zope.schema.interfaces.ValidationError):
+
+    __doc__ = _('There is no report card layout defined for this year')
+
+
+class SchoolYearLayoutValidator(z3c.form.validator.SimpleFieldValidator):
+
+    def validate(self, schoolyear):
+        super(SchoolYearLayoutValidator, self).validate(schoolyear)
+        if schoolyear:
+            root = IGradebookRoot(ISchoolToolApplication(None))
+            if schoolyear.__name__ not in root.layouts:
+                raise NoSchoolYearLayout(schoolyear)
+            layout = root.layouts[schoolyear.__name__]
+            if (not layout.columns or
+                not layout.outline_activities):
+                raise NoSchoolYearLayout(schoolyear)
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    SchoolYearLayoutValidator,
+    view=FlourishRequestReportCardView,
+    field=IRequestYearlyReport['schoolyear'])

@@ -1911,4 +1911,11 @@
       render="template"
       />
 
+  <zope:utility
+     factory=".request_reports.SchoolYearsVocabularyFactory"
+     provides="zope.schema.interfaces.IVocabularyFactory"
+     name="schooltool.gradebook.schoolyears" />
+
+  <zope:adapter factory=".request_reports.SchoolYearLayoutValidator" />
+
 </configure>

@@ -1247,6 +1247,9 @@ class FlourishStudentReportCardPDFView(flourish.report.PlainPDFPage,
 
     name = _('Report Card')
 
+    def __init__(self, *args, **kw):
+        flourish.report.PlainPDFPage.__init__(self, *args, **kw)
+
     def students(self):
         return [self.context]
 
