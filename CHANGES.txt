@@ -2,10 +2,11 @@
 CHANGES
 =======
 
-2.8.4 (unreleased)
+2.8.4 (2015-07-02)
 ------------------
 
-- Nothing changed yet.
+- Added school year dropdown to report card request view
+  (https://launchpad.net/bugs/1432672)
 
 
 2.8.3 (2014-12-03)
