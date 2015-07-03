@@ -687,14 +687,13 @@ class SchoolYearLayoutValidator(z3c.form.validator.SimpleFieldValidator):
 
     def validate(self, schoolyear):
         super(SchoolYearLayoutValidator, self).validate(schoolyear)
-        if schoolyear:
-            root = IGradebookRoot(ISchoolToolApplication(None))
-            if schoolyear.__name__ not in root.layouts:
-                raise NoSchoolYearLayout(schoolyear)
-            layout = root.layouts[schoolyear.__name__]
-            if (not layout.columns or
-                not layout.outline_activities):
-                raise NoSchoolYearLayout(schoolyear)
+        root = IGradebookRoot(ISchoolToolApplication(None))            
+        if schoolyear.__name__ not in root.layouts:
+            raise NoSchoolYearLayout(schoolyear)
+        layout = root.layouts[schoolyear.__name__]
+        if (not layout.columns and
+            not layout.outline_activities):
+            raise NoSchoolYearLayout(schoolyear)
 
 
 z3c.form.validator.WidgetValidatorDiscriminators(
