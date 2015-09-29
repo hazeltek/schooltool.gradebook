@@ -32,6 +32,8 @@ from zope.security.proxy import removeSecurityProxy
 from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.interface import implements, directlyProvides
 from z3c.form import button
+from z3c.form import form
+from z3c.form import field
 
 from schooltool.app.interfaces import ISchoolToolApplication
 from schooltool.requirement import interfaces, scoresystem
@@ -40,6 +42,7 @@ from schooltool.skin.flourish.page import Page
 from schooltool.skin.flourish.page import RefineLinksViewlet
 from schooltool.skin.flourish.page import ModalFormLinkViewlet
 from schooltool.skin.flourish.form import DialogForm
+from schooltool.skin import flourish
 
 
 MISSING_TITLE = _('The Title field must not be empty.')
@@ -528,4 +531,39 @@ class FlourishCustomScoreSystemDeleteView(DialogForm):
     def updateActions(self):
         super(FlourishCustomScoreSystemDeleteView, self).updateActions()
         self.actions['delete'].addClass('button-ok')
+        self.actions['cancel'].addClass('button-cancel')
+
+
+class FlourishCustomScoreSystemEditView(flourish.form.Form,
+                                        form.EditForm):
+
+    template = flourish.templates.Inherit(flourish.page.Page.template)
+    label = None
+    legend = _('Score System Information')
+    fields = field.Fields(interfaces.IScoreSystem).select('title')
+
+    @property
+    def title(self):
+        return self.context.title
+
+    def update(self):
+        return form.EditForm.update(self)
+
+    @button.buttonAndHandler(_('Submit'), name='apply')
+    def handleApply(self, action):
+        super(FlourishCustomScoreSystemEditView, self).handleApply.func(self, action)
+        # XXX: hacky sucessful submit check
+        if (self.status == self.successMessage or
+            self.status == self.noChangesMessage):
+            url = absoluteURL(self.context, self.request)
+            self.request.response.redirect(url)
+
+    @button.buttonAndHandler(_("Cancel"))
+    def handle_cancel_action(self, action):
+        url = absoluteURL(self.context, self.request)
+        self.request.response.redirect(url)
+
+    def updateActions(self):
+        super(FlourishCustomScoreSystemEditView, self).updateActions()
+        self.actions['apply'].addClass('button-ok')
         self.actions['cancel'].addClass('button-cancel')

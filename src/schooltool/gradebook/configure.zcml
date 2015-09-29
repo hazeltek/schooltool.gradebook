@@ -141,7 +141,7 @@
     <require
         permission="schooltool.view"
         attributes="keys __iter__ values items __len__ deployed
-                    title getCategoryWeights"
+                    title getCategoryWeights hidden"
         />
     <require
         permission="schooltool.edit"

@@ -80,6 +80,19 @@
       permission="schooltool.edit"
       />
 
+  <configure package="schooltool.skin.flourish">
+
+    <flourish:page
+        name="edit.html"
+        for="schooltool.requirement.interfaces.IScoreSystem"
+        class="schooltool.requirement.browser.scoresystem.FlourishCustomScoreSystemEditView"
+        content_template="templates/z3c-schooltool-form.pt"
+        permission="schooltool.edit"
+        subtitle="Edit"
+        />
+
+  </configure>
+
   <flourish:page
       name="delete.html"
       for="schooltool.requirement.interfaces.ICustomScoreSystem"
