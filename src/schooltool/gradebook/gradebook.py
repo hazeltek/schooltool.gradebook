@@ -328,7 +328,7 @@ class GradebookBase(object):
 
     def getWorksheetTotalAverage(self, worksheet, student):
         def getMinMaxValue(score):
-            ss = score.scoreSystem
+            ss = score.requirement.scoresystem
             if IDiscreteValuesScoreSystem.providedBy(ss):
                 return (ss.scores[-1][2], ss.scores[0][2],
                     ss.getNumericalValue(score.value))
