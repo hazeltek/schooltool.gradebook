@@ -62,6 +62,7 @@ from schooltool.app.interfaces import IApplicationPreferences
 from schooltool.app.interfaces import IRelationshipStateContainer
 from schooltool.app.membership import Membership
 from schooltool.app.states import ACTIVE
+from schooltool.app.browser.app import ActiveSchoolYearContentMixin
 from schooltool.common.inlinept import InheritTemplate
 from schooltool.common.inlinept import InlineViewPageTemplate
 from schooltool.contact.interfaces import IContact
@@ -123,7 +124,7 @@ def convertAverage(average, scoresystem):
             return score[0]
 
 
-class GradebookStartup(object):
+class GradebookStartup(ActiveSchoolYearContentMixin):
     """A view for entry into into the gradebook or mygrades views."""
 
     template = ViewPageTemplateFile('templates/gradebook_startup.pt')
@@ -185,6 +186,13 @@ class GradebookStartup(object):
             sections = []
             for term in active.values():
                 sections.extend(ISectionContainer(term).values())
+            if not sections and self.previousYear:
+                for term in self.previousYear.values():
+                    sections.extend(ISectionContainer(term).values())
+            if not sections:
+                url = absoluteURL(self.person, self.request)
+                self.request.response.redirect(url)
+                return
             section = self.getFromYear(
                 sorted(sections, key=lambda s: s.title), active)
             url = '%s/%s' % (absoluteURL(section, self.request),
