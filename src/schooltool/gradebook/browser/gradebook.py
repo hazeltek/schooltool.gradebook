@@ -184,10 +184,8 @@ class GradebookStartup(ActiveSchoolYearContentMixin):
                 self.request.response.redirect(self.mygradesURL)
         if is_admin(self.request):
             sections = []
-            for term in active.values():
-                sections.extend(ISectionContainer(term).values())
-            if not sections and self.previousYear:
-                for term in self.previousYear.values():
+            for schoolyear in schoolyears.values():
+                for term in schoolyear.values():
                     sections.extend(ISectionContainer(term).values())
             if not sections:
                 url = absoluteURL(self.person, self.request)
@@ -324,9 +322,9 @@ class SectionFinder(GradebookBase):
             if is_admin(self.request):
                 sections = []
                 schoolyears = ISchoolYearContainer(ISchoolToolApplication(None))
-                active = schoolyears.getActiveSchoolYear()
-                for term in active.values():
-                    sections.extend(ISectionContainer(term).values())
+                for schoolyear in schoolyears.values():
+                    for term in schoolyear.values():
+                        sections.extend(ISectionContainer(term).values())
                 return sorted(sections, key=lambda s: s.title)
             else:
                 return list(IInstructor(self.person).sections())
