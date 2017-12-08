@@ -1,0 +1,22 @@
+./build
+./bin
+./develop-eggs
+./dist
+./parts
+./python
+./.installed.cfg
+./instance
+**/LC_MESSAGES/*.mo
+./src/schooltool.gradebook.egg-info
+./src/schooltool/gradebook/locales/??
+./src/schooltool/gradebook/locales/??_??
+./ID
+./TAGS
+./tags
+./coverage
+./ftest-coverage
+./buildout.cfg
+
+# git extras
+.bzr
+
